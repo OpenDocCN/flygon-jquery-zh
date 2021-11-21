@@ -20,6 +20,16 @@
 +   [jQuery3 学习手册](docs/learn-jq3/SUMMARY.md)
 +   [精通 jQuery](docs/master-jq/SUMMARY.md)
 +   [jQuery 响应式 Web 设计](docs/res-web-design-jq/SUMMARY.md)
++   [jQuery2 动画技术入门指南](docs/jq2-ani-tech-begin-guide/SUMMARY.md)
++   [jQuery2 开发秘籍](docs/jq2-dev-cb/SUMMARY.md)
++   [jQuery 热点](docs/jq-hotshot/SUMMARY.md)
++   [jQueryMobile 秘籍](docs/jqmobi-cb/SUMMARY.md)
++   [jQueryMobile Web 开发基础知识](docs/jqmobi-web-dev-essense/SUMMARY.md)
++   [jQuery 参考指南](docs/jq-ref-guide/SUMMARY.md)
++   [jQueryUI 工具库](docs/jq-tool-ui-lib/SUMMARY.md)
++   [jQueryUI 1.10：jQuery 的用户界面库](docs/jqui-110/SUMMARY.md)
++   [KnockoutJS 基础知识](docs/knockoutjs-essense/SUMMARY.md)
++   [WordPress3 和 jQuery](docs/wp3-jq/SUMMARY.md)
 
 ## 贡献指南
 
