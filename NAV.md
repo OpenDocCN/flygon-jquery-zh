@@ -63,8 +63,8 @@
     +   [飞龙的 Vue 译文集📚](https://opendoccn.github.io/opendoccn-vue-zh)
     +   [飞龙的 Angular 译文集📚](https://opendoccn.github.io/opendoccn-angular-zh)
     +   [飞龙的 React 译文集📚](https://opendoccn.github.io/opendoccn-react-zh)
-    +   [飞龙的 jQuery 译文集📚](https://opendoccn.github.io/opendoccn-jquery-zh)
-    +   [飞龙的 jQuery 译文集（二）📚](https://opendoccn.github.io/opendoccn-jquery-zh-pt2)
+    +   [FreeLearning jQuery 译文集📚](https://opendoccn.github.io/opendoccn-jquery-zh)
+    +   [FreeLearning jQuery 译文集（二）📚](https://opendoccn.github.io/opendoccn-jquery-zh-pt2)
 +   后端/大数据
     +   [JavaTPoint 大数据中文教程📚](https://opendoccn.github.io/javatpoint-bigdata-zh)
     +   [JavaTPoint Web 开发中文教程📚](https://opendoccn.github.io/javatpoint-web-zh)
