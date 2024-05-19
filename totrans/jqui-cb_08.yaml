@@ -403,6 +403,7 @@
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，如果我们已经得到了一个父级滑块小部件和一个百分比，我们将调用`_reset()`方法，并将当前值传递给我们的父级滑块。这将可能更新此小部件的最大值和当前值。完成这些操作后，我们设置了一个观察者，用于观察父级滑块的更改。这是使用`_on()`方法完成的，我们在其中传递`parent`作为我们正在监听事件的元素以及配置对象。该对象具有一个`slidechange`事件，这是我们感兴趣的事件，以及回调函数。在回调函数内部，我们只是使用来自父级的更新值简单地调用了我们的`_reset()`方法。值得注意的是，我们必须使用`_on()`来注册我们的事件处理程序。如果销毁了子滑块，事件处理程序将从父级中删除。
 - en: The `_reset()` method takes a value from the parent slider and resets both the
     `value` and `max` options of this child slider. We're using this method both when
     the child is first created and when the parent value changes. The goal is to preserve
@@ -413,6 +414,7 @@
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '`_reset()`方法接受来自父级滑块的值，并重置此子滑块的`值`和`最大`选项。我们在首次创建子元素和父元素值更改时都使用此方法。目标是保持当前值/最大值比率。这就是`percent`选项发挥作用的地方。由于这作为整数传递给小部件，我们必须将其乘以`0.01`。这是我们计算出该子级的新最大值的方法。一旦我们有了新的最大值，我们就可以将当前值放大或缩小。'
 - en: Finally, in the document-ready event handler where we instantiate each of the
     five slider widgets, we've defined a generic callback function used to update
     the label in each CPU `div`. This gets passed to the create and change options
@@ -422,11 +424,14 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，在文档准备就绪的事件处理程序中，我们实例化了五个滑块小部件，在其中定义了一个用于更新每个 CPU `div` 中标签的通用回调函数。这个函数被传递给了每个滑块小部件的创建和更改选项。我们还在这里使用了我们新定义的选项的值。每个子滑块都有一个独特的总
+    CPU 分配的`百分比`值，并且每个子元素都使用`#master`作为其`父级`。
 - en: Marking step increments
   id: totrans-60
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 标记步长增量
 - en: The slider widget can be passed a step value, which determines the increments
     by which the user can slide the handle. If unspecified, the `step` option is `1`,
     and the handle slides smoothly back and forth. On the other hand, if the `step`
@@ -437,16 +442,19 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 滑块小部件可以传递一个步长值，该值确定用户可以滑动手柄的增量。如果未指定，`步长`选项为`1`，手柄会平滑地来回滑动。另一方面，如果`步长`值更加明显，比如`10`，我们会注意到随着移动手柄而手柄会吸附到位置。让我们看看我们如何扩展滑块小部件以使用户更好地感受到这些增量的位置。我们将使用刻度来在视觉上标记增量。
 - en: How to do it...
   id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何做...
 - en: We'll jump right into the custom CSS used for this widget enhancement. The underlying
     `div` element used for the slider element can be as simple as `<div></div>`.
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将直接进入用于此小部件增强的自定义 CSS。用于滑块元素的基础`div`元素可以简单地是`<div></div>`。
 - en: '[PRE8]'
   id: totrans-64
   prefs: []
@@ -457,6 +465,7 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们的 JavaScript 代码，扩展了滑块并使用新的`ticks`选项创建了小部件的实例：
 - en: '[PRE9]'
   id: totrans-66
   prefs: []
@@ -467,15 +476,18 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看此滑块小部件，我们可以看到我们指定的`步长`值`20`在滑块下方使用刻度标记来表示。
 - en: '![How to do it...](img/2186_08_07.jpg)'
   id: totrans-68
   prefs: []
   type: TYPE_IMG
+  zh: '![如何做...](img/2186_08_07.jpg)'
 - en: How it works...
   id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 工作原理...
 - en: Let's examine the additional capability we've introduced into the slider widget.
     We've added the `ticks` Boolean option, which is turned off by default. This option,
     when true, tells the widget to display the step increments using tick marks. In
@@ -488,6 +500,7 @@
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们检查我们已经引入到滑块小部件中的附加功能。我们添加了`ticks`布尔选项，默认情况下关闭。当这个选项为真时，告诉小部件使用刻度标记显示步进增量。在`_create()`方法中，我们使用`_super()`调用了原始的`_create()`实现，因为我们希望滑块按照正常方式构造。然后，我们检查`ticks`选项是否已打开，以及`step`值是否大于`5`。如果已打开`ticks`选项并且我们有一个小于`5`的`step`值，它们将看起来彼此靠近；所以我们简单地不显示它们。
 - en: The `cnt` counter variable controls our tick rendering loop, and is initialized
     to the first `step` above the `min` option. Likewise, the loop exits before the
     `max` option value. This is because we do not want to render tick marks at the
@@ -499,6 +512,8 @@
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 计数器变量`cnt`控制着我们的刻度渲染循环，并初始化为`min`选项上方的第一个`step`。同样，循环在`max`选项值之前退出。这是因为我们不想在滑块的开头或结尾渲染刻度标记，而只想在中间部分显示。变量`background`用于从滑块小部件中提取`border-color`
+    CSS属性。我们实际上在这里所做的是将主题设置传递给我们要添加到小部件中的新元素。这允许主题被交换，刻度标记的颜色也会相应更改。
 - en: Inside the `while` loop, we're creating the `div` elements that represent the
     tick marks. The `left` CSS property is computed to actually position the `div`
     so that it lines up with the slider handle as the user moves it around. The `ui-slider-tick`
@@ -508,11 +523,14 @@
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`while`循环内，我们正在创建代表刻度标记的`div`元素。`left` CSS 属性被计算为实际定位`div`，使其与用户移动手柄时的滑块手柄对齐。我们将`ui-slider-tick`
+    CSS 类添加到`div`元素中，配置每个刻度标记的公共属性，包括`z-index`，将`div`的一部分推到主滑块栏的后面。
 - en: Getting range values
   id: totrans-73
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 获取范围数值
 - en: The slider widget can be used to control a range value. So instead of moving
     a fixed point, that is the handle, back and forth over the slider axis, the user
     will move two handles back and forth. The space in between these two points represents
@@ -522,17 +540,20 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 滑块小部件可用于控制范围值。因此，用户不是在滑块轴上来回移动一个固定点，即手柄，而是在两个手柄之间来回移动。这两个点之间的空间表示范围值。但是我们如何计算这个数字呢？滑块小部件给我们提供了原始数据，即用户选择的上限和下限。我们可以在我们的事件处理程序中使用这些值来计算范围值。
 - en: Getting ready...
   id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备工作...
 - en: 'We''ll use just a basic slider for this demonstration, but we''ll need some
     supporting CSS and HTML surrounding the slider so that we can display the range
     values as they''re changed. Here is the CSS:'
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将仅使用基本的滑块进行演示，但我们需要一些支持的 CSS 和 HTML 来包围滑块，以便在更改时显示范围值。以下是 CSS：
 - en: '[PRE10]'
   id: totrans-77
   prefs: []
@@ -542,6 +563,7 @@
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是 HTML 代码：
 - en: '[PRE11]'
   id: totrans-79
   prefs: []
@@ -552,11 +574,13 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 操作方法...
 - en: We'll create the `slider` instance using the following JavaScript code. Note
     that we're passing options specific to supporting range selections.
   id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用以下 JavaScript 代码创建`slider`实例。请注意，我们传递了支持范围选择的特定选项。
 - en: '[PRE12]'
   id: totrans-82
   prefs: []
@@ -568,15 +592,18 @@
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，当您在浏览器中查看此滑块时，您会注意到范围值显示为小部件外的标签。而且，如果您移动滑块手柄中的任何一个，标签将反映更改的范围值。
 - en: '![How to do it...](img/2186_08_08.jpg)'
   id: totrans-84
   prefs: []
   type: TYPE_IMG
+  zh: '![操作方法...](img/2186_08_08.jpg)'
 - en: How it works...
   id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 工作原理...
 - en: 'In this example, we''re creating a simple slider widget that uses a range of
     values instead of just a single value. We do this by passing an array of values
     to the widget constructor, and by passing a `range` value of `true` to the constructor
