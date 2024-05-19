@@ -1,0 +1,906 @@
+- en: Chapter 3. Toolbars
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using fullscreen fixed toolbars
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using persistent navbars in toolbars
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing the header with multiple buttons
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a customized round button to the header
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding an image to the header
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a customized back button
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a layout grid to the footer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework provides two toolbars, the **Header** and the **Footer**.
+    The header is the first container in the page and the footer is the last. Header
+    is used to specify the title of the application or the page, and can include the
+    standard **navbar** for navigation. The footer is used for a variety of purposes.
+    It can include standard buttons and form controls and can be customized to suit
+    your needs. It can also contain a navbar for page navigation. The footer is also
+    usually used to display the copyrights and license information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using fullscreen fixed toolbars
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Fixed toolbars** remain in the same position on the screen when the page
+    is scrolled. When the page content of your application occupies the entire viewport,
+    the fixed toolbars will overlap the page content. You cannot toggle the visibility
+    of the fixed toolbars here. To toggle the toolbar visibility, you can use the
+    fixed toolbars in the **Fullscreen mode**. This recipe shows you how to create
+    a simple **Photo Viewer** application that uses fullscreen toolbars.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/03/fullscreen-toolbars` sources
+    folder. This code can be launched using the URL `http://localhost:8080/03/fullscreen-toolbars/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html` create the `#main` page and a `<img>` tag to display a scaled
+    down image of the **Niagara Falls**, as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#photo` page to display the image in fullscreen mode:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create the `#main` page to display the thumbnail image of the
+    **Niagara Falls** using the `<img>` tag with a small `width` and `height`. Add
+    a link to open the `#photo` page. When you first launch the application, the following
+    screen is displayed with a smaller sized image of the snap:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Next create the `#photo` page, with fixed toolbars using the `data-fixed="true"`
+    attribute. Set the page container to occupy the full screen using the `data-fullscreen="true"`
+    attribute. Add the image using the `<img>` tag with `100% width` and `height`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now when you click on the **View full screen** button in `#main`, the `#photo`
+    page is opened with the fullscreen image of the **Niagara Falls**. The fixed toolbars
+    can also be seen. When you tap the screen now, the visibility of the toolbars
+    is toggled. The fullscreen display looks like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The fullscreen toolbars will overlap over the page content by default. You will
+    not be able to access any content that is shown below the toolbar. You will have
+    to tap the screen, toggle the toolbar visibility, and then access the page content.
+    This could become a usability issue for the users of your application. So use
+    this feature judiciously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Fullscreen toolbars are ideal in pages where you have to display full screen
+    content such as photos, previews, slideshows, or videos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The position—fixed CSS property
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Browsers have to support the `position:fixed` CSS property for the proper dynamic
+    positioning of the fixed toolbars. Most modern browsers support this property.
+    For older browsers, this support might not be there and the framework gracefully
+    degrades and falls back to using regular static toolbars. In these older platforms,
+    you can use **Polyfills** to support fixed toolbars and a detailed note on this
+    is available at [http://jquerymobile.com//test/docs/toolbars/bars-fixed.html](http://jquerymobile.com//test/docs/toolbars/bars-fixed.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Toggling the fixed toolbar visibility
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As already mentioned in this recipe, you can tap the screen to toggle the visibility
+    of the fixed toolbars. This change on tap behavior can be controlled by using
+    the `tapToggle` property (by default `true`) of the **fixedtoolbar plugin** .
+    To enable or disable tapping, use the following code snippet, that uses a jQuery
+    selector to find the toolbar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Toggling the fixed toolbar visibility using JavaScript
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can also use JavaScript to toggle the fixed toolbars' visibility by calling
+    the `show` or `hide` methods on the `fixedtoolbar` plugin as shown in the following
+    code. The code snippet uses the jQuery selector to find the toolbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using persistent navbars in toolbars* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using persistent navbars in toolbars
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **Navbar widget** can be used to provide navigation links in your application.
+    A **Persistent Navbar** stays fixed in the same position in your application,
+    like a fixed tab bar, as you navigate between pages. This recipe shows you how
+    to use persistent navbars in the toolbars to create a simple **TV Menu UI**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/03/persistent-navbar` sources
+    folder. This code can be launched using the URL `http://localhost:8080/03/persistent-navbar/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html` create a simple **TV Menu UI** with three pages in it, "`#movies`",
+    "`#songs`", and "`#serials`". Add the `#movies` page with its header and footer
+    having navbars as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next add the `#songs` page with similar content, as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, add the `#serials` page as in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` and add three pages to it: `#movies`, `#songs`, and `#serials`.
+    In `#main` page, add a fixed header by specifying `data-position="fixed"`. To
+    persist this header across all the pages, set the attribute `data-id="persistheader"`.
+    Now add a `navbar` with three links as shown in the previous code. The first link
+    points to the same page and so use `#` for the `href` tag. Also add the attribute
+    `class="ui-btn-active ui-state-persist` to indicate that this button should be
+    in active state when you navigate into this page. Next add a footer to the page
+    with a navbar having three links, **New**, **Popular**, and **Classics**, as shown
+    in the previous code. Add the attributes `data-id="persistfooter"` and `data-position="fixed"`
+    to indicate that this is a fixed footer and it is to be persisted across all the
+    pages. You should use the same `data-id` value for the headers of all three pages.
+    Similarly the same `data-id` should be used for the footers of the three pages.
+    Using the same value will create a sticky `navbar`, which will stay put and not
+    transition when the page transition occurs.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next add the `#songs` page with similar content as the **Movies** page. Set
+    the same `data-id` values to the header and footer as mentioned earlier. Now set
+    the second button to active state in the header `navbar` by setting the attribute
+    `class="ui-btn-active ui-state-persist"` to it. Finally, add the `"#serials"`
+    page with fixed persistent header and footer as in the earlier pages. Here set
+    the third button in the header `navbar` as active. When you launch the application,
+    you can navigate to the three pages using the header navbar. All the three pages
+    have the same header and footer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can randomly select different buttons in the footer for the three pages.
+    When you navigate back and forth between the pages, you will see that the footer
+    button state is persisted and remembered for the pages. The screen is displayed
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The persistent navbar is very handy in menu driven applications, where it is
+    often used to provide navigation between the pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can set icons to the navbar buttons by adding the `data-icon` attribute.
+    The icon position can be set to `top`, `bottom`, `right`, or `left` using the
+    `data-iconpos` attribute as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 3D page transitions with persistent fixed toolbars
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you use persistent fixed toolbars with pages that have 3D page transitions,
+    you could run into positioning issues. The performance could also be slow. So
+    it is better that you convert these pages to use 2D animations, such as `slide`,
+    `slidup`, `slidedown`, `fade`, or `none`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using fullscreen fixed toolbars* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing the header with multiple buttons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you add buttons to the page header, they line up to the left side of the
+    header and only one button can be positioned to the right side by default. This
+    recipe shows you how to add four buttons to the header, with two of them positioned
+    to the right-hand side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/03/multiple-header-buttons`
+    sources folder. This code can be launched using the URL `http://localhost:8080/03/multiple-header-buttons/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create a new stylesheet called `jqm.css` and define two new custom styles as
+    given in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Include the previous stylesheet in the `<head>` tag of `main.html` as shown
+    in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now add four buttons to the page header using the default styles provided by
+    the jQuery Mobile framework and also use your custom styles, as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create the `jqm.css` stylesheet and define two new classes, `.ui-btn-nexttoleft`
+    and `.ui-btn-nexttoright`, to specify the absolute positions that will be used
+    by the buttons. Create `main.html` and include the link to the previous stylesheet
+    after including the link to the `jquery.mobile.css` file as shown in the previous
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next add a header with `<h1>` text in the middle of the header and two anchor
+    buttons on both its sides. Add the attribute `class="ui-btn-left"` to the first
+    button to make it appear in the left-hand corner. Add the attribute `class="ui-btn-nexttoleft"`
+    to the second button. Similarly, add the attribute `class="ui-btn-nexttoright"`
+    to the third button and finally add `class="ui-btn-right"` to the fourth button,
+    which will appear in the right-hand corner. The second and third buttons use the
+    custom classes that you have defined. Now when you launch the page, the buttons
+    are positioned in the header as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take care while using absolute values in your stylesheet; you might have to
+    modify the absolute positions if the text size or layout changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using the attribute `data-role="header"` to the header `div` container causes
+    the jQuery Mobile framework to enhance the header in the standard way. You can
+    skip this attribute and customize the header in your own way by using the class
+    `"ui-bar"` in your `div` container. You can also include widgets other than buttons
+    in the header.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Custom styling a dialog* recipe in [Chapter 2](ch02.html "Chapter 2. Pages
+    and Dialogs"), *Pages and Dialogs*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Adding a customized round button to the header* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Adding an image to the header* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a customized round button to the header
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework allows you to add custom controls to the header
+    of a page. This recipe shows you how to add a custom round button to the header
+    of your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/03/round-button-header` sources
+    folder. This code can be launched using the URL `http://localhost:8080/03/round-button-header/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create a new stylesheet called `jqm.css` and define a custom `roundbtn` class
+    in it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create `main.html` and include the previous stylesheet in the `<head>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add an `About` button to the header of the `#main` page using the newly defined
+    `roundbtn` style, as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the `#about` dialog as, in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create the `jqm.css` stylesheet and define a new class `roundbtn` with `width`,
+    `height`, and `border-radius` properties as shown in the previous code. To create
+    a round button set the `border-radius` property value to exactly half the value
+    of the `width` property. Finally, add the vendor specific properties for `border-radius`
+    to ensure that the border radius works well on various browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create `main.html` and include the link to the above stylesheet after including
+    the link to the `jquery.mobile.css` file as shown in the previous code. Next create
+    the `#main` page and add a header with `<h1>` text to it. Set the `height` of
+    the header to `50px` using the style attribute to ensure the round button with
+    `40px` `height` (as specified in the CSS) fits properly in the header. Next add
+    an anchor link in the header with attributes `data-role="button"` and `data-rel="dialog"`
+    to open the `"#about"` page as a dialog. Add the `roundbtn` style to this button
+    using the `class` attribute. Also add the other classes that are added by the
+    framework while enhancing an anchor link to a button. You can obtain this list
+    of classes by inspecting the anchor element using your browser's developer tools.
+    You have to add these classes manually to ensure that the round button gets the
+    proper style as it has been customized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, define the `#about` page as given in the previous code. When you launch
+    the application, a round button is now displayed in the header as shown in the
+    following screenshot. Clicking on the round button will open the `#about` dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Your browser should support the `border-radius` or the corresponding vendor
+    specific prefix `border-radius` property in the CSS. If it does not, you will
+    see a rectangular button instead of a round button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using CSS to create a bouncing page transition* recipe in [Chapter 2](ch02.html
+    "Chapter 2. Pages and Dialogs"), *Pages and Dialogs*, for a note on vendor prefixes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Custom styling a dialog* recipe in [Chapter 2](ch02.html "Chapter 2. Pages
+    and Dialogs"), *Pages and Dialogs*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Customizing the header with multiple buttons* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Adding an image to the header* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding an image to the header
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The header of a jQuery Mobile page usually contains the text which is to be
+    used as the page header. You can also add other content and markup to the header.
+    This recipe shows you how to add an image to the header of your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/03/header-image` sources folder.
+    This code can be launched using the URL `http://localhost:8080/03/header-image/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this recipe, the image `ABC.png` is used as the logo image for a a fictitious
+    company, ABC Inc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/7225_03_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Create `main.html` and add the above image to its header. The image is linked
+    to a dialog as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the `#about` dialog as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, create a `#main` page and add a header with `<h1>` text to it.
+    Now add an anchor link in the header to open the `#about` page as a dialog by
+    using the attribute `data-rel="dialog"`. Specify a custom style to the anchor
+    link using the attribute `class="ui-btn ui-shadow ui-btn-up-a"`. Do not add `data-role="button"`
+    as the framework would then enhance this link as a button. Next add an `<img>`
+    element pointing to the `ABC.png` image as shown in the previous code. Scale this
+    image to a suitable size by using the `width` and `height` attributes. Finally,
+    define the `#about` page as given in the code. When you launch the application,
+    the header of the `#main` page displays the `ABC.png` image on the left corner
+    as shown in the following screenshot. Clicking on this image opens the `#about`
+    dialog page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can also use native styling for the image and avoid any custom styles being
+    set on the anchor element to display only the image. It is done by using the attribute
+    `data-role="none"` as in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Customizing the header with multiple buttons* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Adding a customized round button to the header* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a customized back button
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When a new page is opened in your application, the jQuery Mobile framework provides
+    an option to add a **Back** button to the header of the page to help you navigate
+    back to the previous page. The **Back** button is not visible by default. This
+    recipe shows you how to dynamically add and customize the **Back** button in your
+    application using JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/03/custom-back-button` sources
+    folder. This code can be launched using the URL `http://localhost:8080/03/custom-back-button/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` and add two anchor links in it. The first link opens a page
+    with a **Back** button in its header and the second link opens a page without
+    the **Back** button.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Also add a submit button to the page as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section of the page and bind it to
+    the `click` event of the submit button:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create `page1.html` with a **Back** button in its page header as shown in the
+    following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create `page2.html`, which does not have the **Back** button by default:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` and add two anchor links to it, which open `page1.html` and
+    `page2.html` respectively. Create `page1.html` and add the attribute `data-add-back-btn="true"`
+    to the page `div` container as shown in the previous code. Now when you click
+    on the first button in `main.html`, it opens `page1.html` and you can see the
+    **Back** button displayed in the page header. Click on it to go back to `main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create `page2.html` and do not add the `data-add-back-btn` attribute to it.
+    Now when you click on the second button in `main.html`, it opens `page2.html`
+    and there is no **Back** button in the header. You can add an anchor link to the
+    page content to navigate back to `main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now in `main.html`, add a submit button with `id="addbackbtns"` and text **Click
+    to Add and Customize Back Button**. In the `pageinit` event handler, which gets
+    invoked after the page has initialized at startup, bind the `click` event of the
+    submit button to a callback function. Here set the option `addBackBtn` of the
+    `$.mobile.page.prototype` object to `true` as shown in the previous code. This
+    will automatically enable the **Back** button on all the pages in your application.
+    Also you can customize the **Back** button further by setting its text and theme
+    using the `backBtnText` and `backBtnTheme` options as shown in the previous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now you can visit both the pages from `main.html` and see that the back buttons
+    are now available and have the same style. Both have yellow color and their text
+    is set to **Prev**, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As mentioned in the recipe, you can set the following property and globally
+    enable the **Back** button for all the pages in your application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When the **Back** button is enabled by default on all the pages, you can set
+    it off for a particular page by adding the attribute `data-add-back-btn="false"`
+    to its page `div` container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Customizing the header with multiple buttons* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Adding a customized round button to the header* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a layout grid to the footer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A **Layout Grid** allows you to place controls in columns next to each other.
+    This recipe shows you how to add multiple form controls to the page footer using
+    a layout grid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/03/footer-layoutgrid` sources
+    folder. This code can be launched using the URL `http://localhost:8080/03/footer-layoutgrid/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` and add a footer to its page. Add a layout grid to the page
+    footer and add form controls to this layout grid, as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` and add a footer to it. Style the footer by specifying the
+    attribute `class="ui-bar"`. This creates a horizontal bar in which you can add
+    your custom controls. Now add a two column layout grid to the footer by creating
+    a `fieldset` element with the attribute `class="ui-grid-a"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add a `div` container with the attributes `data-role="fieldcontain"` to the
+    first column of the layout grid. You must add the attribute `class="ui-block-a"`,
+    to indicate that this `div` container is placed in the first column of the grid.
+    Now add a Slider widget to this column by adding an `input` element with `type="range"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly add a `div` container with the attributes `data-role="fieldcontain"`
+    and `class="ui-block-b"`, to indicate that this `div` container should be placed
+    in the second column of the layout grid. Add three radio buttons to this column
+    in a single group by adding the attribute `data-role="controlgroup"`. Also add
+    the attribute `data-type="horizontal"` to place the radio controls in a horizontal
+    row (by default they are laid out vertically below each other).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The footer now looks as shown in the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_03_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Up to five columns can be specified in a layout grid by styling the grid using
+    the corresponding class, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two column grid – use the `ui-grid-a` class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Three column grid – use the `ui-grid-b` class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Four column grid – use the `ui-grid-c` class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Five column grid – use the `ui-grid-d` class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given the lack of real estate in mobile devices, use the four or five column
+    layout grids selectively. The UI might look cramped and there may not be enough
+    space to fill in your form controls.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Size of the controls in a layout grid
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Adding a form control or a widget to a layout grid column will cause the control
+    to occupy the entire width of the column. If you do not want this behavior, you
+    will have to modify the style of your control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Button and Select form controls support the `data-inline="true"` attribute.
+    You can set this attribute to the controls and they will retain their actual compact
+    sizes, and they will not resize to occupy the entire width of the column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Breaking to the next row in a layout grid
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If your layout grid has multiple rows, you have to add the various controls
+    in their own div containers, starting with `class="ui-block-a"` for the first
+    column and moving to `class="ui-block-e"` for the fifth column. Adding a sixth
+    `ui-block` or using a `div` container with `class="ui-block-a"` at any point of
+    time in between will cause the columns to wrap and the newly added `div` container
+    now moves to the next row.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Start a row with the class `ui-block-a` and move towards `ui-block-e` in a proper
+    sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do not repeat the same ui-blocks in the same row.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using persistent navbars in toolbars* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Creating a custom layout grid* recipe in [Chapter 4](ch04.html "Chapter 4. Buttons
+    and Content Formatting"), *Buttons and Content Formatting*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

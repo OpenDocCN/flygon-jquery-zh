@@ -1,0 +1,537 @@
+- en: Chapter 9. Faster jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'jQuery''s detractors have two legitimate complaints against it. The first complaint
+    is that jQuery creates hard-to-read, spaghetti code. In the previous chapter,
+    we addressed this complaint by showing how to write code that is both easy to
+    read and maintain. The second complaint is that jQuery creates slow code. This,
+    too, is a legitimate complaint. The problem with jQuery or any other library is
+    that if you don''t understand it, it is easy to choose the wrong way to do something.
+    In this chapter, we will address the second complaint: slow jQuery code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To be sure, jQuery itself is written in highly performance-tuned JavaScript;
+    in fact, I highly recommend that you study its source code. The problem with performance
+    and jQuery is usually one of not understanding how it works. It is this lack of
+    understanding that causes programmers to write inefficient code. But thankfully,
+    jQuery is not that hard to understand, and when we pair this understanding with
+    performance measuring tools, we can easily improve the performance of our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Learn how to measure the speed of our JavaScript code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Measure the performance of different jQuery snippets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn when not to use jQuery and use plain vanilla JavaScript instead
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing performance tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we worry about how to improve our app's performance, we should first
+    learn how to measure it. Simply saying "the app feels sluggish" isn't enough.
+    In order to improve an app's performance, you must be able to measure it before
+    you can improve it. Luckily for us, there have been many improvements in our browsers
+    in the past few years. One such improvement is the User Timing API. It isn't officially
+    part of all browsers since it is only a recommendation of the W3C, but it is supported
+    by modern versions of all of the major browsers except Safari. We won't deploy
+    our measuring code with our app, so the lack of Safari support, while regretful,
+    isn't a deal killer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I know some are wondering why we need a new way to measure time. We've had `Date.now()`
+    since the introduction of ECMAScript 5.1 in 2009 and `new Date().getTime()` before
+    that. The problem is one of resolution; at best, `Date.now()` can measure with
+    an accuracy of 1 millisecond, which simply isn't good enough. The computer can
+    execute a lot of JavaScript instructions in 1 millisecond.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The User Timing API is easy to use. We aren''t going to explain all of its
+    capabilities. We will only show just enough to help us write our performance-measuring
+    code. The first function we need to get to know is `performance.now()`. It is
+    similar to `Date.now()` in that it returns the current system time, but it differs
+    in two important ways: first, it returns a floating point value, not an integer
+    value like `Date.now()`. The floating-point value represents a precision of 1
+    microsecond or one-thousandths of a millisecond. Second, `performance.now()` is
+    monotonically increasing, which is a fancy way of saying that it always increases.
+    This means that whenever it is called consecutively, the value of the second call
+    is always greater than the first. This is something that is not guaranteed with
+    `Date.now()`. It might seem strange, but `Date.now()` is not monotonically increasing.
+    `Date.now()` is based on time, and most systems have a process that keeps time
+    in sync by adjusting `Date.now()` by a few milliseconds every 15 or 20 minutes.
+    Because the resolution of `Date.now()` is a millisecond at best, anything that
+    happens in less time than it gets rounded down to 0\. A simple example will help
+    explain the problem better:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code is pretty straightforward. We make two consecutive calls
+    to both `Date.now()` and `performance.now()`, which then display the elapsed time.
+    In most browsers, the elapsed time of `Date.now()` will be zero, which we instinctively
+    know can''t be true. It doesn''t matter how fast your computer is; it will always
+    take some amount of time to execute every instruction. The problem is the resolution:
+    `Date.now()` operates with a millisecond resolution and JavaScript instructions
+    take microseconds to execute.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 1 millisecond equals 1,000 microseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, `performance.now()` has a microsecond resolution; it always shows a
+    difference between any two calls. When called consecutively, it will usually be
+    at the submillisecond level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Performance.now()` is a very useful method, but it is not the only tool in
+    the performance toolbox. The creators of the User Timing API realized that most
+    of us were going to measure our app''s performance, so they wrote methods to make
+    it easier. First, there is the `performance.mark()`method; when passed a string,
+    it will internally store the value of `performance.now()` using the passed string
+    as a key:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code stores a performance mark with the name `startTask1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, there is `performance.measure()`. It will create a named timing measurement.
+    It has three strings as parameters. The first string is the name of the measurement.
+    The second string is the name of the starting performance mark, and the final
+    string is the name of the ending performance mark:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The User Timing API will store the measurement internally with the name as
+    a key. In order to see our performance measures, we simply need to ask for them.
+    The simplest way is to ask for all of them and then loop through them to display
+    each one. The following code demonstrates the technique:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The preceding code displays all of its results to the browser console; nothing
+    is displayed to the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The action begins with the code hooking the document-ready event, which calls
+    the `init()` function. A call to `performance.mark()` is made to create a mark
+    for `mark1`. We then call `delay()` with a counter value of 1,000 to simulate
+    the performance of a useful task and then follow with another call to `performance.mark()`,
+    which creates another performance marker, `mark2`. Again, we call `delay()`, this
+    time with a smaller counter of 10 and create another performance marker, `mark3`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We now have three performance markers. In order to determine how long each
+    simulated task took, we will need to measure the markers using the `performance.measure()`
+    method. It takes three parameters: the name of the measurement, the name of the
+    initial marker, and the name of the final marker. Each measurement will be recorded
+    and stored internally in the performance object. In order to view the measurements,
+    we call the `showMeasurements()` methods.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `showMeasurements()` method begins by calling `performance.getEntriesByType('measure')`.
+    This method returns an array holding all of the performance measures recorded
+    by the performance object. Each item in the array is an object that contains the
+    performance measurement's name, start time, and duration. It also contains its
+    performance type, but we aren't displaying it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we do is make a call to `performance.clearMeasures()`. Keep in
+    mind that the performance object stores all of the marks and measures internally.
+    If you don't clear them occasionally, your lists of measure might become ungainly
+    long. When `performance.clearMeasures()` is called with no parameters, it clears
+    all of the measures it has saved. It can also be called with the name of a measure
+    to clear. You can just as easily clear marks that have been saved by calling `performance.clearMarks()`.
+    Calling it with no parameters clears all the saved marks, and calling it with
+    the name of a mark clears the mark.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Measuring jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we have a way to measure the JavaScript performance, let''s measure
+    some jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There''s nothing tricky in the preceding code, really. It uses Bootstrap and
+    jQuery to create a navigation bar. The `nav` bar isn''t fully functional; it just
+    makes our jQuery code follow some markup to parse:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding markup is the main content. Again, we are just giving ourselves
+    some meaty HTML to parse through:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code measures the speed of two different jQuery snippets. Both
+    snippets return a jQuery object that points to the same element: the sole anchor
+    tag with a class of `find-me`. There are faster ways to find the element, and
+    we will get to these ways later, but right now, we wish to address a problem with
+    our measuring technique.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the code is run, it displays two measurements in the console. The first
+    measurement is about the time it took to find the jQuery object using selectors.
+    The second measurement is about using an `id` selector combined with the `find()`
+    method. The second method is more optimized and should be faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem is most noticeable when you run the test code repeatedly. The timings
+    of each run will vary, but they can vary so much that sometimes, the code that
+    should be faster is slower. Run the timing code again, and suddenly it will become
+    faster. What's going on? Well, although JavaScript is single threaded and we can't
+    interrupt our code, the browser is not single threaded, nor is the operating system.
+    Sometimes, something else on another thread can occur while our test code is running,
+    causing it to appear to be slower. What can we do to fix this?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The answer is to use the law of averages and execute our code enough times
+    to even out the occasional hiccups. With that in mind, here is an improved version
+    of our timing code. The markup is the same as the previous version; only the code
+    within the `<script>` tags has changed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the new version of the code, the only thing we change is how we call our
+    jQuery code. Instead of calling it just once, we pass it to a function that calls
+    it thousands of times. The actual number of times the code should be called is
+    up to you. I like to call it somewhere between 10,000 and 100,000 times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we have a pretty straightforward and precise way of measuring the speed
+    of our code. Keep in mind that we shouldn't deploy our performance-measuring code
+    with our production website. Let's take an in-depth look at jQuery selectors so
+    that we can understand how using the right one can make a dramatic improvement
+    in our code's performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first thing to understand about selectors is that they are a call to the
+    browser's Document Object Model, or DOM, and that all interactions with the DOM
+    are slow. Even developers who know the DOM is slow sometimes don't understand
+    that jQuery uses the DOM like all of the code, which renders the markup to the
+    browser page. Selectors are at the heart of jQuery, and small differences in selectors
+    can make big differences in the speed of the code. It is important for us to understand
+    how to write selectors that are fast and efficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using IDs over other selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The fastest selectors are those that are based on the fastest underlying DOM
+    code. A fast DOM-based element finding method is `document.getElementById()`,
+    so it follows that the fastest jQuery selector is the one based on the `id` selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This doesn't mean that you should put IDs on every element in your markup. You
+    should continue to use IDs on elements when it make sense to do so and use `id`
+    selectors to find them or elements close to them quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Caching your selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Every call to jQuery to evaluate a selector is a significant investment of processing
+    time. jQuery must first parse the selector, call DOM methods to execute the selector,
+    and finally, convert the results into jQuery objects. Remember that the DOM is
+    slow. Luckily, you can cache your selector. Your code will still get hit with
+    a time penalty the first time it is called, but subsequent calls are as fast as
+    they can be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This method works as long as you aren't performing heavy DOM manipulation. By
+    heavy, I mean adding or removing elements from the page or other things that make
+    the cached selector invalid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimizing selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All selectors are not created equal. Choosing the right one can make a big difference
+    in your application's performance, but choosing the right selector can be tricky.
+    The following are a few tips to help you create the right selector. And remember,
+    when in doubt about performance, measure it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right to left
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Deep in the core of jQuery is the Sizzle selector engine. Sizzle reads from
+    right to left. So, your most specific selector should be on the right side. Imagine
+    that we are trying to find a `<p>` tag with a class of `bubble`. How could we
+    optimize the selector? Let''s look at an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our first attempt looks pretty good. But we know that we should have the most
+    specific selector in the rightmost position, so we change things up a bit in our
+    second example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: In most browsers, this will be slightly faster than the first example. In previous
+    versions of jQuery, the difference was greater. Don't worry, though; we still
+    have more optimizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reducing overly specific selectors
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As developers, we tend to overdo things sometimes. This is especially bad when
+    defining selectors. If you add more selectors than required in order to find the
+    element you are looking for, you make jQuery do more work than required. Try to
+    reduce your selectors to only what is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This selector adds more specificity than is needed, making it slower than the
+    previous example. Your selectors should be specific enough to find the desired
+    elements, and no more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Narrowing your search
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: By default, jQuery will search the entire document, looking for matches to your
+    query. Help it out by narrowing your search.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What if we want to be faster still without polluting our markup with excessive
+    IDs? We take advantage of the nearest parent tag that has an ID to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other jQuery optimizations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The optimizations to come can be better termed rules of thumb. They will make
+    your code faster but not drastically so. And luckily, they are easy to follow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating to the latest version
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Updating to the latest version is probably one of the easiest things you can
+    do in order to speed up your jQuery code. You should always exercise care when
+    upgrading to a new version of jQuery, but the upgrades usually bring improved
+    speed, in addition to new features. Now that you know how to measure the performance
+    of your code, you can measure it before and after changing versions to see whether
+    things improve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't expect huge changes in performance and read the release notes to see whether
+    there are any breaking changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the correct version of jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Currently, there are two branches of jQuery: the 1.x branch and the 2.x branch.
+    You should only use the 1.x branch if you need to support an old version of Internet
+    Explorer. If your website runs only on modern browsers and Internet Explorer 9
+    is the oldest version you need to support, you should switch to the 2.x branch
+    of jQuery.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The 2.x branch of jQuery eliminates support for Internet Explorer 6, 7, and
+    8 and all of the headaches that came with it. This makes the code execute a bit
+    faster and also makes the library smaller so that it downloads quicker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't use deprecated methods
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Deprecated methods are those methods that the jQuery development team has decided
+    to remove in a future version. It can take years for the method to be actually
+    removed. You should remove such methods from your code as quickly as possible.
+    The reason for the method's deprecation may not be performance, but you can be
+    sure that the jQuery team isn't going to waste time optimizing a method marked
+    as deprecated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using preventDefault() when appropriate
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The fastest code is the code that doesn't run. The default behavior of an event,
+    once it is handled, is for it to be passed to the parent element and then to its
+    parent again and again, until the root document is reached. All of this bubbling
+    takes time and could be wasted time if you've already done all the required processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, it is easy to prevent this default behavior by calling `event.preventDefault()`
+    from within your event handler. This stops unnecessary code from executing and
+    speeds ups your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Never modify the DOM in a loop
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Always remember that accessing the DOM is a slow process. Access it in a loop
+    and you will compound the problem. It is better to copy the section of the DOM
+    into JavaScript, modify it, and then copy it back. In this example, we are going
+    to modify a DOM element and then compare it with nearly identical code that modifies
+    an element that is not in the DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, all of the action is in the `init()` method. We are modifying
+    the value of an `<input>` tag. In the first unoptimized pass, we modify the DOM
+    in the loop. We do some smart things, such as caching the selector into a variable
+    before the loop begins. This code seems pretty fast at first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second pass, we detach the elements from the DOM before we begin manipulating
+    them. We actually have to write more code in order to do this. First, we cache
+    the form into a variable named `myForm`. Then, we cache its parent into a variable
+    as well. Next, we detach `myForm` from the DOM using jQuery's `detach()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code in the loop is identical to that in our first version. Once we exit
+    the loop, we append `myForm` to its parent in order to restore the DOM. While
+    there is more JavaScript code in the second version, it is about 5 times faster
+    than the first. This is the kind of performance boost that is always worth pursing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery isn't always the answer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery is the most popular JavaScript open source library ever. It is used in
+    more than 60% of the top 100,000 websites. But that doesn't mean that you should
+    always use jQuery; plain JavaScript is sometimes a better choice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using document.getElementById
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When you want to find a DOM element that has an ID, it is faster to call the
+    `document.getElementById()` DOM method than use jQuery. Why? Because that is exactly
+    what jQuery will do after it interprets your selector. If you don''t need a jQuery
+    object and only want the element, save yourself a few precious microseconds and
+    make the DOM call yourself. Calling it is easy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The method accepts one parameter: the name of the `id` element. Note that it
+    doesn''t have a hashtag in front of the name. This isn''t jQuery. If the element
+    is found, a reference to an element object is returned. If it is not found, `null`
+    is returned. Again, remember that the returned value is not a jQuery object, so
+    it won''t have jQuery methods attached to it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other native browser methods available and, in general, they are faster
+    than the code written in JavaScript whether it is jQuery, your own code, or code
+    in some other library. Two other methods are `document.getElementsByTag()` and
+    `document.getElementsByClassName()`. They return an `HTMLCollection` object, which
+    is any array-like collection of elements. If no match is found, the collection
+    is empty and has a length of zero.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Older browsers, such as Internet Explorer 8, don't have `document.getElementsByClassName()`.
+    So, if you need to support older browsers, you should check whether this method
+    exists before you use it. jQuery is smart enough to use the native browser's version
+    if it is present or its own code if it is missing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using CSS
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery and JavaScript are useful for many things, but they shouldn't be used
+    for everything. Things such as animating, rotating, transforming, and translating
+    DOM elements can often be done smoother and faster with CSS. jQuery has some methods
+    that use CSS. However, by writing your own CSS, you can obtain results customized
+    to your needs. CSS can take advantage of the host system's **graphics processor
+    unit** (**GPU**) to produce results that no amount of jQuery/JavaScript can reproduce.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We started this chapter by learning how to measure our code's performance. We
+    then put that knowledge to use by measuring the speed of different selectors as
+    we learned how to write better and faster selectors. We also learned some jQuery
+    best practices that improve our code's speed. We ended the chapter by realizing
+    that jQuery isn't always the answer. Sometimes, better code comes from using plain
+    old JavaScript or DOM methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the final chapter, we will introduce jQuery plugins. Plugins are bits of
+    amazing functionality all wrapped up in easy-to-use packages. Functions allow
+    us to easily add graphical widgets, such as calendars, sliders, and photo carousels,
+    to our apps. We will learn how to use plugins, where to find them, and finally,
+    how to write our own plugin.
+  prefs: []
+  type: TYPE_NORMAL

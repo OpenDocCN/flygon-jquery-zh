@@ -1,0 +1,1317 @@
+- en: Chapter 10. A Sortable, Paged Table with Knockout.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Knockout.js is a fantastic JavaScript **Model-View-ViewModel** (**MVVM**) framework
+    that can help you save time when writing complex, interactive user interfaces.
+    It works very well with jQuery and even has built-in basic templating support
+    for building repeated elements that show different data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we'll build a paged table from data using jQuery and Knockout.js.
+    Client-side paging itself is a great feature, but we'll also allow the table to
+    be sorted by providing clickable table headings, and add some additional features
+    such as filtering the data based on a particular property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By the end of this mission we''ll have built something that looks like the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mission Briefing](img/9106OS_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Building complex UIs that respond rapidly to user interaction is hard. It takes
+    time, and the more complex or interactive an application is, the longer it takes
+    and the more code it requires. And the more code an application requires, the
+    harder it is to keep it organized and maintainable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While jQuery is good at helping us to write concise code, it was never designed
+    with building large-scale, dynamic, and interactive applications in mind. It's
+    powerful, and great at what it does and what it was designed to do; it just wasn't
+    designed to build entire applications with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Something else is needed when building large-scale applications, something that
+    provides a framework within which we can keep code organized and maintainable.
+    Knockout.js is one such framework designed to do just that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Knockout.js is known as an MVVM framework, which is based on three core components
+    – the **Model**, the **View**, and the **ViewModel**. This is similar to the better-known
+    MVC pattern. The intent of these and other similar patterns is to provide a clear
+    separation of the visual part of an application and the code required to manage
+    the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **Model** can be thought of as the data for the application. Really, the
+    actual data is a result of the Model, but when working on the client side, we
+    can forget about how the data is accessed by the server-side code because usually
+    we just make an AJAX request and the data is delivered to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **View** is the visual representation of that data, the actual HTML and
+    CSS used to present the Model to the user. When using Knockout.js, this part of
+    the application can also include bindings, which map elements on the page to specific
+    bits of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **ViewModel** sits between the Model and the View, and is quite literally
+    a model of the View – a simplified representation of the state of the View. It
+    manages the user interaction, makes and handles requests for data, and then feeds
+    the data back to the user interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The tasks needed to complete this mission are listed below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rendering the initial table
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sorting the table
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting the page size
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding Previous and Next links
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding numerical page links
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing class names
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resetting the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Filtering the table
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mission Checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: "We'll be using Knockout.js in this project, so you'll need to grab a copy of\
+    \ it now. The latest version, 2.2.1 at the time this book went to print, can be\
+    \ downloaded from: [http://knockoutjs.com/downloads/index.html](http:// \Lhttp://knockoutjs.com/downloads/index.html).\
+    \ This should be saved in the `js` directory within the main `jquery-hotshots`\
+    \ project folder as `knockout-2.2.1.js`."
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also need some data for this project. We'll need to use a reasonably large
+    data set consisting of data that can be ordered in a variety of ways. We'll be
+    using the periodic table of elements, in JSON format, as our data source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I''ve provided a file as part of this example called `table-data.js`, which
+    contains an object with a property called `elements`. The value of this property
+    is an array of objects, where each object represents an element. The objects are
+    in the following format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Rendering the initial table
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In our first task of the project, we'll build a super-simple ViewModel, add
+    a basic View, and render the Model into a bare `<table>` without any enhancements
+    or additional functionality. This will allow us to familiarize ourselves with
+    some of the basic principles of Knockout, without dropping us in at the deep end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point we create the files we'll be using in this project. Save a copy
+    of the template file as `sortable-table.html` in the root project directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll also need a style sheet called `sortable-table.css`, which we should save
+    in the `css` folder, and a JavaScript file called `sortable-table.js`, which should
+    of course be saved in the `js` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The HTML file should link to each of these resources, as well as the `knockout-2.2.1.js`
+    file. The style sheet should be linked to directly after `common.css`, which we've
+    used in most of the projects in the book so far, while `knockout.js`, `table-data.js`,
+    and the custom script file for this project (`sortable-table.js`) should come
+    after the link to jQuery, in that order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we can build the ViewModel. In `sortable-table.js`, add the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we can add the View, which is built from some simple HTML. Add the following
+    markup to the `<body>` of `sortable-table.html`, before the `<script>` elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we can add some basic styling to our `<table>` and its contents by
+    adding the following code to `sortable-table.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In our script, we first added the usual callback function to be executed when
+    the document loads. Within this we created the ViewModel using an object literal
+    stored in the variable `vm`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only property this object has is `elements`, the value of which is set using
+    a Knockout method. Knockout adds a global `ko` object that we can use to call
+    methods. One of these methods is `observableArray()`. This method accepts an array
+    as an argument, and the array passed in to the method becomes observable. This
+    is the data for our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Knockout, primitives such as strings or numbers can be observable and this
+    allows them to notify subscribers when their values change. Observable arrays
+    are similar, except that they are used with arrays. Whenever a value is added
+    or removed from an observable array, it will notify any subscribers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After defining our ViewModel, we need to apply any bindings that may be present
+    in the View. We'll look at the bindings in just a moment; for now just be aware
+    that until we call Knockout's `applyBindings()` method, any bindings we add to
+    our View won't be applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The HTML we added is almost unremarkable, it's just a simple `<table>`, with
+    a column for each property of an element. If you take a look inside the `table-data.js`
+    file, you'll see the properties of each element in the array match the `<th>`
+    elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first interesting thing is the `data-bind` attribute we added to the `<tbody>`
+    element. This is the mechanism Knockout uses to implement declarative binding.
+    This is how we connect elements in the View to properties of the ViewModel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The value of the `data-bind` attribute consists of two parts – the binding and
+    the ViewModel property to connect to. The first part is the binding, which we
+    set to `foreach`. This is one of Knockout's flow-control bindings, and acts in
+    a similar way to a standard `for` loop in regular JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second part of the binding is the ViewModel property to bind to. The one
+    property our ViewModel has at present is `elements`, which contains an observable
+    array. The `foreach` binding maps to an array and then renders any child elements
+    it has for each item in the array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The child elements that this element has are a `<tr>` and a series of `<td>`
+    elements, so we'll get a row in the table for each item in the `elements` array.
+    In order to populate the `<td>` elements with content we'll use another Knockout
+    binding – the `text` binding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `text` binding binds to a single observable property, so we have a `<td>`
+    that is bound to each property in the objects within the `elements` array. The
+    text of each `<td>` will be set to the value of each property in the current array
+    item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS we added at the end of the task was purely for presentational purposes
+    and contains nothing relevant to Knockout or jQuery. At this point we should be
+    able to run the page in a browser and see the data from `table-data.js` displayed
+    in a neat `<table>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The binding between elements of the View and properties of the ViewModel are
+    at the heart of Knockout. The ViewModel is a simplified version of the state of
+    the UI. Because of the bindings, any time the underlying ViewModel changes, the
+    view will be updated to reflect those changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So if we programmatically add a new element object to the observable array,
+    the `<table>` will instantly be updated to show the new element. Similarly, if
+    we remove an item from the array in the ViewModel, the corresponding `<tr>` will
+    be immediately removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting the table
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we can change the `<th>` elements so that they are clickable. When
+    one of them is clicked, we can then sort the table rows by the column that was
+    clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we can update the `<tr>`and the `<th>` elements that it contains
+    in `sortable-table.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can add some new observable properties to our ViewModel in `sortable-table.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also add a new method called `sort`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we can add some additional CSS to style our clickable `<th>` elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We first updated our HTML with some more bindings. First we added the `click`
+    binding using the `data-bind` attribute on the parent `<tr>`. The `click` binding
+    is used to add an event handler to any HTML element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The handler function can be a ViewModel method or any regular JavaScript function.
+    In this example, we bound the handler to a function called `sort`, which will
+    be a method of our ViewModel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note also that we've added the binding to the parent `<tr>` and not the individual
+    `<th>` elements. We can exploit the fact that events bubble up to their parent
+    elements to implement a very simple and computationally cheap form of event delegation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also added the `css` binding to each of the `<th>` elements. The `css` binding
+    is used to add a class name to an element. So the class name that the element
+    acquires depends on the ViewModel property it is bound to. Each of our `<th>`
+    elements is bound to a different ViewModel property and will be used as part of
+    our sorting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next we made some changes to our script file. First we added a series of new
+    observable properties. We added the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`nameOrder`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`numberOrder`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`symbolOrder`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`weightOrder`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`discoveredOrder`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each of these properties is observable, which is required to allow the `<th>`
+    element's class names to update automatically when any of the properties change.
+    Each of the properties are initially set to the string `ascending` so this is
+    the class name that each `<th>`element will be given.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting the data
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Next we added our `sort` method to the ViewModel. Because this method is part
+    of an event-handling binding (the `click` binding we added to the `<tr>`), the
+    method will automatically be passed two arguments – the ViewModel as the first,
+    and an event object as the second. We can make use of both of these within the
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First we define some variables. We use jQuery to select whichever `<th>` element
+    was clicked. We can determine this using the `target` property of the event object,
+    which we wrap in jQuery so that we can call jQuery methods on the selected element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then get the `data-bind` attribute of the element using jQuery's `attr()`
+    method, which we can then split on the space between the binding name and the
+    property it is bound to. So for example, if we were to click on the `<th>` containing
+    **Name** in a browser our first variable, `orderProp`, would be set to `nameOrder`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next variable `orderVal` is set to the current value of the ViewModel property
+    that the `orderProp` variable points to. Knockout provides a simple way to get
+    or set any ViewModel property programmatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we want to get the value of a property, we call the property as if it were
+    a function, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to set the property, we still call it like a function, but we pass
+    in the value we would like to set as an argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: So, continuing the example of when the `<th>` containing **Name** is clicked,
+    the `orderVal` variable would have the value `ascending`, because this is the
+    default value of each of the `…Order` properties. Notice how we get the correct
+    value using the `orderProp` variable and square-bracket notation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our last variable, `comparatorProp`, is convenient to store the property of
+    the objects within the `elements` array that we are going to sort by. Our ViewModel
+    properties have the string `Order` at the end of them, but the properties inside
+    the objects in the `elements` array do not. So to get the correct property we
+    just have to split the string on the uppercase `O` and take the first item from
+    the array returned by `split()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: observableArray
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Next we use the `sort()` method to perform the sort. It looks like we're using
+    JavaScript's regular `sort()` function for this, but actually, we aren't. Don't
+    forget, the `elements` array isn't just a regular array; it's an **observableArray**,
+    so while we could get the underlying array out of the element's `viewModel` property,
+    and then call the regular JavaScript `sort()` function on it, Knockout gives us
+    a better way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Knockout provides a range of standard array functions from JavaScript that we
+    can call on observable arrays. For the most part these work in very similar ways
+    to their original JavaScript counterparts, but it's almost always better to use
+    the Knockout variants where possible because they are better supported across
+    browsers, especially legacy browsers, than the original JavaScript versions. Some
+    of the Knockout methods also give us little extra bits of functionality or convenience
+    too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One example of this is with Knockout's `sort()` method. This isn't the reason
+    we've used the method here, but it is an example of how Knockout can improve the
+    original JavaScript function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript's built-in default `sort()` function does not sort numbers very well,
+    because it automatically converts numbers into strings and then performs the sort
+    based on the string instead of the number, leading to results that we do not expect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Knockout's `sort()` method does not do this, and can sort arrays of strings
+    or numbers equally as successfully. We don't know at this point whether we'll
+    be sorting strings, numbers, or both because the objects in the `elements` array
+    contains both strings and numbers, sometimes in the same properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like the JavaScript `sort()` function, a function passed to Knockout's `sort()`
+    method will automatically be passed two values, which are the current items to
+    sort. Also like JavaScript's `sort()` function, Knockout's `sort()` method should
+    return `0` if the values being compared are equal, a negative number if the first
+    value is lower, or a positive number if the first value is higher.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the function passed to `sort()`, we first get the values we're going
+    to compare from the objects. Both of the values passed to the function will be
+    objects, but we only want to compare a property from within each of these objects,
+    so we store the properties we'll be comparing in the `propA` and `propB` variables
+    for convenience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing different value types
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I mentioned a moment ago that sometimes we might be comparing values of different
+    types. This could occur if we are sorting by the date column, which may contain
+    a number in the form of a year, or it may be the string `Antiquity`, which some
+    of the objects have.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So we check whether the two values being compared are of the same type using
+    JavaScript's `typeof` operator and a regular `if` statement. If they aren't the
+    same type we check whether each property is a string, and if so, convert its value
+    to the number `0`. Within the `if` statement, we use JavaScript's ternary statement
+    for conciseness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Checking the order
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We then check whether the `orderProp` variable we set a moment ago is set to
+    ascending. If it is, we perform a standard sort. We check whether the two values
+    are equal and if so, return `0`. If the two values are not equal we can then check
+    whether the first value is less than the second and return `-1` if it is, or `1`
+    if it isn't. To keep this entire statement on a single line we can use a compound
+    ternary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the order is not `ascending`, it must be `descending`, so we can perform
+    a descending sort instead. The code for this is almost identical, except that
+    we return `1` if the first value is less than the second value, and `-1` if not,
+    the reverse of the statement in the first branch of the conditional.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then need to update the value of the `…Order` property for the column we
+    have just sorted. This piece of code acts like a simple toggle switch – if the
+    value is currently set to `ascending`, we set it to `descending`. If it's set
+    to `descending`, we simply set it to `ascending`. The behavior that this allows
+    is that when a `<th>` element is clicked for the first time, it will perform the
+    default ascending sort. If it is clicked a second time, it will perform a descending
+    sort.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we want to reset any other `…Order` properties of our ViewModel if they
+    have been changed. We use a simple JavaScript `for in` loop to iterate over the
+    properties of our ViewModel. For each property we check whether it contains the
+    string `Order`, and that it is not the property that we've just updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Provided both of these conditions pass, we reset the value of the current property
+    to the default value `ascending`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding icons
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The CSS we added is used to add a little sort icon to each `<th>` element when
+    it is hovered. We can exploit the CSS shape technique to create a down pointing
+    arrow for ascending, and an up pointing arrow for descending. We also use the
+    `:after` CSS pseudo selector to avoid hardcoding a non-semantic element, such
+    as `<span>` or similar, to display the shape. Which arrow is display is determined
+    by the class name that we bound to the `…Order` properties of our ViewModel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you've never used CSS shapes before, I'd strongly recommend that you look
+    into them because they are a fantastic way of creating icons without requiring
+    non-semantic placeholder elements, or HTTP-heavy images. For more information,
+    check out the CSS shapes guide at [http://css-tricks.com/examples/ShapesOfCSS/](http://css-tricks.com/examples/ShapesOfCSS/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point we should be able to run the page in a browser and click on any
+    of the headings once to perform an ascending sort, or click twice to perform a
+    descending sort:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding icons](img/9106OS_10_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Setting the page size
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So the sorting functionality we added is pretty awesome. But the `<table>` is
+    still quite large and unwieldy – too large in fact to be seen on the page in its
+    entirety. So it's perfect for paging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing we need to do is determine how many items should constitute a single
+    page of data. We could hardcode a value into our script for the number of items
+    to show per page, but a better way is to add a facility to the UI so that the
+    users can set the number of items to display per page themselves. This is what
+    we'll do in this task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can start by adding some additional markup. Add the following elements directly
+    after the `<tbody>` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to make a minor change to the `<tbody>` element. It currently
+    has a `foreach` binding to the observed array of elements. We''re going to add
+    a new property to our ViewModel in a moment and we need to update the binding
+    in `sortable-table.html` so that it is linked to this new property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can add a few new ViewModel properties in `sortable-table.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we can add a special new variable known as a **computed observable**.
+    This should come after the `vm` variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We started out in this task by adding a `<tfoot>` element containing a row and
+    a single cell. Inside the cell is a container for our paging elements. We then
+    have a `<label>` and a `<select>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<select>` element contains a few options for showing different numbers
+    of items, including an option to see all the data. It also uses Knockout's `value
+    data-bind` attribute to link the value of the `<select>` element to a property
+    on our ViewModel called `pageSize`. This binding means that any time the `<select>`
+    element's value changes, such as when a user makes a selection, the ViewModel
+    property will be updated automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This binding goes both ways, so if we were to update the `pageSize` property
+    programmatically in our script, the element on the page would automatically be
+    updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then linked the `<tbody>foreach` binding to a new property on our VeiwModel
+    called `elementsPaged`. We'll use this new property to store a subset of the items
+    in the `elements` array. The actual items in this property will constitute a single
+    page of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we added some new properties to the object literal stored in the `vm` variable,
+    also known as our ViewModel. These properties include `currentPage`, `pageSize`,
+    and `elementsPaged` properties that we just discussed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we do is add a Knockout feature called a computed observable.
+    This is an extremely useful facility that lets us monitor one or more variables
+    and execute code whenever any of the observables change values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `ko.computed()` method to set up the computed observable as a method
+    of the ViewModel, passing in a function as the first argument. The ViewModel is
+    passed in as the second argument. We're not within a method attached to our ViewModel
+    now, so we need to pass the ViewModel in to the `computed()` method in order to
+    have this set to the ViewModel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the function passed as the first argument we reference the three new
+    ViewModel properties we just added. Any ViewModel properties referenced within
+    this function will be monitored for changes and the function invoked whenever
+    this occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All the function does is check whether the `pageSize()` property is equal to
+    the string `all`. If it is, it simply adds all of the objects in the elements
+    array to the `elementsPaged` array. It does this by taking a slice of the `elements`
+    array that starts at the very first item. When `slice()` is used with a single
+    argument it will slice to the end of the array, which is exactly what we need
+    to get the entire array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `pageSize` does not equal the string `all`, we first need to make sure it's
+    an integer. Because this ViewModel property is linked to the `<select>` element
+    on the page, sometimes the value might be a string of the number instead of an
+    actual number. We can ensure it's always a number by using the `parseInt()` JavaScript
+    function on the property and storing it in the variable `pagesize` for use throughout
+    the rest of the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we need to determine what the start index passed as the first argument
+    to `slice()` should be. To work this out we just multiply the value of the `pageSize`
+    property by the `currentPage` property, which is initially set to `0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then populate the `elementsPaged` array with a slice of the `elements`
+    array starting at the `startIndex` value we just determined and ending at the
+    `endIndex` value, which will be the `startIndex` plus the number of items per
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run the page in our browser, the `<select>` box will initially have
+    the value 10 set, which will trigger our computed observable, selecting the first
+    10 items in the `elements` array, and display them in the `<table>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should find that we can use the `<select>` to change how many items are displayed
+    dynamically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this task we used the `slice()` Knockout method. You may have thought that
+    we were using JavaScript's native `Array.slice()` method, but actually we were
+    using the Knockout version and there's an easy way to spot this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usually when we want to get the value inside an observable property, we invoke
+    the property like a function. So when we wanted to get the `pageSize` property
+    of the ViewModel, we used `this.pageSize()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we called the `slice()` method however, we didn't invoke the elements property
+    like a function, so the actual array within the property wasn't returned. The
+    `slice()` method was called directly on the observable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Knockout re-implements a range of native methods that can be called on arrays,
+    including `push()`, `pop()`, `unshift()`, `shift()`, `reverse()`, and `sort()`,
+    which we used in the last task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's recommended to use the Knockout versions of these methods rather than the
+    native JavaScript ones because they are supported across all browsers that Knockout
+    supports, and so that dependency tracking is maintained and the UI of your application
+    is kept in sync.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding Previous and Next Links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point our page is now only displaying the first 10 items. We need to
+    add an interface that allows the user to navigate to other pages of data. In this
+    task we can add **Next** and **Previous** links so that the pages can be viewed
+    in a linear sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll start out once again by adding the HTML component of this feature. Directly
+    after the `<select>` element within the `<tfoot>` element, add the following new
+    markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can add some new methods to our ViewModel. These can go directly after
+    the `sort` method that we added earlier in `sortable-table.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we can add a little CSS to tidy up the new elements we added in this
+    part, as well as the ones we added in the last part by adding the following code
+    to `sortable-table.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We started out by adding a `<nav>` element containing two `<a>` elements to
+    the page, which make the **Previous** and **Next** links. We add data bindings
+    to the links that connect the **Previous** link to the `goToPrevPage()` method,
+    and the **Next** link to the `goToNextPage()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then added a small utility method, as well as these two new methods to our
+    ViewModel. Our methods don't have to accept parameters like the `sort()` method
+    did, and we can access our ViewModel within the methods using `this`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first method `totalPages()` simply returns the total number of pages by
+    dividing the total number of items in the `elements` array by the value held in
+    the `pageSize` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes the `currentPage` property will equal the string `all`, which will
+    return `NaN` when used in a Math operation, so we can add the double-bar OR (`||`)
+    to return `1` when this is the case. We also use `Math.ceil()` to ensure we get
+    a whole number, so when there are 11.8 pages of data (the default based on 10
+    items per page), the method will return 12\. The `Ceil()` function will always
+    round up, because we can't have part of a page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `createPage` computed observable that we added in the last task actually
+    does most of the work for us. The next two methods simply update the `currentPage`
+    property, which in turn automatically triggers the `createPage()` computed observable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the `goToNextPage()` method we first check that we aren't already on the
+    last page, and as long as we aren't, we increase the `currentPage` property by
+    one. We use the `totalPages()` method when we check whether we're on the last
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `goToPrevPage()` method is just as simple. This time we check that we aren't
+    already on the first page of data (if `currentPage` is equal to `0`), and if we
+    aren't, we decrease the value of `currentPage` by `1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tiny bit of CSS we added simply tidies up the elements in the `<tfoot>`
+    element, allowing them to float alongside each other, and makes the new links
+    a little bigger than they would be by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding numerical page links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can now add as many links as are required in order to allow the user to visit
+    any of the pages directly. These are the numerical page links that link to each
+    single page directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we need to add a new observable property to our ViewModel, directly
+    after the existing observables in `sortable-table.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After this we can add a new method to our ViewModel. This can be added after
+    the `goToPrevPage()` method, within the `vm` object literal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Don''t forget to add a comma after the `goToPrevPage()` method! We can then
+    add a new computed observable, in the same way that we have previously. This can
+    come directly after the `createPage` computed observable that we added in the
+    last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we need to add some new markup to the HTML page. This should be added
+    between the **Previous** and **Next** links that we added in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly we can add a little CSS to position the new elements in `sortable-table.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First of all we added a new `pages` observable array to our ViewModel. We didn't
+    give it an array to begin with; we'll add this dynamically at the appropriate
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The computed observable we added as `createPages` is used to build an array
+    where each item in the array represents a page of data. We can get the total number
+    of pages using our `totalPages()` method as we did before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this has been determined, which will be whenever the `pageSize()` observable
+    changes, we can then populate the observable array that we just added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The objects added to the array are created using a simple `for` loop to create
+    an object and push it into an array. Once we've built an object for each page
+    we can then set the array as the value of the `pages` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each object we create has just a single property, called `num`, the value of
+    which is the current value of the `x` counter variable used by the loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the HTML page, we used the `foreach` data binding to iterate over the array
+    we added to the `pages` array. For each object in the array, we create an `<li>`
+    element and an `<a>` element. The `<a>` has two bindings specified using the `data-bind`
+    attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first is the `text` binding, which sets the text of the element. In this
+    case, we set the text to be the value of the `num` property that each object has.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second binding is a click binding, which calls a method called `changePage`.
+    However, within the `foreach` binding, the context is set to the current object
+    in the `pages` array, so we need to use the special `$parent` context property
+    to access the method on the ViewModel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we added the `changePage` method used by the `<a>` elements. All we need
+    to do in this simple method is get the text of the element that was clicked, remove
+    `1` from its value because the actual page numbers are zero-based, and update
+    the `curentPage` observable property of our ViewModel. Inside this method for
+    some reason the value of `this` is not set to the element that was clicked, as
+    we would expect from our encounters with the `sort()` method that we added earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because the `<a>` elements that will trigger the `changePage` method are created
+    within a `foreach` binding, the first argument passed to `changePage` will be
+    the object within the pages array that the `<a>` element is associated with. Luckily
+    we can still access the ViewModel using the variable `vm`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS we added simply floats the list items alongside each other, spaces them
+    out a little, and sets the color and size of the text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As well as the `$parent` context property that allows us to access the parent
+    object of the ViewModel property being iterated in a `foreach` binding, we can
+    also make use of `$data`, which points to the array being iterated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As well as this, there is also an `$index` property that allows us to access
+    the current iteration index, which we could have used in this example, instead
+    of setting the `num` property on each object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing class names
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we can show feedback to the user to describe which page is currently
+    being viewed. We can also disable the **Previous** or **Next** links if we're
+    on the first or last page of data. We can do all this using a little bit more
+    script and some simple CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First we need to add another method to our ViewModel, directly after the existing
+    ones in `sortable-table.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We then need to call this method from several places in our existing code.
+    First, we need to call it at the end of the `createPage()` and `createPages()`
+    computed observables, by adding the following code to the end of the last line
+    in each function (the line that begins with `this`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, in order to add the initial class names before the table is interacted
+    with, we need to call it after the `applyBindings()` method after the ViewModel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we can add the additional CSS that I mentioned in the task introduction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we did in this task was to add a new method to our ViewModel
+    – the `manageClasses()` method. This method is responsible for adding or removing
+    the `disabled` class from the **Previous** and **Next** links, and for adding
+    the active class to the numbered link corresponding to the current page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the method, we first cache a selector for the containing `<nav>` element
+    so that we can access the elements we need to update as efficiently as possible.
+    We also get the `curentPage` ViewModel property as we'll be comparing its value
+    a few times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then find the elements that have the `disabled` and `active` classes, and
+    remove them. Notice how we use jQuery's `end()` method after removing the `active`
+    class to get back to the original `<nav>` selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we need to do now is to put the classes back onto the appropriate elements.
+    If the `currentPage` is `0`, we add the `disabled` class to the first link in
+    the `<nav>` using jQuery's `:first-child` selector in conjunction with the `children()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternatively, if we're on the last page, we add the `disabled` class to the
+    last child of the `<nav>` instead, this time using the `:last-child` selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting the element to apply the `active` class to is done easily using the
+    jQuery `eq()` method, which reduces a selection of elements down to a single element
+    as the specified index. We use the `currentpage` as the index of the element to
+    retain in the selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS was added purely to give the elements with the class names different
+    styling so it was easy to see when the classes are added and removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run the page in a browser now, we should find that the **Previous**
+    link is disabled to begin with, and the number `1` is active. If we visit any
+    of the pages, that number will gain the `active` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resetting the page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we've wired up our numeric paging links, a problem has become apparent.
+    Sometimes, when changing the number of items per page, an empty table is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can fix this by adding another binding to the `<select>` element that resets
+    the current page whenever the `<select>`element's `value` changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we can add the new binding to the HTML. Change the `<select>`
+    element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can add the `goToFirstPage()` method to the ViewModel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First of all we added the `event` binding as a second binding to the `<select>`
+    element responsible for setting the number of items per page. The format of this
+    binding is slightly different than other bindings we've used in this project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the name of the binding, `event` in this case, we specify the name of
+    the event and the handler to call when the event occurs within curly braces. The
+    reason why this format is used is because if we want, we are able to specify multiple
+    events and handlers within the braces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then added the new event handler, `goToFirstPage()`, as a method of our ViewModel.
+    All we need to do within the handler is set the `currentPage` observable to `0`,
+    which will automatically move us back to the first page of results. This will
+    occur whenever the `<select>` element's value changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filtering the table
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To finish off the project we can add filtering so that the different types of
+    elements can be shown. The data for the table contains a column we haven't used
+    yet – the `state` of the element (the actual physical element, not an HTML element!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this task, we can add a `<select>` element that allows us to filter elements
+    by their state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First we need to add a new observable array to the ViewModel, which will be
+    used to store objects that represent the different states an element can be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add a simple non-observable property to the ViewModel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we need to populate the new array. We can do this outside of our ViewModel,
+    directly after where we call `vm.manageClasses()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we can add the new HTML that will create the `<select>` element used to
+    filter the `<table>` data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we need to add a final method to our ViewModel that will actually filter
+    the data when a selection is made:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we can add just a little CSS to `sortable-table.css`, just to tidy
+    up the new elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First we added a new observable array called `states` that will be used to contain
+    the different states of the elements that make up our data. These states are solid,
+    liquid, gas, or unknown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also added a simple property to the ViewModel called `originalElements`,
+    which will be used to store the complete collection of elements. This property
+    is just a regular object property because we don't need to observe its value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Populating the states array
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Next we populate the states array with all of the unique states found in the
+    data. We only need to populate this array once, so it can appear outside of the
+    ViewModel. We start out by creating an empty array and an empty object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then add a single item to the array which will be used for the first `<option>`
+    element within the `<select>` element and will function as a label before the
+    `<select>` box is interacted with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then use jQuery's `each()` method to iterate the `elements` array. For
+    each item in the array (which if you remember, will be an object representing
+    a single element) we get its `state` and check whether this is stored in the reference
+    object. We can check this using the `hasOwnProperty()` JavaScript function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the state doesn't already exist in the object, we add it. If it does already
+    exist, we don't need to do anything. If the object doesn't contain the state,
+    we also push the state into the empty array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the `each()` loop has finished, we should then have an array that contains
+    a single instance of each `state` found in the data, so we can add this array
+    as the value of the `states` observable array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the <select> box
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The underlying markup for the filtering feature is quite straightforward. We
+    added a container `<div>` with a couple of class names, a `<label>` and a `<select>`.
+    The `<label>` class name is just added for accessibility, we won't display it
+    because the first `<option>` of the `<select>` element will function as a label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<select>` element has several Knockout bindings. We use the `foreach` binding,
+    which is connected to the states array, so once this is populated, the `<option>`
+    elements for the `<select>` will be added automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also used the `event` binding once again to add a handler for the `change`
+    event, which will be fired whenever the `<select>` box is interacted with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `<select>` element, we add a template for the `<option>` elements.
+    Each option will be given the `text` and `value` of the `state` property of the
+    current object in the `states` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filtering the data
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We then added the method to our ViewModel responsible for filtering the data
+    displayed in the `<table>`. The first thing we do in the method is check that
+    the first `<option>` has not been selected, because this is just a label and doesn't
+    correlate to a state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can determine this by looking at the `selectedIndex` property of the `target`
+    element (`<select>`), which is available in the `originalEvent` object. This itself
+    is part of the event object that is passed to our event handler automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because we're going to be changing the `elements` observable array (in order
+    to trigger the paging of the filtered elements) we want to store the original
+    elements for later. We can store them in the `originalElements` property of the
+    ViewModel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we need to build a new array that contains only the elements that have
+    the `state` that was selected in the `<select>` element. To do this we can create
+    an empty array and then iterate over the `elements` array and check the `state`
+    of each element. If it matches, we push it into the new array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can get the `state` that was selected from the `<select>` element again using
+    the event object passed to our event handler. This time we use the `value` property
+    of the `target` element in the `originalEvent` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the new array has been populated, we update the `elements` array so that
+    it contains just the new array we have just created, and then set the `currentPage`
+    to `0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The filters that we've added are mutually exclusive, so only one filter can
+    be applied at any one time. Once a filter has been selected, we want to hide the
+    `<select>` box so that another filter cannot be selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also create a label that shows which filter is currently being applied.
+    This label is made from a `<span>` element which shows the text of the filter,
+    and also contains an `<a>` element that can be used to remove the filter and return
+    the `<table>` back to its initial state of showing all of the elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use jQuery's `on()` method to attach the handler for the `<a>` element
+    as soon as it is created and appended to the page. Within the handler, we simply
+    set the `elements` property of the ViewModel back to the array saved in the `originalEvents`
+    property and again reset the `<table>` back to the first page by setting the `currentPage`
+    property to `0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should now find that we can select one of the options in the `<select>`
+    box, see just the filtered data and the filter label, then click on the red cross
+    sign in the filter label to go back to the initial `<table>`. A filtered selection
+    of the data and the filter label is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Filtering the data](img/9106OS_10_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our application runs mostly on Knockout functionality, which allows us to easily
+    populate dynamic elements with content, add event handlers, and generally manage
+    the state of the application. We use jQuery too, mostly in a DOM selection capacity,
+    and also occasionally when we wish to use a utility, such as the `$.each()` method
+    that we leveraged several times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It would have been equally as possible to build this application purely using
+    jQuery and without using Knockout at all; however, jQuery itself was never designed
+    nor intended to be the complete solution to building complex dynamic applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we generally find when we try to build complex dynamic applications using
+    jQuery alone, is that our script very quickly becomes a bloated mess of event
+    handlers that is neither easy to read, or maintain, or update at a future point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Knockout to handle maintaining the state of an application, and using
+    jQuery to fulfill the role it was intended for, gives us the ideal toolkit for
+    building highly dynamic, data-driven, complex applications using very little code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this example, I've tried to keep individual methods as simple as
+    possible and have them do one thing well and one thing only. Keeping individual
+    units of functionality isolated in this way helps to keep our code maintainable
+    because it is easy to see what each existing function does, and easy to add new
+    features without breaking what already exists.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Knockout makes it easy to build a `<table>` from an array of data, and because
+    the data is dynamic, it's easy to edit it or add new items to it, and have the
+    data in our application updated. Although the data is stored locally in a file
+    in this example, it would be trivial to store the data on the server and populate
+    our elements array at page load using a simple AJAX function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This would be the first thing to do if you wanted to take this example further.
+    Once this has been done, why not see if you can make the table cells editable
+    so that their values can be changed, or add a feature that allows you to insert
+    new rows into the `<table>`. Once you've done this, you'll want to post the new
+    data back to the server so that it can be stored permanently.
+  prefs: []
+  type: TYPE_NORMAL

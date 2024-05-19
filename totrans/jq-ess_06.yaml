@@ -1,0 +1,611 @@
+- en: Chapter 6. Better Forms with jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the last chapter, we looked at animations and how they can bring your site
+    to life. In this chapter, we will look at one of the most important functions
+    of any website – forms. A well-crafted form can be the difference between a new
+    customer and a missed opportunity. So forms deserved to be examined closely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting users to complete a form and submit it can be challenging. If our site
+    frustrates a user at any time, they may abandon the form and our site. So we provide
+    the user with gentle cues letting them know what each input element of the form
+    needs by using tool tips, placeholder text, and visual indicators letting them
+    know whether an input is valid or invalid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery doesn't have too many methods dealing specifically with forms. The first
+    of them are all shortcut methods; they replace using `.on()` with the name of
+    the event as the first parameter. Let's examine them and learn how to put them
+    to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Employing form methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's have a look at a number of jQuery methods used with forms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .submit()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The most important of the form methods is `.submit()`. It binds a handler to
+    the browser submit event. When the user has, hopefully, filled out your form and
+    clicks the submit button, the event handler here gets activated. If you want to
+    handle this event yourself without the form actually being submitted, you must
+    either call `event.preventDefault()` or return `false` from the method. If you
+    don't do one of these things, the form will be submitted to your server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the preceding event handler, we return `false` to keep the browser from
+    submitting our form. We could have also called `event.preventDefault()`. We could
+    have written the preceding as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example works identically to the first, but uses a bit more text. We replaced
+    the submit shortcut method with its long form, the `.on()` method, and we also
+    replaced the return false by directly calling the `preventDefault()` method of
+    the event object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .focus()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When the user either tabs or clicks on a form element, the browser fires a focus
+    event. The focus method creates a handler for this event. This could be handy
+    if you would like to create some kind of indication for your users that this is
+    the active element. Check out the `.blur()` method's code example to see how to
+    use it with `.focus()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is important to note that only form elements can receive focus. All of the
+    following are form elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`<input>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<select>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<textarea>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<button>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: .blur()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.blur()` method is the companion to the `.focus()` method. It creates a
+    handler that is triggered when the user tabs off of or otherwise leaves this element
+    causing it to lose focus. This event could also be used to run a validation of
+    the element, but the change event is actually a better choice and it will be explained
+    shortly with the `.change()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can use the `.focus()` and `.blur()` methods together to add a class to the
+    active element and remove it once it loses focus to offer a better visual cue
+    to our users. Note that we are hooking both the input elements and the text area
+    element by separating the tag names with a comma.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One potential problem with the `.focus()` and `.blur()` methods is that they
+    don't bubble up. If you place a child element that is to receive focus within
+    a parent element and hook the focus event of the parent, the event will never
+    be triggered. This means that you can't delegate these events to their parent.
+    You will also have trouble if you need to hook the focus/blur events of dynamically
+    generated input tags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code we hook the focus and blur events of the `fieldset`, `fiOne`,
+    which is the parent element for all of the radio buttons. There is no handler
+    for those events on any of the radio button children. Unfortunately, since neither
+    event bubbles up to its parent element, no event is ever triggered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .focusin() and .focusout()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So now we know that neither the focus nor the blur events bubble up to their
+    parent. We''ve also learned in previous chapters how bubbling can help us to create
+    more dynamic applications. Is there any way that we can get around the lack of
+    bubbling? Luckily, there is a solution: the `.focusin()` and `.focusout()` methods.
+    The `.focusin()` method creates a handler for the `focusin` event, which is triggered
+    when an element is about to receive focus. The `.focusout()` method is the same
+    as the `.focusin()` method except it works with the `focusout` event, which is
+    triggered when an element is about to lose focus. Both of these methods will bubble
+    up to their parent element.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code sample is nearly identical to the previous sample, except the focus
+    and blur events have been replaced with the `focusin` and `focusout` events, respectively.
+    We again hook the parent `fieldset` element. This time, however, the events bubble
+    up to their parent. We add the active class to the `fieldset` and even display
+    which element generated the event by getting its ID from the target property of
+    the event object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we use jQuery to dynamically create new input tags. Please
+    note how we use chaining to both append the new input tag and set its attributes.
+    Even though these tags don't exist at the time their parent hooks the `focusin`
+    and `focusout` events, they nonetheless bubble their events to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .change()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.change()` method creates a handler for the change event. What is nice
+    about the change event is it fire only when the value of the input or text element
+    has changed and the field no longer has focus. This makes it better for validation
+    than using the blur event since the blur event always fires when the element loses
+    focus, whether or not its value has changed. By using the change event, we save
+    ourselves from doing some unnecessary processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: .select()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The last of the event handler methods that we will examine in this chapter
+    is the `.select()` method. It binds to the select event. This event is only triggered
+    on the two elements that allow you to type in text: `<textarea>` and `<input type=''text''>`.
+    The select event only occurs when the user selects some text.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we simply hook the select event and display the name of the
+    tag when it is received. Like most events, we can also trigger the select event
+    by using the `.trigger()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tooltips
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The title attribute has been available since HTML 4.01 for all elements except
+    `<base>`, `<basefont>`, `<head>`, `<html>`, `<meta>`, `<param>`, `<script>`, and
+    `<title>`. It defines a string that most browsers will render above and near the
+    element when the cursor is above the element. The displayed string is commonly
+    referred to as a tooltip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Standard HTML tooltips leave a lot to be desired. Out of the box they are usually
+    styled in a very plain fashion that may clash with your site. If your site, for
+    example, uses a large font to aid your users, a standard tooltip will look very
+    awkward. Luckily, jQuery has a solution, although it is not in the core library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery UI is a library that contains a set of user interface components. The
+    set is designed to be customizable. One of the members of the set is the tooltip.
+    For browsers that lack a native tooltip (title attribute support), it adds support.
+    For browsers that have native support for tooltips, it enhances them by make them
+    customizable and animated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of the components of jQuery UI require the jQuery core library plus a CSS
+    and a JavaScript file in order to work. The CSS file must be added to your HTML
+    file before jQuery, and the JavaScript file must be added afterwards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding markup shows how to correctly add jQuery UI support to a website.
+    First, we add the CSS file, then jQuery, and finally we add jQuery UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The preceding code is using a content delivery network, CDN, to host the files.
+    You can also host the files on your own server, but by using a CDN, you can get
+    a potential performance boost because user browsers may have already cached your
+    files the first time they ever came to your site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have the jQuery library loaded, using the tooltip is pretty simple.
+    We need to hook the jQuery document ready event and set up our tooltip during
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding sample, we wait for the document ready event. In the event
+    handler, we bind the tooltip to the document. This makes it available to our entire
+    site. The final step is to add an animation. The tooltip can be customized to
+    animate onto and off of the page. Here, we have the tooltip animate onto the page
+    after a 150 millisecond delay. It uses the `slideDown` animation effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Placeholder
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Another feature that modern browsers have that older ones lack is placeholder
+    text. It is the slightly grayed text that appears inside of input elements and
+    disappears once the user begins to type. Placeholders are important to forms.
+    They provide the user with a hint about the format of the content unlike the `<label>`
+    element, which is what kind of information is expected. The placeholder attribute
+    has only been around since HTML5\. There are still plenty of browsers lacking
+    support for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to add support for the placeholder attribute to older browsers, we
+    will again use a plugin, but not one from the jQuery team. Instead, we will use
+    the excellent jquery-placeholder, from Mathias Bynens. It is available for download
+    from both bower and npm, but we will download it directly from its GitHub repo
+    at: [http://mathiasbynens.github.io/jquery-placeholder/](http://mathiasbynens.github.io/jquery-placeholder/).
+    Since we aren''t concerned with how it works, only with how to use it, we will
+    install the minified version in our site. In order to do that, we add the following
+    line to our HTML file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The placeholder is a type of plugin referred to as a polyfill. This means that
+    its goal is only to give a browser missing a standard feature that feature. And
+    if the browser already supports that standard, it does nothing. In order to activate
+    the plugin, we add it to the jQuery document ready event, the same way we did
+    earlier with the tooltip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Enabling and disabling elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Elements in your form that are not valid should be disabled. A disabled element
+    is usually shown dimmed-out with gray text. A disabled element can't be focused,
+    doesn't respond to the user, and won't be sent when the form is submitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The odd thing about the disabled attribute is that its presence inside of an
+    element disables it. It doesn't need to be set to `true` or `false`. In fact,
+    setting it `true` or `false` has no effect. To disable the element, add the disabled
+    attribute. To enable the element, remove the disabled attribute. Luckily, jQuery
+    understands this odd behavior and takes care of this detail for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can use the jQuery `.prop()` method to help us out. When we want to disable
+    the element, we do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And when we want to enable the element, we do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In spite of the way things look, jQuery will do exactly what we said. The first
+    line of code will add the disabled attribute to the element and the second will
+    remove it. Here is a more full-featured snippet of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: We begin by wiring up an event listener for the click event of the `disableEnable`
+    button. Once the event is received, we check to see if the button is currently
+    disabled. If it is, we enable it and change the button's text label. If the element
+    is not disabled, we disable it and change the text message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So far, we''ve learned how to hook form events, how to provide modern browser
+    features like placeholder and tooltips to older browsers, and how to use jQuery
+    form methods to gather all of our form data. But we are not doing something really
+    important: validating the data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validation is important both for the user and for us as the site's creators.
+    For users, validation can be used to let them know how to correctly fill out the
+    form. We can gently nudge them when they make a mistake instead of allowing them
+    to submit a bad form and telling them afterwards that the form contained errors.
+    As the site's maintainers, it can be frustrating to find an address in a field
+    that should have a phone number. HTML5 added a lot of validation features to the
+    web. Before we take a look at what jQuery has to offer, let's see what we get
+    for free in a modern browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first HTML5-added attribute that we will look at seems so simple and trivial
+    it is a bit hard to imagine that it didn''t exist already: `autofocus`. The `autofocus`
+    attribute declares which form element should have the focus when the form is loaded.
+    Before it existed, the user had to click an element in order to select it or we
+    had to use a bit of jQuery code like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With HTML5, the preceding code is replaced with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `autofocus` attribute declares that this element gets the focus. Only one
+    element should have the attribute at any given time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'HTML5 also added to the number of `<input>` element types. Previously, the
+    only available types were:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Type | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Button | A push-down button |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Checkbox | A checkbox |'
+  prefs: []
+  type: TYPE_TB
+- en: '| File | File selection |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Hidden | Not displayed but is submitted to server |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Image | A graphical version of the submit button |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Password | Text field with an obscured value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Radio | A radio button |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Reset | Resets the form''s content to the default values |'
+  prefs: []
+  type: TYPE_TB
+- en: '| submit | Submits the form |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Text | Single line text field |'
+  prefs: []
+  type: TYPE_TB
+- en: 'HTML5 added the following new types of `<input>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Type | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Color | A color picker |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Date | A date picker (no time) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| datetime | A date/time picker for UTC |'
+  prefs: []
+  type: TYPE_TB
+- en: '| datetime-local | A date/time picker for the local time zone |'
+  prefs: []
+  type: TYPE_TB
+- en: '| email | An e-mail address |'
+  prefs: []
+  type: TYPE_TB
+- en: '| month | A month/year picker |'
+  prefs: []
+  type: TYPE_TB
+- en: '| number | A text field for a floating point number |'
+  prefs: []
+  type: TYPE_TB
+- en: '| range | A range slider |'
+  prefs: []
+  type: TYPE_TB
+- en: '| search | A text field for search strings |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Tel | A text field for a telephone number |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Time | A time picker with no time zone |'
+  prefs: []
+  type: TYPE_TB
+- en: '| url | A text field for a URL |'
+  prefs: []
+  type: TYPE_TB
+- en: '| week | A week/year picker |'
+  prefs: []
+  type: TYPE_TB
+- en: 'It is important to state that there is very little checking on the different
+    types. As an example, the Tel type allows for the entry of characters that are
+    not normally part of a telephone number. Three HTML5 attributes can help: `minlength`,
+    `maxlength`, and `pattern`. The `minlength` attribute states the minimum number
+    of characters that can be entered in order for the string to be considered valid.
+    The `maxlength` attribute does the same except for the maximum number of characters.
+    The final attribute is `pattern`; it states a regular expression that the inputted
+    string is checked against. In order for the string to be considered valid, it
+    must pass. Regular expressions are super-handy for validation purposes, but they
+    can be tricky to write correctly. Be sure to thoroughly test any regular expression
+    that you add to your site. I also highly recommend using a site that has recipes
+    for popular validation. One such site is the very popular regular expression site
+    at: [http://www.regular-expressions.info](http://www.regular-expressions.info).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'HTML5 also adds a very simple but important validation attribute: required.
+    The required attribute simply states that an input element must be filled out
+    in order for the form to be considered valid. If it is left empty or filled but
+    not valid, compliant browsers will flag the error when the user attempts to submit
+    the form. Unfortunately, the error message and style vary per browser. So once
+    again, if we really want to be in charge of our site''s styling, we must turn
+    to our good friend jQuery.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Validation is not part of jQuery or jQuery UI, but it is the primary function
+    of the jquery-validate plugin. It is written and maintained by a member of the
+    jQuery, jQuery UI, and QUnit teams, Jörn Zaefferer. It began in 2006 and is still
+    being maintained today, making it one of the oldest jQuery plugins. The home of
+    jquery-validate is: [http://jqueryvalidation.org/](http://jqueryvalidation.org/).
+    It can be downloaded as a zip file there or via bower or nuget package managers.
+    The core of the plugin is in the file `jquery.validate.js`. It is all you need
+    for most installations.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you have the plugin added to your script files, next you need to add the
+    call to the validate method on the forms you would like to validate to your jQuery
+    document ready event handler. In order to minimize validation, just enhancing
+    what HTML5 provides, all you need to add is something like the following line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This line tells the plugin to validate the form named `personalInfo`. Nothing
+    else further is required. The plugin will behave in accordance with the validation
+    attributes you placed on your form elements, even with browsers that are not HTML5
+    compliant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you would like more customization, you will need to pass an initialization
+    object to the plugin. The two most important properties are rules and messages.
+    The rules property defines how the plugin will validate each form element. The
+    messages property defines which message the plugin will display when an element
+    fails validation. Here is the code for our validation sample:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: In addition to adding the validate plugin, we need to include jQuery and since
+    we are still using the jQuery tooltip and placeholder plugins, we include them
+    as well. Next, we add a bit of inline CSS to give us a little style.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our form is pretty standard except for one thing: we are no longer adding any
+    inline validation attributes. Instead, we define the validation rules in the JavaScript
+    object that we pass into the validation method, which we will see next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first part of this code sample is fairly straightforward. We bind to jQuery's
+    ready event and then enable the placeholder polyfill and tooltips.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the rules property of the validation object, we pass the names of all the
+    elements we wish to validate. We can tell the validator which elements are required,
+    their minimum lengths, whether they should match another element, and so on. The
+    validator can do much more than shown in the code, so be sure to read the documentation
+    to learn more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the message property of the validation object, we pass all of the messages
+    we wish to display. Any element or state not defined here will simply be assigned
+    a default validation error message, which in many cases may be sufficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final property passed to the validation method is the submit handler. This
+    is the method that is called once the user has successfully submitted his form.
+    You must use the submit handler and not the jQuery submit handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filtering out unwanted characters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'It is our job as web developers to keep the user from doing something bad accidentally.
+    Validation lets the user know when they''ve entered something wrong. Filtering
+    helps keep the user from entering invalid characters. In order to filter characters
+    being entered into a text field, we will need to hook two events: "keypress" and
+    "paste".'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Hooking the `keypress` event allows us to see each key as it is pressed and
+    decide whether or not we want this character in our text field. We hook the paste
+    key to stop the user from cutting and pasting strings into our text field. Most
+    of the work is done by the regular expression. It filters out everything except
+    numbers and letters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Forms are very important to most websites. They are the primary way in which
+    our site's users communicate with the site. Helping our user to fill out our forms
+    and making sure that the data we get is good. We've seen many of the ways that
+    jQuery helps us with forms. The tooltip plugin helps us to add the tooltips to
+    browsers lacking it and to style the tooltips to match our site's look. The placeholder
+    polyfill gives the placeholder attribute to older browsers and quietly steps out
+    of the way for browsers that already support it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery also provides us with easy ways to hook the submit, change, and other
+    form events. These events also provide points to validate the data before we submit
+    it or once it has changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will learn about Ajax and how jQuery makes it almost
+    trivial to send and receive data from our server.
+  prefs: []
+  type: TYPE_NORMAL

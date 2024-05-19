@@ -1,0 +1,1200 @@
+- en: Chapter 9. Creating Slideshows
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Traditionally created in Flash, slideshows are a great way to show off photos,
+    products, illustrations, portfolios, and more. Hands-down, creating slideshows
+    is one of the most common tasks for jQuery developers. In this chapter we'll take
+    a look at how to create a simple slideshow from scratch, and then we'll explore
+    three powerful plugins that create gorgeous, dynamic, and full-featured slideshows.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to plan a slideshow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to write a simple crossfading slideshow from scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the CrossSlide plugin to create a panning and zooming slideshow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Nivo Slider plugin to create a slideshow with fun transition
+    effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Galleriffic plugin to create a thumbnail slideshow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Planning a slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are a few things to consider when you''re preparing to build a jQuery
+    slideshow. They are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, you have to decide what will be the experience for users who have JavaScript
+    disabled. The priority of the various pieces of content in the slideshow should
+    be your guide. If the slideshow is simply featuring bits of content available
+    elsewhere on the site, then it should be sufficient to simply show one photo or
+    slide. If the slideshow is the only way to access the content, then you'll have
+    to be sure to make that content available for users without JavaScript enabled.
+    We'll take a look at both strategies in the various examples in this chapter.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Second, you have to determine if all items in your slideshow will be of the
+    same size or of different sizes. For obvious reasons, it's easiest to handle items
+    that are all the same size and aspect ratio, but sometimes, it's impractical or
+    impossible to identically size all items. I'll cover which slideshows are ideal
+    for same-sized content and which are ideal for variable-sized content as we go
+    along.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Next, you need to consider if your site visitors need to have any kind of control
+    over the slideshow. Sometimes, it's handy to simply have your images on automatic
+    rotation. Other times, it's helpful to allow site visitors to pause the slideshow,
+    or manually move forward and backward through the slides. I'll tell you how much
+    control each of these slideshow approaches offers your site visitors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simple crossfade slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, you'll learn how to build a simple crossfade slideshow. This
+    type of slideshow is ideal for identically-sized images and can be displayed as
+    a single image when JavaScript is disabled. Finally, this type of slideshow offers
+    no control over the slideshow to your site visitors. They cannot pause the slideshow
+    or manually move through the slides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a simple crossfade slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to create a simple crossfading slideshow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll get started by creating a basic HTML document and associated files and
+    folders just like we did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"),
+    *Designer, Meet jQuery*. In the body of the HTML document, include a list of images.
+    Each list item will contain an image, which can optionally be wrapped in a link.
+    Here''s a sample of my image list:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll write a few lines of CSS to style the slideshow. A slideshow shows
+    just one image at a time and the easiest way to show only one image is to stack
+    the images up on top of one another. If the site visitor has JavaScript disabled,
+    they''ll just see the last slide in the list:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If you view the page in a browser, you'll see that the last item in the slideshow
+    is visible, but none of the other items are—they are all stacked beneath the last
+    item. This is what our experience will be for site visitors with JavaScript disabled.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, open up `scripts.js` and we'll get started writing our JavaScript code.
+    This script will be a little bit different than scripts that we've set up before.
+    Instead of something happening just once when the document loads or when a site
+    visitor clicks a link, we actually want to set up a function that will happen
+    on a timed interval. For example, if we want each slide of our slideshow to be
+    visible for three seconds, we'll have to set up a function to switch slides, that
+    gets called every three seconds.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We've already got our slides stacked up on top of one another on the page with
+    the last item on top. Think about how you handle a stack of photographs. You view
+    the photograph on top, and then move it to the bottom of the stack to view the
+    second photo. Then you move the second photo to the bottom to view the third photo
+    and so on. We're going to apply the same principle to our slideshow.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Inside `scripts.js`, create a function called `slideshow`. This is the function
+    that we'll call every three seconds when we want to switch photos.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The first thing we need to do inside our function is select the first photo
+    in the stack.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now we've got the first photo in the stack, we just need to move it to the bottom
+    of the stack to make the next photo visible. We can do that by using jQuery's
+    `appendTo()` method. This will remove the first photo from the beginning of the
+    list and append it to the end of the list.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Our photo-flipping function is ready. Now all we have to do is some initial
+    setup as soon as our page loads. Then we'll set up a call to our photo-flipping
+    function every three seconds. We'll call the `ready()` method on the document.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: As soon as our document is ready, we want to prepare our slideshow. We'll start
+    by selecting all the photos in the slideshow.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, we want to hide all the photos in the slideshow.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Then, we'll filter that list of photos to get just the first one.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And finally, we'll make that first photo visible. All other photos will remain
+    hidden.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At this point, if you refresh the page in the browser, you''ll see that the
+    last slide visible without JavaScript enabled is now hidden and the first slide
+    in the list is now visible instead. Now, all that''s left to do is to call our
+    photo-flipping function every three seconds. To do this, we''ll use a JavaScript
+    method called `setInterval()`. This allows us to call a function at a regular
+    interval. We pass two values to `setInterval:` the name of the function to be
+    called and the number of milliseconds that should elapse between calls to the
+    function. For example, to call my slideshow function every three seconds (or 3000
+    milliseconds), I''d write:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we''re calling our photo-flipping function every three seconds, so you''d
+    expect that if you refresh the page in the browser then you''d see the photos
+    changing every three seconds, but that doesn''t appear to be the case. Reviewing
+    the code, it''s easy to see what''s gone wrong — even though the actual order
+    of the stack of photos is changing every three seconds, all the photos except
+    the first one are invisible. Whether the first photo is on top or not, it''s the
+    only photo visible, so it appears that our slideshow isn''t changing. We''ll have
+    to go back to our `slideshow` function and modify it to make the current photo
+    invisible and make the next photo in the stack visible. Since we want the photos
+    to switch with a nice, slow crossfading effect, we''ll call the `fadeOut()` method
+    to fade the first photo to transparent, and we''ll pass `slow` to that method
+    to ensure it takes its time:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we need to move to the next photo in the list which is currently invisible
+    and make it opaque. We''re going to use the `next()` method to get the next item
+    in the list and then call the `fadeIn()` method to make it appear. Once again,
+    since we want a slow effect, we''ll pass `slow` to the `fadeIn()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, we''ve gotten ourselves into a little bit of trouble with our chaining
+    of jQuery methods. We started with the first photo in the stack, faded it out,
+    then moved to the second photo in the stack, and faded it in. However, when we
+    call the `appendTo()` method, we''re appending the second photo in the stack to
+    the end — we''re moving the second photo in the stack to the bottom instead of
+    the first one. Luckily, jQuery provides a method for us to return to our original
+    selection — the `end()` method. We can call the `end()` method after fading in
+    the second photo to make sure that it''s the first photo that''s getting appended
+    to the bottom of the photo stack:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you refresh the page in the browser, you'll see that you've got a nice crossfading
+    slideshow. As one photo fades out, the next photo fades in, smoothly transitioning
+    between each photo. Since we're constantly moving the top photo in the stack to
+    the bottom, we'll never reach the end of the slideshow, just as you can continuously
+    flip through a stack of photos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set up a slideshow function that selected the first photo in the stack, faded
+    it out, and moved it to the bottom of the stack. Simultaneously, we're finding
+    the second photo in the stack and fading it in. We used the power of jQuery chaining
+    to accomplish all of that in one line of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set up an interval of three seconds and called our photo-flipping function
+    at the end of each three second interval.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we did a bit of set-up work as soon as the document is loaded — hiding
+    all the photos and then making the first one visible. This will ensure that the
+    photos are always displayed in order in our slideshow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, let's take a look at another plugin with some fancy transition effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nivo Slider
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we'll take a look at how to put the Nivo Slider plugin from
+    Dev 7 Studios to good use. Nivo Slider provides for some eye-popping transition
+    effects between photos and offers lots of configuration options. Nivo Slider is
+    ideal for photos that are all identically-sized and it's easy to display a single
+    photo in place of the slideshow for users with JavaScript disabled. Site visitors
+    have the ability to manually advance forward and backward through the slideshow
+    and the slideshow pauses when the mouse is moved over it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nivo Slider is a little different than most of the plugins we'll take a look
+    at in this book. The plugin itself is open-source under the MIT license ( [http://nivo.dev7studios.com/license/](http://nivo.dev7studios.com/license/))
+    and is free to download and use. There are also paid versions of the plugin available
+    for WordPress users that include support, automatic updates, and permission to
+    include the plugin with premium WordPress themes. The slideshow we create in this
+    section is using the free, open-source version of the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a Nivo Slider slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to create an image slideshow with fancy transitions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll get started by setting up a basic HTML file and associated files and folders
+    just like we did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"),
+    *Designer, Meet jQuery*. In the body of the HTML document, Nivo Slider simply
+    requires a set of images inside a container`<div>`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We can optionally wrap each image in a link if we want each slide of our slideshow
+    to link off to another page or web location, but it's not required. Nivo will
+    work fine with unlinked images as well. The `title` attribute of the `<img>` tag
+    is used to display captions for the slideshow.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll add some CSS that will stack up the images on top of one another
+    and set a fixed width and height for our slideshow:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, head over to [http://nivo.dev7studios.com/pricing/](http://nivo.dev7studios.com/pricing/)
+    to download the Nivo Slider plugin. You'll find the **Download** link in the left
+    box that's labeled **jQuery plugin**.![Time for action — creating a Nivo Slider
+    slideshow](img/6709OS_09_img2.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click the **Download** link and save the zip file to your computer.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Unzip the folder and take a look inside.![Time for action — creating a Nivo
+    Slider slideshow](img/6709OS_09_img3.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'There''s a **demo** folder that contains a sample HTML file along with images,
+    scripts, and styles. There are two versions of the plugin—the source version and
+    a packed and minified version. There''s a copy of the license, which is shorter
+    and simpler than you might expect, so feel free to take a look at it. There''s
+    a CSS file, and then there''s a **themes** folder that contains three other folders:
+    **default, orman**, and **pascal**. These are three sample themes included with
+    the plugin. You choose one of these sample themes, create your own, or modify
+    one of the sample themes to suit your tastes.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Let's get the necessary files copied over and ready to use. First, copy `nivo-slider.css`
+    to your own `styles` folder. Select one of the themes and copy the entire folder
+    to your own `styles` folder as well. Then copy `jquery.nivo.slider.pack.js` to
+    your own `scripts` folder alongside jQuery. Your setup should look like the following
+    image:![Time for action — creating a Nivo Slider slideshow](img/6709OS_09_img4.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we''ll get our HTML file set up to use Nivo Slider. In the`<head>` section
+    of the document, include the `nivo-slider.css` file along with the `CSS` file
+    for the theme you''ve selected, before your `styles.css` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At the bottom of the HTML document, just below the closing`</body>` tag, insert
+    the`<script>` tag to include the Nivo Slider plugin, between jQuery and your `scripts.js`
+    file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Open `scripts.js` and call the `ready()` method on the document so that our
+    slideshow will start as soon as the page is loaded in the browser window:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll select the container element for our slideshow:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And finally, we''ll call the `nivoSlider()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you view the page in the browser, you'll see our slideshow has been created.
+    The default setting for the transition effect is to use a random different effect
+    for each transition, so if you watch for a few minutes, you'll get a good idea
+    of the different types of transition effects Nivo Slider includes.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You'll also notice that the value we've included as the `title` attribute for
+    each image is being displayed as the caption for each image.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now let's take advantage of some of the customization options available with
+    the Nivo Slider plugin. The documentation for our options is available at [http://nivo.dev7studios.com/support/jquery-plugin-usage/](http://nivo.dev7studios.com/support/jquery-plugin-usage/)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'You''ll find a list of the available transitions at the bottom of the documentation
+    page. My personal favorite transition is called boxRain. Let''s set that up to
+    be the only transition effect used. We''ll customize the Nivo Slider plugin by
+    passing a set of key/value pairs to the `nivoSlider()` method inside a set of
+    curly brackets:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can specify the number of rows and columns the box animation should include.
+    By default, there are eight columns and four rows, but let''s increase that so
+    that the `boxRain` transition uses more (smaller) boxes:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can also customize the animation speed and the amount of time each slide
+    is shown:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've set the `animSpeed` to 800 milliseconds so that the `boxRain` transition
+    effect will take 800 milliseconds to complete. I've also set the `pauseTime` to
+    4000, so that each image in the slideshow is visible for 4000 milliseconds or
+    four seconds.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up the Nivo Slider plugin to showcase a slideshow with impressive transition
+    effects. We learned how to set up the HTML document appropriately, how to call
+    the `nivoSlider()` method and how to customize some of the slideshow settings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero — customize the slideshow
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to the customization options we used, there are several other configuration
+    options available for the slideshow including the ability to show or hide next/previous
+    buttons, choices for setting up the pagination display or whether or not to show
+    it at all, and lots of callback functions for writing custom functionality for
+    the slideshow. On top of all that, you can completely customize the CSS and images
+    used to create the slideshow so that it looks any way you'd like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try your hand at customizing a slideshow to match any design you'd like and
+    experiment with the other customization options the Nivo Slider makes available.
+    Create a custom slideshow of your own design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, we'll take a look at creating a thumbnail photo gallery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Galleriffic slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Galleriffic slideshow by Trent Foley allows you to turn a list of links
+    to full-size photos into a photo slideshow. The approach is a bit different than
+    the other galleries we've seen so far, where the focus has been on inserting the
+    full-size photos in the document and then animating them into a slideshow. Galleriffic
+    instead takes a list of links to the full-size photos and turns that into a slideshow.
+    The links remain on the page as one way to navigate through the slideshow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Galleriffic slideshow can be used with a set of photos that vary somewhat
+    in size and aspect ratio, but if the difference between different photos is too
+    great, getting the CSS set up to handle the slideshow gracefully will be quite
+    a challenge. The Galleriffic slideshow makes it easy for your site visitor to
+    manually navigate to any photo in the slideshow and also provides next, previous,
+    and a play/pause button for the slideshow. For site visitors with JavaScript disabled,
+    a list of links will be provided that will link them to the full-size versions
+    of the photos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're also going to explore a simple technique that you can use to apply different
+    CSS to the page depending on whether or not JavaScript is enabled. This technique
+    can be applied in a variety of circumstances to give you a bit more control over
+    how your content is presented for site visitors when they have JavaScript disabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a Galleriffic slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to create a slideshow using the Galleriffic plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First up, we're going to make some extra effort to plan out how the slideshow
+    will appear for site visitors with and without JavaScript enabled. If the site
+    visitor doesn't have JavaScript, we'll present them with a grid of thumbnails
+    with captions beneath. Clicking on a thumbnail will show them the full-size version
+    of the photo.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The page will look like the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a Galleriffic slideshow](img/6709OS_09_img5.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'For users with JavaScript, though, I want to show a smaller grid of thumbnails
+    beside a main slideshow area like in the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a Galleriffic slideshow](img/6709OS_09_img6.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: The captions aren't important in the case of thumbnails because they'll be displayed
+    below the slideshow rather than below the photos.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Keeping in mind how we want the page to appear, we'll get started by setting
+    up an HTML file and associated files and folders, just like we did in [Chapter
+    1](ch01.html "Chapter 1. Designer, Meet jQuery"), *Designer, Meet jQuery*. Create
+    a set of 100x100 thumbnails for each photo and store them in a `thumbs` folder
+    inside your `images` folder. We'll use these thumbnails to create a list of links
+    to the full-size photos in the body of the HTML document.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We've included a `title` attribute on each link to ensure a tooltip will show
+    when the mouse hovers over each thumbnail with this brief photo description. I've
+    also included an `alt` attribute on each image tag so that site visitors unable
+    to see the images for any reason will still have access to this description of
+    the image.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Also inside each`<li>`, I've included a`<div>` with a class of `caption` that
+    contains the caption that will appear beneath the thumbnails or beneath the photos
+    in the slideshow.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This is enough HTML to get the non-JavaScript version of the slideshow set up,
+    but the Galleriffic plugin requires a few more elements on the page.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We need to wrap our list of images in a`<div>` with an `id` of `thumbs` like
+    the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We also need to add some empty elements to the page that will hold our slideshow,
+    slideshow caption, and slideshow controls.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The exact position of these elements on the page is up to you—you can create
+    whatever layout you'd like and put the various parts of the slideshow on the page
+    wherever you'd like. For usability purposes, of course, the elements should all
+    be relatively close together.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note that aside from the thumbs `div` that contains our list of thumbnails,
+    the other elements we've added to the page are empty. These elements will only
+    be used if the site visitor has JavaScript enabled, and all the content inside
+    them will be automatically generated by the Galleriffic plugin. This makes them
+    invisible unless they're being used.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, open your HTML file and find the opening`<body>` tag. Add a `class` of
+    `jsOff`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll set up the CSS styles for the thumbnails. Open your `styles.css`
+    file and add these styles:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The CSS has two sections here. The selectors that simply start with .thumbs
+    will apply to the thumbnails whether or not the site visitor has JavaScript enabled.
+    The selectors that start with `.jsOff` will only apply to site visitors who do
+    not have JavaScript enabled. This CSS creates the grid of thumbnails with captions
+    beneath them.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We've also selected the parent container for the slideshow and set it to not
+    display at all for site visitors without JavaScript. Since it's a set of empty
+    `<div>s` they shouldn't take up any space on the page anyway, but this is some
+    extra insurance that these extra elements won't cause any problems for site visitors
+    without JavaScript.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The non-JavaScript version of the page is complete.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll set up the page for users who do have JavaScript enabled. We''ll
+    get started by opening up the `scripts.js` file and inserting our document ready
+    statement:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, we'll write a bit of code to remove that `jsOff` class from the body and
+    replace it with a `jsOn` class.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If a site visitor has JavaScript, the `jsOff` class will be removed from the
+    body and replaced by a `jsOn` class.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, we can write some CSS to apply to the list of thumbnails for site visitors
+    who do have JavaScript. Open your `styles.css` file and add these styles:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This CSS will only apply to site visitors with JavaScript enabled, since the
+    `jsOn` class can only be applied to the `<body>` if JavaScript is available to
+    do the work.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, we''ll write some styles for the bits that make up the slideshow the controls,
+    the caption, and the slideshow area itself:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've created a small sprite that contains images for **play, pause, previous**,
+    and **next** that I'm applying to these controls.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we're all set up to create an awesome slideshow, we just need our plugin
+    code. Head over to [http://www.twospy.com/galleriffic/](http://www.twospy.com/galleriffic/)
+    where you'll find the documentation and downloads for the Galleriffic plugin.
+    You'll have to scroll down the page nearly to the bottom to find the **Download**
+    section.![Time for action — creating a Galleriffic slideshow](img/6709OS_09_img7.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You'll notice that you have two options for the download—you can get a ZIP file
+    that includes some examples or just the plugin code by itself. Since we already
+    know what we want the slideshow to look like, we'll grab just the plugin code.
+    Clicking the link will open up the code itself in the browser window. Right click
+    or select **File | Save As** from the browser's menu to save the file to your
+    own `scripts` folder.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now that we''ve got the plugin, we want to include it in our HTML page. Go
+    down to the bottom of the your HTML page and insert the Galleriffic plugin between
+    jQuery and your `scripts.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll open `scripts.js` and select the container that''s wrapped around
+    our list of thumbnails and call the `galleriffic()` method just after our line
+    of code that changes the class on the body:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: But if you view the page in the browser, you'll see that the slideshow isn't
+    working. This is because the Galleriffic plugin requires a bit of configuration
+    to run. We're going to pass a set of key/value pairs inside curly brackets to
+    the `galleriffic()` method so that our slideshow will run. We basically have to
+    tell the plugin where to show our slideshow, controls, and caption.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The `<div>` with the `id` of `slideshow` is where we're going to show the fullsize
+    images. Controls will be shown in the `div` with the `id` of controls. `<div id="caption">`
+    will display the caption and the `div` we created with the `id` of `loading` will
+    display a loading animation while the slideshow initializes. I've also set `autoStart`
+    to `true` so that the slideshow will start playing automatically.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now if you refresh the page in the browser, you'll see the slideshow in action.
+    **Next** and **previous** buttons allow you to flip through and a **play/pause**
+    button gives you control over the slideshow.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up our page with a display of image thumbnails optimized for site visitors
+    with JavaScript disabled. Then we used a line of JavaScript to change the body
+    class so that we could apply different styles for site visitors who had JavaScript
+    enabled. We set up CSS to display our slideshow and called the `galleriffic()`
+    method to animate the slideshow. Site visitors can manually move back and forward
+    through the photos, can click a thumbnail to load the corresponding full-size
+    photo into the slideshow area, and can pause the slideshow at any point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CrossSlide plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The CrossSlide plugin, by Tobia Conforto, makes it possible to not just fade
+    images in and out, but to also animate panning and zooming. This plugin is ideal
+    if you have a variety of different image sizes. For best results, the only requirement
+    is that all images are at least as large as the slideshow viewing area. Images
+    larger than the slideshow viewing area will be cropped. For example, if the slideshow
+    is 600 pixels wide by 400 pixels tall, then all images used in the slideshow should
+    be at least 600 pixels wide and 400 pixels tall.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With JavaScript disabled, the CrossSlide plugin displays whatever content you've
+    placed into the slideshow as a placeholder. This could be a single image, or it
+    could be an image accompanied by text, or any other sort of HTML content you'd
+    like. The plugin will then remove this placeholder content when the page loads
+    and replace it with the slideshow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is possible to provide buttons that allow site visitors to stop and restart
+    the slideshow. However, site visitors cannot manually advance through the various
+    slides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we dive in, I do want to give a fair warning that you'll find the CrossSlide
+    plugin a bit less designer-friendly than some of the other plugins we've seen.
+    A panning and zooming slideshow is a complex task, and the plugin can only do
+    so much to take that complexity out of your hands. That said, I'm sure if you
+    take your time and exercise a little patience, you'll be able to get it figured
+    out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — building a CrossSlide slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to set up a CrossSlide slideshow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get started, we'll set up a simple HTML document and associated files and
+    folders just like we did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"),
+    *Designer, Meet jQuery*. The body of the HTML document will contain a container
+    for your slideshow. Inside the container, place any content you'd like to display
+    for users with JavaScript disabled.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I'm going to simply show the first photo from the slideshow for users with JavaScript
+    disabled. I've given my container `<div>` an `id` of `slideshow.`
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Open `styles.css` and add some CSS to define the width and height of the slideshow:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, head over to [http://tobia.github.com/CrossSlide/](http://tobia.github.com/CrossSlide/)
+    to get the downloads and documentation for the CrossSlide plugin.![Time for action
+    — building a CrossSlide slideshow](img/6709OS_09_img1.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You'll find the **Download minified** link near the top of the page. The rest
+    of the page shows several examples of the CrossSlide plugin in action. Take a
+    look through the examples. You'll see that it can do everything from a simple
+    crossfade slideshow similar to what we built in the first section of this chapter
+    to a fully animated panning and zooming slideshow.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now that you''ve had a look at some of the types of slideshows you can create
+    with the CrossSlide plugin, here are a few things to keep in mind:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: First, because of the rendering limitations of some browsers (namely, Internet
+    Explorer), zooming in and out on photos can affect the quality of the photo display.
+    The plugin's author recommends keeping the zoom factor at or below 1 to minimize
+    this effect.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Second, because browsers are limited to rendering full pixels, the panning and
+    zooming animation effects might be a bit less smooth than you'd like, particularly
+    for diagonal animations. You can minimize the 1-pixel jumping effect by minimizing
+    or avoiding diagonal animation or by choosing a relatively high speed for the
+    animations, which helps them appear smoother.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, the animations can be a bit CPU-intensive, particularly when using
+    the panning, zooming, and crossfading animations simultaneously, as we'll do in
+    this example. It's nothing that should trip up most newer computers, but depending
+    on your site's audience, you might want to avoid using all possible animation
+    effects at once. At the end of this tutorial, I'll show you how to avoid the most
+    CPU-intensive part of the slideshow if it's causing problems on your own or your
+    site visitor's computers.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When you click the **Download minified** link, the plugin script itself will
+    open in a browser window, just as jQuery itself does. Just right-click on the
+    page or select **File | Save Page As** from the browser's menu bar to save the
+    file to your own computer. Keep the file name, `jquery.cross-slide.min.js` and
+    save the file in your `scripts` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, we just have to include the CrossSlide plugin file at the bottom of our
+    HTML page, between jQuery and `scripts.js:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, open your `scripts.js` file and we''ll get started with the CrossSlide
+    plugin by selecting our slideshow container and calling the `crossSlide()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Recall that a variable is just a container for something. In this case, we've
+    selected the slideshow container and placed it in a variable called `slideshow`.
+    We've done this because we're going to reference the container several times in
+    our script. By saving the slideshow container in a variable, we're preventing
+    jQuery from having to query the DOM looking for the slideshow container each time
+    we want to refer to it, making our code more efficient.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'At this point, if you load the page in a browser, you''ll see that calling
+    the `crossSlide()` method appears to have had no effect on our page. You''ll still
+    see the placeholder content inside our slideshow container and there''s no slideshow
+    happening. That''s because we have to pass not only settings to the `crossSlide()`
+    method, but also the list of photos we''d like to show in our slideshow. Inside
+    the `crossSlide()` method''s parentheses, insert a pair of curly brackets and
+    we''ll pass in a key/value pair to configure the length of time the fade between
+    photos will take in seconds:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that we're expressing the length of time in seconds, not milliseconds.
+    The CrossSlide plugin is set up to expect seconds as units of time rather than
+    the milliseconds that we usually find in JavaScript.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, after our configuration settings, we want to pass an array of photos
+    to the `crossSlide()` method. An array is wrapped in square brackets:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Each photo will have its own set of key/value pairs describing the URL of the
+    image, the caption, and so on. Each photo will be wrapped in its own set of curly
+    brackets. We''ll get started with the URL of the photo which is described in the
+    `src` key:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll add the caption for the photo as another key/value pair:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we have to add two key/value pairs to describe the starting and ending
+    points of the panning and zooming animation. Let''s say we want to pan across
+    this photo from the top left to the bottom right while zooming in. Here are the
+    values we''ll pass the `from` and `to` keys:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, we want to specify how long the animation should take in seconds.
+    I''ll show this photo animation for four seconds:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'That''s one photo for our slideshow. To add more, simply add another set of
+    key/value pairs inside curly brackets. Don''t forget to separate each photo from
+    the previous photo with a comma. Remember not to put a comma after the last photo
+    in the list. Here''s my example with three more photos added:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that I can choose how long each photo displays — allowing a particularly
+    stunning photo to linger on the page longer if I choose, or moving a smaller or
+    less interesting photo off the page more quickly.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now if you refresh the page in the browser, you'll see a panning and zooming
+    slideshow of your photos. We're getting closer!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll use that caption value we passed into the `crossSlide()` method
+    for each photo to create a caption. First, I''m going to go back to my HTML markup
+    and add a container for the caption. You can style this with CSS however you''d
+    like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Keep in mind that the container for your caption has to appear outside of the
+    slideshow container. If you place it inside, it will be removed when the CrossSlide
+    plugin replaces the slideshow container's content with the slideshow.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, we've got a place to display our caption, so we just need a way to put
+    our captions into that container. The `crossSlide()` method will accept a callback
+    method along with our settings and array of images. This callback function will
+    be called each time an image starts to crossfade into the next image, and it is
+    called again when the fade is complete.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Our callback function is passed four possible values: the index of the current
+    image, the current image itself, the index of the previous image, and the previous
+    image itself. The index of the image is simply its place in the slideshow by number.
+    JavaScript, like other programming languages, starts counting at 0 instead of
+    1\. So the index of the first image in the slideshow is 0, the second image''s
+    index is 1, and so on.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Remember I said the callback function is called once when the crossfade starts
+    and once again after the crossfade is finished? If the crossfade is starting,
+    the callback function will get all four values—the index of and the current image,
+    and the index of and the previous image. If the crossfade is finished, we''ll
+    only get two values: the index of the current image and the current image itself.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''ll check to see if the crossfade is starting or finishing. If the crossfade
+    is finished, then we''ll want to show the caption for the new photo. If the crossfade
+    is just starting, then we''ll hide the caption for what will very soon be the
+    previous image:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If the crossfade is finished, then `indexOut` will be `undefined`, since there
+    won't be a value for that variable passed to the callback function. It's easy
+    to check if that value is undefined to figure out if the crossfade animation is
+    starting or finishing. Then, we use jQuery's `text()` method to set the text of
+    the caption to the `alt` value we included with each image and fade the caption
+    in. If the crossfade animation is just starting on the other hand, we'll just
+    fade the caption out.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now if you refresh the page in the browser, you'll see that the caption fades
+    in with each photo and fades out as the crossfade is starting. It's a nice smooth
+    transition from one caption to the next.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This last step is optional. If you find that the CrossSlide plugin with all
+    animations running at once, as we've set up in this example, is too CPU-intensive
+    for your computer or the computers of your site visitors, there's a simple configuration
+    option that will allow you to skip the most CPU-intensive part of the slideshow
+    — namely, when two photos are crossfading while panning and zooming. All you have
+    to do is pass another key/value pair to the configuration options setting `variant`
+    to `true:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will change your slideshow so that each photo will complete panning and
+    zooming before starting the crossfade to the next photo.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Don't be worried if your head is spinning — the CrossSlide plugin is by far
+    the most developer-y plugin we've used yet. Although this plugin isn't super designer-friendly,
+    I hope you can see that even this type of plugin is within your reach if you have
+    a little patience and are willing to experiment a bit. Carefully studying the
+    code for examples will take you pretty far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set up a container which held our static content for users with JavaScript
+    disabled. Then we set up the CrossSlide plugin to replace that content with a
+    dynamic panning and zooming slideshow for the users with JavaScript enabled. We
+    set the length of the crossfade to 1 second, and then passed in our array of images,
+    including the URL, caption, animation starting point, animation ending point,
+    and duration for each image. Finally, we took advantage of the callback function
+    provided by the CrossSlide plugin to fade in each photo's caption and fade it
+    back out when the photo itself starts to fade out. We also took a look at how
+    to make the slideshow a bit less CPU-intensive for those situations where it might
+    cause problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We took a look at four different approaches to building photo slideshows with
+    jQuery. We started off with a simple crossfading slideshow that we built from
+    scratch without a plugin. We explored fancy transition effects with the Nivo Slider
+    plugin. Then we learned how to set up a thumbnail slideshow using the Galleriffic
+    plugin. And finally, we took a look at building a panning and zooming slideshow
+    with the CrossSlide plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, we'll take a look at building sliders and carousels for all types of
+    content on your site.
+  prefs: []
+  type: TYPE_NORMAL

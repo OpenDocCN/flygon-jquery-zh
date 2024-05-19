@@ -1,0 +1,654 @@
+- en: Chapter 9. Client-side Templating
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter will demonstrate some of the most widely used libraries to create
+    complex HTML templates faster, while making our implementation easier to read
+    and understand when compared to traditional string concatenation techniques. We
+    will learn in more detail how to use the `Underscore.js` and `Handlebars.js` templating
+    libraries, get a taste of their conventions, evaluate their features and find
+    the one that best suits our taste.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By the end of this chapter, we will be able to generate complex HTML structures
+    in the browser efficiently by using readable templates and utilizing the unique
+    characteristics of each templating library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discuss the benefits of using a specialized templating library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the current trends in client-side templating, specifically the top
+    representative of the families that use `<% %>` and `{{ }}` as their placeholders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce `Underscore.js` as an example of the family of templating engines
+    that use `<% %>` placeholders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce `Handlebars.js` as an example of the family of templating engines
+    that use curly braces `{{ }}` placeholders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing Underscore.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '`Underscore.js` is a JavaScript library that provides a collection of utility
+    methods that help web developers work more efficiently and focus on the actual
+    implementation of their application rather than bothering with repetitive algorithmic
+    problems. `Underscore.js` is, by default, accessible through the "`_`" identifier
+    of the global namespace and that''s exactly where its name comes from.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As with the `$` identifier in jQuery, the underscore "`_`" identifier can also
+    be used as a variable name in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the utility functions that it provides is the `_.template()` method,
+    which provides us with a convenient way of interpolating specific values into
+    existing template strings that follow a specific format. The `_.template()` method
+    recognizes three special placeholder notations inside templates, which are used
+    to add dynamic characteristics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<%= %>` notation is used as the simplest way to interpolate a value of
+    a variable or an expression in a template.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<%- %>` notation performs HTML escaping on a variable or expression and
+    then interpolates it in a template.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `<% %>` notation is used to execute any valid JavaScript statement as part
+    of the template generation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `_.template()` method accepts a template string that follows these characteristics
+    and returns a plain JavaScript function, commonly referred to as the template
+    function, which can be invoked with an object containing the values that are going
+    to be interpolated in the template. The result of the invocation of the template
+    function is a string value, which is the result of the interpolation of the provided
+    values inside the template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As an example, the above code returns `<h1>Underscore.js example</h1>` and
+    is equivalent to the following shorthand invocation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about the `_.template` method, you can read the documentation
+    at: [http://underscorejs.org/#template](http://underscorejs.org/#template).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What makes `Underscore.js` templates very flexible is the `<% %>` notation,
+    which allows us to perform any method invocation and is, for example, used as
+    the recommended way to create loops in a template. On the other hand, overusing
+    this feature may add too much logic to your templates, which is a known anti-pattern
+    found in many other frameworks, violating the principle of **Separation of Concerns**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Underscore.js templates in our applications
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As an example of using `Underscore.js` for templating, we will now use it to
+    refactor the HTML code generation which takes place in some modules of the dashboard
+    example, as we saw in previous chapters. The modifications required to the existing
+    implementation are limited to the `categories` and the `informationBox` modules,
+    which manipulate the DOM tree of the page by adding new elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first place that such a refactor can be applied is in the `init()` method
+    of the `categories` module. We can modify the code that creates the available
+    `<option>`s of the `<select>` category to look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we iterate over the categories of the dashboard in order to
+    create and append the appropriate `<option>` elements to the `<select>` category
+    element. In our template, we are using the `<%= %>` notation for the `value` attribute
+    of the `<option>` since we know that it will hold an integer value that does not
+    need escaping. On the other hand, we are using the `<%- %>` notation for the content
+    part of each `<option>` in order to escape the title of each category for the
+    case its value is not an HTML-safe string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are using the `_.template()` method outside the `for` loop in order to create
+    a single compiled template function that will be reused on each iteration of the
+    `for` loop. In this way, the browser not only executes the `_.template()` method
+    just once, but also optimizes the generated template function and makes it run
+    faster on each subsequent execution inside the `for` loop. Lastly, we are using
+    the `join('')` method to combine all the HTML strings of the `optionsHtmlArray`
+    variable and `append()` the result to the DOM with a single operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An alternative and possibly simpler way to achieve the same result is by combining
+    the `<% %>` notation and the `_.each()` method that `Underscore.js` provides,
+    enabling us to implement a loop inside the template itself. In this way, the template
+    will be responsible for the iteration over the provided array of categories, moving
+    the complexity from the implementation of the module into the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in the above code, our JavaScript implementation no longer contains
+    a `for` loop, reducing its complexity and the required nesting. There is only
+    a single call to the `_.template()` method, which nicely abstracts the implementation
+    to an operation that generates the HTML and renders the `<option>` elements for
+    all the categories. You can also see how nicely this technique fits in with the
+    Composite logic that jQuery itself follows, in which the methods are designed
+    to operate over collections of elements instead of single items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Separating HTML templates from JavaScript code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even after introducing all of the above improvements, it soon starts to become
+    obvious that writing templates in between your application logic might not be
+    the best approach to follow. As soon as your application becomes complex enough,
+    or when you need to use templates that are more than a few lines long, the implementation
+    starts to feel fragmented by the mix of the application's logic and the HTML templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A cleaner approach to this problem is to store your templates alongside the
+    rest of the HTML code of your page. This is a good step towards better **Separation
+    of Concerns** since it properly isolates the presentation from the application
+    logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to include HTML templates as part of web pages in an inactive form,
+    we need to use a host tag that will prevent them from being rendered, but also
+    allow us to retrieve its content programmatically when needed. For this purpose,
+    we can use `<script>` tags inside the `<head>` or the `<body>` of our page and
+    specify any `type` other than the common `text/javascript` that we normally use
+    for our JavaScript code. The operation principle behind this is that browsers
+    do not try to parse, execute or render the content of `<script>` tags, in case
+    their `type` attribute isn't recognized. After some experimentation, the community
+    of `Underscore.js` users has largely adopted this practice and agreed to specify
+    `text/template` as the preferred type for these `<script>` tags, in an attempt
+    to make these implementations more uniform among developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even though `Underscore.js` is neither opinionated nor contains any implementation
+    specific to the way that the templates become available, using `text/template`
+    `<script>` tags and/or AJAX requests have been valuable techniques that are widely
+    used and are considered best practices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example of a complex template that would be beneficial to move into a
+    `<script>` tag, we will refactor to the `openNew()` method of the `informationBox`
+    module. As you can see in the code below, the resulting `<script>` tag is cleanly
+    formatted and we no longer need to use string concatenation for the definition
+    of the multi-line template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: A good practice when moving HTML templates out of our code is to write an abstracted
+    mechanism to be responsible for retrieving them and providing the compiled template
+    function. This approach not only decouples the rest of the implementation from
+    the template retrieval mechanism but also makes it less repetitive and creates
+    a centralized method designed to provide templates for the rest of the application.
+    Moreover, as we can see below, this approach also allows us to optimize the way
+    that templates are retrieved, propagating the benefits to all the places that
+    they are used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As shown in the above implementation, the `openNew()` method of the `informationBox`
+    module simply invokes the `getEmbeddedTemplate()` function by passing a unique
+    identifier that is associated with the requested template and uses the returned
+    template function to generate the new box's HTML and finally append it to the
+    page. The most interesting part of the implementation is the `getEmbeddedTemplate()`
+    method, which uses the `templateCache` variable as a dictionary to hold all the
+    previously compiled template functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first step is always to check whether the requested template identifier
+    exists in our template cache. If not, then the DOM tree of the page is searched
+    for the `<script>` tag with the related ID and its HTML content is used to create
+    the template function, which is then stored in the cache and returned to the caller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep in mind that it is a good practice to use a specific prefix or suffix for
+    all the identifiers of your HTML templates in order to avoid conflicts with the
+    IDs of other page elements. For this purpose, in the above example we used the
+    `-template` as a suffix of the identifier of our box template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ideally, the implementation of the template provider method should be in a separate
+    module that will be used by all the parts of an application but, since in our
+    dashboard this is used in only one place, we met the needs of our demonstration
+    by simply using a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing Handlebars.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Handlebars.js**, or simply Handlebars, is a specialized client-side templating
+    library that enables web developers to create semantic templates effectively.
+    Using Handlebars for templating leads to the creation of logic-free templates
+    which ensures that the view and the code are isolated, helping preserve the Separation
+    of Concerns principle. It is largely compatible with Mustache templates, which
+    are a templating language specification that have proven their effectiveness over
+    time and have many implementations for all the major programming languages. Additionally,
+    Handlebars provides a set of extensions on top of the Mustache template specification,
+    such as helper methods and partials, as a means of extending the templating engine
+    and creating more effective templates.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can see all the documentation for Handlebars at: [http://handlebarsjs.com/](http://handlebarsjs.com/).
+    You can get more information about Mustache in JavaScript at: [https://github.com/janl/mustache.js/](https://github.com/janl/mustache.js/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main template notation that Handlebars provides is the double curly braces
+    syntax `{{ }}`. As Handlebars was designed to be used for HTML templates from
+    the beginning, this notation also applies HTML escaping by default, lowering the
+    chances that a non-escaped value could reach the template causing potential security
+    problems. If a non-escaped interpolation is required for a specific part of a
+    template, we can use the triple curly braces notation `{{{ }}}`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, since Handlebars prevents us from invoking methods directly from within
+    a template, it provides us with the ability to define and use helper methods and
+    block expressions as a way to cover more complex use cases while also helping
+    to maintain our templates as clean and readable as possible. The set of built-in
+    helpers includes the `{{#if }}` and `{{#each }}` helpers which allow us to perform
+    iterations over arrays and change the outcomes of a template based on conditions
+    very easily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The central method of the Handlebars library is the `Handlebars.compile()`
+    method, which accepts a template string as a parameter and returns a function
+    that can be used to generate string values that follow the form of the provided
+    template. This function can then be invoked (as in `Underscore.js`) with an object
+    as a parameter, the properties of which will be used as a context for the evaluation
+    of all the Handlebars expressions (the curly braces notations) that were defined
+    in the original template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As an example, the above code returns `"<h1>!!!&gt; Handlebars example &lt;!!!</h1>"`,
+    turning the interpolated title into a safe HTML string, but one which would otherwise
+    render properly when attached to the DOM tree of a page. Of course, the same result
+    can be achieved with the following shorthand invocation, if we don''t need to
+    keep a reference to the compiled template function for future use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using Handlebars.js in our applications
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As an example of using `Handlebars.js` for templating and in order to demonstrate
+    its differences from `Underscore.js` templates, we will now use it to refactor
+    our dashboard example, like we did in the previous section. Like before, the refactoring
+    is limited to the `categories` and the `informationBox` modules, which manipulate
+    the DOM tree of the page by adding new elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The refactored implementation of the `init()` method of the `categories` module
+    should look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: First of all, we have used the `Handlebars.compile()` method which generates
+    and returns a template function based on the provided template string. The main
+    difference with the `Underscore.js` implementation we saw in the previous section,
+    is that we now use the double curly braces notation `{{ }}` to interpolate values
+    in our template. Apart from the different appearance, `Handlebars.js` also does
+    HTML string escaping by default in an attempt to eliminate HTML injection security
+    holes by making escaping part of its primary use case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we did earlier in this chapter, we will create the template function outside
+    the `for` loop and use it to generate the HTML for each `<option>` element. All
+    the generated HTML strings are gathered in an array and are finally combined and
+    attached to the DOM tree with a single operation, using the `$.append()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next incremental step to reduce the complexity of our implementation is
+    to abstract the iterations away from our JavaScript code using the looping capabilities
+    of the templating engine itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `Handlebars.js` library allows us to achieve that by using the special `{{#each
+    }}` notation. In between the `{{#each }}` and `{{/each}},` the context of the
+    template is changed to match each individual object of the iteration, allowing
+    to directly access and interpolate the `{{ title }}` of each object in the `categoryInfos`
+    array. Moreover, in order to access the loop counter, Handlebars provides us with
+    the special `@index` variable as part of the context of the loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For a full list of all the special notations that Handlebars provides, you
+    can read the documentation at: [http://handlebarsjs.com/reference.html](http://handlebarsjs.com/reference.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Separating HTML templates from JavaScript code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Like most templating engines, Handlebars also leads us to isolate our templates
+    from the JavaScript implementation of our application and deliver them to the
+    browser by including them in `<script>` tags, inside the HTML of our pages. Moreover,
+    Handlebars is opinionated and prefers the special `text/x-handlebars-template`
+    as the type attribute for all `<script>` tags that contain Handlebars templates.
+    For example, here is how the template for the dashboard''s boxes should be defined
+    according to the library recommendations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even though our implementation would still work if a different `type` was specified
+    for the `<script>` tag, following the library's guidelines can obviously make
+    implementations more uniform among developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we did earlier in this chapter, we will follow the best practice of creating
+    a separate function to be responsible for providing the templates wherever they
+    are needed in the application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the implementation is mostly the same as the `Undescore.js`
+    example that we saw earlier in this chapter. The only difference is that we are
+    now using the `Handlebars.compile()` method to generate the compiled template
+    functions from the retrieved templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pre-compiling templates
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An extra feature of the Handlebars library is the support for template pre-compilation.
+    This allows us to pre-generate all the template functions with a simple terminal
+    command and then have our server deliver to them to the browser, instead of the
+    actual templates. In this way, the browser will be able to use the pre-compiled
+    templates directly, removing the need for the compilation of each individual template
+    and making the execution of the library and our application faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to pre-compile our templates, we first need to place them in separate
+    files. The Handlebars documentation suggests using the `.handlebars` extension
+    for our files but we can still use the `.html` extension if it is preferred. After
+    installing the compilation tool on our development machine (with `npm install
+    handlebars -g`), we can issue the following command in our terminal to compile
+    a template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will generate the `box-template.js` file that is actually a mini-module
+    definition that adds the template to `Handlebars.templates`. The generated file
+    can then be combined and minified like regular JavaScript files and, when loaded
+    by a browser, the template function will become available through the `Handlebars.templates['box-template']`
+    property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that if the `.html` extension is being used for the templates,
+    then the pre-compiled template function will be available through the `Handlebars.templates['box-template.html']`
+    property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you can see, using a template provider function assists with the migration
+    of an existing application to pre-compiled templates since it allows us to encapsulate
+    the way that the templates are retrieved. Moving to pre-compiled templates only
+    requires changing the `getEmbeddedTemplate()` to something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about template pre-compilation in Handlebars, read the
+    documentation at: [http://handlebarsjs.com/precompilation.html](http://handlebarsjs.com/precompilation.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving HTML templates asynchronously
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The final step to mastering client-side templating is a development practice
+    that allows us to load templates dynamically and use them in a web page that has
+    already been loaded. This approach can lead to more scalable implementations than
+    the approach of embedding all the available templates as `<script>` tags inside
+    the HTML source of each page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The key element of this technique is to load each template only when it is
+    required for the presentation of a web page, commonly after a user action. The
+    main benefits of this approach are that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The initial page load time is reduced since the HTML of the page is smaller.
+    The gains from the reduction of the page size become even greater if our application
+    has a lot of templates that are used only under certain circumstances, for example,
+    after specific user interactions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user only downloads a template if it is actually going to be used. In this
+    way, the size of the total downloaded resources for each page load can be reduced.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Subsequent requests for an already loaded template will not lead to an extra
+    download, since the browser's HTTP caching mechanism will return the cached resource.
+    Additionally, since the browser cache is used for all HTTP requests regardless
+    of the page from which they originate, users only have to download the required
+    template once while using our web application.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Because of its benefits to user experience and its scalability, this technique
+    is widely used by the most popular webmail and social networking web sites, where
+    various HTML templates and JavaScript modules are loaded dynamically, based on
+    user actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information on how jQuery can be used to load JavaScript modules on
+    a page dynamically, read the documentation for the `$.getScript()` method at:
+    [https://api.jquery.com/jQuery.getScript/](https://api.jquery.com/jQuery.getScript/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adopting it in an existing implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To illustrate this technique, we will change the `Underscore.js` and `Handlebars.js`
+    implementations of the `informationBox` module so that it fetches the box template
+    for our dashboard using an AJAX request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s proceed by analyzing the necessary changes for our `Underscore.js` implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in the above code, we have implemented the `getAjaxTemplate()`
+    function as a way of decoupling the mechanism that is responsible for fetching
+    the template from the implementation that uses it. This implementation has a lot
+    in common with the `getEmbeddedTemplate()` function that we used earlier, the
+    main difference being that the `getAjaxTemplate()` function is asynchronous and,
+    as a result, returns a **Promise**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `getAjaxTemplate()` function firstly checks whether or not the requested
+    template already exists in its cache, as an extra attempt to reduce HTTP requests
+    to the server. If the template is found in the cache, then it is returned as part
+    of a Resolved Promise, otherwise we initiate an AJAX request using the `$.ajax()`
+    method to retrieve it from the server. Like before, we need to have a convention
+    regarding the naming of the template HTML files and the path used to store them
+    in the server. In our example, we are looking in the same directory as the web
+    page itself and just appending the `.html` file extension. An extra concern in
+    some cases, depending on the web server used, is the definition of the `mimeType`
+    of the resource as `text/html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the AJAX request completes, the `then()` method is executed with the content
+    of the template as a string parameter, which is used to generate the compiled
+    template function. Our implementation finally returns the compiled template function
+    as the result of the chained Promise, right after adding it to its cache. Since
+    the `getAjaxTemplate()` function is asynchronous, we also had to change the implementation
+    of the `openNew()` method and move all the code using the returned template function
+    inside a `then()` callback. Apart from this, the implementation has remained the
+    same and uses the template function in exactly the same way as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: When re-implementing the `getAjaxTemplate()` function to use `Handlebars.js`,
+    the resulting code is mostly the same as before. The only difference is in the
+    invocation of the `Handlebars.compile()` method instead of the `Undescore.js`
+    equivalent. This is an added benefit as many client-side templating engines influenced
+    each other and have converged into a very similar API regarding the way that their
+    template functions are used, largely because of the positive user feedback on
+    the existing implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that the `$.ajax()` method might not work in some browsers when
+    the page is loaded through the filesystem, but works as intended when served using
+    a web server like Apache, IIS, or nginx.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moderation is best in all things
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Even though this technique reduces the overall download footprint of each web
+    page, it also inevitably increases the number of HTTP requests made. Moreover,
+    the practice of loading every template lazily can sometimes increase the time
+    that the user will have to wait if the templates are required for the initial
+    rendering of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Balancing the way that we load our templates between lazy loading and embedding
+    them in `<script>` tags usually brings the best of both worlds. This hybrid approach
+    is considered a best practice by the industry since it allows us to micromanage
+    and fine tune each implementation based on its needs. According to this practice,
+    the templates that are required for the presentation of the main content of a
+    page are embedded in its HTML, while the rest of them are delivered lazily when
+    needed, taking advantage of browser caching.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The implementation of such a template provider function is left as an exercise
+    for the reader. As a hint, such methods have to be asynchronous since, when the
+    requested template is not found embedded in the `<script>` tag of the page, it
+    will have to proceed and make an AJAX request to retrieve it from the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that it is generally preferable to generate the complete initial
+    HTML content of the page on the server side instead of using client-side templating.
+    This not only leads to a smaller loading time of the initial page content but
+    it also prevents situations in which the user is presented with an empty page
+    when JavaScript is unavailable or an error has occurred.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we learned how to use two of the most common client-side templating
+    libraries: `Underscore.js` and `Handlebars.js`. We also learned how they allow
+    us to create complex HTML templates faster while making our implementations easier
+    to read and understand. We then went on to analyze their conventions and evaluate
+    their features and learned by example how they can be effectively and efficiently
+    used in our implementations.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: After completing this chapter, we are now able to generate complex HTML structures
+    in a browser efficiently by using readable templates and utilizing the unique
+    characteristics of the templating libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will learn how to create jQuery Plugins as a way to
+    abstract parts of our applications into reusable and extensible implementations.
+    We will introduce the most widely used patterns for developing jQuery Plugins
+    and analyze the implementation problems that each of them helps to solve.
+  prefs: []
+  type: TYPE_NORMAL

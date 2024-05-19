@@ -1,0 +1,898 @@
+- en: Chapter 8. Miscellaneous Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Freedom of choice is what you got
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Freedom from choice is what you want
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"Freedom of Choice"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the preceding chapters, we have examined many categories of jQuery methods.
+    A few methods provided by the library have so far defied **categorization**, though.
+    In this chapter, we will explore methods that can be used to abbreviate common
+    JavaScript idioms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setup Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These functions are useful before the main code body begins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.browser
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Contains information about the currently running browser.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Boolean flags for each user agent possibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `$.browser` property allows us to detect which web browser is accessing
+    the page, as reported by the browser itself. It contains flags for each of the
+    four most prevalent browser classes—Internet Explorer, Mozilla, Safari, and Opera.
+    The browsers can be tested independently:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When executed on a Firefox browser, the results are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This property is available immediately. It is therefore safe to use it to determine
+    whether or not to call `$(document).ready()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because `$.browser` uses `navigator.useragent` to determine the platform, it
+    is vulnerable to spoofing by the user. It is always best to avoid browser-specific
+    code entirely where possible. In special cases where it needs to be written for
+    different agents, the best alternative is to test for the presence of the JavaScript
+    features you want to use. If this does not differentiate the clients well enough,
+    the `$.browser` property can be used for further distinctions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.noConflict()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Relinquishes jQuery’s control of the `$` variable.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The global jQuery object. This can be set to a variable to provide an alternative
+    shortcut to `$`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Many JavaScript libraries use `$` as a function or variable name, just as jQuery
+    does. In jQuery’s case, `$` is just an alias for `jQuery`, so all functionality
+    is available without using `$`. If we need to use another JavaScript library alongside
+    jQuery, we can return control of `$` back to the other library with a call to
+    `$.noConflict()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This technique is especially effective in conjunction with the `.ready()` method’s
+    ability to alias the `jQuery` object, as within the `.ready()` we can use `$`
+    if we wish without fear of conflicts later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: DOM Element Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods help us to work with the DOM elements underlying each jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .length
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Returns the number of DOM elements matched by the jQuery object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The number of elements matched.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Suppose we had a simple unordered list on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can determine the number of list items by calling `.length`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: .size()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Returns the number of DOM elements matched by the jQuery object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The number of elements matched.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Suppose we had a simple unordered list on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can determine the number of list items by calling `.size()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: .get()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Retrieves DOM elements matched by the jQuery object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'index (optional): An integer indicating which element to retrieve'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A DOM element, or an array of DOM elements if the index is omitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `.get()` method grants us access to the DOM nodes underlying each jQuery
+    object. Suppose we had a simple unordered list on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With an index specified, `.get()` will retrieve a single element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since the index is zero-based, the first list item is returned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Each jQuery object also masquerades as an array, so we can use the array dereferencing
+    operator to get at the list item instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Without a parameter, .get() returns all of the matched DOM nodes in a regular
+    array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In our example, this means that all list items are returned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: .index()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Searches for a given DOM node from among the matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'node: The DOM element to look for'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The position of the element within the jQuery object, or `-1` if not found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The complementary operation to `.get()`, that accepts an index and returns
+    a DOM node, `.index()` takes a DOM node and returns an index. Suppose we had a
+    simple unordered list on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we retrieve one of the two list items, we can store it in a variable. Then
+    `.index()` can search for this list item within the set of matched elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We get back the zero-based position of the list item:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Collection Manipulation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These helper functions manipulate arrays, maps, and strings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .each()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Iterates over a collection, firing a callback function on each item.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (First Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'callback: A function to execute for each matched element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value (First Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (Second Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'collection: An object or an array to iterate over'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'callback: A function to execute for each item in the collection'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value (Second Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.each()` method and `$.each()` function are generic iterators designed
+    to make concise and less error-prone looping constructs. They operate on a collection,
+    and execute a callback function once for every item in that collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first syntax listed above is a method of jQuery objects, and when called
+    it iterates over the DOM elements that are part of the object. Each time the callback
+    runs, it is passed the current loop iteration, beginning from `0`, as a parameter.
+    More importantly, the callback is fired in the context of the current DOM element,
+    so the keyword `this` refers to that element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose we had a simple unordered list on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can select the list items and iterate across them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A message is thus logged for each item in the list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The second syntax is similar, but it is a global function rather than a method.
+    The collection is passed as the first parameter in this case, and can be either
+    a map (JavaScript object) or an array. In the case of an array, the callback is
+    passed an array index and corresponding array value as parameters each time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This produces two messages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If a map is used as the collection, the callback is passed a key-value pair
+    as parameter each time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once again, this produces two messages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: $.grep()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Winnow an array down to a selected set of items.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'array: The array to search through'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'filter: A function to apply as a test for each item, or a string containing
+    an expression to use as a test'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'invert (optional): A Boolean indicating whether to reverse the filter condition'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The newly constructed, filtered array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `$.grep()` method removes items from an array as necessary so that all remaining
+    items pass a provided test. The test is a function that is passed an array item
+    and the index of the item within the array as parameters; only if the test returns
+    true will the item be in the result array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As is typical with jQuery methods, the callback function is often defined anonymously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All array items that are over `50` are preserved in the result array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since filter functions tend to be very short, jQuery provides a further shortcut.
+    Filter functions can be defined as a single expression that is evaluated for each
+    item `a` in the array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This produces the same results as before. We can invert this test by adding
+    the third parameter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This now produces an array of items less than or equal to `50`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: $.map()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Transform an array into another one by using a filter function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'array: The array to convert'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'filter: A function to apply to each item, or a string containing an expression
+    to apply'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The newly constructed, transformed array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `$.map()` method applies a function to each item in an array, collecting
+    the results into a new array. The filter is a function that is passed an array
+    item and the index of the item within the array as parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As is typical with jQuery methods, the callback function is often defined anonymously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All array items are reduced by `45` in the result array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since filter functions tend to be very short, jQuery provides a further shortcut.
+    Filter functions can be defined as a single expression that is applied to each
+    item `a` in the array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This produces the same results as before. We can remove items from the array
+    by returning `null` from the filter function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This now produces an array of the items that were greater than `50`, each reduced
+    by `45`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the filter function returns an array rather than a scalar, the returned
+    arrays are concatenated together to form the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Instead of a two-dimensional result array, the map forms a flattened one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: $.merge()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Merge the contents of two arrays together into the first array.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'array1: The first array to merge'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'array2: The second array to merge'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An array consisting of elements from both supplied arrays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `$.merge()` operation forms an array that contains all elements from the
+    two arrays, with duplicates removed. The order of items in the first array is
+    preserved, with items from the second array appended:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting array contains all four distinct items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `$.merge()` function is destructive. It alters the first parameter to add
+    the items from the second. If you need the original first array, make a copy of
+    it before calling `$.merge()`. Fortunately, `$.merge()` itself can be used for
+    this duplication:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: This shortcut creates a new, empty array and merges the contents of `oldArray`
+    into it, effectively cloning the array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.unique()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Creates a copy of an array of objects with the duplicates removed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'array: An array of objects'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An array consisting of only unique objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `$.unique()` function searches through an array of objects, forming a new
+    array that does not contain duplicate objects. Two objects are considered distinct
+    if they refer to different locations in memory, even if their contents are identical.
+    The original array is not modified. The array may consist of any kind of JavaScript
+    object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting array contains only the four distinct items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: The second instance of the object named `bob` is removed from the resulting
+    array. However, the object named `ted` remains even though it has identical content,
+    since it was created as a separate object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that `$.unique()` modifies the objects in the array, adding an extra property
+    called `mergeNum` to each. This property is a side effect of the implementation
+    of the function, and is not useful to the calling code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.extend()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Merge the contents of two objects together into the first object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'target (optional): An object which will receive the new properties'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'properties: An object containing additional properties to merge in'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The target object after it has been modified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `$.extend()` function merges two objects in the same way that `$.merge()`
+    merges arrays. The properties of the second object are added to the first, creating
+    an object with all the properties of both objects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The value for `durian` in the second object gets added to the first, and the
+    value for `banana` gets overwritten:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `$.extend()` function is destructive; the target object is modified in
+    the process. This is generally desirable behavior, as `$.extend()` can in this
+    way be used to simulate object inheritance. Methods added to the object become
+    available to all the code that has a reference to the object. If, however, we
+    want to preserve both of the original objects, we can do this by passing an empty
+    object as the target:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can also supply more than two objects to `$.extend()`. In this case, properties
+    from all of the objects are added to the target object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If only one argument is supplied to `$.extend()`, this means the target argument
+    was omitted. In this case, the jQuery object itself is assumed to be the target.
+    By doing this, we can add new functions to the jQuery namespace. We will explore
+    this capability when discussing how to create jQuery plug-ins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The merge performed by `$.extend()` is not recursive; if a property of the first
+    object is itself an object or an array, it will be completely overwritten by a
+    property with the same key in the second object. The values are not merged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.trim()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Removes whitespace from the ends of a string.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'string: A string to trim'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The trimmed string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `$.trim()` function removes all newlines, spaces, and tabs from the beginning
+    and end of the supplied string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All of the whitespace characters are trimmed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE

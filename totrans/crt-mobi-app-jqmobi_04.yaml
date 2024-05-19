@@ -1,0 +1,419 @@
+- en: Chapter 4. QR Codes, Geolocation, Google Maps API, and HTML5 Video
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have discussed many of the core concerns of small and big business. Let's
+    turn our eyes now to other concepts that would concern media companies. In this
+    chapter, we'll look at a movie theater chain, but really, these concepts could
+    be applied to any business that has multiple physical locations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: QR Codes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic geolocation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Integrating Google Maps API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Linking and embedding video
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: QR codes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We love our smartphones. We love showing off what our smartphones can do. So,
+    when those cryptic squares, as shown in the following figure, started showing
+    up all over the place and befuddling the masses, smartphone users quickly stepped
+    up and started showing people what it's all about in the same overly-enthusiastic
+    manner that we whip them out to answer even the most trivial question heard in
+    passing. And, since it looks like NFC isn't taking off anytime soon, we'd better
+    be familiar with QR codes and how to leverage them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![QR codes](img/0069_04_00.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The data shows that knowledge and usage of QR codes is very high according
+    to surveys:([http://researchaccess.com/2012/01/new-data-on-qr-code-adoption/](http://researchaccess.com/2012/01/new-data-on-qr-     code-adoption/))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: More than two-thirds of smartphone users have scanned a code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: More than 70 percent of the users say they'd do it again (especially for a discount)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Wait, what does this have to do with jQuery Mobile? Traffic. Big-time successful
+    traffic. A banner ad is considered successful if only two percent of people click
+    through ([http://en.wikipedia.org/wiki/Clickthrough_rate](http://en.wikipedia.org/wiki/Clickthrough_rate)).
+    QR codes get more than 66 percent! I''d say it''s a pretty good way to get people
+    to our creations and, thus, should be of concern. But QR codes are for more than
+    just URLs. Here we have a URL, a block of text, a phone number, and an SMS in
+    the following QR codes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![QR codes](img/0069_04_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are many ways to generate QR codes ([http://www.the-qrcode-generator.com/](http://www.the-qrcode-generator.com/),
+    [http://www.qrstuff.com/](http://www.qrstuff.com/)). Really, just search for `QR
+    Code Generator` on Google and you'll have numerous options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let us consider a local movie theater chain. Dickinson Theatres ([dtmovies.com](http://dtmovies.com))
+    has been around since the 1920s and is considering throwing its hat into the mobile
+    ring. Perhaps they will invest in a mobile website, and go all-out in placing
+    posters and ads in bus stops and other outdoor locations. Naturally, people are
+    going to start scanning, and this is valuable to us because they're going to tell
+    us exactly which locations are paying off. This is really a first in the advertising
+    industry. We have a medium that seems to spur people to interact on devices that
+    will tell us exactly where they were when they scanned it. Geolocation matters
+    and this can help us find the right locations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Geolocation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When GPS first came out on phones, it was pretty useless for anything other
+    than police tracking in case of emergencies. Today, it is making the devices that
+    we hold in our hands even more personal than our personal computers. For now,
+    we can get a latitude, longitude, and timestamp very dependably. The geolocation
+    API specification from the W3C can be found at [http://dev.w3.org/geo/api/spec-source.html](http://dev.w3.org/geo/api/spec-source.html).
+    For now, we''ll pretend that we have a poster prompting the user to scan a QR
+    code to find the nearest theater and show the timings. It would bring the user
+    to a page like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Geolocation](img/0069_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Since there's no better first date than dinner and a movie, the movie going
+    crowd tends to skew a bit to the younger side. Unfortunately, that group does
+    not tend to have a lot of money. They may have more feature phones than smartphones.
+    Some might only have very basic browsers. Maybe they have JavaScript, but we can't
+    count on it. If they do, they might have geolocation. Regardless, given the audience,
+    progressive enhancement is going to be the key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll do is create a base level page with a simple form that
+    will submit a zip code to a server. Since we''re using our template from before,
+    we''ll add validation to the form for anyone who has JavaScript using the `validateMe`
+    class. If they have JavaScript and geolocation, we''ll replace the form with a
+    message saying that we''re trying to find their location. For now, don''t worry
+    about creating this file. The source code is incomplete at this stage. This page
+    will evolve and the final version will be in the source package for the chapter
+    in the file called `qrresponse.php` as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: For anyone who does not have JavaScript, this is what they will see, nothing
+    special. We could spruce it up with a little CSS but what would be the point?
+    If they're on a browser that doesn't have JavaScript, there's pretty good chance
+    their browser is also miserable at rendering CSS. That's fine really. After all,
+    progressive enhancement doesn't necessarily mean making it wonderful for everyone,
+    it just means being sure it works for everyone. Most will never see this but if
+    they do, it will work just fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Geolocation](img/0069_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For everyone else, we'll need to start working with JavaScript to get our theater
+    data in a format we can digest programmatically. JSON is perfectly suited for
+    this task. If you are already familiar with the concept of JSON, skip to the next
+    paragraph now. If you're not familiar with it, basically, it's another way of
+    shipping data across the Interwebs. It's like XML but more useful. It's less verbose
+    and can be directly interacted with and manipulated using JavaScript because it's
+    actually written in JavaScript. JSON is an acronym for JavaScript Object Notation.
+    A special thank you goes out to Douglas Crockford (the father of JSON). XML still
+    has its place on the server. It has no business in the browser as a data format
+    if you can get JSON. This is such a widespread view that at the last developer
+    conference I went to, one of the speakers chuckled as he asked, "Is anyone still
+    actually using XML?"
+  prefs: []
+  type: TYPE_NORMAL
+- en: The example code for this chapter has the full list of theaters, but this should
+    be enough to get us started. For this example, we'll store the JSON data in `/js/theaters.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now that we have data to work with, we can prepare the on-page scripts. Let''s
+    put the following chunks of JavaScript in a script tag at the bottom of the HTML
+    where we had the comment: `We''ll put our page specific code here soon`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The key here is the function `geolocation.getCurrentPosition` `,` which will
+    prompt the user to allow us access to their location data, as shown here on iPhone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Geolocation](img/0069_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If somebody is a privacy advocate, they may have turned off all location services.
+    In this case, we'll need to inform the user that their choice has impacted our
+    ability to help them. That's what the error function is all about. In such a case,
+    we'll display an error message and show the standard form again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we have our user''s position and the list of theaters, it''s time to sort
+    the theaters by distance and show the closest one. The following is a pretty generic
+    code that we may want to use on more than one page. So we''ll put this into our
+    `global.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With all of these pieces in place, it is now simple enough to get the user''s
+    position and find the closest theater. It will be the first in the array, as well
+    as stored directly in the global variable, `closestTheater`. If they have JavaScript
+    turned off, we''ll have to use some server-side algorithms or APIs to figure out
+    which is closest (which is beyond the scope of this book). Regardless, we are
+    keeping every theater''s show times as a set of list items in a flat file (`showtimes.php`).
+    In a real world situation, this would be database driven and we would call the
+    page with a URL that has the ID of the correct theater. For now, the following
+    code is all we need:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We pull in this page fragment using the following on-page scripts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case we have the `showtimes.php` file containing only the listview items,
+    and we are injecting them directly into the listview before refreshing. Another
+    way to accomplish the same thing would be to have another file, like `fullshowtimes.php,`
+    be a fully rendered page with headers, footers, and everything. This would be
+    perfect for the situations where JavaScript or geolocation is not available and
+    we have to revert back to standard page submissions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, instead of calling the load function with simply a page, we could load
+    the entire page and then select the elements in the page we want to inject by
+    using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Certainly, this would be a less efficient way of doing things, but it's worth
+    noting that such a thing can be done. It almost certainly will come in handy in
+    the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integrating the Google Maps API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've done well up to this point on our own. We can tell which theater is closest
+    and how far it is as the crow flies. Sadly though, despite all it's promise, the
+    21st century has not led to us all having private jet packs. Therefore, it is
+    probably best that we not display that distance. Most likely, they're going to
+    drive, ride a bus, bike, or walk.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's leverage the Google Maps API ([https://developers.google.com/maps/documentation/javascript/](https://developers.google.com/maps/documentation/javascript/)).
+    If your site is going to have a lot of API hits, you might have to pay for the
+    business pricing. For us, while we are in development, there's no need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a look at what we''re about to build:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Integrating the Google Maps API](img/0069_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'First, we''ll need another page to show a map and directions, as well as the
+    script that will actually load the maps from Google Maps API, using the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: We have several important parts of this page. The first is the `navbar` attribute
+    within a `footer` attribute for directions to the theater. What you may not realize
+    is that footers don't actually have to be at the bottom of the page. When you
+    use a `navbar` attribute within a `footer` attribute, the link that you clicked
+    on will retain its active state. Without the footer surrounding it, the link will
+    only blink the active state once and then go back to normal. The `map_canvas`
+    and `directions-panel` attributes will be filled in by the Google Maps API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we need to update the CSS code for the extra icons and map constraints.
+    As before, we're keeping them in the location `/css/custom.css`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll add a few more global variables and functions to our current on-page
+    scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we see the global variables for holding the Google objects. The `showDirections`
+    method is made to take a string representing one of four different travel modes:
+    `''DRIVING''`, `''TRANSIT''`, `''BICYCLING''`, and `''WALKING''`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could populate the map and directions at the same time we figure out which
+    theater is closest. It would actually make for a great user experience. However,
+    without analytics to show that the majority of people actually want directions,
+    it makes no sense to incur the costs. Ultimately, that is a business decision,
+    but a company with a customer base of any size could get hammered with API costs.
+    For now, it seems best to trigger the loading of maps and directions when the
+    users go to the `directions` page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Geek-out moment—GPS monitoring
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So, let's geek-out for a minute. What we've done is probably good enough for
+    most circumstances. We show a map and turn-by-turn directions. Let's take it a
+    step further. The geolocation API does more than just determine your current location.
+    It includes a timestamp (no biggie) and can allow you to continuously monitor
+    the user's position using the method `navigator.geolocation.watchPosition` ([http://dev.w3.org/geo/api/spec-source.html#watch-position](http://dev.w3.org/geo/api/spec-source.html#watch-position)).
+    This means that with only a little bit of effort, we can turn our previous direction
+    page into a continuously-updating directions page. In the example code, this is
+    all contained within the file `qrresponse2.php`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Again, updating too often could get expensive. So we should really limit how
+    often we redraw the map and directions. For each transportation mode, there is
+    a difference in the amount of meaningful time needed between updates. While we''re
+    at it, let''s re-do the buttons to contain these options. Here is the entire page''s
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So, now let''s look at the on-page scripts for this GPS monitoring edition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Linking and embedding video
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Previews are a staple in the movie industry. We could simply link directly
+    to the previews on YouTube as many do. Here''s a simple way to do it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Linking and embedding video](img/0069_04_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: That will work but the problem is that it takes the user away from your site.
+    While that may not be the end of the world from a user's perspective, it's a big
+    e-commerce no-no.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, in order to improve the experience and keep the user on our own site, let's
+    directly embed the HTML5 video and use the universal image for movie previews
+    as we have depicted here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Despite the fact that it looks like this will play in a teeny-tiny segment of
+    the page, on smartphones, the video will play in fullscreen landscape mode. The
+    story is a little different on the iPad where it will play inline at the embedded
+    side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ultimately, we'd like to push the right-sized video back to the user for their
+    device using the following code. Smartphones without high-resolution displays
+    aren't exactly going to benefit from a 720p video.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the browser recognizes the HTML5 video tag, the player will start at the
+    top and look through each source tag until it finds one that it knows how to play
+    and matches the right media query (if media queries have been specified). If the
+    browser does not support HTML5 video, it will not know what to do with the video
+    and source tags, and simply consider them to be valid XML elements. They will
+    be treated like extraneous `div` tags and the link button will be displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you can see, we''ve added media queries here to different sources. If it''s
+    a high-resolution screen, we''ll load a prettier video. You could really geek
+    out here by adding lots of different sources: a 480p video for the average smartphone,
+    a 720p video for the iPhone and early iPads, and a 1080p video for the 3rd generation
+    iPad. The only word of caution here is that even though the Apple Retina Display
+    is capable of showing a much more beautiful video, it still has to come over the
+    same pipes. Loading a smaller video might still be better because it will play
+    sooner and cost the customer less bandwidth.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's add a little more CSS to this picture. We're leaving the width at 100
+    percent of whatever is containing it. On smartphones, the picture ratio will scale
+    properly as the width increases. The iPad, not so much. So, let's detect its screen
+    resolutions using media queries and give it an explicit height that will take
+    better advantage of the real estate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've explored the boundaries of modern media on smartphones. You can now brainstorm
+    on the uses and take advantage of QR codes, find out where the user is, monitor
+    the user's position, get directions and maps from Google, and feed responsive
+    videos to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Think about all you have just learned. How hard would it be to create a socially
+    connected website that would allow users to get maps to each other's positions
+    that continue to update as they move closer or further apart. It could be valuable
+    if packaged and marketed properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we're going to leverage GPS to pull tweets within your
+    geographic area. We'll also look at pulling feeds from several other sources such
+    as reddit, RSS feeds, and likewise. It's going to be a lot of fun. It was one
+    of my favorite chapters to write.
+  prefs: []
+  type: TYPE_NORMAL

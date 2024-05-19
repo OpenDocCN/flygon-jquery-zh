@@ -1,0 +1,362 @@
+- en: Chapter 9. Working with Events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will look at how events work in jQuery Mobile. While developers
+    obviously have access to regular events (button clicks, and so on), jQuery Mobile
+    also exposes its own events for developers to make use of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discuss touch, swipe, scroll, and other physical events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discuss page events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with physical events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For the first part of this chapter, we will focus on the "physical" events,
+    or events related to touch and other actions done with a device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For those of you who have been testing jQuery Mobile using a regular browser,
+    please note that some of the following examples will not work properly on a desktop
+    browser. If you wish, you can download and install emulators for various mobile
+    phone types. For example, Android has an SDK that supports creating virtual mobile
+    devices. Apple also has a way to simulate an iOS device. Setting up and installing
+    these emulators are beyond the scope of this chapter, but it is certainly an option.
+    Of course, you can also use a real hardware device as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The physical events include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`tap` and `taphold: tap` represents what it sounds like — a quick physical
+    touch on the web page. `taphold` is a longer touch. Many applications will make
+    use of two separate actions — one for `tap` and one for `taphold`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`swipe, swipeleft`, and `swiperight:` These represent swipes, or a finger movement
+    across most of the devices. The `swipe` event is a generic one, whereas `swipeleft`
+    and `swiperight` represent a swipe in a specific direction. There is no support
+    for a swipe up or down event.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scrollstart` and `scrollstop:` Respectively handle the beginning and end of
+    scrolling a page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`orientationchange:` Fired when the device''s orientation changes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`vclick, vmousedown, vmouseup, vmousemove, vmousecancel`, and `vmouseover:`
+    All of these are "virtual" events meant to abstract away checking for either touch
+    or mouse click events. As these are mainly just aliases for click and touch events,
+    they will not be demonstrated.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Now that we''ve listed the basic physical events, let''s start looking at a
+    few examples. `Listing 9-1` demonstrates a simple example of the `tap` and `taphold`
+    events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This template is rather simple. The page has some explanatory text asking the
+    user to tap on it. Beneath it is an empty paragraph. Note though the two binds
+    at the end of the document. One listens for `tap` while the other listens for
+    `taphold`. The user can do either action and a different status message is displayed.
+    While rather simple, this gives you a good idea of how you could respond differently
+    based on how long the user holds their finger down. (The time for the `taphold`
+    event to fire is around one second):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with physical events](img/7263_9_1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now let''s look at `Listing 9-2`, an example of swipe events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This example is pretty similar to the previous one, except now our event handlers
+    listen for `swipe, swipeleft`, and `swiperight`. One important difference is that
+    we append to the status div instead of simply setting it. Why? A `swiperight`
+    or `swipeleft` event is automatically a swipe event. If we simply set the text
+    in the paragraph, one would wipe out the other. The following screenshot shows
+    how the device looks after a few swipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with physical events](img/7263_9_2.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How about a more complex example? Consider the following code snippet, `Listing
+    9-3:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we've got a file that includes two separate pages, one with
+    the id `first` and the other with the id `second`. Notice we have no links. So
+    how do we navigate? With swipes! Our event handler is now listening for both `swipeleft`
+    and `swiperight`. We first grab the active page using `$.mobile.activePage`, as
+    described in [Chapter 8](../Text/ch08.html "Chapter 8. jQuery Mobile Configuration,
+    Utilities, and JavaScript methods"), *JavaScript Configuration and Utilities in
+    jQuery Mobile* on methods and utilities. The `[0]` at the end refers to the fact
+    that the value is actually a jQuery Selector. Using `[0]` grabs the actual DOM
+    item. The event type will be either `swipeleft` or `swiperight`. Once we know
+    that, we can actively move the user around depending on what page they are currently
+    on and in what direction they swiped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s look at scrolling. You can detect when a scroll starts and when
+    one ends. `Listing 9-4` is another simple example of this in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This template is pretty similar to `test1.html`, the tap tester, except now
+    we've listened to `scrollstart` and `scrollstop`. Also note the list of`<br/>`
+    tags. In the real source file, there are many of these. This will ensure that
+    the page is actually scrollable when you test. When the scrolling will start and
+    end, we simply append to another status `div`. (Please note that currently DOM
+    manipulation is listed as being buggy when listening to `scrollstart`. The previous
+    example may not work in iOS, but works fine on Android.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s look at orientation. While the previous examples should be (mostly)
+    testable on your desktop, you will definitely need a real mobile device to test
+    the next example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The critical part of the previous code listing is the JavaScript at the end,
+    specifically the event listener for changing orientation. This is not actually
+    a jQuery Mobile supported event but something supported by the browser itself.
+    Once the event listener is attached, you can do whatever you wish based on the
+    orientation of the device. The following screenshot is the demonstration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with physical events](img/7263_9_3.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Handling page events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we''ve discussed physical type events, it''s time to turn our attention
+    to page events. Remember that jQuery Mobile has its own concept of pages. In order
+    to give developers even more control over how pages work within jQuery Mobile,
+    numerous page events are supported. Not all will necessarily be useful in your
+    day to day development. In general, page events can be split into the following
+    categories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'load: These are events related to the loading of a page. They are `pagebeforeload,
+    pageload`, and `pageloadfailed. pagebeforeload` is fired prior to a page being
+    requested. Your code can either approve or deny this request based on whatever
+    logic may make sense. If a page is loaded, then `pageload` is fired. Conversely,
+    `pageloadfailed` will be fired on any load that does not complete.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'change: These events are related to the change from one page to another. They
+    are: `pagebeforechange, pagechange`, and `pagechangefailed`. As before, the `pagebeforechange`
+    function acts as a way to programmatically decline the event. If done, the `pagechangefailed`
+    event is fired. `pagebeforechange` is fired *before* the `pagebeforeload` event.
+    `pagechange` will fire after the page is displayed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'transition: Events related to the movement, or transition, from one page to
+    another. They are: `pagebeforeshow, pageshow, pagebeforehide, pagehide`. Both
+    `pagebeforeshow` and `pagebeforehide` run prior to their related events but unlike
+    `pagebeforeload` and `pagebeforechange`, they can''t actually prevent the next
+    event.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'init: As it has been shown many times in this book, jQuery Mobile performs
+    multiple updates to basic HTML to optimize it for mobile displays. These are initialization
+    related events. The events you can listen to are: `pagebeforecreate, pagecreate`,
+    and `pageinit. pagebeforecreate` fires before any of the automatic updates are
+    fired on your controls. This allows you to manipulate your HTML via Javascript
+    beforehand. `pagecreate` is fired after page content exists in the DOM, but still
+    before the layout has been updated by jQuery Mobile. The official docs recommend
+    this as the place to do any custom widget handling. Finally, `pageinit` will run
+    after the initialization has been completed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'remove: There is one event for this category `pageremove`. This event is fired
+    before jQuery Mobile removes an inactive page from the DOM. You can listen to
+    this event to prevent the framework from removing the page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'layout: The final category is related to layout and has one event `updatelayout`.
+    This is typically fired by other layout changes as a way to let the page know
+    it needs to update itself.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'That''s quite a lot! A simple way to look at these events in action would be
+    to simply listen to all of them. In `Listing 9-6`, we have a simple example of
+    this in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This template is part of a four-page, three-file simple application that has
+    buttons linking to each of the other pages. The other pages may be found in the
+    ZIP file you downloaded. In order to test this application, you **should** use
+    a desktop browser with console support. That''s any version of Chrome, recent
+    Firefox browsers (or Firefox with Firebug), and the latest Internet Explorer.
+    A full explanation of the browser console wouldn''t fit in this chapter, but you
+    can think of it as a hidden away debugging log useful for recording events and
+    other messages. In this case, we''ve told jQuery to listen for all of our jQuery
+    Mobile page events. We then log the specific event type to the console. After
+    clicking around a bit, the following screenshot shows how the console log looks
+    in a Chrome browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Handling page events](img/7263_9_4.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Opening the console in Chrome is simple. Click on the monkey wrench icon in
+    the upper right corner of the browser. Select **Tools** and then **JavaScript
+    Console**. Open the console up before testing these files yourself and you can
+    monitor the page events as they happen in real time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What about $(document).ready?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you are a jQuery user, you may be curious how `$(document).ready` comes into
+    play with a jQuery Mobile site. Almost all jQuery applications use `$(document).ready`
+    for initialization and other important setup operations. However, in a jQuery
+    Mobile application, this will not work well. Since Ajax is used to load pages,
+    `$(document).ready` is only really effective for the *first* page. Therefore,
+    the `pageInit` event should be used in cases where you would have used `$(document).ready`
+    in the past.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a real example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So what about a real example? Our next set of code is going to demonstrate
+    how to create a simple, but dynamic, jQuery Mobile web site. The content will
+    be loaded via Ajax. Normally this would be dynamic data, but for our purposes
+    we''ll use simple static files of JSON data. JSON, stands for JavaScript Object
+    Notation, is a way to represent complex data as simple strings. `Listing 9-7`
+    is the application''s home page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first thing you may notice about this jQuery Mobile page is that there isn't
+    any actual content. Not within the jQuery Mobile page's content block at least.
+    There's a `listview` but no actual content. So where's the content going to come
+    from? At the bottom of the page you can see two event listeners. For now let's
+    just focus on the first one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code here binds to the `pagebeforecreate` event that jQuery Mobile fires
+    for pages. We''ve told jQuery Mobile to run this event before it creates the page.
+    This event will run once and only once. Within this event we use the jQuery `get`
+    feature to do an Ajax request to the file `people.json`. That file is simply an
+    array of names in JSON format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Each name has both an ID and the actual name value. When loaded by jQuery,
+    this is turned into an actual array of simple objects. Looking back at the event
+    handler, you can see that we simply loop over this array and create a string representing
+    a set of `li` tags. Note that each one has a link to `test_people.html` as well
+    as a dynamic name. Also note the links themselves are dynamic. They include each
+    person''s ID value as retrieved from the JSON string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a real example](img/7263_9_5.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It was mentioned earlier, but take note of the call to `listview("refresh"):`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Without the `listview("refresh")` portion, the items we added to the listview
+    would not be styled correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a quick look at `test_people.html` next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As with our last page, this one is pretty devoid of content. Note that both
+    the header and the content area are blank. But, if you remember the second event
+    handler in `test_dyn.html`, we have support to load the content here. This time
+    we used the `pagebeforeshow` event. Why? We want to run this code before every
+    display of the page. We need to know what particular person to load. If you remember,
+    the ID of the person was passed in the URL. We can fetch that via a data property,
+    `url`, that exists on the page object. This returns the complete URL, but all
+    we care about is the end of it our ID. So we split the string and grab the last
+    value. Once we have, we can then load in a particular JSON file for each person.
+    The form of this filename is `personX.json`, where `X` is the number 1 through
+    5\. The following line of code is one example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Obviously, a real person object would have a bit more data. Once we fetch this
+    string, we can then parse it and lay out the result on the page itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a real example](img/7263_9_6.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we looked into events that jQuery Mobile application can listen
+    and respond to. These events include physical types (scrolling, orientation, touching)
+    and page based ones as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll look at how jQuery Mobile sites are themed - both
+    out of the box themes and custom ones as well.
+  prefs: []
+  type: TYPE_NORMAL

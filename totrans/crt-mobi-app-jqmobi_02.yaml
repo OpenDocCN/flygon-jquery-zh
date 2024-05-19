@@ -1,0 +1,884 @@
+- en: Chapter 2. A Mom-and-Pop Mobile Website
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The previous chapter taught us some valuable lessons about paper prototyping
+    and gave us a solid ground on which to start our development. Now, we will take
+    those drawings and turn them into an actual jQuery Mobile (jQM) site that acts
+    responsively and looks unique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A new jQuery Mobile boilerplate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A new way of thinking about full-site links
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Breaking the boilerplate into a configurable server-side PHP template
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using alternate icon sets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom fonts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Page curl effects using only CSS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Performance optimization tips
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mobile detection and redirection techniques
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A new jQuery Mobile boilerplate
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile docs have a lot of hidden gems. They make a great starting
+    point but there are actually several ways of doing your base template. There is
+    single-page template, multipage template, templates with global configuration,
+    and dynamically-generated pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, let''s start out with a new jQM single-page boilerplate based on the original
+    single-page template ( [http://view.jquerymobile.com/1.3.0/docs/widgets/pages/](http://
+    http://view.jquerymobile.com/1.3.0/docs/widgets/pages/)). We will evolve this
+    as we move into other chapters so it becomes an all-encompassing template. Following
+    is the basic directory structure we''ll create for this chapter and the files
+    we''ll use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A new jQuery Mobile boilerplate](img/0069_02_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'For now, here is the base HTML. Let''s store it in `template.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Meta viewport differences
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `meta viewport` tag is what really makes mobiles … well … mobile! Without
+    it, mobile browsers will assume that it is a desktop site and everything will
+    be small and require pinch-and-zoom:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This `meta viewport` tag is different in that it actually prevents all pinch-and-zoom
+    action. Why? Because, now smart phones are in the hands of more than just the
+    technical elite who know about such things. I''ve personally seen people accidentally
+    zoom in while just trying to tap a link. They had no idea what they had done or
+    how to get out of it. Regardless, if you use jQuery Mobile, your users have no
+    need of zoom anyway:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will need custom styles. There''s no way around it. Even if we use the jQuery
+    Mobile ThemeRoller ([http://jquerymobile.com/themeroller/](http://jquerymobile.com/themeroller/)),
+    there''s always something that needs overriding. This is where you put it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Originally mentioned under the section regarding global configuration ([http://jquerymobile.com/demos/1.1.0/docs/api/globalconfig.html](http://jquerymobile.com/demos/1.1.0/docs/api/globalconfig.html)),
+    this is where you put your global overrides, as well as any scripts you may want
+    to run or have available universally:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Most mobile websites follow the "best practice" of including a link to the full
+    site. It's usually in the footer and it usually links to the homepage of the full
+    site. OK, great. The job is done right? Wrong! The best practice would be better
+    labeled as the "industry standard" because there is a better way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Full-site links beyond the industry standard
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The industry standard of simply including a full-site link fails to support
+    the user's mental state. When a user navigates around on the mobile site, they're
+    giving a pretty clear indication of what they want to look at. Supporting the
+    user's mental model as they transition from mobile to full site is more work,
+    but crafting a good user experience always is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture this. Sally is looking around on our mobile site because she wants to
+    buy from us. She has actually taken the time to surf down or search to the product
+    that she wants to see. However, due to the constraints of mobile, we made a few
+    conscious choices to not put all the information there. We only included the high
+    points that market research showed people really cared about. At this point, she
+    might be a little bit frustrated as she taps on the full-site link to try to get
+    more information. The full-site link was coded the traditional (lazy) way and
+    takes her to the root of the full site where she now has to go find the product
+    again. Now she has to do it using pinch-and-zoom, which only adds to the aggravation
+    level. Unless Sally is desperately interested, what what's the chance she'd continue
+    looking on her mobile and what's the chance she'd come back on a desktop browser
+    after such a miserable experience?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, instead, picture that same mobile product page having been thoughtfully
+    crafted to point the full-site link at the product page desktop view. This is
+    exactly what we did at my place of employment. Every possible mobile page was
+    explicitly mapped to its desktop equivalent. The seamless transition was taken
+    to user testing with actual customers and was met with a mix of 50 percent ambivalence
+    and 50 percent delight. There was certainly surprise on the users' side because
+    it did violate their expectations, but there was not a single negative reaction.
+    If this does not successfully argue the case for rethinking the way full-site
+    links are traditionally approached, I don't know what does. Preserve the user's
+    mental model. Preserve the contextual relevance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Naturally, you''ll probably have user experience professionals who will use
+    buzzwords like "consistency," "best pracitce," "industry standards," and "violating
+    user expectations." If the evidence from the user tests does not convince them,
+    give them a dose of the following philosophy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Consistency**: This approach is consistent within itself. Every full-site
+    link maps to that page on the full site.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Best practices**: A practice is only best until a new practice, comes along
+    that is better. If they would rather keep with *old* best practices then perhaps
+    they should sell their car, and get a horse and buggy.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Industry standards**: Industry standards are the crutch upon which the rest
+    of the world tries to hobble along while trying not to fall too far behind the
+    innovators. Good is often the enemy of great. Don''t settle for it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Violating user''s expectations**: If we tell our users that we''re going
+    to send them a free MP3 player and we send them a 128 GB iPad 4, have we violated
+    their expectations? Yep! Think they''ll mind? Some expectations are worth violating.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's consider the flip side. What if the user really did want to go to the
+    full-site's starting page? Well, they're only one step away because all they have
+    to do now is hit the home button. So, in all likelihood, we will have saved the
+    user several steps of navigation and, at worst, cost them one extra step to get
+    back to the beginning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's the little details that take a product from good to great. This is certainly
+    a little detail but I challenge you to spend the extra 30 seconds per page to
+    do this part of the job right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The global JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Thanks to the Ajax navigation and progressive enhancement inherent in jQuery
+    Mobile, there are a lot of different and extra events. Let''s consider the three
+    unique jQuery Mobile events I''ve found most useful. We''re not going to immediately
+    use them, just be aware of them and be sure to read the comments. Eventually,
+    we''ll create `/js/global.js` to house the scripts that we''ll need. For now,
+    just read the following script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: .live versus .on
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One thing you may have noticed here is that we are using the `.live` method
+    to capture events. This method has been deprecated since jQuery 1.7\. As of the
+    time of this writing, we're on jQuery 1.9\. However, even when you look at the
+    examples of event handlers in the documentation, they're still using `.live` in
+    multiple places.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.live` function works to check every event that bubbled up to the document
+    level and see if it matches the selector. If so, the function is executed. The
+    reason `.live` was so useful was that it was great at dealing with shifting and
+    dynamically-injected elements. After all, it''s hard to bind to something that''s
+    not there yet. But you could always count on `.live` to catch the events. Due
+    to its overused and general inefficiency, it was deprecated in favor of `.on`.
+    So, here is how we would accomplish the same thing using the following new method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: would become
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This works great if you''re looking to address every page. Now let''s consider
+    a piece of code that could be used to individually target a single page''s initialization:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: would become
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The differences are subtle and, in the end, it's not going to make an ounce
+    of difference from a performance perspective for us because we're dealing with
+    a framework that was designed around letting the page events bubble up to the
+    document level. You will realize no performance boost by using `.on` versus `.live`
+    in a jQuery Mobile implementation. However, you may experience an upgrade headache
+    when you are forced to update because they finally did away with `.live`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The global CSS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In case this is your first exposure to responsive web design, for the most part,
+    all your custom styles will be in the default section. The other sections are
+    for overriding your default styles to tweak for other device widths and resolutions.
+    The `Horizontal Tweaks` section is for overriding styles for landscape orientation.
+    The `iPad` section is geared for tablet resolutions between 768px and 1024px.
+    In the `HD and Retina Tweaks` section, you will most likely be only overriding
+    background image styles to substitute higher resolution graphics. We'll soon see
+    examples of these in action and we'll put what we use into `/css/custom.css`.
+    In the mean time, just look at these structures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Breaking the HTML into a server side template
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Normally, I'm a Java guy, but I've chosen PHP due to the prevalence of the **LAMP**
+    (**Linux, Apache, MySql, PHP** ) platform. All we're really doing here is using
+    variable and Server Side Includes to give our templates consistency and flexibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is not actual production code here. This is just a break down of the initial
+    HTML into a nice PHP boilerplate. If you want to save this to a file for now,
+    may I suggest `/boilerplate.php`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we''ll extract most of the header and put it into `/includes/meta.php`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note the cookies plugin in `js/jquery.cookie.js`. You'll want to download this
+    from [https://github.com/carhartl/jquery-cookie](https://github.com/carhartl/jquery-cookie).
+    We'll use it later in mobile detection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, let''s take the page header, make it dynamic, and drop the contents into
+    `/includes/header.php`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, let''s take the footer content and extract it into `/includes/footer.php`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The header and footer PHP files are set-and-forget files. All we have to do
+    is fill in a few variables on the main page and the `meta.php`, `header.php`,
+    and `footer.php` will take care of the rest. The `headers.php` is coded such that
+    if your `$headerLeftLinkText` is set to the word `Back` regardless of casing,
+    it will turn the left-side button of the header into a back button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we need to create our site
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have a viable boilerplate. We have a customer. Let's get to work and code
+    what we drew in [Chapter 1](ch01.html "Chapter 1. Prototyping jQuery Mobile"),
+    *Prototyping jQuery Mobile*. For this chapter, we'll stick to just the first screen
+    since it's all we need to teach the skills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What we need to create our site](img/0069_02_00.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Here''s what we need to think about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Logo: We''ll simply include the logo from the desktop view.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Buttons: There are several ways we could accomplish these. At first glance,
+    we might think about using standard `data-role="button"` links. We could leverage
+    a `ui-grid` ([http://jquerymobile.com/demos/1.2.0/docs/content/content-grids.html](http://jquerymobile.com/demos/1.2.0/docs/content/content-grids.html))
+    to add the formatting. If we were only intending to optimize for phones held vertically,
+    that would be a great approach. However, we''re going to think outside the box
+    here and create a responsive menu that will react well at different resolutions.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Icons: Those are not standard jQuery Mobile icons. There are countless icon
+    sets online that we could use but let''s go with **Glyp****hish** ([http://glyphish.com/](http://glyphish.com/)).
+    They make high-quality icons that include multiple sizes, retina display optimizations,
+    and the original Adobe Illustrator files just in case you want to tweak them.
+    It''s an excellent value.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Customer testimonials: This looks like it would be perfectly suited to a listview
+    with images. We''ll pull this content from their Facebook page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting Glyphish and defining custom icons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Glyphish has a license that allows for free use with attribution. The free set
+    ([http://www.glyphish.com/download/](http://www.glyphish.com/download/)) has only
+    one size and 200 icons, the "Pro" set has multiple sizes, 400 icons, and an unlimited
+    license. For only $25 dollars, that's a no-brainer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Creating a button with an icon is very simple. All you have to do is use the
+    `data-icon` attribute. Code, such as the following, will yield a button as shown
+    in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Getting Glyphish and defining custom icons](img/0069_02_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: What you may not yet realize is the way the jQuery Mobile actually does this.
+    Whatever you have written as the value for `data-icon` will become a class name
+    on the button. If you have an attribute of `data-icon="directions"` then the class
+    that is applied by jQM is `ui-icon-directions`. Naturally, you'll need to craft
+    this in your own custom CSS file like this. We'll put this, and others like it,
+    into`css/custom.css`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Another thing you'll need to do is get rid of the colored disk around the typical
+    icons. We'll also need to remove the border radius or our icons will get cut off
+    to fit within the shape of the circular radius defined within the style for `ui-icon`.To
+    do this, we'll add the `glyphishIcon` class to each link we want to customize
+    this way. We'll also need to add this definition to our `custom.css` **:**
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the end, our code for the four buttons on the front page would look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It would be rendered on the screen as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting Glyphish and defining custom icons](img/0069_02_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Linking to phones, e-mails, and maps
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Mobile browsers have a distinct usability advantage. If we want to link to
+    an e-mail address, the native e-mail client will instantly pop up. The following
+    code is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can do the same thing with phone numbers and every device will instantly
+    pop up an option to call that number. This is the functionality unmatched on desktops,
+    since most do not have telephony. Here is the `href` element from the preceding
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Maps are another specialty for mobile, since virtually all smart phones have
+    built-in GPS software. Here''s the `href` element for the maps link. It''s just
+    a standard link to Google Maps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For iOS 5 and Android, the OS will intercept that click and bring up the location
+    in the native maps app. Version 6 of iOS changes this model, but we can still
+    link to the Google Maps link and the users will be shown the web view and prompted
+    to open it in Google Maps for iOS, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Linking to phones, e-mails, and maps](img/0069_02_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For platforms other than iOS and Android, the user will simply be taken to the
+    Google Maps site. This is good because Google has done an amazing job of making
+    the site usable on any device, including non-smart phones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, we could leave it at this and call it good enough, but we could do
+    a little more work to give the Apple users a better experience by sending them
+    to the native Apple Maps application. This code will create an object with configurable
+    properties for configuration and future adaptations. It works by version sniffing
+    to see if the major version of the OS is greater than 5\. If so, it will assimilate
+    the Google Maps links.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two ways these links can be converted. First, it will look for an
+    attribute of `data-appleMapsUrl` on the hyperlink and use it. If that is not present
+    on the link, it will check the `forceAppleMapsConversionIfNoAlt` configuration
+    option to see if you have configured the switcher object to convert the Google
+    Maps link directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the system realizes that this phone needs switching, it stores that fact
+    into `localStorage` so it won't have to do the work of version checking again.
+    It will simply check the value in `localStorage` for `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is the code which is located in the `/js/global.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: '}With this code, it is now very easy to simply call it on `pageinit` from our
+    `/js/global.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: This approach is completely seamless to the user. No matter what system they
+    are on, they will have the most frictionless experience in trying to reach your
+    client's business.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom fonts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Custom fonts are present on their full site (and, thus, part of their branding).
+    These fonts will work just as well on mobile. Platforms like iOS, Android, and
+    the latest Blackberry fully support `@font-face` CSS. Older editions of BlackBerry
+    and Windows Phone may or may not support `@font-face` depending on the model that
+    users have. For anyone that does not support `@font-face`, they will simply be
+    presented with standard web fonts as you specify in the `font-family` rule. There
+    are many different web font providers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Google Web** **Fonts** ([http://www.google.com/webfonts/](http://www.google.com/webfonts/))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**TypeKit** ([https://typekit.com/](https://typekit.com/))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Font** **Squirrel** ([http://www.fontsquirrel.com/](http://www.fontsquirrel.com/))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Fonts.com** **Web Fonts** ([http://www.fonts.com/web-fonts](http://www.fonts.com/web-fonts))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For our project we're going to use Google Web Fonts. We'll need to include these
+    lines in the `<head>` of every page that we want to use them. Since we'll probably
+    be using them everywhere, let's just include these lines in our file `/includes/meta.php`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once we have linked our fonts in the `<head>`, we''ll need to specify their
+    usage in a font-family rule within our `/css/custom.css` file as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, for any browser (which is most these days) that supports it, they''ll
+    see something as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Custom fonts](img/0069_02_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**A word of caution**: Web fonts are not exactly lightweight. Marvel weighs
+    in at 20 KB. Not huge, but not small. You would not want to include too many of
+    these.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Page curl shadow effects for our list items
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll be laying out the customer testimonials in unordered lists. We could use
+    an image listview, but we want some spacing in between each item as well as a
+    page curl effect. So, let's just style a regular unordered list. Whenever possible,
+    we should avoid overriding the standard jQuery Mobile code. It's just asking for
+    trouble. Whenever you override something that is built to be a framework (like
+    jQuery Mobile), you run the risk of the next release completely breaking the overrides
+    and custom adaptations you have made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code for this customization will be displayed and labeled in the final CSS
+    a little later in this chapter. The point is, we're going to do this using CSS3\.
+    Most mobile browsers fully support CSS3, including transformations, transitions,
+    animations, shadows, gradients, and rounded corners. Ancient platforms, such as
+    Windows Phone 7 and BlackBerry 5 are based on Internet Explorer 7 or earlier and
+    do not fully support CSS3\. In those cases, rather than seeing the fancy page
+    curl, they'll just see a white box containing and image and text. While not ideal,
+    it's a perfectly reasonable fallback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Optimization: why you should be thinking of it first'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I believe that optimization is important enough that you need to know and be
+    aware of it at the beginning. You are going to do some awesome work and I don't
+    want you or your stakeholders to think it's any less awesome, or slow, or anything
+    else because you didn't know the tricks to squeeze the most performance out of
+    your systems. It's never too early to impress people with the performance of your
+    creations. Mobile is a very unforgiving environment and some of the tips in this
+    section will make more difference than any of the "best coding practices."
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From a performance perspective, there is absolutely nothing worse than an HTTP
+    request. That''s why CSS sprites are a good idea. Every request we make slows
+    us down because the TCP/IP protocol assumes that each request''s available bandwidth
+    starts at near zero. So, not only do we have the communication''s lag time to
+    start pulling assets from the server, it also takes a ramp up time before that
+    asset is transmitted at full possible speed. 4G isn''t going, to save us from
+    these facts. Sure, their transfer rates are great once they get going but the
+    lag time it takes to actually begin the process of transfer is what kills us.
+    We also have to consider how often users find themselves with few or no bars of
+    reception. This is especially true in buildings. So, here are some tips for optimizing
+    your mobile site:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Reduce HTTP requests by combining as many assets as possible.** When the
+    **SPDY protocol** ([http://www.chromium.org/spdy/spdy-whitepaper/](http://www.chromium.org/spdy/spdy-whitepaper/))
+    finally gains traction, it will solve our problems, but, for now and the foreseeable
+    future, this is what slows us down the most. This is also why I will not be advising
+    the user on tools like **Require.js** ([http://requirejs.org/](http://requirejs.org/))
+    to dynamically load in whatever is necessary for that page in chunks. Don''t be
+    lazy. Know what your page needs and combine as much as possible.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Turn on gzip compression on your server.** There''s a pretty good chance
+    that any given server has gzip compression enabled but you should check. This
+    will shrink your text-based assets (HTML, CSS, JS) by up to 70 percent for transmission.
+    It actually makes more of a difference than minifying your code. For more on this,
+    check out [https://developers.google.com/speed/articles/gzip](https://developers.google.com/speed/articles/gzip).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Minify.** Minifying is the process by which a perfectly human-readable piece
+    of code is stripped of all the useful whitespace, formatting, and comments. All
+    that is pushed to the browser is the code. Some go so far as to actually change
+    the variable and function names into one or two letter substitutions. This is
+    really only a good idea for longstanding, highly-stable code. Libraries, such
+    as jQuery, that have a tendency to be large in the first place will definitely
+    benefit. However, for your own code, it''s a good idea to leave it human-readable
+    so you can debug things if you have to. Just try to keep your HTML pages under
+    25 KB (uncompressed) and your JS and CSS files under 1 MB (also uncompressed).
+    A study conducted by Yahoo shows that across all platforms, this seems to be the
+    lowest common denominator that devices will allow to be cached between visits
+    ([http://www.yuiblog.com/blog/2010/07/12/mobile-browser-cache-limits-revisited/](http://www.yuiblog.com/blog/2010/07/12/mobile-browser-cache-limits-revisited/)).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Caching and Microcaching**. If you''re on Apache like most of the rest of
+    the web ([http://news.netcraft.com/archives/2012/01/03/january-2012-web-server-survey.html](http://news.netcraft.com/archives/2012/01/03/january-2012-web-server-survey.html)),
+    you can easily setup caching using an `htaccess` file. If you specify a caching
+    time of one month for a type of asset, then browsers will attempt to hold those
+    assets in cache for one month without even checking to see if there is anything
+    new on the server. Be careful here. You don''t want to set long cache times for
+    anything you might want to be able to change quickly. However, things like JavaScript
+    libraries and images that don''t change can certainly be cached without any ill
+    effects.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In order to protect yourself from traffic flooding, you can use the `htaccess`
+    caching rules to make pages last for something as small as a minute using code
+    such as the following:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You can learn more on caching with htaccess at [http://www.askapache.com/htaccess/speed-up-sites-with-htaccess-caching.html](http://www.askapache.com/htaccess/speed-up-sites-with-htaccess-caching.html).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Do NOT use images if it can be done in CSS3.** The CSS3 standard started
+    back in 1999\. The W3C started working on its first draft for the CSS4 recommendation
+    back in 2009\. It''s time to move the web forward and leave legacy browsers to
+    the ash heap of history. If someone is using a browser that doesn''t support CSS
+    gradients, let them default back to the solid background color they so richly
+    deserve. If their browser doesn''t support rounded corners in CSS, then they''ll
+    just have to make do with square corners.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If a potential client wants you to go beyond the web standards to support ancient
+    technologies or insists on pixel-perfect designs, fire the client or charge them
+    enough extra to make it worth your time. Pixel-perfect designs are hard enough
+    on desktops. Mobile is the Wild, Wild West where everybody is implementing their
+    solutions just differently enough that you'll never achieve pixel-perfect solutions.
+    ([http://dowebsitesneedtolookexactlythesameineverybrowser.com/](http://dowebsitesneedtolookexactlythesameineverybrowser.com/))
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Use CSS3 in lieu of images when possible to save on weight and HTTP requests.
+    Most modern smart phones support it now (iOS, Android, BlackBerry 6+, Windows
+    Phone 8+). By 2013 and 2014, virtually all early smart phones will be replaced.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The final product
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We now have all the requirements, knowledge, and assets to make the first page.
+    We'll place this code as the first page by naming it `index.php`. All images are
+    provided in the source folders for the example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following is the final code for `index.php`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: The custom CSS
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This code from `/css/custom.css` houses everything we've done to customize our
+    look and feel. It includes the definitions for the custom icons, page curls, and
+    custom fonts. Any images referenced were provided by the client and are provided
+    in the final source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Pay particular attention to the comments here as I have spelled out each section''s
+    purpose and how it plays into a *responsive web design*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The resulting first page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the final product of our work. On the left-side we have
+    the rendered page in portrait view, and on the right we have the landscape view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The resulting first page](img/0069_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It is important to test your designs in both orientations. It can be rather
+    embarrassing when someone comes along later and breaks your work by doing nothing
+    more than turning their phone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The resulting first page](img/0069_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here is how it looks on the iPad. There is some matter of debate in the industry
+    as to whether or not the iPad counts as mobile since it has enough resolution
+    and a large enough screen to view normal desktop sites, especially if viewed in
+    landscape mode. People who advocate the desktop view are forgetting a very important
+    fact. The iPad and all the other tablets, such as Kindle Fire, Nook Color, and
+    Google Nexus devices, are still touch interfaces. While full sites are still perfectly
+    readable, interaction points may still be tiny targets. If it's a touch interface,
+    your customer will be better served by jQuery Mobile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the user to our mobile site
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we''ve got this great start to a mobile site, how does the user get
+    there? `yourdomain.mobi`? `m.yourdomain.com`? The truth is, users don''t go to
+    mobile sites. They typically do one of two things: Google the site, or enter in
+    the primary domain into the address bar, the same behavior they use on desktop
+    sites. So, it falls on us to properly detect a mobile user and give them the appropriate
+    interface.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is much debate in the industry as to how this should be done. Most experts
+    seem to agree that you do not want to get into the business of detecting specific
+    platforms, a practice known as user agent sniffing. At first, it doesn''t seem
+    such a bad idea. After all, there''s really only the four major platforms: iOS,
+    Android, Windows Phone, and BlackBerry. Even still, this approach can quickly
+    become a nightmare as new platforms are developed in the future or come into dominance.
+    Here''s the real question, why would we care what platform they''re on? What we
+    really care about is device capability.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting and redirecting using JavaScript
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Naturally, this is not going to hit everyone in the mobile market. Even in the
+    United States, the smart phone penetration rate is only 50 percent. ([http://blog.nielsen.com/nielsenwire/online_mobile/smartphones-account-for-half-of-all-mobile-phones-dominate-new-phone-purchases-in-the-us/](http://blog.nielsen.com/nielsenwire/online_mobile/smartphones-account-for-half-of-all-mobile-phones-dominate-new-phone-purchases-in-the-us/))
+    But does it matter? .
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If this approach only reaches 50 percent of the market at best, is it truly
+    an appropriate solution? Yes, but how can this be? The following two reasons explain
+    it best:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: People who do not have a smart phone don't usually have a data plan. Surfing
+    the web becomes financially prohibitive. Most people without smart phones and
+    data plans won't be reaching you.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: People who have old smart phones like BlackBerry 5 or earlier may have a data
+    plan. However, those devices have browsers that are barely worth the name and
+    their users know it. They *might* hit your site but it's not likely, and their
+    existence is dropping quickly.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For the most part, anyone who likely would hit your site with a smart phone
+    will respond perfectly. The exceptions are not worth mentioning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the device supports media queries and has a touch interface then it's well
+    suited for our mobile site. The only exception to this rule is, of course, Internet
+    Explorer on Windows Phone 7\. So, we'll make a slight concession for them. First,
+    we'll need to download the cookie plugin for jQuery. If you haven't yet, get it
+    from [https://github.com/carhartl/jquery-cookie](https://github.com/carhartl/jquery-cookie)
+    and put it in the `/js/` folder. This code will be placed on any folder that you
+    want to do mobile redirection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also customize the mobile destination on a per-page basis. Pairing this
+    technique with the dynamic full-site link we created earlier will result in a
+    seamless transition between the mobile and desktop view whenever a user wants
+    to switch. We just have one problem now. We need to set a cookie so that, if they
+    tap the full-site link, they won''t be pushed right back into mobile. Let''s put
+    this into `/js/global.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's a good idea to set an expiration on any cookie that you write for mobile
+    devices. On desktops PCs, people tend to close their browsers. On mobile, people
+    click the home button which may or may not actually close that browser's session.
+    On Android, the browser never gets shutdown unless the user does so explicitly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting on the server
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you simply must get all mobile people to your mobile site, you'll need to
+    do detection on the server using a tool like **WURFL** ([http://wurfl.sourceforge.net/](http://wurfl.sourceforge.net/)).
+    It is the ultimate community-maintained database of wireless device descriptors.
+    Essentially, this is user agent sniffing but the database is well maintained by
+    the community. The tool will be able to tell you all kinds of useful things about
+    each device that visits you. The link [http://www.scientiamobile.com/wurflCapability/tree](http://www.scientiamobile.com/wurflCapability/tree)
+    will give you a complete listing of WURFL's capabilities. We'll get into the nuts
+    and bolts of this in a later chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We covered a lot of ground in this chapter and we now have all the skills and
+    tools to take what would have been a pretty generic-looking mobile site and turned
+    it into something unique. We know how to make it look unique, how to host it,
+    how to get the user there, and how to give them a more functional parachute if
+    they're unhappy. Already, we're several steps ahead of the average developer who's
+    just getting started and this is only the second chapter. In the next chapter,
+    we'll start looking into more in-depth topics that bigger businesses usually care
+    about, such as validation, analytics, and many more.
+  prefs: []
+  type: TYPE_NORMAL

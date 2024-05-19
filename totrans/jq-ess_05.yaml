@@ -1,0 +1,520 @@
+- en: Chapter 5. Making Your Site Snazzy with jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It is easy to underestimate the importance animation has for any modern, polished
+    web application. At times, it can seem frivolous and nearly gratuitous to waste
+    time adding animations since they don't seem to add anything to the application.
+    But for users, animations make a huge difference. They help ease the transition
+    from one application state to the next. They also help give the user a sense of
+    location. When a user clicks on a button that causes the page to shift to the
+    left and clicking another button causes the page to shift back to the right, the
+    user derives a sense of location from the animation. In this chapter, we will
+    learn how use jQuery animation and effects to make our site snazzy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The importance of animation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hiding and showing elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sliding elements around
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating custom effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using effects correctly
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The importance of animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As developers, it is easy for us to forget how abstract our applications can
+    be. The concept of a *home* is embedded in our developer brains, but there is
+    nothing really homey about one page of our site compared to any another. But if
+    all of the other pages appear to center on one page without even labeling it,
+    that becomes the home page in the eyes of most users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animation effects help when transitioning from one application state to the
+    next. Without animation, it is easy to miss when elements are added to or removed
+    from the page. The trick is to be skilled in the use of animation. Animations
+    should never feel like they are impeding the user from their goals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hiding and showing elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at animations in jQuery with two of the most useful ones:
+    `hide` and `show`. jQuery provides us with the `.hide()` and `.show()` methods,
+    which do exactly what their names suggest. Straight out of the box, these two
+    methods don''t animate; they act as simple switches, immediately hiding or showing
+    the attached set of elements. However, both of them have several ways it can be
+    called. First, let''s take a look at the `.hide()` method, and then look at its
+    companion, the `.show()` method.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In its most basic mode, the `.hide()` method is called with no parameters,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When called like this, it immediately hides the specified set of elements.
+    Internally, jQuery adds a style attribute to the elements with the property of
+    "`display: none`". This means that the element is both invisible and gives up
+    its space in the DOM. The `.hide()` method accepts optional parameters as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first parameter is duration. It can be either a string or an integer. If
+    it is an integer, it is the number of milliseconds the complete animation should
+    take. If it is a string, it must be one of the two supplied convenience names
+    for duration, either `fast` or `slow`. Fast is equivalent to 200 milliseconds
+    and slow is equivalent to 600 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In its basic mode, the `.show()` method is also called with no parameters,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When called like this, it will immediately show the specified set of elements.
+    jQuery will remove the style attribute with the property of "`display: none;`".
+    The `.show()` method accepts parameters identical to those of the `.hide()` method.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a more practical look at using these methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In our example app, we have four thumbnail images supplied by the super useful
+    site, lorem pixel ([http://lorempixel.com](http://lorempixel.com)). Lorem pixel
+    supplies web designers with placeholder images, which are used while building
+    your site. These images should not be used in production.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The placeholder URL consists of the host site, followed by the width and height
+    of the desired image in pixels. The category of the image is next; in our case,
+    it is `nature`, and the final number identifies a specific picture. There is detailed
+    information on the lorem pixel site on how to create your own URL for placeholder
+    images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Above the images is a set of buttons that trigger actions on the thumbnails.
+    The buttons are cached in the `$hide` and `$show` variables. When the hide button
+    is clicked on, we hide the images. When the show button is clicked on, we do the
+    opposite and show the images. Take note of the way we cache the jQuery objects
+    by storing them in JavaScript objects rather than looking them up again. Caching
+    them results in speed improvement when they are used again. In this small app,
+    it makes no difference, but it can result in a significant increase in speed in
+    more complex apps. We will discuss this in more detail in [Chapter 7](part0054_split_000.html#1JFUC1-6309aac535bb4c1b83b0d7aa1f605023
+    "Chapter 7. Talking to Your Server"), *Talking to Your Server*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In order to make it easier to know which variables hold jQuery objects, we have
+    adopted the standard of beginning such variables with the dollar sign, `$`. Some
+    developers don't like the use of mnemonic devices in variable names, but I find
+    it helps a lot, especially when reading code written by other developers on my
+    team.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`hide` and `show` are so closely related that jQuery has a special method that
+    executes both. The `.toggle()` method will hide the elements when they are shown
+    and show the elements when they are hidden. It is a more appropriate method for
+    our use case, so let''s modify the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We've only had to change a few lines of our code. First, we needed a variable
+    to hold the toggle button. Then, we added code to hook the click of the toggle
+    button, and finally, we made a call to the `.toggle()` method. A nice thing about
+    the toggle button is that we can just continuously click on it and it will keep
+    on toggling the state of the pictures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hiding and showing the pictures is interesting, but not exactly thrilling.
+    So, let''s add duration to the code. Here are the modifications to the app:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This time, we've made changes to only three lines. Each of the lines calls one
+    of the effect methods. We're passing `slow` to the `.hide()` method, `fast` to
+    the `.show()` method, and `1500` to the `.toggle()` method. Remember, when an
+    integer is passed to an effect method, it is the time in milliseconds, so 1,500
+    means 1.5 seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Adding some duration to the effects we have so far is more appealing than simply
+    turning the elements on and off, but it might be nice to have the images fade
+    in and out instead of shrinking and growing. Luckily, jQuery has us covered with
+    some methods that do exactly that: fade out and fade in.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: .fadeOut()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.fadeOut()` method gradually reduces the CSS opacity property down to 0
+    so that the elements are no longer visible, and then it sets the display property
+    to `none`. This method has parameters identical to `.hide()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .fadeIn()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.fadeIn()` method does the opposite of the `.fadeOut()` method. It first
+    sets the display property to increase the opacity property to 1 so that the elements
+    are fully opaque.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .fadeToggle()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Just like the `.toggle()` method, the `.fadeToggle()` method will fade out elements
+    if they are visible and fade in elements if they are not visible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For a more practical example, let''s replace the `.hide()`, `.show()`, and
+    `.toggle()` methods with `.fadeOut()`, `.fadeIn()`, and `.fadeToggle()`, respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the preceding code, we''ve replaced the hide/show methods with their fade
+    equivalents. The code still functions as it did earlier, only now, we have a new
+    animation effect: fading.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So far, we''ve only used the duration parameter, but we know that there are
+    two more: `easing` and `complete`. Let''s check out `complete` first because it
+    is fairly easy to understand.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete parameter is a function that is called once the animation is finished.
+    It is not passed any parameters explicitly, but it is implicitly passed the `this`
+    object pointing to the animated element. We can see this in action by making a
+    small modification to our example program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After the duration, we add an inline anonymous function, which is called once
+    the animation is complete. The `this` object points to the animated element, so
+    we display its `id` in an alert message box. The complete function is called once
+    for every animated element, which may be surprising. In our current example, we
+    are animating the contents of a `<div>` that holds the images. Consider that we
+    change our code to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: By changing our code to point to the individual `<img>` tags instead of their
+    parent `<div>` container, the complete function is now called once for each of
+    the tags, and we will see the alerts walk through the `<img>` tags one by one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The easing parameter deals with how animating objects move. In the real world,
+    objects rarely move at a constant speed. Think of a train leaving a station. It
+    slowly builds up speed as it pulls away. It slowly accelerates until it reaches
+    its desired speed, and then at some point, it will begin to slow down as it approaches
+    the next station. If we were to graph the train's speed, it would be a curve,
+    not a straight line. This acceleration and deceleration of objects seems natural
+    to us since it is the way things move in nature, whether it is a train, a cheetah
+    chasing a gazelle, or us as we get up from our desk to get a glass of water.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Out of the box, jQuery comes with two easings: the default one named swing
+    and a second one called linear. We have been using swing in all of the examples
+    so far since it is the default. Let''s also take a look at linear and compare
+    the two:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the preceding code, we get rid of the toggle button and replace it with
+    two new toggles: one using `"swing"` and the other using `"linear"`. We also create
+    two event handlers to implement the appropriate fade in and fade out. While the
+    difference between the two easings is subtle, it is there. It is more noticeable
+    when objects are moving around. So, in the next section, we will introduce the
+    slide animation and see how our two easings look with it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sliding elements around
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The next sets of methods is called just like the previous two sets. The slide
+    methods are very similar to the show and hide methods, except that instead of
+    shrinking and growing the set elements' width and height dimensions, only the
+    height is changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .slideUp()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `.slideUp()` method shrinks the height of the set of elements down to zero,
+    and then it sets the display property to `none`. The method takes the same three
+    optional parameters that have been discussed already: `duration`, `easing`, and
+    `complete`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: .slideDown()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `.slideDown()` method grows the height of the set of elements to 100%.
+    Its call looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: .slideToggle()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The final member of this set is the `.slideToggle()` method, which will alternate
+    the set of elements between the shown and hidden states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ve modified our code to use the slide methods instead of the fade methods.
+    The easing methods are more noticeably different now. Here is the changed code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since the jQuery animation methods are all called similarly, we were able to
+    simply replace the words `fadeOut`, `fadeIn`, and `fadeToggle` with their slide
+    equivalents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think we have spent enough time studying the basic animation effects. The
+    real fun and graphical wow is in the custom effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating custom effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery doesn't include many effects; out of the box, there are just the hide
+    and show, fade in and fade out, and slide methods. If these were all it could
+    include, it would probably not have been worth including them in the library.
+    Luckily, jQuery lets us create our own animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .animate()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Understanding the `.animate()` method is the key to understanding how to create
+    custom effects. While the other methods are important, none of them do anything
+    until you get the animate method working, which isn''t too hard luckily, especially
+    if you keep in mind how the animate property actually works. It works by manipulating
+    the value of CSS properties. Most—but not all—properties can be manipulated. Let''s
+    take a quick look in order to better explain how the `.animate()` method works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: We've made a few more modifications to our venerable example. We've changed
+    the text of the buttons, added the two `.animate()` methods, and also had to add
+    a style of position that's relative to `allPictures<div>`. The addition of the
+    position relative is critical, and its absence can be the source of a great deal
+    of animation frustration. jQuery's animate function doesn't change the rules of
+    CSS. In order to move `<div>`, it must be moveable. Elements missing a position
+    property default to being position static, which means that they are positioned
+    with the layout of the page and can't be moved. So if you try to animate it, nothing
+    will happen. Placing `<div>` in relative positioning means that it can be moved
+    relative to its layout position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.animate()` method takes the three parameters that we''ve already become
+    familiar with—duration, easing, and complete—and adds a new one: properties, which
+    include the one or more CSS properties we wish to animate. The value of the property
+    can either be absolute or relative. If you simply put a value in the property,
+    it is absolute. jQuery will animate to the value. If you attempt to run an absolute
+    animation a second time, nothing will happen since the property will already hold
+    the desired value. Relative values, on the other hand, are more directional. In
+    the earlier example app, we use two different relative property values. The first
+    one tells jQuery to animate `<div>` 200 pixels to the right. The second one, attached
+    to the toggle linear button, tells jQuery to move `<div>` 200 pixels to the left.
+    To use a relative value, just wrap the value in quotes and precede it with either
+    `+=xx` or `-=xx`, where `xx` is the amount to change the property.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can modify more than one property at a time. When you add more properties,
+    jQuery will animate each to its value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the preceding example, we''ve added two more properties to each `.animate()`
+    method: top and opacity, both of which are relative like the left property. An
+    important thing to note about the animate method is that unlike the show/hide,
+    fade, or slide methods, it never adds the `"display: none"` style to the element.
+    Even when the opacity is 0, the element still occupies all of its space on the
+    page.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: .delay()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Animations can run sequentially one after the other by chaining the animate
+    methods together. You can also introduce a delay in the animation using the `.delay()`
+    method. It takes two parameters: duration and queue name. `Duration` tells you
+    how long in milliseconds you should pause the animation engine for, and `queueName`
+    is the name of the queue to be delayed. We won''t use named queues in this book,
+    so we won''t talk about the queue name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we chain together two separate animations with a 1 second delay
+    between them. Note that if you rapidly press either button, pretty soon, `<div>`
+    will disappear off the page and might not be visible again. This problem is caused
+    by the fact that jQuery adds each new animation request to a queue. It is pretty
+    easy to add items to the queue faster than jQuery can execute them. We will take
+    a look at this problem in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .queue(), .dequeue(), and .clearQueue()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The queue methods give us access to the animation queue that jQuery uses to
+    run the animations. jQuery allows us to have more than one queue, but there is
+    seldom a need for more than one. The `.queue()` method can be used to both get
+    and set either the standard animation queue or a custom one. We can use the queue
+    method to see how many items are in the current queue, and we can pass a callback
+    function to it that is called once the queue is empty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.dequeue()` method is handy when the queue has been stopped and a new item
+    has been added to it. In order to get the queue going again, the `.dequeue()`
+    method must be called. The `.clearQueue()` method removes all of the queued up
+    items that haven't yet executed from the queue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .stop() and .finish()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.stop()` method stops the current animation. If there are callbacks associated
+    with an animation running, they are not called. The `.finish()` method is very
+    similar to this, except that it does everything. It stops the running animation,
+    clears the queues, and completes all the animations for the matched set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery.fx.interval and jQuery.fx.off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: These are two global variables within jQuery. The `jQuery.fx.interval` method
+    sets the animation rate. The lower the value, the faster and possibly smoother
+    the animation. In general, you probably don't want to mess around with this value.
+    It is the global animation timer. Changing it changes the timing for all the animations,
+    not just yours. The `jQuery.fx.off` method kills all the animations when set to
+    true.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using effects correctly
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When jQuery encounters a new bit of animation that it needs to do, it places
+    the new animation at the end of the animation queue. While this is mostly a great
+    way to handle things, it is possible that it might overwhelm the queue by putting
+    items into it faster than they can be pulled out. In general, you should take
+    care when adding more items into the queue. You may want to clear the queue before
+    adding more items to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While the animation features of jQuery are very convenient, they are not exactly
+    state of the art, and they are start showing their age. An example can be seen
+    in the jQuery source code. The following code comes from the source code of jQuery
+    version 2.1.1:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: When running an animation, jQuery uses the `setInterval()` method to time each
+    animation frame; in fact, the `jQuery.fx.interval` global value is used as the
+    timer value. While this was cool a few years ago, most modern browser use the
+    `window.requestAnimationFrame()` method instead, and for browsers that lack it,
+    there are polyfills available. The end of effect of using the `setInterval` method
+    instead of `requestAnimationFramework` is that jQuery's animation will always
+    seem a bit flicker even in the latest browser on the fastest hardware since there
+    is no coordination between the rendering of a frame and the `setInterval` method,
+    like there is with `requestAnimationFrame`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We covered a lot of code this chapter. Animations may seem to be easy to code,
+    but when done well, they can add a lot of content to an application and help make
+    the user aware of the application state change. We first learned how to use jQuery's
+    easy-to-use, built-in animation methods. Once we understood them, we moved on
+    to the `.animate()` and `.delay()` methods, which allow us to create our own custom
+    animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We closed the chapter with a bit of information about the way jQuery performs
+    animations. While it is fine in the simple examples shown, it is actually a bit
+    antiquated. If you wish to perform more complicated animations, you might want
+    to look at more sophisticated libraries, such as `Velocity.js`, `GSAP`, or others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will look at submitting data via forms with jQuery.
+    In particular, we will look at how to validate our forms before we send data to
+    our server.
+  prefs: []
+  type: TYPE_NORMAL

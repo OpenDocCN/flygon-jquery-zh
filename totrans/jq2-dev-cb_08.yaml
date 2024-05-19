@@ -1,0 +1,1023 @@
+- en: Chapter 8. Understanding Plugin Development
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a plugin template
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a tooltip plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a content and image slider plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an RSS feed reader plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Coding an image cropper plugin from scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery plugins allow the developer to write portable code that can be reused
+    within any jQuery project quickly. As part of this book, we have created a lot
+    of functionality that you may want to use in multiple projects. By creating a
+    jQuery plugin with the required functionality, you can abstract the complexity
+    of this functionality and make it simple to include wherever you need it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before you start this chapter, create an easily accessible directory called
+    `chapter8`. Within this folder, add the latest version of the jQuery library,
+    which will be used throughout this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a plugin template
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Creating jQuery plugins has become very popular over the years, and there are
+    many articles and discussions online about plugin creation best practices. Many
+    of these articles discuss in depth how to create a plugin template that can be
+    used as the starting point for any jQuery plugin. This recipe will show you how
+    to create your own jQuery plugin template that will be used throughout this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Inside the `chapter8` folder that was created earlier, create a JavaScript file
+    called `jquery.plugin-template.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To create a basic plugin template that will form the basis of all the plugins
+    used within this chapter, add the following code to `jquery.plugin-template.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Read through the plugin documentation on the jQuery website ([http://learn.jquery.com/plugins/basic-plugin-creation/](http://learn.jquery.com/plugins/basic-plugin-creation/))
+    to see a set of guidelines and best practices to adhere to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin created in this recipe uses simple concepts and best practices to
+    create a lightweight plugin template. There is a popular article ([http://coding.smashingmagazine.com/2011/10/11/essential-jquery-plugin-patterns/](http://coding.smashingmagazine.com/2011/10/11/essential-jquery-plugin-patterns/))
+    by Addy Osmani that provides great insight into plugin authoring while adhering
+    to these recommended best practices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking at our plugin template, the first point to note is the semicolon at
+    the start of the document. This is included to ensure that any previously included
+    plugins or scripts have been closed properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To conform to the jQuery authoring recommendations, the entire plugin is wrapped
+    inside an **Immediately-Invoked Function Expression** (**IIFE**) to provide scope
+    to the plugin. jQuery is provided to the IIFE as the local variable `$` to allow
+    developers to be able to reference the jQuery library in the usual manner without
+    conflicts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within the plugin constructor, a `$scope` variable is declared so that it is
+    clear what represents the plugin''s scope. The element that the plugin is being
+    initialized from is then assigned to the plugin''s scope along with any provided
+    plugin options. The jQuery `extend()` function is used to merge the `defaults`
+    object with the `options` object, overwriting any defaults that may have been
+    provided within `options`. Finally, the `init()` function is added to the plugin''s
+    scope, which is where you will place the plugin''s initialization code, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code makes the plugin available just as any other jQuery object
+    method using the specified plugin name `($('.element').pluginName();`). Using
+    `this.each()`, it will create a new plugin instance for each of the elements the
+    plugin is initiated on and will call the plugin's `init()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a tooltip plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Tooltips are a popular way to show additional information to the user about
+    the UI they are using. This recipe will show you how to create your own basic
+    tooltip plugin that you can easily use in all of your projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the `jquery.plugin-template.js` file and create `jquery.tooltip.js`, which
+    will become the plugin file for this recipe. Create `recipe-2.html` and `recipe-2.js`
+    in the same directory as the plugin file and the jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To create a simple tooltip plugin and sample web page, perform the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML to `recipe-2.html` to create a very simple web page
+    with elements that can have a tooltip:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At the top of `jquery.tooltip.js`, update the `name` variable and set the plugin
+    defaults to be as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Update the `$scope.init()` function with the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following jQuery code to `recipe-2.js` to initialize the tooltip plugin
+    for all the HTML elements with the `hasTooltip` class:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open `recipe-2.html` in a web browser and hover over one of the elements on
+    the screen to see a tooltip appear.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML page created as part of this recipe is used only to provide a few elements
+    to which a tooltip can be attached.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first change to the plugin template is to set the default settings. In this
+    case, we have set the tooltip height and the fade-in animation duration. You can
+    introduce additional features of your own by adding these features to the default
+    settings here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the plugin is initialized for each of the selected elements, the `init()`
+    function is called, which contains most of the logic for this plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin template makes the "jQueryfied" version of the element available
+    through `$scope.$element`. We can use the `prop()` and `data()` functions to check
+    for a title specified on the element and store this in `$scope._text`, which will
+    be used as the tooltip text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This variable is then checked to ensure there is some text available to display.
+    If there is no text, we do not show a tooltip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If `$scope._text` is defined, we create the tooltip HTML using the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `var` statement is important to ensure that a new tooltip element is created
+    for each of the selected elements. By wrapping the HTML code within `$()`, it
+    is possible for us to use jQuery functions on this element before we insert it
+    into the DOM. The HTML code for the tooltip adds the title text and creates an
+    element that will display the left arrow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the jQuery `css()` function, a range of CSS styles are applied to the
+    newly created HTML code to position and style the tooltip. The left and top positions
+    of the tooltip are calculated using the offset, width, and height of the selected
+    element on which the tooltip will be displayed. Note that the `outerWidth()` and
+    `outerHeight()` functions are used as opposed to the `width()`/`height()` functions
+    to include the padding and borders and the returned dimensions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery `find()` function is also used in conjunction with the `css()` function
+    to add the styles to the left arrow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, two event listeners are attached to the selected element so that the
+    tooltip is shown when the user's mouse moves over the element and is removed when
+    the user's mouse moves out. The `fadeIn()` function takes the `duration` parameter
+    from the `defaults` object, which can be overridden when the tooltip plugin is
+    initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To initialize the tooltip plugin for all elements that have the `hasTooltip`
+    class, the following jQuery code is added to `recipe-2.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is where you could overwrite the defaults, for example, using the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This recipe provides a very basic tooltip plugin. You could expand on this recipe
+    to add many additional features, such as positioning, and allow the plugin user
+    to specify which event the tooltip opens on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a content and image slider plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 7](ch07.html "Chapter 7. User Interface Animation"), *User Interface
+    Animation*, you were shown how to create a simple content slider using jQuery.
+    This recipe will show you how to turn that recipe into a reusable jQuery plugin
+    with the addition of being able to add images to the slider. You do not need to
+    read the previous recipe to complete this one, but it is recommended to do so
+    for you to get a better understanding of how the code works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the `jquery.plugin-template.js` file and rename it to `jquery.slider.js`,
+    which will become the plugin for this recipe. You will also need to find an image
+    600 pixels wide and 250 pixels high that will be used in the slider. Finally,
+    create `recipe-3.html`, `slider.css`, and `recipe-3.js` in the same directory
+    as the `jquery.slider.js` file and the jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Perform the following steps to create your image and a content slider plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML to `recipe-3.html`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At the top of `jquery.slider.js`, update the plugin name to `slider` and set
+    the defaults as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Update the plugin''s `$scope.init()` function to be the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following jQuery code to `recipe-3.js` to initialize the slider plugin:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `slider.css`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open `recipe-3.html` within a web browser and you will be presented with a dynamically
+    created image and content slider.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML page sets up the required HTML for the slider plugin. There is a container
+    division with children that the slider plugin will use as slides. The children
+    can be either division elements or images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery code in `recipe-3.js` selects the `mySlider` division element and
+    initializes the slider plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The plugin template we created earlier takes care of the jQuery plugin setup.
+    The functionality for our slider plugin goes inside the `init()` function. At
+    the start of this function, the `slider-frame` class is added to the selected
+    element (`.mySlider`) so that it inherits some basics styles from the `slider.css`
+    stylesheet. Using values from the `options` object, the width and height of the
+    element are set using the jQuery `css()` function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: After this, `$scope.$element.append('<ul class="slider-nav"></ul>');` is used
+    to insert an empty unordered list into the slider, which is ready for the creation
+    of the slide navigation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next section of the code sets up the slider for the animation. As explained
+    in the *Creating an animated content slider* recipe in [Chapter 7](ch07.html "Chapter 7. User
+    Interface Animation"), *User Interface Animation*, a slider needs the width of
+    its container to be the combined width of its slides so that the slides can float
+    next to each other and be moved into view using an animation, as shown in the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To achieve this, the slider''s children (the slides) are selected and then
+    wrapped inside a division element using the jQuery `wrapAll()` function. The width
+    of this element is set to be the width of an individual slide times the number
+    of slides in the slider. To float each of the slides, the `css()` function is
+    used to set the `float` property as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With each slide configured, the next step in the code is to add a list item
+    for each slide to the `slider-nav` unordered list element to form the navigation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final stage of the plugin is to listen for clicks on the anchor elements
+    within the navigation list, which is coded as follows, to allow the user to change
+    the visible slide using this navigation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks on a link, the `animate()` function is used to change the
+    `slider-content` division element's left position based on the selected link.
+    Read more about this in the *Creating an animated content slider* recipe in [Chapter
+    7](ch07.html "Chapter 7. User Interface Animation"), *User Interface Animation*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To add the popular auto-slider effect to this plugin, take a look back to the
+    *Creating an animated content slider* recipe in [Chapter 7](ch07.html "Chapter 7. User
+    Interface Animation"), *User Interface Animation*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Creating an animated content slider* recipe in [Chapter 7](ch07.html "Chapter 7. User
+    Interface Animation"), *User Interface Animation*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an RSS feed reader plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: RSS feed readers are very popular additions to many websites. This recipe will
+    show you how to create a configurable feed reader plugin utilizing the Google
+    Feed API, allowing you to easily re-use the plugin on any website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once again, copy the `jquery.plugin-template.js` file and rename it to `jquery.rssreader.js`
+    to provide the base for this recipe's plugin. Inside the same directory, create
+    `recipe-4.js`, `rssreader.css`, and `recipe-4.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To create the RSS reader plugin, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML code to `recipe-4.html` to create a basic web page and
+    to make the Google Feed API available for use within the page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `rssreader.css` to create the styles for the
+    RSS reader:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At the top of `jquery.rssreader.js`, update the `defaults` object and the `name`
+    variable to be as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Update the plugin `init()` function to include the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following few lines of jQuery to `recipe-4.js` to initialize the plugin
+    for the `myRSSContent` element:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open `recipe-4.html` in a web browser and you will be presented with the following
+    RSS reader:![How to do it…](img/0896OS_08_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML code that creates the web page for this recipe has a single `division`
+    element that is used to initialize the RSS reader plugin and acts as the container
+    for the RSS content. Additionally, the Google Feed API is used and included in
+    this page above the `jquery.rssreader.js` file. Using the Google Feed API means
+    that we can easily create a plugin without requiring any server-side work. This
+    also makes the plugin easily portable to any website. Read more about this API
+    at [https://developers.google.com/feed/v1/devguide#hiworld](https://developers.google.com/feed/v1/devguide#hiworld).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS code styles the RSS reader elements that are created within the plugin
+    itself. No further explanation of this code is needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with the other plugins in this chapter, the template takes care of the plugin
+    setup and our plugin functionality goes inside the `init()` function, which is
+    executed once the plugin has been initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first part of this function adds the `rssreader-frame` class to the selected
+    element, which the CSS code uses to apply a variety of styles. Then, looking at
+    the `options` variable, a width is set on the selected element if one has been
+    provided.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Google Feed API, the feed request is configured using the `URL` and
+    `amount` values of the `options` object as follows. This will tell the API where
+    to collect the RSS content and how many items to return.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After this, the `load()` function is used to make the request with a callback
+    function specified, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If no error has occurred, a header, description, and unordered list elements
+    are created and stored in local variables, as specified by the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the `result.feed` object, it is possible to extract the feed title and
+    description to be placed within these elements. These elements are created and
+    wrapped inside the jQuery selected (`$()`) so that jQuery's functions will be
+    available on these elements for later use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then loop through each of the entries and create a list item for each. Within
+    each list item, we add the feed content, date, title, and link. Using the JavaScript
+    `Date()` function, a more readable date is created to insert into the DOM. To
+    add each of the elements to the unordered list element that was previously created,
+    `_feedList.append(_listElement);` is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The title, description, and the list, which is now fully populated with RSS
+    content, can be inserted into the DOM using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, the following code is used to apply any specified height to the RSS
+    feed reader and add a scrollbar if the content is too big to fit within the specified
+    height:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Creating a news ticker* recipe in [Chapter 6](ch06.html "Chapter 6. User
+    Interface"), *User Interface*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Coding an image cropper plugin from scratch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When allowing users to upload their own images, whether it be for a profile
+    picture or some other use, giving them the ability to trim the image down within
+    the browser provides a huge benefit to the user. This is because most users would
+    not know how to alter the image using a third-party application such as Photoshop.
+    There are many image cropper plugins available on the Internet for free and many
+    tutorials to help you use them, but there are very few examples that provide you
+    with the entire solution. This recipe will show you how to create your own image
+    cropper plugin from scratch, how to upload the image to a web server, and how
+    to take data from the image cropper to resize and save the image to the user's
+    specification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This recipe is quite complex as it includes both client- and server-side code,
+    so ensure you follow each step carefully. Before you begin this recipe, set up
+    the following directory structure in the web root of your web server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/0896OS_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Going by the preceding structure, you need to create the `includes` and `uploads`
+    folders in your web root (**www** in the preceding figure). Within the `includes`
+    folder, save the jQuery library and create the following four files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`imagecrop.css`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.imagecrop.js` (copy the `jquery.plugin-template.js` file as before
+    to create the basis of this plugin)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`recipe-5.css`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`recipe-5.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Within the web root itself, you need to create the `index.html` and `upload.php`
+    files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This recipe will *not* work in IE9 or below as older browsers do not offer support
+    for the `XMLHttpRequest`, `FormData`, and `FileReader` APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carefully follow each of the following steps and then read the *How it works…*
+    section to get a full understanding of the plugin and its associated code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML code to `index.html` to create a web page with the image
+    upload form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Put the following CSS code into `recipe-5.css` to style the HTML page and form
+    you just created:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following jQuery code to `recipe-5.js`, which will allow the user to
+    select and preview an image from their local filesystem and then initiate the
+    image crop plugin:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In `jquery.imagecrop.js`, update the plugin name and defaults as shown in the
+    following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In the plugin constructor created by the plugin template file, add the following
+    declarations directly after `$scope.options` is declared, as shown in the following
+    code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Update the plugin `$scope.init()` function to include the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Directly after the `$scope.init()` function, add the following additional functions:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Insert the following helper functions under the functions you have added:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `imagecrop.css` to add styles to the elements
+    that are created by the image crop plugin:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, add the following PHP code to `upload.php`, which will take data from
+    the web form you have just created and then crop the image and save it into the
+    `uploads` directory:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Navigate to the `index.html` file in your web browser and you will be presented
+    with a simple web form with three steps. By selecting the **Choose File** button
+    and selecting an image from your computer, you will see the image displayed inside
+    the preview box. In the preview box, you will be able to click-and-drag a selection
+    over the image. Once you have done this, clicking on **Upload** will upload the
+    image to the web server (indicated by the progress bar) and the image will be
+    cropped and saved inside the `uploads` folder you created earlier.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is important to understand the different sections of this recipe. The first
+    element of this recipe is the upload form itself, which provides the ability to
+    view the user-selected image within the browser before upload. The second element
+    of this recipe is the image crop plugin itself, which is what we will focus on
+    the most. Finally, to provide the complete solution, there is the upload element
+    of this recipe, which takes data that the image crop plugin has provided and posts
+    it to a PHP script. This PHP script then takes this data to crop and saves the
+    image to the user's specification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Image selection and preview
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The HTML code in `index.html` creates a basic interface with a file input element.
+    When the user clicks on the **Choose File** button, a browse window will open,
+    allowing them to select a file from their computer. Using JavaScript's `FileReader`
+    class, it is possible for us to read this file and display it within the browser.
+    Looking at `recipe-5.js`, you will see a `change` event handler with the code
+    to do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point within the code, there is a basic validation check to ensure that
+    the selected image is not bigger than 800 x 600 pixels. If it is, an alert is
+    shown to the user and the image is not loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the image has finally loaded, the source property for the `#cropableImage`
+    element is updated to be the selected image, displaying it on screen. Finally,
+    the image crop plugin is initialized on the image element as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: Image crop plugin
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The image crop plugin dynamically creates a range of elements that act as layers
+    and containers to allow us to let the user make a selection. To make it easier
+    to understand what each of the layers is trying to achieve, they have been illustrated
+    in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Image crop plugin](img/0896OS_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The **Overlay** layer fades out most of the image with a white background and
+    an opacity of 0.6\. The **Selection** layer is the layer that listens for mouse
+    events indicating that the user is making a selection. The main reason for this
+    is that if the mouse events were attached to the image itself, we would have difficulty
+    with some browsers that allow you to drag the image away with a visual representation
+    of the image, which would get in the way of our functionality. The **Selection
+    Outline** layer is what is drawn by the plugin as the user is making a selection.
+    Its background is the selected image, except the position is adjusted so it only
+    shows the section of the selected image that has been selected, providing focus
+    over the original image that has the overlay obscuring it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the plugin is initialized, there is a set of local variables and defaults
+    declared that the plugin will use throughout its operation; these are shown in
+    the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: The variables prepended with `var` will store the different DOM elements that
+    represent the layers. The `imageSelection` object stores the user's initial click
+    coordinates and then the coordinates when the user finishes making a selection.
+    We can then use these coordinates to calculate the width and position of the selection.
+    The `top` and `left` parameters store the finalized coordinates of the selection
+    once the width and height have been calculated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the `init()` function of the plugin, there is an initial check to determine
+    if the image has been initialized before. If so, the layer DOM elements have already
+    been created and inserted, as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the DOM elements are available, the jQuery `find()` function is used to select
+    the elements and store them within the associated variable. If not, they are created
+    and stored. A scenario where the plugin may have already been initialized for
+    the image is when the user decides to change the selected image. The image source
+    changes, but DOM elements can stay in place and be reused with different dimensions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the layer elements are first created, a container division element with
+    the `crop-frame` class is created with the same dimensions as the selected image,
+    as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is very important that the user selection matches the actual image pixel
+    dimensions exactly; otherwise, cropping calculations will be incorrect. The selected
+    image element is then wrapped within this frame using the jQuery `wrap()` function
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: The other created layers are inserted after the selected image element inside
+    the `crop-frame` division, as shown in the previous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final part of the layer creation attaches various event handler functions
+    that deal will different parts of the selection process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each of the functions specified here are declared later on within the `plugin`
+    class. At the end of the `init()` function, the `updateElementData()` function
+    is called, which sets the initial selection dimensions on the selected image element
+    (for example, `selection-x`) and sets the background image on the Selection Outline
+    layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the user first clicks on the Selection layer, the mouse position is stored
+    as the start coordinates. Then, as the user drags the mouse to make a selection,
+    the new mouse coordinates are stored as end coordinates and the `drawSelection()`
+    function is called. The `drawSelection()` function uses the start and end coordinates
+    to calculate the width and height of the selection and updates the Selection Outline
+    layer''s CSS to show this, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: As part of this function, the background position of the Selection Outline layer
+    is updated to show the actual selection and the `updateElementData()` function
+    is called to apply the new selection data onto the selected image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the user has finished the selection and releases the mouse button, the
+    `onSelectionEnd()` function is called. This function determines whether the selection
+    is smaller than the minimum allowed; if so, the selection is hidden. The mouse
+    move event is unbound from the Selection layer to avoid any conflicts with later
+    functionality, and the Selection Outline layer's `z-index` property is updated
+    so that the Selection Outline layer moves above the Selection layer, allowing
+    for the drag functionality. The drag functionality was covered in detail in the
+    *Creating a basic drag-and-drop functionality* recipe in [Chapter 6](ch06.html
+    "Chapter 6. User Interface"), *User Interface*. Refer to that recipe for a detailed
+    explanation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Image upload
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In `recipe-5.js`, an event handler is attached to the click event for the **Upload**
+    button. Inside the callback function for this event, it is first determined if
+    a selection has been made by the user. If not, an alert is displayed, asking the
+    user to make a crop selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If a valid selection has been made, a new `FormData` object is created to store
+    the data to be uploaded to the PHP script as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `_selectedFile` variable contains the reference to the selected file, which
+    is made available within the change event on the file input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With the required data stored inside the `FormData` object, a new `XMLHttpRequest`
+    object is created to send the data to the PHP upload script as shown in the following
+    code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code is self-explanatory and simply allows us to POST directly from JavaScript
+    without the need for an HTML form. The `onprogress()` function is called by the
+    XHR request as the image is being uploaded and allows us to update the progress
+    bar on the HTML page to reflect the upload's progress. The `onload()` function
+    is called when the operation has completed, allowing us to display any errors
+    that occurred.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cropping and saving the image with PHP
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The PHP script is relatively simple. It accepts and stores the information provided
+    via the POST request from the JavaScript and does some basic validation on the
+    image width and extension, only allowing JPG and PNG images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the image passes validation, either `imagecreatefrompng()` or `imagecreatefromjpeg()`
+    is used to create an image resource in PHP based on the provided image. Then,
+    a blank image is created with the specified crop dimensions as shown in the following
+    line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can think of this blank image as a canvas that PHP will use to paint the
+    modified image on. Then, the provided image is cropped and the new image is stored
+    on the blank canvas using `imagecopyresampled()` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, the new image is saved to disk in the `uploads` directory that was
+    created at the beginning of this recipe, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should see the new image when you open the `uploads` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This recipe provides a basic complete solution to previewing, cropping, uploading,
+    and saving an image, but there are many improvements that can be made. The validation
+    on both the client and server side could be dramatically improved to allow for
+    additional image types and to check for file size as well as dimensions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When `FileReader` is reading the local file into the browser, a loader or progress
+    bar could also be added in the same way that the progress bar is implemented for
+    the upload section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, the drag functionality could be improved so that the selection area's
+    middle does not "snap" to the mouse pointer, since this can be confusing for the
+    user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Creating a basic drag-and-drop functionality* recipe in [Chapter 6](ch06.html
+    "Chapter 6. User Interface"), *User Interface*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

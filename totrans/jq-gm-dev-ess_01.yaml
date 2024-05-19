@@ -1,0 +1,502 @@
+- en: Chapter 1. jQuery for Games
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Over the course of the last few years, jQuery has almost become the default
+    framework for any JavaScript development. More than 55 percent of the top 10,000
+    most visited websites as well as an estimated total of 24 million websites on
+    the Internet are using it (more at [http://trends.builtwith.com/javascript/JQuery](http://trends.builtwith.com/javascript/JQuery)).
+    And this trend doesn't show any sign of stopping.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book expects you to have some prior experience of jQuery. If you feel that
+    you don't meet this requirement, then you could first learn more about it in *Learning
+    jQuery*, *Jonathan Chaffer*, *Karl Swedberg*, *Packt Publishing*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This chapter will quickly go through the peculiarities of jQuery and will then
+    dive deeper into its most game-oriented functions. Even if you probably have already
+    used most of them, you may not be familiar with the full extent of their capabilities.
+    The following is a detailed list of the topics addressed in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The peculiarities of jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The function that will help you for moving elements around
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Event handling
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DOM manipulation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The way of jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery's philosophy differs from most other JavaScript frameworks that predated
+    it. Understanding the design patterns it uses is key to writing readable and efficient
+    code. We'll cover these patterns in the next sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Most jQuery statements are of the following form: a selection followed by one
+    or more actions. The way those actions are combined is called chaining and is
+    one of the most elegant aspects of jQuery. A beginner using jQuery who wants to
+    set the width of an element to 300 pixels and its height to 100 pixels would typically
+    write something like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With chaining, this would be written as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This has many advantages: the element is selected only once, and the resulting
+    code is more compact and conveys the semantic meaning that what you want to achieve
+    is really only one thing, which is to change the element size.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Functions that allow chaining don't only make it possible to group many calls
+    on the same object, but also there are many ways to actually change on what object
+    (or objects) the next function on the chain will operate. In these situations,
+    it is typical to use indentation to convey the idea that you're not working on
+    the same elements as the previous indentation level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, the following chain first selects an element, then sets its background's
+    color as `red`. It then changes the elements in the chain to the children of the
+    previous element and changes their `background-color` attribute to `yellow`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's important that you always ask yourself how the current interactions with
+    the previous and next element in the chain can be avoided for undesired behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Polymorphism
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery has its own way to use polymorphism, and a given function can be called
+    in a lot of different ways depending on how much information you want to give
+    to it. Let's have a look at the `.css()` function. If called with a `String` data
+    type as the only argument, this function will behave as a getter by returning
+    the value of the CSS property you asked for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, the following line retrieves the left-hand side position of a
+    given element (assuming it''s positioned absolutely):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, if you pass a second argument, it will start to behave like a setter
+    and set the value of the CSS property. The interesting thing is that the second
+    argument can also be a function. In this situation, the function is expected to
+    return the value that will be set to the CSS property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code does just that and uses a function that will increase the
+    left-hand side position of the element by one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However; wait, there''s more! If you pass just one element to the same function,
+    but that element is an object literal, then it will be considered as holding a
+    map of properties/values. This will allow you to change many CSS properties in
+    one single call, like setting the left and top position to 100 pixels in the following
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can also use strings as the key and value of your object literal as it's
+    done in JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A very complete resource for finding about all the ways to call a function is
+    the jQuery API website ([http://api.jquery.com](http://api.jquery.com)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will now focus on a few functions that are of interest for developing games.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving things around
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Chaining has a slightly different signification for animation. Though you may
+    never actually need to use jQuery animation functions in most of your games, it
+    may still be interesting to see the peculiarities of their functioning as it may
+    be the cause of many strange behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.animate()` function from jQuery allows you to make a property vary through
+    time from the current value to a new one. A typical effect, for example, would
+    be to move it left from 10 pixels, or change its height. From what you've seen
+    earlier and experienced for other type of functions, you may expect the following
+    code to make a div (DOM division element) move diagonally to the position `left
+    = 200px` and `top = 200px`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, it doesn't! What you will see instead is the div first moves to reach
+    `top = 200px` and only then moves to `left = 200px`. This is called queuing; each
+    call to `animate` will be queued to the previous ones and will only execute once
+    they're all finished. If you want to have two movements executed at the same time,
+    thereby generating a diagonal movement, you'll have to use only one call to `.animate()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another possibility is to explicitly tell the `.animate()` function not to
+    queue the animations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Keep in mind that this also applies to other functions that are in fact wrappers
+    around the `.animate()` function, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`fadeIn()`, `fadeOut()`, and `fadeTo()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hide()` and `show()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`slideUp()` and `slideDown()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![Chaining animations](img/5060OT_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Managing the queue
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here is a list of functions that you can use to manipulate this queue of animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .stop()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.stop()` function stops the current animation of the queue. If you provide
+    some more arguments to the call, you can also clear the queue and define if the
+    elements should stop being animated and stay where they are, or jump to their
+    destination.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .clearQueue()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.clearQueue()` function removes all animations from the queue; not only
+    the current one, but also all the next ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .dequeue()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.dequeue()` function starts the next animation in the queue. This means
+    that if an animation is being executed when this function is called, then the
+    new one will start as the current one finishes executing. For example, if we take
+    the example at the beginning of this section and add a `dequeue()` function at
+    the end, the elements will actually start moving diagonally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: .delay()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `.delay()` function allows you to insert a pause between two animations
+    in the queue. For example, if you want to make an element visible with `.fadeIn()`,
+    then wait for 2 seconds and make it disappear again with `.fadeOut()`. This would
+    be written like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other usages of queues
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Queues are not used only for animations. When you don't specify otherwise, the
+    queue manipulated by those functions is the `fx` queue. This is the default queue
+    used by animations. However, if you want to, you could create another queue and
+    add any number of custom functions and delays to script some time-dependent behavior
+    in your game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling of events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you have used jQuery before, you probably used `.click()` at some point.
+    It is used to define an event handler that will respond to a mouse click in jQuery.
+    There are many more of those, going from keyboard input, form submission, and
+    window resizing, but we will not go through all these. Instead we will focus on
+    the more "low-level" functions to handle events in jQuery and explain exactly
+    the subtle differences between them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You would typically use some of those functions to implement the control of
+    your games either with mouse or keyboard inputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .bind()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `.bind()` function is the basic way to handle events. `.click()` is, for
+    example, just a wrapper around it. The two lines of the following example have
+    exactly the same effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, there is a limitation with the usage of `bind`. Like all other jQuery
+    functions, it only applies to the selected elements. Now, imagine a situation
+    where you want to execute some task each time a user clicks a link with a given
+    class. You would write something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will work as intended, but only for the link present in the webpage at
+    the moment of its execution. What if you change the content of the page with an
+    Ajax call, and the new content also contains links with this class? You will have
+    to call this line of code again to enhance the new links!
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is far from ideal, because you have to manually track all event handlers
+    you defined that may require to be called again later and all the places where
+    you change the content of the page. This process is very likely to go wrong and
+    you'll end up with some inconsistencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution to this problem is `.delegate()`, which is explained in detail
+    in the following section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .delegate()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With `.delegate()`, you give the responsibility of handling events to a parent
+    node. This way all elements added later on as a child to this node (directly under
+    it or not) will still see the corresponding handler execute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code fixes the preceding example to make it work with a link added
+    later on. It's implied that all those links are children of a div with the `ID`
+    attribute as `page`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a very elegant way to solve the problem and it will come in very handy
+    while creating games, for example, where you click on sprites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing event handlers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you need to remove an event handler you can simply use the `.unbind()` and
+    `.undelegate()` functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery 1.7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In jQuery 1.7, `.delegate()` and `.bind()` have been replaced by `.on()` (and
+    `.off()` to remove the handlers). Think of it as a `.delegate()` function with
+    the capacity to behave like `.bind()`. If you understand how `.delegate()` works,
+    you will have no problem to use `.on()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Associating data with DOM elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's say you create a div element for each enemy in your game. You will probably
+    want to associate them to some numerical value, like their life. You may even
+    want to associate an object if you're writing object-oriented code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery provides a simple method to do this, that is, `.data()`. This method
+    takes a key and a value. If you later call it with only the key, it will return
+    the value. For example, the following code associates the numerical value `3`
+    with the key `"numberOfLife"` for the element with ID `enemy3`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may be thinking, "Why shouldn't I simply store my values directly on the
+    DOM element?". There is a very good answer for that. By using `.data()`, you completely
+    decouple your value and the DOM, which will make it way easier to avoid a situation
+    where the garbage collector doesn't free the memory associated with the DOM of
+    a removed element because you're still holding some cyclic reference to it somewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you defined some values using the HTML5 data attribute ([http://ejohn.org/blog/html-5-data-attributes/](http://ejohn.org/blog/html-5-data-attributes/)),
+    the `.data()` function retrieves them too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, you have to keep in mind that making calls to this function has some
+    performance cost, and if you have many values to store for an element, you may
+    want to store all of them in an object literal associated with a single key instead
+    of many values, each associated with their own key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating the DOM
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While creating a game with jQuery, you will spend quite some time adding and
+    removing nodes to the DOM. For example, you could create new enemies or remove
+    dead ones. In the next section we'll cover the functions you will be using and
+    we will also see how they work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .append()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This function allows you to add a child to the currently selected element (or
+    elements). It takes as argument some already existing DOM element, a string containing
+    HTML code that describes an element (or a whole hierarchy of elements), or a jQuery
+    element selecting some nodes. For example, if you wanted to add a child to a node
+    with the ID `"content"`, you would write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Keep in mind that if you give a string to this function, the content will have
+    to be parsed and that this could have some performance issues if you do it too
+    often or for very large strings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .prepend()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This function works exactly like `.append()`, but adds the new content before
+    the first child of the selected element instead of after its last one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .html()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This function allows you to completely replace the content of the selected node(s)
+    with the string passed as an argument. If called without an argument, it will
+    return the current HTML content of the first of the selected elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you call it with an empty string, you will erase all the content of the nodes.
+    This could also be achieved by calling `.empty()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![.html()](img/5060OT_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: .remove()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This function will simply delete all the selected elements and unregister all
+    the associated event handlers and data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .detach()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In some situations, you may only want to remove some content for a short period
+    of time and add it again later. This is typically a case where `.remove()` does
+    too much of a good job. What you really want is to keep all those other things
+    you associated with your nodes so that when they get added later on, they will
+    work exactly like before. `.detach()` has been created exactly for this situation.
+    It will behave like `.remove()`, but will allow you to reinsert your elements
+    easily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stay curious my friend!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So that's it. I would really encourage you to read the API for each of these
+    functions because there are still some sets of arguments that have not been shown
+    here. If anything is still unclear about any of those functions, don't hesitate
+    to look around the Web for more examples on how to use them. As jQuery is such
+    a popular library, and the Web's culture is one of openness, you will easily find
+    lots of help online.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are some places where you can start looking for more information about
+    jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery''s API: [http://api.jquery.com/](http://api.jquery.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Learning jQuery: [http://www.learningjquery.com/](http://www.learningjquery.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we've seen some of the most useful jQuery functions for game
+    development and how to use them. By now you should be familiar with the jQuery
+    philosophy and syntax. In the next chapter, we will put what we've learned into
+    practice and create our first game.
+  prefs: []
+  type: TYPE_NORMAL

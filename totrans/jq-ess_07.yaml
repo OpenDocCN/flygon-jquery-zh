@@ -1,0 +1,491 @@
+- en: Chapter 7. Talking to Your Server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 6](part0047_split_000.html#1CQAE2-6309aac535bb4c1b83b0d7aa1f605023
+    "Chapter 6. Better Forms with jQuery"), *Better Forms with jQuery*, we learned
+    how to let jQuery help us to make better forms for our users. Once a form is filled,
+    we will need to use jQuery to send it back to its server and to get fresh data.
+    We live in the world of single page, fluid apps. Most of the top sites on the
+    Internet update the sections of the page that need to change seamlessly via Ajax.
+    This is a better experience for users than the old-fashioned way of posting data
+    via the submit button and loading a new page. jQuery is ready to help us here.
+    We can use it to get fresh data on demand from our server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Life before jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How jQuery helps us today
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Helper methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ajax events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In order to understand how jQuery can help us talk to our server, we should
+    first take a step back and explore what life was like before jQuery. During this
+    time, websites had two ways to send data to the server: the `<form>` and `<a>`
+    tags.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The HTML `<form>` tag is the element that sends data to the server. It has
+    two attributes that deal with how it sends data to its server. First, there is
+    the `method` attribute, which lets it specify how to send data back to its server.
+    It has two possible values: `get` or `post`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Set the `method` attribute to `get` and it sends the form data appended to the
+    end of the request to the server page specified by the `action` attribute. The
+    form will send the data from all enabled form elements that have a `name` element
+    defined. The `get` method should only be used for small bits of insensitive data.
+    All data sent via a `get` is visible from the URL bar of the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the method attribute to `post` is considered more secure than `get`
+    since it sends its data within the message body so it is not visible in the query
+    string; but don't be fooled into thinking that the data is secured, it is simply
+    not as visible. The `post` should be your go-to method when you are sending new
+    data to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<form>` tag encloses all of the form data elements that will be sent to
+    the server when the submit button is clicked. Keep in mind that only valid elements
+    will be sent. In order to be valid, an element must be enabled and have a `name`
+    attribute. The `name` attribute is the name the value will be given on the server.
+    Unlike the `id` attribute, `name` values can be duplicated, but if they are duplicated
+    within a form, it is up to you to figure out which is which.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another, sometimes overlooked, way to send small amounts of information to the
+    server was by setting query parameters of the `href` attribute of the `<a>` tag.
+    Admittedly, it can only send small chunks of information, but it can be really
+    useful when you need to send data from one page to the next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both the `<form>` and the `<a>` tags result in a page refresh, but it was possible
+    to do Ajax before jQuery. Many people don't realize that Ajax has been possible
+    in Microsoft browsers since the late 1990s. They were implemented using Microsoft's
+    proprietary ActiveX objects, but the usefulness of this capability was not lost
+    to other browser makers who made it an object of the browser, the `XMLHTTPRequest`
+    object, or XHR for short.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, writing code to support this functionality was not easy. Like
+    so many things we have seen in browser programming in the past, the different
+    implementations of similar functions caused us developers to have to write a great
+    deal of plumbing code before we could begin to write feature code. Let's see what
+    jQuery brings to the Ajax party.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How jQuery helps us
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the ways jQuery helps us is by taking the pain out of Ajax. Users no
+    longer want to wait through cycles where they click submit, the page goes blank,
+    then new content loads. Sites like Facebook, Gmail, and Twitter have shown users
+    that the web can be very app-like. Although jQuery is a library and not a programming
+    framework like AngularJS or Ember, it can easily enable the fetching and sending
+    of server data without doing page reloads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In order to demonstrate the code snippets in this chapter, you will have to
+    set up a web server. However, setting up a web server is beyond the scope of this
+    book. One easy way is to use an editor/IDE that includes a built-in web server.
+    Two such editors are JetBrains WebStorm and Adobe's Brackets. Both are available
+    for Windows, Mac OS X, and Linux.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading HTML – .load()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'One the first things that we would like our website to be able to do is to
+    load fresh HTML markup on the page. This is where the .`load()` method comes in
+    handy. It uses Ajax to download HTML from a URL on your server and insert it onto
+    the page at the indicated location. If you need to create a simple single-page
+    app, this method makes it easy. Under the covers, .`load()` uses the `HTTP GET`
+    method, which is the same method used by the browser when it loads HTML. Let''s
+    take a look at some code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code divides into three sections. The first section is everything
+    in the `<head>` tag. The only things important here are that we load jQuery from
+    an online repo and include some inline CSS to delineate where we will eventually
+    inject markup and JSON data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next section is our HTML markup. We have a large `<div>` with the `id` of
+    output-region that will hold the results of our code. In the `<form>` tag, there
+    are a few form elements that will give the form some data. The last row of HTML
+    is a series of buttons that will activate each of our code snippets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final section of the file is our JavaScript. Initially, we have only one
+    function, but we will add more code as we progress through this chapter. Let's
+    get started by examining the load-page click event handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've seen lots of event handler code and there is nothing new here. The first
+    three buttons each use this handler when clicked. The handler will get the `data-page`
+    attribute of the clicked button. The `data-page` attribute tells the code which
+    page to load and it is appended with the extension of `.html`. This is passed
+    to the .`load()` method, which uses it to grab the new markup from the server
+    and write it to the location specified by the selector. If the `.load()` successfully
+    retrieves the HTML, it writes to the indicated selector, which in our case is
+    the `<div>` with the ID of `outputRegion`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading JSON Data – .getJSON()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.getJSON()` method loads JSON data from the passed URL and calls a success
+    function with the returned data or an error object is passed to a failed function.
+    Like most of the Ajax method in jQuery 1.5 and above, it also returns a jQuery
+    promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A promise is an object that represents the eventual results of an asynchronous
+    operation. It can have one of three states: pending, fulfilled, and rejected.
+    When it is first created and hasn''t resolved yet, it has a state of pending.
+    If the promise is resolved successfully, its state changes to fulfilled. If the
+    promise fails, its state changes to rejected. Once a promise''s state changes
+    from pending, it is never changed again.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the jQuery promise in hand, we chain a `then` function to the `$.getJSON`
+    method. The `then` function takes two parameters. The first is a function to be
+    called if the promise is fulfilled successfully. The second parameter is a function
+    to be called if there is an error. If everything is all right, the JSON data is
+    converted to a JavaScript object and passed to the `success` function and a message
+    appears in an alert prompt; otherwise the contents of the error object are displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Loading and executing JavaScript – getScript()
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Most of the Ajax methods get some kind of data from the server. The `.getScript()`
+    method is different. It retrieves JavaScript from the server, parses, and then
+    executes it. Like the other Ajax methods, it returns a promise, but in this case
+    the `success` function is not passed any data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code that the `.getScript()` method loaded is still available after it executes,
+    but there is no easy way to call the code again unless you keep a reference to
+    it. In the example code, we assign the `incrementer` function to the window object
+    so it can be called later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Reading and writing data: jQuery.get() and .jQuery.post()'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The final two shorthand methods are the `$.get()` and `$.post()` methods. We
+    will describe them together since both methods are shortcuts for the `jQuery.ajax()`
+    method. Keep in mind that anything done with a shortcut method can also be done
+    by calling `$.ajax()`. The shortcut methods take care of a lot of the drudge work
+    of making `ajax` calls. Let''s check out some code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code loads the data using an `HTTP GET` method. The `$.get()` shortcut
+    method allows us to rewrite this as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We pass the `$.get()` method just two parameters: the URL of the data and a
+    success function; we don''t even bother to pass an error function handler. Remember
+    that with no error handler, the browser will silently eat any errors. The preceding
+    code demonstrates using the `$.get()` method with a callback function. Let''s
+    make things more interesting by demonstrating how to use promise chaining.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code makes four sequential calls to the server. Each call requests
+    a different bit of JSON data, which it renders via the `showJsonMethod()` function.
+    If any of the calls fails, the `showError()` function of the last `then()` method
+    is called and no further Ajax requests are made. Each successful call returns
+    the next call so it is able to chain the promises together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One potential downside is that the calls are made sequentially. Most browsers
+    can do at least two simultaneous HTTP requests and some can do more. If performance
+    is a concern and the order of the calls doesn't, we could make all of the HTTP
+    request at the same time and let the browser determine how many it can handle.
+    Luckily, jQuery promises have a `$.when()` method. It accepts all of the promises
+    that you wish to wait on as parameters. Once all of the promises have been either
+    resolved or rejected, the `.then()` method is called. The data sent to each promise
+    is sent as parameters in the same order the promises are listed in the `.when()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, the same four HTTP requests are made except now they
+    are made at the same time. The order in which each call will return data is non-deterministic,
+    but the code will wait until all four calls complete before moving on. If any
+    call fails, the entire operation is considered to have failed and the failure
+    method is called. This is different than when we called the code sequentially.
+    Each HTTP request could return data, but once one failed, the failure method was
+    called and no more requests were made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, all of the requests have been made with the `$.get()` method; we've
+    completely ignored the `$.post()` method. Not to worry, both methods are shortcuts
+    for the `$.ajax()` method. We can use the `$.post()` in place of the `$.get()`
+    method pretty much anywhere. So let's replace the `$.get()` method from the first
+    demo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: So if the methods can be exchanged for one another, why have both? To be fair,
+    we haven't been using them the way they are intended. The four main HTTP verbs
+    are get, post, put, and delete. Get is intended to retrieve one or more items
+    from a database. Post is intended to create a new record in the database. Put
+    is meant to update an existing record. And finally, delete removes a record from
+    the database. Using the verbs correctly lies at the heart of RESTful service APIs,
+    which is a bit off-topic for this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Helper methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery provides us with a few Ajax helper methods. There are only three functions
+    and each of them is easy to use and eliminates some grunt work for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating query data – $.param()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An Ajax request usually encodes data to pass to the server in the form of a
+    query string. A query string follows the URL and begins with a question mark "?".
+    Each parameter consists of a name and a value separated by an equals sign. Generating
+    the parameter data is not difficult, but there are a few encoding rules that need
+    to be followed correctly, or your request may fail. The `$.param()` will encode
+    our data into a query string format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, we encode an array of objects named `testData`. Each
+    of the objects has a name and a value property. These properties will be the name
+    and the value of the encode string. We passed the array to the `$.param()` method
+    and store the resulting string in `myParam`, which we then write to the output
+    `<div>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note how the `$.param()` method takes care of the encoding for us. The third
+    array parameter contains an at sign `@`, which is correctly encoded as `%40`.
+    It will also encode other symbols and spaces. Such symbols must be encoded or
+    your Ajax request will fail. Or worse, it may seem to work but send and store
+    incorrect data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `$.param()` method is only necessary when you are creating URLs by hand.
+    If you call the `$.get()` or `$.post()` methods and pass data to them, they will
+    correctly encode and append to the URL or message body correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating query data from a form – .serialize()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The next helper method, `serialize()`, is similar to the `$.param()` method
+    except instead of passing it data, it uses the `<form>` tag indicated by the selector
+    to pull data from all of the valid form elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code serializes all of the form elements in the `myForm <form>`
+    tag when the Serialize button is clicked and renders them to the page. Remember
+    that only valid form elements will be serialized. If an element is disabled or
+    doesn't have a name attribute, it won't be serialized. This method allows you
+    to substitute jQuery for old-fashioned HTML form submits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an object from form data – .serializeArray()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The final member of the Ajax helpers is the `.serializeArray()` method. Like
+    the `.serialize()` method previously described, it gets its data from all of the
+    form elements within the selector specified `<form>` tag. It only uses valid form
+    elements, which must be enabled and have a name element. The difference between
+    this method and the `.serialize()` method is the way the data is encoded. The
+    `.serializeArray()` method encodes the form data as an array of JavaScript objects.
+    Each object consists of a name and a value property. The name is the contents
+    of the element's name attribute and the value is the element's value. We can substitute
+    this method for the `.serialize()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The results of a call to `.serializeArray()` is an array of JavaScript objects.
+    We place the results in the variable `myParam`, which is sent to the JSON `stringify()`
+    method so it can be displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ajax events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes, your application would like to know when various Ajax events occur.
+    Perhaps your application would like to display an icon that indicates that data
+    is being sent to or received from the server and hide the icon once the request
+    is complete. Luckily, jQuery provides us with global Ajax events. These events
+    make it possible to know when any Ajax activity starts, stops, sends data, errors
+    out, or succeeds. These events are global so they must hook the document element.
+    Let's add them to our current sample code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the sample code, we hook three Ajax events: `ajaxStart`, `ajaxStop`, and
+    `ajaxSend`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When an Ajax request begins – .ajaxStart()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.ajaxStart()` method is triggered when the first Ajax request begins. If
+    another request is already in progress, the event won't be fired. In the sample
+    code, we make the hidden `<div>` with the message *Data transfer in progress…*
+    visible in the handler for this event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When an Ajax request completes – .ajaxStop()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.ajaxStop()` fires once all Ajax requests have finished. Like the `.ajaxStart()`
+    method, it is smart enough to only fire when appropriate, allowing us to pair
+    them together to hide and display the message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When running the code locally, you will find that the `stop` event is fired
+    very quickly after the `start` event. In order to allow the message to be seen,
+    we send the `hide` method a parameter of `slow`. Without this parameter, it would
+    be difficult for the user to read the message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When an Ajax request sends data – .ajaxSend()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Before Ajax data is sent, the `.ajaxSend()` handler is called. If you need
+    to differentiate which Ajax request triggered `.ajaxSend()`, it sends three parameters
+    to your handler function: `event`, `jqxhr`, and `settings`. The settings parameter
+    is an object that holds two important properties: `url` and `type`. The `url`
+    property is a string hold the URL that the request is calling. The `type` is which
+    HTTP verb the request is using. By checking these two properties, you should be
+    able to determine which of your Ajax requests triggered the event.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When an Ajax request fails – .ajaxError()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If a request fails, the `.ajaxError()` handler will be fired. The jQuery XHR
+    object, parameter `jqxhr`, will hold the error information. The status code will
+    be in the status property and the error message will be in the `statusText` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When an Ajax request succeeds – .ajaxSuccess()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If the request succeeds, the `.ajaxSuccess()` handler will be fired. The jQuery
+    XHR object will hold the status information. Again, the status code is in the
+    `status` property and the status text is in the `statusText` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When an Ajax request finishes – .ajaxComplete()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.ajaxComplete()` handler is called whenever an Ajax request completes.
+    This method is always called regardless of whether the request succeeded or failed.
+    It is always called after the success or error event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The order that events are called for a single request is always the same. First,
+    the start event, then the send, followed by either the success or error event,
+    then the complete event, and finally the stop event. If more than one request
+    is made, the order that the events are fired becomes non-deterministic. The only
+    thing that can be guaranteed is that the start is the first event and stop is
+    the last.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Modern web apps must smoothly send and retrieve data to their servers. jQuery
+    helps us interact seamlessly with our server and eliminates the need to do a full-page
+    refresh.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to pull new data, JavaScript, and HTML from
+    our server. Also, how to post data to the server without doing a page refresh.
+    And we also learned about some helper methods that jQuery provides that make it
+    easier for us to package our data properly for transmission.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One major criticism of jQuery isn't the library itself but the fact that applications
+    written with it tend to quickly grow unruly. In the next chapter, we will look
+    at ways we can keep our code from looking like spaghetti.
+  prefs: []
+  type: TYPE_NORMAL

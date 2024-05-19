@@ -1,0 +1,848 @@
+- en: Chapter 7. User Interface Animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an animated login form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding photo zoom
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an animated content slider
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating background images
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an animated navigation menu
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using jQuery, it is possible to enhance common user interface elements with
+    attractive animations. These animations can supply interactive actions to heighten
+    the user experience of any website or web application. This chapter shows you
+    how to create some popular user interfaces with modern animations, which you can
+    use in new projects or current websites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an animated login form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The login form is the main entry point to many of the websites and web applications—first
+    impressions are everything. Using jQuery animations, we can create a login form
+    that is animated when it is opened, closed, and there's an error, creating a quality
+    user experience that is reinforced through the animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This recipe requires a web server that supports PHP. This sever can be hosted
+    in the cloud or a simple local development server. Before starting with this recipe,
+    ensure that you have this set up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `recipe-1.html`, `recipe-1.js`, and `recipe.css` in the same directory
+    as the latest version of the jQuery library. As we are creating a login form,
+    we are also going to need a PHP script on which to post our login data. Create
+    a PHP file named `index.php` inside the web root of a web server and add the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In a real-world implementation, the PHP script would authenticate the user's
+    credentials against a database record. To keep this recipe simple and focus on
+    the jQuery code, our PHP code simply performs a string comparison of the user-submitted
+    username and password for `MyUsername` and `MyPassword`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To create the animated login form that uses the preceding PHP script, perform
+    the following step-by-step instructions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML code to `recipe-1.html`, which creates the login form
+    and the button to open it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `recipe-1.css` to add basic styles to the web
+    page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following jQuery code to `recipe-1.js` to allow the user to open and
+    use the login form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open `recipe-1.html` in a web browser, click on the **Open Login Box** button,
+    and you will be presented with the interface shown in the following screenshot:![How
+    to do it…](img/0896OS_07_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A website that allows users to have accounts and log in to them will typically
+    have a login button available somewhere in the main navigation. The HTML code
+    in this recipe creates a very basic web page with a single button to represent
+    where the user can access the login form. The HTML code also provides the basic
+    login form, which by default is hidden using CSS. The CSS code provides the positioning
+    for the login form and the styles for the login errors and form buttons. In addition
+    to the CSS that initially hides the login form, it also sets the value of the
+    login form's top position to a negative number, forcing the login form off the
+    page. This allows us to create slide-in animation to bring the login box into
+    the user's view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first part of the jQuery code creates a click event handler that listens
+    for a click on the login button, shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the button with the `open-login` class is clicked on by the user, the jQuery's
+    `fadeIn()` function is used to fade in the hidden login form and the `animate()`
+    function is used to move the login form onto the screen, creating the slide-in
+    effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A click event handler is created to listen for the `close-login` button being
+    clicked on, which then triggers the reverse animation to fade the login box out
+    and move it off the screen, shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Both animation functions have the duration set to 500 milliseconds, allowing
+    the fade and position animations to start and finish at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The main functionality of this recipe is placed within the callback function
+    for the login button''s click event handler; this is shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This click event handler, which listens for a click on the login button, takes
+    the input data and submits it to the PHP script we created at the beginning of
+    this recipe. First, the username and password are collected from the form and
+    stored in the `username` and `password` variables, shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This data is then sent to the PHP script using jQuery''s built-in AJAX functionality:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code creates an AJAX `POST` request by specifying the URL of the
+    PHP file and setting the `type` parameter to `POST`. A data object is also provided,
+    which holds the information from the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A callback function is specified for the `success` parameter; this is called
+    on a successful response from the PHP script, which is shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: By creating our PHP code, we know that the response will hold a success value
+    of either `true` or `false`. If the success value is `false`, there will be an
+    error message to go with it. There is an additional way that an AJAX request can
+    fail; this is caused by a server error, for example, `500 file not found`. To
+    handle these errors, the jQuery AJAX `.fail()` function should be used. Read more
+    about that at [http://api.jquery.com/jquery.ajax/](http://api.jquery.com/jquery.ajax/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the success callback function, we select the `login-msg` element, which
+    will be used to print any messages on screen. The success value provided by the
+    PHP script is evaluated to determine whether or not the login was successful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the login was successful, the `login-msg` element is updated with a message
+    informing the user that the login is successful and the `success` class is added
+    to turn the message element green in color, shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `removeClass()` function is used to ensure that the `error` class is not
+    present as a remnant of any previous login attempts. In a real-world situation,
+    you may want to redirect the user to the members' area of the website. This code
+    can be replaced to do just that; see the *There's more…* section of this recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the login attempt is not successful, the `error` class is added to the `login-msg`
+    element with the message from the PHP script. We use `response.error` to retrieve
+    this data. A series of animation functions are also used to move the login box
+    from left to right to create the shake effect, emphasizing the error to the user;
+    this is shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The successful login section of the jQuery callback can be easily replaced
+    to redirect the user, if desired. Native JavaScript code can be used to send the
+    user to the desired page using the following code, replacing `/memebers.php` with
+    the appropriate URL, which is shown as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Chapter 5](ch05.html "Chapter 5. Form Handling"), *Form Handling*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding photo zoom
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Photo zoom is a great effect that can be used in many interfaces to add extra
+    user interaction to a photo gallery or product page so that the user can see smaller
+    images clearly. This recipe will show you how to add the photo zoom effect to
+    four images in a list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You are going to need four images to use in this recipe. Make sure they are
+    fewer than 800 px wide and 600 px high. Once you have collected the four images
+    that will be used in this recipe, create `recipe-2.html`, `recipe-2.css`, and
+    `recipe-2.js` in the same directory as these images and the jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Perform the following instructions to add the zoom effect to your chosen images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML code to `recipe-2.html`; ensure that you update the
+    image references that correspond to the images you have chosen:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `recipe-2.css` to style and position the images:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following jQuery code to `recipe-2.js` to add the photo zoom animation
+    to the images when the user hovers over them:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open `recipe-2.html` in a web browser, and hover over one of the four images
+    to see the zoom animation, shown as follows:![How to do it…](img/0896OS_07_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML code in this recipe is very basic and simply creates a division element
+    with the class name `container`, which is centered on the page using CSS. Inside
+    the frame division, there is an unordered list element that has four children,
+    each containing an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS code removes any margin and padding from the unordered list, sets its
+    children to display inline, and sets each child element's overflow property to
+    `hidden`. This is to allow us to initially load the images larger than the list
+    element without showing any overflow to provide the zoomed-in effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS code also sets the image's top and left positions to `-50%` so that
+    they are centered inside the list element. The image's opacity is also set to
+    `0.5` to prevent the images from standing out initially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the beginning of the jQuery code, an `images` variable is declared, which
+    is used to store image data that can be reused later in the code. Within the jQuery
+    on-load block, two event handlers are attached to the document to listen for `mouseover`
+    and `mouseout` events on the photo list elements, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Inside the `mouseover` event handler, `$(this).find(''img'')` is used to find
+    the image within the hovered list element. With this image selected, its size
+    is stored in the `images` variable using `$(this).index()` to get the list element''s
+    index, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, using the jQuery''s `animate()` function, the image''s width and height
+    are set to match the size of the list element to create the zoom-out effect. Its
+    top and left positions are also set to `0`, overwriting the `-50%` positions set
+    within the CSS to ensure that the image fills 100 percent of the list element.
+    The image''s opacity is set to `1` (that is, 100 percent) so that the hovered
+    and zoomed-in image stands out among the other images. The code for this is shown
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Inside the `mouseout` event handler, the previously discussed animation is
+    effectively reversed using the stored image information and resets the image back
+    to where it was before the mouse hover, executed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, you can see that the `images` array is referenced using
+    `$(this).index()` to get the image's original height and width. Its top and left
+    positions are once again set to `-50%`, centering it inside the list element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`_image.finish();` is used in both the event handler callbacks to finish any
+    current animation. This prevents strange results when the user rapidly toggles
+    from one image to the other.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Creating an animated navigation menu*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an animated content slider
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You are probably aware that there is a whole forest of jQuery content slider
+    plugins, tutorials, and downloadable scripts online, which are available for use
+    and most of the content is free of charge. Content sliders are incredibly popular
+    because they are a very attractive and eye-catching way to display important content
+    to a user, such as images, news, and promotions. This recipe will show you how
+    easy it is to create a content slider with jQuery. The slider used in this recipe
+    will allow you to easily customize its look and feel using CSS so you can make
+    it your own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create the usual recipe files: `recipe-3.html`, `recipe-3.css` and `recipe-3.js`
+    in the same directory as your jQuery library.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Perform the following step-by-step instructions to create the attractive content
+    slider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML code to `recipe-3.html`, which creates the basic web
+    page and the structure of the content slider:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `recipe-3.css` to add basic styling and position
+    the content slider:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following jQuery code to `recipe-3.js` to allow the user to toggle
+    between the content slides:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The slider content is an unordered list whose children contain the content that
+    is to be displayed within each slide. Underneath the content list is another unordered
+    list element, which will be populated dynamically by jQuery to create the navigation
+    between each slide.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS code in this recipe is used to position the slider frame and set its
+    static width and height. The slider frame's overflow value is set to `hidden`
+    so that only one slide is visible at a time. The slider content list item elements
+    are set to `float left` so that they are displayed inline, making it possible
+    to shift them into view using jQuery animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first section of the jQuery code selects all of the slider content children
+    and stores them within a local variable. For each slider content list element,
+    a navigation list item is created and appended to the `slider-nav` unordered list,
+    which links to the slider content''s index as shown in the following code; the
+    `active` class is also added to the first navigation anchor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order for the slider content items to float in line with each other, the
+    `slider-content` unordered list element needs to be wide enough to allow it. As
+    the CSS code cannot know how many slides the slider has, jQuery is used to count
+    the number of content items and then multiply this value by the slider''s width,
+    applying this result to the `slider-content` element using the jQuery `width()`
+    function, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Executing the previous code will ensure that the `slider-content` unordered
+    list element is wide enough to allow for the inline positioning of each of the
+    list elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The last part of the jQuery code attaches a click event handler to the document
+    to listen for clicks on the slider navigation. When the user clicks on one of
+    the navigation elements, the callback function for this handler is called as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Within the callback function, the hash value of the clicked link is retrieved
+    using `var index = this.hash.replace("#", "");`, which will result in the index
+    integer of the slide. Using this value, the jQuery `animate()` function can be
+    used to set a negative-left position on the `slider-content` unordered list element;
+    this will animate the slider content to show the selected slide. The `removeClass()`
+    function is used to remove the `active` class from all of the anchor elements
+    within the navigation list. Then, `addClass` is used to add the active class to
+    the clicked element. This will indicate to the user which slide in the navigation
+    has been selected, because it will be lighter in color than the other navigation
+    items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Many of the popular jQuery content sliders have an `auto` mode in which each
+    of the content slides are looped through automatically without any user interaction.
+    This can be easily achieved by adding a little more jQuery code to the recipe.
+    Add the following jQuery code to `recipe-3.js` at the bottom of the `$(function(){});`
+    block if you would like this functionality:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the native JavaScript function `setInterval()`, it is possible to execute
+    a function continuously for a specified interval. In the preceding example, the
+    specified function will be executed after every 3000 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the preceding code, a `count` variable is declared to keep track of the current
+    slide. Inside the function provided to `setInterval`, the `count` value is set
+    to `0` if it has reached the maximum amount of available slides. The jQuery animation
+    function is then used in the same way as the click event handler to animate the
+    next content slide into view. Once again, `$(".slider-nav li a").removeClass("active");`
+    is used to remove the `active` class from all of the navigation anchors and then
+    `$(".slider-nav li").find("a[href='#" + count + "']").addClass("active");` is
+    used to add the class only to the element that links to the next content slide.
+    Finally, the count is incremented so that the next iteration animates the next
+    content slide in view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is also worth mentioning that every time the jQuery's `append()` function
+    is called, the DOM is redrawn. This can cause the application to slow down if
+    many items are added using the `append()` function, like in this recipe. A simple
+    way to avoid this is by creating a string of all the list elements that are to
+    be added and include a single `append()` function after the loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Animating background images*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating background images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Fullscreen image backgrounds can provide a very attractive splash screen for
+    any website. This recipe will show you how to use jQuery to dynamically change
+    the background image of your website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `recipe-4.html`, `recipe-4.css`, and `recipe-4.js` in the same directory
+    as the jQuery library. For this recipe, you will also need a set of images that
+    will be used as the background images. Find three or four large images (upto 1280
+    X 1024 px in size), and save them in the same directory as the three files you
+    have just created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Have the three files you have just created open and ready for editing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML code to `recipe-4.html` to create the basic web page
+    and elements to hold the background image and text:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `recipe-4.css` to apply basic styles to the newly
+    created web page; ensure that you update the image reference to correspond with
+    one of your chosen images:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following jQuery code to `recipe-4.js` to activate the background animation
+    in the `background` division element that you have just added to `recipe-4.html`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Update the filenames in the _`images` array at the beginning of `recipe-4.js`
+    to match the filenames of the images you have chosen for this recipe.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The basic web page created in this recipe has two main parts. Firstly, there
+    is a division element with the `background` class, which is made to fill the entire
+    screen and use the chosen images as its background. Secondly, there is a `text-frame`
+    division element, which simply holds some text floating in the center of the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The CSS code in `recipe-4.css` sets the background element''s position to `absolute`
+    and its left, right, bottom, and top positions to `0`, forcing it to fill the
+    entire screen. Its background property is then set using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: The background option sets one of the chosen images as its initial background
+    and ensures that it is centered and fixed. The `background-size` property is used
+    to ensure that the background image always fills 100 percent of the `background`
+    division element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A similar CSS is used to ensure that the `text-frame` element fills the screen,
+    and using percent and auto margins, the `text-inner` element that holds the text
+    is centered vertically and horizontally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_images` array at the beginning of `recipe-4.js` holds the references to
+    the chosen background images. The `index` variable is used to keep track of the
+    currently displayed background image. Within the jQuery on-load function, `setInterval`
+    is declared to execute a set of animations to change the background image every
+    six seconds. This is similar to the previous recipe's *There's more...* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because the jQuery''s `animate()` function does not support animating the background
+    image directly, we have to provide a workaround. Inside the `setInterval()` function,
+    the `animate()` function is used on the background element''s opacity to fade
+    the element out. Then, by specifying a callback for the jQuery''s `animate()`
+    function, the background element''s `background-image` property is modified using
+    jQuery''s `css()` function as soon as the animation is completed. Using `css()`,
+    the background image is changed and the `animate()` function is used again to
+    change the opacity back to `1`, which fades in the element. Using the index value
+    to reference the `_images` array, it is possible to select a different background
+    image for every iteration of the `setInterval()` function, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once the last animation is completed, the index value is incremented by one
+    to ensure that the next iteration displays a different image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Creating an animated content slider*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an animated navigation menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Your website's navigation allows your visitors to easily find the content hosted
+    on your site. Providing the user with a fun and interactive navigation menu that
+    is also easy to use can make a lasting impression on them. This recipe shows you
+    how to create a modern animated navigation menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `recipe-5.html`, `recipe-5.css`, and `recipe-5.js` in the same directory
+    as the latest version of the jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Perform all of the following steps to create a unique and modern animated navigation
+    menu for any site:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML to `recipe-5.html` to create the basic web page, and
+    include the newly created files along with the jQuery library:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Inside the body tags of the HTML code you have just added to `recipe-5.html`,
+    add the following code to create the structure for the navigation menu:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following CSS code to `recipe-5.css` to provide basic styling to the
+    navigation menu and web page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To add the animations to the navigation menu based on user interaction, add
+    the following jQuery code to `recipe-5.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open `recipe-5.html` in a web browser, and you will be presented with a simplistic
+    navigation menu. Hovering over the **About** item will activate an animation and
+    present you with the associated submenu as shown in the following screenshot:![How
+    to do it…](img/0896OS_07_03.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This recipe's code will be easy to understand when we break it down piece by
+    piece. The HTML code used to create the navigation menu has a division element
+    with the class `frame`, which acts as the menu container to control the width
+    and position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The menu itself consists of an unordered list element with the navigation class.
+    Within this list, there are multiple first-level list elements with anchors acting
+    as the menu page links.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each of these first-level links has a `link-content` container element that
+    holds two `nav-item` division elements. Styling two of these `nav-item` elements
+    differently with CSS allows us to create the drop-in animation as we are only
+    showing one of these at once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `about` first-level navigation item also has a submenu. To achieve this,
+    the list item contains another unordered list with the `sub-nav` class. Using
+    CSS, this subnavigation element is placed over the original first-level page link
+    when visible so that the cursor is not moved from that area. This allows us to
+    keep the original link in the hovered state and the submenu open until the user's
+    mouse leaves the submenu entirely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The submenu page links follow the same structure as the first-level links in
+    which they have two item elements with the same text. This is to allow us to create
+    a similar hover animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within `recipe-5.js`, the first part attaches a `mouseenter` event handler
+    to the document to look for the mouse pointer entering one of the navigation first-level
+    links, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: When this happens, the `animate()` function is used on the link's `link-content`
+    child to sets its top margin to `-50`. This will move the second `nav-item` class
+    into a view that has its background styled orange with CSS. After 200 milliseconds,
+    when the animation is complete, an additional callback function is called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This will execute the code to open any subnavigation menus that the currently
+    hovered item contains. Using the `css()` function to first set the subnavigation's
+    left position to `0`, bringing it onto the screen, and then using the `animate()`
+    function to set the opacity of the element to `1`, will fade the image into view.
+    The subnavigation elements are originally positioned off the screen using a left
+    position of `-10000` so that they do not get in the way of any clicks the user
+    may perform on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second event handler is for the `mouseleave` event. This event handler checks
+    to see whether or not the top-level link, which has just been set to `left`, has
+    a subnavigation menu using `if ($(this).parent().find('.sub-nav').length == 0)`.
+    If it does not, the hover animation is reversed, setting the `link-content` element's
+    top margin back to `0`. This allows us to leave the hovered state active while
+    the user is navigating the submenu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next event handler is another `mouseleave` event, which handles the user
+    leaving the submenu, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once the user's mouse has left the submenu, the `animate()` function is used
+    to set the submenu's opacity to `0`, fading it out. Then, after the 200-millisecond
+    animation has been completed, the `css()` function is used to move the submenu
+    -10000 pixels off the screen. Finally, using `find()` to select the first-level
+    `link-content` element, the original hover animation is reversed, putting the
+    menu back to its dormant state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two additional event handlers attached to the document. The additional
+    `mouseenter` and `mouseleave` events are used to create the hover animations for
+    the submenu items. The same code and technique is used for first-level navigation
+    menu, except that instead of changing the top margin, the left margin is changed
+    to animate the `sub-link-content` elements from left to right as opposed to top
+    to bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Creating an animated content slider*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Animating background images*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

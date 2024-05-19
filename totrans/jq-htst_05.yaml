@@ -1,0 +1,1251 @@
+- en: Chapter 5. jQuery File Uploader
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's now possible to create a fully featured file upload widget with nothing
+    but a few of the latest HTML5 APIs and jQuery. We can easily add support for advanced
+    features such as multiple uploads, and a drag-and-drop interface, and with just
+    a little help from jQuery UI we can also add engaging UI features such as detailed
+    file information and progress feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we'll build an advanced multifile upload widget using the HTML5
+    file API to provide the core behavior, and using jQuery and jQuery UI to build
+    an attractive and engaging interface that visitors will find a pleasure to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll build the widget as a jQuery plugin because it's the kind of thing that
+    we'd probably like to be encapsulated so that we can drop it into numerous pages
+    and have it work with just a little configuration, instead of having to build
+    a custom solution every time we require this functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery provides some great features that make writing reusable plugins a breeze.
+    Over the course of this project we'll see just how easy it is to package up specific
+    functionality and a mechanism for generating all of the necessary mark-up and
+    adding all of the required types of behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling file uploads on the client side gives us a lot of opportunity for adding
+    experience enhancing features, including information about each file selected
+    for upload, and a rich progress indicator that keeps the visitor informed about
+    how long the upload is likely to take.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also allow the visitor to cancel the upload while it is in progress,
+    or remove previously selected files before the upload begins. These kinds of features
+    just aren't available using purely server-side techniques for handling file uploads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the end of this project we''ll have produced the following widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Why Is It Awesome?](img/9106OS_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To arrive at the completed project, we''ll need to complete the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the page and plugin wrapper
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating the underlying markup
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding event handlers for receiving files to upload
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displaying the list of selected files
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Removing files from the upload list
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a jQuery UI progress indicator
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Uploading the selected files
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reporting success and tidying up
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mission Checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Like in some of our previous projects, as well as using jQuery, we'll also be
+    using jQuery UI in this project. The copy of jQuery UI we downloaded at the start
+    of the book should already contain all of the widgets we require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like in the previous project, we'll also need to use a web server for this project,
+    which means running the page using a proper `http://` URL and not a `file:///`
+    URL. See the previous project for information on compatible web servers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the page and plugin wrapper
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll create the page that links to the required resources, as
+    well as add the wrapper that our plugin will live within.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point we should create the different files we'll need for this project.
+    First, save a new copy of our template file in the main project folder and call
+    it `uploader.html`. We'll also need a new style sheet, which should be saved in
+    the `css` folder as `uploader.css`, and a new JavaScript file, which should be
+    saved in the `js` folder as `uploader.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The new page should link to the jQuery UI style sheet so that we get the styling
+    required by the Progressbar widget, and also the style sheet for this project
+    in the `<head>` of the page, directly after the existing link to `common.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ll also need to link to jQuery UI and the JavaScript file for this example.
+    We should add both of these script files directly after the existing `<script>`
+    element for jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All our plugin will require is a container that the widget can render the required
+    markup into. In the `<body>` of the page, before the `<script>` elements linking
+    to the different JavaScript resources, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As well as linking to the script file that contains the code for our plugin,
+    we''ll also need to call the plugin in order to initialize it. Directly after
+    the existing `<script>` elements, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The plugin''s wrapper is a simple construct that we''ll use to initialize the
+    widget. In `uploader.js`, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When building jQuery plugins, the best thing we can do is make our plugins easy
+    to use. Depending on what the plugin is for, it is best to have as few prerequisites
+    as possible so if a complex markup structure is required by the plugin, it is
+    usually best to have the plugin render the markup it needs, rather than making
+    the users of the plugin try to add all of the required elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In light of this, we'll write our plugin so that all it requires on the page
+    is a simple container that the plugin can render the markup into. We added this
+    container to the page and gave it an `id` attribute for easy selecting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developers using our plugin will need a way to invoke it. jQuery plugins extend
+    the `jQuery` object with additional methods and our plugin will add a new method
+    to jQuery called `up()`, which is called like any other jQuery method name – on
+    a set of elements that have been selected by jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The extra `<script>` element we add to the bottom of the `<body>` element calls
+    our plugin method in order to invoke the plugin, which is how someone using our
+    plugin would invoke it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our script file, we start out with a semicolon and an immediately-invoked
+    anonymous function. The semi-colon supports the modular nature of jQuery plugins
+    and protects our plugin from other plugins that don't stop execution correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If another plugin in use on the page didn't end its final statement or expression
+    with a semi-colon, and we didn't start our plugin with a semi-colon, it could
+    produce script errors that prevented our plugin working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use an anonymous function as a wrapper for our plugin and invoke it immediately
+    with an extra set of parentheses after the function body. We can also ensure that
+    our plugin works with jQuery's `noConflict()` method by locally scoping the `$`
+    character within our plugin and passing the `jQuery` object into the anonymous
+    function as an argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the anonymous function we first define an object literal called `defaults`
+    that will be used as a configuration object for our plugin. This object contains
+    another object called `strings`, which is where we store all of the different
+    bits of text that are displayed in various elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason for using a configuration object for text strings is to make our
+    plugin easy to localize, making it easier for non-English speaking developers
+    to use. Making plugins as flexible as possible is a good way of making the plugin
+    more appealing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the `defaults` object we define a constructor function that will generate
+    instances of our widget. The plugin is called Up and we capitalize the first letter
+    of its name because this is the general convention for functions that should be
+    invoked using the `new` keyword.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The constructor function can accept two arguments; the first is a jQuery element
+    or collection of elements and the second a configuration object defined by the
+    developer using our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the constructor function we first attach some members to the instance.
+    The first is called `config` and will contain the object returned by jQuery's
+    `extend()` method, which is used to merge two objects together, and unlike most
+    jQuery methods, it's called on the `jQuery` object itself rather that a collection
+    of HTML elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It takes four arguments; the first argument instructs the `extend()` method
+    to deep-copy the object being merged into the jQuery object, which we need to
+    do because the `defaults` object contains other objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second argument is an empty object; any other objects will be merged together
+    and their own properties added to this object. This is the object that the method
+    will return. If we didn't pass in an empty object, the first object passed into
+    the method would be returned instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next two arguments are the objects we are going to merge. These are the
+    `defaults` object that we defined a moment ago, and the `opts` object that may
+    be passed to the constructor when it is invoked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that if a developer wishes to pass in a configuration object, they
+    can overwrite the values that we've defined in the `defaults` object. The properties
+    not overwritten with this configuration object will be set to the default values
+    instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also store a reference to the element, or collection of elements, as a member
+    of the instance as well so that we can easily operate on the elements in other
+    parts of our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we add a couple of empty arrays that will be used to store the list of
+    files to upload and the XHR requests in progress. We'll see how these properties
+    are used later in the project, so don't worry too much about them now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery provides the `fn` object as a shortcut to its prototype, which is how
+    we extend jQuery with our plugin method. In this case the method is called `up()`
+    and is the method we invoked using the `<script>` element at the bottom of `uploader.html`.
+    We specify that the method may accept a single argument, which is an object containing
+    the configuration options that someone using our plugin may wish to provide.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the method, we first create a new instance of the uploader using the
+    `new` keyword in conjunction with our constructor function. We pass the constructor
+    function the element (or collection of elements) that the method is called on,
+    and the `options` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we returned `this` from the method. Inside a method added to jQuery's
+    prototype, the `this` object refers to the jQuery collection. It's very important
+    to return the collection of elements that the method was called on in order to
+    preserve chaining.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Chaining is an inherent feature of jQuery that developers using it have come
+    to expect. It is important that developers' expectations are met with regard to
+    the style of programming they use. People using our plugin will expect to be able
+    to add additional jQuery methods after calling our plugin's method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we are returning the collection of elements by returning the `this`
+    object, developers can do things like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: So that's a simple example of what's possible, but it should illustrate why
+    it is important to always return `this` from a plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating the underlying markup
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task, we'll add an initialization method to our plugin which will generate
+    the required markup that the widget requires.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we should add the following code directly after the `Up()` constructor
+    function in `uploader.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to call this new `init()` method. Change the method added to jQuery''s
+    `fn` object so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add the CSS for the markup generated by the plugin. In `uploader.css`,
+    add the following styling:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can add an `init()` method that takes care of creating and injecting the
+    markup that the widget is built from by adding it to our constructor's `prototype`.
+    All objects created by the constructor will inherit the method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first store the `this` object, which inside our `init()` method still refers
+    to the jQuery collection of elements, so that we can easily refer to it inside
+    event handlers, which we'll add in the next task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also locally scope the `strings` property to make resolution slightly faster,
+    as we refer to this property frequently in order to add the visible text strings
+    to the widget's visible UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we create the new HTML elements and store each of them in variables. This
+    means that we can create the container and append all of the required elements
+    to it while it's still in memory, and then inject the entire widget into the page's
+    DOM in one go, instead of repeatedly modifying the DOM and adding the elements
+    one by one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The outer container for the widget is an `<article>` element which has a class
+    name for easy styling. The HTML5 specification describes an `<article>` as a self-contained
+    interactive widget, so I feel this is the perfect container for our widget. Although
+    equally as relevant, the `<article>` is not restricted to what we would traditionally
+    describe as an "article" – for example, a blog/news post or an editorial style
+    piece.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have a `<header>` element to contain the main heading for the widget, within
+    which we use a standard `<h1>`. We also use two `<h2>` elements inside the widget
+    to show the different sections (the drag-and-drop area, and the more traditional
+    file `<input>`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<input>` element has a `type` attribute of `file` and is also given the
+    `multiple` attribute, using jQuery's `prop()` method, so that multiple files can
+    be uploaded in supporting browsers. Current versions of IE (9 and below) do not
+    support this attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also add an `<a>` element directly after the `<input>`, which we'll use to
+    open the Open dialog used to select the files to upload. The problem with the
+    standard `file` type `<input>`, is that there is no standard!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Almost every browser implements the `file` type `<input>` differently, with
+    some browsers showing an `<input>` as well as a `<button>` and some browsers just
+    showing a `<button>` and some text. It's also impossible to style the `<input>`
+    or `<button>` generated by the control as these are part of the **shadow DOM**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on what the shadow DOM is, see [http://glazkov.com/2011/01/14/what-the-heck-is-shadow-dom/](http://glazkov.com/2011/01/14/what-the-heck-is-shadow-dom/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get around these cross-browser differences, we'll hide the `<input>` with
+    CSS and use the `<a>` element, styled to appear like an attractive button, to
+    open the dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also add an empty `<div>` element that we'll use to list the selected files
+    and display some information about each one, followed by another `<a>` element
+    that will be styled like a button. This button will be used to initiate the upload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We used the standard jQuery 1.4+ syntax for creating new HTML elements and supplied
+    a configuration object for most of the elements we created. Most elements are
+    given a class name and some also get text or HTML content. The class names we
+    use are all scoped with a sensible prefix so as to avoid potential conflicts with
+    existing styles already used on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS we added is mostly just for presentation. The important aspects are
+    that we hide the standard file `<input>`, and give the drop target a fixed size
+    so that files can easily be dropped on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we should be able to run the page in a browser (via a web server)
+    and see the basic elements and layout of the plugin. The page should appear as
+    in the first screenshot of this project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding event handlers for receiving files to upload
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can use the `init()` method that we added in the last task to attach the
+    event handlers that our widget will need to handle files being selected for upload.
+    This may happen either when files are dropped onto the drop target, or when they
+    are selected using the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Directly after appending the new HTML elements to the container at the end
+    of the `init()` method in `uploader.js` (but still within the `init()` method),
+    add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We first use jQuery's `on()` method, in event-delegation mode, to attach an
+    event handler to the outer container of the widget. We specify the `click` event
+    as the first argument, and a selector that matches our button with the class name
+    `up-choose` as the second argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the handler function passed to `on()` as the third argument, we first
+    prevent the default behavior of the browser using JavaScript's `preventDefault()`,
+    and then trigger a `click` event for the hidden `<input>` element used to select
+    the files to upload. This will cause the File dialog to open in the browser and
+    allow files to be selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then attached another event handler. This time we are looking for either
+    the `drop`, `dragover`, or `change` events. The `drop` event will be triggered
+    when files are dropped onto the drop zone, the `dragover` event will be triggered
+    while files are held over the drop zone, and the `change` event will be triggered
+    if files are removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of these events will bubble up from either the drop zone (the `<article>`
+    with the class name `up`) or the hidden `<input>` and will pass through the outer
+    container of the widget, to which the event handler is bound.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this handler function we first check whether it's the `dragover` event;
+    if it is, we again prevent the default behavior of the browser using `preventDefault()`
+    and `stopPropagation()`. We also need to `return false` from this branch of the
+    conditional.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next branch of the `if` checks whether the event that triggered the handler
+    was the `drop` event. If it was we still need to use `preventDefault()` and `stopPropagation()`,
+    but this time we can also get the list of selected files using the event object
+    that jQuery creates and passes to the handler function, and store them in a property
+    on the widget instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If neither of these conditions is `true`, we get the list of files from the
+    `<input>` element instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The property we need is part of the `originalEvent` object that jQuery packages
+    into its own event object. We can then get the `files` property from the `dataTransfer`
+    object. If the event was the `change` event instead, we can just get the `files`
+    property of the hidden `<input>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whichever method is used, the collection of files selected for upload is stored
+    on the instance of the widget under the `files` property. This is just a temporary
+    property, which will get overwritten each time new files are selected, unlike
+    the widget's `filelist` array, which will store all the files for an upload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we call the `handleFiles()` method. We'll add this method to the widget's
+    `prototype` in the next task so once this has been done, we'll be able to call
+    the method here without running into problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Combining the two events and detecting which event occurred in this way is much
+    better than attaching to separate event handlers. It means that we don't need
+    two separate handler functions that both do essentially the same thing, and regardless
+    of whether files are selected with the button and standard dialog, or by dropping
+    files onto the drop target, we can still get the list of files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As this point we should be able to either drop files onto the drop zone, or
+    click the button and select files using the dialog. However, a script error will
+    be thrown because we haven't yet added the `handleFiles()` method of our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying the list of selected files
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we can populate the `<div>` we created in order to display the
+    list of files that have been selected for upload. We'll build a table where each
+    row in the table lists a single file with information such as the filename and
+    type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Directly after the `init()` method in `uploader.js`, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add some additional CSS for the new markup we''ve created. Add
+    the following code to the bottom of `upload.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We started out by adding the `handleFiles()` method to the widget's `prototype`,
+    making the method call `widget.handleFiles()` that we added at the end of the
+    last task work. It was added in exactly the same way as the `init()` method earlier,
+    and just like inside `init()`, the `this` object points to the instance of the
+    widget inside `handleFiles()`. This makes the element on the page, the configuration
+    options, and the selected file list easy to access.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the method, we first created a series of variables. Like in the `init()`
+    method we create a local variable called widget that stores the `this` object.
+    We won't be adding any event handlers to this method so we don't absolutely have
+    to do this, but we do access the object several times so it makes sense to cache
+    it in a variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also cache the selected files container using `widget.el` – don't forget
+    that `el` already refers to the jQuery-wrapped instance of the outer widget container,
+    so we can call jQuery methods, such as `find()` directly on it without rewrapping
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we create a series of new DOM elements ready for them to be cloned inside
+    loops. This is a much better way of creating elements, especially inside loops,
+    and avoids having to continually create new jQuery objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also define a variable called `table`, but we don't initialize it straight
+    away. Instead we use the `if` conditional to check whether the container already
+    contains a `<table>` element by checking if jQuery's `find("table")` returns a
+    collection that has `length`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `length` is equal to `false`, we know that no `<table>` elements were selected
+    so we initialize the `table` variable with a new `<table>` element created with
+    jQuery. We then create a header row for the `<table>` which we'll use to add headings
+    for each of the columns in the new table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point the `<table>` element only exists in memory, so we can add the
+    new row to it without modifying the DOM of the page. We also cache a reference
+    to the `tableHeadings` property of the `strings` object used in our configuration
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use jQuery's `each()` utility to create all of the `<td>` elements used
+    as the table headings. As well as being able to call `each()` on a collection
+    of elements selected from the page, we can also call `each()` on the jQuery object
+    in order to iterate a pure JavaScript array or object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `each()` method accepts the array or object to iterate. In this case it's
+    an array, so the iteration function called for each item in the array receives
+    the index of the current item and the value of the current item as arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the iterator, we first create a new string that we can use as a class
+    name. The word `class` is a **reserved word** in JavaScript, so we call our variable
+    `cs` instead. To create the class name, we just convert the current string to
+    lowercase using JavaScript's `toLowerCase()` function, and then remove any empty
+    spaces using JavaScript's `replace()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a complete list of the reserved words in JavaScript, see the MDN documentation
+    at [https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Reserved_Words](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Reserved_Words).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `replace()` function takes the regular expression to match as the first
+    argument, and the replacement string as the second argument. We could use the
+    string `" "` as the first argument instead, but then only the first blank space
+    would be removed, whereas using a regular expression with the `g` flag allows
+    us to remove all spaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create a new `<td>` element by cloning one of the elements we created
+    and stored in a variable at the start of the task. We give it a general class
+    name for styling purposes, and the unique class name that we just created so that
+    each column can be styled independently if required, and then append it straight
+    to the header row that we created a moment ago.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check whether we're iterating the last item in the array by testing
+    whether the current index is equal to the `length` of the array minus 1\. If it
+    is the last item, we add a clear all link by cloning the `<a>` element we created
+    and cached at the start of the task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set the text of the new `<td>` element to the value of the current array
+    item and add the `up-remove-all` class for styling purposes so that we can filter
+    events dispatched by it. We can also use jQuery's `attr()` method to set a `colspan`
+    attribute of `2` to this `<td>`. The new `<a>` element is then added as the HTML
+    content of the new `<td>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If it's not the last item in the array we simply set the text content of the
+    new `<td>` element to the value of the current array item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is all done in the first branch of the outer `if` statement which occurs
+    when the table does not exist. If the container does already contain a `<table>`
+    element, we still initialize the table variable by selecting the `<table>` from
+    the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't forget that the `handleFiles()` method we're inside will be invoked once
+    files have been selected, so now we need to build a new row in the table for each
+    of the files that were selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again we use jQuery's `each()` method, this time to iterate the collection of
+    stored files in the widget's `files` property. For each file that was selected
+    (either by dropping onto the drop zone, or using the button) we first create a
+    new `<tr>` by cloning our `row` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then split the `name` property of the current file on the `.` character.
+    We store the extension of the file by getting the last item in the array created
+    by the `split()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we also create a delete link, which can be used to remove an individual
+    file from the list of files to upload, by cloning the `<a>` element we created
+    at the start of the task. It is given the text `x` and the class name `up-remove`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we create a series of new `<td>` elements by cloning the cached `<td>`
+    in the `cell` variable again. The first `<td>` is given a generic class name of
+    `icon`, and the extension for the current file so that we can add an icon for
+    the different file types that can be uploaded, and append it to the new row.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second `<td>` element displays the name of the file. The third `<td>` element
+    shows the size of the file in kilobytes. If we knew that large files were likely
+    to be uploaded, we could instead convert to megabytes, but for the purpose of
+    this project, kilobytes will be sufficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fourth `<td>` element has the new delete link added to it using jQuery's
+    `html()` method and the last `<td>` element has an empty `<div>` element added
+    to it which we'll use for the jQuery UI Progressbar widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the new cells have been created and appended to the new row, the new row
+    itself is appended to the table. We can also add the current file to our `fileList`
+    array ready to be uploaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we need to check once more whether the selected files container already
+    has a `<table>` element inside it. It if doesn't, we append the new `<table>`
+    we have just built to the container. If it does contain the `<table>` already,
+    the new rows will already have been added to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS we added in this part was purely presentational. One thing I've done
+    is to add some classes so that an icon can be shown for different file types that
+    might be selected for upload. I've only added a few as an example; the ones you
+    actually require would depend on the type of files that you expected your users
+    to upload. A generic icon is also created for types that do not match the selectors
+    we've added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The icons used in this example are part of the Farm Fresh icon pack. I've renamed
+    the files for conciseness and can be found in the code download accompanying this
+    book. The icons are available at Fat Cow web hosting at ([http://www.fatcow.com/free-icons](http://www.fatcow.com/free-icons)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point we should be able to run the page in a browser, select some files
+    to upload, and see the new `<table>` we have just created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We manually created the elements needed to display the list of selected files
+    in this example. Another way to do it would be to use a templating engine, such
+    as jsRender or Dust.js, instead. This would have the benefit of being faster and
+    more efficient than our manual creation, would keep our plugin code simpler and
+    more concise, and the file smaller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, it would add another dependency to our plugin because we'd have to
+    include the templating engine itself, as well as a precompiled template stored
+    in a JavaScript file. We aren't creating that many elements in this example, so
+    it's probably not worth adding another dependency. When many elements need to
+    be created, the cost of adding a dependency is outweighed by the efficiency it
+    adds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the kind of thing that needs to be considered on a case-by-case basis
+    when writing a jQuery plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing files from the upload list
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll add the event handlers that will make the **Remove** and
+    **Remove all** links in the new file list work. We can attach the event handlers
+    in the same place that we added other event handlers earlier to keep things organized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `upload.js`, within the widget''s `init()` method and directly after the
+    existing calls to jQuery''s `on()` method, add the following new code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We use jQuery's `on()` method to add a `click` event again. We attach it to
+    the outer container of the widget as we have our other events, and this time we
+    filter the events based on the selector `td a` as the event will only originate
+    from `<a>` elements inside `<td>` elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the event handler we first prevent the default behavior of the browser
+    because we don't want the link to be followed. We then define a simple helper
+    function that removes the `<table>` element from the widget, removes the value
+    of the file `<input>`, and clears the `fileList` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to clear the `<input>` because otherwise if we selected some files and
+    then removed them from the list of files, we wouldn't be able to then reselect
+    the same group of files. It's a bit of a fringe case, but this simple little trick
+    allows it to work so we may as well include it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we check what the `className` property of the element that triggered the
+    event is. We can see this property using the target property of the `originalEvent`
+    object that is included in the jQuery event object which is passed to our handler
+    function. We could also use the `srcElement` property of the jQuery event object,
+    but this does not work in current versions of Firefox.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the `className` property matches `up-remove-all`, we simply call our `removeAll()`
+    helper function to remove the `<table>` element and clear the `<input>` and `fileList`
+    array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `className` property doesn't match the **Remove all** link, we have to
+    remove just the row of the `<table>` element that contains the `<a>` that was
+    clicked. We first cache a reference to the `<a>` that triggered the event, which
+    is set to `this` inside our handler function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also define a variable called `removed`, which we'll initialize with a value
+    shortly. Lastly we store the `filename` of the file that the row we are about
+    to remove represents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've set our variables, the first thing we do is remove the row that we
+    can get using jQuery's `closest()` method, which finds the first parent element
+    that matches the selector passed to the method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use jQuery's `each()` method to iterate the `fileList` array. For each
+    item in the array, we compare the item's `name` property with the `filename` variable
+    we just initialized. If the two match, we set the `index` number, which is passed
+    automatically to the iterator function by jQuery, to our `removed` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the `each()` method has finished, we can use JavaScript's `splice()` function
+    to remove the file the current `<tr>` represented. The `splice()` function takes
+    two arguments (it can take more but we don't need them here), where the first
+    argument is the index of the item to begin removing at, and the second argument
+    is the number of items to remove.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we check whether the `<table>` element has more than one row left in
+    it. If it only has one row left, this will be the header row so we know that all
+    files have been removed. We can therefore call our `removeAll()` helper function
+    to tidy up and reset everything.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now when we've added files to the upload list, we should then be able to remove
+    individual files using the inline **x** buttons, or clear the list using the **Remove
+    all** link.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a jQuery UI progress indicator
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll add the elements and initialization code required by the
+    jQuery UI Progressbar widget. The widget won't actually do anything yet because
+    we won't be actually uploading anything until the next task, but we need to wire
+    everything up ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll add an `initProgress()` method to our widget's prototype to select the
+    `<div>` elements that we added to the `<table>` element and convert them into
+    Progressbar widgets. We can also add the method that will be used to update the
+    Progressbars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Directly after the `handleFiles()` method, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we''ll need to call this method after new rows have been added to `<table>`.
+    Add the following call to our new method right at the end of the `handleFiles()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can add the code that updates the Progressbar. Add the following code
+    directly after the `initProgress()` method we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need a tiny bit of CSS for the new progress bars. Add the following
+    code to the end of `uploader.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This was a shorter task than some of those we've covered in this project so
+    far, but no less important. We added the new method in the same way that we've
+    added most of the functionality for our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the method we first select all `<div>` elements with the class name `up-progress`.
+    Don't forget that we can access the widget's container element using `this.el`
+    and as it's a jQuery object already we can call jQuery methods, such as `find()`
+    on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then iterate each element in the selection using jQuery's `each()` method.
+    We're using the standard `each()` method in this task, where the current element
+    in the collection is set to `this` inside the iterator function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the iterator function we first cache the current element. We then check whether
+    it has the jQuery UI class name `ui-progressbar` and if it doesn't, we convert
+    the element into a Progressbar using the jQuery UI method `progressbar()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Doing it this way means that the progress bar will always be created, whether
+    it is the initial set of files being selected for uploading, or additional files
+    that are being added to an existing `<table>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also added a call to the new `initProgress()` method at the end of the `handleFiles()`
+    method, which is called whenever new files are selected for upload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we added the `handleProgress()` method, which we'll bind to an event in
+    the next task. This method will be passed two arguments, the first is the event
+    object and the second is an already-wrapped jQuery object representing an individual
+    Progressbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the method, we first calculate how much of the file has been uploaded.
+    We can determine this by dividing the loaded property of the event object by the
+    total property, and then dividing by 100 to give us the percentage of the file
+    that has been uploaded so far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `loaded` and `total` properties are special properties that are added to
+    the event object when the progress event is fired by the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have the percentage, we can call the `value` method of the Progressbar
+    widget in order to set the value to the percentage. This is a jQuery UI method
+    and so is called in a special way. Rather than calling `value()` directly, we
+    instead call the `progressbar()` method, and pass the name of the method to invoke,
+    `value`, as the first argument. All jQuery UI methods are called in this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we added a little presentational CSS just to tweak the default styling
+    provided by the default jQuery UI theme in use. When we add files to be uploaded
+    now, we should see an empty Progressbar after each file in the `<table>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Uploading the selected files
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have a list of files attached to the instance of our plugin ready to
+    be uploaded. In this task we'll do just that and upload the files asynchronously
+    using jQuery. This behavior will be tied to the **Upload files** button that we
+    added to the markup generated by the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also use this task to update our Progressbars with the current progress
+    of each file being uploaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As this is another event handler, we''ll add it in the `init()` method along
+    with all of the other event handlers so that they''re all kept in one place. Add
+    the following code at the end of the `init()` method, after the existing event
+    handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next add the new `uploadFiles()` method. This can go after the progress-related
+    methods that we added in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Within our `uploadFiles()` method, we first store a reference to the widget
+    as we have in some of the other methods we've added. We also store a reference
+    to the **Upload files** button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next thing to do is to check that the button doesn't have class name of
+    `disabled`. If it does have this class name, it means that an upload has already
+    been initiated for the selected files so we want to avoid making a duplicate request.
+    If the button doesn't have the `disabled` class, it means that this is the first
+    time the button has been clicked. So to prevent duplicate requests we then add
+    the class `disabled`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we iterate over the list of files that we've collected and which is stored
+    in the widget instance's `fileList` property. For each file in the array we first
+    create a new `FormData` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`FormData` is a part of the new XMLHttpRequest (XHR) level 2 specification
+    which allows us to dynamically create a `<form>` element and submit that form
+    asynchronously using XHR.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've created a new `FormData` object, we also store a reference to the
+    Progressbar widget associated with the current file. We then use the FormData's
+    `append()` method to append the current file to the new `FormData` object so that
+    the file is encoded and sent to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we post the current `FormData` object to the server using jQuery's `ajax()`
+    method. The `ajax()` method will return the `jqXHR` object for the request. This
+    is a special version of the XHR object that jQuery enhances with additional methods
+    and properties. We need to store this `jqXHR` object so that we can use it a little
+    later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll look at exactly how it's used in the next task, but for now just understand
+    that the `jqXHR` object returned by the `ajax()` method is pushed into the `allXHR`
+    array that we stored as a member on the widget instance right at the start of
+    the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `ajax()` method accepts a configuration object as an argument which allows
+    us to control how the request is made. We set the request to `POST` using the
+    `type` option, and specify the URL to post to using the `url` option. We add the
+    `FormData` object as the payload of the request using the data option and set
+    the `contentType` and `processData` options to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we don't set the `contentType` option to `false`, jQuery will try to guess
+    which content type should be used for the request, which it may or may not do
+    correctly, meaning some uploads will work and some will fail, seemingly for no
+    apparent reason. The `content-type` of the request will be set to `multipart/form-data`
+    by default as we are using `FormData` which have files appended to them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the `processData` option to `false` will ensure that jQuery doesn't
+    try to transform the file into a URL-encoded query string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to modify the underlying XHR object used to make the request, so that
+    we can attach our handler function to the progress event. The handler must be
+    bound to the event before the request is made and the only way to do that currently
+    is using the `xhr` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The option takes a callback function which we can use to modify the original
+    XHR object and then return it for the request to be made. Inside the callback,
+    we first store the original XHR object, which we can get from jQuery's `ajaxSettings`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check whether the object has an `upload` property, and if it does we
+    set an anonymous function as the value of `onprogress`. Within this function,
+    we simply call the `handleProgress()` method of our widget that we added in the
+    last task, passing it the progress event object and the Progressbar widget that
+    we stored at the start of this task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reporting success and tidying up
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we need to show when each file has finished uploading. We also
+    need to clear the `<table>` from the widget and re-enable the upload button once
+    all of the uploads have completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can show when each individual file has completed uploading using jQuery''s
+    `done()` method, which we can chain after the `ajax()` method that we added in
+    the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to tidy up following the uploads, we can make use of jQuery''s `when()`
+    method. We should add the following code directly after the `each()` method in
+    `uploadFiles()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Because jQuery's `ajax()` method returns a `jqXHR` object, and because this
+    object is a special object called a **promise object**, we can call certain jQuery
+    methods on it. The `done()` method is used to execute code when the request completes
+    successfully.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You may be more used to using jQuery's `success()` method to handle successful
+    AJAX requests, or the `error()` or `complete()` methods. These methods have been
+    removed from the library in version 1.9, so we should use their replacements `done()`,
+    `fail()`, and `always()` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this function all we need to do is remove the clear button and the Progressbar
+    widget for the file that has just finished uploading. We can find the elements
+    that need to be removed easily by navigating to them from the current Progressbar
+    widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We stored a reference to each individual Progressbar in the last task and because
+    the `done()` method is chained to the `ajax()` method, we can still access this
+    element using the variable after the request has completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that there appears to be an extra closing bracket at the end of the `done()`
+    method. The reason for this is because it's still within the `push()` method that
+    we added in an earlier task. It's critical that the `done()` method is added to
+    the correct place – it must be chained to the `ajax()` method inside the `push()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once these elements have been removed, we add a simple message that says the
+    file has finished uploading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also need to remove the `<table>` element from the page once all the requests
+    have been completed. It was for this reason that we stored all of the `jqXHR`
+    objects generated when uploading the files in the last task. We can use jQuery's
+    `when()` method to do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `when()` method can accept a series of promise objects and returns when
+    they have all been resolved. However, this method doesn't accept an array, which
+    is why we call it using JavaScript's `apply()` method instead of calling it normally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can again use the `done()` method to add a callback function to be invoked
+    once the `when()` method has returned. Within this callback, all we do is remove
+    the `<table>` element showing the files that were uploaded and re-enable the upload
+    button by removing the `disabled` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is all we need to do to actually upload the file or files that were selected
+    and receive progress feedback on each file individually, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Viewing the example file**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To see this project in action you'll need to view the page we've created using
+    a web server (using `http://localhost` on your own computer). It won't work if
+    you open the file by double-clicking on it in Explorer or Finder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've made it to the end of the project. At this point we should have an uploader
+    plugin that is easy to use and provides rich features in supporting browsers such
+    as multiple files, file information, an editable upload list, and upload progress
+    reports.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Not all browsers are able to use the features that this widget is built to exploit.
+    The Opera browser for example, sees programmatically triggering the file dialog
+    box as a security risk and so does not allow it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, legacy versions of Internet Explorer (anything prior to version 10) will
+    not be able to handle this code at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supporting incompatible or legacy browsers is beyond the scope of this example,
+    but it would be relatively straight forward to add a fallback that made use of
+    some other technology, such as Flash, in order to provide support for some of
+    the behavior our plugin demonstrates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Or there are a range of older jQuery plugins that make use of `<iframe>` elements
+    to simulate uploading files via AJAX. Instead of focusing on what isn't supported,
+    I've chosen to focus on what *can* be done in supporting browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By uploading the files individually, we were able to add an event handler to
+    monitor the progress of the files being uploaded. This also opens up of the possibility
+    of aborting the upload of individual files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this challenge why not see if you can add a mechanism for canceling the
+    upload of a file. We already have the remove button which is used to remove files
+    before they are uploaded. These could easily be updated so that they cancelled
+    the upload if the upload is in progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A handler for the abort event can be added to the XHR object in the same way
+    as the progress event handler was attached, so it should be easily achievable.
+  prefs: []
+  type: TYPE_NORMAL

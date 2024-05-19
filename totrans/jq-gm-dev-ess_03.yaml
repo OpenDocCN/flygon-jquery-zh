@@ -1,0 +1,494 @@
+- en: Chapter 3. Better, Faster, but not Harder
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The game we just developed will work just fine on almost all devices and in
+    almost all browsers, the main reason being it's very simple and contains few moving
+    sprites. However, as soon as you'll try to make a more complex game like we will
+    in the following chapters, you'll realize that you need to take great care to
+    write optimized code for obtaining good performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we will look back at our previous code and propose an optimized
+    version of some of its aspects. Some of those optimizations are there to make
+    your game run faster and some others are there to make your code more readable
+    and easier to maintain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, it's a good practice to implement a first version of your game with
+    fewer features without worrying too much about performance, and then optimize
+    and add more functions to it. This helps you to avoid spending too much time on
+    something you may not need in the game, allowing you to benchmark your optimizations
+    to make sure they really make things faster, and most importantly, keep you motivated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will dive deeper into the following areas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reducing the number of intervals and timeouts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keyboard polling
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using HTML fragments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Avoiding reflow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using CSS Transform to speed up sprite positioning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `requestAnimationFrame` instead of timeouts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Intervals and timeouts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In our game we used a lot of `setInterval` calls. You may think that those calls
+    are multithreaded, but they are not. JavaScript is strictly single-threaded (with
+    the recent exception of WebWorkers, but we won't look into that here). This means
+    that all those calls are really run one after the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're interested in the dirty details of how exactly intervals and timeouts
+    work, I would recommend reading the excellent article written by *John Resig*,
+    *How JavaScript Timers Work* ([http://ejohn.org/blog/how-javascript-timers-work/](http://ejohn.org/blog/how-javascript-timers-work/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Therefore, intervals and timeouts don't add multithreading to your code, and
+    there are many reasons why you may want to avoid using them too much. First, it
+    makes your code somewhat difficult to debug. Indeed, depending on how much time
+    each call takes, your interval will be executed in a different order, and even
+    those will be of the exact same periodicity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, performance-wise, using `setInterval` and `setTimeout` too much
+    can be very taxing on older browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The alternative is to use a single interval to replace all your animation's
+    functions and the game loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One interval to rule them all
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using one single interval doesn't necessarily mean that you want all your animations
+    to execute at the same rate. An acceptable solution in most cases is to allow
+    any multiple of the base interval for the animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically, you will have your game loop running at a given rate (let's say 30
+    milliseconds), and your animations running at the same rate or two, three, four
+    times slower. However, this doesn't have to be restricted to animations; you may
+    want to have more than one game loop, some of them executed at a much lower rate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, you may want to increase the level of the water in a platform game
+    every second. That way, the player has the incentive to finish the level quickly,
+    otherwise he/she will drown. To allow this in the framework, we will add an `addCallback`
+    function that will take a function and a rate. The game loop from our previous
+    game will be implemented using this instead of `setInterval`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that the `startPreloading` function will slightly change. After the
+    call to the `endCallback` function, we will start a `setInterval` function with
+    a new function that will call all the functions that have been defined through
+    `addCallback` and take care of the animations. Furthermore, we will change its
+    name simply to `startGame` to reflect the change in usage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the game, it won''t be necessary to explicitly create an interval with the
+    game loop as this is automatically done by the `startGame` function; we just have
+    to add it to the game with the function `addCallback`. The following image shows
+    a comparison of this method and the one using many `setTimeout` functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![One interval to rule them all](img/5060OT_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We will implement this in our framework by providing this minimal refresh rate
+    to an `initialize` function. From this point, all the animations and periodical
+    functions will be defined as a multiple of it. We will still use milliseconds
+    in the API to describe their rate, but will store the rate internally as the closest
+    multiple of the base rate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our initialize function will use the `$.extend` function that we used. For now
+    on, we will only have the base refresh rate, but we will add more values as we
+    need them. We also need to define the default values for the base refresh rate
+    to account for the situation where the user didn't specify one manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The newly renamed `startGame` function will look like the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We didn''t change much here; after the `endCallback` function, we added a call
+    to an internal function: `gf.refreshGame`. It''s this function that will, in turn,
+    coordinate both the refreshment of animations and periodic function calls.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This new function will use two lists to know when to do what, one for callbacks
+    and one for animations. We have one for animations already: `gf.animationHandles`.
+    We will rename it simply to `gf.animations` and create a second one named `gf.callbacks`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both lists will have to include a way to know if they should be executed at
+    the current iteration of the base rate or not. To detect this, we will use a simple
+    counter for each animation and callback. Each time the base loop executes, we
+    will increment all of them and compare their values with the rate of the associate
+    animation/callback. If they are equal, it means that we need to execute it and
+    reset the counter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This simple mechanism will replace the many calls to `setInterval` and solve
+    the problems associated to this that we mentioned earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function that sets animations to a div has to be adapted in consequence.
+    As you've seen in the preceding example, the actual code that takes care of finding
+    out which frame of the animation has to be defined is now in the `refreshGame`
+    function. This means that the `setAnimation` function just needs to add the animation
+    to the list without caring about how it will be animated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The part of the function that checks if the div already has an animation associated
+    to it is now slightly more complicated, but otherwise the function is now much
+    simpler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**gf.animations = [];**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to write a similar code to add the callbacks to the base loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function is trivial; the only interesting part is the normalization of
+    the refresh rate to express it as a multiple of the base rate. You probably noticed
+    that we didn''t do anything of that sort for animations, but we will do this now
+    in the function that creates animations. It will now look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that's it; with those simple changes, we will get rid of most `setInterval`
+    functions. It may seem quite a lot of work to duplicate functionality that you
+    get out of the box with vanilla JavaScript, but you will see in time that it helps
+    quite a lot when you start debugging your game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keyboard polling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you played the game from the last chapter, you may have noticed that the
+    movements from left to right from our "frog" are somewhat strange, that is, if
+    you press and hold the left key, your avatar will move left a bit, stall for some
+    time, and start moving left continually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This behavior is not directly caused by the browser, but rather by the operating
+    system. What''s happening here is that the OS will repeat any key when it stays
+    pressed long enough (also known as "sticky keys"). There are two parameters that
+    define this behavior:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The grace period: This is the time during which the OS will wait before repeating
+    the keys. This avoids repeating the keys when you really mean to press them once.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The frequency at which the keys will repeat.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You have no control on those parameters or on the occurrence of this behavior.
+    It all depends on the OS and the way the user configured it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For continuous actions, this is far from ideal. If you move an avatar around
+    in an RPG or a platformer game, you need the movement to be continuous and linear
+    in speed. A solution to this problem is called state polling. With this method,
+    you want to actively query the state of some keys instead of waiting for a change
+    in state as is done with event handling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In your game loop, you would at some point ask if the key "left" is pressed
+    and react accordingly. This is used a lot in native games, but JavaScript doesn't
+    offer this possibility out of the box. We will have to implement a state polling
+    technique ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping track of the keys' state
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To do this we will use the only tools available: the `keydown` and `keyup`
+    events. We will register two event handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If a key with a given keycode "c" is pressed, the first event handler will write
+    `true` in an array at index "c".
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When the same key is released, the second event handler sets the value of index
+    "c" to `false`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'A nice feature of this solution is that we don''t need to initialize the state
+    of the array for each possible key as, by default, it is undefined; so, when we
+    check, its value will return `false`. The following image illustrates how these
+    two event handlers work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Keeping track of the keys'' state](img/5060OT_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We will register those two event handlers at the end of our framework:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once this is done, we can simply move the code that handles the left and right
+    movement to our game loop and rewrite it to use the `gf.keyboard` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we don't need to check if the player dies because we already do it once
+    in the game loop. You just have to keep in mind that more than one key can be
+    pressed at the same time. This wasn't the case in the previous version that used
+    an event handler and where one event was generated for each key that was pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you try the game now, you will notice that the horizontal movements of your
+    player are much better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see, the code that uses polling is prettier and in most cases more
+    compact. Furthermore, it is inside the game loop, which is always a good thing.
+    However, there are still situations where it may not be the best solution. Making
+    our frog jump is a perfect example of this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing between event handling and polling really depends on the situation,
+    but in general, if you want to react to a key pressed once you will use events,
+    and if you want to react to a key pressed continuously you will use polling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML fragments
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Here we will look at some small optimizations in the code that creates the sprites.
+    As this function is called only eight times in our entire game and only during
+    the initialization phase, it's not very important that it's fast in this case.
+    However, there are many situations where you need to create lots of sprites during
+    the game, for example, when shooting lasers in a shoot-'em-up when creating levels
+    of a platformer or the maps of an RPG.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This technique avoids parsing the HTML code (that describes a sprite) each time
+    that you add one to the game. It uses what's called an HTML fragment, which is
+    a kind of a severed branch from the usual HTML tree of nodes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![HTML fragments](img/5060OT_03_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'jQuery offers a very simple way to generate such a fragment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this example, the variable `fragment` will hold the HTML element in memory
+    until we need to use it. It is not automatically added to the document. If you
+    want to add it later you can simply write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Keep in mind that the fragment is still referencing the added element, which
+    means that if you add it to another location later on it will be removed from
+    the previous one, and if you modify it you will modify the document too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To avoid this situation, what you want is to clone the fragment before you
+    insert it into your document, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is exactly the way we will rewrite our `addSprite` function to make it
+    faster:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we created a fragment for the only part that is common to every sprite.
+    Then, before we add it to the document, we clone it and add the special parameters
+    that were provided to the `addSprite` function, such as its position, size, and
+    ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like I said before, you probably won't have noticed any visible changes for
+    our very simple game, but this code is much more efficient and will come in handy
+    in more complex games where we generate lots of sprites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoiding reflow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When modifying the DOM, you must try to avoid generating a complete reflow of
+    the whole document, or of a large part of it. There are many ways of minimizing
+    the risk of doing this, and modern browsers are pretty good at optimizing when
+    they do it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically, the browser will try to regroup as much modification it can before
+    reflowing the document. However, if you try to access information that is dependent
+    on one of those modifications, it will have to perform a reflow in order to be
+    able to calculate the new information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A pretty good rule of thumb is to avoid reading the DOM, like the plague, and
+    as a last resort, group all reads and perform them at the end of the refresh loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our game there is one point where we are in this exact situation: Each time
+    we access the X position of the player''s avatar, we force the browser to reflow.
+    Position and size is probably the most frequently accessed information during
+    the game loop. One simple way to make things faster is to avoid getting them from
+    the DOM. Indeed, as long as they are set through the framework function, we can
+    simply store them somewhere and retrieve them when needed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this we will use jQuery''s `data` function to associate our sprite with
+    an object literal containing those interesting values. The `addSprite` function
+    would be extended this way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, in the `gf.x` and `gf.y` functions we will use this value instead of
+    the CSS property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This also has the advantage of getting rid of two `parseInt` values, and the
+    code of the game doesn't even have to change!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving your sprite around using CSS Transforms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using CSS Transforms is a simple hack that allows you to move objects on the
+    screen much faster than it does with the use of CSS `top` and `left` properties.
+    If you decide to use this, you have to be aware that not all browsers support
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We won''t go into too much detail because CSS Transforms are explained in the
+    next chapter, *Looking Sideways*. The following code is the modification required
+    to use CSS Transforms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in the highlighted part of the code, we need to set both coordinates
+    each time. This means that we have to retrieve the y coordinate when we modify
+    the x coordinate and vice versa.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using requestAnimationFrame instead of timeouts
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A new feature has been added quite recently to browsers in order to make animations
+    smoother: `requestAnimationFrame`. This makes the browser tell you when it''s
+    the best possible time to animate your page instead of doing it whenever you feel
+    like it. You would use this instead of registering your callbacks with `setInterval`
+    or `setTimeout`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you use `requestAnimationFrame`, it's the browser that decides when it
+    will call the function. Therefore, you'll have to take into account the exact
+    time that passed since the last call. The standard specification used to define
+    this time is milliseconds (like the ones you would get with `Date.now()`), but
+    it's now given by a high-precision timer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As there are implementations of those two versions around, and this feature
+    is vendor-prefixed in most browsers, you should use a tool to abstract the dirty
+    details. I would recommend reading these two articles, both of which provide code
+    snippets that you could use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://paulirish.com/2011/requestanimationframe-for-smart-animating/](http://paulirish.com/2011/requestanimationframe-for-smart-animating/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://www.makeitgo.ws/articles/animationframe/](http://www.makeitgo.ws/articles/animationframe/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we spent some time optimizing the game we wrote in [Chapter
+    2](ch02.html "Chapter 2. Creating Our First Game"), *Creating Our First Game*.
+    We've seen some optimization techniques that will make our game smoother without
+    impacting our game's code readability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The framework we've built is now a reasonable foundation upon which we can build
+    a more complete one in the following chapters. We will begin in the following
+    one by adding the capability to create tile maps that we will use to implement
+    a platformer game.
+  prefs: []
+  type: TYPE_NORMAL

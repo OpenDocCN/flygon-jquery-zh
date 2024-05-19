@@ -1,0 +1,459 @@
+- en: Chapter 3. Making a Better FAQ Page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Frequently Asked Questions page has been a mainstay of all types of websites
+    since the dawn of the Web. It's used as a marketing page, as an attempt to reduce
+    the number of calls or e-mails to a customer service department, and as a helpful
+    tool for site visitors to learn more about the company or organization they're
+    dealing with or the products or services they're interested in purchasing.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Though we'll be building an FAQ page for this example, this expand and collapse
+    technique will be useful in many different situations — a list of events with
+    event details, a listing of staff or members with bios, a list of products with
+    details — any situation where a listing of items should be quick and easy for
+    site visitors to scan, but where more information should be readily and easily
+    available upon demand when they find the thing they're looking for.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to traverse an HTML document with jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to show and hide elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use simple jQuery animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to easily toggle a class name for an element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: FAQ page markup
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll get started by taking some extra care and attention with the way we mark
+    up our FAQ list. As with most things dealing with web development, there's no
+    one right way of doing anything, so don't take this approach as the only correct
+    one. Any markup that makes sense semantically and makes it easy to enhance your
+    list with CSS and JavaScript is perfectly acceptable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — setting up the HTML
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll get started with our sample HTML file and associated files and folders,
+    like we set up in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"), *Designer,
+    Meet jQuery*. In this case, our HTML is going to be a definition list with the
+    questions inside the`<dt>` tags and the answers wrapped in`<dd>` tags. By default,
+    most browsers will indent the`<dd>` tags which means the questions hang into the
+    left margin, making them easy to scan. Inside the`<body>` of your HTML document,
+    add a heading and a definition list as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You can adjust the style of the page however you would like by adding in some
+    CSS. Here's how I've styled mine:![Time for action — setting up the HTML](img/6709OS_03_img1.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For users with JavaScript disabled, this page works fine as is. The questions
+    hang into the left margin and are bolder and darker than the rest of the text
+    on the page, making them easy to scan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up a basic definition list to hold our questions and answers. The default
+    style of the definition list lends itself nicely to making the list of questions
+    scannable for site visitors without JavaScript. We can enhance that further with
+    our own custom CSS to make the style of our list match our site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — moving around an HTML document
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're going to keep working with the files we set up in the previous section.
+    Open up the `scripts.js` file that's inside your `scripts` folder. After the document
+    ready statement, write a new empty function called `dynamicFaq:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Let's think through how we would like this page to behave. We would like to
+    have all the answers to our questions hidden when the page is loaded, then when
+    a user finds the question they're looking for, we would like to show the associated
+    answer when they click the question.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'That means the first thing we''ll need to do is hide all the answers when the
+    page loads. That''s as simple as selecting all of our `<dd>` elements and hiding
+    them. Inside your `dynamicFaq` function, add a line of code to hide the `<dd>`
+    elements:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Time for action — moving around an HTML document](img/6709OS_03_img2.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You might be wondering why we didn't use CSS to set the display of the`<dd>`
+    tags to `none`. That would have hidden our answers, but it would have hidden our
+    answers for everyone — site visitors without JavaScript enabled wouldn't have
+    been able to access the answers, the most important part of our page!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: It would also stop most search engines from indexing the content inside of our
+    answers, which could be helpful for people trying to find the answers to their
+    questions in a search engine. By using JavaScript to hide the answers, we can
+    be sure the answers will be available unless the user has JavaScript enabled and
+    is capable of showing them again.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, we need to show the answer when the site visitor clicks on a question.
+    To do that, we need to tell jQuery to do something whenever someone clicks on
+    one of the questions or`<dt>` tags. Inside the `dynamicFaq` function, add a line
+    of code to bind a click function to the`<dt>` tags:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'When the site visitor clicks on a question, we want to get the answer to that
+    question and show it because our FAQ list is set up similar to the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '...we know that the answer is the next node or element in the DOM after our
+    question. We''ll start from the question. When a site visitor clicks a question,
+    we can get the current question by using jQuery''s `$(this)` selector. The user
+    has just clicked on a question, and we say `$(this)` to mean the question they
+    just clicked on. Inside that new `click` function, add `$(this)` so we can refer
+    to the clicked question:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now that we have the question that was just clicked, we need to get the next
+    thing or the answer to that question so that we can show it. This is called **traversing
+    the DOM** in JavaScript speak. It just means that we're moving to a different
+    part of the document.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'jQuery gives us the `next()` method for moving to the next node in the DOM.
+    We''ll select our answer by doing as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we''ve moved from the question to the answer. Now all that''s left to do
+    is show the answer:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Don''t forget that our `dynamicFaq` function won''t do anything until we call
+    it. Call the `dynamicFaq` function inside your document ready statement:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, if we load the page in the browser, you can see that all of our answers
+    are hidden until we click on the question. This is nice and useful, but it would
+    be even nicer if the site visitor could hide the answer again when they''re done
+    reading it to get it out of their way. Luckily, this is such a common task, jQuery
+    makes this very easy for us. All we have to do is replace our call to the `.show()`
+    method with a call to the `.toggle()` method as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now when you refresh the page in the browser, you'll see that clicking the question
+    once shows the answer and clicking the question a second time hides the answer
+    again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Toggling the display of elements on a page is a common JavaScript task, so jQuery
+    already has built-in methods for handling it and making it simple and straightforward
+    to get this up and running on our page. That was pretty easy; just a few lines
+    of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sprucing up our FAQ page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: That was so easy, in fact we have plenty of time left over for enhancing our
+    FAQ page to make it even better. This is where the power of jQuery becomes apparent
+    — you can not only create a show/hide FAQ page, but you can make it a fancy one
+    and still meet your deadline. How's that for impressing a client or your boss?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — making it fancy
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s start with a little CSS to change the cursor to a pointer and add a
+    little hover effect to our questions to make it obvious to site visitors that
+    the questions are clickable. Open up the `styles.css` file that''s inside the
+    styles folder and add this bit of CSS:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: That definitely helps to communicate to the site visitor that the questions
+    are clickable.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — making it fancy](img/6709OS_03_img3.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: When we click a question to see the answer, the change isn't communicated to
+    the site visitor very well — the jump in the page is a little disconcerting and
+    it takes a moment to realize what just happened. It would be nicer and easier
+    to understand if the question were to slide into view; the site visitor could
+    literally see the question appearing and would understand immediately what change
+    just happened on the screen.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: jQuery makes it easy for us. We just have to replace our call to the `.toggle()`
+    method with a call to the `.slideToggle()` method.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you view the page in your browser, you can see that the questions slide
+    smoothly into and out of view when the question is clicked. It's easy to understand
+    what's happening when the page changes, and the animation is a nice touch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We replaced our `toggle()` method with the `slideToggle()` method to animate
+    the showing and hiding of the answers. This makes it easier for the site visitor
+    to understand the change that's taking place on the page. We also added some CSS
+    to make the questions appear to be clickable to communicate the abilities of our
+    page to our site visitors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're almost there!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery made animating that show and hide so easy that we've still got time left
+    over to enhance our FAQ page even more. It would be nice to add some sort of indicator
+    to our questions to show that they're collapsed and can be expanded, and to add
+    some sort of special style to our questions once they're opened to show that they
+    can be collapsed again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding some final touches
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s start with some simple CSS to add a small arrow icon to the left side
+    of our questions. Head back into `style.css` and modify the styles a bit to add
+    an arrow icon or an icon of your choosing. You can place the icon you choose inside
+    your `images` folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I'm using an image sprite for the arrows. As I'm changing the color of my questions
+    from blue to green when the mouse hovers over the questions, I've included both
+    the blue and green arrows in my sprite and am using a bit of CSS to show the green
+    arrow when the text turns green. That means only one image has to download and
+    there's no delay in downloading a new image to show when the mouse hovers over
+    my question. If you're unfamiliar with the CSS image sprite technique, I recommend
+    taking a look at *Chris Coyier's* article explaining it at [http://css-tricks.com/css-sprites/.](http://css-tricks.com/css-sprites/.
+    )
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, we want to change the arrow to a different orientation when the question
+    is opened. All we have to do is use a new CSS class for the open state of our
+    questions and code the off and on states so the new arrow shape changes color
+    as well. Again, I''ve included these arrow images in the same sprite, so the only
+    thing I have to change is the background position:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Just make sure to add these new classes *after* the other CSS we're using to
+    style our`<dt>` tags. That will ensure that the CSS cascades the way we intended.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: So we have our CSS to show our questions are open, but how do we actually get
+    to use it? We'll use jQuery to add the class to our question when it is opened,
+    and to remove the class when it's closed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'jQuery provides some nice methods for working with CSS classes. `addClass()`
+    will add a class to a jQuery object and `removeClass()` will remove a class. However,
+    we want to toggle our class just like we''re toggling the show and hide of our
+    questions. jQuery''s got us covered for that too. We want the class to change
+    when we click on the question, so we''ll add a line of code inside our `dynamicFaq`
+    function that we''re calling each time a `<dt>` is clicked:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now when you view the page, you'll see your open styles being applied to the
+    `<dt>` tags when they're open and removed again when they're closed. But we can
+    actually crunch our code to be a little bit smaller.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: One of the most powerful features of jQuery is called chaining. We've already
+    used chaining in our code when we added `slideToggle()` to the `next()` method
+    on one line.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Methods in jQuery can be chained. You can keep adding new methods to further
+    transform, modify or animate an element. This line of code gets the question,
+    traverses the DOM to the next node, which we know is our `<dd>`, and then toggles
+    the slide animation for that `<dd>.`
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We can take advantage of chaining again. We have a bit of redundancy in our
+    code because we''re starting two different lines with `$(this)`. We can remove
+    that extra `$(this)` and just add our `toggleClass()` method to the chain we''ve
+    already started as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Time for action — adding some final touches](img/6709OS_03_img4.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We created CSS styles to style the open and closed states of our questions,
+    and then we added a bit of code to our JavaScript to change the CSS class of the
+    question to use our new styles. jQuery provides a few different methods for updating
+    CSS classes, which is often a quick and easy way to update the display of our
+    document in response to input from the site visitor. In this case, since we wanted
+    to add and remove a class, we used the `toggleClass()` method. That saved us from
+    having to figure out on our own if we needed to add or remove the open class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also took advantage of chaining to simply add this new functionality to our
+    existing line of code, making the animated show and hide of the answer and the
+    change of CSS class of our question happen all in just one line of code. How's
+    that for impressive power in a short amount of code?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to set up a basic FAQ page that hides the answers
+    to the questions until the site visitor needs to see them. Because jQuery made
+    that so simple, we had plenty of time left over for enhancing our FAQ page even
+    more, adding animations to our show and hide of the questions, and taking advantage
+    of CSS to style our questions with special open and closed classes to communicate
+    to our site visitors how our page works. And we did all of that with just a few
+    lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we'll learn how to use custom scrollbars on our pages.
+  prefs: []
+  type: TYPE_NORMAL

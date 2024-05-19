@@ -1,0 +1,540 @@
+- en: Chapter 8. jQuery Mobile Configuration, Utilities, and JavaScript methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will look at how JavaScript can be used to further configure
+    and enhance jQuery Mobile websites. So far we've made use of HTML and CSS to generate
+    everything. Now we'll look at additional scripting that add additional functionality
+    to your sites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Explain how jQuery Mobile sites can be configured via JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discuss the various JavaScript utilities that ship with jQuery Mobile and how
+    they can be used
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Explain the APIs used to work with the enhanced jQuery Mobile form and widget
+    controls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring jQuery Mobile
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery Mobile does many things for you — from improving page navigation to changing
+    how form controls work. All of this is done in an effort to make your content
+    work better in a mobile environment. There will be times, however, when you do
+    not want jQuery Mobile to do something, or you perhaps simply want to slightly
+    tweak how the framework acts. That's where configuration comes in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To configure a jQuery Mobile site, you begin by writing code that listens for
+    the `mobileinit` event. This can be listened to using a normal jQuery event handler,
+    similar to the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order for this event to be captured, you must configure it before jQuery
+    Mobile is actually loaded. The simplest way to do this, and the way recommended
+    by the jQuery Mobile docs, is to simply place this code in a script loaded before
+    the jQuery Mobile JavaScript library. The following code snippet shows what the
+    header of our files typically look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Notice the jQuery Mobile library is the last one loaded. We can simply add
+    in a new script tag before it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Configuring jQuery Mobile is as simple as updating the `$.mobile` object. The
+    following code snippet is a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This object contains a set of key/value pairs for the various settings that
+    can be configured. You don''t actually create it — it exists when the event handler
+    is run. Another option is to make use of jQuery''s `extend()` functionality, as
+    shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Either form is ok and works absolutely the same. Use whichever feels more comfortable.
+    Now, let''s look at the various configuration options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Settings | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ns` | This is the namespace value used for data attributes. It defaults
+    to nothing. You would specify a value here if you wanted to prefix the jQuery
+    Mobile-recognized data attributes. So for example, if you wanted to use `data-jqm-role="page"`
+    instead of `data-role="page"`, you would configure the ns value to be `jqm`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `activeBtnClass` | This simply sets the class name used for buttons in the
+    active state. The default for this value is `ui-btn-active`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `activePageClass` | This sets the class name for pages that are currently
+    being viewed. The default for this value is `ui-page-active`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ajaxEnabled` | We''ve discussed before how Ajax is used for both, page loads
+    and form submissions. If you wish to disable this, set this value to `false`.
+    The default, obviously, is `true`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `allowCrossDomainPages` | A security setting that defaults to false, setting
+    this to true allows for remote pages to be loaded via `$.mobile.loadPage`. This
+    is normally only required for PhoneGap applications that load content from another
+    server. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `autoInitializePage` | Normally, jQuery Mobile will run `$.mobile.initializePage`
+    on load. This displays the renders page. (At this time, this particular function
+    isn''t properly documented.) If you wish to disable this default value, set `autoInitializePage`
+    to `false`. You will need to run `$.mobile.initializePage` manually. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `defaultDialogTransition` | Specifies what transition should be used to show
+    or hide dialogs. The default is `pop`. Possible values are: `fade, flip, pop,
+    slide, slidedown`, and `slideup`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `defaultPageTransition` | Like the previous option, this setting is used
+    for transitions, this time for page loads. The default is `slide` and the options
+    similar to the previous option are possible. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `gradea` | Used to determine what actually constitutes a "good" browser.
+    This is handled by jQuery Mobile but if you want to overrule the framework, or
+    define some other condition that must be met, you would provide a function here
+    that returns a Boolean (true or false). |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `hashListeningEnabled` | Refers to the ability to listen to changes in the
+    `location.hash` property of the browser. jQuery Mobile handles this normally,
+    but if the value is set to `false`, you can write your own code to respond to
+    these changes. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ignoreContentEnabled` | Normally jQuery Mobile automatically enhances everything
+    it can. You can disable this in some cases at a control level, but you can also
+    tell jQuery Mobile to ignore everything within a particular container by adding
+    `data-enhance=true`. If you make use of this feature, then your configuration
+    must be set `ignoreContentEnabled` to `true`. This tells jQuery Mobile to look
+    for, and respect, that particular flag. This is set to `false` by default and
+    allows jQuery Mobile to do its magic quite a bit faster. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `linkBindingEnabled` | jQuery Mobile typically listens to all link clicks.
+    If you wish to disable this globally, you can do so with this setting. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `loadingMessage` | This specifies the text used when pages are loading. This
+    is normally "loading", but you could use custom code here to check the user''s
+    locale and use a local specific version. However, the message is typically hidden.
+    See the next setting for more information. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `loadingMessageTextVisible` | When pages are loaded by jQuery Mobile, only
+    a loading graphic is used. If you wish a message to be displayed as well, set
+    this value to `true`. The default is `false`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `loadingMessageTheme` | The theme to use for the page loading dialog. The
+    default is `a`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `minScrollBack` | jQuery Mobile will attempt to remember your scrolled position
+    in a page when you return to it. This can be useful on a large page that the user
+    returns to after visiting another page. By default, the scroll will be remembered
+    if it is more than `150`, the default. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `pageLoadErrorMssage` | This is a message shown to users if an error occurs
+    when loading a page. The default is **Error Loading Page**, but could be changed
+    for localization reasons. (Or any reason really.) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `pageLoadErrorMessageTheme` | The theme to use when a page load error dialog
+    is displayed. The default is `e`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `pushStateEnabled` | Tells jQuery Mobile to use the HTML5 `pushState` functionality
+    instead of hash based changes for page navigation. This defaults to `true`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `subPageUrlKey` | jQuery Mobile supports multiple pages within one file.
+    In order to make these "virtual" pages bookmarkable, jQuery Mobile will append
+    a value to the URL containing the prefix ui-page. So for example, `ui-page=yourpage`.
+    This setting lets you customize the prefix. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'That''s quite a few options, but typically you will only need to configure
+    one or two of these settings. Let''s look at a simple example where a few of these
+    are put to use. `Listing 8-1` is the home page for the application. Note the use
+    of the additional script tag to load in our configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The file contains two pages, and links to another, `test2.html`. That page simply
+    provides a link back so will not be included in the text. Now let's look at `config.js:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In `config.js`, two settings are modified - the default page transition and
+    the loading message for pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In an earlier chapter, we discussed forms and how jQuery Mobile automatically
+    enhances controls. While you can suppress this enhancement on a control within
+    your HTML, you can also tell jQuery Mobile a list of controls never to enhance.
+    To set this list, specify a value for `$.mobile.page.prototype.options.keepnative`.
+    The value should be a list of selectors. Any field that matches one of the selectors
+    will *not* be enhanced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery Mobile utilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we've covered jQuery Mobile configuration, let's take a look at the
+    utilities available to your applications. These are utilities provided by the
+    framework and can be used in any application. You may not need them all (or any)
+    on your site, but knowing they are there can help save you time in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Page methods and utilities
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s begin looking at methods and utilities related to pages and navigation
+    between pages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$.mobile.activePage:` This property is a reference to the current page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.changePage(page,options):` This method is used to change to another
+    page. The first argument, page, can be either a string (the URL), or a jQuery
+    DOM object. The `options` argument is an optional object of key/value pairs. These
+    options are:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`allowSamePageTransition:` Normally jQuery Mobile will not allow you to transition
+    to the same page, but if set to `false`, this will be allowed.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`changeHash:` Determines if the URL should change.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data:` Either a string or an object of values passed to the next page.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-url:` Value used for the URL in the browser. This is normally set by
+    the page the user is being sent to. You can override this here.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pageContainer:` jQuery Mobile will place pages within a DOM item that acts
+    as a *bag* for all the pages. You can bypass this automatic collection and use
+    another item in the DOM instead.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`reloadPage:` If a page already exists in the browser, jQuery Mobile will fetch
+    it from memory. Setting this to `true` will force jQuery Mobile to reload the
+    page.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`role:` jQuery Mobile will typically look for the `data-role` attribute of
+    the page loaded. To specify another role, set this option.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`showLoadMsg:` Normally jQuery Mobile shows a loading message when a page is
+    fetched. You can disable this by setting this value to `false`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`transition:` What transition to use. Remember this can be configured at a
+    global level as well.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`type:` We mentioned earlier that jQuery Mobile loads in new pages via an Ajax-based
+    request. The `type` option allows you to specify the HTTP method used to load
+    the page. The default is `get`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.loadPage(page,options):` This is a lower-level function used when
+    `$.mobile.changePage` is passed a string URL to load. Its first argument is the
+    same as `$.mobile.changePage`, but its options are limited to `data, loadMsgDelay,
+    pageContainer, reloadPage, role`, and `type`. Those options are the same as those
+    listed in the previous option, except for `loadMsgDelay`. This value gives time
+    for the framework to try to fetch a page via the cache first.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.showPageLoadingMsg()` and `$.mobile.hidePageLoadingMsg():` Either
+    shows or hides the page loading message. The `showPageLoadingMsg` function allows
+    for custom text, theming, and an icon only view.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In `listing 8-2`, a simple example of `$.mobile.changePage` is demonstrated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The page simply contains one button. At the bottom of the file is a jQuery event
+    listener for that button. When clicked, `$.mobile.changePage` is used to load
+    `test2.html` while making use of the flip transition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Path and URL related utilities
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'These utilities are related to the current location, URL, or path of the application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$.mobile.path.isAbsoluteUrl` and `$.mobile.path.isRelativeUrl:` These two
+    functions look at a URL and allow you to check if they are either a full, or absolute
+    URL, or a relative URL.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.path.isSameDomain(first url, second url):` Allows you to compare
+    two URLs and determine if they are in the same domain. This method will notice
+    http versus https and correctly consider these separate domains.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.path.makePathAbsolute(relative path, absolute path):` Takes a relative
+    path, compares it to an absolute path, and returns an absolute path version of
+    the relative path.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.path.makeUrlAbsolute(relative url, absolute url):` A slightly different
+    form of the previous function, this utility works with absolute URLs instead.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.path.parseUrl(url):` URLs are made up of many different parts. This
+    function will take either a full or relative URL and return an object containing
+    the following properties: hash, host, hostname, href, pathname, port, protocol,
+    and search. Along with these fairly typical URL properties, the function also
+    returns the following properties:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`authority:` Contains the username, password, and host properties.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`directory:` Given the path portion of a URL, this will return just the directory.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`domain:` Contains the authority and protocol portions of the URL.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`filename:` Returns just the filename portion of the URL.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hrefNoHash:` Given a URL with a hash, this returns the href minus the hash.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hrefNoSearch:` Given a URL with a search property, this returns the href minus
+    the search value.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`username` and `password:` Contains the username and password if present in
+    the URL.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Listing 8-3` is a *tester* application. It contains form fields allowing you
+    to test all of the methods previously discussed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Listing 9-4` is a bit long, but it''s really pretty simple. Each `fieldcontain`
+    block consists of one particular test of the path methods and utilities. In the
+    bottom half of the template you can see we''ve made use of `keyup` event listeners
+    to monitor changes to these fields and run each test. You can use this template
+    to see how these methods react based on different inputs. The following screenshot
+    shows an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Path and URL related utilities](img/7263_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Miscellaneous utilities
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are a few more utilities you may want to know about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$.mobile.fixedToolbars.hide()` and `$.mobile.fixedToolbars.show():` Either
+    show or hide fixed toolbars. Both utilities can take a Boolean argument that specifies
+    if the hide (or show) action takes place immediately. If not specified (or false
+    is passed) then the toolbars will animate as they hide or show.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.mobile.silentScroll(position):` Scrolls the page to a certain y-position.
+    The term `silent` here refers to the fact that this method will *not* fire any
+    code listening for scroll events.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jqmData()` and `jqmRemoveData():` Due to jQuery Mobile''s heavy use of data
+    attributes for various features, "regular" usage of jQuery''s data functions should
+    be replaced with these instead. They handle recognizing any update to the default
+    namespace as well.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery widget and form utilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ve mentioned, numerous times, how jQuery Mobile automatically updates various
+    items and supports things like lists and collapsible content. One of the things
+    you may run into, however, is trying to get jQuery Mobile to work with content
+    loaded *after* the page is rendered. So, for example, imagine a list view that
+    has data added to it via some JavaScript code. `Listing 8-4` demonstrates a simple
+    example of this. It has a `listview` with a few items in it, but also a form by
+    which a person could add new entries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When initially loaded, notice everything seems fine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![jQuery widget and form utilities](img/7263_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'However, the following screenshot shows what happens when an item is added
+    to the end of the list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![jQuery widget and form utilities](img/7263_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As you can see, the new item was indeed added to the end of the list, but it
+    wasn''t drawn correctly. This brings up a critical point. jQuery Mobile parses
+    your code for data attributes and checks for form fields once. After it has done
+    so, it considers its work done. Luckily, there is a standard way for these UI
+    items to be updated. For our `listview` it is a simple matter of calling the `listview`
+    method on the list itself. The `listview` method can be used to turn a new list
+    into a `listview`, or to refresh an existing `listview`. To refresh our `listview`
+    , we''d simply modify the code, as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can find the previous code snippet in `test6.html`. The following screenshot
+    shows how the application handles the new item:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![jQuery widget and form utilities](img/7263_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: That `listview` method could also be used for completely new lists. Consider
+    the following code snippet `listing 8-5:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, a completely new list is appended to the `div` tag. Notice
+    that we still include the proper `data-role`. But, this by itself, is not enough.
+    We follow up the HTML insertion with a call to the `listview` method to enhance
+    the list just added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar APIs exist for other fields. For example, new buttons added to a page
+    can be enhanced by calling the `button()` method on them. In general, assume any
+    changes to enhanced controls will need to be updated via their respective JavaScript
+    APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we (finally!) broke out some JavaScript. We looked at how you
+    can configure various jQuery Mobile settings, what utilities exist, and how to
+    handle post-rendered updates to enhanced controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll continue working with JavaScript and look at the
+    various events your code can listen to.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1186 @@
+- en: Chapter 9. Methods and Utilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `loadPage()` to load a page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `changePage()` to change a page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `jqmData()` and `jqmRemoveData()`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `jqmEnhanceable()`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `jqmHijackable()`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `$.mobile.base`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parsing an URL
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `$.mobile.path` utility methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using silent scrolling
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework provides numerous methods and utilities that work
+    on the `$.mobile` object. This chapter shows you how to use these methods and
+    utilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The source files for all the recipes in this chapter are available under the
+    `code/09` folder of the archive. Each recipe is listed in its own sub-folder,
+    which is named accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using loadPage() to load a page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using the `$.mobile.loadPage()` method, you can load an external page in the
+    background into the DOM and enhance its contents without affecting the current
+    page. This recipe shows you how to do the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/loadpage` source folder.
+    You can launch this code by using the URL: `http://localhost:8080/09/loadpage/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with the page `id="main"`, and add an empty `div` tag and
+    a link to `#page1`, shown as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add an event handler for the `pagebeforeshow` event of `#main`, and load `#page1`
+    using the `loadPage()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add an event handler for the `pagebeforeshow` event of `#page1` to update the
+    displayed message:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, create `page1.html`, shown as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create main.html with `#main` page, and add an empty `div` with `id="msgdiv"`
+    and a link to open `#page1` in it. The `#page1` reference is not yet available
+    during `pageinit`, as it comes from the external `page1.html` file. Add the event
+    handler for the `pagebeforeshow` event on the `#main` page. Here, obtain the current
+    active page using the `$.mobile.activePage()` method, and display its `data-url`
+    attribute in `#msgdiv` using the jQuery `attr()` method. Next, load `page1.html`
+    using the `$.mobile.loadPage()` call. Also, set the `loadPage()` options, and
+    set the `role` attribute to `dialog`. The page now gets loaded in the background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add an event handler for the `pagebeforeshow` event of `#page1`. Obtain `data-url`
+    of the active page, as done previously, and display it in the `#page1content`
+    div container. Finally, create `page1.html` with an empty div with `id="page1content"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When `main.html` loads, you will see the **Show Page 1** button. Click on it,
+    and `page1.html` will be shown as a dialog box using the default pop transition.
+    Also, the active page data URL will be correctly shown in both the pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`$.mobile.loadPage()` returns a deferred `promise` object, which automatically
+    gets resolved once the page is enhanced and loaded into the DOM.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The loadPage() options
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `loadPage()` method takes in an optional `options` object as the second
+    argument. The following properties can be set on the `options` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`data`: This is the data for the Ajax page request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`loadMsgDelay` (50 seconds by default): This is the delay before the page load
+    message is shown'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pageContainer`: This is the element that contains the loaded page'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`reloadPage` (`false` by default): This forces the page to be reloaded'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`role`: This is the `data-role` value for the page load'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`showLoadMsg` (`false` by default): This decides whether to display the page
+    load message or not'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`type` (`get` by default): This specifies the type of Ajax request (`get` or
+    `post`)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using changePage() to change a page* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Using page load and remove events* recipe in [Chapter 8](ch08.html "Chapter 8. Events"),
+    *Events*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using changePage() to change a page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to use the `$.mobile.changePage()` method to change
+    from one page to another using JavaScript. This recipe extends the *Using a split
+    button list* recipe from [Chapter 6](ch06.html "Chapter 6. List Views"), *List
+    Views*, and displays the selected image from the list item in a new page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/changepage` source folder.
+    Also, revisit the *Using a split button list* recipe from [Chapter 6](ch06.html
+    "Chapter 6. List Views"). You can launch this code by using the URL: `http://localhost:8080/09/changepage/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with a split button list, with the `href` attribute for
+    the `<img>` tag having a `file` parameter, with the path for the image file in
+    the left button, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the `#viewphoto` page, and open it when the left part of the split button
+    is clicked:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section, and call `$.mobile.changePage()`
+    in the `pagebeforechange` event handler:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Display the image in the `pagebeforeshow` event handler of the `#viewphoto`
+    page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Add the split button list and the `#viewphoto` page in `main.html`, as shown
+    in the code. Add an empty `#imgid` attribute to the `div` tag in the `#viewphoto`
+    page, to show the full image. The split button list and the `#viewphoto` page
+    code are already explained in [Chapter 6](ch06.html "Chapter 6. List Views").
+    The `href` attribute of the right button just points to `#`, as it is not used
+    in this recipe. Change the list item `href` attribute in the left buttons to include
+    the file parameter; for example, `href="#viewphoto&file=img1.png"`. When the app
+    is launched, the following screen is displayed with thumbnails, as shown in the
+    split button list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: But, nothing happens when you click on the split list buttons, as the framework
+    does not understand the file parameter with the `href` attribute. To open and
+    display the image, you will have to manually handle the page change. To manually
+    invoke `pageChange()`, add an event handler for the `pagebeforechange` event.
+    Here, check if the target page (`data.toPage`) is an URL string, and obtain the
+    URL components using the `$.mobile.path.parseUrl()`method. Now, search for the
+    file parameter in the URL hash using the regular expression—`#viewphoto&file`.
+    If it is found, then it is a request to view the image. You must now handle the
+    page change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Call the `pageChange()` method and pass it the `main.html#viewphoto` URL. Also,
+    set the `options` argument with custom values for `transition`, `type`, and `dataUrl`.
+    You can store the filename information in `dataUrl` by splitting the URL hash
+    as shown. Finally, prevent the default `pagebeforechange` event handling, as you
+    are already handling the page change here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, you will have to query the URL string provided to `pageChange()` for
+    the `file` parameter, and display the image. To do this, add an event handler
+    for the `pagebeforeshow` event of the #`viewphoto` page. Get the URL components
+    using the `$.mobile.path.parseUrl()` method. Search for the `img` expression;
+    if found, get the filename from the URL hash and display the image in the `#imgid`
+    div container, as shown in the code. Now, if you click on any list item, the corresponding
+    image is displayed in a larger size in the `#viewphoto` page, as shown in the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `$.mobile.changePage()` method uses the `$.mobile.loadPage()` method internally
+    to fetch the new page during the page change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The changePage() options
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `changePage()` method takes in an optional `options` object as the second
+    argument. The following properties can be set on the `options` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`allowSamePageTransition` (`false` by default): Transitions to the current
+    active page are ignored by default, but can be enabled by using the `allowSamePageTransition`
+    option'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`changeHash` (`true` by default): This updates hash in the location bar'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data`: This is the data for the Ajax page request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`dataUrl`: This is the URL to update the browser location after page change'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pageContainer`: This is the element that contains the loaded page'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`reloadPage` (`false` by default): This forces the page to be reloaded'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`reverse` (`false` by default): This is the direction of transition for page
+    show'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`role`: This provides the `data-role` value for showing the page'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`showLoadMsg` (`false` by default): This decides whether or not to display
+    the page load message'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`transition`: This is the transition to be used for page change'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`type` (`get` by default): This specifies the type of Ajax request (`get` or
+    `post`)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using loadPage() to load a page* and *Parsing a URL* recipes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Using a split button list* recipe, in [Chapter 6](ch06.html "Chapter 6. List
+    Views"), *List Views*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Using page load and remove events* recipe in [Chapter 8](ch08.html "Chapter 8. Events"),
+    *Events*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using jqmData() and jqmRemoveData()
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `jqmData()` and `jqmRemoveData()` methods are available to add or remove
+    data attributes to the elements of a jQuery mobile app. They automatically handle
+    custom namespaces. This recipe shows you how to use these methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/jqmdata` source folder.
+    You can launch this code by using the URL: `http://localhost:8080/09/jqmdata/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add the following script to `main.html` before including `jquery.``mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add two text inputs and a button to the page, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to invoke the `jqmData()`
+    and `jqmRemoveData(``)` methods:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add an event handler for the `mobileinit` event, before including
+    the reference to `jquery.mobile.js`. This is invoked at the start of the app.
+    Here, set the `$.mobile.ns="my-"` namespace configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add two text inputs with `id="pgtheme"` and `id="customdata"` to display the
+    page theme and custom data, respectively. Add a button with `id="clearbtn"`. Next,
+    bind the `pageinit` event to a callback function. In this function, get the `page`
+    element using the `div:jqmData(role='page')` custom selector. Using `jqmData()`
+    ensures that the lookup of the data attribute (`data-my-role`) with a custom namespace
+    is automatically handled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Set a **Custom Data** attribute on the page with the value **Custom data text**
+    using the `jqmData()` method, as shown in the following screenshot. Finally, display
+    the **Page Theme** and **Custom Data** attributes in the two text inputs. The
+    page is displayed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Next, add a `click` event handler for `#clearbtn` to remove the custom data
+    attribute set on the page using the `jqmRemoveData()` method, and update the value
+    of the **Custom Data** text field. Now, when you click on the **Clear Custom Data**
+    button, the text input will display **undefined**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The jQuery methods `data()`, `hasData()` , and `removeData()`, do not take the
+    namespace of the `data-` attributes into consideration. You will have to write
+    a custom code to handle it. Instead, use the `jqmData()` and `jqmRemoveData()`
+    methods, as shown in this recipe. You can inspect the code using a DOM inspector
+    to verify the use of a custom namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Configuring the default namespace* recipe in [Chapter 7](ch07.html "Chapter 7. Configurations"),
+    *Configurations*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using jqmEnhanceable()
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When `data-enhance="false"` is set on a parent element, it is inherited by all
+    the child elements. To search for elements that can use manual enhancements or
+    for custom plugin authoring, the jQuery Mobile framework provides a filter method
+    called `jqmEnhanceable()`. This recipe shows you how to use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/09/jqmenhance` source folder.
+    You can launch this code using the URL `http://localhost:8080/09/jqmenhance/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add the following script to `main.html` before including `j``query.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add two anchor buttons to the page as shown. The second button is within a `div`
+    tag which has `data-``enhance="false"`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to invoke the `jqmEnha``nceable()`
+    method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add an event handler for the `mobileinit` event before including
+    the reference to `jquery.mobile.js`, which is invoked at the start of the app.
+    Set the `$.mobile.ignoreContentEnabled=true` configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add two `div` tags to the content of `#main`. Add a `#` link to both these `div`
+    tags. Do not set the `data-role="button"` attribute on either of the links. The
+    second `div` tag has the `data-enhance="false"` attribute set. Next, bind the
+    `pagecreate` event to an event handler. At this point, the page is already `initialzied`,
+    but the widgets are yet to be enhanced. Now invoke the `jqmEnhanceable()` method
+    on the anchor element, as shown. This filters and provides only those anchor elements
+    that do not have `data-enhance="false"` inherited from its parent. So, in the
+    code, `Link 1` is made available. Set its `data-role` attribute to `button` using
+    the jQuery `attr()` call, as shown in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, when you open the app, only **Link 1** is enhanced to a button and **Link
+    2** is not enhanced, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `jqmEnhanceable()` method works only when the `$.mobile.ignoreContentEnabled=true`
+    configuration is set. The parent node of each element is visited and checked for
+    the `data-enhance` value, and any parent that has a `false` setting is removed
+    with its child elements from the filtered set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using `jqmEnhanceable()` on even a small set of elements is costly, as all the
+    parent elements are checked for the `data-enhance` value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using jqmHijackable()* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using jqmHijackable
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When `data-ajax="false"` is set on a parent element, this is inherited by all
+    the child elements. A filter method called `jqmHijackable()` is available to search
+    for child elements that can use custom forms and link binding. This recipe shows
+    you how to use this method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/jqmhijack` source folder.
+    You can launch this code by using the URL: `http://localhost:8080/09/jqmhijack/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add the following script to `main.html` before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add two anchor buttons to the page, as shown. The second button is within a
+    `div` tag, which has `data-ajax="false"`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to invoke the `jqmHijackable()`
+    method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, create `page1.html`, as shown in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add an event handler for the `mobileinit` event before including
+    the reference to `jquery.mobile.js`. This is invoked at the start of the app.
+    Set the `$.mobile.ignoreContentEnabled=true` configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add two `div` tags to the content of `#main`. Add a link to the external `page1.html`
+    file in both these `div` tags. The second `div` tag has the `data-ajax="false"`
+    attribute set. Next, bind the `pageinit` event to an event handler, and invoke
+    the `jqmHijackable()` method on the anchor element, as shown. This filters and
+    provides only those anchor elements that do not have `data-ajax="false"` inherited
+    from their parent. So, in the code, `Link 1` is made available. Set its `data-transition`
+    attribute to `flip` using the jQuery `attr()` call, as shown in the code. Finally,
+    create `page1.html`, and add the **Go Back** link to return to the `#main` page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, when you click on **Link 1**, `page1.html` opens with the flip transition.
+    But, if you click on **Link 2**, `page1.html` is opened without the flip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this recipe, **Link 2** opens `page1.html` using `data-ajax="false"`. This
+    will clear `main.html` from the DOM. Returning back to `main.html` will load `main.html`
+    into the DOM, but will not trigger the `mobileinit` event. This will cause **Link
+    1** to not use the flip transition when opening `page1.html`. To work around this
+    issue, add the `data-ajax="false"` attribute to return the link in `page1.html`.
+    This will reload `main.html` into DOM freshly and trigger the `mobileinit` event.
+    Now, moving from `main.html` to `page1.html` via both links works smoothly any
+    number of times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.mobile.ignoreContentEnabled configuration
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `jqmHijackable()` method works only when the `$.mobile.ignoreContentEnabled=true`
+    configuration is set. The parent node of each element is visited and checked for
+    the `data-ajax` value, and any parent that has a `false` setting is removed with
+    its child elements from the filtered set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using `jqmHijackable()` on even a small set of elements is costly, as all the
+    parent elements are checked for the `data-ajax` value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using jqmEnhanceable()* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using $.mobile.base
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `$.mobile.base` object provides the reference to the original document base.
+    You can set a custom value on the base object using the `set()` method. You can
+    use the `reset()` method to revert to the original value. This recipe shows you
+    how to use these utility methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/base` source folder. You
+    can launch this code by using the URL: `http://localhost:8080/09/base/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with two buttons, as shown in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to display the document base object values:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Invoke the `$.mobile.base` utility methods in the `pageinit` event handler:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add an empty `div` tag with `id="dispdiv"`, and add two buttons (`#changebtn`
+    and `#resetbtn`) to `main.html`, as shown. Add a `disp()`function to display the
+    current document base and the original document base values in the `#dispdiv`
+    div container. You can get the original document base using the `$.mobile.getDocumentBase()`
+    method. Invoke the `disp()` function on the `pageinit` event. On first load, the
+    base values are displayed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, bind the click event of the `#changebtn` to an event handler, and set
+    the document base to a custom value using the `$.mobile.base.set()` method. Click
+    on the **Set Document Base** button now, and the custom base is displayed, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Bind `#resetbtn` to an event handler, and reset the document base by calling
+    the `$.mobile.base.reset()` method. Click on the **Reset Document Base** button
+    and you will see that the base value has been reverted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parsing an URL
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `$.mobile.path` object provides properties and methods that you can use
+    to work with URLs. This recipe shows you how to fetch the components of a URL
+    using the `$.mobile.path.parseUrl()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/parseurl` source folder.
+    You can launch this code by using the URL: `http://localhost:8080/09/parseurl/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with an empty `div` tag and an anchor link, as shown in
+    the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to fetch the URL of the anchor
+    button when it is clicked:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following method to display the various components of the URL:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add an empty `div` tag with `id="msgdiv"` to `main.html`. Add a link with a
+    complex `href` string, as shown in the code. Create a `dispPath` function that
+    takes in a URL string. Here, call the `$.mobile.path.parseUrl` method to obtain
+    an object (`#urlcomp`) that contains the various components of the URL. Display
+    these URL components in the `#msgdiv` div container. When the app is first loaded,
+    call the `dispPath()` method in the `pageinit` event handler, and pass it to the
+    document URL parameter `got`, by calling the `$.mobile.getDocumentUrl()` method.
+    The following screenshot is displayed on first load:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, add an event handler for the `click` event of the anchor link. Invoke
+    the `dispPath()` function, and pass it the `href` attribute as the parameter.
+    Get the `href` attribute by calling the jQuery `attr("href")` method on the anchor
+    object. Finally, call the `event.preventDefault()` and `event.stopPropagation()`
+    methods to prevent the default action of the click event. Now, when you click
+    on **Link 1**, the URL components of the complex `href` attribute are displayed
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `$.mobile.parseUrl()` method returns an object that contains the string
+    values of the various URL components as follows; empty strings are stored when
+    a particular URL component is not used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`href`: This is the original URL that was parsed'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hrefNoHash`: This is the `href` attribute without the hash component'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hrefNoSearch`: This is the `href` attribute without the search query and hash'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`domain`: This has the protocol and authority components'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`protocol`: This is the protocol (includes the `:` character)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`authority`: This has the username, password, and host components'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`username`: This is the username'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`password`: This is the password'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`host`: This is the host and port'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hostname`: This is the name of the host'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`port`: This is the port (can be empty if the protocol uses its default port)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pathname`: This is the path of the file or directory referenced'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`directory`: This is the directory part of the pathname without filename'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`filename`: This is the filename part of the pathname without directory'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`hash`: This is the hash component (includes the `#` character)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`search`: This is the query component (includes the `?` character)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using $.mobile.path utility methods* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using $.mobile.path utility methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to use the utility methods provided by the `$.mobile.path`
+    object in your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/path` source folder. You
+    can launch this code by using the URL: `http://localhost:8080/09/path/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create the `main.html` page with four anchor links, as shown in the following
+    code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add the following script to the `<head>` section to get the URL of the link
+    clicked.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the `disppath()` function to display the output of the `$.mobile.path`
+    utility methods:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Add an empty div tag with `id="msgdiv"` to `main.html`. Add four links with
+    different URLs, as shown in the code. Add script to the `<head>` section to obtain
+    the original document URL (`#docurl`) of the page using the `$.mobile.getDocumentUrl()`
+    method in the `pageinit` event handler. Use this URL as the reference point for
+    comparison in this recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, add an event handler for the `click` event of the four anchor links. Invoke
+    the `dispPath()` function, and pass it the `link` href attribute as the parameter.
+    You can obtain the `href` attribute by calling the jQuery `attr("href")` method
+    on the anchor object. Also call the `event.preventDefault()` and `event.stopPropagation()`
+    methods in this event handler to prevent any further action on the `click` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the `dispPath` function, call the `$.mobile.path.parseUrl` method to obtain
+    the `href` component of the URL passed in. Now, invoke the various `$.mobile.path`
+    utility methods, and display their outputs in the `#msgdiv` div container, as
+    shown in the code. Call the `isRelativeUrl()` method to check if the URL passed
+    in is relative. Convert it to an absolute value using the `makePathAbsolute()`
+    and `makeUrlAbsolute()` methods. The original document URL is used as reference
+    for these conversions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the page loads, you will see four link buttons. Click on the first link
+    `http://localhost:8080/09/path/main.html`, and an output similar to the following
+    screenshot will be shown. The URL is in the same domain as the reference URL,
+    and the URL is also absolute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The second link, `http://localhost:8080/09/base/`, points to a folder. The
+    following output is seen; the domain is same and the URL is absolute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The third link, `page1.html`, is a relative URL. The absolute path and the absolute
+    URL are computed using the reference URL and displayed, as shown in the following
+    screenshot; the **Same Domain** value is **false** here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The final link points to the parent directory, `../`, and is again a relative
+    URL. The absolute path and URL is computed using the reference URL, and is displayed
+    as shown in the following screenshot; the **Same Domain** value is **false** again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `$.mobile.path` utility methods used in this recipe are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`isAbsoluteUrl`: Checks if a given URL is absolute'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isRelativeUrl`: Checks if a given URL is relative'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`makePathAbsolute`: Converts a relative path to absolute; the method uses a
+    reference path argument for the conversion'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`makeUrlAbsolute`: Converts a relative URL to absolute; the method uses a reference
+    URL argument for the conversion'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`isSameDomain`: Checks if two URLs belong to the same domain'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Parsing an URL* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using silent scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can use the `$.mobile.silentScroll` method to scroll to any vertical position
+    on your page, without triggering the scroll event listeners. This recipe shows
+    you how to use silent scrolling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/09/silentscroll` source folder.
+    You can launch this code by using the URL: `http://localhost:8080/09/silentscroll/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with an empty `div` tag and two buttons that will be used
+    to scroll to the top and bottom of the page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to create a lengthy page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, based on the button clicked, scroll to the top or bottom of the page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add two buttons with IDs `bottombtn` and `topbtn` to `main.html`. Create an
+    empty `div` tag with `id="dispdiv"`, and populate it with some lengthy content.
+    Here, a script is used on the `pageinit` event to add 100 lines of text in a loop
+    to `#dispdiv`. The page is initially displayed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Bind the `click` event of the `#bottombtn` button to call `$.mobile.silentScroll`
+    with a large value (2000px here) as the Y parameter. Now, when you click on the
+    **Page Bottom** button, the page scrolls to the Y position (2000px) which is at
+    the bottom of the document, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_09_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Next, bind the `click` event of the `#topbtn` button, and pass the `$.mobile.defaultHomeScroll`
+    property as a parameter to `$.mobile.silentScroll`. Now, click on the **Page Top**
+    button, and the page scrolls back to the top.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `silentScroll` method does not invoke the scroll event listeners. Add the
+    following code to verify that the alert is not shown when you click on any of
+    the buttons. But the alert is shown when you use the scrollbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: The $.mobile.defaultHomeScroll Property
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `$.mobile.defaultHomeScroll` property used in this recipe is internally
+    used by the jQuery Mobile framework to scroll to the top of the page. This value
+    is obtained from the browser using the `$.support.scrollTop` property. If this
+    value is not `0`, the framework sets it to `0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using Scroll Events* recipe in [Chapter 8](ch08.html "Chapter 8. Events"),
+    *Events*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

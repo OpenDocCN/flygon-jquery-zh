@@ -1,0 +1,373 @@
+- en: Chapter 13. Becoming an expert - Build an RSS Reader application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that you've been introduced to jQuery Mobile and its features, it's time
+    to build our final, full application — an RSS Reader.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discuss the RSS Reader application and its features
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discuss what could be added to the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: RSS Reader — the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before diving into the code, it may make sense to quickly demonstrate the application
+    in its final working form so you can see the pieces and how they work together.
+    The RSS Reader application is exactly that, an application meant to take RSS feeds
+    (for example from CNN, ESPN, and other sites), parse them into readable data,
+    and provide a way for the user to view the articles. This application will allow
+    you to add and delete feeds, providing both a name and a URL, and then provide
+    a way to view the current entries from the feed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The application begins with a basic set of instructions. These instructions
+    are only visible when you run the application without any known feeds:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![RSS Reader — the application](img/7263_13_1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Clicking the **Add Feed** button brings you to a simple form allowing for both
+    a name and a URL. (Unfortunately the URL has to be typed in manually. Luckily
+    modern mobile devices allow for copy and paste. I''d strongly recommend using
+    that!):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![RSS Reader — the application](img/7263_13_2.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'After adding the feed, you are returned back to the home page. The following
+    screenshot shows the view after a few feeds are added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![RSS Reader — the application](img/7263_13_3.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To begin reading entries, the user simply selects one of the feeds. This will
+    then fetch the feed and display the current entries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![RSS Reader — the application](img/7263_13_4.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The final part of the application is the entry view itself. Some blogs don''t
+    provide a "full" copy of the entry via RSS, and obviously you may want to comment
+    on the blog itself. So, at the bottom we provide a simple way to hit the real
+    web site, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![RSS Reader — the application](img/7263_13_5.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now that you've seen the application, let's build it. Once again we're going
+    to use PhoneGap Build to create the final result, but this application will actually
+    run as is on a regular website as well. (We will discuss exactly why in a bit.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the RSS Reader Application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Our application begins with the first page, `index.html`. This page will load
+    in jQuery and jQuery Mobile as well. Its core mission is to list your current
+    feeds, but it has to recognize when the user has no feeds at all and provide a
+    bit of text encouraging them to add their first feed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: As mentioned before the code listing, we need to load up our jQuery and jQuery
+    Mobile templates first. You can see that in the beginning of the previous code
+    listing. Most of the rest of the page is boiler-plate HTML you've seen in the
+    previous chapter, so let's call out a few specifics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First make note of the introductory paragraph. Notice the CSS to hide the text?
+    The assumption here is that — most of the time — the user won't need this text
+    as they will have feeds. Our code then is going to handle showing it when necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following that paragraph is an empty list that will display our feeds. Right
+    below that is the button that will be used for adding new feeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we've got a bit of script at the end. This creates an event listener
+    for the jQuery Mobile page event, `pagecreate`, that we tie into to then start
+    up our application tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All of our code (our custom code that is) will be stored in `main.js`. This
+    file is a bit big, so we''ll simply show parts of it that relate to each section.
+    Please keep that in mind as we go through the chapter. The entire file can be
+    found with the rest of the book''s sample code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our first snippet from `main.js` comes from the `init` function. Remember this
+    is run on `pagecreate` for the home page. It's run before the page shows up. That
+    makes it a good place to go ahead and register a function for when the page is
+    displayed. We've taken most of that logic out into its own function, so let's
+    take a look at that next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The displayFeeds function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`displayFeeds` handles retrieving our feeds and displaying them. The logic
+    is simple. If there are no feeds, we want to display the introductory text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice we also clean out the list. It's possible, a user had feeds and deleted
+    them. By resetting the list to an empty string we ensure that we don't leave anything
+    behind. If there are feeds, we create the list dynamically ensuring we call the
+    `listview("refresh")` API at the end to ask jQuery Mobile to pretty up the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing our feeds
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So where do the feeds come from? How do we store them? While we are using PhoneGap
+    and could make use of the embedded SQLite database implementation, we can use
+    something simpler `localStorage. localStorage` is an HTML5 feature that allows
+    you to store key/value pairs on the client. While you can''t store complex data,
+    you can use JSON serialization to encode complex data before it''s stored. This
+    makes storage of data extremely simple. Do keep in mind though that `localStorage`
+    involves file storage. Your application needs to read from a file whenever a change
+    is made to the data. Since we are talking about a simple list of feeds, though,
+    this data should be relatively small:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous three functions represent the entire wrapper to our storage system.
+    `getFeeds` simply checks `localStorage` for the value, and if it exists, handles
+    converting the JSON data into a native JavaScript object. `addFeed` takes a feed
+    name and URL, creates a simple object out of it, and stores the JSON version.
+    Finally, the `removeFeed` function simply handles finding the right item in the
+    array, removing it, and storing it back to `localStorage`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding an RSS feed
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So far so good. Now let''s look at the logic necessary to add a feed. If you
+    remember, the link we used to add a feed went to `addfeed.html`. Let''s take a
+    look at it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: There isn't much to this page outside of the form. Note that our form has no
+    action. We aren't using a server here. Instead our code is going to handle picking
+    up the form submission and doing something with it. Also note that we've not done
+    something we recommended earlier - putting the jQuery and jQuery Mobile includes
+    on top. Those includes are necessary in desktop applications because it's possible
+    the user may bookmark a page outside of your application's home page. Since the
+    eventual target for this code is a PhoneGap application, we don't have to worry
+    about that. This makes our HTML files a bit smaller. Now let's return to `main.js`
+    and look at the code that handles this logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code is a snippet from the `init` method of `main.js`. It handles
+    the button click on the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can take a look at `handleAddFeed`. I''ve abstracted this code, just
+    to make things simpler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: For the most part, the logic here should be simple to understand. We get the
+    feed name and URL values, ensure they aren't blank, and optionally alert any error.
+    If an error didn't occur, then we run the `addFeed` method described earlier.
+    Notice we make use of the `changePage` API to return the user to the home page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I''ll call out one particular bit of code here, the line that handles displaying
+    the error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This line comes from the PhoneGap API. It creates a mobile-specific alert notification
+    for your device. You can think of it as a fancier JavaScript `alert()` call. The
+    second argument is a callback function for the alert window dismissal. Because
+    we don't need to do anything in that situation, we provide an empty callback that
+    does nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Viewing a feed
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Moving on what happens when a user clicks to view a feed? This is probably
+    the most complex aspect of the application. We begin with the HTML template, which
+    is rather simple because most of the work is going to be done in JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This page basically acts as a shell. Note it has no real content at all, just
+    empty HTML elements waiting to be filled. Let''s return to `main.js` and see how
+    this works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This first snippet handles listening for the `pageshow` event on `feed.html`.
+    This means it will run every time the file is viewed, which is what we want since
+    it is used for every different feed. How does that work? Remember that our list
+    of feeds included an identifier for the feed itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: jQuery Mobile provides us access to the URL via the data ("url") API. Since
+    this returns the entire URL and we only care about stuff after the question mark,
+    we can use some string functions to clean it up. The end result is a numeric value
+    query, that we can use to fetch the data out of our feed query. In a regular desktop
+    application it would be pretty simple for a user to mess with the URL parameters.
+    Therefore, we'd do some checking here to ensure that the value requested actually
+    exists. Since this is a single user application on a mobile device, it really
+    isn't necessary to worry about that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we try to fetch the feed, we make use of a simple caching system. The
+    very first line in `main.js` creates an empty object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This object will store the results from our feeds so that we don''t have to
+    constantly re-fetch them. That''s why the following line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: is run before we do any additional network calls. So how do we actually get
+    the feed? Google has a cool service called the Feed API ([https://developers.google.com/feed/](https://developers.google.com/feed/)).
+    It lets us use Google to handle fetching in the XML of an RSS feed and converting
+    it to JSON. JavaScript can work with XML, but JSON is far easier since it becomes
+    regular, simple JavaScript objects. We've got a bit of error handling, but if
+    everything works well, we simply cache the result. The final bit is a call to
+    `displayFeed:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: All that the previous block does is iterate over the result feed. When Google
+    parsed the XML from the feed, it turned into an array of objects we can loop over.
+    While there are a number of properties in the feed we may be interested in, for
+    the list we care about the title only. Notice how we build our link. We pass the
+    numeric index and the URL (which we will use in the next portion). This is then
+    rendered to a simple jQuery Mobile listview.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the entry view
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Ready for the last part? Let''s look at the individual entry display. As before,
+    we''ll begin with the template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to `feed.html` before it, `entry.html` is an empty shell. Note that
+    the header, the content, and the link are empty. All of these will be replaced
+    with real code. Let''s head back to `main.js` and look at the code that handles
+    this page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: So what's going on here? Remember that we passed an index value (which entry
+    was clicked, the first, the second?) and the URL of the feed. We parse out those
+    values from the URL. Once we know the URL of the feed, we can use our cache to
+    get the specific entry. Once we have that, it's a simple matter to update the
+    header, contents, and link. And that's it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Going further
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can take the code from this application and upload it to the PhoneGap Build
+    service now to try it out on your own device. But what else could we have done?
+    Here''s a short list of things to consider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: PhoneGap provides a connection API ([http://docs.phonegap.com/en/1.4.1/phonegap_connection_connection.md.html](http://docs.phonegap.com/en/1.4.1/phonegap_connection_connection.md.html))
+    that returns information about the device's connection status. You could add support
+    for this to prevent the user from trying to read a feed when the device isn't
+    online.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: While we store the user's feeds in `localStorage`, the cached data from reading
+    the RSS entry is stored temporarily. You could also store that data and use it
+    when the user is offline.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'PhoneGap has an excellent plugin API and a great variety of plugins are already
+    available. ([https://github.com/phonegap/phonegap-plugins](https://github.com/phonegap/phonegap-plugins))
+    One of these plugins allow for easier sending of SMS messages. You could add an
+    option to send an entry title and link to a friend via SMS. Did we mention PhoneGap
+    also lets you work with your contacts? See the Contacts API for more information:
+    [http://docs.phonegap.com/en/1.4.1/phonegap_contacts_contacts.md.html](http://docs.phonegap.com/en/1.4.1/phonegap_contacts_contacts.md.html).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hopefully you get the idea. This is only one example of the power of jQuery
+    Mobile and PhoneGap.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we took what we had learned of PhoneGap from the previous chapter
+    and created a full, if rather simple, mobile application making use of jQuery
+    Mobile for design and interactivity.
+  prefs: []
+  type: TYPE_NORMAL

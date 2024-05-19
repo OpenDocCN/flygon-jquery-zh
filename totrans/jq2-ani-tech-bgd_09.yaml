@@ -1,0 +1,2743 @@
+- en: Chapter 9. CSS3 Animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*CSS3 brings many impressive new styles to the web-development arena, and even
+    though the specification is far from complete, many aspects of it are being used
+    in the latest browsers. Pure-CSS animation may even make it into the specification
+    at some point. At the time of writing nearly all modern browsers fully support
+    this. However, with a little help from jQuery we can create our own CSS3 animations
+    that work with varying degrees of success, across all common browsers, new and
+    old.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll be covering the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The different CSS3 transforms available
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating an element's rotation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the CSS3 transforms matrix
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating an element's skew with jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For further information on CSS3 2D transforms, see the W3C Working Draft specification
+    at [http://www.w3.org/TR/css3-transforms/](http://www.w3.org/TR/css3-transforms/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS3 2D transforms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'CSS3 defines a style property called `transform` which allows us to transform
+    targeted elements in a two-dimensional space along the x and y axes. A range of
+    transform functions can be supplied as the value of the `transform` property,
+    which dictates how the transformation should be applied. The following 2D transform
+    functions are defined:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Function | Example usage | Description of the transform |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `matrix` | `matrix(a, b, c, d, tx, ty)` | It rotates, scales, skews, or translates
+    the element according to the combination of the supplied parameters. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `rotate` | `rotate(x)` | It rotates the element with a specified number of
+    degree around the transform-origin. By default, the origin should be the center
+    of the element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scale` | `scale(x, y)` | It scales the element with the specified number
+    of units along the x and y axes. If y is not supplied, it is assumed to be the
+    same as x. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scaleX` | `scale(x)` | It scales the element with the specified number of
+    units along the x axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scaleY` | `scale(y)` | It scales the element with the specified number of
+    units along the y axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `skew` | `skew(x, y)` | It skews the element with the specified number of
+    degree along the x and y axes. If y is not supplied it is assumed to be 0. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `skewX` | `skew(x)` | It skews the element with the specified number of degree
+    along the x axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `skewY` | `skew(y)` | It skews the element with the specified number of degree
+    along the y axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `translate` | `translate(x, y)` | It repositions the element with the specified
+    number of pixels along the x and y axes. If y is not provided it is assumed to
+    be 0. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `translateX` | `translate(x)` | It repositions the element with the specified
+    number of pixels along the x axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `translateY` | `translate(y)` | It repositions the element with the specified
+    number of pixels along the y axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: Understanding the matrix
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All the individual transform functions (`rotate()`, `skew()`, among others)
+    can be thought of as shortcuts for a specific matrix transform. Indeed, most browsers
+    will apply a matrix behind-the-scenes even when a transform function is provided.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `matrix` function takes six parameters, and each of the transforms mentioned
+    in the previous table can be performed by providing different combinations of
+    values for these parameters. Sometimes we can apply several transforms simultaneously
+    by using the `matrix` function. Let's look at some quick examples to illustrate
+    how the matrix can be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Translate
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Translating an element causes it to move from its original location. Positive
+    values translate the element to the right or down the page (depending on the axis),
+    and negative values move the element to the left or up the page. For example,
+    an element could be moved 100 pixels right along the x axis and 100 pixels down
+    along the y axis using the following transformation matrix:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'transform: matrix(1, 0, 0, 1, 100, 100);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This `matrix` function, equivalent to using the transform function `translate(100px,
+    100px)`, would cause the targeted element to appear like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Translate](img/9642OS_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see in the previous screenshot, the element has moved from its original
+    location (upper-left corner of the screen) even though we have not used CSS to
+    position the element, which we can see is the case in the DOM Inspector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fifth parameter of the matrix in this example corresponds to the x axis,
+    and the sixth parameter to the y axis. Don't worry too much about the first four
+    parameters as we will cover these in more detail shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is of critical importance to note that some browsers, such as Firefox, expect
+    these values with the units specified (as in the previous screenshot), while other
+    browsers, such as Opera, or those based on the WebKit rendering engine, will expect
+    these values without units.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An element does not need to be positioned in order for it to be translated,
+    and the transform does not affect the flow of the document or other elements around
+    it. Adjacent elements will position themselves according to an element's original
+    location, not its new location following a translation. The translated element's
+    content is also translated along with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scale
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You may be wondering why we supplied the value 1 as the first and fourth parameters
+    in our first matrix code snippet, but 0 as the value of the second and third parameters
+    instead of supplying all zeros.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The reason for this is that, the parameters (the first and fourth) correspond
+    to the `scale` transform function, so to retain the transformed element''s original
+    size, the `scale` parameters are set to 1\. To double the size of an element (without
+    translating its position), we could use the following transformation matrix:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'transform: matrix(2, 0, 0, 2, 0, 0);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This snippet would be equivalent to using `transform: scale(2, 2)` and would
+    cause the targeted element to appear like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scale](img/9642OS_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the previous screenshot we can see that the element is now twice its original
+    size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous code symmetrically scales the target element along both the x and
+    y axes. These values are unitless in all supporting browsers, and the value 0
+    cannot be specified. Integers or floating-point numbers may be provided, and the
+    scaling may be asymmetrical if necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An interesting effect of scaling is that, providing negative values cause the
+    element to be reversed, and not shrunk, as we may intuitively surmise. So if we
+    were to provide `-2` and `-2` as the first and fourth values in the previous code
+    snippet, the element would be reflected both vertically and horizontally, as well
+    as being made twice its original size. We can even supply a combination of positive
+    and negative values for this type of transformation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A reflected element would appear like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scale](img/9642OS_09_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The element is reversed along both its x and y axis, as if it were being viewed
+    upside down in a mirror. This could be hugely useful if, for example, we were
+    implementing pure-CSS reflections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Skew
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The two zero values that correspond to the second and the third parameters
+    in the matrix can be used as skew values, with the x axis using the second parameter,
+    and the y axis using the third. We could skew an element (without modifying its
+    scale or position) using the following matrix transform function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'transform: matrix(1, 1, 0, 1, 0, 0);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows a skewed element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Skew](img/9642OS_09_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The previous screenshot shows an element skewed along the x axis. As with other
+    matrix functions, positive values for these parameters cause transformation along
+    the right or downwards direction, negative values along the left or upward direction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous snippet, only the x axis has been skewed. A consequence of the
+    skew is that the element has grown in size. The bounding box of the transformed
+    element has doubled in size from 200 px (the original size of the element) to
+    400 px.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regardless of this increase in size however, the flow of the document remains
+    unaffected by the transform and just like the other transforms, any content within
+    the transformed element also becomes transformed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Transforms have a varying impact on any text contained in the element across
+    different browsers, with the text remaining crisp and readable in some browsers
+    following a transform, and degrading in other browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rotation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To rotate an element using the matrix, we need to use the trigonometric functions
+    sine and cosine to calculate the values of the first four parameters. The first
+    and the fourth parameters take cosine functions of the angle of rotation, while
+    the second and the third parameters are sine and minus-sine functions of the rotation
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The sine and cosine functions are relatively advanced mathematical constructs
+    used to express the different relationships between the sides of triangles and
+    the angles of triangles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While an understanding of their exact nature is not essential to use them (JavaScript
+    has built-in functions that will calculate them automatically), a deeper understanding
+    of their nature and use will only help when working specifically with rotation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a basic introduction, see the Wikipedia article on Trigonometric functions
+    at [http://en.wikipedia.org/wiki/Trigonometric_functions](http://en.wikipedia.org/wiki/Trigonometric_functions).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To rotate an element by, for example, 37 degrees we would use the following
+    transform:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'transform: matrix(0.7986355, 0.6018150, -0.6018150, 0.7986355, 0, 0);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our rotated element should appear like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Rotation](img/9642OS_09_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see, the edges of the rotated element appear outside of the viewport.
+    Care should be taken to correctly position elements that are to be rotated so
+    as to ensure that there is adequate space to display the element in its entirety
+    if necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calculating the sine and cosine functions of the angle of rotation can be easily
+    done using a scientific calculator, or of course JavaScript itself programmatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with transforms
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using the shortcut transform functions such as `rotate()` or `skew()` is easier
+    and more convenient than using the matrix. However, this ease of use comes at
+    a price—we're limited to using only one of them at a time on a single element.
+    If we were to try and use more than one of them in a CSS statement, only the last
+    one defined would be applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we need to apply several different transforms to an element, we can use
+    the matrix function, depending on which transformations we need to apply. For
+    example, we can skew an element, while also translating and scaling it using something
+    like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'transform: matrix(2, -1, 0, 2, 300px, 0);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, the element would be skewed along the x axis, doubled in size,
+    and moved 300 px to the right. We couldn't rotate the targeted element in the
+    previous code snippet at the same time as doing these things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even if we supply two matrix functions, one for the skew, scale, and translate,
+    and a second for the rotation, then only the rotation would be applied. We can
+    however rotate and translate, or rotate and scale an element simultaneously using
+    a single matrix function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery and transforms
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can use jQuery's `css()` method in the setter mode to set the CSS3 transforms
+    on selected elements, and we can use it in getter mode to retrieve any transform
+    functions set on an element. We just need to ensure that we use the correct vendor
+    prefix, such as `–moz-transform` for Firefox, or `-webkit-transform` for WebKit/Blink-based
+    browsers. Opera also has its own vendor prefix (for older versions), as do newer
+    versions of IE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One thing to be aware of is that while we can set a specific transform function
+    such as `rotate()` on a selected element, we can only get the value of the `style`
+    property in its matrix format. Have a look at the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("#get").css("-moz-transform", "rotate(30deg)");
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("#get").text($("#get").css("-moz-transform"));
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This would result in the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using jQuery and transforms](img/9642OS_09_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the previous screenshot, we see that the rotation we applied in the first
+    line of code using the `rotate()` transform function is returned with the second
+    line of code as a matrix function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**cssHooks**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It''s important to note that the use of `cssHooks` could help with browser
+    compatibility testing on your code for all the various vendor prefixes. More about
+    `cssHooks` can be found here: [http://api.jquery.com/jQuery.cssHooks/](http://api.jquery.com/jQuery.cssHooks/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, a great jQuery plugin for `cssHooks` can be found here: [https://github.com/brandonaaron/jquery-cssHooks](https://github.com/brandonaaron/jquery-cssHooks).
+    It has some CSS3 2D transforms behavior included. While it is beneficial from
+    a learning perspective to create these effects manually, as we do throughout the
+    remainder of this chapter, remember to use this file to save your time and effort
+    in the future.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS3 3D transforms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: All of the transform functions we have looked at so far are two-dimensional,
+    operating on just the x and y axes. Transforms that operate in three dimensions,
+    along the x, y, and z axes have also been proposed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '3D equivalents of all of the transform functions exist and usually just take
+    an extra parameter, which corresponds to the vector of each dimension, and the
+    angle. For example, a 3D rotation could be added using this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'transform: rotate3d(0, 1, 0, 30deg);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with 2D transforms, there is an all-encompassing matrix function that allows
+    us to implement any of the other transforms and allows us to combine some of them
+    together on a single element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If, like me, you thought the 2D transform matrix, with its six parameters, was
+    complex and perhaps a little hard to understand, wait till you start using the
+    3D matrix, which has 16 parameters in total!
+  prefs: []
+  type: TYPE_NORMAL
+- en: At present, 3D transforms are supported in WebKit-based browsers and Firefox
+    (with partial support for IE10), so we won't be looking at these in any further
+    detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Browser support for CSS3 3D transforms can be found here: [http://caniuse.com/transforms3d](http://caniuse.com/transforms3d).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animated rotation with jQuery and CSS3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this example, we'll set up an animation that rotates an image using the `rotate()`
+    transform function. Since this is supported by the majority of common browsers,
+    it's actually really easy to implement, and can be a great effect that enhances
+    the appearance and behavior of the page it is used on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – animating an element's rotation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll just be rotating a simple image in this example, so this is the only visible
+    element we need in the `<body>` element of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following `<img>` tag to a fresh copy of the template file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/color-wheel.png" id="colorWheel">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: At this point we don't even need any styles as everything we need to set can
+    be done in the JavaScript which we'll add next.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In the anonymous function at the bottom of the HTML page, add the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var img = $("#colorWheel"),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: offset = img.offset(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: origWidth = img.width(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: origHeight = img.height(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: rotateStrings = [
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"rotate(",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 0,
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"deg)"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '],'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: getVendor = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var prefix = null,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: vendorStrings = {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'pure: "transform",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'moz: "-moz-transform",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'webkit: "-webkit-transform",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'op: "-o-transform"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for (props in vendorStrings) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if(img.css(vendorStrings[props]) === "none") {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: prefix = vendorStrings[props];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (prefix === null) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: prefix = "filter";
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: img.css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'position: "absolute",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod=''auto expand'');"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return prefix;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: vendor = getVendor();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: function doRotate() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: rotateStrings[1]++;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (vendor === "filter") {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var rad = rotateStrings[1] * (Math.PI * 2 / 360),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: cos = Math.cos(rad),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: sin = Math.sin(rad),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: driftX = (img.width() - origWidth) / 2,
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: driftY = (img.height() - origHeight) / 2,
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el = img.get(0);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: img.css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: offset.left - driftX,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'top: offset.top - driftY'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.filters.item("DXImageTransform.Microsoft.Matrix").M11 = cos;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.filters.item("DXImageTransform.Microsoft.Matrix").M12 = -sin;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.filters.item("DXImageTransform.Microsoft.Matrix").M21 = sin;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.filters.item("DXImageTransform.Microsoft.Matrix").M22 = cos;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: img.css(vendor, rotateStrings.join(""));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: setInterval(function() { doRotate() }, 100);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save the page as `rotate.html`. If we run the page in a browser now, we should
+    see the color wheel slowly spinning around its center.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we did was to cache a selector for the image as we'll be referring
+    to it several times throughout the code. Note that, this is the only jQuery object
+    we created in the whole script, which as we've discussed earlier in the book,
+    is great for improving performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set some other variables at this point including the offset of the image
+    (its `absolute` position on the page), its original width and height, and an array
+    containing different parts of the CSS property that we'll set in string and integer
+    formats.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set an inline function (`getVendor()`) as the value of a variable which
+    we can use to determine which vendor prefix to use. This function first sets some
+    variables which will be used to store the determined vendor prefix and an object
+    literal containing all of the different prefixes we want to test for. We also
+    include the native `transform` property. Although this isn't yet supported by
+    any browser, one day it might be, so this helps future-proof our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `doRotate()` function iterates over each property in the object literal
+    using a `for...in` loop. Within the loop, we try to read the value of the `transform`
+    property using each vendor prefix. An interesting fact is that, each browser will
+    report `none` as the value of the prefix it supports, and a falsey value such
+    as `false`, `null`, or `undefined` for the prefixes it doesn't support. We can
+    use this to reliably determine which browser is in use and therefore which vendor
+    prefix we need to use. The correct vendor prefix for whichever browser is in use
+    is then saved to the `vendor` variable ready to be returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If none of these tests identify a vendor prefix, then it's likely that the browser
+    in use is an older version of Internet Explorer. Again, keep in mind, jQuery 2.0
+    does not support IE8 and below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the vendor variable is still set to null at this point, we set the variable
+    to `filter`. In order to programmatically work with the value of the `filter`
+    property in IE, `filter` must already be applied to the element, so we also set
+    a filter on the element in this part of the code using jQuery's `css()` method
+    ready to manipulate later in the code. We also set the `sizing mode` to `auto
+    expand` in order to prevent the element from being clipped when the rotate is
+    applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the end of the function the `prefix` variable is returned containing a string
+    of the vendor prefix for the browser currently in use. Directly after the function,
+    we set a variable called `vendor` which will contain the value returned by the
+    function for easy reference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we define a regular function `doRotate()`which will be used to perform
+    the actual rotation. The first thing we do in this function is increment the second
+    property of our `rotateStrings` array by one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We then check whether the `vendor` variable equals `filter`. If it does, we
+    know that the browser in use is IE and can proceed to determine the values that
+    the proprietary `filter` will need. IE allows rotation to be implemented in two
+    different ways. We could use the `BasicImage` filter property to rotate the image,
+    although that allows us only to set one of four rotation values: `0`, `1`, `2`
+    or `3`, which correspond to 0, 90, 180, or 270 degrees. This is simply not flexible
+    enough for our needs in this example.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, instead we use the `Matrix` filter which gives us much more control over
+    the degree of rotation. This is very similar to the CSS3 matrix transform, with
+    six parameter values that are combined to generate the different transforms (a
+    rotation in this case).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The parameters that we use in this example are `M11`, `M12`, `M21`, and `M22`
+    which map roughly to the first four values in the CSS3 version, with the exception
+    that the second and the third values are reversed in Microsoft's vendor prefix
+    version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The values of each of these properties must be computed using the JavaScript
+    trigonometry functions, `Math.cos` and `Math.sin`. We set some variables to calculate
+    these values. The first variable, `rad`, converts the number of degrees of rotation
+    into radians as these are the units required by the `Matrix` filter. The radians
+    are calculated by multiplying the current degree of rotation (stored as the second
+    item in our `rotateStrings` array) by PI times 2, divided by 360.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An unfortunate problem that occurs in IE when rotating elements is that, the
+    rotated element drifts around the page as it is being rotated. This is caused
+    by the size of the element's bounding box increasing as the element rotates. The
+    rotation does occur around the center of the element, but because IE thinks the
+    element has grown, the center of the rotated element is shifted on each rotation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `drifX` and `driftY` variables that we set, allow us to determine how far
+    the element has shifted so that we can correct it. The shift is worked out by
+    comparing the original width and height of the element prior to it being rotated,
+    with the new width and height following the rotation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also store the raw `img` element from the jQuery object using jQuery's `get()`
+    method with an argument of `0` which returns the actual DOM node instead of a
+    jQuery object. The `filter` must be applied to a proper DOM element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've set our variables, we then correct the drift caused by the previous
+    rotation using jQuery's `css()` method, and then insert our computed trigonometry
+    values into the `Matrix` filter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, if the `vendor` variable equals anything other than `filter`, we can
+    simply set the relevant vendor prefix to the items in our `rotateStrings` array.
+    We do this by calling JavaScript's `join()` method on the array. This is much
+    more efficient than using concatenation to create the string needed for the CSS
+    property and as this function will be executed repeatedly, we really need to make
+    sure it is as efficient as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we do in our code is start the rotation animation by setting
+    an interval that calls our `doRotate()` function every 100 milliseconds. We use
+    an anonymous function as the first argument of the `setInterval()` function which
+    avoids the need to attach the function to be executed be saved to the `window`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Problems with IE
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Besides the fact that IE makes us work twice as hard as any other browser to
+    set the element''s rotation, it also presents us with another problem: it totally
+    destroys the alpha layer of the PNG we are rotating. Suddenly our nice anti-aliased
+    circle-edge becomes jagged and unsightly (view this example in IE to see the issue).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The animation is also slightly jerky in IE, and both this and the inability
+    to use PNGs with alpha layers in them could easily be a show-stopper for IE. If
+    this was the case, we could easily disable the animation in IE by simply doing
+    nothing when the `filter` property is returned by our `getVendor()` function.
+    There are some things we could do however, to negate the problems in IE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, we could simply use a PNG with no transparency, which would preserve
+    the circle's border in IE (in this example). Or, we could lay another image over
+    the top of the image we are rotating to hide the jagged edges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – implementing CSS3 rotation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. In this example we used an array in conjunction with the JavaScript `join()`
+    method to create the string. Why?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because it's more fun.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because it makes our code look better.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because performance-wise, it's much faster than string concatenation.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because otherwise the element won't rotate correctly.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. To make the animation run correctly in Internet Explorer we had to constantly
+    adjust the `top` and `left` style properties of the rotated element in order to
+    maintain its position. Why does the drift in IE occur?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because the size of the rotated element's bounding box is changed throughout
+    the animation. As the rotated element is centered within its bounding box, its
+    position changes as the box increases and decreases in size.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because the alpha layer of the PNG was removed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because the Matrix filter property was used.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because of a bug in IE's implementation of the CSS3 rotate property.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Have a go hero – extending CSS3 rotation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The rotation effect can be used in many places, whether animated or not. But
+    when animated, as in this example, it makes a very good background as part of
+    a larger composition of elements. Used as the background of a semi-transparent
+    logo for example, it creates a stunning effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go at incorporating the effect into a page and using it as the background
+    of another image. You'll also see first-hand how much this can improve the appearance
+    of the effect in IE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animated skewing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Just like with the `rotate()` function, we can animate a `skew()` transform
+    for creating attractive special effects. In this example, we'll use the `matrix()`
+    function for all browsers, not just IE, in order to apply several transforms to
+    an element at once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The context of this example will be a cover-flow style widget that displays
+    images one after the other by animating the images'' skew. The user will be able
+    to cycle back and forth through the images using links:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Animated skewing](img/9642OS_09_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The previous screenshot shows how the finished widget will appear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the underlying markup and basic styling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: First, we'll look at the HTML that we'll be using in the example and then we'll
+    look at the initial styling added to the elements prior to being skewed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following code to the `<body>` element of the template file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="viewer">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="flow">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/atreyu.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/beatles.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/blink.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/cold.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/disturbed.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/floyd.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/korn.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/prodigy.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/the-birthday-massacre.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/xx.jpg">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <ul>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li id="left"><a href="#" title="Move Left">Left</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li id="right"><a href="#" title="Move Right">Right</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </ul>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Save the page as `skew.html`. Next, in a new file add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#viewer {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:700px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:220px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:100px 0 30px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #000;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:relative;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#flow:after {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: content:"";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clear:both;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: visibility:hidden;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#flow img {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin-left:-165px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:relative;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:-15px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:245px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:#fff;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#viewer li {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: list-style-type:none;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bottom:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#left { left:20px; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#right { right:20px; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this file in the `css` directory as `skew.css`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're using a simple collection of elements for this example. We used an outer
+    container, mostly for positioning purposes so that we can center the widget in
+    the viewport and position other elements within it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<img>` elements are what we will be applying the skew animations to, so
+    these are isolated in their own container to make selecting them in the script
+    later on easier. We also have a list element containing two links. These will
+    be used to trigger the animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS is as light as the HTML. We simply position the container, the images,
+    and the controls as required for the example. All of the fun CSS3 we'll set and
+    manipulate using the script. You should note that this example isn't progressively
+    enhanced as this would deviate too far from an already quite large example, as
+    we'll see in a moment when we add the JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – initializing the widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The first thing we need to do is set up the images ready to have their skew
+    manipulated. We can also add the function that will return the correct vendor-specific
+    prefix for the transform style property that we used in the last example. In the
+    empty function at the bottom of the HTML page, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: var viewer = $("#viewer"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: flow = viewer.find("#flow"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: order = flow.children().length,
+  prefs: []
+  type: TYPE_NORMAL
+- en: oneRad = 1 * (Math.PI / 180),
+  prefs: []
+  type: TYPE_NORMAL
+- en: matrix = ["matrix(", 1, ",", 0, ",", 0, ",", 1, ",","0px,", "0px)"],
+  prefs: []
+  type: TYPE_NORMAL
+- en: msMatrix = "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand')",
+  prefs: []
+  type: TYPE_NORMAL
+- en: getVendor = function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var prefix = null,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: vendorStrings = {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'pure: "transform",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'moz: "-moz-transform",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'webkit: "-webkit-transform",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'op: "-o-transform"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for (props in vendorStrings) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if(flow.css(vendorStrings[props]) === "none") {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: prefix = vendorStrings[props];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (prefix === null) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: prefix = "filter";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return prefix;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: vendor = getVendor(),
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'property = (vendor !== "filter") ? matrix.join("") : msMatrix;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: flow.children().eq(0).addClass("flat").css(vendor, property).css("zIndex", order
+    + 1);
+  prefs: []
+  type: TYPE_NORMAL
+- en: flow.children().not(":first").each(function(i) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: el = flow.children().eq(i + 1);
+  prefs: []
+  type: TYPE_NORMAL
+- en: matrix[1] = 0.7;
+  prefs: []
+  type: TYPE_NORMAL
+- en: matrix[3] = -30 * oneRad;
+  prefs: []
+  type: TYPE_NORMAL
+- en: matrix[5] = -10 * oneRad;
+  prefs: []
+  type: TYPE_NORMAL
+- en: matrix[7] = 0.7;
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'matrix[9] = (vendor === "-moz-transform") ? "90px," : "90,";'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'matrix[10] = (vendor === "-moz-transform") ? "-30px)" : "-30)";'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (vendor !== "filter") {
+  prefs: []
+  type: TYPE_NORMAL
+- en: el.addClass("skew-right").css(vendor, matrix.join("")).css("zIndex", order);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: el.addClass("skew-right").css(vendor, msMatrix).css({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'zIndex: order,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'top: -30,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: 270,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: 140,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: 140,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'marginLeft: -100'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M11 = 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M12 = matrix[5];
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M21 = matrix[3];
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: el.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M22 = 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: order--;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: matrix[3] = 0;
+  prefs: []
+  type: TYPE_NORMAL
+- en: matrix[5] = 0;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the first part of the script we initialize our variables. If you've wondered
+    why we always initialize our variables at the top of functions, the reason is
+    because of a phenomenon called Hoisting. This is where the variables initialized
+    in functions get "hoisted" to the top of the function and can contain results
+    that we aren't expecting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can learn more about JavaScript Hoisting at: [http://thecomputersarewinning.com/post/a-dangerous-example-of-javascript-hoisting/](http://thecomputersarewinning.com/post/a-dangerous-example-of-javascript-hoisting/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first variable we create is a cached selector for the outer container of
+    our widget. This is the one and only jQuery object we create in this entire example.
+    Some of the code we'll add is quite intensive in places, so keeping the number
+    of jQuery objects we create to a bare minimum is essential for performance reasons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we use the original jQuery object and the `find()` jQuery method to cache
+    a selector for the `flow` element (the direct parent of the image elements that
+    will be skewed) as we'll need to access or manipulate this element several times
+    as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we store the number of image elements in the widget using the `length`
+    property of a jQuery object containing the child elements of the flow element.
+    We also store the result of converting one degree to one radian so that we can
+    easily convert from one unit to another throughout the script without repeatedly
+    performing the same calculation. Both the CSS3 transform `matrix` and IE's `matrix`
+    filter can accept radians so that makes them a convenient unit to work with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create our matrix array and Microsoft's `matrix` property as a string.
+    The array includes all of the individual properties as array items, including
+    the required commas as strings. The reason we include the commas in our array
+    is that we can call the `join()` JavaScript function on the array later without
+    specifying a separator and without having to worry about removing the unnecessary
+    commas it would insert incorrectly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we add the `getVendor()` function that we used in the previous example.
+    This is a convenient way to ensure that correct prefix is used when we apply the
+    skew styling. We won't cover this function in detail as we have already looked
+    at it earlier in the chapter (in the *Time for action – animating an element's
+    rotation* section). Again, we call the function straight away after defining it
+    and store the result in a variable for later use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last variable we create will hold a string containing either the CSS3 matrix
+    function with all the required parameters, or it will contain IE's `matrix` property
+    in its most basic form with only the `sizingMethod` parameter defined. If you
+    remember from the previous example, IE can only manipulate the matrix property
+    after it has been initially set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we can move on to prepare the first image. We select the first
+    image using jQuery's `eq()` method, passing in `0` as the index of the element
+    we are interested in. We set a class name of `flat` on the first image so that
+    we can easily select it later, and also give it a higher `z-index` than the other
+    images so that it is visible in its entirety. Next we loop through the remaining
+    images using jQuery's `each()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The anonymous function we pass to the method accepts the parameter `i` which
+    is the index of the current iteration. This in turn will allow us to select each
+    element one after the other on each iteration of the loop. The first thing we
+    do in the function is cache a reference to the current `<img>` element using the
+    index as an argument for the `eq()` method. We add 1 to the index value to avoid
+    selecting the first image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next block of code we set some of the items in our `matrix` array. We
+    set the scale parameters (items 1 and 7 in the array) to 0.7 so that the skewed
+    images are reduced in size slightly and we set the skew parameters (items 3 and
+    5 in the array) to the radian equivalent of -30 and -10 degrees respectively.
+    This will skew the images slightly up and to the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set the translate parameters (items 9 and 10 in the array) to position
+    the skewed elements correctly so that they stack up horizontally. If the browser
+    in use is Firefox we have to use `px` in the value for the translate properties,
+    but with other browsers the values should be unitless. We use a ternary condition
+    to check the `vendor` variable (this will contain the vendor prefix for the current
+    browser) and set the value accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've set our array items we then check whether the browser in use is not
+    IE and provided it isn't, we apply the skew to the current element. We also set
+    the `z-index` of the current element using the `order` variable which is set to
+    the length of the number of images. Doing this makes the current element the top-most
+    image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the browser in use is IE, we apply the Microsoft `matrix` and set some different
+    CSS on the images. The translate parameters don't work in IE, so we position the
+    images using jQuery instead. Skewing the elements in IE also causes the elements
+    to increase in size, so we have to drastically reduce their dimensions which we
+    also do with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On each iteration of the loop we reduce the value of this variable by one. The
+    `z-index` of each element will therefore get progressively lower as we process
+    each image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have set the required CSS styles, we then skew the elements by manipulating
+    the proprietary Microsoft `matrix` filters. Remember, these properties can only
+    be manipulated on actual DOM elements, not jQuery objects, so we retrieve the
+    raw element using jQuery's `get()` method with the index as 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the `each()` loop has finished, we reset the third and fifth parameters
+    in the `matrix` array. This is because we will use the array again several times,
+    so each time we should use the default values for the parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – animating an element's skew
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now we''ll add a function that will skew the elements to the left. The function
+    will have to be applied to two elements: to the flat or non-skewed element, as
+    well as to the one before it (to the right in this case). The function to animate
+    the skew from right to left is as follows and should be placed below the `matrix[5]
+    = 0;` line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function skewRTL() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var flat = flow.find(".flat").css("zIndex", order + 1),
+  prefs: []
+  type: TYPE_NORMAL
+- en: preFlat = flat.next(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix = matrix.slice(0),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix = matrix.slice(0),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatDims = 200,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preDims = 170,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: skew = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (preFlat.length) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (flatMatrix[3] <= 30 * oneRad && flatMatrix[5] <= 10 * oneRad) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var flatTranslateX = parseInt(flatMatrix[9].split("p")[0], 10),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatTranslateY = parseInt(flatMatrix[10].split("p")[0], 10),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preTranslateX = parseInt(preMatrix[9].split("p")[0], 10),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preTranslateY = parseInt(preMatrix[10].split("p")[0], 10);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[1] = flatMatrix[1] - 0.001;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[3] = flatMatrix[3] + oneRad;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[5] = flatMatrix[5] + (oneRad / 3);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[7] = flatMatrix[7] - 0.001;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[1] = preMatrix[1] + 0.01;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[3] = preMatrix[3] + oneRad;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[5] = preMatrix[5] + (oneRad / 3);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[7] = preMatrix[7] + 0.01;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'flatMatrix[9] = (vendor === "-moz-transform") ? flatTranslateX - 6 + "px,"
+    : flatTranslateX - 6 + ",";'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'preMatrix[9] = (vendor === "-moz-transform") ? preTranslateX - 3 + "px," :
+    preTranslateX - 3 + ",";'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'preMatrix[10] = (vendor === "-moz-transform") ? preTranslateY + 1 + "px)" :
+    preTranslateY + 1 + ")";'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (vendor !== "filter") {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.css(vendor, flatMatrix.join(""));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.css(vendor, preMatrix.join(""));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M12 = flatMatrix[5];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M21 = flatMatrix[3];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M12 = preMatrix[5];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M21 = preMatrix[3];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatDims = flatDims - 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preDims = preDims + 0.5;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: flatDims,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: flatDims'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: preDims,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: preDims'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(flatInterval);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (vendor !== "filter") {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[3] = 0;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[5] = 0;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.css(vendor, preMatrix.join(""));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'top: -30,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: 260'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.prev().css("zIndex", "");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.removeClass("flat").css("zIndex", "");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.addClass("flat");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(flatInterval);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.css("zIndex", order + 1);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: preMatrix[3] = -30 * oneRad;
+  prefs: []
+  type: TYPE_NORMAL
+- en: preMatrix[5] = -10 * oneRad;
+  prefs: []
+  type: TYPE_NORMAL
+- en: if(!flatInterval) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var flatInterval = setInterval(function() { skew() }, 1);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we did in our function is we set the variables used by the function.
+    We cached a reference to the current element that has the `flat` class and also
+    set this element's `z-index` to be one higher than any of the other images to
+    ensure it is always on top of the other images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also cached a reference to the next image after the `flat` image. In this
+    function, this will be the image to the right of the un-skewed image. We then
+    made two copies of the original `matrix` array, one for the `flat` element and
+    one for the `preFlat` element. To copy an array, all we did is use JavaScript's
+    `slice()` method with an index of zero.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next two variables we created are the initial dimensions of the `flat` and
+    `preFlat` images. These variables are only used by IE, but because of hoisting,
+    we need to define them here and not in an IE-specific code block later in the
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we defined an inline function called `skew()` which we'll repeatedly call
+    in order to produce the actual animation. Within this function we first checked
+    that there is an element after the `flat` element by checking that the `preFlat`
+    object has a length. If the length is equal to zero (that is if it does not have
+    length), we simply clear any intervals that may exist, and make sure that the
+    `flat` element is at the top of the z-index stack. If the `preFlat` object does
+    have a length however, we then check that the current `skewX` property is less
+    than or equal to the radian equivalent of 30 degrees, and that the `skewY` property
+    is less than or equal to the radian equivalent of 10 degrees (we can work this
+    out by multiplying 30 or 10 respectively by our stored figure for 1 radian). The
+    current skew properties for the `flat` image are currently stored in items the
+    third and fifth items in the `flatMatrix` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Provided both conditions are true, we can proceed with the animation. Part of
+    the animation involves translating the `flat` and `preFlat` images so that along
+    with skewing, the images move as well (we'll also resize them, but we'll come
+    to that in a moment).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to translate the images correctly we need to get their current translation,
+    which we do first of all by defining four new variables and populating them with
+    the current translation values from the two matrix arrays. These figures need
+    to be numerical so we use JavaScript's `parseInt` and `split()` functions to break
+    the strings apart and convert the digits to integers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we needed to update our two matrix arrays with the new values. The right-to-left
+    function will incrementally update the values in the `flatMatrix` and `preMatrix`
+    arrays, and then apply the arrays to the element. So the animation will consist
+    of rapid updates to each transform parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `flat` image also needs to be skewed as it is translated, so we increase
+    the `skewX` and `skewY` parameters by one radian and a third of one radian respectively.
+    Remember, in order to skew an element to the left and up directions, the skew
+    parameters should be positive so we increase the values of items 3 and 5 of the
+    `flatMatrix` array on each pass of the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `flat` image starts off larger than the skewed images so we need to reduce
+    array items 1 and 7 slightly, each time the function runs. The `skew()` function
+    will be called 30 times; so to reduce the scale of the flat image so that it finishes
+    the correct size, we reduce the scale parameters by `0.001` on each pass of the
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The values we want are 30 degrees of the skew on the x axis, and 10 degrees
+    of the skew on the y axis. 10 is one third of 30 which is why we increase the
+    `skewY` parameter by one radian divided by three.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I mentioned earlier that in Firefox the translate parameters need a unit, such
+    as `px`, but other browsers are unitless for these values. We use a JavaScript
+    ternary conditional to check the `vendor` string and if it equals the Firefox
+    vendor prefix (`-moz-transform`), we add `px` to the value. The flat image only
+    needs to be translated on the x axis and it needs to move left by 6 pixels, so
+    we update array item 9 with a value that is six less than its current value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also have to update the `preFlat` image so that it goes from being skewed
+    to the right to being flat. We also have to increase the size of the `preFlat`
+    image as they start out smaller. Similarly, we updated the relevant array items
+    in the `preMatrix` so that over the course of 30 iterations of the `skew()` function
+    they end up at the right values. The `preFlat` image also needs to be translated,
+    but this time along both the `x` and y axes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we checked the vendor string once more and as long as it isn't `filter`
+    (IE), we apply the transform to the `flat` and `preFlat` image by joining the
+    array. If it is IE, we have to do a little more work to apply the transformation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We applied each of the relevant `Matrix` properties, `M12` and `M21,` on the
+    `flat` and `preFlat` images. We used jQuery's `get()` method with an index of
+    `0` to obtain the actual DOM element once more. We also reduced the size of the
+    `flat` image, and increased the size of the `preFlat` image using our `flatDims`
+    and `preDims` variables that we initialized earlier and then we used jQuery's
+    `css()` method to apply the new sizes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: IE's `Matrix` property helpfully ignores the scaling parameters when the `sizingMethod`
+    is set to `auto` `expand`, but this property must be set to prevent the images
+    from being clipped. This is why we fallback to jQuery's `css()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unusually, we were able to set fractional pixel sizes when using IE, which is
+    fortunate as it allows us to set the size of the images in the correct order for
+    them to end up at the right size when the animation ends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then come to the last part of the `skewRTL()` function before we start our
+    animation. This block of code is executed once at the end of the animation when
+    the third and fifth items in our `flatMatrix` array are greater than 30 and 10
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First we cleared the intervals so that the skew is not animated further. We
+    then check the vendor string once more, and as long as it isn't `filter`, we reset
+    the skew on the flat element to `0` (on both the x and y axes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is needed because for some reason, the `preFlat` image doesn't quite go
+    back to exact zero. I assume this is because JavaScript's `Math` functions do
+    not allow the number to have enough decimal places to be entirely accurate. The
+    image is only slightly off however, so this sudden switch to `0` at the end of
+    the animation is not noticeable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, translating an element at the same time as skewing it does not
+    seem possible in IE. What happens is that IE applies the new skew, but fails to
+    apply the new position until the skew animation has finished, so the element is
+    skewed and then moved in two separate steps. It doesn't look too great, so instead,
+    after the skew animation is complete, we simply reposition the flat element without
+    animating it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After correcting the skew or the position, we remove the `z-index` from the
+    flat element (which has now been skewed to the left) and remove the class name
+    `flat` from it, and then add the class name `flat` to the `preFlat` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point the flat image has been skewed to the left, resized and translated,
+    and the `preFlat` image has been skewed back to zero, resized and translated.
+    Both the `flat` and `preFlat` images are transformed together at the same time,
+    which is why the function is as large as it is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right at the end of the `skewRTL()` function, defined after the `skew()` function
+    that will be repeatedly called by the `setInterval()` function, we initialize
+    the third and fifth values in the `preMatrix` array so that the array will contain
+    the correct skew for the initial state of the element. When we create the array
+    by copying the original `matrix` array used when the widget is initialized, these
+    items will both be set to `0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before calling the `setInterval()` function on the two images to be skewed,
+    we first check that an interval doesn't already exist. This stops the widget from
+    breaking if the link is repeatedly clicked by the visitor. The element will be
+    skewed more than once if the link is clicked several times in rapid succession,
+    but the widget will continue to function and the page will not throw errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – skewing an element from left to right
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We can now add the function that skews an element from left to flat and from
+    flat to right. This function is very similar to the function we just looked at.
+    The changes in the code have been highlighted in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function skewLTR() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var flat = flow.find(".flat"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: preFlat = flat.prev(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix = matrix.slice(0),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix = matrix.slice(0),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatDims = 200,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preDims = 170,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: skew = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (preFlat.length) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (flatMatrix[3] >= -30 * oneRad && flatMatrix[5] >=-10 * oneRad) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var preTranslateX = parseInt(preMatrix[9].split("p")[0], 10),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preTranslateY = parseInt(preMatrix[10].split("p")[0], 10);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[1] = flatMatrix[1] - 0.001;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[3] = flatMatrix[3] - oneRad;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[5] = flatMatrix[5] - (oneRad / 3);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatMatrix[7] = flatMatrix[7] - 0.001;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[1] = preMatrix[1] + 0.01;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[3] = preMatrix[3] - oneRad;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[5] = preMatrix[5] - (oneRad / 3);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[7] = preMatrix[7] + 0.01;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'preMatrix[9] = (vendor === "-moz-transform") ? preTranslateX + 3 + "px," :
+    preTranslateX + 3 + ",";'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'preMatrix[10] = (vendor === "-moz-transform") ? preTranslateY + 1 + "px)" :
+    preTranslateY + 1 + ")";'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (vendor !== "filter") {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.css(vendor, flatMatrix.join(""));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.css(vendor, preMatrix.join(""));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M12 = flatMatrix[5];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M21 = flatMatrix[3];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M12 = preMatrix[5];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.get(0).filters.item("DXImageTransform.Microsoft.Matrix").M21 = preMatrix[3];
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flatDims = flatDims - 1.5;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preDims = preDims + 1.5;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: flatDims,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: flatDims'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: preDims,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: preDims'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(flatInterval);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(preInterval);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (vendor !== "filter") {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[3] = 0;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[5] = 0;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.css(vendor, preMatrix.join(""));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.removeClass("flat").css("zIndex", parseInt(flat.next().css("zIndex")) +
+    1);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preFlat.addClass("flat").css("zIndex", order + 1);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(flatInterval);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(preInterval);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: flat.css("zIndex", order + 1);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: order = flow.children().length;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[3] = 30 * oneRad;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[5] = 10 * oneRad;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'preMatrix[9] = (vendor === "-moz-transform") ? "-90px," : "-90,";'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preMatrix[10] = (vendor === "-moz-transform") ? "-30px," :"-30,";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if(!flatInterval) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var flatInterval = setInterval(function() { skew() }, 1),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: preInterval = setInterval(function() { skew() }, 1);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We won't cover the whole function in its entirety as it's very similar to what
+    we have discussed before, but let's take a moment to look at what differs in this
+    function. First, instead of selecting the next image to the right of the `flat`
+    element, we select the one to the left of it using jQuery's `prev()` method instead
+    of `next()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When updating the skew on our `flat` and `preFlat` elements, we are skewing
+    the element the opposite way. To skew an element to the right, we need to use
+    a minus figure so instead of going from `0` to `30` or from `-30` to `0`, we are
+    going the opposite way, from `30` to `0` or `0` to `-30`, so we subtract the radian
+    equivalent of 1 degree instead of adding it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are also translating to the right instead of the left, so instead of removing
+    3 pixels each time to move the image left we add 3 pixels to move it to the right.
+    We also provide different values for the dimensions variables used by IE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This time when we set the `z-index` of the element that was previously flat,
+    we add `1` to the z-index of the next element (to the right) to make sure it is
+    higher than this element. However, we can't use our length variable (`order`)
+    from earlier or it will be at the same `z-index` as the `flat` element, but will
+    appear above it as it comes after the element in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final difference is that when we initialize the third and fifth items in
+    our array, we are specifying the current skew to the left and not the right, so
+    these items are set to the radian equivalent of 30 and 10 degrees instead of -30
+    and -10.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – wiring up the controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'All that''s left to do is add the event handlers to the left and right links
+    at the bottom of the widget so that the different images can be viewed. After
+    the two skew functions, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: viewer.find("#left a").click(function(e) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs: []
+  type: TYPE_NORMAL
+- en: skewRTL();
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: viewer.find("#right a").click(function(e) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs: []
+  type: TYPE_NORMAL
+- en: skewLTR();
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All we do is add a click handler to each link which prevents the link from being
+    followed with `preventDefault` and then call the relevant skew function. The example
+    should now be fully working in all common browsers, although the effect is handled
+    rather badly by IE in general with slower, more sluggish animations, less accurate
+    skewing, jittery, and uncontrollable movements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One point to note is that there is a difference between the full and minified
+    versions of the jQuery source file which causes older versions of IE to throw
+    errors when the minified version is used, but not when the un-minified version
+    is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero – extending matrix animation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It would definitely be beneficial to build this example so that it incorporates
+    progressive enhancement. Work on an alternative, accessible layout that works
+    with the scripting disabled, and then convert the widget into the format used
+    in this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You could also work on a more suitable fallback for IE, in which the example
+    uses a simpler image viewer, perhaps one of those looked at earlier in the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – using the matrix
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. The CSS3 matrix transform function is useful in which situation?
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we want to work in radians instead of degrees.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When we need to animate a transform function.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When we want to apply more than one transform function to an element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When coding for Internet Explorer.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. In the transform function `matrix(a, b, c, d, e, f)`, which parameters
+    refer to the element's translation?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`a` and `b`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`a` and `d`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`b` and `c`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`e` and `f`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter we looked at CSS3 transform style properties in detail, covering
+    some of the different transform functions, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`matrix`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`rotate`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scale`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scaleX`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scaleY`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`skew`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`skewX`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`skewY`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`translate`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`translateX`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`translateY`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We learned a lot about the CSS3 `matrix` property in this chapter, as well
+    as how to make use of it with jQuery. Specifically, we learned the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first saw the different values that these functions take and the effects
+    that they have on elements they are applied to. We also saw that in order to animate
+    these styles, we can use simple native JavaScript intervals or timeouts to continuously
+    adjust the function parameters, or apply them in a rapid sequence. We learned
+    that, in most cases these transform functions can only be applied to elements
+    individually, we also saw that only the last transform function that is defined
+    is applied to the elements. The matrix function however allows us to apply several
+    of the functions to a single element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We learned that we can't rotate and skew a single element, but we can rotate,
+    scale, and translate an element, or skew, scale, and translate it if we wish.
+    Browser support for CSS3 transforms is very good, with only very minor differences
+    between most browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We observed that although we can't use the transform functions in jQuery's `animate()`
+    method, we can easily create our own animations manually, and we can use them
+    with other methods, such as the `css()` method. Don't forget to use `cssHooks`
+    (see the previous tip) to achieve this kind of functionality too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next and final chapter of the book, we'll take a look at a new HTML5
+    element that allows us pixel-perfect control over an area on the page—the `<canvas>`
+    element—and how it can be used to create interactive animations.
+  prefs: []
+  type: TYPE_NORMAL

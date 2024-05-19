@@ -1,0 +1,686 @@
+- en: Chapter 6. Building an Interactive Navigation Menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In 2003, an article published on A List Apart ([http://alistapart.com](http://alistapart.com))
+    called *Suckerfish Dropdowns* showed how HTML and CSS alone (with just a little
+    JavaScript help for IE6) could be used to build a complex multilevel drop-down
+    menu. The Suckerfish name derived from the gorgeously designed demo of the technique
+    which featured illustrations of remoras and sharksuckers. While useful, the original
+    requires that the site visitor not move their mouse outside the menu area while
+    navigating or the menu disappears. Over the years, the Suckerfish Dropdowns have
+    inspired a lot of spinoffs — Son of Suckerfish, Improved Suckerfish, and so on
+    that attempt to address the shortcomings of the original. Since jQuery can make
+    everything better, we'll build on this idea using the Superfish jQuery plugin
+    to make the menu easier to use.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The developer of the Superfish plugin, Joel Birch, says that most support issues
+    with the plugin come from people not understanding the CSS for the menu. To be
+    sure you have a firm grasp on the CSS, I highly recommend reading the original
+    Suckerfish Dropdowns article on *A List Apart* at [http://www.alistapart.com/articles/dropdowns](http://www.alistapart.com/articles/dropdowns).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get started with this plugin, we'll build on a basic Suckerfish menu. Since
+    that menu only requires CSS, we still get an interactive menu if we have JavaScript
+    disabled. The menu is just improved for users with JavaScript enabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll learn the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Superfish jQuery plugin to create a horizontal drop-down menu
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating vertical flyout menu with the Superfish plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing the drop-down and flyout menus created with the Superfish plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Horizontal drop-down menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The horizontal drop-down menu was long a common item in desktop software but
+    challenging if not impossible to implement in websites until CSS and JavaScript
+    finally arrived on the scene to make them possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a horizontal drop-down menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at how we can use the Superfish plugin to create a horizontal
+    drop-down menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started, we''ll create a simple HTML page and the associated folders
+    and files like we created in [Chapter 1](ch01.html "Chapter 1. Designer, Meet
+    jQuery"), *Designer, Meet jQuery*. The body of our HTML file will contain a navigation
+    menu that consists of nested unordered lists as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note that we've added an `id` of `sfNav` and a `class` of `sf-menu` to the `<ul>`
+    that contains our menu. This will make it easy for us to select and style the
+    menu the way we'd like.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If you view your page in the browser, it will look similar to the following
+    screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a horizontal drop-down menu](img/6709OS_06_image1.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: As you can see, we've organized our links into a hierarchy. This is useful for
+    finding the information that we want, but it takes up quite a lot of space. This
+    is where we can use a technique of hiding extra information until it's needed.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, we need a copy of the Superfish plugin. Head over to [http://users.tpg.com.au/j_birch/plugins/superfish/](http://users.tpg.com.au/j_birch/plugins/superfish/)
+    where you'll find Joel Birch's Superfish plugin available for download along with
+    documentation and examples.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In Joel''s **Quick Start Guide**, we see that there are three simple steps
+    to implementing the Superfish plugin:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Write the CSS to create a Suckerfish-style drop-down menu
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Link to the `superfish.js` file
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Call the `superfish()` method on the element that contains your menu
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lucky for us, Joel also includes a sample CSS file, so we can get started quickly.
+    We'll look at customizing the appearance of our menu later, but for now, we'll
+    go ahead and use the CSS included with the plugin.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Click on the **Download & Support** tab.![Time for action — creating a horizontal
+    drop-down menu](img/6709OS_06_image2.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The first link in the **Download** section is the link to download the ZIP file.
+    Underneath that, we see a bulleted list of all the files included in the ZIP and
+    links are provided to download each of them separately. We'll go ahead and download
+    the entire ZIP file since we're going to make use of several of these files. Click
+    on the **Superfish-1.4.8.zip** link and save the file to your computer.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Unzip the folder and take a look inside:![Time for action — creating a horizontal
+    drop-down menu](img/6709OS_06_image3.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We'll find the files nicely organized into subdirectories by type along with
+    an example HTML file we can examine to see the plugin at work.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The first file we'll need from the **Download** section is the `superfish.css`
+    file from the `css` folder. Copy that file to your own `styles` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we''ll edit our HTML file to include the `superfish.css` file in the
+    head of the document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're attaching the `superfish.css` file before our `styles.css` file to make
+    it easier for us to override any styles in the `superfish.css` file we want to
+    change later.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, if you refresh the page in a browser, you'll see a working Suckerfish drop-down
+    menu:![Time for action — creating a horizontal drop-down menu](img/6709OS_06_image4.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When I move my mouse over the first link, the nested`<ul>` becomes visible.
+    If I move my mouse down to the last link in the drop down, the`<ul>` nested at
+    the third level becomes visible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep in mind, all of this is accomplished without JavaScript — just CSS. If
+    you spend a few moments using the menu, you'll probably quickly recognize some
+    shortcomings. First, if I want to move my mouse from the **Ornithoptera** link
+    to the **Cape York Birdwing** link, my natural inclination is to move my mouse
+    diagonally. However, as soon as my mouse leaves the blue menu area, the menu closes
+    and disappears. I have to adjust to move my mouse directly right onto the submenu,
+    then down to the link I'm interested in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a horizontal drop-down menu](img/6709OS_06_image5.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is awkward and makes the menu feel fragile. If my mouse moves even 1 pixel
+    outside the menu, the menu collapses and disappears. Another problem is that the
+    menu opens as soon as the mouse hovers over it. If I am moving my mouse over the
+    menu moving from one part of the page to another, the menu opens and closes quickly,
+    which can be distracting and unexpected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a great place for jQuery to step in and make things a bit better and
+    more usable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — improving the drop-down menu with jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to improve the usability of the drop-down menu with jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll begin by attaching the Superfish plugin to our HTML page at the bottom
+    of our file, between jQuery and our `scripts.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, open `scripts.js`, where we will write our code calling the `superfish()`
+    method. As usual, we''ll get started with the document ready statement so that
+    our script runs as soon as the page is loaded into the browser:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Looking at the documentation for the Superfish plugin, we see that we only
+    have to select the element or elements that we''d like to apply the behavior to
+    and then call the `superfish()` method. Inside our `ready()` method, we''ll add
+    the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, if you refresh the page in the browser, you'll see the menu still looking
+    very similar, but with much improved behavior. The Superfish JavaScript and CSS
+    work together to add arrows to the menu items that have nested children. If you
+    move your mouse off of the menu, it does not disappear immediately, making it
+    possible to move the mouse diagonally to nested menu items. There's also a subtle
+    fade in animation when the menu items appear. And a background color change to
+    each menu item on hover, making it easy to see which item is currently active.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up a navigation menu consisting of a set of nested lists, forming a hierarchy.
+    Next, we attached a CSS file to add a simple drop-down functionality to our menu.
+    However, that CSS-only menu had a few shortcomings. So we attached the Superfish
+    plugin to take care of those and make our menu more user friendly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vertical fly-out menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We saw how the addition of the Superfish plugin enhanced the user experience
+    of our drop-down menu, but what if we wanted to create a vertical fly-out menu
+    instead?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a vertical fly-out menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Switching from a horizontal drop-down menu to a vertical fly-out menu couldn't
+    be easier. We'll use the same HTML markup and our JavaScript code will stay the
+    same. The only change we'll need to make is to add some new CSS to make our menu
+    display vertically instead of horizontally. We can keep working with the same
+    files we used in the last example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `css` folder of the Superfish download, you''ll find a file named `superfish-vertical.css`.
+    Copy that file to your own `styles` folder. In the `head` section of the HTML
+    file, we''ll attach the new CSS file. Between `superfish.css` and `styles.css`,
+    add the new CSS file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, in the HTML we'll add an `sf-vertical` class to the list that contains
+    our menu.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now when you refresh the page in a browser, you'll see the menu displayed vertically
+    with fly-outs:![Time for action — creating a vertical fly-out menu](img/6709OS_06_image6.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The only difference between the horizontal drop-down menu and the vertical fly-out
+    menu is the CSS and a class name added to the menu container. By simply adding
+    a new CSS file and a new CSS class, it's possible to create a vertical fly-out
+    menu instead of a horizontal drop-down menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing the navigation menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The included CSS with the Superfish plugin makes creating an interactive navigation
+    menu quick and simple, but a soft blue menu isn't going to fit into every design,
+    so let's take a look at how we can customize the menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're going to take a look at how we can customize the look of the menu by writing
+    our own CSS, customize the animation for showing the nested menus, highlight the
+    current page, and enhance the hover behavior of the menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re going to get started by writing some CSS to create a custom look for
+    our menus. We''re going to use the Suckerfish Dropdown approach to create a menu
+    that will work for our site visitors who don''t have JavaScript enabled. I''d
+    like to create a soft gradient background and have my menu items appear to be
+    ribbons floating over the top of this background. My menu will look similar to
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Customizing the navigation menu](img/6709OS_06_image7.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'I''m going to really take advantage of the newer CSS3 properties available
+    for use in modern browsers. I''m using gradients, box shadows, and rounded corners.
+    I''ve carefully selected these options because even without these extras, the
+    menu will still look okay and will be usable. The following is an example of how
+    the menu will appear in the older browsers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Customizing the navigation menu](img/6709OS_06_image8.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can see that it's missing some of the extra styling from the modern browser
+    example, but that it's still perfectly usable and generally pleasing to the eye.
+    If it were really important for the menu to look the same in all browsers, then
+    we could apply the same effects using images instead of CSS3 to get the final
+    effect. However, we'd likely need to add some extra markup, and we'd definitely
+    need to add images and extra lines of CSS, all adding weight to our pages overall.
+    Whether you decide to allow your menu to degrade gracefully for older browsers
+    or you decide to write the extra code and create the extra images to make the
+    menu appear the same in all browsers is a decision you'll need to make based on
+    the client's expectations, the target audience for the website, and the importance
+    of building speedy and lightweight pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are some things to keep in mind as you write custom CSS for a drop-down
+    or fly-out menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: :hover and .sfHover
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to make your menu work without JavaScript, you''ll need to take advantage
+    of the `:hover` pseudo-class for the list items. Make sure to also create a CSS
+    selector for the same element with a `.sfHover` class, which will be used by the
+    JavaScript. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This bit of code makes the nested menu visible on the screen when the parent
+    list item is hovered over. Including the `li:hover` selector ensures the menu
+    works without JavaScript. Also including the `li.sfHover` selector ensures the
+    JavaScript menu will apply the same code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cascading inherited styles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It''s the very nature of CSS for styles to cascade down the DOM and be applied
+    to all children of the selector as well as the selector itself. So, if you write
+    code to style the list items of the first-level menu like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All of the`<li>s` in your menu are going to have a dark red background, no
+    matter which level of the menu they appear in. If you want to apply different
+    styles to different menu levels, you''ll have to override the cascade in other
+    lines of code. For example, if I wanted to make the second menu level have a dark
+    blue background, I''d add this snippet of CSS *after* the preceding code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That means for a`<li>` inside another`<li>`, the background will be blue. Keep
+    in mind that now this style will in turn cascade down to other menu levels, so
+    if you want a dark green background for the third-level menu, you''ll need to
+    add another bit of CSS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In some cases, making use of direct descendent selectors in your CSS can help
+    to prevent you from having to write too many lines of CSS overriding styles written
+    for elements higher up in the DOM. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This bit of CSS takes advantage of a direct descendent selector (>). The dark
+    red background in this case will only apply to the`<li>` elements nested directly
+    inside`<ul>` with a class of `sf-menu`. It will not cascade down to the second-
+    or third-level menus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vendor prefixes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'If you''d like to experiment with the new CSS3 properties, you''ll have to
+    be sure to prepend your properties with vendor-specific prefixes. While these
+    properties are supported by most modern browsers, they are still under development
+    and may be implemented in slightly different ways in different browsers. Take
+    for example, this bit of CSS, which rounds the bottom two corners:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that the property for the bottom-left and bottom-right corners is
+    slightly different between webkit-based browsers (Safari and Chrome, mainly) and
+    Mozilla browsers (mainly Firefox). After the vendor-specific code, include the
+    general CSS3 code for any browsers that support that to make sure your code is
+    future-proof.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — customizing Superfish menus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Customizing a Superfish menu mostly involves writing your own CSS to style
+    the menu the way you''d like. Here''s how we''ll create a custom look for the
+    menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you'll remember some web basics, you'll remember that CSS stands for Cascading
+    Style Sheets. The cascading features are what we'll focus on here. Any styles
+    we write for the top level of our menu are going to cascade down to the other
+    levels of the menu. We have to remember that and handle all the cases where we'd
+    rather stop a style from cascading downward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s get started by styling the top level of our menu. Since I''m using new
+    CSS3 features, we''re going to have to be prepared to write a bit of extra code
+    so that each browser can handle our code gracefully. Here''s the CSS we''ll create
+    for the top level of the menu. Place this code inside your `styles.css` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Phew! That seems like a lot of code, but much of it is the repeated gradient
+    and shadow declarations we have to use for each different type of browser. Keep
+    your fingers crossed that this requirement goes away soon and the browser vendors
+    eventually reach agreement on how gradients and drop shadows should be created
+    with CSS.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, let''s take a look at how we''ll style the next level of our menus. Add
+    the following CSS to your `styles.css` file to style the second level:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Once again, this seems like a lot of CSS, but we still have that problem of
+    having to write our declarations for each individual browser. The second level
+    of menu items is also complicated by the need to override or undo any styles we
+    applied to the top level of the menu that we don't want to apply here. For example,
+    we applied a `float` property to all items at the top level of our menu, but we
+    had to undo that for the second level of the menu.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: I'm sure you're starting to see why most of the support issues for the Superfish
+    plugin are CSS related, rather than JavaScript related. There's a lot to keep
+    track of here.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Finally, we still have a third level of menu to style. Just like the second
+    level, we need to undo any cascading styles that we don''t want to apply. Add
+    the following styles to your `styles.css` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And take a deep breath, because we've finally reached the end of the CSS to
+    create a custom style for the menu. Don't worry, this was a particularly complex
+    design using lots of new CSS3 styles. If you pick something a bit simpler, it
+    could be a lot less code that you'll have to create to get the style working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The bonus of this CSS is that it will work even without enabling JavaScript.
+    The Superfish plugin just enhances the menu and makes it more usable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We wrote custom CSS to style our menu to match a design that we created. In
+    order to get hover states working correctly, we had to remember to style both
+    the `:hover` pseudoclass and the `.sfHover` class. We also had to dig into the
+    cascading feature of CSS and decide which styles should cascade down through all
+    levels of the menu and which should not. And finally, we had to keep in mind that
+    newer CSS3 properties have to be declared in different ways for different browsers—for
+    now, at least. All of this adds up to a drop-down menu requiring more custom CSS
+    than you might expect at first. Just be patient and keep the cascade in mind as
+    you work down through the levels of the menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom animation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we've got the CSS for our custom style written, let's take a look at
+    customizing the animation that shows the submenus. A sliding animation would be
+    better suited to my menu style. The default animation is to fade the submenus
+    in, but I'd rather override this default behavior and replace it with a sliding
+    animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — incorporating custom animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to incorporate custom animations to your menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fading the menu in means that the menu opacity is animating from 0 to 100 percent.
+    I''d rather animate the height of the submenu, so that the submenu slides into
+    view. To do that, open your scripts.js file and we''ll customize the animation
+    value inside the `superfish()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Just adding a value here will override the default behavior of the plugin and
+    replace it with the animation we choose instead.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now when you refresh the page in a browser, you'll see the submenus slide into
+    view instead of fade in, which is a much more fitting animation for the CSS I've
+    used to style the menus.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We took advantage of one of the customization options for the Superfish plugin
+    to change the show animation of the nested subnavigation links. There are more
+    customization options covered in the documentation of the Superfish menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The hoverIntent plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Earlier, I pointed out that one problem with our menu was how quickly the menu
+    reacted to the `mouseover` event. Any time the mouse is moved over the menu, the
+    nested menus open. While that might seem like a good thing at first, it might
+    be disconcerting or surprising to site visitors if they are simply moving their
+    mouse on the screen and aren't intending to use the drop-down or fly-out menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Superfish plugin has built-in support for the hoverIntent plugin. The hoverIntent
+    plugin sort of pauses the `mouseover` event and makes the page wait to see if
+    the mouse slows down or stops on an item to make sure it's what the site visitor
+    intended to do. That way if the site visitor just happens to roll his/her mouse
+    over the drop-down menu on their way to something else on the page, the submenus
+    won't start appearing, throwing them into confusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you'll recall, the hoverIntent plugin was actually included in the ZIP file
+    when we downloaded the Superfish plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding the hoverIntent plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to take advantage of the hoverIntent plugin for your menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the Superfish download, locate the `hoverIntent.js` file inside the `js`
+    folder and copy the file to your own `scripts` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, we need to attach the hoverIntent plugin to our HTML page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Don't forget to keep dependencies in mind when attaching multiple JavaScript
+    files to a page. All jQuery plugins depend on jQuery to operate, so jQuery needs
+    to be attached to your page before any plugins. In this case, the Superfish plugin
+    depends upon the hoverIntent plugin, so we need to make sure hoverIntent is added
+    to our page before the Superfish plugin.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Add the new`<script>` tag to the bottom of your page with the other scripts
+    as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you refresh the page in a browser, you'll see that there's a short pause
+    when your mouse moves over the menu before the nested submenu appears. And if
+    you run your mouse across the page quickly, crossing the menu, no unwanted submenus
+    appear on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero — set your own speed
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Try using the different customization options for the Superfish plugin that
+    are outlined in the documentation to adjust the speed of the animation that shows
+    the submenus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Whew! That was a lot of work we just did, but I have to say we have a pretty
+    impressive navigation menu to show for our efforts. We learned how to use the
+    Superfish jQuery plugin to produce horizontal drop-down menus or vertical fly-out
+    menus. And we learned how to fully customize the look and feel of our menu to
+    fit our site design perfectly. Being able to hide subsections of the site until
+    they're needed makes a complex navigation structure less overwhelming for your
+    site visitors. It's simple and clear to see what the main sections of the site
+    are, and they can easily drill down to just the content they want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we'll take a look at spiffing up our animation even more by super-powering
+    it with Ajax.
+  prefs: []
+  type: TYPE_NORMAL

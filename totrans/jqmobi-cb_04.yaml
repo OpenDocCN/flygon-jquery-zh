@@ -1,0 +1,1137 @@
+- en: Chapter 4. Buttons and Content Formatting
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scripting a dynamically added button
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a custom icon in a button
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a custom icon sprite
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Replacing the default icon sprite
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using alternate icons in a collapsible
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a nested accordion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a custom layout grid
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using XML content
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSON content
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In a jQuery Mobile app, you can add buttons, form controls, and lists as the
+    page content of your app. The page content is a `div` container with the attribute
+    `data-role="content"`. You can display data and format it using the ready styles
+    and layouts that are provided by the framework. You can group and display data
+    in **collapsible blocks** and in **collapsible sets** or **accordions** . You
+    can show data in multiple columns using the **Layout Grid** . You can also use
+    the table and other HTML elements in your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scripting a dynamically added button
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Buttons are standard HTML form elements that are enhanced by the **button plugin**
+    in the jQuery Mobile framework to make them finger friendly and also to look good
+    in a wide variety of mobile devices. You can add buttons to your app by using
+    the `<button>` tag or the `<input>` tag. You can also style the anchor element
+    as a button by adding the `data-role="button"` attribute to it. This recipe shows
+    you how to dynamically add a button to a page using JavaScript and bind an action
+    to this newly added button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/dynamic-button` sources
+    folder. You can launch this code using the URL `http://localhost:8080/04/dynamic-button/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create the `#main` page and add a button to it. When you click
+    on this button, use JavaScript and create a second button and also assign an action
+    to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create the `#main` page in `main.html` and add the following code content to
+    it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add the following script to handle the `click` event of the button. In the callback
+    function, create the new button and also assign an action to it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add `#page2` as given in the following code. This is a multi-page document.
+    This page is opened when you click the dynamically added button.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` with a page `#main` and add a button with `id="addContentBtn"`
+    to the page content. Also add an empty `div` container, `id="newcontent"` to the
+    page. When you load this page, you will see only one button with text **Click
+    to add new button** displayed on the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next add the given script. Add a `pageinit` event handler that gets invoked
+    after the page has been initialized. Here, bind the `click` event of the button
+    to a callback function. In the callback function, add an anchor link with `data-role="button"`
+    to the empty `"#newcontent"` div. Since the page is already initialized, you have
+    to explicitly call the `create` method to trigger the framework to revisit this
+    link and enhance it to a button. Now when you click on the first button, you will
+    see that the second button, **Disable 1st button and Go to Page 2**, is created
+    and displayed. In the script also add code to bind the `click` event of the new
+    button to a callback function. Here, invoke the `disable` method on the first
+    button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally create a new page with `id="page2"` that will get opened when you click
+    on the new button. Add the `data-add-back-btn="true"` to `#page2` to provide a
+    **Back** button to help navigate back to the `#main` page. Now when you click
+    on the second button, the dynamically added script gets invoked and the first
+    button is disabled and the page navigates to open `page2`. You can click on the
+    **Back** button in `page2` and go back to the `#main` page. You will see that
+    the first button is now disabled by the dynamic script that you had added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The button plugin also provides methods to `enable`, `disable`, and `refresh`
+    the button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Button options
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Buttons provide numerous markup options using the `data-` attributes. They are
+    **corners** (`data-corners`), **icon** (`data-icon`), **iconpos** (`data-iconpos`),
+    **shadow** (`data-shadow`), **iconshadow** (`data-iconshadow`), **inline** (`data-inline`),
+    and **theme** (`data-theme`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can call the `buttonMarkup` method on an anchor link to enhance it as a
+    button. The following line of code takes a native anchor link and adds the button
+    role to it and also sets the `data-icon="alert"` and `data-inline="true"` attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using a custom icon in a button
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Buttons can contain text, icons, or both. The icon can be positioned in one
+    of the four directions within a button. The jQuery Mobile framework provides a
+    set of standard icons that you can use in your app. This recipe shows you how
+    to add a custom icon to a button along with the standard icon provided by the
+    framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/custom-icon` sources folder.
+    You can launch this code using the URL `http://localhost:8080/04/custom-icon/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this recipe, the following image, `square.png` is used for the custom icon
+    image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/7225_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Create a new style sheet `jqm-icon.css` and define the custom icon style as
+    in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Include the CSS in the `<head>` section of `main.html`, as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Use the custom icon with a submit button and with the following different themes.
+    Add the default `"home"` icon as well, for comparison.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create a `jqm-icon.css` stylesheet and add a new icon class in it, `ui-icon-square`.
+    Specify the `background-image` property and point it to the image file to be used.
+    Specify the `background` color for the icon and also specify the background color
+    for the **icon disc** with opacity as shown. Here, the prefix text **ui-icon**
+    indicates to the button plugin that this is a custom icon and this generates a
+    `square` class. You can now use the `data-icon="square"` attribute in a button
+    and the framework will fetch and display the `square` icon on the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create `main.html`, add submit buttons using input tags, and set icons to these
+    buttons using the `data-icon` attribute. First use the default `home` icon and
+    then use the newly added custom `square` icon, with and then without text. For
+    a detailed comparison you can add multiple buttons using the different theme swatches
+    (`data-theme="a"` to `data-theme="e"`). The end result is as shown in the following
+    image. The custom icon looks as good as the default one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The icon `.ui-icon-square` defined in the CSS is of standard resolution. Most
+    of the new devices support HD resolution today. So to make it work on HD resolutions,
+    you can create a new high resolution image, `square-HD.png` of 36 x 36 pixels
+    size. Use this image in a `@media` query as shown in the CSS and specify the target
+    device resolutions that this high resolution icon should work on. For more details
+    about the `@media` query, see [http://jquerymobile.com/demos/1.1.1/docs/buttons/buttons-icons.html](http://jquerymobile.com/demos/1.1.1/docs/buttons/buttons-icons.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the standard resolution custom icon, use images of 18 x 18 pixels size saved
+    in a **PNG-8** format with alpha transparency. Set its alpha value to `0.4` and
+    the background color to `#666`. Now your icons will look similar to the default
+    icons provided by the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using data-inline
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: By default, the button is stretched to fit the width of its container. You can
+    specify the attribute `data-inline="true"` to show the button in its compact mode.
+    You can also add multiple inline buttons next to each other in the same row.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using data-iconpos
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A button can be associated with an icon image by using the `data-icon="home"`
+    attribute. Here, `"home"` is the name of the icon being used. The `data-iconpos`
+    attribute can be used to specify where the icon should be displayed in the button.
+    The possible values are `top`, `bottom`, `left`, and `right`. Using the `data-iconpos="notext"`
+    attribute hides the text completely and resizes the button to show only the icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using shadows and corners with buttons
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Buttons use rounded corners by default and this can be controlled using the
+    Boolean attribute `data-corners`. Shadows are also enabled by default for the
+    button and its icon. This can be controlled by using the attributes `data-shadow`
+    and `data-iconshadow`. The `data-corners`, `data-shadow`, and `data-iconshadow`
+    attributes are all Boolean and take `true` or `false` values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Adding a custom icon sprite* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Replacing the default icon sprite* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a custom icon sprite
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework uses a default **icon sprite** and derives all the
+    icons from it. This recipe shows you how to add a custom icon sprite, with the
+    **divide** and **equals** icons, to the default standard icon set, together forming
+    the keys of a calculator. The standard icon set already has the **plus**, **minus**,
+    and **delete** (**multiply**) icons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/add-icon-sprite` sources
+    folder. You can launch this code using the URL `http://localhost:8080/04/add-icon-sprite/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this recipe, the following image, `calc-sprite.png` provides the divide
+    and equals icons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/7225_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Create a new `jqm-sprite.css` stylesheet and define the classes `.ui-icon-divide`
+    and `.ui-icon-equals` for the new icons derived from the custom icon sprite:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Include the CSS in the `<head>` section of `main.html`, as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the new icons derived from the custom icon sprite along with the default
+    icons as shown in the following code. Display the buttons with text first:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then display the buttons without text for comparison:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create a stylesheet `jqm-sprite.css` and add new icon classes `.ui-icon-divide`
+    and `.ui-icon-equals` in it. Specify the `background-image` property and point
+    it to the image file to be used as the icon sprite. Next specify the `background`
+    colors for the icon and for the **icon disc** with opacity as shown. Also specify
+    a `border-radius` of `9px` for the icons. The vendor prefixes are added to ensure
+    this works on various browser platforms. Finally, define the position for each
+    of the new icons within the icon sprite as shown in the last two lines of the
+    CSS file. Add the `@media` query to specify the target device resolutions that
+    the icons should work on; this is explained earlier in this chapter in the *Using
+    a custom icon in a button* recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, the prefix text **ui-icon** indicates to the button plugin that these
+    are custom icons and this generates the corresponding classes without the prefix
+    text. You can now use the new icons on buttons using the attributes `data-icon="divide"`
+    or `data-icon="equals"`, and the framework will fetch and display the correct
+    custom icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create the buttons of a simple calculator by adding submit
+    buttons using input tags. Set icons to these buttons using the `data-icon` attribute
+    as shown. Display the buttons with and without text for comparison. Here, the
+    **plus**, **minus**, and **delete** icons are from the default icon sprite. The
+    custom icon sprite contributes the **divide** and **equals** icons. The screen
+    is displayed as shown in the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For creating an icon sprite, use a PNG image with a height of `18px`. The total
+    width is a multiple of `18px` multiplied by the number of icons in the sprite.
+    An alpha value of `0.4` and a background color of `#666` are used by the default
+    icon sprite. Use the same in your custom sprite to maintain a consistent look
+    with the default icons. Save the image in a **PNG-8** format with alpha transparency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specifying an invalid icon name
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the code, if you specify an invalid icon name, say `data-icon="random"`,
+    the framework prefixes this with the text `.ui-icon-`and tries to look the class
+    up in the stylesheet. If this is not resolved to a valid icon, the framework now
+    picks up the first icon from the default icon sprite and displays the same instead.
+    The first icon in the default sprite is the `plus` icon and is used in all places
+    where the icon name cannot be resolved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Replacing the default icon sprite* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Using a custom icon in a button* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Replacing the default icon sprite
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to replace the default icon sprite provided with jQuery
+    Mobile and use your own instead. The custom icon sprite used here contains icons
+    which form the six faces of a dice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/replace-icon-sprite` sources
+    folder. You can launch this code using the URL `http://localhost:8080/04/replace-icon-sprite/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this recipe, the following image, `dice.png` is an icon sprite with six icons
+    for the six faces of a dice. This icon sprite is used to replace the default icon
+    sprite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/7225_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Create a new stylesheet `jqm-sprite.css` and redefine the default `.ui-icon`
+    class available with jQuery Mobile framework. Replace the default icon classes
+    with new classes for the icons derived from the custom icon sprite as shown in
+    the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Include the CSS in the `<head>` section of `main.html`, as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the new icons derived from the replaced icon sprite to display the six
+    faces of the dice as shown in the following code. Display the buttons with text:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then display the buttons without text for comparison:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create a stylesheet `jqm-sprite.css` and copy the code snippet for the `.ui-icon`
+    class as is from the `jquery.mobile.css` file. Change the `background-image` URL
+    of the icon sprite to point to the custom icon sprite `dice.png` image. Add the
+    individual icon classes with the names `.ui-icon-one` to `.ui-icon-six`. Specify
+    the positions of these icons in the icon sprite. The class `.ui-icon` already
+    specifies the `background` colors for the icons. It also specifies a border radius
+    of `9px` for the icons with the required vendor prefixes. Modify the `@media`
+    query and update the names of the new icons instead of the default icons as shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, the prefix text **ui-icon** indicates to the button plugin that these
+    are custom icons and this generates the corresponding classes without the prefix
+    text. You can now use the replaced icons on buttons using the attributes `data-icon="one"`
+    to `data-icon="six"` and the framework will fetch and display the correct custom
+    icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create the buttons for the six faces of a dice by adding submit
+    buttons using input tags. Set icons to these buttons using the `data-icon` attribute
+    as shown. Display the buttons with and without text for comparison. The buttons
+    for the six faces of a dice are now displayed as shown in the following screenshot,
+    first with text and then without text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This recipe shows you how to replace the default icon sprite with your own custom
+    icon sprite. You will no longer be able to use the default icons in your application.
+    So replace the default icon set only if you have a valid reason to do it and if
+    your app requires customization of all the icons. A better approach is to add
+    a custom sprite along with the default sprite as shown in the previous recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using a custom icon in a button* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Adding a custom icon sprite* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using alternate icons in a collapsible
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A **collapsible** is a container with the `data-role="collapsible"` attribute.
+    You can add a header and other controls inside collapsible content and only the
+    header is displayed when the collapsible block is collapsed. You can click on
+    the **+** icon next to the collapsible to expand it. This recipe shows you how
+    to use alternate icons with a collapsible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/collapsible` sources folder.
+    You can launch this code using the URL `http://localhost:8080/04/collapsible/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html` add two collapsible blocks using `data-role="collapsible"`, as
+    shown in the following code. By default, the first collapsible uses the standard
+    icons (**plus** and **minus**).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section of the page to set alternate
+    arrow icons to the second collapsible:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add two collapsible blocks; they have the default **plus**
+    and **minus** icons when they are loaded. Add script and create an event handler
+    for the `pagebeforeshow` event to change the icons for the second collapsible
+    (with `id="collapser"`). Use the jQuery `find()` method to find the class `.ui-icon-plus`
+    (**plus** icon) and replace it with the class `.ui-icon-arrow-r` (**right arrow**)
+    using the `toggleClass()` method. Similarly, replace the class `.ui-icon-minus`
+    (**minus** icon) with the class `.ui-icon-arrow-d` (**down arrow**). Set the `data-collapsed="false"`
+    attribute on the collapsible blocks to show in an expanded mode. The second collapsible
+    now has the arrow icons instead of the default icons when the page is displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When a collapsible is expanded or collapsed, the framework toggles the icon
+    using standard icons. You can override this behavior by adding an event handler
+    for the `pageshow` event. Based on the event (`expand` or `collapse`) on the collapsible
+    block, find the `.ui-icon` class and replace it with the `.ui-icon-arrow-d` or
+    the `.ui-icon-arrow-r` classes to show the **down** or the **right** arrows. The
+    collapsed blocks now look as shown in the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can theme the collapsible content by using the `data-content-theme` attribute.
+    The header is not affected. The following code themes the collapsible content
+    with swatch `e`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting a theme to the collapsible header
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Use the `data-theme` attribute and set the theme to the entire collapsible
+    block including the header. Now you can set a different theme to the collapsible
+    content using the `data-content-theme` attribute. It will now look as if you styled
+    the header separately. The following code snippet sets the header theme to swatch
+    `a` and body to swatch `e`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Creating a nested accordion* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a nested accordion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: An **accordion** or a **collapsible set** is a group of collapsible blocks in
+    a container with `data-role="collapsible-set"`. Only one collapsible can be expanded
+    at a time and the other collapsibles go back to their collapsed state. You cannot
+    nest accordions directly. This recipe shows you how to create a **nested accordion**
+    in a simple application that displays the various real estate properties available
+    for purchase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/nested-accordion` sources
+    folder. You can launch this code using the URL `http://localhost:8080/04/nested-accordion/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add a nested accordion to `main.html` using `data-role="collapsible-set"` as
+    shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, create a collapsible set with two collapsible blocks in it.
+    The first collapsible shows **Villas and Row Houses** and the second shows **Apartments**.
+    You can now nest another collapsible set under the **Villas and Row Houses** collapsible,
+    as shown in the previous code snippet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add two collapsible blocks, nesting them inside the first collapsible block
+    to list two properties. Theme the nested content differently from its parent collapsible
+    using the `data-theme` and `data-content-theme` attributes. The nested collapsible
+    is displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now to complete the code, add content to the second collapsible **Apartments**.
+    At any point in time, only one collapsible is expanded in this nested accordion,
+    as seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Introducing any other element or content in between two collapsible blocks in
+    a collapsible set breaks the set. The collapsible blocks are no longer synchronized
+    and they become independent of each other when you expand or collapse them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As the name indicates, a collapsible set must only contain collapsible blocks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using alternate icons in a collapsible* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a custom layout grid
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can use a **layout grid** to place controls next to each other in your application.
+    By default, the layout grid creates column cells with equal width. This recipe
+    shows you how to customize this and create cells with varying heights and widths.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/layoutgrid` sources folder.
+    You can launch this code using the URL `http://localhost:8080/04/layoutgrid/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add a layout grid to `main.html` as shown in the following code, using the
+    `ui-grid` and `ui-block` classes:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` and add a layout grid to its page by adding a `fieldset`
+    element with the attribute `class="ui-grid-a"`. This will create two columns having
+    equal widths by default. But you can add three cells by adding `ui-block-a`, `ui-block-b`,
+    and `ui-block-c` divs as shown in the code. Each div has varying widths, with
+    **Col B** having `50%` width and the other two columns `25%` width each. The total
+    width sums up to 100 percent and the framework automatically lines them up in
+    a single row. If the sum were to exceed 100 percent, then the extra cells would
+    be moved to the next row.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now in the second row add a single `div` with class `ui-grid-solo` and this
+    will style the cell to have 100 percent width. You can alter the height of this
+    cell as shown in the code using the `style="height:"` attribute. The `ui-bar`
+    and `ui-bar-e` classes style the cells with a border and a gradient color and
+    themes it with swatch `e`. The grid layout now looks as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can theme an individual cell, `ui-block` differently from other cells, by
+    adding the `data-theme` attribute to it. To theme an entire row differently from
+    other rows in the grid, you will have to add the same `data-theme` attribute to
+    all the cells of that row.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding content to a layout grid cell
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can add any sort of element inside the `ui-block` cell of a layout grid.
+    You can even add a layout grid inside this cell. You have to choose wisely how
+    you want your screen to look, keeping in mind the limited screen size of mobile
+    devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a grid layout to any container
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can add a grid to any container by adding the `ui-grid` class to it. The
+    following code snippet styles the entire page as a two column grid:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Adding a layout grid to the footer* recipe in [Chapter 3](ch03.html "Chapter 3. Toolbars"),
+    *Toolbars*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using XML content
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can display data obtained from various formats and sources in your application.
+    This recipe shows you how to display a sample set of **Student Records** obtained
+    from an XML file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/xml-content` sources folder.
+    You can launch this code using the URL `http://localhost:8080/04/xml-content/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create the `student.xml` file with the student node having attributes `name`
+    and `age`. Each `student` node has multiple `course` child elements. Each `course`
+    element has a `name` attribute and a child `marks` element as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `main.html` file and add one hidden `div` container. You can read
+    the XML data into this `div` and then format and display it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Include the following JavaScript code in the `<head>` section of `main.html`
+    to load the XML file, format the data, and then display it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add a `div` container with `id="hiddendiv"` and hide it by setting
+    the attribute `hidden="true"`. Create an event handler for the `pageinit` event
+    to handle the loading of the XML data as soon as the page is initialized and available
+    in memory. Load the XML data into `hiddendiv` using the jQuery Ajax `load()` method.
+    On successful load, find each `student` node using the jQuery `find()` method.
+    For each `student`, generate HTML code by creating a collapsible (using `data-role="collapsible"`).
+    Set the collapsible header to the student's `name` and `age`. You can obtain these
+    values from the attributes of the `student` node by using the jQuery `attr()`
+    method. Next, find each course within the `student` node and obtain `course` `name`
+    and `marks`. The `marks` value is read by using the `children()` call, which extracts
+    the first child element of the `course` node. The `course` elements are added
+    to an unordered list (using `data-role="listview"`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once the HTML content is built, set it to the `"#content"` page content div
+    and then trigger the `"create"` method to let the jQuery Mobile framework do its
+    magic and generate the enhanced controls, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This recipe shows you how to read contents from a XML file located in the same
+    folder using Ajax. You can also send an Ajax request to a server and obtain this
+    XML as the response. The jQuery library has a whole bunch of selectors and manipulators
+    that you can use to read and write XML data. Visit [http://docs.jquery.com](http://docs.jquery.com)
+    to read more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: XML structure requires end tags and this makes it bulky. Always try to make
+    your XML as light as possible by using more attributes when possible instead of
+    child nodes. You can also use an algorithm such as *gzip* to compress the XML.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using native browser rendering for XML
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Almost all browsers know how to render and display XML data directly. The XML
+    content can also be formatted and styled if it has an associated style sheet.
+    In your jQuery Mobile app you can leverage this feature in situations where you
+    can open the content in another page using the `target` attribute on the anchor
+    link, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using JSON content* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSON content
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**JSON** stands for **JavaScript Object Notation**. It is a lightweight data-interchange
+    format and is very easy to use. This recipe shows you how to display the prices
+    of **Precious Metals** from a JSON file.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/04/json-content` sources folder.
+    You can launch this code using the URL `http://localhost:8080/04/json-content/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create the `precious.json` file containing an array of the five precious metals.
+    The name, symbol, and the intraday `open`, `close`, `high`, and `low` prices are
+    also available, as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create `main.html` and add an empty `div` with `id="preciousdata"` to it. You
+    can read the JSON file, format, and display the data here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Include the following JavaScript code in the `<head>` section of `main.html`
+    to fetch and load the JSON file, format the data, and show the price table of
+    the precious metals in a layout grid:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, store the HTML strings used to create the layout grid in local variables:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the local variables defined above and construct the HTML content for the
+    title of the layout grid:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now create the HTML content for each metal, including their price details:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, add this data to the `#preciousdata` div and trigger the `"create"`
+    method to display the formatted JSON data:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add an empty `div` container with `id="preciousdata"`. You can
+    use this to display the formatted JSON data later. Create an event handler for
+    the `pageinit` event to handle the loading of the JSON data as soon as the page
+    is initialized and available in memory. Use the `$.getJSON()` jQuery call to fetch
+    the JSON encoded data from the server using a GET request. The JSON data is now
+    available in the `metal` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the callback function for the `getJSON` method, create the HTML content for
+    a five column layout grid using the `ui-grid-d` class. The five columns are titled
+    **Precious Metal (USD)**, **Open**, **High**, **Low**, and **Close**. Create the
+    title row using the `ui-block` classes for each column cell. Next, loop through
+    the objects in `metal` and construct the column cells as shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Theme the columns alternatively with swatch `e` and swatch `c`. You can theme
+    the title differently using swatch `a`. Finally, set the generated HTML content
+    to the `#preciousdata` div and trigger the `create` method to let the jQuery Mobile
+    enhance the layout grid. The JSON with precious metal price data is now displayed
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_04_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This recipe shows you how to use the `jQuery.getJSON()` method to fetch the
+    JSON data from the server. The jQuery library also provides a `jQuery.parseJSON()`
+    method that you can use to parse a JSON string directly into a JavaScript object,
+    as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: JSON for data storage and data transfer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: JSON is very popular today for storing and transferring data. JSON is a subset
+    of JavaScript and as seen in this recipe, reading JSON data using JavaScript is
+    very trivial. JSON is lightweight and uses less bandwidth compared to XML (for
+    example, no start and end tags). JSON is also supported out of the box by numerous
+    document oriented databases such as CouchDB and MongoDB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSON parsers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: JSON data can also be loaded using the JavaScript `eval()` method. But do this
+    only if you absolutely have to and are very sure about the source of the JSON
+    text file. It is always safer to load the data using a **JSON parser** as this
+    will accept only valid JSON data, and prevent potentially malicious code from
+    running. Refer to [www.json.org](http://www.json.org) for more details and for
+    accessing a whole range of available JSON parsers. The jQuery JSON methods are
+    usually preferred as they are very handy and also safe to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Always use a properly implemented JSON parser to read and write `.json` files.
+    Avoid using the `eval()` method, which is not secure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using XML content* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

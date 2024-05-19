@@ -1,0 +1,698 @@
+- en: Chapter 2. A Fixed Position Sidebar with Animated Scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `position:fixed` CSS style adds an interesting effect that allows a targeted
+    element to retain its position on the screen even when the page it is on is scrolled.
+    However, its effectiveness is limited by the fact that no matter how deep the
+    element is nested within other elements, it is always fixed relative to the document
+    as a whole.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we'll create a sidebar that emulates the `position:fixed` CSS
+    style but doesn't suffer from the same limitations as a pure CSS solution. We
+    can also add an attractive animation to the page so that when navigation items
+    in the sidebar are clicked, different parts of the page are scrolled into view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a screenshot that shows the final result of this project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mission Briefing](img/9106_02_01_preFinal.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Being able to fix an element in place on the page is an incredibly popular UI
+    design pattern used by many large and popular websites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping the visitor's main tools or calls-to-action within reach at all times
+    improves the user experience of the site and can help keep your visitors happy.
+    Making things convenient is important, so if a visitor has to scroll down a long
+    page, then scroll all the way up just to click something, they will soon lose
+    interest in the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This same principle is also an emerging trend on mobile devices. Actual `position:fixed`
+    styling has pretty poor support on mobile devices in general, but the idea of
+    keeping important tools in hand, so to speak, without requiring excessive scrolling
+    or a change of screen is being picked up and implemented in some of today's most
+    well-known apps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To complete this project we will need to work through the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a suitable demo page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Storing the initial position of the fixed element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Detecting when the page has scrolled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling browser window resizes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Automating scrolling
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Restoring the browser's back button
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling the hash fragment on page load
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a suitable demo page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll prepare the demo page and the other files we'll need ready
+    for the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make the benefits of this technique obvious, we'll need to use a number of
+    extra elements that strictly speaking aren't part of the required elements for
+    the sidebar that we'll be fixing in place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The sidebar that we'll use as the focus of this example will need to sit within
+    the structure of a complete page, and to see the fixed position effect, the page
+    will also need to be quite long.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be using a range of HTML5 elements when building our demo page and you
+    should be aware that these are not supported in older versions of some browsers.
+    If you find that you do need to support legacy browsers, you'll need to use the
+    `html5shiv` script available at Google Code ([http://code.google.com/p/html5shiv/](http://code.google.com/p/html5shiv/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We should first save a new copy of the template file to the root folder of our
+    project and call the new file `fixed-sidebar.html`. We can also create a new style
+    sheet called `fixed-sidebar.css`, which we can save in the `css` folder, and a
+    new JavaScript file called `fixed-sidebar.js`, which should be saved to the `js`
+    folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can link to the new style sheet in the `<head>` part of the HTML page using
+    the following new `<link>` element, which should be added directly after the link
+    to `common.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Remember that the `common.css` style sheet is used to provide useful things
+    such as a reset, a simple typography framework, and some common layout styles
+    in order to minimize the CSS each project requires.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can link to the new JavaScript file using the following new `<script>` element,
+    which should be directly after the jQuery `<script>` file in the `<body>` part
+    of `fixed-sidebar.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The underlying page is now set up ready for us to add the elements that are
+    required for this project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use a basic layout for our page consisting of the following elements,
+    which should be added to `fixed-sidebar` `.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: These elements should be added to the `<body>` of the page, directly before
+    the `<script>` element that links to jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll also need some basic CSS for our example page in order to create the
+    layout that this example requires. In the `fixed-sidebar.css` style sheet that
+    we created for this example, add the following styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: As before, none of this code is actually required, we're using it just to lay
+    out the demo page as we need to for the purposes of this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've added a very simple layout to create our demo page. The HTML5 `<article>`
+    is filled with five different HTML5 `<section>` elements, each with their own
+    `id` attributes. We'll use these a little later in the project to allow animated
+    navigation between them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous code sample each `<section>` element is empty. But if you're
+    following along and writing the example code as you go, you should fill each of
+    them with a variety of random elements in order to increase the length of the
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: None of the elements we're using in this example matter at all. The HTML5 `<aside>`
+    is the element that we'll be fixing in place, but the fact that it's an `<aside>`
+    element is not important – any element can be used with this technique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `<aside>` element is an HTML5 `<nav>` element. As I mentioned, this
+    will allow us to add another cool feature later on, but again, is not essential
+    for the basic technique to be used. Any content can be used in the element that
+    is to be fixed in place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice also that in the CSS we don't use `position:fixed` anywhere at all. The
+    reason for this is simple. An element that has a fixed position is positioned
+    relative to the document as a whole, not to its parent container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If no pixel coordinates are supplied, a fixed position element is rendered where
+    the flow of elements on the page dictates depending on its DOM position (although
+    it is still technically out of the normal flow of the page).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we try to do this with our example layout, it ends up at the far-left of
+    the outer `.wrapper` element, because the `float` specified on the `<article>`
+    element also removes the `<article>` element from the normal document flow. This
+    is not good.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If pixel coordinates are supplied, these are interpreted by the rendering engine
+    to be relative to the window, just like absolutely positioned elements. In some
+    situations it may be acceptable to specify pixel coordinates, but when using a
+    liquid layout such as in this example, the required coordinates to set the `left`
+    and `top` style properties of the `<aside>` element will vary depending on the
+    resolution of the screen used to view the page, hence the conundrum we face and
+    hence the reason to use jQuery to achieve it instead of simple CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To save time when creating example layouts, like the one used in this project,
+    we can use services such as Placehold It ([http://placehold.it/](http://placehold.it/))
+    for placeholder images of any dimensions, and HTML Ipsum ([http://html-ipsum.com](http://html-ipsum.com))
+    for a range of common HTML elements pre-filled with Lorem Ipsum placeholder text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing the initial position of the fixed element
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we can fix the element in place, we'll need to know where that place
+    is. In this task we'll obtain the current starting position of the `<aside>` element
+    that we're going to be fixing in place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `fixed-sidebar.js` we should start with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can cache a couple of jQuery-selected elements at the top of our function,
+    and to store the initial position of the fixed element, we can then add the following
+    code within the function we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've used the same outer wrapper for our code that we used in the first project.
+    As I mentioned then, it's a very common way to execute code once the page has
+    finished loading. We'll probably use it in every project throughout the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then cache references to the elements that we're going to be referring to
+    so that we don't have to keep selecting them from the DOM. We'll be querying these
+    elements inside event handlers a little later so it's much better for performance
+    to select them from the page once and then refer to the saved, or cached, version
+    throughout our code, instead of repeatedly selecting elements from the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We store references to the `window` object as we'll be attaching several event
+    handlers to it. We'll be scrolling the entire page a little later on and for full
+    cross-browser compatibility we should select and store a reference to both the
+    `<html>` and `<body>` elements, as different browsers use either the `<html>`
+    or `<body>` element, so this covers all bases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll need to select the element with the class name `wrapper`, the containing
+    `<article>`, all of the different `<section>` elements, and of course the `<aside>`
+    element, which we'll be working with frequently throughout the remaining code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also store the initial position of the fixed element so that we know the
+    coordinates on the page to fix the element to. We use jQuery's `offset()` method,
+    which returns an object containing `top` and `left` properties that show the current
+    position relative to the document, exactly what we require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Depending on the styles applied to the surrounding elements, the `width` of
+    the element being fixed may change. To alleviate this we also store the initial
+    `width` of the element using jQuery's `width()` method, which returns an integer
+    expressing the `width` in pixels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we can also compute and store the `width` as a percentage. We'll need
+    to know this later when we want to react to the browser window being resized.
+    Working it out is easy by multiplying `100` by the `width` of the fixed element,
+    then dividing this figure by the width of its container, which again we use jQuery's
+    `width()` method to obtain. This also means that the `width` of the fixed sidebar
+    can easily be changed in just the CSS file, and the script will continue to work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting when the page has scrolled
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our next task is to detect when the page has been scrolled and fix the element
+    in place when that occurs. Detecting the scroll event is made easy for us by jQuery,
+    as is setting the `position` to `fixed`, because there are simple jQuery methods
+    we can call to do these exact things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add the following code to the script file directly after the variables we initialized
+    in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can use jQuery's `one()` method to attach an event handler to the `window`
+    object that we stored in a variable. The `one()` method will automatically unbind
+    the event handler as soon as the event is detected for the first time, which is
+    useful because we only need to set the element to `position:fixed` once. In this
+    example we are looking for the `scroll` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the event is detected, the anonymous function we pass as the second argument
+    to `one()` will be executed. When this occurs we use jQuery's `css()` method to
+    set some `style` properties. We set the `width` of the element to counter situations
+    where the `width` of our target element increases because of `float` and/or `margin`
+    on surrounding elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set the `position` to `fixed` and also set the `top` and `left` style properties
+    using the initial position of the element that we stored in the `initialPos` variable
+    at the start of the project. We use JavaScript's `Math.round()` method in order
+    to round the `top` and `left` pixel positions to whole numbers, which helps to
+    avoid any cross-browser issues with subpixel rounding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling browser window resizes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At the moment, our `<aside>` element will be fixed in place as soon as the page
+    scrolls, which suits our needs while the browser remains the same size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if the window is resized for some reason, the `<aside>` element will
+    fall out of its fixed position and could be lost outside of the boundaries of
+    the viewport. In this task, we'll fix that by adding an event handler that listens
+    for the window's resize event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To maintain the fixed element''s correct location relative to the rest of the
+    page, we should add the following code directly after the `one()` method that
+    we added in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This time we use jQuery's `on()` method to attach our event handler. We pass
+    two arguments to this method; the first is the event we are listening for, which
+    in this task is the window's `resize` event, and the second is the function that
+    we wish to execute when the event is detected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We only want to reposition and resize the `<aside>` element if the page has
+    already been scrolled and the element has had its `position` set to `fixed`, so
+    before we do anything else we first check that this is the case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the element's `position` is set to `fixed`, we first determine the current
+    `left` style property of the wrapper element using the `left` property of the
+    object returned by jQuery's `offset()` method. We also get the wrapper element's
+    `width` using jQuery's `width()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because our layout is liquid we also need to adjust the `width` of the fixed
+    element. In the CSS we originally set the `width` to `20%`, so we can ensure that
+    it stays at 20 percent of its container by dividing the container's current width
+    by 100 and then multiplying it by the `percentWidth` variable we stored in the
+    first task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use jQuery's `css()` method to set the `width` of the fixed element
+    and it's `top` and `left` style properties to make sure that it stays in the correct
+    location when the `window` is resized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Automating scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point, we should be able to click on any of the links in the navigation
+    menu we added to the fixed element, and the page will jump to bring the corresponding
+    section into view. The fixed element will still be fixed into place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jump to the section is quite jarring however, so in this task we'll scroll
+    each section into place manually so that the jump to each section is not so sudden.
+    We can also animate the scroll for maximum aesthetic effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this task we should add another event handler, this time for `click` events
+    on the links in the navigation list, and then animate the page scroll to bring
+    the selected `<section>` into view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we can add a general function for scrolling the page which accepts some
+    arguments and then performs the scroll animation using those arguments. We should
+    define the function using the following code directly after the `one()` method
+    that we added in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we can add a handler for click events on the navigation in our fixed
+    element. This should be added directly after the `scrollPage()` function that
+    we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First we defined the `scrollPage()` function which accepts three arguments.
+    The first is `href`, the second is an integer that represents the figure that
+    the `scrollTop` property of the page will need to be animated to, and the third
+    is a Boolean that will tell the function whether or not to update the hash fragment
+    in the location bar of the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we do in this function is check whether the page actually needs
+    to be scrolled. To ensure it does, we just check that the current scroll of the
+    page, obtained using jQuery's `scrollTop()` method, is different from the amount
+    that we wish to scroll to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery `animate()` method also accepts three arguments. The first is an
+    object where each key is a property to animate, and each value is the value to
+    animate it to. In this case we want to animate the `scrollTop` property using
+    the `scrollAmount` argument which is passed to our function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second argument to the `animate()` method is the duration that the animation
+    should run for. It accepts an integer that represents the duration in milliseconds.
+    We specify `500` so the animation will take half a second to complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The third argument is a callback function that we would like executed as soon
+    as the animation ends. If the `updateHash` argument passed to our function is
+    set to `true`, we can update the location bar of the browser to show the `id`
+    of the desired `<section>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can do this by updating the `hash` property of the `document.location` object
+    with the `href` argument passed to our `scrollPage()` function. This updates the
+    location bar but because it is just a hash fragment, it doesn't cause the page
+    to reload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After adding the `scrollPage()` function, we then added a handler for `click`
+    events on the navigation inside the fixed element. We use jQuery's `on()` method
+    once again to attach this event, but this time we pass three arguments to the
+    method, which enables event delegation. The handler is attached to the `<body>`
+    of the page that we have already stored in a variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first argument is the event that we want to bind the handler to, which in
+    this case is the `click` event. The second argument is a selector; the `on()`
+    method will filter all click events so that only those originating from elements
+    that match the selector will invoke the bound handler function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case we are only interested in clicks on the `<a>` elements in our fixed
+    element – `<aside>`. The third argument is the function to bind as the handler,
+    which is automatically passed the original event object by jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this function we first stop the browser navigating to the corresponding
+    `<section>` element, using the `preventDefault()` method of the event object that
+    is passed to our handler function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we set a variable that tells us which `<section>` the user would like
+    to navigate to. Inside our event handler function the `$(this)` object is scoped
+    to the link that was clicked, so we can easily get the required section `id` by
+    getting the `href` attribute of the clicked link using jQuery's `attr()` method.
+    We store this in a variable called `href`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to know where on the page the required `<section>` element is, which
+    we obtain by using JavaScript's `split()` method to split the string stored in
+    the `href` variable that we just set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we specify `#part` as the string to split on, the `split()` method will return
+    an array consisting of two items, where the second item is a string version of
+    the section number that was clicked. By wrapping this statement in JavaScript's
+    `parseInt()`, we end up with an integer. We store this integer in the `target`
+    variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last variable we set is the offset of the desired `<section>` element. To
+    select the correct `<section>` element, we can use the `sections` array that we
+    stored at the start of the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To pull the correct element from this array, we use jQuery's `eq()` method and
+    pass it the value that we just saved in the `target` variable minus `1`. We need
+    to subtract `1` because arrays in JavaScript start at `0`, but our `<section>`
+    `id` attributes start at `1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have this information we can then call our `scrollPage()` function,
+    passing in the values we have just computed to animate the page scroll in order
+    to bring the desired `<section>` element into view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Restoring the browser's back button
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point, we can click any of the links in the `<aside>` element and the
+    page will be smoothly scrolled to the desired location on the page. The address
+    bar of the browser will also be updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if the user tries to go back to a previous `<section>` using the back
+    button of his/her browser, nothing will happen. In this task we'll fix that so
+    that the back button works as expected, and can even use smooth scrolling when
+    the back button is used to go back to the previous `<section>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can enable the back button very easily by adding another event handler directly
+    after the one for click events that we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We use jQuery's `on()` method to attach our event once again, and this time
+    we don't need to make use of event delegation, so we revert to the two-argument
+    form of the method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This time we are listening for the `hashchange` event, which as before is passed
+    as the first argument and occurs whenever the `hash` property of the `document.location`
+    object is changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our handler function, which is passed as the second argument, we set the
+    variables for the different values that we need to pass to the `scrollPage()`
+    function in order to perform the scroll. We don't need to prevent the default
+    behavior of the browser this time, and the `href` variable is set using the `document.location.hash`
+    property as it will be the back button that will trigger the event, not one of
+    the links in the `<aside>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, this handler will also be triggered when one of the links is clicked,
+    because the links also update the hash, but the conditional check inside the `scrollPage()`
+    function will prevent unnecessary calls to jQuery's `animate()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `target` variable is computed in exactly the same way as it was in the last
+    event handler, but this time, the `targetOffset` variable needs to handle cases
+    where there is no hash fragment in the address bar of the browser. To handle this,
+    we use a JavaScript ternary construct that checks whether the `target` variable
+    that we just defined has a falsey value, which would indicate an empty string.
+    If it does, we want to just animate the scroll back to zero. If it doesn't, we
+    determine the required scroll amount in the same way as we did before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should now be able to load the page, scroll to a part of the page by clicking
+    on one of the links in the `<aside>` element, and then scroll back to the top
+    of the page using the browser's back button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling the hash fragment on page load
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At the moment the functionality of the browser's back button has been restored,
+    and the visitor can see the bookmarkable URL in the address bar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the page is requested with a hash fragment in it, the page will automatically
+    jump to the specified `<section>` when the page loads. In this part we'll add
+    some code that checks the hash property of the `document.location` object and
+    if a hash is detected, it will scroll to the corresponding part of the page smoothly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To enable this, we should add the following code directly after where we define
+    our starting variables near the top of the script file, and directly before where
+    we listen for the scroll event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this bit of code, which will be executed as soon as the page has loaded,
+    we first check whether the `document.location` object contains a `hash` (or at
+    least, contains a `hash` that is not an empty string).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If it does, we obtain the `hash`, get the number of the `<section>`, and calculate
+    the offset from the top of the page in the same way that we have done in previous
+    tasks. We then set the `scrollTop` of the page to `0` to force the browser to
+    the top of the page. We also remove the hash at this point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally we can call our `scrollPage()` function, passing in the new `href` fragment,
+    the amount of scroll required, and set the final argument to `true` so that the
+    correct hash fragment is added back to the browser's location bar. It should all
+    happen so quickly that the user does not notice that the page load has been intercepted
+    and the behavior modified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we looked at a very simple way of mimicking CSS's `position:fixed`
+    styling to fix an important element into place. The technique to only apply the
+    fixed positioning when the page starts to scroll is simple but effective, and
+    is an excellent way to circumvent the shortcomings of actual `position:fixed`
+    when working with complex or liquid layouts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We saw how to handle window resizes and added a smooth scrolling facility that
+    scrolled the page between different named sections of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also looked at how we can read and write to the `document.location.hash`
+    property of the `window` object, and how to manually scroll to the requested section
+    when the page is loaded. We also fixed the browser's back button to work with
+    our smooth-scrolling animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Very often, with the kind of in-page navigation we've used in this project,
+    it is useful to show an on-state on the navigation links when a section is scrolled
+    to, either manually, or by clicking on one of the links. Have a go at adding this
+    simple but effective addition to the code that we've looked at over the course
+    of this project.
+  prefs: []
+  type: TYPE_NORMAL

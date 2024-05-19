@@ -1,0 +1,496 @@
+- en: Chapter 11. Creating an Interactive Data Grid
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While you might not consider a data grid to be all that exciting, they do offer
+    a way for site visitors to interact with large amounts of data and understand
+    it in a way they might not be able to otherwise. One of the most exciting developments
+    in HTML5 is the introduction of a grid element, which allows us to easily create
+    an interactive data grid using only markup. However, it's one of the new elements
+    for which browser support is lagging — there is little, if any, browser support
+    for the time being, and it could be years before we're able to make use of this
+    new element. Luckily, we can use jQuery to fill in the gap until the new grid
+    element is ready for primetime.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll learn the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Turning an ordinary table into an interactive data grid using the DataTables
+    jQuery plugin from Allan Jardine
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing the appearance and behavior of the data grid with help from the
+    jQuery UI Themeroller
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic data grid
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll get started by using the DataTables plugin to create a basic data grid,
+    keeping the default settings and the styles provided with the data grid. Data
+    grids are most helpful when we have large amounts of data to present, and site
+    visitors might want to filter and sort the data in different ways to find the
+    information they are looking for. Think, for example, of a list of flights — one
+    site visitor might be interested in sorting the flights by departure time to find
+    the earliest possible departure, while another site visitor might want to sort
+    the flights by duration to find the shortest possible flight.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Presenting the data in an interactive data grid allows each site visitor to
+    quickly and easily find just the information they're looking for in a sea of information.
+    For site visitors with JavaScript disabled, they'll simply see a large table of
+    data and will never know that they're missing out on the interactive features.
+    All of the information will still be available to them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a basic data grid
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at how to turn a basic HTML table into an interactive data
+    grid:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll get started as usual with our basic HTML file and associated files and
+    folders, just like we did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet
+    jQuery"), *Designer, Meet jQuery*. We''ll fill the`<body>` of our HTML document
+    with the HTML markup for a large table of data. The DataTables plugin does require
+    that we are careful and correct with our table markup. We''ll need to be sure
+    to use a`<thead>` element for the table''s header, and a`<tbody>` element for
+    the table''s body. A`<tfoot>` element for the table footer is optional. Here''s
+    an abbreviated sample of the HTML markup for a table of the all-time best-selling
+    books:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've added a total of 106 books to the table, each marked up just as these are.
+    Note that we've added an `id` of `book-grid` to the table element, and have used
+    the `<th>` elements for the heading of each column, and enclosed those in a `<thead>`
+    element. We've also used a `<tbody>` element to wrap all the rows in the table's
+    body.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, we'll download the DataTables plugin. Head over to [http://datatables.net](http://datatables.net)
+    where you'll find the plugin's downloads, documentation, and examples. Click on
+    the **Download** link in the header to download a ZIP file.![Time for action —
+    creating a basic data grid](img/6709OS_11_img1.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Unzip the folder and take a look inside.![Time for action — creating a basic
+    data grid](img/6709OS_11_img2.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There's a folder of `examples` with several different examples of the DataTables
+    plugin in action. A folder of `extras` provides extra functionality for advanced
+    data tables we won't be using any of those here. There's a `media` folder that
+    contains `images, css, js`, and `unit_testing` resources. And finally a `Readme.txt`,
+    file contains information on the plugin's creator and where to find the documentation,
+    and so on.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, you'll find the licenses for the plugin, both BSD and GPL. You can
+    read these license files or visit Wikipedia to get the details on these licenses,
+    but they're both free software licenses allowing you to make use of the plugin
+    code for free.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We're going to set up a basic example, so we'll just need a couple of things
+    for our own project. First, copy the contents of the `images` directory to your
+    own `images` directory. Open the `css` folder and copy `demo_table.css` to your
+    own `styles` directory. Be careful to select the proper CSS file `demo_table.css`
+    because there are a few CSS files in there. Finally, in the `js` folder, find
+    the minified version of the plugin, `jquery.dataTables.min.js`, and copy that
+    to your own `scripts` directory.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we''ll get all the necessary files attached to our HTML page that contains
+    our table. In the`<head>` section of the document, attach the CSS file, before
+    your own `styles.css` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, at the bottom of the HTML document, attach the DataTables plugin in between
+    jQuery and your own `scripts.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, open your `scripts.js` file and inside a document ready statement, select
+    the table and call the `dataTable()` method as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, if you refresh the page in the browser, you'll see that your table has
+    been transformed into a data grid. You can select how many items to view at one
+    time, type into the search box to find specific table entries, and use the pagination
+    controls at the bottom right to page through the data table's rows.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a basic data grid](img/6709OS_11_img3.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up a basic HTML table and turned it into an interactive data grid by
+    attaching some CSS and the DataTables plugin. We selected the table and called
+    the `dataTable()` method to activate the DataTables plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That was pretty easy, wasn't it? Of course, chances are this lavender design
+    doesn't fit the design of your site, so let's take a look at how we can customize
+    the appearance of the data table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing the data grid
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The DataTables plugin is the first plugin we've used that has support for the
+    jQuery UI Themeroller. jQuery UI is a collection of widgets and interactions that
+    make building complex applications easier and faster. Learning jQuery UI itself
+    is beyond the scope of this book, but we'll take a look at how to use the jQuery
+    UI Themeroller to create a custom theme for our data table. This same theme would
+    apply to any jQuery UI widgets used on our page, as well as any jQuery plugins
+    being used that include support for the jQuery UI Themeroller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — customizing the data grid
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll pick up right where we left off with our data table. If you''d like
+    to save your basic example, just save a copy of the file. Then follow these steps
+    to customize the appearance of your data grid:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Head over to [http://jqueryui.com/themeroller](http://jqueryui.com/themeroller)
+    where we'll take a look at the Themeroller. In the left column, you'll find the
+    controls for selecting a predefined theme or creating a custom theme, and the
+    wide right column contains samples of several different types of widgets.![Time
+    for action — customizing the data grid](img/6709OS_11_img4.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on the **Gallery** tab in the left column, and you'll see that you have
+    dozens of choices of pre-built Themeroller themes to choose from. As you click
+    on different samples, you'll see the sample widgets in the right column update
+    to reflect that style. I usually like to get started by selecting a prebuilt theme
+    that's reasonably close to the color scheme or appearance that I want, then I
+    flip to the **Roll Your Own** tab to tweak it to suit my needs. For this example,
+    I'm going to start with the **Cupertino** style.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After flipping to the **Roll Your Own tab**, you'll see that there are settings
+    for fonts, colors, corners, headers, and so on. Make whatever adjustments you'd
+    like to get the theme looking just the way you'd like. Feel free to play and experiment.
+    If you go too far and get to something you don't like, it's easy to flip back
+    to the **Gallery** tab and select the prebuilt theme again, stripped of any of
+    your customizations, then start again.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Keep in mind that any of your customizations will be lost if you re-select a
+    prebuilt theme. Once you get something you like, be sure to move on to step 3
+    to save it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Once you've got your theme set up just the way you'd like, click on the **Download
+    Theme** button.![Time for action — customizing the data grid](img/6709OS_11_img5.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You'll find yourself on the **Build Your Download** page, which might seem a
+    little confusing. Note that jQuery UI is so large and has so many different features
+    on offer, the developers realize that forcing everyone to download the entire
+    thing would be overkill. If you only wanted to use one widget, there'd be no need
+    for downloading all the other widgets and effects. This page lets you pick and
+    choose different components of jQuery UI so that you don't have to download more
+    than you need.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Since we're only here for a theme, we can go ahead and click on the **Deselect
+    all components** link near the top of the page.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — customizing the data grid](img/6709OS_11_img6.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Then, we'll leave the **Theme** and **Version** settings at their defaults and
+    click on the **Download** button to download a ZIP file.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unzip the file and take a look inside. You'll see that even though we got the
+    simplest download we could, we still have quite a few files.![Time for action
+    — customizing the data grid](img/6709OS_11_img7.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We've got a `css` folder that contains our theme folder with a CSS file and
+    **images** inside it. We've also got a `development-bundle` folder, an HTML file,
+    and a `js` folder that contains jQuery and a jQuery UI file.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All we need out of all of this is our theme. Copy your theme folder to the styles
+    directory of your own project. My theme folder is named `cupertino` since that's
+    the theme I chose. If you selected a different theme, your theme folder will be
+    called something else. It will be easy to find, though, as it will be the only
+    folder inside the `css` folder.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, we'll attach our theme CSS file to our HTML file. Inside the`<head>` section,
+    attach your theme CSS file before the `demo_table.css` file we attached in the
+    previous example.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, unfortunately, our theme CSS file doesn't quite have all the styles we'll
+    need for a nicely styled data grid. After all, the jQuery UI developers have no
+    way of knowing all the different types of widgets and plugins people will want
+    to use, so there's no possible way they could cover every single case. Luckily,
+    DataTables plugin author Allan Jardine has already done some nice work for us
+    in this area and has provided a CSS file with the styles we'll need to get our
+    themed data grid looking its best.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You can read up on styling the DataTables plugin in the documentation Allan
+    Jardine has made available at [http://datatables.net/styling/](http://datatables.net/styling/).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Back inside the DataTables plugin files, look inside the `css` folder inside
+    the `media` folder to find the `demo_table_jui.css` file. Copy that to your own
+    styles folder and update your `<link>` tag to link to this version of the `demo_table.css`
+    instead as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we just have to make a small update to our JavaScript code. We have to
+    tell the `dataTable()` method that we want to use jQuery UI. Head back into your
+    `scripts.js` file and we''ll add a pair of curly brackets and pass a key/value
+    pair to enable jQuery UI styling for our data table:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If you refresh the page in the browser now, you''ll see that the data grid
+    is now using a style that''s consistent with the widgets we saw on the jQuery
+    UI Themeroller page:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — customizing the data grid](img/6709OS_11_img10.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: However, you'll notice that the color scheme for the table rows is still lavender.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s make some adjustments to the color scheme. Open `demo_table_jui.css`.
+    There are just a couple of lines to update. First, we''ll find line 281 where
+    the colors for the zebra-striping for the table are defined and update those to
+    the colors we''d like to use as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I'm going with a pale blue for odd rows and white for even rows to match the
+    Cupertino style I selected earlier. Feel free to choose colors that match your
+    own chosen theme.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll change the color scheme for the currently sorted row. You''ll
+    find the CSS for the sorted odd rows at line 380\. I''m going to change mine to
+    a medium blue as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And finally, we can find the CSS for the sorted even row at line 392\. I'm going
+    to change this to a light blue.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You can select your own colors that coordinate with your own chosen theme.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, if you refresh the page in the browser, you'll see that the zebra-striping
+    pattern of the table fits with our Themeroller theme.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — customizing the data grid](img/6709OS_11_img8.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Next up, we''ll take a look at making a couple of other customizations to the
+    data grid. First, let''s change those simple next and previous pagination buttons
+    into numbers. We''ll pass another key/value pair to the `dataTable` method to
+    replace the buttons with pagination numbers as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember to separate each key/value pair with a comma, but not to place a comma
+    after the last key/value pair.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If you refresh the page in the browser, you''ll see that the simple buttons
+    have been replaced by pagination numbers as shown in the following screenshot:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![Time for action — customizing the data grid](img/6709OS_11_img9.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'We might decide that for this particular data table, the search function doesn''t
+    make sense. The DataTables plugin offers a way for us to disable individual features.
+    To disable the search box filtering, we''ll pass another key/value pair as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Refresh the page in the browser and you'll see that the search box is gone.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — customizing the data grid](img/6709OS_11_img11.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: You've probably noticed that by default, the DataTables plugin is sorting our
+    table by the first column in ascending order, from A to Z. That might be fine
+    in some cases, but in this case since we're listing the all-time best-selling
+    books, we probably want to sort the table to show the books with the highest sales
+    first. We'll pass in a new key/value pair to specify which column should be used
+    for the default sort and which direction the sort should go.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The key we're using is called `'aaSorting'`, and the value is the column number
+    and sort direction inside two sets of square brackets. Don't forget that JavaScript
+    starts counting at 0, not 1\. So the fifth column in our table is actually column
+    4\. Then, we want the highest number at the top, so we pass `'desc'` for descending
+    order.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Refresh the page in the browser and you'll see that the books are now in order
+    from highest sales to lowest sales. Note also that this default sort order doesn't
+    affect your site visitor's ability to sort the table by any of the other columns
+    in any order they'd like. The site visitor can still interact with your table.
+    We're just re-defining the default view in a way that makes the most sense for
+    the data we're presenting.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We took our basic data grid and took it a step further by customizing the appearance
+    and behavior of the plugin. We learned how to use the jQuery UI Themeroller to
+    create a custom theme for our data grid. Then we learned how to replace the simple
+    pagination buttons with page numbers, disable searching the table, and how to
+    set a default sort for the data grid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to turn an ordinary HTML table into an interactive
+    data grid. Our site visitors can now take advantage of sorting different columns
+    of the table to view the data in different ways. Site visitors with JavaScript
+    disabled simply see an ordinary HTML table that contains all of the data. Data
+    grids aren't terribly exciting, but they can make dealing with large amounts of
+    data worlds easier for your site visitors. Next up, we'll learn how to make forms
+    both prettier and easier to use.
+  prefs: []
+  type: TYPE_NORMAL

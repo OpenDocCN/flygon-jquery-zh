@@ -1,0 +1,3402 @@
+- en: Chapter 7. Custom Animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*The predefined effects that we have looked at throughout the book so far are
+    very good at what they do, but they are there to cater to very specific requirements
+    and will sometimes not be enough when more complex animations are needed.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In these situations, we can use jQuery''s `animate()` method, which allows
+    us to easily define custom animations that can be as complex and as specialized
+    as the task at hand requires. This is what we''ll be looking at over the course
+    of this chapter.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Subjects that we''ll cover throughout the course of this chapter include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating custom animations with the `animate()` method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Passing arguments to the method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating an element's dimensions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating an element's position
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a jQuery animation plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the jQuery plugin we created
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The animate method
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'All custom animations with jQuery are driven by the `animate()` method. Despite
+    the ability to animate almost any style property that has a numeric value, this
+    method is simple to use and takes just a few arguments. This method may be used
+    in the following way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(elements).animate( properties [,duration] [,easing] [,complete] );
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first argument should take the form of an object, where each property of
+    the object is a style that we'd like to animate, very similar to how we would
+    use jQuery's `css()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As I mentioned before, this can be any CSS style that takes a purely numerical
+    argument (with the exception of colors, although with the jQuery UI library, we
+    can animate colors as well. See [Chapter 6](ch06.html "Chapter 6. Extended Animations
+    with jQuery UI"), *Extended Animations with jQuery UI*, for more information on
+    jQuery UI). Background positions cannot be animated by jQuery natively, but it
+    is quite easy to animate this property manually; see [Chapter 3](ch03.html "Chapter 3. Background
+    Animation"), *Background Animation*, for more information on this technique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The duration, easing, and callback arguments take the same formats as those
+    that we used with the fading methods earlier in the book ([Chapter 2](ch02.html
+    "Chapter 2. Image Animation"), *Image Animation*) and are used in exactly the
+    same way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Per-property easing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As of jQuery Version 1.4, you can set per-property easing functions within a
+    single `animate()` call. So, for example, if we are animating both the `width`
+    and `height` parameters of an element, we can use the `linear` easing for the
+    `width` animation, and the `swing` easing for the `height` animation. This applies
+    to the standard easing functions built into jQuery, or any of the easing functions
+    we talked about in the previous chapter ([Chapter 6](ch06.html "Chapter 6. Extended
+    Animations with jQuery UI"), *Extended Animations with jQuery UI*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To supply easing types to the `animate()` method on a per-property basis, we
+    need to provide an array as the value of the property we are animating. This can
+    be done using the following syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(elements).animate({
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'property: [value, easingType]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An alternative syntax for animate()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Instead of using the duration, easing, and callback arguments individually,
+    we may alternatively pass a configuration object to the `animate()` method containing
+    the following configuration options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`duration`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easing`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`complete`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`step`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`queue`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`specialEasing`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first three options (`duration`, `easing`, and `complete`) are the same
+    as the arguments would be if we passed them into the method in the standard way.
+    The last three options (`step`, `queue`, and `specialEasing`) are interesting,
+    however, in that we do not have access to them in any other way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `step` option allows us to specify a callback function that will be executed
+    on each step of the animation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `queue` option accepts a Boolean value that controls whether the animation
+    is executed immediately or placed into the selected element's queue
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `specialEasing` option allows us to specify an easing function for each
+    individual style property that is being animated, giving us easing on a per-property
+    basis using the alternative syntax:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The pattern for this second method of usage is as follows:$(elements).animate(properties
+    [,configuration]);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Like most (but not all) jQuery methods, the `animate()` method returns a jQuery
+    object so that additional methods can be chained to it. Like the other effect
+    methods, multiple calls to `animate()` on the same element will result in an animation
+    queue being created for the element. If we want to animate two different style
+    properties at the same time, we can pass all of the required properties within
+    the object passed to the `animate()` method as the first argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating an element's position
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `animate()` method is able to animate changes made to any CSS style property
+    that has a numeric value, with the exception of colors and background positions.
+    In this example, we'll create a content viewer that shows different panels of
+    content by sliding them in and out of view using the `animate()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This type of widget is commonly used on portfolio or showcase sites and is an
+    attractive way to show a lot of content without cluttering a single page. In this
+    example, we'll be animating the element's position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating an animated content viewer
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll start again by adding the underlying markup and styling:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The underlying markup for the content viewer should be added as follows using
+    our template file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="slider">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="viewer">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img id="image1" src="img/amstrad.jpg" alt="Amstrad CPC 472">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img id="image2" src="img/atari.jpg" alt="Atari TT030">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img id="image3" src="img/commodore16.jpg" alt="Commodore 64">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img id="image4" src="img/commodore128.jpg" alt="Commodore 128">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img id="image5" src="img/spectrum.jpg" alt="Sinclair ZX Spectrum +2">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <ul id="ui">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li class="hidden" id="prev"><a href="" title="Previous">«</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li><a href="#image1" title="Image 1" class="active">Image 1</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li><a href="#image2" title="Image 2">Image 2</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li><a href="#image3" title="Image 3">Image 3</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li><a href="#image4" title="Image 4">Image 4</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li><a href="#image5" title="Image 5">Image 5</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <li class="hidden" id="next"><a href="" title="Next">»</a></li>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </ul>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save the file as `animate-position.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, we should create the base CSS. By that, I mean we should add the CSS that
+    is essential for the content viewer to function as intended, as opposed to styling
+    that gives the widget a theme or skin. It's a good practice to separate out the
+    styling in this way when creating plugins so that the widget is compatible with
+    jQuery UI's ThemeRoller theming mechanism.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file in your text editor, add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#slider {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:500px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:relative;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#viewer {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:400px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:300px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:relative;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: overflow:hidden;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#slider ul {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:295px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0 auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: list-style-type:none;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#slider ul:after {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: content:".";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: visibility:hidden;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clear:both;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#slider li {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin-right:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#prev, #next {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:175px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#prev { left:20px; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#next {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: right:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: .hidden { display:none; }
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#slide {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:2000px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:300px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#slide img { float:left; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#title {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-align:center;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this in the `css` folder as `animate-position.css`, and don't forget to
+    link to the new stylesheet from the `<head>` tag of our page. Run the page in
+    your browser now before we get into the scripting, so that you can see how the
+    widget behaves without the accompanying script. You should find that any image
+    can be viewed by clicking on its corresponding link using only CSS, and this will
+    work in any browser. The previous and next arrows are hidden with our CSS because
+    these will simply not work with JS turned off and when the image titles are not
+    displayed, however, the widget's core functionality is still fully accessible.
+    This is known as **progressive enhancement** and is considered by many to be the
+    best practice for web development.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The underlying HTML in this example is very straightforward. We have an outer
+    container for the content-viewer as a whole, and then within this, we have a container
+    for our content panels (simple images in this example), and a navigation structure
+    to allow the different panels to be viewed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some of the elements we've added style rules for in our CSS file aren't hardcoded
+    into the underlying markup, but will be created as necessary when needed. Doing
+    it this way ensures that the content-viewer is still usable even when the visitor
+    has JavaScript disabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One important point to note is that the `#slide` wrapper element that we created
+    and wrapped around the images has a `height` parameter equal to a single image
+    and a `width` parameter equal to the sum of all image widths. The `#viewer` element,
+    on the other hand, has both a `width` and a `height` parameter equal to a single
+    image, so that only one image is visible at any one time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With JavaScript disabled, the images will appear to stack up on top of each
+    other, but once the `#slide` wrapper element has been created, the images are
+    set to float in order to stack up horizontally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use easing in this example; so be sure to link to jQuery UI directly
+    after the jQuery reference at the end of the `<body>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <script src="img/jquery-ui.js"></script>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – initializing variables and prepping the widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'First, we need to prepare the underlying markup and store some element selectors.
+    Add the following code between our anonymous function in our newly created HTML
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("#viewer").wrapInner("<div id=\"slide\"></div>");
+  prefs: []
+  type: TYPE_NORMAL
+- en: var container = $("#slider"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: prev = container.find("#prev"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: prevChild = prev.find("a"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: next = container.find("#next").removeClass("hidden"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: nextChild = next.find("a"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: slide = container.find("#slide"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: key = "image1",
+  prefs: []
+  type: TYPE_NORMAL
+- en: details = {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'image1: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'position: 0, title: slide.children().eq(0).attr("alt")'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'image2: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'position: -400, title: slide.children().eq(1).attr("alt")'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'image3: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'position: -800, title: slide.children().eq(2).attr("alt")'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'image4: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'position: -1200, title: slide.children().eq(3).attr("alt")'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'image5: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'position: -1600, title: slide.children().eq(4).attr("alt")'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("<h2>", {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'id: "title",'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'text: details[key].title'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}).prependTo("#slider");'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To start with, we first wrapped all of the images inside `#viewer` in a new
+    container. We'll be using this container to animate the movement of the panels.
+    We give this new container an `id` attribute so that we can easily select it from
+    the **Document Object Model** (**DOM**) when required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the element that we will be animating later in the example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we cache the selectors for some of the elements that we'll need to manipulate
+    frequently. We create a single jQuery object pointing to the outer `#slider` container
+    and then select all of the elements we want to cache, such as the previous and
+    next arrows, using the jQuery `find()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A `key` variable is also initialized, which will be used to keep track of the
+    panel currently being displayed. Finally, we create a `details` object that contains
+    information about each image in the content viewer. We can store the `left` position
+    in pixels that the `slide` container must be animated to in order to show any
+    given panel, and we can also store the title of each content panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The title of each panel is read from the `alt` attribute of each image, but
+    if we were using other elements, we could select the `title` attribute, or use
+    jQuery's data method to set and retrieve the title of the content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<h2>` element used for the title is created and inserted into the content-viewer
+    with JS because there is no way for us to change it without using JavaScript.
+    Therefore, when visitors have JS disabled, the title is useless and is better
+    off not being shown at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we do in the first section of code is to remove the `hidden`
+    class name from the next button so that it is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The previous link (by this, I mean the link that allows the visitor to move
+    to the previous image in the sequence) is not shown initially, because the first
+    content panel is always the panel that is visible when the page loads, so there
+    are no previous panels to move to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – defining a post-animation callback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Next, we need a function that we can execute each time an animation ends. Add
+    the following code beneath the code we added previously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function postAnim(dir) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var keyMatch = parseInt(key.match(/\d+$/));
+  prefs: []
+  type: TYPE_NORMAL
+- en: '(parseInt(slide.css("left")) < 0) ? prev.show() : prev.hide();'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '(parseInt(slide.css("left")) === -1600) ? next.hide() : next.show();'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (dir) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'var titleKey = (dir === "back") ? keyMatch - 1 : keyMatch + 1;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: key = "image" + titleKey;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: container.find("#title").text(details[key].title);
+  prefs: []
+  type: TYPE_NORMAL
+- en: container.find(".active").removeClass("active");
+  prefs: []
+  type: TYPE_NORMAL
+- en: container.find("a[href=#" + key + "]").addClass("active");
+  prefs: []
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this second section of the code, we define a function that we'll call after
+    an animation ends. This is used for some housekeeping to do various things that
+    may need to be done repeatedly; so, it is more efficient to bundle them up into
+    a single function instead of defining them separately within event handlers. This
+    is the `postAnim()` function, and it may accept a single parameter which refers
+    to the direction that the slider has moved in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we do in this function is use the regular expression, `/\d+$/`,
+    with the JavaScript's `match()` function to parse the panel number from the end
+    of the string saved in the `key` variable, which we initialized in the first section
+    of code, and which will always refer to the currently visible panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our `postAnim()` function may be called either when a panel is selected using
+    the numeric links, or when the previous/next links are used. However, when the
+    previous/next links are used, we need the `key` variable to know which panel is
+    currently being displayed in order to move to the next or previous panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check whether the first panel is currently being displayed by checking
+    the `left` CSS style property of the `#slide` element. If the `#slide` element
+    is at `0`, we know the first panel is visible, so we hide the previous link. If
+    the `left` property is less than `0`, we show the previous link. We do a similar
+    test to check whether the last panel is visible, and if so, we hide the next link.
+    The previous and next links will only be shown if they are currently hidden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check whether the `dir` (direction) argument has been supplied to the
+    function. If it has, we have to work out which panel is now being displayed by
+    reading the `keyMatch` variable that we created earlier, and then either subtract
+    `1` from it if the `dir` argument is equal to `back`, or add `1` to it, if not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result is saved back to the `key` variable, which is then used to update
+    the `<h2>` title element. The title text for the current panel is obtained from
+    our `details` object using the `key` variable. Lastly, we add the class name `active`
+    to the numeric link corresponding to the visible panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although not essential, this is something we will want to use when we come to
+    add a skin to the widget. We select the right link using an attribute selector
+    that matches the `href` attribute of the current link. Note that we don't create
+    any new jQuery objects in this function; we use our cached `container` object
+    and the `find()` method to obtain the elements we require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding event handlers for the UI elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that the slider has been created, we can add the event handlers that will
+    drive the functionality. Insert the following code beneath the `postAnim` function
+    we just added in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("#ui li a").not(prevChild).not(nextChild).click(function(e){
+  prefs: []
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs: []
+  type: TYPE_NORMAL
+- en: key = $(this).attr("href").split("#")[1];
+  prefs: []
+  type: TYPE_NORMAL
+- en: slide.animate({
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'left: details[key].position'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, "slow", "easeOutBack", postAnim);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: nextChild.add(prevChild).click(function(e){
+  prefs: []
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs: []
+  type: TYPE_NORMAL
+- en: var arrow = $(this).parent();
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (!slide.is(":animated")) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: slide.animate({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: (arrow.attr("id") === "prev") ? "+=400" : "-=400"'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, "slow", "easeOutBack", function(){'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '(arrow.attr("id") === "prev") ? postAnim("back") : postAnim("forward")'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first handler is bound to the main links used to display different panels,
+    excluding the previous and next links with the jQuery `not()` method. We first
+    stop the browser following the link with the `preventDefault()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then update the `key` variable with the panel that is being displayed by
+    extracting the panel name from the link's `href` attribute. We use JavaScript's
+    `split()` method to obtain just the panel `id` and not the `#` symbol.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we animate the slide element by setting its `left` CSS style property
+    to the value extracted from the `details` object. We use the `key` variable to
+    access the value of the `position` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As part of the animation, we configure the duration as `slow` and the easing
+    as `easeOutBack`, and specify our `postAnim` function as the callback function
+    to execute when the animation ends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we need to add a click handler for the previous/next links used to
+    navigate to the next or previous image. These two links can share a single-click
+    handler. We can select both of these two links using our cached selectors from
+    earlier `nextChild` and `prevChild`, along with jQuery's `add()` method, to add
+    them both to a single jQuery object in order to attach the handler functions to
+    both links.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We again stop the browser from following the link using `preventDefault()`.
+    We then cache a reference to the parent of the link that was clicked, using the
+    `arrow` variable, so that we can easily refer to it later on in the function.
+    This is needed because within the callback function for the `animate()` method,
+    the `$(this)` keyword will be scoped to the `#slide` element instead of the link
+    that was clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check that the `#slide` element is not already being animated using
+    the `:animated` filter. This check is important because it prevents the viewer
+    from breaking if one of the links is clicked repeatedly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If it is not already being animated, we perform the animation and move the slide
+    element either `400` pixels (the `width` parameter of a single content panel)
+    backward or forward. We can check which arrow was clicked by looking at the `id`
+    attribute of the element referenced by the `arrow` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We specify the same duration and easing values as before in the animation method,
+    but instead of passing a reference to the `postAnim` function as the callback
+    parameter, we pass an anonymous function instead. Within this anonymous function,
+    we determine which link was clicked and then call the `postAnim` function with
+    the appropriate argument. Remember, this is necessary to obtain the correct key
+    for the `details` object, because neither the previous nor the next links have
+    the `href` attributes pointing to an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Try the page out in a browser at this point and you should find that an image
+    can be viewed by clicking on any of the links, including the previous and next
+    links. This is how the widget should appear at this stage:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What just happened?](img/9642_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The previous screenshot shows the widget in its un-skinned state, with only
+    the JavaScript required for it to function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Skinning the widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '"There''s more than one way to skin a cat", was once proclaimed, and this applies
+    to widgets, as well as cats. Lastly, let''s add some custom styling to the widget
+    to see how easy it is to make the widget attractive, as well as functional. These
+    styles can easily be changed to re-skin the widget to give it a completely different
+    look.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding a new skin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'At the bottom of the `animate-position.css` file, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: a { outline:0 none; }
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#slider {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'border:1px solid #999;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -moz-border-radius:8px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: -webkit-border-radius:8px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: border-radius:8px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: background-color:#ededed;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '-moz-box-shadow:0 2px 7px #aaa;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '-webkit-box-shadow:0 2px 7px #aaa;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'box-shadow:0 2px 7px #aaa;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#title, #slider ul {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: margin-top:10px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: margin-bottom:12px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#title {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: font:normal 22px "Nimbus Sans L", "Helvetica Neue",
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Franklin Gothic Medium", Sans-serif;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: color:#444;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#viewer {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'border:1px solid #999;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: background-color:#fff;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#slider ul { width:120px; }'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#slider ul li a {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs: []
+  type: TYPE_NORMAL
+- en: width:10px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: height:10px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: text-indent:-5000px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: text-decoration:none;
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'border:2px solid #666;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -moz-border-radius:17px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: -webkit-border-radius:17px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: border-radius:17px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: background-color:#fff;
+  prefs: []
+  type: TYPE_NORMAL
+- en: text-align:center;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#slider #prev, #slider #next {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs: []
+  type: TYPE_NORMAL
+- en: text-align:center;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#slider #prev { left:10px; }'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#slider #prev a, #slider #next a {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs: []
+  type: TYPE_NORMAL
+- en: height:28px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: width:28px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: line-height:22px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: text-indent:0;
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'border:1px solid #666;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: -moz-border-radius:17px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: -webkit-border-radius:17px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: border-radius:17px;
+  prefs: []
+  type: TYPE_NORMAL
+- en: background-color:#fff;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#prev a, #next a {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: font:bold 40px "Trebuchet MS", sans-serif;
+  prefs: []
+  type: TYPE_NORMAL
+- en: color:#666;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '#slider ul li a.active { background-color:#F93; }'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With this code, we style all of the visual aspects of the widget without interfering
+    with anything that controls its working. We give it some nice rounded corners
+    and add a drop-shadow to the widget, turn the numeric links into little clickable
+    icons, and style the previous and next links. Colors and fonts are also set in
+    this section as they, too, are obviously highly dependent on the theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These styles add a basic, neutral theme to the widget, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What just happened?](img/9642_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The styles we used to create the theme are purely arbitrary and simply for the
+    purpose of the example. They can be changed to whatever we need in any given implementation
+    to suit other elements on the page, or the overall theme of the site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – creating an animated content-viewer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. What arguments may the `animate()` method pass?
+  prefs: []
+  type: TYPE_NORMAL
+- en: An array where the array items are the element to animate, the duration, the
+    easing, and a callback function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The first argument is an object containing the style properties to animate,
+    optionally followed by the duration, an easing type, and a callback function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: An object where each property refers to the style properties to animate, the
+    duration, easing, and a callback function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A function which must return the style properties to animate, the duration,
+    easing, and a callback function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. What does the `animate()` method return?
+  prefs: []
+  type: TYPE_NORMAL
+- en: An array containing the style properties that were animated
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A array containing the elements that were animated
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A jQuery object for chaining purposes
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A Boolean indicating whether the animation completed successfully
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Have a go hero – making the image viewer more scalable
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In our animated content-viewer, we had a fixed number of images and a hardcoded
+    navigation structure to access them. Extend the content viewer so that it will
+    work with an indeterminate number of images. To do this, you will need to complete
+    the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Determine the number of images in the content-viewer at runtime and set the
+    `width` parameter of the `#slide` wrapper element based on the number of images
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the navigation links dynamically based on the number of images
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create the `details` object dynamically based on the number of images, and set
+    the correct `left` properties to show each image
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating an element's size
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As mentioned at the start of the chapter, almost any style property that contains
+    a purely numeric value may be animated with the `animate()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We looked at animating an element's position by manipulating its `left` style
+    property, so let's move on to look at animating an element's size by manipulating
+    its `height` and `width` style properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we'll create image wrappers that can be used to display larger
+    versions of any images on the page by manipulating the element's size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the underlying page and basic styling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: First, we'll create the underlying page on which the example will run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML to the `<body>` tag of our template file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <article>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h1>The Article Title</h1>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p><img id="image1-thumb" class="expander" alt="An ASCIIZebra" src="img/ascii.gif"
+    width="150" height="100">Lorem
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ipsum dolor...</p>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p><img id="image2-thumb" class="expander" alt="An ASCII
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Zebra" src="img/ascii2.gif" width="100" height="100">Lorem
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ipsum dolor...</p>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </article>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Save the example page as `animate-size.html`. We''ll keep the styling light
+    in this example; in a new file in your text editor, add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: article {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:800px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: z-index:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: font:normal 18px "Nimbus Sans L", "Helvetica Neue",
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"Franklin Gothic Medium", sans-serif;'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: article p {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0 0 20px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:800px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: font:15px Verdana, sans-serif;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: line-height:20px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'article p #image2-thumb {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:right;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:6px 0 0 30px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: img.expander {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:6px 30px 1px 0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: .expander-wrapper {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: z-index:999;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: .expander-wrapper img {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: cursor:pointer;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: .expander-wrapper .expanded { z-index:9999; }
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this file as `animate-size.css` in the `css` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML could be any simple blog post consisting of some text and a couple
+    of images. The points to note are that each image is given an `id` attribute so
+    that it can be easily referenced, and that each image is actually the full-sized
+    version of the image, scaled down with the `width` and `height` attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The styles used are purely to lay out the example; very little of the code is
+    actually required to make the example work. The `expander-wrapper` styles are
+    needed to position the overlaid images correctly, but other than that, the styling
+    is purely arbitrary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're floating the second image to the right. Again, this isn't strictly necessary;
+    it's used just to make the example a little more interesting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – defining the full and small sizes of the images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'First, we need to specify the full and small sizes of each image. Place the
+    following code into our anonymous function inside the HTML file we just created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: var dims = {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'image1: {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'small: { width: 150, height: 100 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'big: { width: 600, height: 400 }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'image2: {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'small: { width: 100, height: 100 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'big: { width: 400, height: 400 }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'webkit = ($("body").css("-webkit-appearance") !== "" && $("body").css("-webkit-appearance")
+    !== undefined) ? true : false;'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We created an object which contains properties matching each image's filename.
+    Each property contains another nested object, which has the `small` and `big`
+    properties and the relevant integers as values. This is a convenient way to store
+    structured information that can easily be accessed at different points in our
+    script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also created a variable called `webkit`. There is a slight bug in how images
+    floated to the right are treated in WebKit-based browsers. This variable will
+    hold a Boolean that will indicate whether WebKit is in use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A test is performed which tries to read the `-webkit-appearance` CSS property.
+    In WebKit browsers, the test will return `none`, as the property is not set, but
+    other browsers will either return an empty string or the value `undefined`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the overlay images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Next, we should create an almost exact copy of each image on the page to use
+    as an overlay. Add the following code beneath the code we just added to our HTML
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(".expander").each(function(i) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var expander = $(this),
+  prefs: []
+  type: TYPE_NORMAL
+- en: coords = expander.offset(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: copy = $("<img>", {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'id: expander.attr("id").split("-")[0],'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'src: expander.attr("src"),'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: expander.width(),'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: expander.height()'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this part of the `<script>` tag, we selected each image on the page and processed
+    them using jQuery's `each()` method. We set some variables, caching a reference
+    to the current image, and storing its coordinates on the page relative to the
+    document using the jQuery `offset()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create a new image for each existing image on the page, giving it an
+    `id` attribute that pairs it with the image it is overlaying, the `src` variable
+    of the original image, and the `width` and `height` parameters of the original
+    image. We use JavaScript's `split()` function to remove the part of the string
+    that says `thumb` when we set the `id` attribute of the new image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the previous code does not represent an entire snippet of fully-functional
+    code. The outer function passed to the `each()` method has not yet been closed,
+    as we need to add some additional code after these variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the overlay wrappers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We now need to create the wrappers for each of the overlay images (note that
+    this code is still within the `each()` method, and so will be executed for each
+    of the images that have the `expanded` class name). Add the following code directly
+    below the last line of the `each` function we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("<div></div>", {
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"class": "expander-wrapper",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'css: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'top: coords.top,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: (webkit === true && expander.css("float") === "right") ? (coords.left
+    + expander.width()) : coords.left,direction: (expander.css("float") === "right")
+    ? "rtl" : "ltr"'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'html: copy,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: expander.width(),'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: expander.height(),'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'click: function() {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var img = $(this).find("img"),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: id = img.attr("id");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (!img.hasClass("expanded")) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: img.addClass("expanded").animate({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: dims[id].big.width,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: dims[id].big.height'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'queue: false'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: img.animate({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: dims[id].small.width,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: dims[id].small.height'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'queue: false,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'complete: function() {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).removeClass("expanded");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}).appendTo("body");'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section of code, we create the wrapper element for the new image. We
+    give it a new class name so that it can be positioned correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Quoting the class property**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to use quotes around the property name `class` because it's a reserved
+    word in JavaScript and could throw script errors if this isn't done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set the position of the wrapper element using the `css` property, in conjunction
+    with the coordinates we obtained from the `offset()` method earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When setting the `left` position of the wrapper element, we need to check our
+    `webkit` variable to see if Safari or Chrome is in use. If this variable is set
+    to `true`, and if the image is floated to the right, we position the overlay according
+    to the `cords.left` value, in addition to the `width` parameter of the original
+    image. If the `webkit` variable is `false`, or if the original image is floated
+    `left`, we just set the `left` position of the wrapper to the value stored in
+    `coords.left`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also need to set the `direction` property of any images that are floated
+    right. We check the `float` style property and set the `direction` to `rtl` if
+    the image is floated right, or `ltr` if not. This is done using JavaScript, a
+    ternary conditional.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This check is done so that the wrapper expands from right to left when the image
+    is floated `right`. If we didn't set this, the wrapper would open up from left
+    to right, which could make the full-sized image overflow the viewport, or the
+    content container result in scroll bars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We add the new image to the wrapper by passing a reference to it into the jQuery
+    `html()` method, and set the `width` parameter of the wrapper to the `width` parameter
+    of the original (and new) image. This is necessary for the overlay to be positioned
+    correctly over any images that are floated right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we add a click handler to the wrapper. Within the anonymous function passed
+    as the value of the `click()` method, we first cache a reference to the image
+    within the wrapper that was clicked, and get the `id` attribute of the image for
+    convenience. Remember, the `id` attribute of the overlay image will be the same
+    as the original image it is covering, minus the text string `-thumb`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check whether the image has the class name `expanded`. If it doesn't,
+    we add the class name and then animate the image to its full size using the second
+    format of the `animate()` method. We pass two objects into the method as arguments;
+    the first contains the CSS properties we wish to animate, in this case, the `width`
+    and `height` parameters of the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The correct `width` and `height` parameters to increase the image are retrieved
+    from the `dims` object using the `id` attribute of the image that was clicked
+    as the key. In the second object passed to the `animate()` method, we set the
+    `queue` property to `false`. This has the same effect as using the `stop()` method
+    directly before the `animate()` method and ensures that nothing bad happens if
+    the overlay wrapper is repeatedly clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the image already has the class name `expanded`, we animate the image back
+    to its small size. Again, we use the two-object format of the `animate()` method,
+    supplying `false` as the value of the `queue` property, and removing the class
+    name `expanded` in an anonymous callback function passed to the `complete` property.
+    Once the wrapper has been created, we append it to the `<body>` tag of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, the code we've written will work as intended—clicking on an image
+    will result in the expanded version being animated to its full size. However,
+    if the page is resized at all, the overlays will no longer be overlaying their
+    images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – maintaining the overlay positions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Because the overlays are positioned absolutely, we need to prevent them from
+    becoming misaligned if the window is resized:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(window).resize(function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("div.expander-wrapper").each(function(i) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var newCoords = $("#image" + (i + 1) + "-thumb").offset();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).css({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'top: newCoords.top,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: newCoords.left'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All we need to do is make sure the overlay images stay directly on top of the
+    original images when the page resizes, which we can achieve by binding a handler
+    for the resize event to the `window` object. In the handler function, we just
+    get the new coordinates of the underlying image, and set the `top` and `left`
+    properties of the wrapper accordingly. Note that we don't animate the repositioning
+    of the overlays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Save the file and preview it in your browser. We should find that we can click
+    on either image and it will expand to show a full-sized version of the image,
+    with the first image expanding to the right and the second expanding to the left:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What just happened?](img/9642_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the previous screenshot we see the first image as it expands to its full
+    size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – creating expanding images
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. In this example, we used a different format for the arguments passed to
+    the `animate()` method. What format did the arguments take?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two arrays where the first array contains selectors for the elements to animate
+    and the second contains the duration, easing, the `specialEasing` strings, and
+    a callback function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A single object containing the style properties to animate, duration, easing,
+    and the `specialEasing` strings, and `step` and `complete` callback functions
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A function which must return the style properties to animate, the duration and
+    easing strings, and a callback function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Two objects where the first object contains the style properties to animate,
+    and the second object contains the duration, easing and the `specialEasing` strings,
+    a Boolean indicating whether to queue repeated `animate()` calls, and the step
+    and complete callback functions
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. What is the keyword `this` scoped to in an animation's callback function?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The element that was animated
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The current window
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The container of the element that was animated
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The event object
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Have a go hero – doing away with the hardcoded dims object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous example, we hardcoded an image into the top of our script that
+    was used to tell the `animate()` method what size the image should be animated
+    to. While this was fine for the purpose of the example, it doesn't really scale
+    well as a long-term solution as we would have to remember to set this every time
+    we used the script (or otherwise ensure our images are always of a fixed size).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem is that we have no way to programmatically get both the full size
+    and thumb size from a single image. The good news is that any data that can be
+    stored in a JavaScript object can also be passed across a network for consumption
+    as a JSON object. Extend this example so that when the page loads, it passes the
+    `src` attributes of the images on the page to the server, which returns a JSON
+    object containing the small and large image sizes. An image manipulation library,
+    such as GD or ImageMagick, for PHP, ImageResizer, or the `System.Drawing.Image`
+    type in .NET, will be your friend here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a jQuery animation plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Plugins are an excellent way of packaging up functionality into an easy-to-deploy
+    and share module of code that serves a specific purpose. jQuery provides the `fn.extend()`
+    method precisely for this purpose, making it easy to create powerful and effective
+    plugins that can be easily distributed and used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are a few guidelines that should be adhered to when creating jQuery plugins.
+    These are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: New methods, which are called like other jQuery methods, for example, `$(elements).newMethod()`,
+    should be attached to the `fn` object, and new functions, which are used by the
+    plugin, for example, `$.myFunction()`, should be attached to the `jQuery` object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: New methods and functions should always end in a semi-colon (`;`) to preserve
+    the functionality when the plugin is compressed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inside methods, the `this` keyword always refers to the current selection of
+    elements, and methods should always return `this` to preserve chaining
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Always attach new methods and functions to the `jQuery` object, as opposed to
+    the `$` alias, unless using an anonymous function with an aliased `$` object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In this section, we'll create a plugin that can be used to create advanced transition
+    effects when showing a series of images. The finished widget will be similar in
+    some respects to the image viewer we created earlier, but will not animate the
+    images themselves. Instead, it will apply transition effects between displaying
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating a test page and adding some styling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Once again, we'll create the example page and basic styling first and add the
+    script last.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The underlying HTML for this example is very light. All we need in the `<body>`
+    tag of our template file are the following elements:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="frame">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img class="visible" src="img/F-35_Lightning.jpg" alt="F-35 Lightning">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/A-12_Blackbird.jpg" alt="A-12 Blackbird">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/B-2_Spirit.jpg" alt="B-2 Spirit">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/SR-71_Blackbird.jpg" alt="SR-71 Blackbird">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/F-117_Nighthawk.jpg" alt="F-117 Nighthawk">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this page as `advanced-transitions.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Like the markup, the CSS we rely on for a plugin should also be as minimal as
+    possible. Luckily, not much CSS is required for our small collection of elements.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Add the following code to a new file in your text editor:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#frame {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:relative;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:520px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:400px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: z-index:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#frame img {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: z-index:1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#frame img.visible { z-index:2; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#frame a {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:50%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:100%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: z-index:10;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:transparent;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-image:url(transparent.gif);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: filter:alpha(opacity = 0);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-align:center;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-decoration:none;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: font:90px "Palatino Linotype", "Book Antiqua",
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Palatino, serif;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: line-height:400%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#frame a:hover {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:#fff;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'text-shadow:0 0 5px #000;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: filter:alpha(opacity=100);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: filter:Shadow(Color=#000, Direction=0);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#frame a:focus { outline:none; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#prev { left:0; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#next { right:0; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#overlay {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:100%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:100%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: z-index:3;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#overlay div { position:absolute; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this in the `css` folder as `advanced-transitions.css`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All we have on the underlying page are the images between which we wish to make
+    transition within a container. It's best to keep the markup requirements for plugins
+    as simple as possible so that they are easy for others to use and don't place
+    undue restrictions on the elements or structure they want to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The images are positioned absolutely within the container using CSS so that
+    they stack up on top of one another, and we set our `visible` class on the first
+    element to ensure one image is above the rest in the stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the styling goes towards the previous and next anchors, which we'll
+    create with the plugin. These are set so that each one will take up exactly half
+    of the container and are positioned to appear side-by-side. We set the `z-index`
+    property of these links so that they appear above all of the images. The `font-size`
+    property is ramped up considerably, and an excessive `line-height` means we don't
+    need to middle-align the text with `padding`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In most browsers, we simply set the `color` property of the anchors to `transparent`,
+    which hides them. Then, we set the `color` property to white in the `hover` state.
+    This won't work too well in IE, however, so instead we set the link initially
+    to transparent with the Microsoft `opacity` `filter`, and then set it to fully
+    opaque in the `hover` state, which serves the same purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Another IE-specific fix**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'IE also presents us with another problem: the clickable area of our links will
+    only extend the height of the text within them because of their absolute positioning.
+    We can overcome this by setting a reference to a background image.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The best part is that the image doesn't even need to exist for the fix to work
+    (so you'll find no corresponding `transparent.gif` file in the book's companion
+    code bundle). The fix has no detrimental effects on normal browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now, let's create the plugin itself. Unlike most of the other example code we've
+    looked at, the code for our plugin will go into its own separate file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding a license and defining configurable options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In a new file, create the following outer structure for the plugin and save
+    it in our `js` folder under the name `jquery.tranzify.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: /*
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plugin name jQuery plugin version 1.0
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copyright (c) date copyright holder
+  prefs: []
+  type: TYPE_NORMAL
+- en: License(s)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*/'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ;(function($) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.tranzify = {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'defaults: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'transitionWidth: 40,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'transitionHeight: "100%",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'containerID: "overlay",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'transitionType: "venetian",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'prevID: "prev",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'nextID: "next",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'visibleClass: "visible"'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '})(jQuery);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All plugins should contain information on the plugin name, version number, the
+    copyright owner (usually the author of the code), and the terms, or links to the
+    terms, of the license or licenses it is released under.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin is encapsulated within an anonymous function so that its variables
+    are protected from other code which may be in use on the page it is deployed on.
+    It also has a semicolon placed before it to ensure it remains a discrete block
+    of code after potential minification, and in case it is used with other less scrupulously
+    written code than our own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also alias the `$` character for safe use within our function, to ensure
+    it is not hijacked by any other libraries running on the page, and to preserve
+    the functionality of jQuery's `noConflict()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is a good practice to make plugins as configurable as possible so that end
+    users can adjust them to suit their own requirements. To facilitate this, we should
+    provide a set of default values for any configurable options. When deciding what
+    to make configurable, a good rule of thumb is to hardcode nothing other than pure
+    logic into the plugin. Hence, IDs, class names, and anything like that should
+    be made configurable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The defaults we set for the plugin are stored in an object that is itself stored
+    as a property of the `jQuery` object that is passed into the function. The property
+    added to the `jQuery` object is called `tranzify`, the name of our plugin, and
+    will be used to store the properties, functions, and methods we create so that
+    all of our code is within a single namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our default properties are contained in a separate object, called `defaults`,
+    within the `tranzify` object. We set the `width` and `height` parameters of the
+    transition elements, the `id` attribute of the container that gets created, the
+    default transition, the `id` attributes for the previous and next links, and the
+    class name we give to the currently displayed image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As I mentioned, it's best not to hardcode any `id` values or class names into
+    a plugin if possible. The person implementing the plugin may already have an element
+    on the page with an `id` attribute of `overlay`, for example, so we should give
+    them the option to change it if need be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding our plugin method to the jQuery namespace
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Next, we can add the code that will insert our plugin into the jQuery namespace
+    so that it can be called like other jQuery methods. Add the following code directly
+    above the last line in the code we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.fn.extend({
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'tranzify: function(userConfig) {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'var config = (userConfig) ? $.extend({}, $.tranzify.defaults, userConfig) :
+    $.tranzify.defaults;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: config.selector = "#" + this.attr("id");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: config.multi = parseInt(this.width()) / config.transitionWidth;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $.tranzify.createUI(config);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return this;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery provides the `fn.extend()` method specifically for adding new methods
+    that can be chained to the `jQuery()` function, which is how most plugins are
+    created. We defined a function as the value of the sole property of an object
+    passed to the `extend()` method. We also specified that the method may take one
+    argument, which may be a configuration object passed into the method by whoever
+    is using the plugin to change the default properties we set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing our method does is check whether or not a configuration object
+    has been passed into the method. If it has, we use the `extend()` method (not
+    `fn.extend()`, however) to merge the user's configuration object with our own
+    `defaults` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The resulting object, created by the merging of these two objects, is stored
+    in the variable `config` for easy access by our functions. Any properties that
+    are in the `userConfig` object will overwrite the properties stored in our `defaults`
+    object. Properties found in the `defaults` object but not the `userConfig` object
+    will be preserved. If no `userConfig` object is passed into the method, we simply
+    assign the `defaults` object to the `config` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we built an `id` selector that matched the element of the method that
+    was called on and added this as an extra property to the `config` object, making
+    it convenient to use throughout the plugin. We can't store this as a default property
+    because it is likely to be different on every page that the plugin is used on,
+    and we also can't expect users of the plugin to have to define this in a configuration
+    object each time the plugin is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The number of transition elements we need to create will depend on the size
+    of the images and the width of the transition elements (defined as a configurable
+    property), so we worked out a quick multiplier based on the width of the image
+    and then configured transition width for use later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following this, we called the function that will create the previous/next links
+    (we will define this shortly) and passed the function, the `config` object, so
+    that it can read any properties that the user has configured.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we return the jQuery object (which is automatically assigned to the
+    value of the `this` keyword within our plugin method). This is to preserve chaining
+    so that the user can call additional jQuery methods after calling our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the UI
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Next, we need to create the previous and next links that are overlaid above
+    the images and allow the visitor to cycle through the images. Add the following
+    chunk of code beneath the `$.fn.extend()` section we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.tranzify.createUI = function(config) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var imgLength = $(config.selector).find("img").length,
+  prefs: []
+  type: TYPE_NORMAL
+- en: prevA = $("<a></a>", {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'id: config.prevID,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'href: "#",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'html: "«",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'click: function(e) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(config.selector).find("a").css("display", "none");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $.tranzify.createOverlay(config);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var currImg = $("." + config.visibleClass, $(config.selector));
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if(currImg.prev().filter("img").length > 0) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: currImg.removeClass(config.visibleClass).prev().addClass(config.visibleClass);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: currImg.removeClass(config.visibleClass);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(config.selector).find("img").eq(imgLength - 1).addClass(config.visibleClass);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $.tranzify.runTransition(config);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}).appendTo(config.selector),'
+  prefs: []
+  type: TYPE_NORMAL
+- en: nextA = $("<a></a>", {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'id: config.nextID,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'href: "#",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'html: "»",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'click: function(e) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(config.selector).find("a").css("display", "none");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $.tranzify.createOverlay(config);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var currImg = $("." + config.visibleClass, $(config.selector));
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if(currImg.next().filter("img").length > 0) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: currImg.removeClass(config.visibleClass).next().addClass(config.visibleClass);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: currImg.removeClass(config.visibleClass);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(config.selector).find("img").eq(0).addClass(config.visibleClass);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $.tranzify.runTransition(config);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}).appendTo(config.selector);'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is by far our largest function and deals with creating the previous and
+    next links, as well as defining their click handlers during the creation using
+    the jQuery syntax. The first thing we do is obtain the number of images in the
+    container, as the click handlers we add will need to know this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We create the anchor for the previous link, and in the object passed as the
+    second argument, we define the `id` attribute (using the value from the `config`
+    object), a dummy `href`, an HTML entity as its `innerHTML`, and a click handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the click handler, we use the `preventDefault()` method to stop the browser
+    following the link, then hide the previous and next links in order to protect
+    the widget against multiple clicks, as this will break the transitions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we call our `createOverlay()` function, passing it the `config` object,
+    to create the overlay container and the transition elements. We also cache a reference
+    to the currently selected image using the class name stored in the `config` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then test whether there is another image element before the visible image.
+    If there is, we remove the class from the element that currently has it and give
+    it to the previous image in order to bring it to the top of the stack. If there
+    aren't any more images before the current image, we remove the `visible` class
+    from the current image and move to the last image in the container to show that
+    instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've defined everything we need, we can append the new anchor to the specified
+    container. We also create the next link within the current function, as well,
+    giving it a very similar set of attributes and a click handler, too. All that
+    differs in this click handler is that we test for an image after the current one,
+    and move to the first image in the container if there isn't one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the transition overlay
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Our next function will deal with creating the overlay and transition elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.tranzify.createOverlay = function(config) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var posLeftMarker = 0,
+  prefs: []
+  type: TYPE_NORMAL
+- en: bgHorizMarker = 0
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: overlay = $("<div></div>", {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'id: config.containerID'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: for (var x = 0; x < config.multi; x++) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("<div></div>", {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: config.transitionWidth,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: config.transitionHeight,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'css: {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'backgroundImage: "url(" + $("." + config.visibleClass, $(config.selector)).attr("src")
+    + ")",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'backgroundPosition: bgHorizMarker + "px 0",'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: posLeftMarker,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'top: 0'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}).appendTo(overlay);'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bgHorizMarker -=config.transitionWidth;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: posLeftMarker +=config.transitionWidth;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: overlay.insertBefore("#" + config.prevID);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our previous function dealt with creating the overlay container and the transition
+    elements that will provide the transition animations. The plugin will need to
+    set the `position` and `background-position` properties of each transition element
+    differently in order to stack the elements up horizontally. We'll need a couple
+    of counter variables to do this, so we initialize them at the start of the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create the overlay container `<div>` and give it just an `id` attribute,
+    so that we can easily select it when we run the transitions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we create the transition elements. To do this, we use a standard JavaScript
+    `for` loop, which is executed a number of times depending on the multiplier we
+    set earlier in the script. On each iteration of the loop, we create a new `<div>`,
+    which has its `width` and `height` parameters set according to the properties
+    stored in the configuration object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `css()` method to set the `backgroundImage` property of the overlay
+    to the currently visible image, and the `backgroundPosition` property according
+    to the current value of the `bgHorizMarker` counter variable. We also set the
+    `left` property to position the new element correctly according to the `posLeftMarker`
+    variable, and the `top` property to `0` to ensure correct positioning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once created, we append the new element to the container and increment our counter
+    variables. Once the loop exits and we have created and appended all of the transition
+    elements to the container, we can then append the container to the element on
+    the page that the method was called on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – defining the transitions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The final function will perform the actual transitions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.tranzify.runTransition = function(config) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var transOverlay = $("#" + config.containerID),
+  prefs: []
+  type: TYPE_NORMAL
+- en: transEls = transOverlay.children(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: len = transEls.length - 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: switch(config.transitionType) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'case "venetian":'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: transEls.each(function(i) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: transEls.eq(i).animate({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'width: 0'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, "slow", function() {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (i === len) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: transOverlay.remove();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(config.selector).find("a").css("display", "block");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: break;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'case "strip":'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var counter = 0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: function strip() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: transEls.eq(counter).animate({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'height: 0'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, 150, function() {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (counter === len) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: transOverlay.remove();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(config.selector).find("a").css("display", "block");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: counter++;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: strip();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: strip();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our last function deals with actually running the transitions. In this example,
+    there are just two different types of transitions, but we could easily extend
+    this to add more transition effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This function also requires some variables, so we set these at the start of
+    the function for later use. We cache a reference to the overlay container, as
+    we'll be referring to it several times. We also store the collection of transition
+    elements and the number of transition elements. We subtract `1` from the number
+    of children because the figure will be used with the jQuery's `eq()` method, which
+    is zero-based.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To determine which of our transitions to run, we use JavaScript's `switch` statement
+    and check the value of the `config.transitionType` property. The first transition
+    is a kind of **venetian-blind** effect. To run this transition, we just animate
+    the `width` parameter of each element to `0` using jQuery's `each()` method. The
+    function we specify as the argument to this method automatically receives the
+    index of the current element, which we access using `i`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the callback function for each animation, we check whether `i` is equal to
+    the `length` of the collection of transition elements, and if it is, we remove
+    the overlay and show the previous and next links once more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second transition removes the old image one strip at a time. To do this,
+    we use a simple `counter` variable and a standard JavaScript function. We can't
+    use the `each()` method this time, or all of the transition elements will slide
+    down together, but we want each one to slide down on its own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the function, we animate the current transition element's height to `0`
+    and set a rather low duration so that it happens fairly quickly. If the animation
+    is too slow, it spoils the effect. In the callback function, we check whether
+    our `counter` variable is equal to the number of transition elements, and if so,
+    remove the overlay and show the links again. If the `counter` variable hasn't
+    reached the last element at this point, we increment the `counter` variable and
+    call the function once more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Save this file as `jquery.tranzify.js` in the `js` folder. This is the standard
+    naming convention for jQuery plugins and should be adhered to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To use the plugin, we just call it like we would call any other jQuery method,
+    inside our ready function or anonymous function, like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <script>
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("#frame").tranzify();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: </script>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this form, the default properties will be used. If we want to change one
+    of the properties, we just supply a configuration object, such as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("#frame").tranzify({
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'transitionType: "strip"'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The default animation should run something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the plugin](img/9642_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the previous screenshot, we see the transition elements all simultaneously
+    shrinking to `0` `width`, creating an effect like Venetian blinds being opened
+    to reveal the new image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the plugin is simple; there is just one point to remember. All of the
+    images should be of same size, and the `width` parameter of each image should
+    be exactly divisible by the `transitionWidth` property. As we've exposed the `transitionWidth`
+    property as a configurable property, we should be able to use an image of any
+    size we wish and set this accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For reference, the second transition effect runs like this, with strips of
+    the old image sliding away to reveal the new image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the plugin](img/9642_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the previous screenshot, we can see the effects of the second transition
+    type, with the old image being stripped away to reveal the new image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – creating a plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. What is the difference between a plugin method and a function?
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no difference, conceptually and in practice they are the same
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Methods are able to accept arguments, functions are not
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Methods execute faster
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Methods are attached to the `fn` object and are used like existing jQuery methods,
+    while functions are attached directly to the jQuery object and called like any
+    normal function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. What must each new method return?
+  prefs: []
+  type: TYPE_NORMAL
+- en: A string containing the `id` attribute of the selected element
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: An array containing the `id` attributes of selected elements
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The `this` object, which points to the currently selected element
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Nothing should be returned
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Have a go hero – extending the plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our plugin currently contains just two transition effects (venetian and strip).
+    Extend the plugin to include more transition effects of your own devising. The
+    plugin currently creates a number of transition elements that are the full height
+    of each image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By wrapping our existing `for` loop within another `for` loop and adding some
+    new counter variables for `top` position and vertical `background-position`, it
+    is relatively easy to add square transition elements in a checkerboard style,
+    which opens up the possibility of more complex and attractive transition effects.
+    Do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we looked at some common usages of the `animate()` method,
+    which is the means for us to create custom animations in jQuery when the built-in
+    effects are not enough for our requirements. The method is robust, easy to use,
+    and makes complex animations trivial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When simple sliding or fading does not meet our requirements, we can fall back
+    onto the `animate()` method in order to craft our own high-quality custom animations.
+    We learned the following points about the `animate()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `animate()` method can be used to animate any numeric CSS property (except
+    colors, for which jQuery UI is required).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The arguments passed into the method may take one of two formats. The first
+    allows us to pass an object containing the CSS properties to animate, as well
+    as separate duration, easing, and callback arguments. The second format allows
+    us to pass in two objects, the first allowing us to specify the CSS properties
+    to animate as before, and the second allowing us to specify additional options,
+    such as the duration, easing, and callback. The second option gives us access
+    to some special arguments not accessible in the first format, such as `specialEasing`
+    and the `step` callback.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All CSS properties specified in the first object will be executed simultaneously.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to achieve animations involving an element's position, or its dimensions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We also looked at how we can extend the jQuery library with brand new functions
+    and methods in the form of plugins. Plugins are a great way of wrapping up code
+    for easy deployment and sharing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've looked at all of jQuery's animation methods, in the next chapter,
+    we're going to take a look at other popular animations, such as adding mouse and
+    keyboard events and animating the post links.
+  prefs: []
+  type: TYPE_NORMAL

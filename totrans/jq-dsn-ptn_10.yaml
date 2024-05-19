@@ -1,0 +1,853 @@
+- en: Chapter 10. Plugin and Widget Development Patterns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter focuses on the design patterns and best practices used when implementing
+    jQuery Plugins. We will learn here how to abstract parts of an application into
+    separate jQuery Plugins, promoting the **Separation of Concerns** principle and
+    code reusability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will firstly analyze the simplest ways that a jQuery Plugin can be implemented,
+    learn the various conventions of jQuery Plugin development and the basic characteristics
+    that every plugin should satisfy in order to follow jQuery principles. We will
+    then proceed with an introduction to the most widely used design patterns and
+    analyze the characteristics and benefits of each of them. By the end of this chapter,
+    we will be able to implement extensible jQuery Plugins using the development pattern
+    that best suits each use case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduce the jQuery Plugin API and its conventions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Analyze the characteristics that make an excellent plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to create a plugin by extending the `$.fn` object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to implement generic plugins that are extensible in order to make
+    them reusable in more use cases
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to provide options and methods to your plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the most common design patterns for jQuery plugin development and
+    analyze the common implementation problems that each of them helps to solve
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing jQuery Plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The key concept of jQuery plugins lies in extending the jQuery API by making
+    their functionality accessible as a method on jQuery **Composite Collection**
+    Objects. A jQuery plugin is simply a function that is defined as a new method
+    on the `$.fn` object, which is the **Prototype Object** that every jQuery Collection
+    Object inherits from.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By defining a method on the `$.fn` object, we are actually extending the core
+    jQuery API itself, since this makes the method available on all created jQuery
+    Collection Objects from that point onwards. As a result, after a plugin has been
+    loaded in a web page, its functionality is available as a method on every object
+    returned by the `$()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The main convention of the jQuery plugin API is that the jQuery Collection
+    Object that the plugin was invoked on is made available to the plugin''s method
+    as its execution context. In other words, we can use the `this` identifier in
+    the plugin method, as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Following jQuery principles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the goals when creating a plugin is to make it feel like a part of jQuery
+    itself. After reading the previous chapters, you should be familiar with some
+    of the principles that all jQuery methods follow and the characteristics that
+    make its approach special. Implementing a plugin that follows these principles
+    makes users feel more comfortable with its API, be more productive, and make fewer
+    implementation errors, which leads to an increase in the plugin's popularity and
+    adoption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Two of the most important characteristics that a great jQuery plugin should
+    have are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It should apply on all the elements of the jQuery Collection Object it is invoked
+    on whenever applicable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It should allow further chaining of other jQuery methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's now move on and analyze each of these principles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working on Composite Collection Objects
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One of the most important features of jQuery methods is that they are applied
+    on every item of the Composite Collection Object that they are invoked on. As
+    an example, the `$.fn.addClass()` method adds one or more CSS classes to every
+    item of the collection after individually checking whether each class has already
+    been defined on each individual element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a result, our jQuery plugins should also follow this principle by operating
+    on every element of a collection, when such a thing seems logical. If you are
+    using only jQuery methods in your plugin's implementation, most of the time, you
+    get this for free. On the other hand, an important consideration to bear in mind
+    is that not all jQuery methods operate on every element of a collection object.
+    Methods like `$.fn.html()`, `$.fn.css()` and `$.fn.data()` apply on all the items
+    of the collection when used as setter methods, but operate only on the first element
+    when used as getters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see an example implementation of a plugin that uses `$.fn.animate()`
+    to create a shake effect on all items of a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Invoking this plugin with `$('button').vibrate();` applies the shaking animation
+    on every matched element of the page. To achieve that, the plugin changes the
+    `left` CSS property of all matched elements using the `$.fn.animate()` method,
+    which conveniently operates on every element. On the other hand, since the `$.fn.css()`
+    method applies only on the first element of the collection when used as a getter,
+    we had to iterate over all the elements using the `$.fn.each()` method and ensure
+    that each of them was not statically positioned, in which case the `left` CSS
+    property would not affect its appearance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, using only jQuery methods is not always sufficient for the implementation
+    of a plugin. In most cases, a new plugin will have to use at least one non-jQuery
+    API for its implementation, requiring us to iterate over the items of the collection
+    and apply the logic of the plugin to each of them individually. The same approach
+    should be used when each element of the collection has to be handled slightly
+    differently based on its state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a result, it is quite common for plugins to wrap almost all of their implementations
+    inside a `$.fn.each()` invocation. By recognizing the common needs that are covered
+    by explicit iteration, the jQuery team and most jQuery plugin boilerplates now
+    make it part of their standard practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Allowing further chaining
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In general, when your plugin''s code does not need to return anything, all
+    that you have to do to enable further chaining is to add a `return this;` statement
+    to its last line, as we saw in the previous example. Make sure that all the code
+    paths return a reference of the invocation context (`this`) or another relevant
+    jQuery collection object, in the same way that `$.fn.parent()` and `$.fn.find()`
+    do. Alternatively, when all your code is wrapped inside another jQuery method,
+    such as `$.fn.each()`, it is common practice to simply return the result of that
+    invocation, as demonstrated below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Keep in mind that, if your code manipulates the collection object that it was
+    invoked on, instead of returning the `this` reference, you might need to return
+    the new collection that was the result of your plugin's manipulations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You should avoid basing your plugin's implementation on a return value in order
+    to allow further chaining. Instead of doing that, it is preferable to initialize
+    the plugin on its first invocation and then provide some overloaded ways to invoke
+    it, as a way of returning values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with $.noConflict()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first step to improve a plugin's implementation is to make it work in environments
+    that do not have access to the `$` identifier. An example of this is when a web
+    page uses the `jQuery.noConflict()` method, which prevents jQuery from assigning
+    itself to the `$` global identifier (or `window.$`) and keeps it available only
+    on the `jQuery` namespace (`window.jQuery`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `jQuery.noConflict()` method allows us to prevent jQuery from conflicting
+    with other libraries and implementations that also happen to use the `$` variable.
+    For more information, you can visit the jQuery documentation page at: [http://api.jquery.com/jQuery.noConflict/](http://api.jquery.com/jQuery.noConflict/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In such cases, the plugin definition would throw an **$ is not defined** error
+    or even worse; it might try to use the `$` variable that the developer has reserved
+    to use in an implementation, leading to errors that are hard to debug.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fortunately, the changes required to fix this problem are easy to implement
+    and do not affect the functionality of the plugin. All that we have to do is rename
+    all of the occurrences of the `$` identifier in our plugin with `jQuery`, as shown
+    below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Wrapping with an IIFE
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The next best practice to follow is to wrap the definition and implementation
+    of our plugin with an IIFE. This not only makes our plugin look like the **Module
+    Pattern** but also makes our implementation more robust by adding several other
+    benefits to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all, the IIFE pattern allows us to create and use private variables
+    and functions in the context of the plugin''s definition. These variables are
+    shared across all the instances of the plugin in a similar way to how static variables
+    work in other programming languages, enabling us to use them as synchronization
+    points between the plugin instances:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Otherwise, we would have to use something like `$.simplePlugin101._callCounter`
+    or `$.simplePlugin101._utilityLogMethod()` to emulate privacy, which is just a
+    naming convention and does not provide any actual privacy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second benefit, as demonstrated in the above example, is that it allows
+    us to use the `$` identifier again to access jQuery with no concerns about conflicts.
+    In order to achieve this, we are passing the jQuery namespace variable as an invocation
+    parameter to our IIFE and use the `$` identifier to name the respective parameter.
+    In this way, we effectively alias the jQuery namespace to `$` in the context created
+    by the IIFE, enabling us to use the minimal `$` identifier in our implementation
+    to keep our code slim and readable, even if `jQuery.noConflict()` is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, adding the `use strict;` statement on the top of our IIFE helps
+    us to eliminate any leaking of variables into the global namespace. For example,
+    the following code would throw a **ReferenceError: assignment to undeclared variable
+    x** error during the invocation of the plugin''s method, enabling us to catch
+    those errors during the development phase of the plugin helping produce a more
+    robust final implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about JavaScript''s strict execution mode, you can visit:
+    [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, this pattern, as with all the namespace aliasing practices that use
+    IIFEs, can also help increase the gains when minifying your plugin''s source code,
+    when compared to an implementation that references the jQuery namespace variable
+    directly. In an attempt to maximize the benefits of this technique, it''s also
+    common to alias all the global namespace variables that our plugin accesses, as
+    demonstrated below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating reusable plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: After analyzing the most important aspects of the development of jQuery plugins,
+    we are now ready to analyze an implementation that is used for something more
+    than a simple demonstration. In order to create a really useful and reusable plugin,
+    it must be designed such that its operations are not restricted by the demands
+    of its original use case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most popular plugins, like the most useful jQuery methods, are those that
+    provide a high degree of configuration of their functionality. Creating a plugin
+    that is configurable adds a degree of flexibility to its implementation, which
+    enables us to match the needs of several other use cases that are governed by
+    the same operation principles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we said earlier, a jQuery plugin is just a function attached to the `$.fn`
+    object and, as a result, we can make its implementation more abstract and generic
+    in the same way as with plain functions of our modules. As in simple functions,
+    the easiest way to differentiate the operation of a jQuery plugin is by using
+    invocation parameters. A plugin that exposes a lot of configuration parameters
+    has great potential of being able to be match the requirements of several different
+    use cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accepting configuration parameters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In contrast to how we implement functions that usually accept up to five arguments
+    and still have a manageable and relatively clean API, this practice does not work
+    so well with jQuery plugins. In order to expose a clear API and maintain a high
+    level of usability, regardless of the various configuration options that are exposed,
+    most jQuery plugins provide a minimal API that accepts up to three invocation
+    arguments. This is achieved by using dedicated setting objects with a specific
+    format, as a way of encapsulating multiple options and passing them as a single
+    argument. Another approach is to expose an API with two parameters, where the
+    first one is a regular value that defines the operation of the plugin and the
+    second one is used to wrap the less important configuration options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A great example of both of these practices is the `$.ajax(settings)` method,
+    which is invoked with a single settings object as a parameter to define how it
+    should operate, but also exposes another overloaded way to be invoked with two
+    arguments. The two argument overload is invoked with `$.ajax(url, settings)`,
+    where the first is the target URL for the HTTP request and the second is an object
+    with the rest configuration options. What applies to both of them is that the
+    method itself contains a set of sensible defaults that are used instead of any
+    configuration parameter that the user has not defined. Moreover, the second overload
+    also defines the second parameter as optional and, if that was not provided during
+    its invocation, it bases its operation on the default settings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Adopting the settings object practice in our plugins not only brings all the
+    aforementioned benefits, but also allows us to extend the implementation in a
+    more scalable way, since the addition of an extra configuration parameter has
+    little effect on the rest of its API. As an example of this, we will reimplement
+    the `$.fn.vibrate` plugin that we saw earlier in this chapter in a more generic
+    way, so that a setting object with default values is used for its configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In contrast to the original fixed implementation, this one accepts a single
+    object as an invocation parameter which wraps four different options that can
+    be used to diversify the operation of the plugin. The options object allows us
+    to diversify the operation of the plugin by exposing four customization points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The number of loops that the shake effect should run
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The amplitude of the animation, as a means of controlling how much an element
+    should move away from its original position
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The period of each loop, as a means of controlling how fast the movement will
+    be
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The direction of the animation, which is horizontal when `left` is used or vertical
+    when `top` is used
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By following a widely accepted best practice, we have defined all the default
+    values for the configuration options as a separate object. This pattern not only
+    allows us to gather all the related values under a single object, but also enables
+    us to use the `$.extend()` method as an effective way of composing all the defined
+    options with the default values of the undefined ones. We can thus avoid checking
+    explicitly for the existence of each individual property, reducing the complexity
+    and the size of our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In brief, the `$.extend()` method returns the object passed as its first argument
+    after merging the properties of the subsequent objects together into the first
+    object. As a result, the returned object will contain all the default values except
+    those that were defined in the options object that was passed as an invocation
+    parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about the `$.extend()` helper method, you can visit the
+    documentation page at: [http://api.jquery.com/jQuery.extend/](http://api.jquery.com/jQuery.extend/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, instead of using a simple variable, we are exposing the default options
+    object as a property of the plugin's function, enabling users to change them to
+    better suit their needs. As an example, consider a case in which a smooth animation
+    is required for the needs of a specific application. By setting `$.fn.vibrate.defaultOptions.period
+    = 250,` the developer would completely remove the need to specify the `period`
+    option in every invocation of the plugin, which would lead to an implementation
+    with less repetitive code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery library itself adopts this practice for defining the default configuration
+    parameters of the `$.ajax()` method. Because of the increased complexity of this
+    method, jQuery provides us with the `jQuery.ajaxSetup()` method as a way of setting
+    up the default parameters for every AJAX request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, in order to create a generic variant of the original implementation
+    and utilize the aforementioned configuration options, we replaced the four fixed
+    invocations of the `$.fn.animate()` method of the original implementation with
+    a `for` loop that utilized the `loops` option. Inside the `for` loop itself, we
+    construct the parameters for each call of the `$.fn.animate()` method and briefly
+    alternate the direction of the animated movement on each subsequent execution
+    of the loop, and also ensure that the first and last movements have half of the
+    time duration and half of the shift of all of the other steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final implementation can be configured to produce different animations,
+    based on the needs of each specific use case, ranging from short horizontal animations
+    that are ideal for notifying a user about an invalid action, to vertical long
+    animations that look like a levitation effect. The plugin can be invoked with
+    any combination of the aforementioned options, use the default values for missing
+    options and even operate with no invocation argument, as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Writing stateful jQuery plugins
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The plugin implementations that we have looked at so far were stateless since,
+    after completing their execution, they revert their manipulations on the DOM's
+    state and don't leave allocated objects in the browser's memory. As a result,
+    subsequent invocations of stateless plugins always produce the same results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can probably guess, such plugins have limited applications since they
+    can't be used to create a series of complex interactions with the user of the
+    web page. In order to orchestrate complex user interactions, a plugin needs to
+    preserve an internal state with the actions taken up to that point in order to
+    change its operation mode appropriately and handle subsequent interactions. Comparing
+    the characteristic of stateful and stateless plugins could be defined as the equivalent
+    to comparing plain (static) functions with methods that are part of an object
+    and can operate on its state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another popular category of plugins, in which having an internal state is essential,
+    is the family of plugins that manipulate the DOM tree. These plugins usually create
+    complex element structures such as a rich text editors, date pickers and calendars,
+    commonly by building on a user-defined empty `<div>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing a stateful jQuery Plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As an example of the patterns used for the implementation of plugins of this
+    family, we will write a generic **Element Mutation** **Observer** plugin. This
+    plugin will provide us with a convenient way of adding event listeners for changes
+    to the DOM tree that originate from any of the elements that this plugin was invoked
+    on. As a way of achieving that, the following implementation uses the **MutationObserver**
+    API, which, at the time of writing, is implemented by all modern browsers and
+    is available to more than 86% of web users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information on the Mutation Observer, you can visit: [https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s now proceed with the implementation and analyze the practices that were
+    used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Firstly, we define our plugin inside an IIFE, as recommended earlier in this
+    chapter. Right after the declaration of the plugin on the `$.fn` object, we use
+    the `$.fn.each()` method as a direct approach to ensure that the functionality
+    of our plugin is applied to every item of the jQuery Collection Object that it
+    was invoked on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two of the main issues that stateful plugin implementations have is the lack
+    of a mechanism to preserve the internal state of each instantiation of the plugin
+    and a way of avoiding being initialized many times on the same page element. In
+    order to solve both of these problems, we need to use something like a hash table
+    in which the key is the element itself and the value is an object with the state
+    of the plugin's instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, this is more or less how the `$.fn.data()` method works by associating
+    DOM elements and JavaScript object values using specific string keys. By using
+    the `$.fn.data()` method and the plugin's name as an association key, we are able
+    to store and retrieve the state object of our plugin very easily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using the `$.fn.data()` method for this use case is considered a best practice
+    and is used by most stateful plugin implementations and boilerplates since it
+    is a robust part of jQuery that enables us to reduce the size of our plugin's
+    implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If an existing state object is not found then we can assume that the plugin
+    is not yet initialized on that specific element and start its initialization right
+    away. The state object of this plugin will contain the instance of the active
+    MutationObserver responsible for tracking the changes that happen on the observed
+    DOM element, and an array with all the callbacks that have subscribed to it to
+    get notifications about changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After creating a new MutationObserver instance, we configure it to look for
+    three specific types of DOM changes and instruct it to invoke all the callbacks
+    of the plugin's state object whenever such DOM changes occur. Finally, we create
+    the state object itself to hold the observer and the associated callbacks and
+    use the `$.fn.data()` method as a setter and associate it with the page element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After ensuring that the plugin is instantiated and initialized on the provided
+    element, we check whether the plugin is invoked with a function as a parameter
+    and, if so, we add it to the list of the plugin's callbacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that using a single MutationObserver instance per element and having
+    it notify about DOM changes by iterating over an array of callbacks greatly reduces
+    the memory requirements of the implementation, just like when we are using a single
+    delegate observer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example of using our newly implemented plugin to observe for changes of
+    a specific DOM element would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Destroying a plugin instance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'An extra consideration that a stateful plugin has to take into account is offering
+    the developer a way to reverse the changes that it introduced to the state of
+    the page. The most common and simple API for achieving this is to invoke the plugin
+    with the `destroy` literal as its first parameter. Let''s proceed with the required
+    implementation changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to adapt our implementation to the above requirement, all we had to
+    do was to check whether the plugin was invoked with the `destroy` string value
+    as its first parameter, right after retrieving the plugin''s state object. If
+    we find that the plugin has already been instantiated on the specified element
+    and that the `destroy` string value has been used, we can proceed to stop the
+    Mutation Observer itself and clear the association that `$.fn.data()` created
+    by using the `$.fn.removeData()` method. Finally, at the end of the `if` statement
+    we added a `return` statement since, after completing the destruction of the plugin
+    instance, we no longer need to execute any other code. An example of destroying
+    a plugin instance with this implementation would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Implementing getter and setter methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By using the same technique that we demonstrated earlier for the implementation
+    of the `destroy` method of our plugin, we can provide several other overloaded
+    ways to invoke our plugin that work like normal methods. This pattern is not only
+    used by plain jQuery plugins, but is also adopted by more complex plugin architectures,
+    as with jQuery-UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, we might end up with a plugin implementation that results
+    in a large number of invocation overloads, which is something that would make
+    it difficult to use and document. A way to work around this is to combine the
+    getter and setter methods of your API into multi-purpose methods. This not only
+    reduces the API surface of your plugin so that a developer has to remember fewer
+    method names but it also increases the productivity since the same pattern is
+    used in many jQuery methods like `$.fn.html()`, `$.fn.css()`, `$.fn.prop()`, `$.fn.val()`,
+    and `$.fn.data()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a demonstration of this, let''s see how we can add a new method to our MutationObserver
+    plugin that works both as a getter and a setter for the registered callbacks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: As shown in the above code, we have created an overloaded invocation method
+    which uses the `callbacks` string value as the first argument of the plugin invocation.
+    This getter and setter method allows us to retrieve or overwrite all of the callbacks
+    that are registered on the MutationObserver and works in addition to the pre-existing
+    methods for invoking the plugin, by using a function parameter and the `destroy`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The getter and setter implementation is based on the assumption that, when trying
+    to use the `callbacks` method as a getter, you don't need to pass any extra parameters
+    and, when trying to use it as a setter, you will pass an extra array as an invocation
+    parameter. In order to support the getter variant, which prevents further chaining
+    and only operates on the first element of the composite collection, we had to
+    declare and use the `result` variable which is initialized to the value of the
+    `this` identifier. If the `callbacks` getter is used, we assign the `callbacks`
+    of the first element of the collection to the `result` variable and break out
+    of the `$.fn.each()` iteration by returning `false` to finish the execution of
+    the plugin's method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is an example use case for our newly implemented getter and setter method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that invocation overloads that prevent further chaining by returning
+    non-jQuery object results should be well documented since this technique conflicts
+    with the chaining principle that everyone expects to work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using our plugin in our Dashboard application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After completing our `mutationObserver` plugin, lets now see how we can use
+    it for the implementation of the `counter` sub-module that we used in our Dashboard''s
+    implementation in previous chapters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in the above implementation, our plugin abstracts nicely and
+    replaces the old implementation by providing a generic, flexible and reusable
+    API. Instead of listening for click events on the different buttons of the page,
+    the implementation is now using the `mutationObserver` plugin and observes the
+    `boxContainer` element for the additions or removals of child elements. Moreover,
+    this implementation change does not affect the functionality of the `counter`
+    module which appears to work in the same way since all the changes are encapsulated
+    in the module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the jQuery Plugin Boilerplate
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Boilerplate project, which is available at [https://github.com/jquery-boilerplate/jquery-patterns](https://github.com/jquery-boilerplate/jquery-patterns),
+    offers several templates that can be used as starting points for the implementation
+    of robust and extensible plugins. These templates incorporate a lot of best practices
+    and design patterns such as those analyzed earlier in this chapter. Each of the
+    templates packs a number of best practices that work well together, in an attempt
+    to provide good starting points that better match the various use cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Perhaps the most widely used template is `jquery.basic.plugin-boilerplate`
+    from Adam Sontag and Addy Osmani, which even though it is characterized as a generic
+    template for beginners and above, successfully covers most aspects of jQuery plugin
+    development. What makes this template unique is the Object-Oriented approach that
+    it follows which is presented in such a way that it helps you write better structured
+    code, without making it harder to introduce customizations on the implementation.
+    Let''s proceed and analyze its source code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The semi-colon right before the IIFE is there to avoid errors in case of unfortunate
+    script concatenation (and possibly minification) with a file that might be missing
+    an ending semi-colon. Right below, the boilerplate uses the `pluginName` variable
+    as a DRY way of naming our plugin and using its name for any other case. As an
+    added benefit, all that we have to do if we need to rename our plugin is change
+    the value of this variable and rename the `.js` file of our plugin accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following the best practices that we saw earlier, a variable is used to hold
+    the default options of the plugin and, as we can see a few lines later, it is
+    merged with the user-provided options using the `$.extend()` method. Keep in mind
+    that, if we want to expose the default options, all that we have to do is define
+    it as part of the plugin''s namespace: `$.fn[pluginName].defaultOptions = defaults;`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The actual plugin definition can be found near the end of this boilerplate code.
+    Following the already discussed best practices, it iterates over the items of
+    the collection using `$.fn.each()` and returns its result, which is equivalent
+    to returning `this`. It then ensures that a plugin state instance exists for each
+    item of the collection by using the `$.data()` method and the prefixed plugin
+    name as an association key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Plugin` constructor function is used for the creation of the plugin's state
+    object which, after storing the DOM element and the final plugin options as properties
+    of the object, invokes the `init()` method of its prototype. The `init()` method
+    is the suggested place to define our initialization code, for example, it could
+    instantiate a new MutationObserver as we did earlier in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding methods to your plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default, every method that is defined as part of the prototype is only available
+    for internal use. On the other hand, we can easily extend the above implementation
+    to make a method available to all our users, as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: One guideline to follow when working with this boilerplate is to extend your
+    plugin by adding extra methods to the `Plugin`'s prototype. Additionally, try
+    to keep any modifications to the plugin's definition as small as possible, ideally
+    single line method invocations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to make the implementation more scalable, with regards to how the
+    plugin methods are invoked and if we want to add an abstract approach for methods
+    that are intended for internal or private use by the plugin, we can introduce
+    the following changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above implementation, we used the first argument to identify the method
+    that needs to be invoked and then invoked it with the rest arguments. We also
+    added a check to prevent the invocation of methods that start with an underscore
+    which, according to common conventions, are intended to be for internal or private
+    use. As a result, in order to add an extra method to your plugin's public API,
+    we just need to declare it in the `Plugin.prototype` that we saw earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Another great way to implement your plugin when you are already using jQuery-UI
+    in your application is to use the `$.widget()` method which is also known as jQuery-UI
+    Widget Factory. Its implementation abstracts several parts of the boilerplate
+    code that we saw in this chapter and helps create complex and robust plugins.
+    For more information, you can read the documentation at: [http://api.jqueryui.com/jQuery.widget/](http://api.jqueryui.com/jQuery.widget/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing a name
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Lastly, after learning the best practices that we need to create a jQuery plugin,
+    let's say something about the naming conventions and where to publish your new
+    and shiny plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you have probably already seen, most jQuery plugins use the following naming
+    convention: jQuery-myPluginName for their project sites and repositories and store
+    their implementations in a file named `jquery.mypluginname.js`. After settling
+    on some prospective names for your plugin, take a moment and search the web to
+    verify that there is no one else with the same project name. The jQuery documentation
+    suggests searching for plugins on NPM and refining your results by using the `jquery-plugin`
+    keyword. This is obviously the best way to publish your plugin so that it can
+    be easily found by others.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about NPM, you can visit: [https://www.npmjs.com/](https://www.npmjs.com/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another popular place for searching and hosting JavaScript libraries is GitHub.
+    You can find its repository search page at [https://github.com/search?l=JavaScript](https://github.com/search?l=JavaScript),
+    where it filters the search results to include only JavaScript projects and searches
+    for existing plugins and already used project names. Since in our case we are
+    focusing on jQuery plugins, you will get better results by searching for project
+    names that follow the aforementioned naming convention, jQuery-myPluginName.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Until recently, developers could search for existing plugins and register a
+    new one at the official jQuery Plugin Registry ([http://plugins.jquery.com/](http://plugins.jquery.com/)).
+    Unfortunately, it has been discontinued and now only allows searching for older
+    plugins with no new submissions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we learned how jQuery can be extended by implementing and using
+    plugins. We first saw an example of the simplest way that a jQuery plugin can
+    be implemented and analyzed the characteristics that make a great plugin, and
+    one which follows the principles of the jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We were then introduced to the most common development patterns in the developer
+    community for creating jQuery Plugins. We analyzed the implementation problems
+    that each of them solves and the use cases that are a better match for them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After completing this chapter, we are now able to abstract parts of our applications
+    into reusable and extensible jQuery plugins that are structured using the development
+    pattern that best matches each use case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will present several optimization techniques that can
+    be used to improve the performance of our jQuery applications, especially when
+    they become large and complex. We will discuss simple practices such as using
+    CDNs to load third-party libraries and continue with more advanced subjects such
+    as lazy loading the modules of an implementation.
+  prefs: []
+  type: TYPE_NORMAL

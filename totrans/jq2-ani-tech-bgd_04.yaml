@@ -1,0 +1,1017 @@
+- en: Chapter 4. Navigation Animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*In this chapter, we''re going to look at some animation methods for navigation.
+    Navigation allows our users to move around to different pages in our site. Adding
+    a bit of animation to this common website feature will spice up our web projects.
+    Spicy is good!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a look at the things we''ll be learning in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding and removing a CSS class to an element when our mouse pointer enters
+    and leaves the element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Changing the styles of a hovered element using the `animate()` method, along
+    with specifying a duration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learning how to smoothly scroll the window to a page element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We're going to make an example that smoothly scrolls and changes the page background
+    color when a link is clicked. Fancy!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating simple navigation animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're going to start by simply changing the background color on an anchor tag
+    (`<a>`) when we hover over it. This is the simplest form of navigation animation,
+    so this is a good place to start. We're going to change the background color by
+    adding a class to the element. This will easily allow us to build in more styles
+    to the class if needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We'll be using jQuery UI again in this chapter to make up for the lack of support
+    for color animation in jQuery 2.0\. Refer to the previous chapter on where to
+    download the jQuery UI library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring addClass() and removeClass()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The syntax of `addClass()` and `removeClass()` may look like the following
+    (square brackets denote optional arguments):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(selector).addClass( className [,duration] [,easing] [,complete] );
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(selector).removeClass( className [,duration] [,easing] [,complete] );
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's important to note that `duration` isn't a jQuery option on `addClass()`
+    or `removeClass()`. This option is being added in by the jQuery UI and is called
+    a method override.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – setting up our navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s create our navigation structure and basic animation by performing the
+    following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by creating a new document based on our template file from the first
+    chapter, naming it `navigation-animation1.html` and saving it in our `jquery-animation`
+    directory.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we''ll need to add the jQuery UI library after our jQuery library by
+    adding this line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <script src="img/jquery-ui.min.js"></script>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Then, we will add the following HTML code into our newly created document under
+    the `<body>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <nav>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#">Link1</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#">Link2</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#">Link3</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#">Link4</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#">Link5</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#">Link6</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#">Link7</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </nav>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Save the following code to a file `navigation-animation1.css` and link it to
+    our HTML document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: nav a {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:5px 10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#DDD;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: nav a.hover {background:#F0F;}
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Add this code into our empty anonymous function so we can get our script moving:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("nav a").hover(function(){
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).addClass("hover", 300);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, function(){'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).removeClass("hover", 300);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used the `hover()` handler to tell our navigation link what to do when our
+    mouse cursor enters and leaves the element. We also set the duration to `300`
+    (milliseconds) so the `hover()` method animation is slightly delayed and gives
+    us the animation effect we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot is an illustration of how the animation should work
+    by moving the cursor from the first link through the last one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What just happened?](img/9642OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Have a go hero – extending our hover style
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Have a go and see what other effects can be achieved by adding additional styles
+    to our `hover` class. For starters, try changing the element's `height` and `position`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the stop() method
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The previous example is a simple way to allow for easy updates to the styles.
+    You'll notice that if you hover over all the navigation links very quickly, going
+    back and forth several times and then stop, the animation continues until it's
+    played out each animation. This isn't generally a very desirable effect, so we
+    need to add the `stop()` method to stop the previous animation before the next
+    one starts. We need to adjust our code a bit since `addClass()` and `removeClass()`
+    can't be stopped in the animation queue. For this, we'll be using the `animate()`
+    method to allow us to stop the animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding the stop() method
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To stop our animations before the next one starts, we'll need to modify our
+    code a little. Adding `stop()` before the `animate()` effect is what we'll need
+    to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using the same file as before (`navigation-animation1.html`), we''re going
+    to update the code in our anonymous function with the following code (the new
+    code is highlighted):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("nav a").hover(function(){
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(this).stop().animate({ backgroundColor:"#F0F" }, 300);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}, function(){'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(this).stop().animate({ backgroundColor:"#DDD" }, 300);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You'll notice that if we quickly move our pointer over the navigation links
+    now (moving our cursor back and forth), the previous animation stops before the
+    next one starts. This is a much more elegant animation than the previous one.
+    Just like spicy, we like elegant too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating the window with scrollTop()
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we learned how to use `scrollTop()` to make the background
+    image of our `<body>` element animate on the page in different directions and
+    speeds. In the next example, we're going to use `scrollTop()` to animate the window
+    by smoothly scrolling to an element on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The *smooth scrolling* animation method can be used to visually indicate to
+    our users that the position of our window has changed based on an action they
+    take on the page, generally following a mouse click of an element. This animation
+    method is often used exactly as we're going to build it and is referred to as
+    a *one pager*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – scripting our smooth scrolling animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the following steps, we''re going to create our smooth-scrolling, one pager
+    animation that will animate to different sections of the content in our page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, let's start by making a new file using our template `smooth-scrolling.html`,
+    and then saving it in our `jquery-animation` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Second, we''re going to add in our jQuery UI library again by inserting the
+    following code directly below our jQuery library (the new code has been highlighted):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <script src="img/jquery.js"></script>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <script src="img/jquery-ui.min.js"></script>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we need to add the following CSS code to a new file named `smooth-scrolling.css`
+    and link it in `smooth-scrolling.html`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: body, html {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: body {background:#CCC;}
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: nav {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:100%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:fixed;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:10px 0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-align:center;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'outline:1px dotted #FFF;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#EEE;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:rgba(255, 255, 255, 0.9);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: nav a {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:#222;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0 10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-decoration:none;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: content {margin-top:50px;}
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: content div {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:400px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'outline:1px solid #FFF;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#EEE;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:rgba(255, 255, 255, 0.8);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Then, we''ll add the following HTML code under the `<body>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <nav>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#link1">Link1</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#link2">Link2</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#link3">Link3</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#link4">Link4</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#link5">Link5</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#link6">Link6</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <a href="#link7">Link7</a>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </nav>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div class="content">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="link1">Link1</div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="link2">Link2</div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="link3">Link3</div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="link4">Link4</div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="link5">Link5</div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="link6">Link6</div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="link7">Link7</div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Finally, add the following to our anonymous function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("a[href^='#']").click(function(e){
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var pos = $(this.hash).offset().top - 50;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("body, html").stop().animate({ scrollTop:pos }, 1000);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We used the `click()` handler with a complicated looking selector. The selector
+    we used means: select all anchor tags (`<a>`) whose `href` attribute begins with
+    (`^`) a pound sign (`#`).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our selector will be the `<body>` tag for this example and we're using the `animate()`
+    method to handle our dirty work. The `stop()` method is used again so the previous
+    animation stops before the next one begins. We're setting a new variable named
+    `pos` to hold the position of the clicked link (`<a>`) from the top of the page
+    using `offset().top`. Also, we're subtracting `50` from the `pos` variable as
+    an offset because we want the top of the `content` element to land just under
+    the navigation bar. We set the duration of the animation to `1000` milliseconds,
+    because we want it to take 1 second for the animation to jump from the current
+    position on the page to the next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Smooth scrolling and page background color
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now, let's take the two animation methods we learned above and merge them together
+    into one. This example will use the smooth scrolling method to jump to our linked
+    elements and change the page background color at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot illustrates the stopping points of the corresponding
+    links after they''re clicked in our navigation bar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Smooth scrolling and page background color](img/9642OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Time for action – creating the super animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To merge our previous two examples together, we'll need to create a new file
+    and mix our CSS and jQuery code from both the examples together. Of course, we'll
+    need to make a few adjustments to allow them to work together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a new document called `navigation-animation2.html` using the file template
+    and save it under our `jquery-animation` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Then, place the following CSS code into a new file called `navigation-animation2.css`,
+    and link it in the HTML document we just created:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: body, html {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: body {background:#F00;}
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: nav {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:100%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:fixed;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:10px 0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-align:center;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'outline:1px solid #FFF;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#EEE;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:rgba(255, 255, 255, 0.5);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: nav a {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:#222;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0 10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-decoration:none;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: content {margin-top:50px;}
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: content div {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:400px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'outline:1px solid #FFF;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#EEE;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:rgba(255, 255, 255, 0.8);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Finally, we need to place the following code into our anonymous function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("a[href^='#']").click(function(e){
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var link = $(this).index() + 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var background = "";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (link == 1) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background = "#F00"        //red
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (link == 2) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background = "#FF5000"     //orange
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (link == 3) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background = "#FF0"        //yellow
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (link == 4) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background = "#0F0"        //green
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (link == 5) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background = "#0FF"        //light blue
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (link == 6) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background = "#00F"        //dark blue
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (link == 7) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background = "#F0F"        //fuschia
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var pos = $(this.hash).offset().top - 50;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("body, html").stop().animate({ scrollTop:pos, backgroundColor:background },
+    1000);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we did was add a new `link` variable. This will hold the index
+    value of the link that our user clicks on. We incremented the index value by `1`
+    because the `index()` method is zero-based, and it's been a long day, so we don't
+    want to deal with starting at zero when we count up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `background` variable is declared to ward off those filthy JavaScript error
+    monsters, as always. We created an `if` statement to handle the hex values of
+    background colors. The `background` variable gets set to the color (that we defined)
+    of the link that's clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our selector for this magic trick will be the `<body>` tag again, because we're
+    both scrolling to another position on the page and changing the background color
+    of the page as well. This is the same code as before, except this time, we added
+    `backgroundColor` and are setting the value (background) from the if statement
+    above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero – extending the script further
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Try to think of some added functionality to our merged animation example. Here
+    are a few ideas to get you going:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dynamically change the height of the content `<div>` elements to the height
+    of the window (don't forget to add in a window resize function)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Change the background color using a window scroll function so that it changes
+    colors if you manually scroll down the page and not just by clicking on the links
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fade in the content `<div>` elements once they come into view either by clicking
+    on the links or by manually scrolling down the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Automatically scroll through the content without having to click on the links
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pop quiz – the ^ symbol and the stop() method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. What does the `^` symbol mean in our `<a>` selector?
+  prefs: []
+  type: TYPE_NORMAL
+- en: It means "equals"
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It means "contains"
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It means "starts with"
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It means "ends with"
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. What does the `stop()` method do?
+  prefs: []
+  type: TYPE_NORMAL
+- en: It stops the animation queue on the selected element(s)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It stops the page from loading
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It stops all the animations on the page
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It stops animations from running until the page is reloaded
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to change the styles on an element based on
+    our mouse interactions, using `addClass()` and `removeClass()`, and how to control
+    the speed (duration) of adding and removing those classes with a little help from
+    jQuery UI's method overrides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we learned how to smoothly scroll the window to a specified element on
+    our page. Later, we merged both of our examples together into one example that
+    would smoothly scroll the window and fade our page's background color. Also in
+    this chapter, we found a puppy. What's that? You didn't find a puppy? You must
+    have missed a semi-colon somewhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've added a little spice to our navigation elements, we're going
+    to learn how to give some life to our form inputs in the next chapter. Some of
+    the things we'll learn in the next chapter are form validation animation, visually
+    changing the form to alert the user of a problem with their submission, and how
+    to shake the form if we need the user to fix one of their entries.
+  prefs: []
+  type: TYPE_NORMAL

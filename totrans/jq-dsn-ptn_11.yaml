@@ -1,0 +1,867 @@
+- en: Chapter 11. Optimization Patterns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter presents several optimization techniques that can be used to improve
+    the performance of jQuery applications, especially when they become large and
+    complex.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will start with simple practices like bundling and minifying our JavaScript
+    files and discuss the benefits of using **CDN**s to load third-party libraries.
+    We will then move on to analyze some simple patterns for writing efficient JavaScript
+    code and learn how to write efficient CSS selectors in order to improve the page's
+    rendering speed and DOM traversals using jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will then study jQuery-specific practices such as the caching of jQuery Composite
+    Collection Objects, how to minimize DOM manipulations, and have a reminder of
+    the **Delegate Observer Pattern** as a good example of the **Flyweight Pattern**.
+    Lastly, we will get an introduction to the advanced technique of **Lazy Loading**
+    and have a demonstration of how to load the different modules of an implementation
+    progressively, based on user actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By the end of this chapter, we will be able to apply the most common optimization
+    patterns to our implementations and use this chapter as a checklist of best practices
+    and performance tips before moving the application to a production environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we shall:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Learn the benefits of bundling and minifying our JavaScript files
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to load third-party libraries through the CDN server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn some simple JavaScript performance tips
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to optimize our jQuery code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the Flyweight pattern and showcase some examples of it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to lazyload parts of our application when required by a user action
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Placing scripts near the end of the page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first tip for making your page's initial rendering faster is to gather all
+    the required JavaScript files and place their `<script>` tags near the end of
+    the page, preferably just before the closing `</body>` tag. This change will have
+    a great impact on the time needed for the initial rendering of the page, especially
+    for users with low speed connections such as mobile users. If you are already
+    using the `$(document).ready()` method for all initialization purposes that relate
+    to the DOM, moving the `<script>` tags around should not affect the functionality
+    of your implementation at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main reason for this is that, even though browsers download the page's HTML
+    and other resources (CSS, images, and so on) in parallel, when a `<script>` tag
+    is encountered, the browser pauses everything else until it is downloaded and
+    executed. In order to work around this limitation of the specification, attributes
+    like `defer` and `async` from HTLM5 have been introduced as parts of the `<script>`
+    tag specification but unfortunately have only started to be adopted by some browsers
+    recently. As a result, this practice is still widely used to obtain good page
+    loading speeds even on older browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about the `<script>` tag you can visit: [https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bundling and minifying resources
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first place to look when trying to make a page load faster is for ways to
+    reduce the number and total size of HTTP requests. The benefits come from the
+    fact that the browser downloads the content in larger chunks instead of spending
+    time waiting for a lot of small round-trips to the server to complete. This is
+    especially beneficial for users with low speed connections such as mobile users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resource concatenation is a simple concept that does not need any introduction.
+    This can be done manually but it is preferable to automate this task with a bundling
+    script or introduce a build step for your project. Depending on your development
+    environment, there are different bundling solutions to choose from. If you are
+    using **grunt** or **gulp** as part of your development stack, you can use solutions
+    like `grunt-contrib-concat` ([https://github.com/gruntjs/grunt-contrib-concat](https://github.com/gruntjs/grunt-contrib-concat))
+    and `gulp-concat` ([https://github.com/contra/gulp-concat](https://github.com/contra/gulp-concat))
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Minifying JavaScript files is a more complex procedure which includes a series
+    of code transformations that are applied to the target source code, ranging from
+    something as simple as white space removal to more complex tasks like variable
+    renaming. Popular solutions for minifying JavaScript include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: YUI Compressor available at [http://yui.github.io/yuicompressor/](http://yui.github.io/yuicompressor/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Google's Closure Compiler available at [https://developers.google.com/closure/compiler/](https://developers.google.com/closure/compiler/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: UglifyJS available at [https://github.com/mishoo/UglifyJS2](https://github.com/mishoo/UglifyJS2)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once again, various solutions exist that integrate the above libraries nicely
+    with your preferred development environment and make minification a simple task.
+    Examples of integrations for grunt and gulp include `grunt-contrib-uglify` ([https://github.com/gruntjs/grunt-contrib-uglify](https://github.com/gruntjs/grunt-contrib-uglify))
+    and `gulp-uglify` ([https://github.com/terinjokes/gulp-uglify](https://github.com/terinjokes/gulp-uglify))
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a final word, keep in mind that your code should be as readable and as logically
+    structured as possible. Bundling and minifying your JavaScript and CSS files is
+    most effectively done as a build step of your development and deployment procedures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using IIFE parameters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Apart from helping to avoid polluting the global namespace, using IIFEs to wrap
+    your implementation can also be beneficial for the size of your minified JavaScript
+    files. Let's take a look at the following code in which the `jQuery`, the `window`,
+    and the `document` variables are passed as invocation parameters to the module's
+    IIFE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We saw a similar pattern in the previous chapter, as part of the suggested
+    template for creating jQuery plugins. Even though the variable aliasing does not
+    affect the functionality of the implementation, it allows the code minifiers to
+    apply variable renaming in more places than before, resulting in code like the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in the above code, all the invocation parameters of the IIFE
+    were renamed by the minifier to single letter identifiers, which increases the
+    gains of the minification especially if the original identifiers are used in several
+    places.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As an added benefit, aliasing also protects our modules from the case that the
+    original variables get accidentally assigned a different value. For example, when
+    IIFE parameters are not used, an assignment like `$ = {}` or `undefined = 7` from
+    within a different module would break all the implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using CDNs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Instead of serving all of the JavaScript and CSS files of the third-party libraries
+    from your web server, you should consider using a **Content Delivery Network**
+    (**CDN**). Using a CDN to serve the static files of the libraries that are used
+    by your website can make it load faster since:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CDNs have high speed connections and several caching levels.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CDNs have many geographically distributed servers that can deliver the requested
+    files faster since they are closer to the end user.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CDNs help parallelize resource requests, since most browsers can only download
+    up to four resources concurrently from any specific domain.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Moreover, if a user has static resources cached from a previous visit to another
+    website that uses the same CDN, he or she will not have to download them again,
+    reducing the time that your site needs to load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is a list with the most widely used CDNs for JavaScript libraries which
+    you can use in your implementations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://code.jquery.com/](https://code.jquery.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://developers.google.com/speed/libraries/](https://developers.google.com/speed/libraries/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://cdnjs.com/](https://cdnjs.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://www.jsdelivr.com/](http://www.jsdelivr.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using JSDelivr API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A newcomer to the CDN world is JSDelivr, which is gaining popularity because
+    of its unique features. Beyond simply serving existing static files, JSDelivr
+    provides an API ([https://github.com/jsdelivr/api](https://github.com/jsdelivr/api))
+    that allows us to create and use custom bundles with the resources that we need
+    to load, helping us to minimize the HTTP requests that our site needs. Moreover,
+    its API allows us to target libraries with different levels of specificity (major,
+    minor, or bug fix releases) and even allows us to load only specific parts of
+    a library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, take a look at the following URL, which allows us to load the
+    most recent bug fix releases of jQuery v1.11.x with a single request as well as
+    some parts of jQuery-UI v1.10.x and Bootstrap v3.3.x: [http://cdn.jsdelivr.net/g/jquery@1.11,jquery.ui@1.10(jquery.ui.core.min.js+jquery.ui.widget.min.js+jquery.ui.mouse.min.js+jquery.ui.sortable.min.js),bootstrap@3.3](http://cdn.jsdelivr.net/g/jquery@1.11,jquery.ui@1.10(jquery.ui.core.min.js+jquery.ui.widget.min.js+jquery.ui.mouse.min.js+jquery.ui.sortable.min.js),bootstrap@3.3)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimizing common JavaScript code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this section, we will analyze some performance tips that are not jQuery-specific
+    and can be applied to most JavaScript implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing better for loops
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When iterating over the items of an array or an array-like collection with
+    a `for` loop, a simple way to improve the performance of the iteration is to avoid
+    accessing the `length` property on every loop. This can easily be done by storing
+    the iteration `length` to a separate variable, declared just before the loop or
+    even along with it, as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Moreover, if we need to iterate over the items of an array that does not contain
+    **falsy** values, we can use an even better pattern which is commonly applied
+    for iterating over arrays that contain objects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this case, instead of relying on the `length` property of the array, we
+    exploit the fact that access to an out-of-bounds position of the array returns
+    `undefined` which is falsy and stops the iteration. Another sample case that this
+    trick can be used in is when iterating over **Node Lists** or jQuery Composite
+    Collection Objects as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about the **truthy** and **falsy** JavaScript values,
+    visit: [https://developer.mozilla.org/en-US/docs/Glossary/Truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)
+    and [https://developer.mozilla.org/en-US/docs/Glossary/Falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing performant CSS selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Even though **Sizzle** (jQuery's selector engine) hides the complexity of DOM
+    traversals based on complex CSS selectors, we should have an idea of how our selectors
+    are performing. Understanding how CSS selectors are matched against the elements
+    of the DOM helps us write more efficient selectors which perform better when used
+    with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key characteristic of efficient CSS selectors is specificity. According
+    to this, ID and Class selectors are always more efficient than selectors with
+    many results like `div` and `*`. When writing complex CSS selectors, keep in mind
+    that they are evaluated from the right to the left and that a selector gets rejected
+    after recursively testing it against every parent element until the root of the
+    DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a result, try to be as specific as possible with the rightmost selector in
+    order to cut down the matched elements as quickly as possible during the execution
+    of the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The other performance tip is using the Child Selector ("parent > child") wherever
+    applicable, in an effort to eliminate the recursion over all the hierarchy of
+    the DOM tree. A great example where this can be applied is in cases where the
+    target elements can be found at a specific descendant level of a common ancestor
+    element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The same tips can also be applied to CSS selectors that are used for styling
+    pages. Even though browsers have been trying to optimize any given CSS selector,
+    the tips described above can greatly reduce the time that is required to render
+    a web page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information on jQuery CSS selector performance, you can visit: [http://learn.jquery.com/performance/optimize-selectors/](http://learn.jquery.com/performance/optimize-selectors/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing efficient jQuery code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s now proceed and analyze the most important jQuery-specific performance
+    tips. For more information about the most up-to-date performance tips on jQuery,
+    keep an eye on the relevant page for jQuery''s Learning Center: [http://learn.jquery.com/performance](http://learn.jquery.com/performance)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minimizing DOM traversals
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since jQuery made DOM traversals so simple, many web developers overused the
+    `$()` function everywhere, even in subsequent lines of code, making their implementations
+    slower by executing unnecessary code. One of the main reasons that the complexity
+    of the operation is so often overlooked is the elegant and minimalistic syntax
+    that jQuery uses. Despite the fact that JavaScript browser engines became many
+    times faster in the last few years, with performance comparable to many compiled
+    languages, the DOM API is still one of their slowest components and, as a result,
+    developers have to minimize their interactions with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Caching jQuery objects
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Storing the result of the `$()` function to a local variable and subsequently
+    using it to operate on the retrieved elements is the simplest way of eliminating
+    unnecessary executions of the same DOM traversals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the previous chapters, we even suggested storing Composite Collection Objects
+    of important page elements as properties of our modules and reusing them everywhere
+    in our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Caching retrieved elements on modules is a very good practice when the elements
+    are not going to be removed from the page. Keep in mind that, when dealing with
+    elements with shorter lifespans, in order to avoid memory leaks, you have to either
+    ensure that you clear all their references when they are removed from the page
+    or have a fresh reference retrieved when required and cache it only inside your
+    functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scoping element traversals
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Instead of writing complex CSS selectors for your traversals like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can instead have the same result in a more efficient way by using an already
+    retried ancestor element to scope the DOM traversal. This way, you are not only
+    using simpler CSS selectors that are faster to match against page elements, but
+    you are also reducing the number of elements that have to be checked. Moreover,
+    the resulting implementations have less code repetitions (are DRYer) and the CSS
+    selectors used are simple and as a result more readable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Additionally, this practice works even better with module-wide cached elements
+    like those we used in the previous chapters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Chaining jQuery methods
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One of the characteristics of all jQuery APIs is that they are **Fluent** interface
+    implementations that enable us to chain several method invocations on a single
+    Composite Collection Object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we discussed in previous chapters, chaining allows us to reduce the number
+    of used variables and leads to more readable implementations with fewer code repetitions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't overdo it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Keep in mind that jQuery also provides the `$.fn.end()` method ([http://api.jquery.com/end/](http://api.jquery.com/end/))
+    as a way of moving back from a chained traversal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Even though this is a handy method in many cases, you should avoid overusing
+    it since it can damage the readability and performance of your code. In many cases,
+    using cached element collections instead of `$.fn.end()` results in faster and
+    more readable implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving DOM manipulations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we said earlier, the extensive use of the DOM API is one of the most common
+    things that makes an application slower, especially when used to manipulate the
+    state of the DOM tree. In this section, we will showcase some tips to improve
+    performance when manipulating the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating DOM elements
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The most efficient way to create DOM elements is to construct a HTML string
+    and append it to the DOM tree using the `$.fn.html()` method. Additionally, since
+    this is too limiting in some use cases, you can also use the `$.fn.append()` and
+    `$.fn.prepend()` methods, which are slightly slower but may be a better match
+    for your implementation. Ideally, if multiple elements need to be created, you
+    should try to minimize the invocation of these methods by creating a HTML string
+    that defines all the elements and then inserting it into the DOM tree, as shown
+    below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another way to achieve the same result, is by using an array to store the HTML
+    for each intermediate element and then join them right before the insertion to
+    the DOM tree:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is a commonly used pattern since, until recently, it performed better than
+    concatenating the intermediate results with "+=".
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling and animating
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Whenever possible, use CSS classes for your styling manipulations by utilizing
+    the `$.fn.addClass()` and `$.fn.removeClass()` methods instead of manually manipulating
+    the style of the elements with the `$.fn.css()` method. That's especially useful
+    when you need to style a large number of elements since this is the main purpose
+    of CSS classes and browsers have already spent years optimizing it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As an extra optimization step to minimize the number of manipulated elements,
+    you can apply CSS classes on a single common ancestor element and use a descendant
+    CSS selector to apply your styling, as demonstrated here: [https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you still need to use the `$.fn.css()` method, for example, when your
+    implementation needs to be imperative, use the invocation overload that accepts
+    object parameters: [http://api.jquery.com/css/#css-properties](http://api.jquery.com/css/#css-properties).
+    In this way, the required method invocations are minimized when applying multiple
+    styles on elements and your code is better organized.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, avoid mixing methods that manipulate the DOM with methods that read
+    from the DOM since this will force a reflow of the page so that the browser can
+    calculate the new positions of the page elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instead of doing something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Prefer grouping the non-conflicting manipulations together like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The browser can thus skip some re-renderings of the page, resulting in fewer
+    pauses of the execution of your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about reflows, visit the following page: [https://developers.google.com/speed/articles/reflow](https://developers.google.com/speed/articles/reflow)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, note that all jQuery-generated animations in v1.x and v2.x are implemented
+    using the `setTimeout()` function. This is going to change in v3.x of jQuery which
+    plans to use the `requestAnimationFrame()` function, which is a better match for
+    creating imperative animations. Until then, you can use the **jQuery-requestAnimationFrame**
+    plugin ([https://github.com/gnarf/jquery-requestAnimationFrame](https://github.com/gnarf/jquery-requestAnimationFrame))
+    which monkey-patches jQuery to use the `requestAnimationFrame()` function for
+    its animations when it is available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating detached elements
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another way to avoid unnecessary repaints of the page while manipulating DOM
+    elements is to detach the element from the page and re-attach it after completing
+    your manipulations. Working with a detached in-memory element is much faster and
+    does not cause reflows on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to achieve that, we use the `$.fn.detach()` method which, in contrast
+    to `$.fn.remove()`, preserves all event handlers and jQuery data on the detached
+    element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Additionally, to be able to place the manipulated element back into its original
+    position, we can create and insert a hidden placeholder element into the DOM.
+    This empty and hidden element does not affect the rendering of the page and is
+    removed after the original item is placed back into its original position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about the `$.fn.detach()` method, you can read the documentation
+    at: [http://api.jquery.com/detach/](http://api.jquery.com/detach/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing the Flyweight Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: According to Computer Science, a Flyweight is an object that is used as a means
+    of reducing the memory consumption of an implementation by providing functionality
+    and/or data that are shared with other object instances. The **Prototypes** of
+    JavaScript constructor functions can be characterized as Flyweights since every
+    object instance can use all of the methods and properties that are defined in
+    its prototype until it overwrites them. On the other hand, classical Flyweights
+    are separate objects from the object family that they are used with and often
+    hold the shared data and functionality in special data structures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Delegate Observers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A great example of Flyweights in jQuery applications is Delegate Observers which,
+    as we saw in the Dashboard example in [Chapter 2](part0018_split_000.html#H5A42-e8d3cd3d052d4ee0b4673af57a64ddef
+    "Chapter 2. The Observer Pattern"), *The Observer Pattern*, can greatly reduce
+    the memory demands of an implementation by working as a centralized event handler
+    for a large group of elements. In this way, we can avoid the cost of setting up
+    separate observers and event handlers for every element and use the browser's
+    event bubbling mechanism to observe for them on a single common ancestor element
+    and filter their origin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The actual Flyweight object is the event handler along with the callback that
+    is attached to the ancestor element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using $.noop()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The jQuery library offers the `$.noop()` method which is actually an empty function
+    that can be shared among implementations. Using empty functions as default callback
+    values simplifies and improves the readability of an implementation by reducing
+    the number of `if` statements. This is handy for jQuery plugins that already encapsulate
+    complex functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: In such situations, where the implementation requirements or the personal taste
+    of the developer has led to using empty functions, the `$.noop()` method is useful
+    as a way to lower memory consumption by sharing a single empty function instance
+    among all the different parts of an implementation. An added benefit of using
+    the `$.noop()` method for every part of an implementation is that we can also
+    check whether a passed function reference is the empty function by simply checking
+    `callbackFn === $.noop()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information, you can find the documentation at: [http://api.jquery.com/jQuery.noop/](http://api.jquery.com/jQuery.noop/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the $.single plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another simple example of the Flyweight pattern in jQuery applications is the
+    `jQuery.single` plugin as described by *James Padolsey* in his article, *76 bytes
+    for faster jQuery,* which tries to eliminate the creation of new jQuery objects
+    whenever we need to apply jQuery methods on a single page element. The implementation
+    is quite small and creates a single jQuery composite collection object that is
+    returned on every invocation of the `jQuery.single()` method, containing the page
+    element that was used as an argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `jQuery.single` plugin is useful when used in observers like `$.fn.on()`
+    and iterations with methods like `$.each()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: The benefits of using the `jQuery.single` plugin come from the fact that we
+    are creating fewer objects and, as a result, the browser's Garbage Collector will
+    also have less work to do when freeing up the memory of short lived objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a side note, keep in mind the side effects of having a single jQuery object
+    returned by every invocation of the `$.single()` method and the fact that the
+    last invocation argument will be stored until the next invocation of the method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Additionally, in case that you use something like `$btn1.remove()` then the
+    element will not be freed until the next invocation of the `$.single()` method
+    which will remove it from the plugin's internal collection object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another similar but more extensive plugin is the `jQuery.fly` plugin which can
+    be invoked with arrays and jQuery objects as parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about `jQuery.single` and `jQuery.fly`, you can visit
+    the following URLs: [http://james.padolsey.com/javascript/76-bytes-for-faster-jquery/](http://james.padolsey.com/javascript/76-bytes-for-faster-jquery/)
+    and [https://github.com/matjaz/jquery.fly](https://github.com/matjaz/jquery.fly).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, the jQuery implementation that handles the invocation of
+    the `$()` method with a single page element is not complex at all and only creates
+    a single simple object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Moreover, the JavaScript engines of modern browsers have already become quite
+    efficient when dealing with short-lived objects since such objects are commonly
+    passed around an application as method invocation parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lazy Loading Modules
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Finally, we will get an introduction to the advanced technique of Lazy Loading
+    Modules. The key concept of this practice is that, during the page load, the browser
+    will only download and execute those modules that are required for the initial
+    rendering of the page while the rest of the application modules are requested
+    after the page is fully loaded and is required to respond to a user action. `RequireJS`
+    ([http://requirejs.org/](http://requirejs.org/)) is a popular JavaScript library
+    that is used as a module loader but, for simple cases, we can achieve the same
+    result with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example of this, we will use it to lazy load the `informationBox` module
+    of the Dashboard example that we saw in previous chapters, after the first click
+    of the user on the Dashboard''s `<button>`. We will abstract the implementation
+    that is responsible for downloading and executing JavaScript files into a generic
+    and reusable module named `moduleUtils`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `getModule()` method accepts the module's namespace as a string parameter
+    and returns either the Module's **Singleton Object** itself or a falsy value if
+    the module is not already loaded. This is done with the `Array.reduce()` method
+    which is used to iterate over the different parts of the namespace string, using
+    the dot (.) as a delimiter and evaluating each part on the previous object context,
+    starting with `window`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about the `Array.reduce()` method, you can visit: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ensureLoaded()` is the primary method of the `moduleUtils` module and is responsible
+    for retrieving and executing modules that are not already loaded. It first uses
+    the `getModule()` method to check whether the requested module has already been
+    loaded and, if so, returns its namespace object as a Resolved Promise.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next step, if a module has not yet been loaded, is to check the `ongoingModuleRequests`
+    object to verify whether the requested module is not already being downloaded.
+    In order to do that, the `ongoingModuleRequests` object uses the module's namespace
+    string as a property and stores the Promises of the AJAX requests that are used
+    to retrieve the `.js` files from the server. If a Promise object is available
+    then we can infer that the AJAX request is still ongoing and, instead of starting
+    a new one, we return the existing Promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, when none of the above returns a result, we use the lower case module
+    file naming convention that we discussed in previous chapters and use jQuery's
+    `$.getScript()` method to initiate an AJAX request to retrieve the requested module
+    file. The Promise created for the AJAX request is assigned as to the appropriate
+    property of the `ongoingModuleRequests` object and is then returned to the caller
+    of the method. When, at a later point in time, the Promise is Fulfilled, we re-evaluate
+    the module and return it as the final result of the returned Promise. Moreover,
+    regardless of the result of the AJAX request, the Promise is also removed from
+    the `ongoingModuleRequests` object in order to keep the implementation reusable
+    in case of a network failure and also free up the memory that was allocated for
+    the request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Keep in mind that the `$.getScript()` method might not work in some browsers
+    when the page is loaded through the filesystem, but does work as intended when
+    served using a web server like Apache, IIS or nginx. For more information about
+    `$.getScript(),` you can visit: [http://api.jquery.com/jQuery.getScript/](http://api.jquery.com/jQuery.getScript/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only change that we introduced to the existing implementation of the `informationBox`
+    module for this demonstration was to make it self-initializable in an attempt
+    to reduce the complexity of the `ensureLoaded()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we also had to change the implementation of the `categories` module
+    so that it would use the `ensureLoaded()` method before using the `informationBox`
+    module. As you can see below, we had to refactor the code handling the click event
+    on the dashboard''s `<button>` since the `ensureLoaded()` method returns a Promise
+    as a result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned several optimization techniques that can be used
+    to improve the performance of jQuery applications, especially when they become
+    large and complex.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started with simple practices like bundling and minifying our JavaScript
+    files and discussed the benefits of using CDNs to load third-party libraries.
+    We then went on to analyze some simple patterns to writing efficient JavaScript
+    code and learned how to write efficient CSS selectors to improve the page's rendering
+    speed and DOM traversals using jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We continued with jQuery-specific practices such as caching of jQuery Composite
+    Collection Objects, how to minimize DOM manipulations, and had a reminder of the
+    Delegate Observer pattern, as a good example of the Flyweight Pattern. Lastly,
+    we got an introduction to the advanced technique of Lazy Loading and saw a demonstration
+    of how to load the various modules of an implementation progressively, based on
+    user actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After completing this chapter, we are now able to apply the most common optimization
+    patterns to our implementations and use this chapter as a checklist of best practices
+    and performance tips before moving an application to a production environment.
+  prefs: []
+  type: TYPE_NORMAL

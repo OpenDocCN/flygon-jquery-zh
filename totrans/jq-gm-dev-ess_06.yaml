@@ -1,0 +1,495 @@
+- en: Chapter 6. Adding Levels to Your Games
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Until now all of our games have had only one level. This is nice for a demo
+    or a proof of concept, but you probably want to have many levels in your game.
+    As always there are many ways to do this, but most of them are based on the idea
+    that each of your levels are described by their own file (or files).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will begin this chapter by quickly exploring the different ways to combine
+    files to create your game. We will then look at the jQuery functions that allow
+    such techniques.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we will take the game we developed in [Chapter 4](ch04.html "Chapter 4. Looking
+    Sideways"), *Looking Sideways*, and extend it to include three levels by implementing
+    some of the techniques described beforehand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a quick list of the topics we will cover in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using multiple files for your game
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loading files with `$.ajax`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Executing remote JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a new level to our game
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing a multi-file game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first thing you have to ask yourself is, "When are the other files loaded?"
+    The classical approach is to have simple levels and load the next one at the end
+    of the previous one. This is the typical scenario for a platform game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another approach is to have one big level and load a sublevel when you reach
+    a given point. Typically, in an RPG the big level would be the outside world and
+    the sublevel would be the inside of buildings. In both of these examples, the
+    loading of the file doesn't need to be done asynchronously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last common approach is to have a single very large level made of many sublevels.
+    This is typically what you have for MMORPG. Here you need to load the files asynchronously
+    so that the player doesn't notice that the sublevel has to be loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The challenge you will face depends greatly on which of the aforementioned
+    situations you find yourself in. They can be divided as follows: loading a tile
+    map, a sprite, and loading a logic behavior.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading tile maps
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you remember, in [Chapter 5](ch05.html "Chapter 5. Putting Things into Perspective"),
+    *Putting Things into Perspective*, we loaded the tile map in the form of a JSON
+    file. As we explained earlier, we load a JSON file that holds the description
+    of the tile map. To do this, we use the basic AJAX function in jQuery: `$.ajax()`.
+    We will later see all the details about using this function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, simply loading a tile map is often not enough to describe your level
+    entirely. You may want to specify where the end of the level is, what are the
+    areas that will kill the player, and so on. One common technique is to use a secondary
+    tile map, one that is invisible and holds tiles that adds meaning to the other
+    tile map.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following figure shows an example of this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Loading tile maps](img/5060OT_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This has several advantages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can easily give the same semantic meaning to different tiles. For example,
+    tiles with or without grass can represent the ground and interact in the exact
+    same way with the player.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can give the same semantic meaning to tiles of two levels that use completely
+    different tile sets. This way you don't really have to worry about what images
+    are used in your levels as long as they use the same logic tiles to model it.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Implementing this isn''t really hard. The following code shows the changes
+    in the `gf.addTilemap` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we simply add a flag to indicate if the tile maps are here for
+    a logical purpose. If so, we don't need to create any tiles in it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The collision detection function is now slightly modified too. In the case
+    of a logical tile map we can''t simply return the divs. Instead, we will return
+    an object literal containing the size, position, and type of the colliding tiles.
+    The following code extract shows exactly this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once this feature is implemented, it becomes very easy to load the level. Indeed,
+    as long as the logical tile map is present and the game's code knows how to react
+    to each tile, we don't need anything more to make the player react to its environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading sprites and their behavior
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If loading a tile map from a different file is pretty straightforward, there
+    are plenty of ways to do the same for the sprites that a level contains.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can implement an interpreter for a JSON file that will in turn create and
+    configure the enemies and NPCs. This has the advantage that you could merge this
+    JSON and the one describing the tile map. This way you would only need to load
+    one file instead of two. As there''s a pretty big overhead for each file you load,
+    the size of the file has little impact; in most situations it will make your level
+    load faster. The following diagram illustrates this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Loading sprites and their behavior](img/5060OT_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'It has some disadvantages too: first your engine has to be written to understand
+    every possible behavior you may want your enemies to adopt. It means that if you
+    have a kind of enemy that is used only once in the tenth level of the game, you
+    will still need to load its implementation at the same time you load the game
+    at startup. If you work in a team and the other members want to implement their
+    own type of enemy, they will need to modify the engine instead of just working
+    on their level.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You will also need to be really careful to specify a JSON format that covers
+    all your needs or you run the risk of having to refactor a big part of your game
+    later on. The following code is an example of how such a JSON file might look
+    like the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Another possible implementation is to load a complete script that will in turn
+    create the enemies and configure them. This has the advantage of making your game
+    more modular and loosening the coupling between the game and the levels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It has several disadvantages though. First, if you're not careful, the code
+    of your level has the potential to override some of your main game variables.
+    This will create bugs that are quite difficult to track and will depend on the
+    order the levels have been loaded. Secondly, you will have to be extra careful
+    with choosing your variable scope as each newly loaded level's code is executed
+    in the global scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the example given in this chapter, we will choose the second solution because
+    it makes sense for a small game and is quite flexible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: No matter which of those you choose to implement, you will most likely use `$.ajax`
+    or one of its aliases. In the next section, we will take a detailed look at it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using $.ajax
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `$.ajax` function is a very powerful, but low-level function. It has many
+    aliases that can be used for different specific tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$.get` is a multi-purpose alias that reduces the number of options in comparison
+    with `$.ajax` and has an API based on multiple optional parameters instead of
+    a single object literal. It always loads files asynchronously.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.getJSON` is a function used to load a JSON file asynchronously.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.getScript` is a function that loads a script asynchronously and then executes
+    it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.load` is a function that loads an HTML file asynchronously and injects its
+    content in the selected element.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.post` is similar to `$.get`, but uses a post request.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'As you can see all these aliases have one thing in common: they all load their
+    files asynchronously. This means that if you rather load your resource synchronously,
+    you are back to using `$.ajax`. However, be reassured it''s not really more complicated
+    than the aliases once you know the right parameters. Furthermore, the API documentation
+    for the aliases always include the exact parameter to use for an `$.ajax` call
+    to have the same effect.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When using `$.ajax`, you have to make sure that you access the files through
+    a server and that you respect the same-origin policy. Otherwise, you will likely
+    run into problems on most browsers. To learn more about `$.ajax` you should look
+    at the official jQuery API documentation ([http://api.jquery.com/jQuery.ajax/](http://api.jquery.com/jQuery.ajax/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading a JSON file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: JSON files are a very convenient way to load external data without having to
+    parse it yourself. Once loaded, a JSON file is typically stored in a simple JavaScript
+    object. Then you can simply look up its properties to access the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to mimic a call to `$.getJSON` with `$.ajax` it will look something
+    like the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, `url` is the web address of the JSON file, `data` is an optional list
+    of parameters you may want to pass to the server, and `success` is the callback
+    that will handle the JSON file once it's loaded. If you want to access the remote
+    file synchronously, you have to add the parameter `async` `:` `false` to the call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It''s in the callback that you will decide what to do with the JSON file; it
+    will have the following signature:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, `data` holds the object generated from the JSON file. What you will do
+    with it really depends on your use case; here is a short version of the code that
+    imports the tile maps generated by Tiled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The highlighted part is quite typical. Indeed, most non-trivial JSON will hold
+    an array of elements to make it possible to describe any number of similar entities.
+    When you are not the designer of the JSON file specification, you may find yourself
+    in the situation where you have to convert the content of the JSON object to your
+    own data structure. That's exactly what this code does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no general approach here and you really have to consider each situation
+    individually. The nice thing is that in most cases this piece of code is executed
+    only a few times during the game and therefore, is not sensible with regard to
+    performances. You're better off making it as readable as possible rather than
+    searching all the places where you can make it run faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading a remote script
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you want to mimic the usage of `$.getScript` with `$.ajax`, it will look
+    something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we did earlier, you can make it synchronous simply by adding `async : false`
+    to the list of parameters. This will do two things: load the script and execute
+    it. The callback is not that important here, it will only allow you to track whether
+    the file was successfully retrieved or not.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As mentioned earlier, the script will be executed in the global scope. This
+    has some implication on your code organization. Until now the code of our games
+    looked like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here all the functions and variables are defined in a "private" scope that
+    cannot be touched from outside. This means that if your remote code tries to do
+    something like the following, it will fail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Indeed, the functions `someFunction` and `someVariable` are not visible from
+    the global scope. The solution is to carefully choose which variable and function
+    should be visible from the remote code and put them in the global scope. In our
+    situation it might look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may want to keep all these in a namespace like we did for our framework.
+    As you're writing a final product that won't likely be used as a library in another,
+    it has more to do with personal preference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging calls to $.ajax
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we are loading remote files, a new variety of problems can occur:
+    the URL of the file may no longer be valid, the server may be down, or the file
+    may be ill formatted. In production, you may want to detect these at runtime to
+    display a message to the user instead of simply crashing. During the development
+    phase, you may want to find out exactly what went wrong in order to debug your
+    code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery provides three functions that you can use to perform this: .`done()`,
+    `.fail()`, and `.always()`. There used to be three others (`.success()`, `.error()`,
+    and `.complete()`), but they have been deprecated since jQuery 1.8.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: .done()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`.done()` can be used instead of the success callback. It will only be called
+    once the file is successfully loaded. The provided function will be called with
+    the following three arguments in this order: `data`, `textStatus`, `jqXHR`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`data` is the loaded file, which means you could handle your JSON file there
+    if you wanted to.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: .fail()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`.fail()` is called whenever a problem occurred. The provided function will
+    be called with the following three arguments in this order: `jqXHR`, `textStatus`,
+    `exception`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When loading and executing a script, it's very convenient to find what happened
+    if the script is not executed. Indeed, the exceptions won't appear in most browsers'
+    debug consoles, but the exception argument will contain the exact exception thrown
+    by your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, if we look at the scope problem described earlier where the main
+    game contains the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And a remote script like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You could catch the exception by writing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the following error would be written to the console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will work to detect other problems such as unresponsive servers and so
+    on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying our platform game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We now have all the knowledge we need for creating a multi-level game. First,
+    we will create a list of levels and a function to load them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The highlighted lines are the ones that do the remote loading of files. This
+    uses the functions described earlier. As you can see, there is no mechanism to
+    detect that the game is over. You could add one as homework if you want to!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before the next level is loaded, we have to make sure to delete the existing
+    one as well as the enemies it contains.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we will change the game to work with logic tiles instead of standard ones.
+    This way we can have a kind of tile that defines the end of one level. Here is
+    our collision detection code modified to do exactly that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we've added the possibility for the player to die when he/she
+    hits some tiles. This will make him/her reappear at the beginning of the current
+    level. If the tiles are of type 3, we set the status of the player as `finished`.
+    Later, we detect the status and load the next level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Don't forget to rest the player position too, otherwise, it will appear in the
+    middle of the next level instead of at its starting point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We now have to write each script that creates the enemies for their respective
+    level. This is almost the exact same piece of code that we used in the previous
+    version of the game, but placed in a separate file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you may already have figured, we cannot simply run the game and use that
+    script without modifying our code some more. As we said before, the remote script
+    will be executed in the global scope and we need to move the pieces it uses to
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we need the enemies'' objects and animations as well as the array that
+    contains the list of enemies. We will simply take those out of their closure and
+    add them at the beginning of our game script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now the game will contain as many levels as we want. Have fun with the level
+    editor! Here we used the scripts only to set the enemies, but we could use it
+    to change the level background if we wanted to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Making your game multileveled adds a few new tricks to your sleeve. Now you've
+    learned to divide your assets in many files and load them when you need them.
+    You've also learned how to use tiles to describe logic behavior and not only the
+    graphical aspect of your levels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned earlier, there is much more that can be done with the game to make
+    it really fun. I will recommend spending quite some time on level design. In most
+    commercial games, this is where most of the time is spent, so don't hesitate to
+    stop coding for a while and start making and testing your levels!
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, you will learn how to make a multiplayer game. For this
+    we will use the game we created in [Chapter 5](ch05.html "Chapter 5. Putting Things
+    into Perspective"), *Putting Things into Perspective*, and add new functionality
+    to it in the same way we did for the game from [Chapter 4](ch04.html "Chapter 4. Looking
+    Sideways"), *Looking Sideways*, which we used in this chapter.
+  prefs: []
+  type: TYPE_NORMAL

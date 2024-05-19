@@ -1,0 +1,458 @@
+- en: Chapter 6. HTML5 Audio
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's take what we've learned so far and turn our eyes to the music scene. We're
+    going to take the jQuery Mobile interface and turn it into a media player, artist
+    showcase, and information hub that can be saved to people's home screens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 Audio (the progressive enhancement way)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fixed position, persistent toolbars (really!?)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom JavaScript controls for HTML5 Audio
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HTML5 Audio in iOS and how it is different
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The all-in-one solution (multipage made useful)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Saving to the home screen with HTML5 manifest
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HTML5 Audio
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Say hello to Lindsey Stirling. Lindsey burst onto the scene on season five of
+    America's Got Talent. Have you ever seen a violinist *rock out*? Since her appearance
+    on the national stage, she's been lighting up YouTube with millions of views per
+    video. On September 18, 2012, she released her first self-titled album. This chapter
+    will be a fan tribute centering on her music and digital presence. If you want
+    the full experience, go to her YouTube channel [http://youtube.com/lindseystomp](http://youtube.com/lindseystomp).
+    Her 2 million subscribers can't be wrong!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![HTML5 Audio](img/0069_06_00.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, back to business. As we''ve seen so far, jQuery Mobile makes everything
+    easy. You almost have to try to make things complicated. HTML5 Audio can be as
+    complicated as you want it to be and we will get there. For now, let''s see just
+    how ridiculously simple it can be to bring audio into your jQuery Mobile pages.
+    Consider the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it. That's all it took to get that music control bar in the previous
+    image. Let's break this down just a little.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Just like in the video from [Chapter 4](ch04.html "Chapter 4. QR Codes, Geolocation,
+    Google Maps API, and HTML5 Video"), *QR Codes, Geolocation, Google Maps API, and
+    HTML5 Video*, the `audio` tags can support multiple sources and the browser will
+    simply choose the first one it knows how to deal with. Older browsers won't have
+    a clue what to do and will simply parse this like XML, which means that the only
+    thing that will show up is the text, "Your browser is so old that you can't hear
+    the music."
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each browser provides its own native interface for controlling the audio. Some
+    are tiny and shiny like the iOS version you just saw, and some are completely
+    ugly but more usable such as Android. Regardless, they all leave something to
+    be desired so let's turn jQuery Mobile into a media player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is our base starting page. You can find the source for this in `electricdaisy_basic.html`
+    in the code files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This well-constructed jQuery Mobile page doesn't need JavaScript for any purpose
+    other than beautification. You can turn off JS and the whole page still works
+    and still plays music. For all those progressive enhancement fans out there, we're
+    starting off on the right foot. After all, everyone is a fan of music, not just
+    people with smartphones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let's see what we can do around creating a better control interface using
+    JavaScript and fixed position toolbars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fixed position persistent toolbars (really!?)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I'll be honest; I have a generally low opinion of fixed position toolbars in
+    the mobile space. From a usability standpoint, they're a disaster. Mobile screens
+    have very little usable space to begin with. To waste that much more real estate
+    without providing a *strong* benefit to the user, is unthinkable. Moreover, because
+    of the CSS involved, ancient versions of Android (less than Version 2.3) will
+    not support the fixed position toolbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: <rant>Yet, we see it all the time don't we? Companies slap their logo on a top
+    toolbar that never goes away. They throw on a little global navigation and call
+    it a benefit to the user when really it's all about them reinforcing their branding.
+    You can tell because the only interactive parts on the bar are a menu button and
+    possibly a search button (as if we couldn't have found them again at the top).
+    There are many better techniques to provide global navigation. </rant>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Fixed position persistent toolbars (really!?)](img/0069_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Today, we have a valid use for these bars. We're going to put music controls
+    in them that will persist as we transition tracks. If we do the job right, this
+    music website will feel more like an app and give the user constant control over
+    the sound coming from their device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you've already played with this part of the jQM UI, skip to the next paragraph
+    now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making a toolbar fixed (doesn't move as you scroll) and persistent (doesn't
+    move as you change pages) is pretty simple really. All you have to do is add `data-position="fixed"`
+    to make it fixed and give `data-id="whatever"` to the footers on the pages where
+    you want the footer to hold still as the page transitions behind it. This functionality
+    also works with headers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the basis for our persistent footer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'See that class up at the top of the footer (`jsShow`)? Let''s add another class
+    (`jsHide`) to the paragraph surrounding the `audio` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the CSS, let''s add the following rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we''ll add a line to our `global.js` file to pull the whole thing together:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a technique used by the HTML5 boilerplate ([http://html5boilerplate.com/](http://html5boilerplate.com/))
+    and Modernizer ([http://modernizr.com/](http://modernizr.com/)). If you've not
+    looked at these two marvels, it's worth your time. The long and short of it is
+    that we now have a handy, lightweight way of handling progressive enhancement.
+    Voice assist also works perfectly for those who need the assistance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re very close now to having a nice universal UI for a media player, but
+    if you''ve been typing along, you''ve notice that the input `type="range"` is
+    showing a textbox. On its own this probably wouldn''t be too offensive but the
+    fact that HTML5 Audio keeps track of its current position in terms of seconds
+    makes it pretty useless as a display element. So, let''s hide it and expand the
+    bar a bit with some simple CSS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, that we're looking good, let's wire the thing together and make it work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling HTML5 Audio with JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Alright then, here we start to get a little bit more hairy with JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, let''s set up an interval to update the progress bar. It''s going to
+    have to serve two functions, displaying the current time and changing the time.
+    We''ll start by adding references to these objects as well as placing event hooks
+    for every one of the audio events that we might want to attach to. The comments
+    describe which events are fired when:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s create the function that will run the interval:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we''ll just kick off the interval when the play button is clicked and do
+    the other necessary things. As usual, everything is well commented:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Setting seek controls:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s create a JSON object to track our current state and track list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next up, the skip back and forward buttons. We could set up the random button
+    but for now we''ll skip that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Performance Note**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice how I've have shifted away from using the `click` event and I'm now using
+    the `vclick` event. The `vclick` event is a custom event in jQuery Mobile that
+    attempts to bridge the performance gap between click (a desktop-based event) and
+    tap/touchstart (touch-based events). There is generally about a 300-millisecond
+    gap between the two and which browser supports what is always a hard thing to
+    figure out. By using `vclick` you can still support desktop and touch devices
+    but you can hopefully realize a slight performance boost. For more about this,
+    check out the blog post by one of the jQuery Mobile contributors, John Bender
+    at [https://coderwall.com/p/bdxjzg](https://coderwall.com/p/bdxjzg).
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 Audio in iOS is different
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Understanding the event cycle of HTML5 Audio is critical to making it work right.
+    This can get especially confusing when you start mixing in the odd event cycles
+    of jQuery Mobile. Add to that a confusing set of resource restrictions that differ
+    per device and you've got a real recipe for confusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a quick and easy way of testing mobile sites, you can usually just open up
+    Google Chrome (since its WebKit) or IE9 (for the Windows Phone) and shrink it
+    down to mobile size. Naturally, this does not substitute for real testing. Always
+    check your creations on real devices. That being said, the shrunken browser approach
+    will usually get you 97.5 percent of the way there. Well... HTML5 Audio throws
+    that operating model right out the window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On iOS, even if you've tagged the `audio` tag to preload and autoplay, it won't.
+    No error is thrown; no indication is given that your coded requests were completely
+    ignored. If you look at the code included for this chapter, you'll see in the
+    `basicPlayer.js` script how many try/catch and debug statements I've put in while
+    trying to make this work, and figure out what was going wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Technically, `pageinit` is the event that the documentation says is equivalent
+    to `document.ready` but that doesn't mean that the page is actually visible yet.
+    The end of the event chain leading to page reveal is the `pageshow` event. So,
+    no matter what, that should be the end and it should be ready for whatever you
+    might want to do. At this time, you should (theoretically) be able to tell the
+    song to play (`.play()`) using JavaScript. Alas, it just doesn't work this way.
+    You can take the exact same function used to trigger the audio play from pressing
+    the play button and even kick it off with a time delay and yet nothing works.
+    It's not a timing issue. iOS requires direct user interaction to kick off the
+    audio for the first time. *Tie it directly to the click event or it won't work.*
+  prefs: []
+  type: TYPE_NORMAL
+- en: The all-in-one solution (multipage made useful)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have a full-blown player with a unified interface that could be used
+    to manage a playlist. The only real problem we have at this point is network latency.
+    Even in this new age of 4G and LTE, cellular latency can get ridiculous. This
+    is especially true if you work at a place like I do where the building pushes
+    back signals like a Spartan phalanx. So, in order to give this an even better
+    user experience, we're going to abandon this page-by-page business.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While we're at it, let's pack in some of what we've done in previous chapters
+    such as bringing in Lindsey's latest tweet and the content from her blog. We'll
+    use the same CSS from before but we'll change the rest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The all-in-one solution (multipage made useful)](img/0069_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'One of the first things that starts to annoy server-side and object-oriented
+    types is how often you have to repeat a chunk of code. This becomes a real issue
+    if there is a global header or footer. So, let''s create a `div` tag to house
+    the universal footer content and a script to pull it in at the right time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now on any page load that wants to have these controls in the footer, we''ll
+    just copy this content right into the footer before the page is marked up by jQM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, it''s time to take every song page and make it dynamic. We remove
+    the individual audio elements and simply link to them in data attributes of the
+    "page". The footer is gone and in its place is empty footer ready for the injection
+    of the controls:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All this will require us to revamp our JavaScript. Some of the pieces will
+    remain the same but since we''re down to a single audio element, the code can
+    be simplified. Here is the final source code for the all-in-one version that is
+    in the `index.html` file of the code bundle available at the Packt Publishing
+    website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With all the usual stuff out of the way, here is the first "page" of the experience:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following page lists all the tracks available to preview:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here are the individual song pages. I have not included every song page because
+    that would just be a waste of pages. You''ll get the idea of how this works. Note
+    that each page has footer with the same `data-id` attribute. The following allows
+    for the footer to remain in place as pages transition between songs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This part is not a page. It''s the hidden master controls that will be imported
+    into each page that plays songs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following code is the template for rendering the imported blog content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following code is the template for rendering the Twitter feed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: With it all built together into one huge multipage app like this, you will feel
+    the buttery smoothness of the interface. We're using the exact same CSS in this
+    file that we did in the standalone song files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Saving to the home screen with HTML5 manifest
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With great power comes great responsibility. This is a power feature. If you
+    properly leverage the HTML5 manifest and a few other meta tags, your application
+    will become a full-screen, chrome-less app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Saving to the home screen with HTML5 manifest](img/0069_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To make your apps save down and launch as full-screen apps you''ll need icons
+    for your home screen. They''ll be squares in sizes of 144, 114, 72, and 57 pixels.
+    Link to them like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The user''s navigation buttons can be made to disappear on iOS. Be aware that
+    if you choose to do this, you need to provide full navigation within your app.
+    This means you''ll probably want to add either a back button. If you want to make
+    the app go full screen, use these tags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: To make the thing available in the offline mode, we'll use the manifest. Manifest
+    uses the application cache to store the assets. There is a limit to how much you
+    can store. This differs from device to device but it's probably less than 25 MB.
+    List what you want saved in the order of priority just to be saved. For a complete
+    breakdown of what all the manifest can do, check out [http://www.html5rocks.com/en/tutorials/appcache/beginner/](http://www.html5rocks.com/en/tutorials/appcache/beginner/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here are the contents of our manifest. It is saved under `app.manifest`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To use the manifest file, your web server or `.htaccess` will have to be configured
+    to return the type of `text/cache-manifest`. In the HTML file, all you have to
+    do is add it as an attribute to the `html` tag itself, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you want to clear your cache, you can always do it through your browser settings.
+    You can also control the cache with JavaScript. The earlier article I linked to
+    provides plenty of detail if you really want to dig in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This was a meaty chapter despite its simplistic start. But, you now know pretty
+    much everything there is to know about combining HTML5 Audio with jQuery Mobile.
+    You can create the wonderful academic, progressively enhanced pages and even make
+    complex apps to be saved to devices. If this chapter didn't scare you off, you
+    could really start making some powerful mobile sites for media outlets and venues.
+    The only thing this chapter could have really used is a picture gallery for artists
+    and venues. But, don't worry; we'll approach that in the next chapter where we'll
+    be creating a showcase for photographers.
+  prefs: []
+  type: TYPE_NORMAL

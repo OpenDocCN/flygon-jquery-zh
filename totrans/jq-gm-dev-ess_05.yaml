@@ -1,0 +1,664 @@
+- en: Chapter 5. Putting Things into Perspective
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We will now see how to render another very popular kind of effect: the top-down
+    perspective (also known as overhead perspective). There are a wide variety of
+    games that can be created using this technique:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hack and slash like *Gauntlet*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Shoot 'em up like *Alien Breed*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: RPG like *Zelda* or *Chrono Trigger*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simulation like *Simcity*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: War game like *Civilization* or *Warcraft*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These games use what is called an orthogonal projection. This can be easily
+    rendered using a simple tile map like the one we implemented in the last chapter.
+    In this chapter, we will make an RPG that will look like *The Legend of Zelda:
+    A Link to the Past* on Super Nintendo.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will use the graphical assets from BrowserQuest ([http://browserquest.mozilla.org](http://browserquest.mozilla.org)),
+    a very cool open source game developed by Mozilla to demonstrate the capability
+    of modern browsers. You can see it in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Putting Things into Perspective](img/5060OT_05_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In this chapter we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tile map optimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sprite-level occlusion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Advanced collision detection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'At the end of this chapter, we will quickly discuss another variant of the
+    top-down view that can be used for the same kind of games: 2.5D or isometric projection.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimizing tile maps for top-down games
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The tile map we implemented in the last chapter works well for side scrollers
+    as they typically use a sparse matrix to define their levels. This means that
+    if your level is 100 tiles long and 7 tiles high, it will contain way less than
+    700 tiles. This allows us to create all those tiles at the beginning of the game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a typical top-down game, we find ourselves in a very different situation.
+    Indeed, in order to render the map, all the possible tiles of the tile map used
+    are defined. This means we will have at least 700 tiles for the same level of
+    dimensions. The situation becomes even worse if we use many layers. To reduce
+    this number in order to increase performances, we will have to generate only the
+    tiles that are visible at startup. Then when the view moves, we will have to track
+    which tiles become invisible and delete them, and which tiles become visible and
+    generate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a tradeoff here; adding and removing tiles will take time, and there
+    is a good chance that it will slow down the game a bit. On the other hand, having
+    a very large amount of tiles in your scene and moving them around will make rendering
+    everything slow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ideally, choosing between the two techniques is a matter of testing both and
+    finding which one generates the better result on your target platform. If you
+    really need it, you could even use a hybrid solution where you generate the tile
+    map per chunk. This will allow you to tune when you tolerate the slow down due
+    to the creation and deletion of tiles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we will modify the framework to display only the visible tiles, and this
+    has proven to be fast enough for this kind of game where the player moves at a
+    reasonable speed and where the world is typically quite big.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the visible tiles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The good part is that we already have most of the code we need to find which
+    tiles are visible. Indeed, we have a function that returns the tiles that are
+    colliding with a box. To find the visible tiles, we just need to define this box
+    as the game screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here you can see that we use a function to find the offset of the tile map.
+    This is needed because there is the possibility of it being nested into one or
+    more groups that have themselves been moved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To find the offset, we simply need to look at the current element and all of
+    its parents. We will stop if the parent is not a sprite, group, or tile map. We
+    will also stop if the parent is the base div, that is, the div used to hold the
+    whole game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: To find if the parent is a group, sprite, or tile map, we check for the presence
+    of an object associated with the key "data".
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Except for the part where we find the visible box, the `addTilemap` function
+    itself hasn''t changed much. Here is a short version of it with the changed part
+    highlighted:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Moving the tile map
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We now have to track the movement of the tile maps to update which ones are
+    visible. As we have two functions to move any element around, we just have to
+    modify them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we cannot just update tile maps when they are moved around; we also
+    have to update them when any of their parent elements are moved around. jQuery
+    provides a very simple way to find if an element has a tile map as its child or
+    grand child element: `.find()`. This function searches for any subelement matching
+    the provided selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we add the class `gf_tilemap` to each of our tile maps, it's very easy to
+    detect them. The following code is the new `gf.x` function with the change highlighted.
+    The `gf.y` function is exactly the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: If one of the subelements, or the element itself, is a tile map, we need to
+    update it. We do this with the `gf.updateVisibility()` function. This function
+    only finds the new visibility box in the tile map and compares it to the old one.
+    This means that we have to keep this visibility stored in the data of the sprite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code is the full implementation of this function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first four loops are there to remove the existing tiles that are not visible
+    anymore. Instead of testing whether the tiles to be deleted are on the top or
+    the bottom, we just write two loops. The first one in the code is written as if
+    the tiles to be deleted are on the top. If the tiles to be deleted turn out to
+    be at the bottom as shown in the following figure, the loop won't execute as `oldVisibility.y1
+    > newVisibility.y1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Moving the tile map](img/5060OT_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The same goes if the tiles are to be deleted from the top, left, or right.
+    We then use the exact same mechanism to add new tiles. There is, however, one
+    thing we have to be careful about; as we add the tiles horizontally first, when
+    we add them vertically, we have to make sure not to create the tiles we already
+    created a second time. The following figure shows the overlapping tiles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Moving the tile map](img/5060OT_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There are more elegant ways to do this, but here we simply check if a tile exists
+    before creating it. This is done in the `gf.createTile` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: With these two changes, the tile maps are now generated dynamically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting the occlusion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When using top-down views, we will encounter one of the two possibilities:
+    either the "camera" looks straight down at the ground or with a slight angle.
+    The following figure illustrates the two situations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sorting the occlusion](img/5060OT_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the first case, the only situation where an element is hidden by another
+    one is if it's straight above it. It's quite easy to produce this effect; we can
+    simply use a group for each altitude and place the sprites and tile maps in the
+    right group.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s consider a level that contains a tree and a bridge under
+    which the player can walk, just like in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sorting the occlusion](img/5060OT_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We could organize our game screen like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sorting the occlusion](img/5060OT_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once this is done, there is not much to worry about. If at some point an NPC
+    (non-player character) or the player moves up or down, we just have to remove
+    them from one group and add them to the other one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most modern games, however, use the second type of view, and that''s the one
+    we will use for our small game. With this perspective, it''s not only the elements
+    above the others but also the ones in front of them that might hide them. The
+    following figure illustrates this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sorting the occlusion](img/5060OT_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: To devise a strictly generic solution for this would be a little overkill for
+    most games and would likely generate some performance issues. Instead, we will
+    use the following tricks to generate a convincing effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sprite occlusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If we make the following assumptions, the situations for sprites become simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ground is strictly flat. There may be many flat "floors" with different
+    altitudes but each of them is flat.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The altitude difference between two flat floors is greater than the size of
+    the biggest NPC or the player.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'With these limitations, we can manage sprite occlusion with these two rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If a sprite is on a higher floor than another, the former will always hide the
+    latter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If two sprites are on the same floor, the one with the bigger y coordinate will
+    always hide the other one
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The most straightforward way to implement this is to use the `z-index` CSS
+    property. The implementation would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we need to add the sprite height to the y coordinate because what we need
+    to consider for occlusion is the bottom of the sprite and not the top.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the sprite is one floor higher, we will add to make sure that its z index
+    is bigger than all the sprites in the floor above. Let''s say we give an index
+    to each level, 0 being the lowest one, 1 the one above, and so on; in this case,
+    the formula to generate the z index from the y coordinate would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In our game, all of our sprites will be on the same level so we won't need to
+    use this function, and we could stick with the preceding code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Level versus sprite occlusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If we stick to the same assumption as before, we don''t need to do much to
+    generate an occlusion of sprites from the background. Our level is defined using
+    tile maps. When designing the level, we will separate our tiles into two tile
+    maps: one being the floor and the other one being everything above it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let''s consider a scene with a tree and a house:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Level versus sprite occlusion](img/5060OT_05_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We will store the ground, the bottom of the house, and the trunk of the tree
+    in one tile map, and we will store the top of the house as well as the foliage
+    of the tree in another one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Collision detection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Collision detection is slightly different for this game as for the previous
+    one. As we use collision instead of per-pixel collision with the sprite-bounding
+    box, we find ourselves in a situation where we might detect a collision where
+    only the sprites'' non-transparent pixels are colliding, as shown in the following
+    figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Collision detection](img/5060OT_05_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: However, there is a very easy solution to this problem without resorting to
+    per-pixel or polygonal collision detection; we will use a second transparent sprite
+    to create the zone we really want to use for collision detection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Player versus environment collisions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In our game, we will use a technique often used in RPG; the player avatar will
+    be made of not only one sprite but of a superposition of sprites. This will allow
+    us to change the armor the avatar wears, change the weapon he uses, his haircut,
+    skin color, and so on, without having to generate all the possible combinations
+    of those variants.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our game, we will only use two images for the player avatar: the player
+    and its weapon. We will place them into a group; this will make it easy to move
+    them around.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To these two sprites, we will first add a transparent sprite that will define
+    the collision zone for the collision with the environment. The following figure
+    shows exactly that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Player versus environment collisions](img/5060OT_05_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, we've chosen a collision box that is as wide as the body of
+    the player avatar, but slightly shorter. This is to account for the situation
+    where the player approaches an obstacle from below. As shown in the previous figure,
+    his head will hide a part of the bottom of this object. With this smaller collision
+    box, we automatically generate this effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we don't want the avatar to collide with every element of the level. For
+    example, it shouldn't collide with the ground or with anything above it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you remember, we separated the level into two tile maps before. To make
+    collision detection easier, we will simply separate the lower one in two as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One containing all the ground elements that don't collide with the player
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: One containing all the elements that collide with the player
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This means that we now have three tile maps for the level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can imagine, designing this level and adding all the tiles to the right
+    tile map is becoming too complicated as we write all the arrays by hand. Instead,
+    we will use a tile map editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a tile map editor
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are quite a few free and open source tile map editors around. For this
+    game, we will use Tiled ([http://www.mapeditor.org/](http://www.mapeditor.org/)).
+    It has the advantage that it allows the tile maps to be exported to a JSON file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The images that we will use to create our level come from the game BrowserQuest
+    by Mozilla. The following figure shows a part of it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using a tile map editor](img/5060OT_05_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, we have tiles for grassy ground, tiles for sandy ground, and
+    tiles that represent the transition to sandy ground. The transition tiles are
+    half transparent and half sandy. This allows us to transit to sandy ground from
+    any other type of ground.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This means we will have to use yet another tile map. The lower tile map will
+    be divided in two: one with all the ground elements and one with the transition
+    elements that contain transparent pixels and don''t collide with the player. However,
+    in total we will have four tile maps to draw our level. For example, a part of
+    our level with sand, grass, and a tree would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using a tile map editor](img/5060OT_05_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We won''t look at the entire code that imports the JSON file generated by Tiled.
+    If you want more details, just look at the `gf.importTiled` function. The important
+    part is that we use jQuery''s `$.ajax` function. With this function, we will be
+    able to load the JSON file. The trick is to use the right parameter to call it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: jQuery also provides a shorthand function called `$.getJSON`, but we want to
+    have a synchronous call and that's only possible with `$.ajax`. With these calls,
+    the function we provided to the success parameter will be called once the JSON
+    file is loaded. It's in this function that we will import the file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to see exactly how we do it, you can simply look at the provided
+    code for this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we are using the `$.ajax` function, we just have to make sure that
+    we access our code from a server to test it as simply opening our HTML file in
+    a browser won't work anymore. If you don't have a server running, you can use
+    EasyPHP on Windows ([http://www.easyphp.org](http://www.easyphp.org)), or MAMP
+    on OS X ([http://www.mamp.info](http://www.mamp.info)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Player versus sprite collision
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will only support one kind of sprite versus sprite collision detection here:
+    the player attacking an enemy or talking to an NPC. Like before, we will need
+    a transparent sprite to define the zone where the collision should be detected.
+    Except this time, this zone is not on the player itself but in front of him, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Player versus sprite collision](img/5060OT_05_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The only trick is that this zone has to be moved around to always face the
+    direction where the player is looking. If we take the same OO code that we used
+    for the last game to implement the player, it would look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The highlighted parts of the code show where we change the position of the collision
+    zone for interaction with NPCs and enemies. We call this the sprite hit zone because
+    it represents the zone that is covered by a swing of the player's sword.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To choose the right size and position for this hit zone, you really have to
+    fine-tune it to the images you use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the main game loop, we will then check for collision between this zone and
+    a list of NPCs and then enemies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Talking to NPCs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The only interaction we will implement with NPCs is a one-way dialog. When the
+    player hits an NPC, we will display a line of dialog. If he hits it again and
+    the NPC has more to say, we will display the next line of dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will use a line at the bottom of the screen to display this text. This line
+    has to be semitransparent to let the player see the level behind it, and it has
+    to be over all the elements of the game. This is how we will create it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This type of interface is typically called a console. To make it semitransparent
+    and still leave the text inside it opaque, we apply a transparent background color
+    by calling the `rgba()` function. To make sure it floats over all the game elements,
+    we give it a big enough z index.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display text in this console, we simply have to use `.html()`. The following
+    code is the complete implementation of the NPCs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this is how we will instantiate one of them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nothing very special here; we just have to make sure to set the correct z index
+    too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fighting enemies
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To fight enemies, we will simulate the throw of a dice. The rule of combat
+    is quite typical in an RPG: the player throws a dice to the player and adds it
+    to a fixed value called the attack modifier. This will generate the attack value
+    of the player''s strike. The enemy will try to defend itself by throwing a dice
+    to the enemy and add it to its own defense modifier.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the player's strike is bigger than the enemy's defense, the attack is successful
+    and the enemy will suffer a loss of life equal to the player's strike. If the
+    enemy's defense is stronger, the attack fails and the enemy remains safe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code is the implementation of this mechanism:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we use the console to display the progress of the combat to the player.
+    The formula for the combat could be different depending on additional parameters,
+    such as the bonus provided by the weapon the player uses and the enemy's armor.
+    It's really up to you to find out what you want to consider when deciding if a
+    strike is successful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We didn't implement this, but the enemy striking back would be exactly the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The complete game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: That's it for this game. All the rest of the implementation is taken straight
+    from the game we created in [Chapter 4](ch04.html "Chapter 4. Looking Sideways"),
+    *Looking Sideways*. We use the same object-oriented code of the player and the
+    other sprites to resolve the collision between the player and the level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good exercise would be to make the enemies move around and attack the player,
+    implement an experience and life bar for the player, and design a bigger world
+    and more NPCs to make the story more interesting. Indeed, that's what makes RPGs
+    so great to write; they are a great medium for telling stories!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another way you could improve this game is to use an isometric projection instead
+    of an orthogonal one. Explaining how to write a general-purpose isometric engine
+    is outside the scope of this book, but if you want to learn more about this, you
+    could read *Making Isometric Social Real-Time Games with HTML5, CSS3, and JavaScript*
+    by *Andres Pagella* ([http://shop.oreilly.com/product/0636920020011.do](http://shop.oreilly.com/product/0636920020011.do)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Isometric tiles
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are two difficulties when dealing with isometric tiles. First, it's very
+    simple to display an orthogonal grid with DOM elements, whereas it's more complicated
+    to display an isometric one. Secondly, the occlusion is harder to compute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drawing an isometric tile map
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will use a trick here to generate our tile map. Each of our tiles will be
+    stored in an area where they are surrounded by transparent pixels in such a way
+    as to give them a square shape, just like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Drawing an isometric tile map](img/5060OT_05_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To make the magic happen, we will use two normal tile maps to display one isometric
+    one. They will overlap, but with an offset between them equal to half the height
+    and half the width of one tile. The following figure shows you how it would look:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Drawing an isometric tile map](img/5060OT_05_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Occlusion for isometric games
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The occlusion for isometric games is harder to manage than for orthogonal ones.
+    In this situation, you can't simply play with layers to generate the correct occlusion.
+    Instead, you will have to give a z index to each "block" positioned in the level
+    (such as the walls, trees, objects, and others).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The value of this occlusion will depend on its coordinate just as in the case
+    of the player, NPCs, and enemies previously. This means that you will need to
+    post-process the tile map and generate them. This process can be quite complex
+    to automate, and if the number of elements in your game is reasonably small, you
+    may want to do it by hand. Otherwise, you will need to have some sort of 3D model
+    of where each block belongs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you have learned how to use tile maps to their full potential.
+    You can now write a wide variety of games using the techniques you have learned
+    in this chapter and the previous one. You will probably find out that the problems
+    you encounter while writing a game are often the same. The best solution, however,
+    often depends on your game's limitations and constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you start writing your game, don't try to implement a general solution
+    but instead first focus on your particular situation. The result will most likely
+    be faster, easier to maintain, and will take you less time to implement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will learn how to implement a multilevel game using
+    the platformer we created in [Chapter 4](ch04.html "Chapter 4. Looking Sideways"),
+    *Looking Sideways*.
+  prefs: []
+  type: TYPE_NORMAL

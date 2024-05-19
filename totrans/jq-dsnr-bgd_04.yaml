@@ -1,0 +1,802 @@
+- en: Chapter 4. Building Custom Scrollbars
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A common strategy for dealing with pages that have a lot of content is to hide
+    some of the content until the site visitor wants or needs it. There are many approaches
+    to this — you could use tabs, accordions, lightboxes, or the focus of this chapter,
+    scrollable areas.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Scrollable areas are easy for site visitors to understand and use, but they
+    often get ignored because some operating systems have unsightly scrollbars that
+    ruin the aesthetics of your carefully-tuned design. Browsers offer few, if any,
+    options for customizing the appearance of scrollbars, and no official means of
+    doing so has ever been included in any HTML or CSS specification.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Some designers have turned to Flash to create custom scrollbars, and I'm sure
+    you've come across samples of these Flash scrollbars online more often than not,
+    they're unwieldy and break common conventions for dealing with scrollable areas.
+    For example, you're rarely able to use your mouse's scrollwheel to scroll through
+    a Flash scrollable area.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to download and use jQuery plugins to do even more with jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use a plugin's built-in customization options to customize how a plugin
+    works
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use CSS to customize a plugin even further
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to set up custom-designed scrollbars that work just as your site visitors
+    expect
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the jScrollPane plugin to smoothly scroll between different bits
+    of content in our scrollable area
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Designer, meet plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've already talked about how programmers solve the same problems over and
+    over again. It's these common tasks that jQuery simplifies so that we can accomplish
+    these tasks with a minimum amount of code. But what about the tasks that are only
+    somewhat common, like the desire for beautiful custom scrollbars that work?
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's where the jQuery community becomes important. Developers in the jQuery
+    community are able to write code that extends the functionality of jQuery to simplify
+    tasks that are only somewhat common. These bits of code are called **Plugins**
+    and they are used in conjunction with the jQuery library to make coding complex
+    interactions, widgets, and effects as simple as using the features already built
+    into jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll find a library of hundreds of jQuery plugins on the official jQuery site.
+    In addition to those, there are literally thousands more available from sites
+    across the Web for just about any task you want to accomplish.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To create custom scrollbars, we'll be using *Kelvin Luck's* jScrollPane plugin.
+    You'll learn how to install the plugin on your page and how to configure the CSS
+    and options to make your scrollbars look and work the way you want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing a plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Recently, the jQuery team has started supporting a small number of official
+    jQuery plugins, and you can use those confidently, knowing that they have the
+    same level of expertise, documentation, and support behind them that jQuery itself
+    has. All other jQuery plugins are provided by various members of the jQuery community,
+    and those authors are solely responsible for documentation and support for their
+    own plugins. Writing and providing jQuery plugins is a bit of a free-for-all,
+    and sadly you will come across a fair number of jQuery plugins which are poorly
+    documented, poorly supported, and even worse, poorly written. What kinds of things
+    should you, as a newcomer to jQuery, look for when choosing a plugin?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A recent update to the plugin*. Frequent updates mean that a plugin is well-supported
+    and that the author is keeping the plugin up to date as jQuery and browsers evolve.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Thorough and easy-to-understand documentation*. Before attempting to download
+    and use a plugin, take a look through the plugin''s documentation and make sure
+    you understand how to implement the plugin and how to use any options the plugin
+    makes available to you.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Browser support*. Great plugins generally have the same browser support as
+    the jQuery library itself.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Working demo*. Most plugin authors will offer one or more working demos of
+    their plugin in action. Check out the demo(s) in as many different browsers as
+    possible to be sure the plugin works as advertised.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Reviews and ratings*. You won''t find reviews and ratings for all plugins,
+    but if you can find some, they can be helpful indicators of the quality and reliability
+    of the plugin.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up some scrollable HTML
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's take a look at how to set up a simple HTML page that contains a scrollable
+    area. Once we've got that out of the way, we'll look at how to replace the default
+    scrollbars with custom ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — scrollable HTML
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to set up a simple HTML page with a scrollable area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start off with setting up a basic HTML page and associated files and
+    folders, just like we did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet
+    jQuery"), *Designer, Meet jQuery*. We need to have an area of content that''s
+    large enough to scroll, so we''ll add several paragraphs of text to the body of
+    the HTML document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I have not included it all, but I have included five long paragraphs of lorem
+    ipsum text on my page to add some length and give us something to scroll. In case
+    you're not aware, lorem ipsum is simply dummy filler text. You can generate some
+    random lorem ipsum text for yourself to fill your page at [http://lipsum.com.](http://lipsum.com)
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, we need to make our text scroll. To do that, I'm going to wrap all those
+    paragraphs of lorem ipsum in a `div` and then use CSS to set a height on the `div`
+    and set the `overflow` to `auto:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, open your empty `styles.css` file, and add this bit of CSS to make our
+    text area scrollable:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Feel free to add some additional CSS to style your text any way you'd like.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, when I view my page in a browser, I''ll see that the browser has added
+    some (ugly) scrollbars for my text:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — scrollable HTML](img/6709OS_04_img1.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Adding custom scrollbars
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In most cases, the appearance of the scrollbars is determined by the operating
+    system your site visitor is using instead of their browser. So it doesn't matter
+    if you're using Firefox, Safari, Chrome, or some other browser on a Mac — you'll
+    always see those trademark shiny blue scrollbars. On a PC, you'll always see chunky
+    squarish scrollbars in whatever color scheme you've set in your Windows options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — simple custom scrollbars
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can see that the operating system's default scrollbars stick out like a
+    sore thumb in the middle of our nicely designed page. Let's fix that, shall we?
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we've got to get our hands on the plugin we'd like to use to create our
+    custom scrollbars. Head over to [http://jscrollpane.kelvinluck.com/](http://jscrollpane.kelvinluck.com/)
+    and click on the **Download** link in the navigation menu:![Time for action —
+    simple custom scrollbars](img/6709OS_04_img2.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This will jump you down to the **Download** section of the site, where you'll
+    see Kelvin Luck is using Github to host his code. Github is a social coding hub
+    — a sort of Facebook for developers — where the main focus is on writing, sharing,
+    and discussing code. Hosting jQuery plugins and other open source code projects
+    with Github is becoming more and more common these days as Github offers developers
+    an easy way to share and collaborate on their code with others.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Don't worry — downloading a plugin from Github is simple. I'll walk you through
+    it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: First, click the Github link on *Kelvin Luck's* site:![Time for action — simple
+    custom scrollbars](img/6709OS_04_img3.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: That will take you to the jScrollPane project's home page on Github. On the
+    right side of the page, you'll see a **Downloads** button:![Time for action —
+    simple custom scrollbars](img/6709OS_04_img4.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After you click on the **Downloads** button, you'll get a modal dialog window
+    showing all the available download packages for the project. Keep it simple, just
+    click on the **Download .zip** button to get the latest version:![Time for action
+    — simple custom scrollbars](img/6709OS_04_img5.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The ZIP download will kick off automatically. Once it's done, we're done at
+    Github. I told you it was easy. Now, let's unzip the package and see what's inside.![Time
+    for action — simple custom scrollbars](img/6709OS_04_img6.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Wow! That's a lot of files! What are we supposed to do with all of these?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: It looks a little scary and confusing, but most of these files are examples
+    and documentation about how to use the plugin. All we need to do is find the JavaScript
+    files that make up the plugin. We'll find those inside the `script` folder.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — simple custom scrollbars](img/6709OS_04_img7.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Inside the `script` folder, we'll find more like what we expected. Let's figure
+    out what these files are.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`demo.js` is sample code. It''s what *Kelvin Luck* used to put together the
+    assorted demos in the zip file. It might be useful to look at for examples if
+    we get stuck, but we don''t need it for our own project.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.jscrollpane.js` is the source code for the jScrollPane plugin. If we
+    wanted to modify the way the plugin works or dig through the source code, we could
+    use this file, but we''re not expert coders just yet, so we can leave this one
+    alone for now. Why does the filename begin with `jquery.?` It''s a common practice
+    to add the `jquery`. in front of the file name to mark it as a jQuery plugin.
+    It can make finding the jQuery plugins much easier in large projects that could
+    be using a dozen or more jQuery plugins along with other JavaScript files.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.jscrollpane.min.js` is the compressed version of the plugin. It''s
+    the same code as `jquery.jscrollpane.js` except it''s been minified. That just
+    means all the extra spaces, tabs, and so on have been removed to make the file
+    smaller—and you can see that it was pretty effective. The minified file is only
+    16 KB as opposed to 45 KB for the regular file. We won''t be able to read this
+    file easily if we open it, but that''s fine. We don''t need to be able to read
+    it, and it''s more important that we serve up the smallest files possible to our
+    site visitors.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.mousewheel.js` is the other plugin that we''ll be using for our custom
+    scrollbars. It''s the plugin that will let our mouse''s scrollwheel work just
+    as it should in our scrollable areas'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`mwheelintent.js` is yet another plugin. Looking through *Kelvin Luck''s* documentation,
+    we see that this plugin is used for making sure our scrollable areas work as we
+    expect when we nest scrollable areas inside one another. We won''t be needing
+    that for now.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Copy `jquery.jscrollpane.min.js` and `jquery.mousewheel.js` and put them in
+    your `scripts` folder inside your own project, right next to the `jquery.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we need to include these two files in our page, just like we did with
+    jQuery. Go down to the bottom of your page, and attach the new files between the
+    jQuery`<script>` tag and your own`<script>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Anytime you are using jQuery plugins, you want to make sure that you put your`<script>`
+    tags in the correct order. The jQuery`<script>` tag should always be first, any
+    plugins will come next. And finally any script that you're writing that's using
+    jQuery or the plugins will come last. This is because the browser will load these
+    scripts in the order we specify. The plugin files need to be loaded after jQuery
+    because they are using the jQuery library and rely on it being available before
+    they can work. In JavaScript-speak, we call this a dependency. The plugin code
+    is dependent on jQuery. And in turn, our own code is dependent on both the plugin
+    code and the jQuery library itself, so it needs to be loaded after those are available.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: In this case, we have an additional dependency that we need to be aware of.
+    The jScrollPane plugin is dependent on the MouseWheel plugin. For this reason,
+    we need to make sure that we load up the MouseWheel plugin first, and then the
+    jScrollPane plugin. If you ever have problems getting jQuery or a plugin to work,
+    it's a good idea to check your script order — a missing or out-of-order dependency
+    is often to blame.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We're almost ready to get our scrollbars set up, but there's one more file that
+    we'll need to include. The jScrollPane plugin actually works by hiding the browser's
+    native scrollbars and constructing replacements from ordinary `<div>s` and `<span>s`.
+    That means we'll need some CSS to style those `<div>s` and `<span>s` to look like
+    a scrollbar. Later on, we'll look at how we can write our own CSS to make our
+    scrollbars look any way we want, but for now, we'll use the CSS that Kelvin Luck
+    has supplied with his plugin to keep things simple.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Go back into the files we downloaded from Github and find the `style` folder.
+    Inside the folder, you''ll find two files: `demo.css` and `jquery.jscrollpane.css`.
+    Just like with the script files, the `demo.css` file is special code that was
+    written just for the examples, but `jquery.jscrollpane.css` is the file that will
+    style our scrollbars. Copy that file to your own `styles` folder and then inside
+    the`<head>` section of your document, attach the new stylesheet before your own
+    `styles.css` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Phew! We''ve done a lot of work already, but we still need to add our custom
+    scrollbars to our page. No worries, in true jQuery style, it''s just a couple
+    of lines of code. Open up your `scripts.js` file and add this bit of code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, if you refresh the page, you'll see our scrollable area now has a jScrollPane-style
+    scrollbar.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — simple custom scrollbars](img/6709OS_04_img8.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's pick that last bit of code apart to understand what's happening there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re already familiar with this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That''s the ready method of the jQuery object being called on the document.
+    That means that we''ll run our code as soon as the document is ready. As usual,
+    we''ve told jQuery what should happen as soon as the document is ready by passing
+    a function to this method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So the only really new thing we have to look at is the line of code we wrote
+    inside the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: But even this we can understand at least a bit. We know that `$('#scrolling')`
+    will select the item on the page with the `id` of scrolling. Remember, we wrapped`<div
+    id="scrolling"></div>` around the paragraphs of text that we wanted to scroll.
+    Then we used a couple lines of CSS to limit the height of the `#scrolling div`
+    and show the browser's scrollbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we can see that we're calling the `jScrollPane()` method. Most jQuery plugins
+    will work this way — by adding a new method that you can call. How do you know
+    what the new method is named? You'll usually find it in the documentation for
+    the plugin. jScrollPane is exceptionally well documented with piles of examples
+    for you to pick apart, learn from, and modify.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding arrow controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Okay, now that we've got the basics of using plugins under our belts, now we
+    can take a look at how we can take it further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding up and down arrows
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's add top and bottom buttons to our scrollbars so our scrollbars look and
+    behave more like native scrollbars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s go back to that line of code in our `scripts.js` file where we called
+    the `jScrollPane()` method to create the custom scrollbars:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Remember how we could pass things to methods and functions by putting them
+    inside the parentheses? We had the following example:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: where we wanted to say that the dog was eating bacon. So, in JavaScript-speak
+    we passed bacon to the eat method of the dog.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Well, in this case, we can pass a set of options to the `jScrollPane` method
+    to control how our scrollbars look and act. We want to show the top and bottom
+    arrows on our scrollbars, and we can do that by setting the `showArrows` option
+    to true. We just have to make a simple modification to our line of code as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now when you refresh the page, you'll see boxes at the top and bottom of your
+    scrollbars, just where top and bottom arrows would appear.![Time for action —
+    adding up and down arrows](img/6709_04_img10.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you click on these boxes, you'll see that they behave just like the up and
+    down arrows on a regular scrollbar. They're just a little plain — we can style
+    those up with some CSS to look any way we'd like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set the `showArrows` option of the `jScrollPane` method to `true`. There's
+    a rather long list of advanced options available with this plugin, but luckily,
+    we don't have to learn or know them all to be able to make good use of it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How do we know that there's a `showArrows` option? We'll find it in the documentation
+    for the plugin. Once you get better at understanding JavaScript and jQuery, you'll
+    be able to read the plugin files themselves to see what options and methods the
+    plugin is providing for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To pass one option to a method, you''ll wrap it in curly braces. Then you''ll
+    type the name of the option you''re setting (in this case, `showArrows)`, then
+    a colon, and then the value that you''re setting the option to (in this case,
+    `true` to show the arrows). Just like we did before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you want to pass more than one option to a method, you''ll do everything
+    the same, except you''ll need to put a comma between the options. For example,
+    if I wanted to add a little breathing room between my text and the scrollbar,
+    I could do that by setting a value for the `verticalGutter` option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, you can see that if I were setting a dozen or more options, this line
+    of code would get long and hard to read. For that reason, it''s common practice
+    to break options out onto separate lines as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that the content and order are the same, only this example is easier
+    for a human being to read and understand. A computer doesn't care one way or the
+    other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Be careful not to add an extra comma after the last option/value pair. Most
+    browsers will handle that error gracefully, but Internet Explorer will throw an
+    error and your JavaScript won't work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing the Scrollbar Style
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now we've got top and bottom buttons on our scrollbars, so let's make them look
+    just the way we want. We can do this by writing our own CSS to style the scrollbars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you've spent any time at all debugging CSS, then you already know about the
+    tools available to you in your favorite browser to do so. Just in case you haven't,
+    I highly recommend you take a look at the Firebug extension for Firefox, or the
+    developer tools built into Opera, Chrome, Safari, and IE9\. A quick Google search
+    for 'your browser *developer tools tutorial'* should yield plenty of results where
+    you can learn how to take advantage of what these tools have to offer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're using an older version of IE, then take a look at the **Debug Bar**
+    program available as an extension to IE that will be helpful for troubleshooting
+    problems with CSS. It is free for personal use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I tend to use Google Chrome when I''m developing new pages. To access the developer
+    tools in Chrome, click the wrench icon at the far right of the toolbar, then select
+    **Tools** | **Developer Tools**. Here''s an example of the CSS information I can
+    get by using the built-in tools:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Customizing the Scrollbar Style](img/6709OS_04_img9.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: On the left, you can see the DOM for my document — all the HTML elements that
+    make up the document tree. I can interact with it — each node can be expanded
+    or collapsed to show or hide the elements that are nested inside. In this case,
+    the highlighted element is the container for our jScrollPane scrollbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the right, I can see the CSS that applies to the element I've selected on
+    the left. I can also see which file that particular CSS appears in, and on what
+    line. In this case, most of the CSS that's styling my scrollbar container can
+    be found on line 20 of the `jquery.jscrollpane.css` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Digging into the DOM and CSS this way is a quick and easy way to figure out
+    which lines of CSS we need to modify to get the appearance that we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have a couple of options for customizing the CSS for the scrollbars. Either
+    we can modify the `jquery.jscrollpane.css` file directly, or we can copy those
+    styles to our own stylesheet and make the changes there. It's a matter of personal
+    preference, but if you opt to modify the `jquery.jscrollpane.css` file directly,
+    as I'm going to do here, then I highly recommend you to make a separate copy of
+    it to keep so that you can refer to it or easily restore it without having to
+    re-download it again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding our own styles
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Open `jquery.jscrollpane.css`. Around line 56, you'll find the CSS that styles
+    `.jspTrack`. This is the track for our scrollbar the background area you might
+    say. The default style for it is a pale lavender color.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We don''t want to mess with the position, since our scrollbar is relying on
+    that to work correctly, but you can feel free to change the background color to
+    any color, gradient, or image you''d like. I''m going to make mine pale pink:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, I'll tackle the top and bottom buttons. I have not only a default style,
+    but also a disabled style. For example, when the scroll area is all the way to
+    the top the top button is disabled since I can't possibly scroll any higher. If
+    I examine the buttons with my developer tools, I can also see that there's an
+    additional class name on the buttons that's not styled in the default CSS — the
+    top button has a class of `jspArrowUp` and the bottom button has a class of `jspArrowDown`.
+    That will let me set a different style for the up and down buttons — I'm going
+    to use an image of an upward pointing arrow as a background for the top arrow,
+    and a downward-pointing arrow for the bottom button to make their function clear
+    to my site visitors.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Here''s my CSS for styling those:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now when you refresh the browser, you can see that the scrollbars are styled
+    pink — just the way I wanted them. We modified the CSS that was supplied by the
+    plugin developer to make the scrollbars appear just the way we wanted. We were
+    able to use the developer tools built into our browser to target the file and
+    line numbers of the code that needed to be updated to change the appearance of
+    the scrollbars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero — style the scrollbars the way you want
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, you might not care for bright pink scrollbars, and you might think my example
+    is a little bit plain, and you'd be right. But you can get creative with background
+    colors, gradients, images, rounded corners, and more, to style your scrollbars
+    just the way you'd like. You can mimic the scrollbars of your favorite operating
+    system so that all of your site visitors see them the way you like, or you can
+    create an entirely new style. Experiment with the CSS to create your own scrollbar
+    style.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Smooth scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'jScrollPane is a mature and full-featured plugin. If you poke through the examples
+    and documentation, you''ll find all kinds of fun options to play with. I''ll walk
+    you through setting up one of my favorites: animated scrolling inside the scrollable
+    area.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — setting up smooth scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You could place any kind of content you''d like inside a scrollable area —
+    a list of news stories, a gallery of photos, or a long article with several sections,
+    headings, and subheadings, for example. Here''s how you can set up a control to
+    smoothly scroll from one section to another:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll need to do is assign an ID to each of our paragraphs.
+    I have five paragraphs of lorem ipsum in my scrollable area, so I''m going to
+    assign them `ids` of `para1, para2, para3, para4`, and `para5`. You can choose
+    whatever `ids` you like, but keep in mind that an `id` cannot begin with a number.
+    So now my code looks like this (I''ve truncated the text to save space):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s add in some internal links above our scrollable area to jump to
+    each of these paragraphs. After the heading and before the scrollable area, add
+    the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If we have JavaScript disabled, these links work; they will scroll the scrollable
+    area down to the paragraph in question making it visible to our site visitor.
+    But we want them to work with our fancy custom scrollbars. So we just have to
+    pass a new option to our jScrollPane method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This new option is to keep the browser from attempting its default behavior
+    when the internal links are clicked. Refresh the page, and try out the links to
+    the paragraphs.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'It works, but it''s not exactly pretty, and it can be a little disconcerting
+    when that scrollable area jumps suddenly like that — our site visitor might not
+    realize exactly what''s happened. Let''s make it obvious by smoothly animating
+    that jump to the different paragraphs. All we have to do is add another option
+    to our code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, when you refresh the page and click the paragraph links, you'll see that
+    the scrollable area smoothly scrolls to the proper paragraph. It's easy to understand
+    what's happening and where you are on the page and in the scrollable area.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We took advantage of one of the features of the jScrollPane plugin and made
+    smooth scrolling to any bit of content inside our scrollable container possible.
+    The options and values available to us are all documented in the plugin's documentation
+    and examples. You can see how easy it was to customize this plugin to add this
+    nice bit of behavior, thanks to the plugin author's hard work in making tough
+    stuff easy for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Phew! This was quite a chapter. We learned about jQuery plugins, how to use
+    them, and how to use the options they make available to customize them. We learned
+    about dependencies and inserting multiple scripts into our file in the correct
+    order. We used Kelvin Luck's excellent jScrollPane plugin to replace our boring
+    operating system scrollbars with fancy custom ones of our own design. And the
+    bonus is, they work just like browser scrollbars our site visitors can click on
+    the track, on the up and down buttons, they can drag the handle, or they can use
+    their mousewheel to navigate up and down the scrollable areas we've set up. It's
+    a win for both aesthetics and usability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we learned how to smoothly scroll to an anchor inside the scrollable
+    area this allows our site visitors to easily get to individual bits of content
+    inside the scrollable area, and communicates what's happening clearly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, we'll take a look at overriding the browser's default tooltips with
+    nicely designed tooltips of our own and we'll learn how to make them work even
+    harder for us by adding extra content.
+  prefs: []
+  type: TYPE_NORMAL

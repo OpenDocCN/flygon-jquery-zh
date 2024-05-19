@@ -1,0 +1,387 @@
+- en: Chapter 1. Anatomy of a jQuery Script
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: He's got a brand new start
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Now he's a happy guy
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"Happy Guy"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A typical jQuery script uses a wide assortment of the methods that the library
+    offers. Selectors, DOM manipulation, event handling, and so forth come into play
+    as required by the task at hand. In order to make the best use of jQuery, we need
+    to keep in mind the wide range of capabilities it provides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book will itemize every method and function found in the jQuery library.
+    Since there are many methods and functions to sort through, it will be useful
+    to know what the basic categories of methods are, and how they come into play
+    within a jQuery script. Here we will see a fully functioning script, and examine
+    how the different aspects of jQuery are utilized in each part of the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Dynamic Table of Contents
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As an example of jQuery in action, we'll build a small script that will dynamically
+    extract the headings from an HTML document and assemble them into a table of contents
+    for that page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our table of contents will be nestled on the top right corner of the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A Dynamic Table of Contents](img/3810_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We''ll have it collapsed initially as shown above, but a click will expand
+    it to full height:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A Dynamic Table of Contents](img/3810_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'At the same time, we''ll add a feature to the main body text. The introduction
+    of the text on the page will not be initially loaded, but when the user clicks
+    on the word **Introduction**, the introductory text will be inserted in place
+    from another file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A Dynamic Table of Contents](img/3810_01_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Before we reveal the script that performs these tasks, we should walk through
+    the environment in which the script resides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obtaining jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The official jQuery website ([http://jquery.com/](http://jquery.com/)) is always
+    the most up-to-date resource for code and news related to the library. To get
+    started, we need a copy of jQuery, which can be downloaded right from the home
+    page of the site. Several versions of jQuery may be available at any given moment;
+    the latest uncompressed version will be most appropriate for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: No installation is required for jQuery. To use jQuery, we just need to place
+    it on our site in a public location. Since JavaScript is an interpreted language,
+    there is no compilation or build phase to worry about. Whenever we need a page
+    to have jQuery available, we will simply refer to the file's location from the
+    HTML document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting Up the HTML Document
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are three sections to most examples of jQuery usage— the HTML document
+    itself, CSS files to style it, and JavaScript files to act on it. For this example,
+    we''ll use a page containing the text of a book:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The actual layout of files on the server does not matter. References from one
+    file to another just need to be adjusted to match the organization we choose.
+    In most examples in this book, we will use relative paths to reference files (`../images/foo.png`)
+    rather than absolute paths (`/images/foo.png`). This will allow the code to run
+    locally without the need for a web server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The stylesheet is loaded immediately after the standard `<head>` elements.
+    Here are the portions of the stylesheet that affect our dynamic elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: After the stylesheet is referenced, the JavaScript files are included. It is
+    important that the script tag for the jQuery library be placed *before* the tag
+    for our custom scripts; otherwise, the jQuery framework will not be available
+    when our code attempts to reference it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing the jQuery Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Our custom code will go in the second, currently empty, JavaScript file which
+    we included from the HTML using `<script src="img/dolittle.js" type="text/javascript"></script>`.
+    Despite how much it accomplishes, the script is fairly short:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We now have a dynamic table of contents that brings users to the relevant portion
+    of the text, and an introduction that is loaded on demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Script Dissection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This script has been chosen specifically because it illustrates the widespread
+    capabilities of the jQuery library. Now that we've seen the code as a whole, we
+    can identify the categories of methods used therein.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We will not discuss the operation of this script in much detail here, but a
+    similar script is presented as a tutorial on the Learning jQuery web log: [http://www.learningjquery.com/2007/06/
+    automatic-page-contents](http://www.learningjquery.com/2007/06/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selector Expressions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Before we can act on an HTML document, we need to locate the relevant portions.
+    In our script, we sometimes use a simple approach to finding an element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This expression creates a new jQuery object that references the element with
+    the ID `introduction`. On the other hand, sometimes we require a more intricate
+    selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we produce a jQuery object potentially referring to many elements. Elements
+    are included if they are anchor tags, but only if they are descendants of `<h2>`
+    elements that are themselves children of an element with the ID `introduction`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These **selector expressions** can be as simple or complex as we need. [Chapter
+    2](ch02.html "Chapter 2. Selector Expressions") will enumerate all of the selectors
+    available to us and how they can be combined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM Traversal Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Sometimes we have a jQuery object that already references a set of DOM elements,
+    but we need to perform an action on a different, related set of elements. In these
+    cases, **DOM traversal** methods are useful. We can see this in part of our script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Because of the context of this piece of code, the keyword `this` refers to a
+    jQuery object (it often refers instead to a DOM element). In our case, this jQuery
+    object is in turn pointing to the `<h3>` heading of the table of contents. The
+    `.toggleClass` method call manipulates this heading element. The subsequent `.next()`
+    operation changes the element we are working with, though, so that the following
+    `.slideToggle` method call acts on the `<div>` containing the table of contents
+    rather than its header. The methods that allow us to freely move about the DOM
+    tree like this are listed in [Chapter 3](ch03.html "Chapter 3. DOM Traversal Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM Manipulation Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Finding elements is not enough; we want to be able to change them as well.
+    Such changes can be as straightforward as changing a single attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we modify the ID of the matched element on the fly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sometimes the changes are further-reaching, on the other hand:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This part of the script illustrates that the **DOM manipulation** methods can
+    not only alter elements in place, but also remove, shuffle, and insert them. These
+    lines add a new heading at the beginning of `<div id="page-contents">`, insert
+    another `<div>` container at the end of it, and place the whole thing at the beginning
+    of the document body. [Chapter 4](ch04.html "Chapter 4. DOM Manipulation Methods")
+    will detail these and many more ways to modify the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Even when we can modify the page at will, our pages will sit in place, unresponsive.
+    We need **event methods** to react to user input, making our changes at the appropriate
+    time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this snippet we register a handler that will execute each time the selected
+    anchor tag is clicked. The click event is one of the most common ones observed,
+    but there are many others; the jQuery methods that interact with them are discussed
+    in [Chapter 5](ch05.html "Chapter 5. Event Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Chapter 5](ch05.html "Chapter 5. Event Methods") also discusses a very special
+    event method, `.ready`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method allows us to register behavior that will occur immediately when
+    the structure of the DOM is available to our code—even before the images have
+    loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Effect Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The event methods allow us to react to user input; the **effect methods** let
+    us do this with style. Instead of immediately hiding and showing elements, we
+    can do so with an animation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method performs a fast sliding transition on the element, alternately hiding
+    and showing it with each invocation. The built-in effect methods are listed in
+    [Chapter 6](ch06.html "Chapter 6. Effect Methods"), as is the way to create new
+    ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: AJAX Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Many modern websites employ techniques to load content when requested without
+    a page refresh; jQuery allows us to accomplish this with ease. The **AJAX Methods**
+    initiate these content requests and allow us to monitor their progress:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here the `.load` method allows us to get another HTML document from the server
+    and insert it in the current document, all with one line of code. This and more
+    sophisticated mechanisms of retrieving information from the server are listed
+    in [Chapter 7](ch07.html "Chapter 7. AJAX Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: Miscellaneous Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Some methods are harder to classify than others. The jQuery library incorporates
+    several **miscellaneous methods** that serve as shorthand for common JavaScript
+    idioms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Even basic tasks like iteration are simplified by jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `.each` method seen here steps through the matched elements in turn, performing
+    the enclosed code on all of matched elements. In this case, the method helps us
+    to collect all of the headings on the page so that we can assemble a complete
+    table of contents. More helper functions such as this can be found in [Chapter
+    8](ch08.html "Chapter 8. Miscellaneous Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plug-In API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We need not confine ourselves to built-in functionality either. The **plug-in
+    API** that is part of jQuery allows us to augment the capabilities already present
+    with new ones that suit our needs. Even in the small script we''ve written here,
+    we''ve found the use for a plug‑in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code defines a new `.toggleNext` jQuery method that slides the following
+    element open and shut. We can now call our new method later when needed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Whenever code could be reused outside the current script, it might do well as
+    a plug‑in. [Chapter 9](ch09.html "Chapter 9. Plug-In API") will cover the plug-in
+    API used to build these extensions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've now seen a complete, functional jQuery-powered script. This example, though
+    small, brings a significant amount of interactivity and usability to the page.
+    The script has illustrated the major types of tools offered by jQuery, as well.
+    We've observed how the script finds items in the DOM and changes them as necessary.
+    We've witnessed response to user action, and animation to give feedback to the
+    user after the action. We've even seen how to pull information from the server
+    without a page refresh, and how to teach jQuery brand new tricks in the form of
+    plug-ins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll be stepping through each function, method, and selector expression in
+    the jQuery library now, chapter by chapter. In illustrating many of them, a customized
+    logging function will aid our examples. This `.log` method prints text to the
+    screen in a useful context; we'll dissect it as an example of a plug-in at the
+    end of [Chapter 9](ch09.html "Chapter 9. Plug-In API").
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each method will be introduced with a summary of its syntax and a list of its
+    parameters and return value. Then we will offer a discussion, which will provide
+    examples where applicable. For further reading about any method, consult the online
+    resources listed in [Appendix A](apa.html "Appendix A. Online Resources").
+  prefs: []
+  type: TYPE_NORMAL

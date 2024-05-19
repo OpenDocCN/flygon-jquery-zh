@@ -1,0 +1,406 @@
+- en: Chapter 8. Writing Code that You can Read Later
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery truly does help us do more with less code, but one thing it doesn't address
+    is how to organize our code. This may not be a problem at first, but as your app
+    grows in age and features, it's organization (or lack thereof), becomes a problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will look at some proven methods to organize JavaScript.
+    In this chapter we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Learn some object-oriented techniques to make our code easy to understand and
+    maintain
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use events to decouple our code and ensure that unrelated sections don't need
+    to directly talk to each other
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Take a quick look at writing JavaScript unit testing, specifically with Jasmine,
+    which is a behavior-driven development framework used to test JavaScript code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Separation of concerns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Software architectural patterns, such as **Model-View-Controller** (**MVC**),
+    have become popular mainly because they address the issue of code organization
+    head-on. Model-View-Controller divides an application into three main parts. The
+    model is the part that deals with the application's data. The controller gets
+    the data from the model and feeds it to the view, and it takes user input from
+    the view and feeds it back to the model. One of the most important things about
+    this pattern is that you should never mix responsibilities. The model never contains
+    the controller code, the controller never contains views, and so on. This is called
+    **Separation of Concerns**, or SoC. If any part of the application violates this
+    rule, your application will descend into a hot mess of tightly coupled, interdependent
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We don''t need to go all in with MVC in order to gain some benefits from it.
+    We can use it as a way to guide us in our development. For one, it helps us answer
+    this question: where should this code go? Let''s look at an example. We are given
+    the requirement to write the code to retrieve membership data from our web service
+    and render it for the user to select from. How should we proceed? Your first impulse
+    might be to write some code like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code achieves our requirements but has several problems. First, there is
+    no separation of concerns. While we are not striving to create an MVC application,
+    we should at least strive to have functions that are broken down along model,
+    view, and controller lines. Our model, in this case, is represented by the `$.getJSON()`
+    method call. It is bound directly to our controller code, which takes the model
+    data and creates an HTML template out of it in this example. And finally, our
+    view code takes the HTML template and renders it using a `$.html()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This code is also an example of tight coupling. Each section of the code depends
+    directly on the next, and there is no way to pull them apart. Tightly coupled
+    code is more difficult to test. There is no easy way to test this code's functionality.
+    Just look at it. The code is inside the document-ready event; you would have to
+    mock that event in order to even begin testing the code's functionality. Once
+    you've mocked the document-ready event, you will also need to somehow mock the
+    `getJSON()` method since the rest of the code is buried inside it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Breaking code into logical units
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the things that makes the previous code sample hard to understand is
+    that it hasn't been broken down into logical units. In JavaScript, we don't have
+    classes like other object-oriented languages, but we have objects and even files
+    to keep logically related units of code together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We break code down, starting with the functions. Rather than having one function
+    that does everything, strive to have many functions, with each function only doing
+    one thing. When functions do too many things, they become hard to understand.
+    Comments may help explain what the code is doing, but well-written code should
+    comment itself. Functions help clearly separate the different bits of functionalities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You may be wondering why any of this matters, especially since we have working
+    code that achieves our requirements. It matters since the typical program spends
+    far more time being maintained than written. So, it is important that we write
+    our code to be maintainable. Let''s try this again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The second version of the code is longer than the original, and even though
+    it lacks comments, it is more legible. Separating the code into separate functions
+    makes it easy to understand what it is doing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a complete MVC application, we might create separate classes for each concern
+    and then move each function into the class to which it belongs. But we don''t
+    need to be so formal. First, we don''t have classes in JavaScript, but we have
+    very powerful objects that can contain functions. So let''s try again, using a
+    JavaScript object to bundle up our code this time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this version, we have all our code bundled into the member object. This makes
+    it easy to move our code about and helps us think of it as a single, cohesive
+    unit. Putting the code into an object also makes it possible to use the `this`
+    construct. It is arguable whether it is an improvement or not. I've seen many
+    a JavaScript developer type all object names out in the long form just to avoid
+    having to think about this. Note that we also shorten most of the method names.
+    Having the word `member` in many of the method names is redundant since the name
+    of object is `member`. Also, note that we are now calling our functions "methods".
+    When a function is part of a class or object, it is a method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using events to decouple code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Through this book, we have used events, but they have always been triggered
+    by jQuery or the browser but never by us. Now, that is about to change. Events
+    are really great for the decoupling of code. Imagine a scenario where you and
+    another developer are working together on an application. The other developer
+    is going to supply your code with data. This data—let's call it the data source—will
+    be available intermittently, unlike the previous example of supplying the data
+    via a single Ajax call. Your code, the data reader, will render the data to the
+    page when it becomes available. There are several ways that we could go about
+    this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The data source could provide a polling method for us to call. We would repeatedly
+    call this method until the source has some new data for us. However, we know that
+    polling is inefficient. The majority of the time we call the polling service,
+    there won't be any new data, and we will have burned CPU cycles without returning
+    any new data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could supply the data source with a method it could call whenever it has
+    new data. This solves the issue of inefficiency since our code will only be called
+    when there is new data. Think about what a maintenance nightmare we would introduce
+    by doing this. When there is only one dependent module that the data source is
+    supplying data to, it seems easy enough. But what if a second or third module
+    also needs the data source? We will have to keep updating the data source module.
+    And if any of the data reader modules change, the data source may need to be updated
+    as well. What should we do?
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use custom events. Using custom events loosens the coupling. Neither
+    side directly calls the other. Instead, when the data source has new data, it
+    triggers the custom event. Any data reader that wants the new data simply registers
+    a handler for the custom events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here are some of the nice things about using custom events. First, the coupling
+    is loose. Second, there is no limit to the number of data readers that can register
+    for the event. Third, if the event is triggered with no listeners, nothing breaks.
+    And finally, if there is a bunch of readers registered but new data never comes,
+    nothing breaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing we must be careful about with custom events is to remember to release
+    the event handlers when we are through with them. Two things can happen if we
+    forget. First, we may cause a memory leak. A memory leak is when JavaScript is
+    unable to release a chunk of memory because something—in our case, an event handler—is
+    still holding a reference to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over time, the browser will begin to act increasingly sluggish as it begins
+    to run out of memory before it finally crashes. Second, our event handler can
+    be called too many times. This happens when the code that hooks the event is called
+    more than once without the event ever being released. Before you know it, the
+    event handler is called two times, three times, or more instead of being called
+    only once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One last nice thing about custom events is that we already know most of what
+    we need to in order to implement them. The code is only slightly different from
+    what we learned in order to perform regular browser events. Let''s take a look
+    at a simple example first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we place two buttons on the page. The first button triggers
+    an event, and the second one releases the event handlers. Below the buttons is
+    a wide `<div>` that is used to display messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code inside the script tags first creates a variable named `customEvent`,
+    which holds the name of the custom event. The name of the event is up to you,
+    but I would suggest something that includes your company's reverse domain name
+    since you wouldn't want a future browser release to break your code because it
+    uses the same event name. Then, we have the two event handlers that don't do anything
+    particularly interesting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, in the document-ready event handler, we hook the custom event twice.
+    We use the click event of the first button to trigger the custom event and the
+    click event of the second button to release the handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One thing we didn''t show in this example was how to pass data to the custom
+    event handler code. Luckily, this isn''t difficult, so let''s show how with another
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's walk through the code to make sure we understand what it is doing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user interface consists of a single button labeled **stop** and a horizontal
+    rule. Members will appear below the horizontal rule, and messages will appear
+    next to the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the script tags, the code kicks off by creating an empty array for the
+    users and a string to hold the name of our custom events. The code consists of
+    three main functions: `showMessage`, `init`, and `startTimer`. When the document-ready
+    event fires, it calls the `init` method and then the `startTimer` method.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `startTimer` method makes repeated calls every 5 seconds to a random user
+    web service. It gives us a random new user every time it is called. In the `init`
+    method, we establish two handlers for our custom event: `addNewNameToList` and
+    `welcomeNewUser`. Each method takes the user data that the event provides and
+    does something different with it. To stop the example program, click on the **stop**
+    button and it will clear the interval timer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using unit tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Unit tests are a funny subject. It seems that everyone agrees that it is good
+    to write tests, but few people actually do it. A complete examination of unit
+    testing would take an entire book but, hopefully, we can cover just enough about
+    unit tests to show you how to add them to your code and explain why you should.
+  prefs: []
+  type: TYPE_NORMAL
+- en: My preferred unit test framework is Jasmine, [http://jasmine.github.io/](http://jasmine.github.io/).
+    This is not to slight any of the other fine frameworks available, but Jasmine
+    works on the frontend and backend, works in the browser and the command line,
+    is actively maintained, and does all one would want from a test framework. Keep
+    in mind that while the code is written for Jasmine, the principles can be applied
+    to any JavaScript unit test framework. Before we look into how to write unit tests,
+    we should begin with why we should write unit tests at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why write unit tests at all?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the beginning, JavaScript was rarely used in websites. When it was used,
+    it was only to do minor things that could live without if JavaScript was disabled.
+    So, the list of things was small, mainly client-side form validation and simple
+    animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nowadays, things have changed. Many sites won't run at all with JavaScript disabled.
+    Others will run with limited functionality and usually display a missing JavaScript
+    warning. So since we rely so heavily on it, it makes sense to test it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We write unit tests for three main reasons: to verify that our application
+    is functioning correctly, to verify that it continues to work correctly after
+    the modification, and finally, to guide our development when using either **Test
+    Driven Development** (**TDD**) or **Behavior Driven Development** (**BDD**). We
+    are going to focus on the first point, verifying that our application is functioning
+    correctly. We will use the Jasmine Behavior-Driven JavaScript testing framework
+    to do that. Jasmine runs from either the command line or from the browser. We
+    will only use it from the browser.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to keep our example short, we will run the quintessential unit test
+    example: an arithmetic calculator. It will be able to add, subtract, multiply,
+    and divide two numbers. To test the calculator, we will need three files: `SpecRunner.html`,
+    `calculator.js`, and `calculator-spec.js`. `SpecRunner.html` loads the other two
+    files and the Jasmine framework. Here is the `SpecRunner.html` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: There is nothing particularly challenging in `SpecRunner.html`. Besides the
+    files that Jasmine needs in order to run, you place your application—not all of
+    it, only the parts required for the unit tests to be able to run and the unit
+    test files. By tradition, the unit test files have the same name as the file that
+    they are testing, with `-spec` added to the end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the `calculator.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our calculator is simple and easy to understand. It is a JavaScript that has
+    four functions: add, subtract, multiply, and divide. Testing its functionality
+    should be equally simple, and it actually is. Here is the `spec` file that tests
+    the calculator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Jasmine''s unit test framework works around three methods: `describe`, `it`,
+    and `expect`. The `describe` is a global function that holds a test suite. Its
+    first parameter is a string holding the name of the test suite. The second parameter
+    is a function that is the test suit. Next up is `it`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like `describe`, `it` is a global function in Jasmine, and `it` holds a specification,
+    or spec. The parameters passed to `it` are also a string and a function. By tradition,
+    the string is written so that when read with `it`, it completes a sentence describing
+    the specification. The function performs the test using one or more expectations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Expectations are created using the `expect` Jasmine function. The `expect` is
+    the equivalent of `assert` in other unit test frameworks. It is passed a single
+    parameter, which is the value to be tested that calls the actual in Jasmine. Chained
+    to the expectation is the `matcher` function. The `matcher` function is passed
+    the expected value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The combination of the `expect` and `matcher` functions in Jasmine is one of
+    its most beautiful things. When written correctly, they read like an English sentence.
+    This makes it easy to both write tests and read them later. Jasmine also comes
+    with a large number of matchers, which helps you to write exactly the expectation
+    you want. There is also a `not` operator that will reverse the logic of any `matcher
+    function`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to run the sample test, simply launch the `SpecRunner.html` page. It
+    will load Jasmine, the parts of code we would like to test, and the specifications.
+    In unit test tradition, the page will either be green, which means all of our
+    specifications have passed, or red, which means that at least one specification
+    has failed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Jasmine''s goal is to help us find and fix broken tests. If, for instance,
+    our add specification failed, we would see the name of the test suite and the
+    failing specification displayed together in red: "Calculator can add numbers."
+    Below it would be the failing expectations. It would show us what value it had
+    and what value we expected.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the sample code, we create our test suite with a call to the `describe` method.
+    We have specifications, each testing one aspect of our calculator. Note how have
+    worded our specifications so that they read like sentences. Our first specification
+    reads "it can add numbers". When our test passes, we'll see the test suite display
+    the word "Calculator" and each of the specifications listed below it, stating
+    with what was tested.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jasmine also has `setup` and `teardown` functions. A `setup` function executes
+    before each specification in a test suite runs. A `teardown` function runs after
+    each specification runs. We haven't used either in the sample code, but they can
+    be quite useful in more complicated tests, especially when objects need to be
+    prepared and cleaned up afterward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jasmine is a complete unit test framework. We've barely scratched the surface
+    of what it can do. Also, keep in mind that while running Jasmine from the browser
+    is convenient, more power comes from running it from the command line. Then, it
+    is able to integrate into you website's build process. But this is only an introduction;
+    to fully appreciate how Jasmine can help you write cleaner and also help you test
+    jQuery, you will need to try it in your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We covered a lot of ideas in this chapter. Developers often forget that JavaScript
+    is an object-oriented language, but it is not a class-based language. One of the
+    most important things to keep in mind is the technique of Separation of Concerns.
+    It is the cornerstone of keeping your code understandable and maintainable. Learning
+    about SoC led us to the topics of breaking our code into logical units and using
+    events to decouple our code. We ended the chapter by learning how to unit test
+    our code with the popular open source tool, Jasmine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we''ve learned how to organize our code, it is time for us to turn
+    our attention to other things people complain about in relation to jQuery: performance.
+    In the next chapter, we will learn how to measure the performance of our code
+    and the simple things we can do to speed it up. Quite a few blog posts have made
+    it seem that jQuery is to blame for the slowness of many websites. If you don''t
+    understand JavaScript or jQuery well, it is easy to reach this conclusion. Luckily,
+    it is not difficult to learn a few rules of thumb that can dramatically improve
+    the speed of your jQuery code.'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1014 @@
+- en: Chapter 6. List Views
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using inset and non-inset lists
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a custom numbered list
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a nested list
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a read-only nested list
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Formatting content in a list
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a split button list
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using image icons
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a custom search filter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modifying a list with JavaScript
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A simple list in jQuery Mobile is created using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code is a regular HTML unordered list to which you add the attribute
+    `data-role='listview'`. The framework now enhances the list, styles it, and makes
+    it mobile friendly. It adds a right arrow for the anchor elements and when you
+    tap any of the list items, the page in the link is loaded into the DOM and opened
+    using AJAX transition when possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using inset and non-inset lists
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: An **inset list** is a list embedded within a container (a page or form or another
+    list). This recipe shows you how to create inset and non-inset lists. The recipe
+    also highlights what you need to take care while using non-inset lists with other
+    form controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/inset-list` sources folder.
+    This code can be launched using the URL `http://localhost:8080/06/inset-list/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with three lists and a few buttons as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the code, the first list is an inset list and the other two are non-inset
+    lists. You can create an inset list by adding the attribute `data-inset='true'`
+    to a list. This styles the list with rounded corners and gives it a nice margin
+    of `15px` on all four sides. If you place buttons or any other form controls next
+    to inset lists, the layout is automatically adjusted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next list in the code is a non-inset list and it does not have the `data-inset`
+    attribute. The framework adds a padding of `-15px` to this list and stretches
+    it to fill the entire width of the screen. If you place buttons or any other form
+    controls next to this list, the controls will overlap each other due to the negative
+    padding. This list has rectangular corners.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The third list in the code is also a non-inset list. But the overlapping of
+    controls is handled here by using the attribute `style=''margin: 15px''`. This
+    adds a margin of `15px` to the list and negates the default padding. The three
+    lists are displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Add an additional margin when you use non-inset lists with other form controls
+    to avoid overlapping of the controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can configure the framework to use inset lists by default in your app.
+    You can do this by setting the `inset` option of the `listview` plugin to `true`
+    and bind this to the `mobileinit` event as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting the listview theme
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can use the `data-theme` attribute and set a theme to the list as shown
+    in the following code. The list uses swatch `e` in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting the theme on list items
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can use the `data-theme` attribute with each list item and set different
+    themes. The following code sets swatch `e` to the list item **Item 1**, whereas,
+    the list item **Item 2** will use swatch `d`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating a custom numbered list
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A **numbered list** by default uses decimals in jQuery Mobile. The framework
+    uses CSS to add the numbering. JavaScript is used where CSS cannot be used. This
+    recipe shows you how to add alphabet numbering to your list using JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/custom-numbered-list` sources
+    folder. This code can be launched using the URL `http://localhost:8080/06/custom-numbered-list/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create an ordered and an unordered list as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to add alphabet numbering to the unordered list:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first list in the code is an ordered list and uses decimal numbers by default.
+    The next list with `id='alphalist'` is an unordered list. Add the given script
+    to the page container or the `<head>` section of `main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the script, bind the `pageinit` event to a function that injects the alphabet
+    numbering. In this function, call the jQuery `find(''li'')` method to fetch all
+    the list items in the list. Loop through each of these items using the jQuery
+    `each()` method. In the callback function of `each()`, get the current text of
+    the list item using `$(this).html()` and prefix the alphabet (with `normal` font
+    weight) to this text. Set this new string (`str`) to the list item by using `$(this).html(str)`.
+    Finally increment the alphabet in the loop by using the `charCodeAt()` and `fromCharCode()`
+    JavaScript methods. When the page is shown, the two lists are now displayed as
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can create any type of numbered lists (such as Roman numerals, small or
+    upper case alphabets, bullets and so on) using JavaScript. But you will have to
+    ensure that you handle all the scenarios with these lists (for example, handling
+    the item numbering of nested lists).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a nested list
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A **Nested List** is a list that is embedded within the list item of another
+    list. A right arrow icon is shown by default on the list item and when you click
+    on it, the framework opens a separate sub page to display the nested list. The
+    sub page shown uses theme `b` by default for the page header. The framework can
+    handle nesting to n-levels. This recipe shows you how to use nested lists and
+    also how to fetch the child pages of the nested list using JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/nested-list` sources folder.
+    This code can be launched using the URL `http://localhost:8080/06/nested-list/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add the following code to create a list of authors. Add nested
+    lists with book names to some of the authors.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to fetch the child pages of the nested list:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the code, add author names as list items with anchor links. Add nested lists
+    with book names for the authors **Rabindranath Tagore** and **William Shakespeare**.
+    The author **H.G. Wells** does not have a nested list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the given script to the page container or the `<head>` tag in `main.html`.
+    In the script bind the `pageinit` event to an event handler to call the `childPages`
+    method of the **listview plugin** . Iterate through the array of child pages using
+    the jQuery `each()` method. In the callback function of `each()`, get the header
+    text of the sub pages using the jQuery `find()` method. Find the header div that
+    has the attribute `class='ui-title'`. Concatenate this text to a string and once
+    all the author sub pages are fetched, set this string as the content of the empty
+    `'nestedlists'` div. This will display the list of authors who have a nested list
+    of books. The author **H.G. Wells** does not have a nested list and is not shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The nested lists are embedded after the anchor link `<a>` tag inside the list
+    item `<li>` tag in a list. When you click on this list item, it opens the sub
+    page as shown in the following screenshot. The anchor link text is set as the
+    header of the sub page and the header uses theme `b` by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You will notice the difference in the theme of the sub page compared to the
+    main page. The main page uses theme `a` for the page content and header. It uses
+    theme `b` for the list. The sub page header is set to theme `b` by default. Since
+    the nested list used the `data-theme='a'` attribute, the entire sub page, including
+    the nested list, is themed with swatch `a`. This might not be ideal while using
+    nested lists in your app. Refer to the recipe *Theming a nested list* in [Chapter
+    10](ch10.html "Chapter 10. The Theme Framework"), *The Theme Framework* on how
+    to theme a nested list properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Theming the header of the sub page of a nested list
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As seen in this recipe, by default the header of the sub page of a nested list
+    is set to swatch `b`. You can use the attribute `data-header-theme` as shown in
+    the following code to set the header theme of the sub page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Configuring the header theme option of a list view
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can configure the default header theme of nested lists across your app
+    by setting the `headerTheme` option of the `listview` plugin. The following code
+    sets this to theme `a` and binds it to the `mobileinit` event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using a read-only nested list* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Theming a nested list* recipe in [Chapter 10](ch10.html "Chapter 10. The
+    Theme Framework"), *The Theme Framework*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a read-only nested list
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A **read-only list** is a list that contains non interactive items or items
+    that do not have anchor links in them. The framework styles read-only items differently
+    compared to the regular items. The read-only items have a lighter or paler shade
+    of the theme color and they also have a smaller size as the user is not expected
+    to tap on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This recipe shows you how to create a read-only nested list and also use **Options**
+    to configure list views. It also shows you how to display a nested list as an
+    inset list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/read-only-list` sources
+    folder. This code can be launched using the URL `http://localhost:8080/06/read-only-list/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add the following code to create a list of authors. Add nested
+    lists with book names to some of the authors.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the page to configure the list view options:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the code, add author names as list items without any anchor links. Add nested
+    lists with books for authors **Rabindranath Tagore** and **William Shakespeare**.
+    Author **H.G. Wells** does not have a nested list. Author **Mark Twain** has an
+    anchor link. The list uses theme `e`, that is, a yellow color. Items that do not
+    have nested lists or anchor links are displayed in a lighter shade and a smaller
+    font. Items with nested lists or with anchor links are displayed in a regular
+    color and have a bigger font.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Add the previous script to the page or the `<head>` tag of `main.html` as shown
+    in the code. The script configures the default options of the `listview` plugin.
+    In this recipe, the `theme`, `headerTheme`, and `inset` options are configured.
+    Use the `headerTheme` option to set the theme of the sub page header to `a` as
+    shown in the previous code. Now when you click the list item **Rabindranath Tagore**,
+    the sub page is opened for the nested list. The nested list with the header theme
+    `a` is displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There may be instances when you want to display the nested list as an inset
+    list. You can do this by wrapping the inner list within a `<div>` tag. The framework
+    now will not create a sub page for the nested list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Calling the `childPages` method on the `listview` plugin will not return the
+    lists that are embedded with the `<div>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The list of books of **William Shakespeare** are embedded within the `<div>`
+    tag in this recipe and so a nested list is not created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using inset nested lists will stretch your list vertically and the user will
+    have to scroll the page to view all the contents. So use them selectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using a nested list* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Theming a nested list* recipe in [Chapter 10](ch10.html "Chapter 10. The
+    Theme Framework"), *The Theme Framework*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Formatting content in a list
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to format text in a list item. It also shows you how
+    to use collapsible items and **count bubbles** within the list item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/format-content` sources
+    folder. This code can be launched using the URL `http://localhost:8080/06/format-content/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following code to create a list of modes of transport:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the page to configure the list view options:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Add the three modes of transport as list items as shown in the previous code.
+    Add a collapsible block with `data-role='collapsible'` to each of the list items.
+    Add a heading text to each of the collapsible block and create a list with different
+    vehicle types as its content. Add a string with the style set to `class='ui-li-aside'`.
+    This creates a string and positions it on the top right corner of the list item.
+    Finally, add the number of vehicles listed and set its style to a **count bubble**
+    by using `class='ui-li-count'`. Do this for each of the list items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the script shown in the code to the page or the `<head>` tag of `main.html`
+    to configure the default values for list options `theme`, `inset`, and `countTheme`.
+    The list is now displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following image shows the list with one collapsible block expanded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can theme the count bubble using the option `countTheme` as already mentioned
+    in this recipe. You can also set the attribute `data-count-theme` on the list
+    as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using form controls in a list item
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This recipe shows you how to add a collapsible content with a list to a list
+    item. You can also add any form control to a list item as shown in the following
+    code. The framework enhances the form control by adding the required padding and
+    margins within the list item and makes the form control tap friendly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using a split button list* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a split button list
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A **split button list** is a list that provides two different actions for the
+    same list item. This is created by adding two anchor links to a list item. The
+    framework then automatically converts the list item to a split button. Any image
+    added to the first link gets scaled down to a thumbnail with a size of `80 x 80px`.
+    The second link is replaced with an icon called the **split icon** and is positioned
+    at the right-hand side corner of the split button. This recipe shows you how to
+    create a split button list to display images in a list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/split-button-list` sources
+    folder. This code can be launched using the URL `http://localhost:8080/06/split-button-list/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` as a multi-page template app. Add a split button list in
+    the `#main` page as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add the `#viewphoto` page that will be opened on tapping the left part of the
+    split button.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add the `#download` page that will be opened on tapping the split icon.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Add list items to the list in the `#main` page as shown in the previous code.
+    Each list item has two links and both the links are opened as dialogs by setting
+    the `data-rel='dialog'` attribute. Point the first link to the `#viewphoto` page.
+    Add an image pointing to the photo and add a formatted description to the anchor
+    link text. Depending on the size of the thumbnail image, you can add padding to
+    the image as shown in the previous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Point the second link to the `#download` page. The second link is automatically
+    converted to a split icon. The right arrow is used by default for the split icon.
+    You can configure this by using the `data-split-icon` attribute on the list view.
+    Use the `data-split-theme` attribute to theme the split icon. The split button
+    list is displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Tapping on the photo image or the left button in the list item opens the **Photo
+    View** dialog as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Tapping on the split icon opens the **Download** dialog as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To display the photo image in the `#viewphoto` dialog you will have to write
+    some JavaScript code to handle the `pagechange` event. This is covered in the
+    recipe *Using changePage() to change a page* in [Chapter 9](ch09.html "Chapter 9. Methods
+    and Utilities"), *Methods and Utilities*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the split button list using listview options
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can configure the default values for the split icon and the split icon
+    theme using the `splitTheme` and `splitIcon` options of the `listview` plugin
+    and bind it to the `mobileinit` event. The following code sets the star icon and
+    theme `e` as default values for the list view options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Formatting content in a list* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Using image icons* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Using changePage( )to change a page* recipe in [Chapter 9](ch09.html "Chapter 9. Methods
+    and Utilities"), *Methods and Utilities*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using image icons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework adds an icon to the right-hand side of an interactive
+    list item (a list item having a link). You can also add an icon to the list item
+    text and the framework sizes this icon to fit within `40 x 40px`. This recipe
+    shows you how to display icons with list items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/list-icons` sources folder.
+    This code can be launched using the URL `http://localhost:8080/06/list-icons/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add a list with list items as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add an image to each of the list items in the list within the anchor link of
+    the list item. Set the attribute `class=''ui-li-icon''` to this image element.
+    This instructs the framework to style the image as an icon and the image is automatically
+    scaled down to fit inside the list item. You can set the required margin to the
+    text so that it gets displayed correctly after adjusting for the image size. The
+    list is displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For an interactive list item, that is, an item with a link, the framework adds
+    a right arrow icon by default at the right-hand side of the list item. This can
+    be changed by using the `data-icon` attribute on the list item. The code in this
+    recipe uses the `star` icon for the list item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Formatting content in a list* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Using a split button list* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a custom search filter
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When a **List Search Filter** is used, the framework runs through the list items
+    and displays the items that match the filter text. Alternate text can also be
+    used with the search filter. The list item text is ignored when alternate text
+    is used. The search is a generic match and any occurrence of the search value
+    within the text is displayed in the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This recipe shows you how to use a search filter that can search both the list
+    item text and alternate text. It also shows you how to configure search filters
+    and also how to implement a custom search callback function that uses a custom
+    search logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/custom-search` sources folder.
+    This code can be launched using the URL `http://localhost:8080/06/custom-search/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, create the following list of Mobile platforms. The list items
+    also contain the OS manufacturer names in the attribute `data-filtertext`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the page to configure the default list options:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The following code snippet includes the list item text in the search text:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The custom search callback is defined as in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, create a list with `id='oslist'.` Add list items for the various
+    Mobile OS platforms as shown in the code. Create list items with the attribute
+    `data-role='list-divider'` and separate the list items as **Open Source** and
+    **Closed**. Add the OS manufacturer name as alternate search text by using the
+    `data-filtertext` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the given script to the page or the `<head>` tag of `main.html`. Set the
+    various list view configuration options like `theme='e'` and `inset='true'`. This
+    is a **read-only list** and the list items are shaded with a light yellow color.
+    Use the `dividerTheme='e'` option to theme the list divider items. The list divider
+    items are styled with a darker shade by the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, add the `filter=''true''` and `filterTheme=''e''` options to add a search
+    filter to the list and theme it with swatch `e`. Use the `filterPlaceholder` option
+    to specify a custom text for the search filter text control (the default is ''`Filter
+    Items...`''). Finally set a custom search call back function by setting the option
+    `filterCallback=customFilter`. The list is displayed as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The default search function in a list matches any occurrence of the search string
+    in the text. To override this, define the custom filter callback as shown in the
+    previous code. The function accepts two parameters, `text` and `searchValue` .
+    Create a regular expression to search for the occurrence of the `searchValue`
+    at the start of the word in the given text. The occurrence of the search value
+    in between a word is ignored. The regular expression is matched with the text
+    using the `match()` method. The `i` parameter makes it case insensitive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the `filtertext` attribute is used with a list item, the default search
+    uses only this text and ignores the list item text. To use both the list item
+    text and the filter text, add a `pageinit` event handler as shown in the previous
+    code. In this function, find each list item using the jQuery `find(''li).each()`
+    method and in the callback of `each()`, fetch the list item text and add it to
+    the filter text. This will not have any visible impact on the list item. But the
+    list item text is now part of the filter text and is thus available for the search
+    filter. So a search for **a** will list **Android** and **iOS** (the filtertext
+    has the value **Apple**). But this will not list **Symbian** or **Bada** which
+    contain **a** in between words as seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If you search for **Bo** it shortlists only **Boot2Gecko** as seen in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The search callback function returns a Boolean value and this indicates if the
+    text should be hidden by the search filter. So the search filter callback should
+    return `false` for all matching elements. Unmatched text elements return `true`
+    and get hidden by the search filter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using data-attribute to configure list divider themes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The recipe uses the `dividerTheme` option to theme the list divider item. You
+    can also use the `data-divider-theme` attribute as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using data-attribute to configure list search filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The recipe shows you how to use the `filter`, `filterTheme` and `filterPlaceholder`
+    options to configure the list view. These can also be set using the `data-filter`,
+    `data-filter-theme`, and `data-filter-placeholder` attributes as shown in the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Modifying a list with JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You can use JavaScript to dynamically modify a list and its contents. This recipe
+    shows you how to use JavaScript to add or remove list items in a read-only list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/06/scripting-lists` sources
+    folder. This code can be launched using the URL `http://localhost:8080/06/scripting-lists/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following code to create an empty list in a layout
+    grid:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to dynamically add or remove list items:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Add a two column layout grid to `main.html` using the attribute `class='ui-grid-b'`
+    on a `fieldset` container. Add an empty list with `id='numlist'` to the first
+    column. Add two buttons with the IDs `addBtn` and `removeBtn` to the second column.
+    On clicking these buttons, list items are dynamically updated to the empty list
+    in the first column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the given script to the page or the `<head>` section of `main.html`. In
+    the script, create an event handler for the `pagecreate` event which gets fired
+    before the page is fully initialized. Here, add an event handler for the `create`
+    event of the `listview` element. When the `listview` element is created, this
+    event is fired. In its callback function, bind the `click` event of the `addBtn`
+    and `removeBtn` buttons as shown in the previous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `addBtn`, when pressed, adds a list item to the list. The list item text
+    is kept in memory and incremented on adding new elements. The `removeBtn` when
+    pressed, fetches the most recent list item element that was added by calling the
+    jQuery `find('li').last()` method. This last element is removed by calling the
+    `remove()` method. Call the `refresh()` method on the **listview plugin** after
+    any modification to update the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the app is started, the display looks like the following screenshot with
+    an empty list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Pressing the **Add** button adds new list items to the list, as in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Pressing the **Remove** button removes the recently added list item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_06_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned in this recipe, you have to call the `refresh()` method on the
+    **listview plugin** after any modification. On adding new list items or on removing
+    list items, the `refresh()` method triggers an update of the list and applies
+    the necessary styles and enhancements on the list items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE

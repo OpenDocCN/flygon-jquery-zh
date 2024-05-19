@@ -1,0 +1,801 @@
+- en: Chapter 2. Creating Our First Game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you lay your eyes on an electronic device, chances are that there is a browser
+    running on it! You probably have more than one installed on each of your PCs and
+    some more running on your portable devices. If you want to distribute your games
+    to a wide audience for a minimal cost of entry, making it run in the browser makes
+    a lot of sense.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flash was for a long time the go-to platform for games in browsers, but it has
+    been losing speed in the last few years. There are many reasons for this and there
+    have been countless arguments about whether this is a good thing or not. There
+    is, however, a consensus on the fact that you can now make games run in the browser
+    without plugins at a reasonable speed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book will focus on 2D games as they are the ones that run well on current
+    browsers and the features they depend on are standardized. This means that an
+    update of the browser shouldn't break your games and that for the most part you
+    don't have to worry too much about difference between browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will, however, in the near future be able to develop modern 3D games, like
+    you would on a game console and have them run on browsers. If that's what you
+    thrive on, this book will provide you with fluency in the basic knowledge that
+    you will need to make those games.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating animated sprites
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Moving sprite around
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preloading assets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Main game loop implementation using a finite state machine
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic collision detection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does this book work?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Making games has this amazing advantage that you immediately see the result
+    of the code you just wrote move before your eyes. This is the reason why everything
+    you learn in this book will directly be applied to some practical examples. In
+    this chapter, we will write a small game together inspired by the classic *Frogger*.
+    In the following chapters, we will then make a platformer and a role playing game
+    (RPG).
+  prefs: []
+  type: TYPE_NORMAL
+- en: I really encourage you to write your own version of the games presented here
+    and modify the code provided to see the effects it has. There is no better way
+    of learning than to get your hands dirty!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's get serious – the game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The game we will implement now is inspired by *Frogger*. In this old school
+    arcade game, you played the role of a frog trying to cross the screen by jumping
+    on logs and avoiding cars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Let''s get serious – the game](img/5060OT_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In our version, the player is a developer who has to cross the network cable
+    by jumping packets and then cross the browser "road" by avoiding bugs. To sum
+    up, the game specifications are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the player presses the up arrow key once, the "frog" will go forward one
+    step.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By pressing the right and left arrow key, the player can move horizontally.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the first part (the network cable) the player has to jump on packets coming
+    from the left of the screen and moving to the right. The packets are organized
+    in lines where packets of each line travel at different speeds. Once the player
+    is on a packet, he/she will move along with it. If a packet drives the player
+    outside of the screen, or if the player jumps on the cable without reaching a
+    packet, he/she will die and start at the beginning of the same level once again.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the second part (the browser part) the player has to cross the browser screen
+    by avoiding the bugs coming from the left. If the player gets hit by a bug he/she
+    will start at the beginning of the same level once again.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are very simple rules, but as you will see they will already give us plenty
+    of things to think about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Learning the basics
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this book, we will use DOM elements to render game elements. Another
+    popular solution would be to use the Canvas element. There are plus and minus
+    points for both technologies and there are a few effects that are simply not possible
+    to produce with only DOM elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, for the beginner, the DOM offers the advantage of being easier to debug,
+    to work on almost all existing browsers (yes, even on Internet Explorer 6), and
+    in most cases to offer reasonable speed for games. The DOM also abstracts the
+    dirty business of having to target individual pixels and tracking which part of
+    the screen has to be redrawn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though Internet Explorer supports most of the features we will see in this
+    book, I would not recommend creating a game that supports it. Indeed, its market
+    share is negligible nowadays ([http://www.ie6countdown.com/](http://www.ie6countdown.com/))
+    and you will encounter some performance issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now from some game terminology, sprites are the moving part of a game. They
+    may be animated or nonanimated (in the sense of changing their aspect versus simply
+    moving around). Other parts of the game may include the background, the UI, and
+    tiles (we will look more into this in [Chapter 4](ch04.html "Chapter 4. Looking
+    Sideways"), *Looking Sideways*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Framework
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: During this book, we will write some code; part of the code belongs to an example
+    game and is used to describe scenes or logic that are specific to it. Some code,
+    however, is very likely to be reused in each of your games. For this reason, we
+    will regroup some of those functions into a framework that we will cleverly call
+    `gameFramework` or `gf` in short.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A very simple way to define a namespace in JavaScript is to create an object
+    and add all your function directly to it. The following code gives you an example
+    of what this might look like for two functions, `shake` and `stir`, in the namespace
+    `cocktail`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This has the advantage of avoiding collision with other libraries that use similar
+    names for their objects or functions. Therefore, from now on when you see any
+    function added to the namespace, it will mean that we think those functions will
+    be used by the other games we will create later in this book or that you might
+    want to create yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code is another notation for namespace. Which one you use is a
+    personal preference and you should really use the one that feels right to you!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Typically, you would keep the code of the framework in a JS file (let's say
+    `gameFramework.js`) and the code of the game in another JS file. Once your game
+    is ready to be published, you may want to regroup all your JavaScript code into
+    one file (including jQuery if you wish so) and minimize it. However, for the whole
+    development phase it will be way more convenient to keep them separate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sprites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sprites are the basic building blocks of your game. They are basically images
+    that can be animated and moved around the screen. To create them you can use any
+    image editor. If you work on OS X, there is a free one that I find has been particularly
+    well done, Pixen ([http://pixenapp.com/](http://pixenapp.com/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are many ways to draw sprites using the DOM. The most obvious one is
+    to use the `img` element. This causes several inconveniences. First, if you want
+    to animate the image you have two options, neither of which are exempt of drawbacks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can use animated gifs. With this method you have no way to access the index
+    of the current frame through JavaScript, and no control over when the animation
+    starts to play or when it ends. Furthermore, having many animated GIFs tends to
+    slow things down a lot.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can change the source of the image. This is already a better solution, but
+    provides worse performance if proposed and requires a large number of individual
+    images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Another disadvantage is that you cannot choose to display only one part of the
+    image; you have to show the entire image each time. Finally, if you want to have
+    a sprite made of a repeating image, you will have to use many `img` elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the sake of completeness, we should mention here one advantage of `img`;
+    it's really easy to scale an `img` element—just adjust the width and height.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The proposed solution uses simple divs of defined dimensions and sets an image
+    in the background. To generate animated sprites, you could change the background
+    image, but instead we use the background position CSS property. The image used
+    in this situation is called a sprite sheet and typically looks something like
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sprites](img/5060OT_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The mechanism by which the animation is generated is shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sprites](img/5060OT_02_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Another advantage is that you can use a single sprite sheet to hold multiple
+    animations. This way you will avoid having to load many different images. Depending
+    on the situation, you may still want to use more than one sprite sheet, but it's
+    a good thing to try to minimize their number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing animations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's very simple to implement this solution. We will use `.css()` to change
+    the background properties and a simple `setInterval` to change the current frame
+    of the animation. Therefore, let's say that we have a sprite sheet containing
+    4 frames of a walk cycle where each frame measures 64 by 64 pixels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we simply have to create a `div` with the sprite sheet as its background.
+    This `div` should measure 64 by 64 pixels, otherwise the next frame would leak
+    onto the current one. In the following example, we add the sprite to a `div` with
+    the ID `mygame`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As the background image is by default aligned with the upper-left corner of
+    the `div`, we will only see the first frame of the walk-cycle sprite sheet. What
+    we want is to be able to change what frame is visible. The following function
+    changes the background position to the correct position based on the argument
+    passed to it. Take a look at the following code for the exact meaning of the arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we have to call this at regular intervals to produce the animation. We will
+    use `setInterval` with an interval of 60 milliseconds, that is, around 17 frames
+    per second. This should be enough to give the impression of walking; however,
+    this really has to be fine-tuned to match your sprite sheet. To do this we use
+    an anonymous function that we pass to `setInterval`, which will in turn call our
+    function with the correct parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: You probably noticed that we're doing something special to compute the current
+    frame. The goal is to cover values from 0 to 3 (as they're 4 frames) and to loop
+    back to 0 when we reach 4\. The operation we use for this is called modulo (`%`)
+    and it's the rest of the integer division (also known as Euclidean division).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, at the third frame we have 3 / 4 which is equal to 0 plus a remainder
+    of 3, so 3 % 4 = 3\. When the frame number reaches 4 we have 4 / 4 = 1 plus a
+    remainder of 0, so 4 % 4 = 0\. This mechanism is used in a lot of situations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding animations to our framework
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As you can see there are more and more variables needed to generate an animation:
+    the URL of the image, the number of frames, their dimension, the rate of the animation,
+    and the current frame. Furthermore, all those variables are associated with one
+    animation, so if we need a second one we have to define twice as many variables.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The obvious solution is to use objects. We will create an animation object that
+    will hold all the variables we need (for now, it won't need any method). This
+    object, like all the things belonging to our framework, will be in the `gameFramework`
+    namespace. Instead of giving all the values of each of the properties of the animation
+    as an argument, we will use a single object literal, and all the properties that
+    aren't defined will default to some well-thought-out values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this, jQuery offers a very convenient method: `$.extend`. This is a very
+    powerful method and you should really take a look at the API documentation ([http://api.jquery.com/](http://api.jquery.com/))
+    to see everything that it can do. Here we will pass to it three arguments: the
+    first one will be extended with the values of the second one and the resulting
+    object will be extended with the values of the third.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To use this function we will simply create a new instance of it with the desired
+    values. Here you can see the values used in the preceding examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we didn't need to specify `width:` `64` because it's the default
+    value! This pattern is very convenient and you should keep it in mind each time
+    you need default values and also the flexibility to override them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can rewrite the function to use the animation object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we will create a function for our framework based on the technique we've
+    already seen, but this time it will use the new animation object. This function
+    will start animating a sprite, either once or in a loop. There is one thing we
+    have to be careful about—if we define an animation for a sprite that is already
+    animated we need to deactivate the current animation and replace it with the new
+    one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do this we will need an array to hold the list of all intervals' handles.
+    Then we'll only need to check if one exists for this sprite and clear it, then
+    define it again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will provide a convenient, flexible, and quite high-level way to set an
+    animation for a sprite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving sprites around
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we know how to animate a sprite, we need to move it around to make
+    it interesting. A few things are necessary for this; first, the div that we use
+    has to be positioned absolutely. This is very important for two reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's a nightmare for the developer to manipulate other positioning as soon as
+    the scene becomes complicated.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It's by far the least expansive way for the browser to compute the position
+    of an element.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What we want then is the sprite to be positioned relative to the div that holds
+    the game. This means that it too has to be positioned, absolutely, relatively,
+    or fixed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once those two conditions are met, we can simply use the `top` and `left` CSS
+    properties to choose where the sprite appears on the screen, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Moving sprites around](img/5060OT_02_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following code sets the correct parameters for the container div and adds
+    a sprite:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we will use this piece of code a lot, we will factor it into a function of
+    our framework event if it's trivial. As we did for the animation constructor,
+    we will use an object literal to define the optional arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will then write a function that moves a sprite along the x axis and another
+    one along the y axis. One typical convention in graphic programming is to have
+    the x axis going from left to right and the y axis going from top to bottom. Those
+    functions will take the ID of the element to move and the position to move it
+    to. To mimic the way some jQuery functions work, our functions will return the
+    current position of the sprite if you don't provide a second argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: With those three simple functions, you have all the basic tools that you need
+    to generate the graphics of your game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preloading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There is, however, one last thing that is required in most cases; asset loading.
+    To avoid starting the game before some of the images are loaded you need to load
+    them before. Most users expect the game to start loading only when they decide
+    to start it. Furthermore, they want some feedback about the progress of the loading
+    process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In JavaScript, you have the possibility to define, for each image, a function
+    that will be called once the image has finished loading. This, however, has a
+    limitation that it won't provide you with information about the other images.
+    And you can't simply define a callback for the last image that you start to run
+    as you have no guarantee about the order in which your images will load, and in
+    most cases images don't load one after the other, but rather a bunch at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many possible solutions, most of them equally good. As this code is
+    run in most cases only once and before the game starts, performance is not of
+    great concern here. What you really want is a robust, flexible system to know
+    when all the images are loaded and the possibility to track the overall progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our solution will use two functions: one to add images to a list of image to
+    preload and the other one to start the preloading.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This first function doesn't do a lot. It simply takes an URL, checks if it's
+    already present in the array where we store the images to preload, and if the
+    new image is not in the array, add it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next function takes two callbacks. The first one is called once all the
+    images are loaded and the second one (if defined) is called with the current progress
+    as a percentage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this function, we start by defining a new `Image` object for every URL that
+    was added to the list. They will automatically start loading. Then we define a
+    function that we will call at regular intervals. It will use the `complete` properties
+    of images to check if each image is loaded. If the number of loaded images equals
+    the total number of images, it means that we are done preloading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What could be useful is to automatically add the images used for animations
+    to the preload list. To do this, we just need to add three lines at the end of
+    the animation object in the following way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Initializing the game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The framework part of the game is done. Now we want to implement the graphics
+    and game logic. We can divide the game's code into two parts, one that will be
+    executed only once at the beginning, and one that will be called periodically.
+    We will call the first one the initialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This part should be executed as soon as the images are done loading; this is
+    the reason why we will pass it as the end callback for the `startPreloading` function.
+    This means that at the very beginning we need to add all the images that we will
+    use to the preload list. Then once the user launches the game (for example, by
+    clicking an image with the ID `startButton`) we will call the preloader.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code uses the standard jQuery way to execute a function once the
+    page is ready. I won't give you the complete code here because some of it is quite
+    repetitive, but I will give at least one example of each of the actions performed
+    here and you can always look at the complete source code if you're curious.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is a list of what we need to do in the initialize function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create the sprites that compose the game scene
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create the GUI elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following diagram shows how we will build our game scene:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Initializing the game](img/5060OT_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'No more than eight sprites: one for the background, one for the player, three
+    for the network packets, and three for the bugs. To make things simpler we will
+    use only one sprite for each band of packets/bugs. The three bands of packets
+    will have the same animation and the same for the three bands of bugs.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To avoid making the elements pop up as they are added, we will first add them
+    to an invisible element and make this element visible only once all the sprites
+    are created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only GUI element will be a small `div` containing the number of lives the
+    player has.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last line of this function is starting the main loop. The main loop is the
+    code that will be executed periodically. It contains most (if not all) of the
+    game logic that doesn't immediately depend on an input from the player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Main loop
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The main loop will typically contain a **finite** **state** **machine** **(FSM)**.
+    An FSM is defined by a series of states and the list of transitions from one state
+    to another. The FSM for a simple game where the player would have to click three
+    boxes that appear one after the other would look like the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Main loop](img/5060OT_02_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When you implement an FSM, you really need to consider two things: how the
+    game should behave in each state, and what conditions make the game transition
+    to a new state. The advantage of FSMs is that they provide a formal way to organize
+    your game logic. It will make it easier to read your code and you can add/or change
+    your logic at a later time if you need it. I would recommend you to first draw
+    the FSM for your game and keep it somewhere to help you debug your game.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For our *Frogger* game there are 10 states. The initial state is `START` and
+    the two final states are `GAMEOVER` and `WON`. Here is a description of what happens
+    exactly in each state:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All states: The packets and bugs move to the right'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`STARTPOS`: Nothing special happens'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`LINE1`: The player moves at the same speed as the packets of the first line;
+    if the player goes out of the screen it dies and goes back to `START`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`LINE2`: The player moves at the same speed as the packets of the second line,
+    if the player goes out of the screen it dies and goes back to `START`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`LINE3`: The player moves at the same speed as the packets of the third line,
+    if the player goes out of the screen it dies and goes back to `START`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`REST`: Nothing special happens'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`LINE4`: If the player gets hit by a bug from the line, it dies and goes back
+    to `REST`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`LINE5`: If the player gets hit by a bug from the line, it dies and goes back
+    to `REST`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`LINE6`: If the player gets hit by a bug from the line, it dies and goes back
+    to `REST`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`WON` and `GAMEOVER`: Nothing special happens'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'On all states except `WON` and `GAMEOVER` the player can move around. This
+    will trigger the following transitions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Successful jump: Go to the next state'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Successful left/right slide: Stay in the same state'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Failed jump of left/right slide: If the number of remaining lives is greater
+    than zero, go back to the last "safe" state (`START` or `REST`), otherwise transition
+    to `GAMEOVER`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Main loop implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The most readable way to write an FSM is to use switch statements. We will use
+    two, one in the main loop to update the game, and the other in the part that handles
+    keyboard input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code is an extract of the main loop. We first initiate a few variables
+    that we will need to define the behavior of the game, and then code the FSM described
+    in the preceding section. To move the packets and bugs we will use a trick and
+    simply change the `background-position`. This is a less flexible solution than
+    the function that we wrote earlier, but in this situation it is faster and makes
+    it easy to give the impression of an infinite number of elements with a single
+    sprite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this point, the game displays all the moving parts. There still isn't any
+    way for the player to control its avatar. To do this we will use the `keydown`
+    event handler. We will implement two different solutions to move the sprite around.
+    For the horizontal movement, we will use the `gf.x` function that we wrote earlier.
+    This makes sense because it's a very small movement, but for the vertical jump
+    we will use `$.animate` to make the avatar move to its destination in many steps
+    and create a more fluid movement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we start to check the state of the game to be sure that the player is allowed
+    to move. Then we check which key was pressed. The left and right parts are self-explanatory,
+    but the jump part is subtler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We need to check the state of the game to find out where the player should jump.
+    Then we use a callback that we pass to the `animate` function in order to update
+    the state of the game only once the animation is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That''s it, you can now control the player. If you jump on a packet the player
+    will move with it, and when you reach the end you will win the game. However,
+    you may have noticed we forgot something important: there is no way for the player
+    to die! To add this feature we will need to detect whether the player is at a
+    place that is safe or not.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Collision detection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We will use some sort of collision detection, but a very simple version that
+    is designed only for this situation. In the later chapters, we will see more general
+    solutions, but this isn't necessary here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are six spots where collision detection matters in this game; the three
+    lines of packets in the first part, and the three lines of bugs in the second
+    part. Both represent the exact same situation. There is a succession of elements
+    separated by some empty space. The distance between each element is constant along
+    with its size. We don't need to know on which packet the player has jumped or
+    which bugs hit the player, what matters is only if the player stands on a packet
+    or if he/she was hit by a bug.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this reason we will use the **modulo technique** we used before to reduce
+    the problem complexity. What we will consider is the following situation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Collision detection](img/5060OT_02_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: To know if the player touches the element or not we just need to compare its
+    x co-ordinate with the element position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code does just that. First, it checks the game state to know what
+    collision to detect (if any), then uses modulo to bring the player back to the
+    simplified situation we want to consider. And finally, it checks the coordinates
+    of the player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There is one small thing you have to be careful about: modulo can have a negative
+    value. This is why we check for this and simply add the width of the repeating
+    part to go back to a positive value.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a pretty fast way to detect the solution and there are many such cases
+    where you can design your own collision detection and make it very efficient because
+    you know exactly what to check in your particular situation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we can call this method in our game. There are two places where this should
+    be done: in the main loop and in the input handler. When we detect that the player
+    died, we need to decrease its life and move it to the right place. Furthermore,
+    we want to detect that the player has no more life and change the game''s state
+    to `GAMEOVER` in this situation. The following function does just that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can add the collision detection in the main loop. We will need to check
+    for another thing: the player shouldn''t go out of the screen in one of the packets.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the input handler, we will add the code into the callback executed at the
+    end of the jump animation. For example, to check collision for a jump from the
+    start to the first line we will write the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here you see why we didn't use `gameState` in the `kill` function. In this situation,
+    the player is still in its previous state. It still hasn't "landed" so to say.
+    Only if the jump was safe, we will change the player's state to the next line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have a game that completely implements the specification that we defined
+    at the beginning of the chapter. The code is not yet optimized and that will be
+    the subject of our next chapter, but to make a game that is nice to play it would
+    really need more polish. You could add a high-score system, integration with social
+    networks, and sound and touch device compatibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will cover those topics and more in the future chapters. However, there
+    are a lot of things you can do with what you have already learned now to make
+    the game better: you may want to add an animation for when the player dies, a
+    nicer GUI, nicer graphics, the ability to jump back, and more than one level.
+    It''s these small things that will make your game stand out and you should really
+    invest a big part of your time to give this professional finish to your game!'
+  prefs: []
+  type: TYPE_NORMAL

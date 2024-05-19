@@ -1,0 +1,1279 @@
+- en: Chapter 8. Events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using orientation events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using scroll events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using touch events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using virtual mouse events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using page initialization events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using page load and remove events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using page change events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using page transition and animation events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using layout events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework provides specific events in addition to the default
+    native events for both desktop and mobile platforms. It allows you to bind to
+    these events using the jQuery `bind()` or `live()` method, and thus allows you
+    to perform custom actions. This chapter shows you how to use the events that are
+    available in the jQuery Mobile framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using orientation events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework triggers an `orientationchange` event when the orientation
+    (**portrait** or **landscape**) of the mobile device is changed. This recipe shows
+    you how to use the `orientationchange` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/orientation` sources folder.
+    You can launch this code by using the URL `http://localhost:8080/08/orientation/main.html`
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carry out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html` as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add script to handle the `orientationchange` event in the `<head>` section:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` with page content, as shown in the preceding code snippet.
+    Add the given script and bind the `orientationchange` event to a callback function.
+    Here, set the current orientation of the device to the `h1` header of the page.
+    You can get the device orientation by using the `data.orientation` property of
+    the callback function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the page loads, change the orientation of the device; the header text will
+    show **portrait** or **landscape** based on the current orientation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In platforms where the orientation property is not supported (`$.support.orientation`
+    is `false`), or when the `$.mobile.orientationChangeEnabled` global configuration
+    is set to `false`, the framework binds the resize event handler to handle the
+    orientation change of the device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The orientationChangeEnabled global configuration
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can configure the `$.mobile.orientationChangeEnabled` configuration in the
+    `mobileinit` event handler, which gets invoked at the start of your app. This
+    must be done before including the `jquery.mobile.js` script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using scroll events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you scroll, the jQuery Mobile framework fires the scrollstart event. When
+    you stop scrolling the `scrollstop` event is triggered. This recipe shows you
+    how to use these two events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/scroll` sources folder.
+    You can launch this code by using the URL `http://localhost:8080/08/scroll/main.html`
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carry out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with the page content `div` styled with a large value for
+    its height, so that the scroll bars appear:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to handle the `scroll` events:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` as shown in the preceding code. Add a `div` container with
+    a `height` of `1000px` to the page content. This will make the vertical scroll
+    bars appear. Now, add the given script to the `<head>` section of the page. Bind
+    the `scrollstart` event to a callback function that updates the page header text.
+    Similarly bind the `scrollstop` event to a callback function that updates the
+    header text. Now, scroll the page holding the vertical scroll bar handle. You
+    can see the page header text showing `"Scrolling now..."`, and when you stop or
+    pause scrolling, the text is updated to `"Scrolling done!"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There is an issue as to how the `scrollstart` event works on iOS devices. DOM
+    manipulation is not allowed during scroll, and the event gets queued and triggered
+    as soon as the scrolling stops. So keep this in mind when you work with scroll
+    events on iOS devices. You will have to have to make your changes before scrolling
+    starts and not as soon as it starts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using touch events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework provides five touch events. They are the `tap` ,
+    `taphold` , `swipe` , `swipeleft` , and `swiperight` events. The tap event is
+    fired when you tap the screen. If the tap duration is longer, the `taphold` event
+    is fired first and then the `tap` event is fired after you lift your finger. When
+    you swipe across the screen, the `swipe` event is fired first and then the `swipeleft`
+    or `swiperight` events are fired, based on the direction of your swipe action.
+    This recipe shows you how to use these touch events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this recipe, a yellow box is shown where you last tapped the screen. A green
+    box is created each time you tap and hold. You can also see how the swipe action
+    works by swiping a blue bar to the left or right edge of the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/touch` sources folder. You
+    can launch this code by using the URL `http://localhost:8080/08/touch/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The steps to be followed are
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `main.html`, define the following styles in the `<head>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the page content with two `<div>` tags styled with the blue bar and yellow
+    box:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section, to handle the `tap` and `taphold`
+    events:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, handle the `swipe`, `swipeleft`, and `swiperight` events:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add the `style` tag and define the `box`, `yellow`, `green`,
+    and `blue` classes. Add an empty `div` tag with `id="movingbox"`, and set the
+    attribute `class="box yellow"`. This creates a `60px` wide yellow-colored square.
+    Next, add an empty `div` tag with `id="edgebar"`, and set the attribute `class="box
+    blue"`. This creates a `60px` `wide blue bar on the edge of the screen as shown
+    in the following screenshot. The yellow box is hidden below the blue bar as it
+    has a lower `z-index` value.`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`![How it works...](img/7225_08_01.jpg)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Now add the given script to the `<head>` section of `main.html`. Bind each
+    of the five touch events to callback functions as shown. If the tap duration is
+    long, then it is `taphold`. So, define a Boolean `tapholdflag` to track whether
+    the `tap` event was `taphold` or not. Set this to `true` in the `taphold` event
+    handler, and clear it after the `tap` event is fired.`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`In the callback of the `tap` event, first check if `tapholdflag` is already
+    set. If so, then this is a `taphold` event. Create a new green box and call the
+    `"` `create"` method as shown. If the `tapholdflag` is `false`, then this is a
+    simple tap. Update the new position of the yellow box, and trigger the `"refresh"`
+    method. Finally, clear `tapholdflag` and set it to `false`.`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`You can get the tap location by using the `event.clientX` and `event.clientY`
+    parameters. Set these values to the `left` and `top` style attributes of the box
+    to update its position. The screen looks similar to the following screenshot after
+    a few `tap` and `taphold` events:`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`![How it works...](img/7225_08_02.jpg)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Now, bind the `swipe` event to a callback function and configure the `swipe`
+    event properties as shown in the code. The code shows you how to configure the
+    `scrollSupressionThreshold`, `durationThreshold`, `horizontalDistanceThreshold`,
+    and `verticalDistanceThreshold` properties.`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Bind the `swipeleft` event to a callback to set the `left` and `top` style
+    attributes of the blue bar and call the `"refresh"` method. This will move the
+    bar to the left edge of the screen. Similarly, bind the `swiperight` event to
+    a callback to set the `right` and `top` style attributes of the blue bar, and
+    call `"refresh"`. This will move the bar to the right edge of the screen. Now,
+    when you swipe towards the right side of the screen, the bar moves to the right
+    edge, as shown in the following screenshot; swipe towards the left side, and the
+    bar moves back to the left edge:`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`![How it works...](img/7225_08_03.jpg)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`There''s more...`'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`In the code, the callback for the `swipe` event shows you how to configure
+    the `swipe` event properties. The available configurations are as follows:`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '``scrollSupressionThreshold` (`10px` by default): The swipe distance must be
+    more than this value for the event to be fired, else it is a `scroll` event`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '``durationThreshold` (`1000ms` by default): If the swipe duration is more than
+    this value, then the `swipe` event is prevented from being fired`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '``horizontalDistanceThreshold` (`30px` by default): The horizontal swipe distance
+    must be more than this value for the event to be fired`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '``verticalDistanceThreshold` (`75px` by default): The vertical swipe distance
+    must be less than this value for the event to be fired`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`The tapholdThreshold property`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`The `tap` event is fired whenever you tap the screen. If the tap duration
+    exceeds a certain value (`750ms` by default), then this is treated as a `taphold`
+    event. You can configure this duration by setting the `$.event.special.tap.tapholdThreshold`
+    property as follows:`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`Note`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`The default `tap` event configurations work well for most of the platforms.
+    So modify them only if you have a very strong reason to do so.`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`See also`'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`The *Using virtual mouse events* recipe`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`# Virtual mouse events'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework provides virtual `mouse` or `vmouse` events to abstract
+    the mouse and touch events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You don''t have to write separate handlers for the touch and mouse events for
+    each of the supported platforms or devices. You just have to write the event handlers
+    for the `vmouse` events and this will work across various platforms. There are
+    seven `vmouse` events supported by the framework: `vmousemove` , `vmouseover`
+    , `vmouseout` , `vmousedown` , `vmouseup` , `vclick` , and `vmousecancel` . This
+    recipe shows you how to use these `vmouse` events.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/vmouse` sources folder.
+    You can launch this code by using the URL `http://localhost:8080/08/vmouse/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The steps to be followed are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with content having seven `div` tags for the seven `vmouse`
+    events, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to handle the `vmousemove`,
+    `vmouseover`, and `vmouseout` events:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, handle the `vmousedown`, `vmouseup`, and `vclick` events:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, handle the `vmousecancel` event, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html`, and add seven empty `divs` to display the event locations
+    for each of the seven `vmouse` events. Add the given script and bind the callback
+    functions for each of the `vmouse` events, as shown in the `pageinit` event handler.
+    Use the `e.clientX` and `e.clientY` values of the event parameter passed to the
+    callback function to get the location of the `vmouse` event. When you load the
+    page and move the mouse around performing various mouse actions described, the
+    screen is displayed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: When the mouse is moved (or on a `touchmove` event), the `vmousemove` event
+    is triggered. The `vmouseover` event is triggered when the move action is done
+    over an element to which the event is bound. The `vmouseout` event is triggered
+    when the `move` action goes out of the element to which the event is bound. In
+    the preceding code, the `vmouseout` event is bound to the `h1` header. Move your
+    mouse over the header and out of it to see this parameter get updated on the screen.
+    The `vmousedown` event is triggered when the mouse is clicked (or on a `touchstart`
+    event). The `vmouseup` event follows the `down` event when the click is over (`touchend`
+    event). The `vclick` event is triggered along with the `vmousedown` and `vmouseup`
+    event on the click or tap action. In the `vmousedown` event handler, you can use
+    the `event.which` attribute to find which mouse button was clicked. This value
+    is `0` for a `tap` event. You can try and click the different buttons on your
+    mouse to see the screen update accordingly. Finally, the `vmousecancel` event
+    is triggered when there is a mouse or touch event that is canceled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The framework provides the following three configurations for the `vmouse`
+    events:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$.vmouse.moveDistanceThreshold` (`10px` by default): If the move is more than
+    this value, then it is a `scroll` event. The `vmousecancel` event gets called
+    and the `TouchMove` event gets canceled.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.vmouse.clickDistanceThreshold` (`10px` by default): If a `vmouse` click
+    event was already captured, it is in the block list. Then, all `vmouse` clicks
+    less than this distance are ignored.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`$.vmouse.resetTimerDuration` (`1500ms` by default): If the interval between
+    `vmouse` clicks is more than this duration, then it is not a touch event. `Scroll`,
+    `TouchMove`, and `TouchEnd` events use this. The block list is cleared.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The default `vmouse` configurations work well for most of the platforms. So
+    modify them only if you have a very strong reason to do so.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Mouse coordinates
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This recipe shows you to use the `event.clientX` and `event.clientY` properties
+    to get the mouse coordinates. You can also get the screen and page coordinates
+    using the `event.pageX` , `event.pageY`, `screen.pageX`, and `screen.pageY` attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using vclick events on touch devices
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: On touch devices, the `webkit` browsers are known to process click events after
+    a lag of about 300ms after the `touchend` event is triggered. This delay could
+    result in a different target being selected if the underlying object or background
+    were to change within this gap. Another issue would be to match the event with
+    the corresponding target due to the time lag; for example, when using `event.preventDefault()`.
+    To avoid these issues on touch devices, use the `click` event instead of the `vclick`
+    event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using touch events* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Page initialization events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework provides the **page plugin** which automatically
+    handles page initialization events. The `pagebeforecreate` event is fired before
+    the page is created. The `pagecreate` event is fired after the page is created
+    but before the widgets are initialized. The `pageinit` event is fired after the
+    complete initialization. This recipe shows you how to use these events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/pageinit` sources folder.
+    You can launch this code using the URL `http://localhost:8080/08/pageinit/main.html`
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carry out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with three empty `<div>` tags as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to handle the `pagebeforecreate`
+    event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, handle the `pagecreate` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, handle the `pageinit` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add three empty `divs` to the page content as shown. Add the
+    given script to the page. In the script, `str` is an HTML string for creating
+    an anchor link with the `data-role="button"` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the callback for the `pagebeforecreate` event, and set `str` to the `div1`
+    container. Since the page was not yet created, the button in `div1` is automatically
+    initialized and enhanced as seen in the following image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the callback for the `pagecreate` event. Select the previous anchor button
+    in `div1` using the jQuery `find()` method, and set its `data-icon` attribute.
+    Since this change was made after page initialization but before the button was
+    initialized, the `star` icon is automatically shown for the `div1` button as shown
+    in the following screenshot. Finally, add the callback for the `pageinit` event
+    and add `str` to both the `div2` and `div3` containers. At this point, the page
+    and widgets are already initialized and enhanced. Adding an anchor link will now
+    show it only as a native link without any enhancement for `div2`, as shown in
+    the following screenshot. But, for `div3`, find the anchor link and manually call
+    the `buttonmarkup` method on the button plugin, and set its icon to `star`. Now
+    when you load the page, the link in `div3` gets enhanced as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can trigger `"create"` or `"refresh"` on the plugins to let the jQuery Mobile
+    framework enhance the dynamic changes done to the page or the widgets after initialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Page initialization events fire only once
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The page initialization events fire only once. So this is a good place to make
+    any specific initializations or to add your custom controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Do not use $(document).ready()
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `$(document).ready()` handler only works when the first page is loaded or
+    when the DOM is ready for the first time. If you load a page via Ajax, then the
+    `ready()` function is not triggered. Whereas, the `pageinit` event is triggered
+    whenever a page is created or loaded and initialized. So, this is the best place
+    to do post initialization activities in your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Page load and remove events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework triggers the page load events whenever an external
+    page is loaded into the DOM. It fires the `pagebeforeload` event before loading
+    the page and then fires either the `pageload` or `pageloadfailed` event based
+    on the status of the page load. The `pageremove` event is fired when a page is
+    removed from the DOM. This recipe shows you how to use the page load and page
+    remove events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/pageload` sources folder.
+    You can launch this code using the URL `http://localhost:8080/08/pageload/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carry out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with four buttons and an empty `div` element, as shown in
+    the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to handle the `pagebeforeload`
+    event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, handle the `pageload` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, handle any error with the `pageloadfailed` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Also handle the `pageremove` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, create a dialog with `id="dialog"` as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, create `page1.html` with a button to go back to `#main`, as shown
+    in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, create the `#main` page and add four anchor links with the `data-role="button"`
+    and `data-inline="true"` attributes, to create four inline buttons. These links
+    point to `page1.html`, `page2.html`, `page3.html`, and `page4.html`. Also add
+    an empty `div` container with `id="msgdiv"` to display the messages. Next, add
+    a dialog with `id="dialog"` to `main.html`. Finally, create only `page1.html`,
+    as shown, with a link to return back to the main page. The other three pages are
+    not created. Bind the page load and page remove events to callback functions as
+    given in the script. These callback functions have two parameters available. The
+    first is the `event` object and the second is the `data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the callback of the `pagebeforeload` event, get the `url`, `absUrl` (absolute
+    URL), `dataUrl` (the data URL), and `options.type` properties from the `data`
+    object. Display them in the `msgdiv` container. The `options` object is the same
+    that gets passed into the `$.mobile.loadPage()` call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the callback of the `pageload` event, get the `xhr.status` (the jQuery `XMLHttpRequest`
+    object) and `textStatus` attributes that indicate page load success and display
+    them in the `msgdiv` container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the `pageloadfailed` callback function to display the `data.xhr.status`
+    and `data.errorThrown` properties on page load error. Finally, add the `pageremove`
+    callback function and display a message that the page was removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, when you initially load the app and click on the **Page 1** button to
+    open `page1.html`, the `pagebeforeload` event is triggered first, then the `pageload`
+    event is fired after the page is fully loaded. Navigate back to the main page
+    and this triggers the `pageremove` event. You can see these messages displayed,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, in the `pagebeforeload` event handler, use a regular expression search
+    to check whether the page requested or the `data.url` is `page2.html` (which does
+    not exist). Display a custom error message if `page2.html` was requested. Also
+    prevent any further action on this request by calling `event.preventDefault()`.
+    The `data.deferred.reject()` method must be finally called to reject the deferred
+    object reference contained in the data object. Now, when you click on the **Page
+    2** button, the `pageloadfailed` event is not triggered, as shown in the following
+    screenshot, and the custom error message **ABORTED!!! page2.html does not exist.**
+    is displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Click on the **Page 3** button; it now tries to load `page3.html`, which is
+    not present, and displays an **Error Loading Page** default error message overlaid
+    on the current page, as shown in the following screenshot. You can also see the
+    messages from the `pageloadfailed` event handler here. There was no custom event
+    handling done in this case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Finally, add code in the `pagebeforeload` callback function to search for `page4.html`
+    in the `data.url` object. If the string was found, redirect the request to load
+    the `#dialog` dialog. Also, display a custom message if `page4.html` was requested.
+    Now, to prevent the default action on `pagebeforeevent`, call the `event.preventDefault()`
+    method. You must also call the `data.deferred.resolve()` method to resolve the
+    deferred object reference contained in the `data` object. Then, open the `#dialog`
+    page by passing it as the parameter to the `resolve` method, as shown in the code.
+    Now, when you click on the **Page 4** button, the custom error dialog popup is
+    displayed. When you close the dialog, your custom message **ABORTED!!! error dialog
+    shown instead.** is displayed, as shown in the following screenshot. You will
+    note that the `pageloadfailed` event callback function did not get called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you prevent the default page load events by calling the `event.preventDefault()`
+    method, then you must inform the framework to resume processing other `changePage()`
+    requests once you are done. You can do this by calling the `reject()` or `resolve()`
+    methods on the `data.deferred` object passed to the callback function of the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using loadPage() to load a page* recipe in [Chapter 9](ch09.html "Chapter 9. Methods
+    and Utilities"), *Methods and Utilities*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Page change events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework triggers page change events whenever a page is loaded
+    by the `$.mobile.changePage()` method into the DOM. The `pagebeforechange` event
+    is fired first, before the page changes. Then, either the `pagechange` event (on
+    success) or the `pagechangefailed` event (on failure) is fired. This recipe shows
+    you how to use the page change events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/pagechange` sources folder.
+    You can launch this code using the URL `http://localhost:8080/08/pagechange/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carry out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with two links to open two dialogs and an empty `div` element
+    in its page content, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to handle the `pagebeforechange`
+    event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, handle the `pagechange` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, handle any error with the `pagechangefailed` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Finally, create the `#dialog1` dialog as follows. The second dialog, `#dialog2`,
+    is not created.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add two anchor links with `data-role="button"` to the content
+    of the `#main` page. These links point to the `#dialog1` and `#dialog2` dialogs.
+    Also, add an empty `div` container with `id="msgdiv"` to display the messages.
+    Finally, add only one dialog with `id="dialog1"` to `main.html`. Add an empty
+    `div` container with `id="dialogdiv"` to this dialog. The other dialog is not
+    created. Bind the page change events to the callback functions as given in the
+    script. These call back functions have two parameters available. The first is
+    the `event` object and the second is the `data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the callback of the `pagebeforechange` event, get the `data.toPage` (target
+    page) attribute. This can either be a string or an object. Check if this is an
+    object (if it has the `toPage` attribute) and then use the `data.toPage.data-url`
+    string. Display the `toPage` message in both the message `div` containers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the callback of the `pagechange` event, get the `data.fromPage` (source page)
+    attribute. Check again whether this is an object or a string and display the `data.fromPage.data-url`
+    string if it is an object in both the message `div` containers. Also, the `data.options`
+    object has properties, such as `transition`, that you can use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, in the callback for the `pagechangefailed` event, display a custom
+    error message. When the page loads for the first time, you can see the following
+    image. The text **main** is shown for **toPage**; there is no **fromPage** here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Click on the **Dialog 1** button and the following dialog box will be shown.
+    The **toPage** value is **dialog1** and **fromPage** is **main**. The transition
+    that was used is shown as **pop**, which is the default transition for the dialog:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Close this dialog box, and the `#main` page opens , which displays a message
+    similar to the one shown in the following screenshot. **toPage** is **main** and
+    **fromPage** is **dialog1**. The transition used is again shown as **pop**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Finally, click on **Dialog 2** button; since `#dialog2` does not exist, the
+    custom error message **PAGE CHANGE FAILED** is shown, as you can see in the following
+    screenshot, from the `pagechangefailed` callback:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can prevent the default page change action by calling the `event.preventDefault()`
+    method in the `pagebeforechange` event handler. You can redirect the navigation
+    to another page here using the `$.mobile.changePage()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sequence of pagechange event
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After the `pagebeforechange` event is triggered, the `changePage()` request
+    loads the page into the DOM, and then the transition of the page occurs. The `pageshow`
+    and `pagehide` events are triggered at this point. Finally, the `pagechange` event
+    is fired only after this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Using changePage() to change a page* recipe in [Chapter 9](ch09.html "Chapter 9. Methods
+    and Utilities"), *Methods and Utilities*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Page transition and animation events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'During page navigation, the current page transitions out and the new active
+    page transitions in. Animation is used where supported. The jQuery Mobile framework
+    triggers four page transition events during page navigation, which are listed
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`pagebeforehide`: This event is triggered before the current page is hidden'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pagehide`: This event is fired once the current page is hidden'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pagebeforeshow`: This event is fired before the new active page is shown'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pageshow`: This event is triggered once the active page is shown'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can also access the `animationComplete` plugin to perform custom actions
+    as soon as the animation is completed. This recipe shows you how to use the page
+    transition events and also how to use the `animationComplete` plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/transition` sources folder.
+    You can launch this code using the URL `http://localhost:8080/08/transition/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carry out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html`, and add `#main` page with a link to open the `#page` page
+    and an empty `div` container, as shown in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#page` page, as follows, with a button to go back to `#main` and
+    an empty `div` container to display messages:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section, to clear the message `div`
+    containers whenever a link is clicked:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Handle the `pagebeforeshow` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Handle the `pagebeforehide` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Handle the `pageshow` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Handle the `pagehide` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the callback function for the `animationComplete()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` and add an anchor link with `data-role="button"` to the content
+    of the `#main` page. This link opens the `#page` page in `main.html`. Create the
+    `#page` page, as shown with a link to go back to `#main`. Add empty `#msgdiv`
+    and `#pagediv` containers to the pages respectively, to display messages. Bind
+    the `click` event of the anchor link in the `pageinit` event handler, and clear
+    any previously displayed messages. This callback is triggered whenever you click
+    on the links in the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, bind the four page transition events to their callback functions as given
+    in the script. These callback functions have two parameters available. The first
+    is the `event` object and the second is the `data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the callback of the `pagebeforeshow` event, get the `data.prevPage` (previous
+    page) object. This can be empty on first load. Check if it is available (if it
+    has the `prevPage` attribute) and use the `data.prevPage.data-url` string. Display
+    the `prevPage` message in both the message `div` containers. Use similar logic
+    in the callback for the `pagehide` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, in the callback of the `pagebeforehide` and `pagehide` events, obtain
+    and display the `data.toPage` (source page) property. Finally, invoke the `animationComplete`
+    plugin and define the `anim` callback function, as shown in the `pagebeforehide`
+    event handler. Write code in the `anim()` function to display a simple **ANIMATION
+    DONE!!!** message in both the div containers, as shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the page loads for the first time, you can see the following image with
+    the `pagebeforeshow` and `pageshow` event handlers being called. `prevPage` is
+    undefined at this point of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Click on the **Page 1** button to open `#page`. You can see messages from the
+    `pagebeforehide` and `pagebeforeshow` event handlers saying that **Current Page**
+    is **page** and **Previous Page** is **main**. Then, you can see the **ANIMATION
+    DONE!!!** message from the `animationComplete()` callback. The page is visible
+    at this point, and the messages from the `pagehide` and `pageshow` events can
+    also be seen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Click on the **Go Back** button. Now, `#main` is shown and the messages are
+    displayed as before. This time, **Current Page** is **main** and **Previous Page**
+    is **page**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'On first load, the `pagebeforeshow` and `pageshow` event handlers show an empty
+    `data.nextPage` object. To display proper values on first load, these two events
+    must be bound to their callback functions in the `mobileinit` handler, when the
+    page loads and before loading the `jquery.mobile.js` script file, as shown in
+    the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Configuring the default transitions* recipe in [Chapter 7](ch07.html "Chapter 7. Configurations"),
+    *Configurations*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using layout events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Components, such as list views and collapsible blocks, are dynamically resized
+    by user interactions. This could cause overlap of controls or positioning issues.
+    To prevent this, these components trigger the `updatelayout` event, and the jQuery
+    Mobile framework updates the entire document and ensures that all components are
+    laid out correctly. This recipe shows you how to use the `updatelayout` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/08/layout` sources folder.
+    You can launch this code by using the URL `http://localhost:8080/08/layout/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Carry out the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create `main.html` with three collapsible blocks and a `<div>` container, as
+    shown in the following code snippet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section, to handle the `updatelayout`
+    event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add a `div` container with `id="msgdiv"` to the page content.
+    Add three collapsible blocks with the `data-collapsed="false"` attribute. Add
+    the given script to bind the `pageshow` event (which gets fired on page show),
+    to an event handler. Here, bind the `updatelayout` event to a callback function.
+    In this callback, use the `event.target.innerHTML` property to get the text of
+    the collapsible block on which the `updatelayout` event was called. Display it
+    in the `msgdiv` block as shown. Now, when you load the page, the three collapsible
+    blocks are seen expanded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Click on the first block that says **Tallest Mountain**. You will see it collapse
+    and `msgdiv` text being updated to show **updatelayout on: Mt. Everest**, as shown
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_08_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The jQuery Mobile framework updates the layout and adjusts the positions as
+    required for most of the scenarios when you add or manipulate components or toggle
+    their visibility in your page. You have to trigger the `create` or `refresh` method
+    on these elements. But there may be occasions in which the framework does not
+    handle the positioning properly when you add or manipulate controls or toggle
+    their visibility. In such cases, you can trigger the `updatelayout` event and
+    inform the framework to update all components and reposition them. You can do
+    this by using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]`'
+  prefs: []
+  type: TYPE_NORMAL

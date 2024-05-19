@@ -1,0 +1,408 @@
+- en: Chapter 3. The Publish/Subscribe Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will showcase the Publish/Subscribe Pattern, a design pattern
+    quite similar to the Observer Pattern but with a more distinct role that is a
+    better fit for more complex use cases. We will see how it differs from the Observer
+    Pattern and how jQuery adopted some of its concepts and brought them to its Observer
+    Pattern implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Later, we will proceed and rewrite our previous chapter's example using this
+    pattern. We will use this pattern's benefits to add some extra features and also
+    reduce the coupling of our code with the elements of the web page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduce the Publish/Subscribe Pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how it differs and what advantages it has over the Observer Pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how jQuery brings some of its features to its methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to emit custom events with jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rewrite and extend the example from [Chapter 2](part0018_split_000.html#H5A42-e8d3cd3d052d4ee0b4673af57a64ddef
+    "Chapter 2. The Observer Pattern"), *The Observer Pattern*, using this pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing the Publish/Subscribe Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Publish/Subscribe Pattern is a Messaging Pattern where the emitters of the
+    messages, called the **publishers**, multicast messages to a number of recipients,
+    called the **subscribers**, that have expressed their interest in receiving such
+    messages. The key concept of this pattern, which is also commonly referred to
+    as the Pub/Sub Pattern in short, is to provide a way to avoid dependencies between
+    the publishers and their subscribers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An extra concept of this pattern is the use of **topics** that are used by the
+    subscribers in order to express that they are only interested in messages of a
+    specific type. This way, publishers filter subscribers before sending a message
+    and distribute that message only to the appropriate ones, thereby reducing the
+    amount of traffic and work required on both sides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing the Publish/Subscribe Pattern](img/00013.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Another common variant is to use a central, application-wide object, known as
+    the **broker**, that relays messages produced by the publishers to the relevant
+    subscribers. The broker, in this case, acts as a well-known message handler to
+    send and subscribe to message topics. This enables us, instead of coupling different
+    application parts together, to only reference the broker itself and also the topic
+    that our components are interested in. Even though topics might not be an absolute
+    requirement in the first variant of this pattern, this variant plays an essential
+    role in scalability since there will commonly exist way less brokers (if not just
+    one) than publishers and subscribers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing the Publish/Subscribe Pattern](img/00014.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: By following a subscription scheme, the code of the publisher is completely
+    decoupled from the subscribers, meaning that the publisher does not have to know
+    the objects depend on them. As a result, we do not need to hard code to the publisher
+    each separate action that should be executed on the different parts of our application.
+    Instead, the components of an application, and possibly third-party extensions,
+    subscribe to be notified only about topics/events that they need to know. In such
+    distributed architecture, adding a new feature to an existing application requires
+    minimal to no changes to the application components it depends on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it differs from the Observer Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The most basic difference is that, by definition, the Pub/Sub Pattern is a one-way-Messaging
+    Pattern that can also pass a message, unlike the Observer Pattern that just describes
+    how to notify the observers about a specific state change on the subject.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, unlike the Observer Pattern, the Pub/Sub Pattern with a broker results
+    in more loosely coupled code for the different parts of an implementation. This
+    is because the observers need to know their subject that is emitting the events;
+    however, on the other hand, the publishers and their subscribers only need to
+    know the broker that is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it is adopted by jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Once again, the jQuery library provides us with a convenient way to take advantage
+    of the Pub/Sub Pattern in our code. Instead of extending its API by adding new
+    methods specifically named "publish" and "subscribe" and introducing new concepts,
+    the developers decided to extend the `jQuery.fn.on()` and `jQuery.fn.trigger()`
+    methods with the ability to handle and emit custom events. This way, jQuery can
+    be used to implement a publisher/subscriber communication scheme using the already
+    known convenient methods it provides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom events in jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Custom events allow us to use almost any user-defined string value as a common
+    event that we can add listeners for, and also manually fire it on page elements.
+    As an extra but a precious feature, custom events can also carry some extra data
+    to be delivered to the listeners of the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery library added its own custom events implementation, before it was
+    actually added to any web specification. This way, it was proved how useful they
+    can be when used in web development. As we saw in the previous chapter, in jQuery,
+    there is a specific part of the implementation that handles both the common element
+    event and also custom events. The `jQuery.event` object holds all the internal
+    implementations related to firing and listening to events. Also, the `jQuery.Event`
+    class is a dedicated wrapper that jQuery uses for the needs of both the common
+    element events and its custom events implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing a Pub/Sub scheme using custom events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous chapter, we saw how the `jQuery.fn.on()` method can be used
+    to add event listeners on elements. We also saw that its implementation is maintaining
+    lists with the added handlers and notifying them when required. Moreover, the
+    event name seems to have the same coordination purpose, just like the topic. This
+    implementation semantics seem to match exactly with the Pub/Sub Pattern as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `jQuery.fn.trigger()` method actually uses the internal `jQuery.event.trigger()`
+    method that is used to fire events in jQuery. It iterates over the internal handlers
+    list and executes them with the requested event along with any extra parameters
+    that the custom event defines. Once again, this also matches the operation requirements
+    of the Pub/Sub Pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a result, `jQuery.fn.trigger()` and `jQuery.fn.on()` seem to match the needs
+    of the Pub/Sub Pattern and can be used instead of separate "publish" and "subscribe"
+    methods, respectively. Since they are both available on the `jQuery.fn` object,
+    we can use these methods on any jQuery object. This jQuery object will act as
+    an intermediate entity between the publishers and the subscribers, in a way that
+    perfectly aligns with the definition of the broker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good common practice, which is also used by a lot of jQuery plugins, is to
+    use the outermost page element that holds the implementation of the application
+    or the plugin as the broker. On the other hand, jQuery actually allows us to use
+    any object as a broker, since all that it actually needs is a target to emit an
+    observe for our custom events. As a result, we could even use an empty object
+    as our broker such as `$({})`, in case using a page element seems too restricting
+    or not clean enough according to the Pub/Sub Pattern. This is actually what the
+    jQuery Tiny Pub/Sub library does, along with some method aliasing, so that we
+    actually use methods named "publish" and "subscribe" instead of jQuery's "on"
+    and "trigger". For more information on Tiny, you can visit its repository page
+    at [https://github.com/cowboy/jquery-tiny-pubsub](https://github.com/cowboy/jquery-tiny-pubsub).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Demonstrating a sample use case
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In order to see how the Pub/Sub Pattern is used, and make it easy to compare
+    it with the Observer Pattern, we are going to rewrite the dashboard example from
+    [Chapter 2](part0018_split_000.html#H5A42-e8d3cd3d052d4ee0b4673af57a64ddef "Chapter 2. The
+    Observer Pattern"), *The Observer Pattern*, using this pattern. This will also
+    clearly demonstrate how this pattern can help us decouple the individual parts
+    of an implementation and make it more extendable and scalable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Pub/Sub on the dashboard example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Just like in our previous implementation, we use `$(document).ready()` in order
+    to delay the execution of our code until the page has been fully loaded. First
+    of all, we declare our broker and assign it to a new variable on the `window`
+    object so that it is globally available on the page. For our application's broker,
+    we are using a jQuery object with the outermost container of our implementation,
+    which in our case is the `<div>` element with the `dashboardContainer` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even though using global variables is generally an anti-pattern, we store the
+    broker into a global variable since it is an important synchronization point of
+    the whole application and must be available for every piece of our implementation,
+    even to those that are stored in separate `.js` files. As we will discuss in the
+    next chapter about the Module Pattern, the preceding code could be improved by
+    storing the broker as a property of the application's namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to implement the category selector, we are first observing the `<select>`
+    element for the `change` event. When the selected category changes, we create
+    our message using a plain JavaScript object with the `value` of the selected `<option>`
+    stored in the `categoryID` property. Then, we publish it in the `dashboardCategorySelect`
+    topic using the jQuery `jQuery.fn.trigger()` method on our broker. This way, we
+    move from a UI element event to a message with application semantics that contains
+    all the required information. Right below, in our subscriber's code, we are using
+    the `jQuery.fn.on()` method on our broker with the `dashboardCategorySelect` topic
+    as a parameter (our custom event), just like we would do to listen for a simple
+    DOM event. The subscriber then uses the `categoryID` from the received message,
+    just like we did in the implementation of the previous chapter, to display the
+    appropriate category items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following the same approach, we split the code that handles adding and closing
+    information boxes in our dashboard in publishers and subscribers. For the needs
+    of this demonstration, the message of the `categoryItemOpen` topic contains just
+    the name of the category we want to open. However, in an application where the
+    box content is retrieved from a server, we would probably use a category item
+    ID instead. The subscriber then uses the category item name from the message to
+    create and insert the requested information box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, the message for the `categoryItemClose` topic contains the index
+    of the box that we want removed. Our publisher uses the `jQuery.fn.closest()`
+    method to traverse the DOM and reach the child elements of our `boxContainer`
+    element and then uses the `jQuery.fn.index()` method to find its position among
+    its siblings. The subscriber then uses `jQuery.fn.eq()` and the `boxIndex` property
+    from the received message to filter and remove only the requested information
+    box from the dashboard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In a more complex application, instead of the box index, we can associate each
+    information box element with a newly retrieved `jQuery.guid` using a mapping object.
+    This will allow our publisher to use that `guid` in the message instead of the
+    (DOM-related) element index. The subscriber will then search the mapping object
+    for that `guid` in order to locate and remove the appropriate box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we are trying to demonstrate the advantages of the Pub/Sub Pattern, this
+    implementation change was not introduced in order to ease the comparison with
+    the Observer Pattern and is instead left as a recommended exercise for the reader.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To summarize the above, we used the `dashboardCategorySelect`, `categoryItemOpen`,
+    and `categoryItemClose` topics as our application-level events in order to decouple
+    the handling of the user actions from their origin (the UI element). As a result,
+    we now have dedicated reusable pieces of code that manipulate our dashboard's
+    content, which is equivalent to abstracting them into separate functions. This
+    allows us to programmatically publish a series of messages so that we can, for
+    example, remove all the existing information boxes and add all the category items
+    of the currently selected category. Alternatively, even better, make the dashboard
+    show all the items of each category for 10 seconds and then move to the next one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending the implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to demonstrate the scalability that the Pub/Sub Pattern brings with
+    it, we will extend our current example by adding a counter with the number of
+    boxes that are currently open in the dashboard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Extending the implementation](img/00016.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'For the counter implementation, we will need to add some extra HTML to our
+    page and also create and reference a new JavaScript file to hold the counter implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the HTML page of the example, we will need to add an extra `<div>` element
+    to hold our counter and some description text. For our counter, we are using an
+    `<output>` element, which is a semantic HTML5 element ideal to present results
+    of user actions. The browser will use it just like a normal `<span>` element,
+    so it will appear right next to its description. Also, since there is initially
+    a hint box open in our dashboard, we use a `1` for its initial content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: For the counter implementation itself, all we need to do is add an extra subscriber
+    to the dashboard's broker, which is globally available to other JavaScript files
+    loaded in the page, since we have attached it to the `window` object. We are simultaneously
+    subscribing to two topics, by passing them space delimited to the `jQuery.fn.on()`
+    method. Right after this, we locate the counter `<output>` element that has the
+    ID `dashboardItemCounter` and parse its text content as a number. In order to
+    differentiate our action, based on the topic that the message has received, we
+    use the `event` object that jQuery passes as the first parameter to our anonymous
+    function, which is our subscriber. Specifically, we use the `type` property of
+    the `event` object that holds the topic name of the message that was received
+    and based on its value, we change the content of the counter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the event object that jQuery provides, you can visit
+    [http://api.jquery.com/category/events/event-object/](http://api.jquery.com/category/events/event-object/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, we could also rewrite the code that prevents accidental double-clicks
+    on the category item buttons. All that is needed is to add an extra subscriber
+    for the `categoryItemOpen` topic and use the `categoryName` property of the message
+    to locate the pressed button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using any object as a broker
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While in our example we used the outermost container element of our dashboard
+    for ourbroker, it is also common to use the `$(document)` object as a broker.
+    Using the application's container element is considered a good semantic practice,
+    which also scopes the emitted events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we described earlier in this chapter, jQuery actually allows us to use any
+    object as a broker, even an empty one. As a result, we could instead use something
+    such as `window.broker = $({});` for our broker, in case we prefer it over using
+    a page element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By using newly constructed empty objects, we can also easily create several
+    brokers, in case such a thing would be preferred for a specific implementation.
+    Moreover, in case a centralized broker is not preferred, we could just make each
+    publisher the broker of itself, leading to an implementation more like the first/basic
+    variant of the Pub/Sub Pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since in most cases, a declared variable is used to access the application's
+    broker within a page, there is little difference between the above approaches.
+    Just choose the one that better matches your team's taste, and in case you change
+    your mind at a later point, all you have to do is use a different assignment on
+    your `broker` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using custom event namespacing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As a closing note for this chapter, we will present, in short, the mechanism
+    that jQuery provides for namespacing custom events. The main benefit of event
+    namespacing is that it allows us to use more specific event names that better
+    describe their purpose, while also helping us to avoid conflicts between different
+    implementation parts and plugins. It also provides a convenient way to unbind
+    all the events of a given namespace from any target (element or broker).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A simple example implementation will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: For more information, you can visit the documentation page at [http://docs.jquery.com/Namespaced_Events](http://docs.jquery.com/Namespaced_Events)
+    and the article at [https://css-tricks.com/namespaced-events-jquery/](https://css-tricks.com/namespaced-events-jquery/)
+    from the CSS-Tricks website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we were introduced to the Publish/Subscribe Pattern. We saw
+    its similarities with the Observer Pattern and also learned its benefits by doing
+    a comparison of the two. We analyzed how the more distinct roles and the extra
+    features that the Publish/Subscribe Pattern offers make it an ideal pattern for
+    more complex use cases. We saw how jQuery developers adopted some of its concepts
+    and brought them to their Observer Pattern implementation as custom events. Finally,
+    we rewrote the example from the previous chapter using the Publish/Subscribe Pattern,
+    adding some extra features and also achieving greater decoupling between the different
+    parts and page elements of our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have completed our introduction to how the Publish/Subscribe Pattern
+    can be used as a first step to decouple the different parts of an implementation,
+    we can move on to the next chapter where we will be introduced to the Module Pattern.
+    In the next chapter, we will learn how to separate the different parts of an implementation
+    into independent modules and how to use namespacing to achieve better code organization
+    and define a strict API to achieve communication between the different modules.
+  prefs: []
+  type: TYPE_NORMAL

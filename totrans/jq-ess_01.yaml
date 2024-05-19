@@ -1,0 +1,334 @@
+- en: Chapter 1. jQuery Part by Part
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery is hands down the most popular JavaScript library on the Internet. According
+    to [http://builtwith.com](http://builtwith.com), it is used by over 87% of the
+    websites that use a JavaScript library. That is an amazing amount of penetration.
+    It is hard to believe that jQuery has only been around since 2006.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will start to get you familiar with jQuery. We will cover
+    the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why was jQuery created?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The major components of jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why are there two maintained versions of jQuery?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a content delivery network?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Life before jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 2006 may not seem that long ago, but it is almost a lifetime in Internet years.
+    If you don't agree, think about what kind of cellphone you had then, if you had
+    one. At that time, the four most popular browsers were Internet Explorer, Firefox,
+    Safari, and Opera. What about Chrome? It didn't exist yet, and it wouldn't come
+    along until late 2008\. Internet Explorer, used by over 80% of users, was by far
+    the most popular.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At that time, Microsoft didn't seem too concerned with being standards-compliant.
+    Why should they? They had over 80% of the market. If a website had to choose,
+    they usually chose to work with IE. But the winds of change were already blowing.
+    80% might seem like an insurmountable lead, but two years ago, it was over 90%.
+    The other browsers, led by Firefox, were slowly but surely chipping away at that
+    lead. Lots of people, including developers, were switching to alternative browsers
+    and they wanted websites that worked on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, writing web applications is tough now and it was worse then.
+    JavaScript is not the friendliest programming language around. But JavaScript
+    was not the problem; browsers were the problem. The same code ran on different
+    browsers and behaved differently. On one, it ran perfectly; on another, it crashed,
+    leaving users frustrated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To understand how differences in browser implementations could result in lots
+    of extra work for developers, let''s take a look at implementing a JavaScript
+    Ajax call. In 2006, the **W3C** (**World Wide Web Consortium**) standards didn''t
+    cover the `XMLHttpRequest` object that lies at the heart of all Ajax requests.
+    Microsoft invented the technology way back in 1999 with Internet Explorer version
+    5\. Unfortunately, they chose to implement it as an ActiveX control. ActiveX was
+    a proprietary Microsoft technology, so there was no way other browsers could implement
+    it in the same way. Mozilla, Safari, and Opera chose to implement it as an object
+    attached to the global window. So, in order to add Ajax to a website that could
+    work on all browsers, developers had to write, test, and maintain twice as much
+    code as they should: a set of code for IE and another set of code for everybody
+    else.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Are you thinking how hard could it be to detect whether the browser was IE
+    and do something different? Well, you are right it isn''t that hard to detect
+    which browser your code is running, but it is hard to do it reliably because browsers
+    can lie. According to the W3C standard, the way to detect the browser is simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This property is supposed to return the name of the browser, but if you try
+    it on Chrome, Safari, or Internet Explorer, they all return the same value, "Netscape".
+    What gives? As I already said, browsers can lie.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
+    for all the Packt Publishing books you have purchased. If you purchased this book
+    elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'During the 90s, websites began to detect which browsers were visiting them.
+    At that time, there were really only three browsers: Netscape Navigator, Microsoft''s
+    Internet Explorer and the browser that started it all, NCSA Mosaic. Mosaic was
+    created by the National Center for Supercomputing Applications at the University
+    of Illinois Urbana-Champaign. At this time, the real battle for browser supremacy
+    raged between Microsoft and Netscape. The companies fought by adding new features
+    to their browsers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the features that Netscape added to their browser was the frame element.
+    It was very popular. Many websites of the time would only use the frame element
+    if the browser was Netscape Navigator. They checked for Netscape either using
+    `window.navigator.appName` or by `window.navigator.userAgent`. Navigator's code
+    name was Mozilla, which was included in the user agent string. Later, when Microsoft
+    added the frame element to IE, websites continued to not serve frame-based content
+    to IE since they only identify the browser by name, not by feature detection.
+    So, IE began to lie. It returned Netscape from `window.navigator.appName` and
+    included Mozilla in its user agent. Now, for historical compatibility, many other
+    browsers lie too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two ways to deal with browser compatibility issues. The first way
+    is the one we''ve already shown: browser detection. Browser detection is tougher
+    than you think, and it can have unintended side effects, just like the failure
+    of websites to serve frames to IE even after it supported them. The second technique
+    is feature detection, also known as property sniffing. Before you use a feature,
+    you should make sure the browser supports it. While this is usually more difficult
+    code to write, it is much more beneficial to users. If the feature isn''t supported
+    in one version of a browser, it may be supported in the next. Feature detection
+    is the method used in jQuery.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Best practice**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use feature detection, not browser detection. If you need to write code to detect
+    a feature yourself instead of using jQuery or some other third-party solution
+    such as Modernizr, always use feature detection and never use browser detection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why was jQuery created?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the major reasons for the creation of jQuery was to free developers from
+    having to check the entire myriad of features, which were implemented differently
+    on the available browsers. In fact, jQuery's motto is "write less, do more". One
+    of the goals of jQuery is to free developers from writing plumbing code and concentrate
+    on adding functionalities to their websites instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The major components of jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Looking at the jQuery API page, [http://api.jquery.com](http://api.jquery.com),
+    for the first time can be mind-numbing. It lists over 300 different methods. Don't
+    freak out; there is a method to the madness. Most of the API methods can be divided
+    into just a few categories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The DOM selection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: These are the methods that give jQuery its name. They help find the element
+    or elements that you are looking for in the **document object model** (**DOM**).
+    If you know browser JavaScript, you are probably thinking what is the big deal?
+    It has always been possible to query the DOM. There are `document.getElementById`,
+    `document.getElementsByClassName`, and so on. But the interface of jQuery is much
+    cleaner than any of these methods. jQuery uses CSS-style selectors to parse the
+    DOM, and it consistently returns a jQuery object as an array of zero or more elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The document methods return different things depending on which method you call.
+    If you call `document.getElementById`, it returns either an element object or
+    null if the element is not found. For `document.getElementsByClassName`, it returns
+    `HTMLCollection`, an array-like object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM manipulation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once you have found an element, you will usually want to modify it somehow.
+    jQuery has an extensive set of manipulation methods. The built-in document methods
+    can't compare. jQuery's methods allow you to delete or replace markups. You can
+    also insert a new markup before, after, or surrounding the old markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Being able to handle events is crucial to creating a dynamic website. While
+    modern browsers all pretty much follow the standards, this wasn't the case a few
+    years ago. jQuery makes it possible to support both modern and old browsers from
+    the same code base.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Form
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A good number of websites on the Internet have one or more forums to send user
+    information back to a web server. These methods make it easier to send the information
+    back to a server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS and animation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: CSS methods are convenience methods and aid the handling of classes and the
+    locations and dimensions of elements. Unlike the built-in JavaScript methods,
+    they do far more than simply reading the class attributes' string; they allow
+    you to add, remove, toggle, and check for the presence of a class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animation methods are simple but add polish to your website. No longer do you
+    have to settle for a markup, which appears or disappears; now, it fades in or
+    out or even slides in or out. And if you are so inclined, you can use jQuery's
+    effect framework to create your own custom animation effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ajax
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we've already discussed, Ajax is one of the main features of jQuery. Even
+    if you don't need to support legacy browsers, jQuery's Ajax methods are much cleaner
+    than those of the browser. They also have built-in support for asynchronous success
+    and error functions and even return a JavaScript promise object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Helpers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The final, main group of jQuery methods is about helper functions, such as `.each()`,
+    to iterate over a collection. jQuery also adds methods to determine the type of
+    a JavaScript object, and it functions strangely missing from the language. Plus,
+    it adds other methods that don't fit neatly into a category.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why are there two maintained versions of jQuery?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: After nearly 7 years of development, jQuery was beginning to show its age. The
+    1.8 version was a major release and included a rewrite of the Sizzle Selector
+    Engine and improvements to the animations, but more was needed. There were some
+    inconsistencies in the interface, there were lots of deprecated methods, and there
+    was lots of code in need of thorough cleaning. So, the version 1.9 release consisted
+    of jQuery and the jQuery Migrate plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery development team believed 1.9 was such a huge change that they created
+    the jQuery Migrate plugin to help ease the transition. The Migrate plugin included
+    all of the deprecated methods, which sounds weird, but in its development version,
+    it console logged the use of deprecated methods. This gave developers a working
+    site and a way to know what things needed to be fixed. The production version
+    doesn't do any extra logging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The 2.0 version came out a few months later, and it brought a friend. The development
+    team, continuing to address both the platform's weight and speed, decided to drop
+    support for all versions of Internet Explorer below 9\. A great deal of code in
+    jQuery was written specifically for the quirks in older versions of Internet Explorer.
+    The difference was dramatic. The minimized version of jQuery 1.10 is 93 KB, while
+    the minimized version of jQuery 2.0 clocks in at 83 KB, a nearly an 11% reduction
+    in size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, for now and the foreseeable future, there will be two versions of jQuery:
+    the 1.x version that supports most browsers, including Internet Explorer versions
+    6, 7, and 8\. The 2.x version supports all modern browsers, including IE versions
+    9 and higher. It is important to note that both versions have the same API, though
+    their internals are different.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The difference between minified and un-minified versions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'For each branch of jQuery, there are two versions: minified and un-minified.
+    The un-minified version is intended only for development. It allows you to easily
+    step through jQuery code while debugging and gives more meaningful stack traces.
+    The minified version should be used in production. It has undergone minification,
+    which removes all of the unnecessary whitespace and renames of JavaScript variables
+    and internal methods. Minification decreases the download time of the file. The
+    development version of jQuery 2.1.1 is 247 KB, while the production version is
+    only 84 KB.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Should the need ever arise to debug the minified version of jQuery, you can
+    download the source map file. A source map allows you to have access to the original
+    debug information and is supported by all modern browsers, including IE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is a content delivery network?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The faster your site loads, the more visitors are encouraged to return later.
+    Another way to speed up your load time is to use a **content delivery network**,
+    or **CDN**. The magic of a CDN is twofold. First, CDNs are usually located on
+    edge servers, which means that rather than being hosted at a single physical location,
+    they are located at multiple locations across the Internet. This means they can
+    be found and downloaded faster. Second, browsers will usually cache static files
+    on the user's machine, and loading a local file is orders of magnitude faster
+    than downloading it from the Internet. CDNs are used by lots of companies, big
+    and small. So, it is possible that one of them is using the same copy of jQuery
+    that your site needs and has already cached it locally on the user's machine.
+    So, when your site asks for it, voila, it is already there, and your site gets
+    a nice performance boost for free.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Modern browsers are far more capable than their nearly forgotten ancestors.
+    It would be easy for a new web developer to wonder why jQuery exists. In this
+    chapter, we explored the reasons for its existence by taking a look at what web
+    development was like before jQuery. We then broke jQuery's API into easy-to-digest
+    major components. We learned why it makes sense for jQuery to have two maintained
+    versions and why each version has two different forms. In the next chapter, we
+    will start digging into the API and learn how to write selectors and filters.
+  prefs: []
+  type: TYPE_NORMAL

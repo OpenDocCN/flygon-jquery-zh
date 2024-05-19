@@ -1,0 +1,912 @@
+- en: Chapter 4. Looking Sideways
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's now time to make a more complex game. We will implement a very popular
+    genre, that of the 2D platform game. Some early examples of this genre are *Super
+    Mario Bros* and *Sonic the Hedgehog*. These games are typically built using small
+    repetitive sprites, called tile maps, for the level design. We will add these,
+    as well as a more general collision detection, to our framework. For the game
+    logic itself we will use object-oriented code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is a quick list of the features we will have to add to our framework:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Offline divs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Groups
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sprite transformation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tile maps
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Collision detections
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will first begin by going through all of these, and will then start with
+    the game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Offline divs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As explained at the end of the previous chapter, avoiding reflow is a good way
+    to speed things up. It's not always easy to completely avoid querying the state
+    of the DOM during your manipulations. And even if you are very careful, as a framework
+    developer, you are never sure what the user of your framework will do. However,
+    there is a way to reduce the negative effect of a reflow; detach the piece of
+    DOM you are working on, modify it, and then attach it back to the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s say you have a node with the ID `box` and want to manipulate its child
+    elements in a complex manner. The following code shows you how to detach it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This requires a small modification of our framework's API; until now, we used
+    a string to identify sprites. This has the side effect of requiring the sprite
+    to be part of the document. For example, if you call `gf.x("sprite")`, jQuery
+    will try to find a node with the ID `sprite` in the document. If you detach the
+    sprite or one of its parents, the function won't find its ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution is simply to provide the DOM node itself to our framework's functions.
+    As we use jQuery, we will wrap this node in jQuery. Let's compare the current
+    API and the proposed one for the `gf.x` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This solution has another advantage; it allows for further optimization. If
+    we look at the implementation of this function, we will find another problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that each time the function is called, jQuery is used to retrieve
+    the element. Any access to the DOM (even using the element's ID in the selector)
+    to find the element has a performance cost. Ideally, if the concerned element
+    is used more than a few times, you may want to cache it to improve performance.
+    This is made possible with the proposed API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The implementation is pretty straightforward, so we will only show the `gf.x`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Groups
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'It''s very convenient to organize the elements of your game in a hierarchical
+    manner. A typical game could be organized this way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Groups](img/5060OT_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: To allow this, we need to add a very simple thing called groups to our framework.
+    A group is basically a simple div, positioned exactly like a sprite, but has no
+    background and no width and height. We will add a `gf.addGroup` function to do
+    this for us. Its signature will be the same as that of `gf.addSprite`, but the
+    options argument will only hold *x* and *y* coordinates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following example shows you how to generate the tree shown in the previous
+    figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The implementation of this function is very similar to that of `gf.addSprite`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Having multiple entities on our game screen makes it necessary to have a simple
+    way to differentiate between them. We could use a flag in the object literal associated
+    with the node through the `$.data` function, but we will instead use CSS classes.
+    This has the advantage of making it very easy to retrieve or filter all the elements
+    of one type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To implement this, we just have to change the fragments for sprites and groups.
+    The name we will give to the CSS class will be namespaced. Namespacing in CSS
+    is simply done with a prefix in the class name. For example, we will give our
+    sprites the class `gf_sprite`; this will minimize the chance that another plugin
+    uses the same class, in contrast to, say, `sprite`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The new fragment will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now if you want to find all the children that are sprites, you can write something
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Sprite transformation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are many situations where you will want to transform your sprites in simple
+    ways. You may want, for example, to make them bigger or smaller or to rotate or
+    flip them. The most convenient method for doing this is by using CSS transforms.
+    In the last few years, CSS transforms have become well supported by most browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you decide to use this feature, you just have to realize that versions before
+    Microsoft Internet Explorer 9 do not support it. There is the possibility to use
+    the proprietary `filter` CSS property, but in most cases, it's way too slow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another possibility is that of using a technique used in some of the old 8-bit
+    and 16-bit games. You can simply generate the images for the transformed sprite.
+    This has the advantage of being very fast and being compatible with all browsers.
+    On the other hand, it will increase the size of your artworks and requires you
+    to regenerate all the transformations if you need to change your sprite at some
+    point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will here only implement the CSS transform solution because in most situations
+    it's acceptable to target modern browsers only.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS transform
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are many transformations that are possible in CSS, even 3D ones (you can
+    take a look at [https://github.com/boblemarin/Sprite3D.js](https://github.com/boblemarin/Sprite3D.js)
+    for some very good examples of this), but we will stick to rotation and scaling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In most browsers, the CSS property "transform" is vendor prefixed. This means
+    that in Safari, for example, it will be called `-webkit-transform`, and in Firefox,
+    `-moz-transform`. Working with properties of this kind used to be a real pain,
+    but with jQuery 1.8, you can simply forget about it and act as if there was no
+    prefix. jQuery will take care of using the correct prefix where it needs it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As explained before, there are many values that this property can take, and
+    we will focus on two here: `rotate` and `scale`. The syntax for `rotate` is as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, `angle` is a clockwise angle expressed with its unit, either degrees or
+    radians (abbreviated respectively as **deg** and **rad**). The rotation is done
+    around the origin of the element, by default, its center. This is what you want
+    in a game most of the time, but if you want to change it for some reason, you
+    can simply use the `transform-origin` CSS properties to do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, if you want to rotate your element 10 degrees counterclockwise
+    you would write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It would look like this if your element were a red square:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![CSS transform](img/5060OT_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The way `scale` works is very similar, but it has two possible syntaxes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`transform: scale(ratio)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`transform: scale(ratio_x, ratio_y)`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you specify only one value, the result will be an isotropic transformation;
+    in other words, of equal magnitude along both axes. On the contrary, if you specify
+    two values, the first will scale along the x axis and the second one along the
+    y axis (anisotropic transformation). The following figure illustrates the difference
+    between those two.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![CSS transform](img/5060OT_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In our case, we will not include arbitrary anisotropic scaling into our framework,
+    but we will still use the two-value syntax because it will allow us to flip our
+    sprites; indeed, if we write `scale(-1,1)`, this will in effect mean "flip the
+    element along the x axis (horizontally) and leave it unchanged along the y axis".
+    Of course, this works with values other than 1; as long as the magnitude of the
+    two values is the same, you will only flip the sprite and not change its aspect
+    ratio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These two values for the transform property work well together, so if you wanted
+    to rotate an element 10 degrees counterclockwise, flip it vertically, and make
+    it twice as large, you would write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding transform to the framework
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now we have to write a function that does this for us. As with most of our
+    framework''s functions, we will use an object literal to hold the optional arguments
+    and give the node to which the function applies as a first argument. A call to
+    this function to generate the example is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The angle is in degrees and the `flipH` and `flipV` options are Boolean values.
+    The values of the omitted parameters (`flipH`, in this example) won''t default
+    to a general value; what we will do instead is to take the current value of this
+    parameter for the given element. This will allow you to call the transform function
+    twice and change two different parameters without having to know what the other
+    call is doing. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will, however, mean that we won't be able to use the `$.extend` function
+    like we used to. Instead, we will have to manually check the stored value of the
+    undefined parameters for the given elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These values will be stored in the object literal associated with the `gf`
+    key, which is associated with our element that has the `$.data` function. That
+    also means that we will need to define the default value for those properties
+    when we create the sprite (or group). For example, the `addSprite` function will
+    start with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once you''ve understood the way in which the CSS `transform` property works,
+    the implementation of our `gf.transform` function will be pretty straightforward:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once again, this is a simple function that will provide great functionality
+    and allow us to create neat effects in our games. Depending on your game, you
+    may want to add the anisotropic scaling to it or even 3D transform, but the basic
+    structure and API of the function can remain the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tile maps
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Tile maps are a very common tool for making lots of games. The idea behind it
+    is that most levels are made of similar parts. The ground, for example, is likely
+    to repeat itself a lot, with a few variations; there will be a few kinds of different
+    trees repeated many times, and a few items such as stones and flowers or grass
+    will appear many times, represented by the exact same sprite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that using one big image to describe your level is not the most efficient
+    solution size-wise. What you really want is to be able to give a list of all the
+    unique elements and then describe how they are combined to generate your level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tile maps are the simplest implementation of this. They add a constraint though;
+    all elements must be of the same size and placed on a grid. If you can work with
+    those constraints, this solution becomes very efficient; that's the reason why
+    so many old games were created with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will start by implementing a very naive version of it and then show, at the
+    end of the chapter, how we can make it faster in most situations without too much
+    work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To sum up, a tile map is made up of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A series of images (what we call animations in our framework)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A bi-dimensional array describing what image goes where
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following figure illustrates this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Tile maps](img/5060OT_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In addition to being useful for reducing the size of your game, tile maps offer
+    the following advantages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting collisions with a tile map is very easy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The array that describes how the tile map looks also contains semantic information
+    about the level. For example, tiles 1 to 3 are ground tiles, while 4 to 6 are
+    part of the scenery also. This will allow you to easily "read" the level and react
+    to it.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It's very simple to generate random variation of levels. Just create the bi-dimensional
+    array with a few rules, and your game will be different each time the player starts
+    again!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lots of open-source tools exist that help you create them.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'However, you have to realize that there are some constraints too:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As all the elements composing the tile map have the same size, if you want to
+    create a bigger element, you will have to decompose it into smaller parts, which
+    could be tedious.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Even if done with a lot of talent, it will give a certain continual look to
+    your game. If you want to avoid having some blocks that repeat around your level,
+    tile maps are not for you.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Naive implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We already know how to create a sprite, so basically what we need in order to
+    create a tile map is to generate the sprites that compose it. Just like `gf.addSprite`,
+    our `gf.addTilemap` function will take the parent div, the ID of the generated
+    tile map, and an object literal describing the options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The options are the position of the tile map, the dimension of each tile, and
+    the number of tiles that compose the tile map horizontally and vertically, the
+    list of animations, and the bi-dimensional array describing the tile position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will iterate through the bi-dimensional array and create the sprite as needed.
+    It''s often convenient to have places without sprites in our tile map, so we will
+    use the following conventions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If all the entries have zeroes, it means that no sprites need to be created
+    at this place
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If all the places have a number greater than zero, it means that a sprite with
+    an animation at the index corresponding to this number minus one in the animation
+    array should be created
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is typically a place where you want to create your complete tile map before
+    adding it to the document. We will use a cloned fragment to generate the `div`
+    tag holding all the tiles and add to it the cloned fragment we used for sprites
+    too. Only once all the tiles are created will we add the tile map to the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is one more subtlety here. We will add two classes to our tiles, one
+    that marks which columns the tile belong to, and another that marks which row
+    it belongs to. Other than that, there are no big subtleties in the code for now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it for now. This will generate the whole tile map at initialization time.
+    This means that very large tile maps will be slow. We will see at the end of the
+    chapter how to generate only the part of the tile map that is visible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Collision detection
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This is a very important part of our framework, and we will start by looking
+    at how we will do this for the case of a sprite colliding with the tile map. This
+    situation has the advantage of being easier than the general case, but still using
+    most of the same basic ideas. We will, however, stick with axis-aligned elements.
+    This means that collision with rotated elements will not be shown here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Colliding with tile maps
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Finding which tiles of a tile map collide with a sprite can be divided into
+    two parts. First find a box representing the intersection of the two. Then, list
+    all the sprites in this box. A list of some of the possible intersections is shown
+    in red in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Colliding with tile maps](img/5060OT_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This may at first seem complicated, but it becomes much easier if you consider
+    that it's the exact same problem as finding two one-dimensional intersections
+    (one for each axis).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You may not have realized it, but we used a simplified version of one-dimensional
+    intersections in our *Frogger* clone to detect collisions. The following figure
+    shows what a typical one-dimensional intersection, **i**, of two segments, **a**
+    and **b**, would look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Colliding with tile maps](img/5060OT_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In this situation, the intersection is simply the second element as it''s completely
+    contained in the first one. The following figure shows you three other possible
+    situations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Colliding with tile maps](img/5060OT_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: One way to solve the problem is to express the solution from the point of view
+    of the second element. Two points will define the interval; let's call the left-most
+    point `i1` and the right-most `i2`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's first consider the situation where such an intersection really exists,
+    where the two elements are touching. You will probably see that `i1` is the bigger
+    point between `a1` and `b1`. In the same manner, `i2` is the smaller point between
+    `a2` and `b2`. However, what if the two intervals don't intersect? We will simply
+    return `i1=b1` and `i2=b1` if the interval `a` is at its left, and `i1=b2` and
+    `i2=b2` if the interval `a` is at its right. To compute this, we just have to
+    constrain the result for `i1` and `i2` between `b1` and `b2`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The resulting function would look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The good part is that we only use two comparisons for each point. Now we can
+    apply this to our two-dimensional problem. The following figure shows you how
+    to decompose the box intersection into two line intersections:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Colliding with tile maps](img/5060OT_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Finding the colliding tiles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now we will write a function that takes a sprite and a tile map. It will then
+    find the intersections for both axes: x1 to x2 and y1 to y2\. Now the point (x1,
+    y1) will be the upper-left corner of the intersection box, and the point (x2,
+    y2) will be the lower-right corner.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, what we really want for tile maps is not the coordinates but the indexes
+    in the bi-dimensional array. Therefore, we will first transform the coordinate
+    so that the point of origin is the upper-left corner of the tile map. Then, we
+    will divide the new coordinates according to the width and the respective height
+    of a single tile. After rounding the result of this operation, we will have the
+    indexes of the upper-left and lower-right tiles that compose the intersecting
+    box:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will now use this result in the collision detection function. We simply have
+    to list all the tiles between those two points. We will use the bi-dimensional
+    array to find all non-zero entries and then use the classes we defined for the
+    line and column to find our tiles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will allow us to find all the tiles colliding with a sprite, but we have
+    to be careful that the coordinate that we give for the sprite and the tile map
+    are correct. If the sprite is in a group that is moved ten pixels to the right,
+    we will have to add ten to the value of the x coordinate of the sprite; otherwise,
+    the collision detection method will not notice it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could write a version of this function that looks at the coordinates of all
+    of the sprites and tile maps to find what their relative offset is. This makes
+    the function slightly slower and a bit more complex, but you should be able to
+    do it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sprite versus sprite collision
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The function to detect whether two sprites collide or not will use the same
+    one-dimensional intersection function we just wrote. To have a collision between
+    the two sprites, we must have a collision on both one-dimensional projections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the interval returned by the `gf.intersect` function has a length of zero
+    (both values are equals), it means that the two sprites collide on this axis.
+    To have a collision between the two sprites, both projections have to collide.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The implementation of our function is very simple as most of the logic is contained
+    in the `gf.intersect` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Coding the game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have all the tools we need to start our game. For this game, we will
+    use the wonderful artworks by Kenney Vleugels ([http://www.kenney.nl](http://www.kenney.nl)).
+    It will be a classical platformer where the player can move around and jump.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There will be two kinds of enemies, a sort of blob and a flying insect. For
+    the sake of simplicity, the player is immortal and kills the enemies as soon as
+    it touches them. We will describe here each part of the game in the following
+    order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic setup of the game screen
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Object-oriented code for the player
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Player control
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parallax scrolling
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enemies
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic setup of the game screen
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'This is very similar to what we did for the *Frogger* clone. Here is how we
+    will organize the game screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Basic setup of the game screen](img/5060OT_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We will have a lot of animations in this game; three for the player, three for
+    each of the two enemies' seven tiles, and two background animations. To make things
+    more readable, we will regroup them. The animations for the player and enemies
+    will each be stored in an object literal, and the animations for the tiles will
+    be stored in an array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is an extract of our code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Object-oriented code for the player
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are many reasons you may want to use object-oriented (OO) code in your
+    game. First, it's a very good way to organize your code. Second, it provides some
+    useful ways to reuse and extend your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are not familiar with OO programming, JavaScript is probably not the
+    best language to learn. We won't go into the theory of OO; even without it, you
+    should be able to see the logic behind the code we will be writing and what it
+    brings to the table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we need only one player, we will create an anonymous class and instantiate
+    it right away. This is quite unusual and only makes sense in this particular situation.
+    Here is the skeleton of our class with all methods, but without their implementation.
+    We will look at each of them later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we begin by defining a few variables that we will use later,
+    and then define the object's methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the player's position
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have implemented a very basic physic simulation for player movement along
+    the y axis; if no collision occurs, the avatar will fall with a given acceleration
+    and with a limited maximum speed. This is sufficient to generate neat jump trajectories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at what the `update` function does. First, it needs to compute
+    the avatar''s next position:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see in this code that we compute the speed; this is the vertical speed
+    of the player. We use the correct physical rule here, where the speed after a
+    time interval is equal to *the previous speed plus the acceleration time of the
+    interval*. It's then constrained between -100 and 100 to simulate the terminal
+    velocity. Here, the acceleration is constant, as is the gravitational pull.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we use this speed to compute the next position along the y axis, again
+    with the correct physical rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The new position along the x axis is much simpler; it's the current position
+    modified by the horizontal movement induced by player control (we will see later
+    exactly how this value is generated).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we need to check for collision to see if the avatar can really go where
+    it wants or whether there is something on the way. For this, we will use the `gf.tilemapCollision`
+    method we wrote earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have all the tiles that collide with our sprite, what can we do? We
+    will look at any of them and move the sprite out of their way through the shortest
+    possible movement. To do this, we will compute the exact intersection between
+    the sprite and the tile and find whether its width or height is its larger dimension.
+    If the width is more than the height, it means it's a shorter move on the y axis,
+    and if the height is more than the width, it's a shorter move on the x axis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we do this for all tiles, we will have moved the avatar to a place where
+    it doesn''t collide with any tiles. Here is the full code of what we just described:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will notice that if we detect that we need to move the player upward along
+    the y axis, we change the avatar animation and status if the player is jumping.
+    This is simply because this means that the player has landed on the ground.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This code alone is enough to contain all the rules you need to produce a decent
+    movement of the player in the level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the player's avatar
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All methods except `update` directly correspond to particular types of input
+    from the player. They will be called during the main loop after the corresponding
+    key has been detected as pressed. If no keys are pressed, the idle function will
+    be called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the function that moves the player to the left:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Its main part is a switch because we will react differently depending on the
+    state of the player. If the player is currently standing, we will need to change
+    the animation to walking, set the player's new state, and move the player along
+    the x axis. If the player is jumping, we just move the player along the x axis
+    (but slightly slower). If the player is already walking, we just move it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last line flips the sprite horizontally because our image depicts the player
+    facing right. The function for the right direction is basically the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `jump` method will check whether the player is currently either standing
+    or walking, and if so, it will change the animations, change the status, and set
+    a vertical speed to generate the jump during the `update` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `idle` status will set the status to standing and the `animation` function
+    accordingly, but only if the player is walking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that's it for player movement. If you start the game with the logic contained
+    in this object alone, you will already have most of what makes a platformer—a
+    character moving around jumping from one platform to the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Player control
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We will still need to connect the player''s object to the main loop. This is
+    really trivial as all the logic is contained in the object. There is, however,
+    one little detail we omitted. As it is the player will go out of the screen if
+    he moves left. We need to follow him! The way we will implement it is thus: if
+    the player goes beyond a given point, we will start to move the group containing
+    all the sprites and tiles in the opposite direction. This will give the impression
+    that the camera is following the player.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the main loop containing everything we described earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parallax scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Parallax scrolling is a very neat way of giving a little depth to a 2D game.
+    It uses the principle that the farther away objects are, the slower they seem
+    to move. It's typically what you see when you look through the side window of
+    a moving car.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Parallax scrolling](img/5060OT_04_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The first layer in the preceding figure will be the group containing all the
+    sprites and the tile map. The second and third layers will simply be images. We
+    will use the same technique we used in the previous game: we will simply use the
+    background position to generate their movement.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final code takes place in the main game loop just after we move the group
+    around to keep the player visible on screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the code is simple; the only subtlety is in choosing the right
+    values for the speed of each layer. There is sadly no other way to do this than
+    by observing the effect with the naked eye.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating enemies
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For the enemies, we will use OO code too. It will allow us to use inheritance
+    only to specify what changes between the two sorts of enemies. The first kind
+    is slime. Enemies of this type crawl on the ground, and when they die, they flatten
+    and stay where they were killed. They patrol back and forth between two points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second kind are flies. They behave exactly like the slimes, but they fly
+    in the sky, and once killed, fall into the abyss.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will start by writing the code for the slimes. It will be similar in structure
+    to the player''s object, only much simpler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Enemies have only two states, alive and dead. It's the `update` function that
+    generates their behavior, either by making them patrol or by letting them die.
+    The only subtlety here is that we use a direction variable to store whether the
+    slime is moving to the left or to the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As the behavior of the flies is so similar, we don''t need to write much to
+    implement their object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here you can see the quite strange syntax for object inheritance in JavaScript
+    (it''s called prototypal inheritance). If you''re not familiar with it, you should
+    read some advanced books about JavaScript because the full implication of what''s
+    going on here is beyond the scope of this book. However, the intuitive way to
+    understand it is this: you create a simple object and copy all the methods of
+    another class into it. Then you modify the classes you want to override.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we really just need to change the way the fly behaves after its death by
+    making it fall.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we have to call the update function from the main game loop and check for
+    collision with the player. This, again, is done in a very simple way as most of
+    the logic is already written or is in the framework:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is it for our game. Of course, like for the last one, there are a lot
+    of things you can add here: give the player the ability to die, allow him to kill
+    enemies only if he jumps on them, or anything you like, really. With this basic
+    template, you''ll be able to generate a wide variety of games with vastly different
+    gameplays depending on your choice of the basic rules. Here is what the final
+    game looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating enemies](img/5060OT_04_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now know how to draw tile maps and detect collision between them and sprites
+    as well as between sprites. We have a working example of object-oriented code
+    for our game logic that we will be able to use in lots of other kinds of games.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As for our preceding game, the resulting game here can be improved in lots of
+    ways, and I recommend doing so to familiarize yourself even more with the code.
+    You can add more enemies, make them die only if the player jumps on them, and
+    detect when the player reaches the end of the level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will use the techniques we learned here to make a top-view
+    RPG.
+  prefs: []
+  type: TYPE_NORMAL

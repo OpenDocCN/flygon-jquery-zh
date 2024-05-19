@@ -1,0 +1,1847 @@
+- en: Chapter 3. Loading and Manipulating Dynamic Content with AJAX and JSON
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading HTML from a web server into a page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using AJAX and handling server errors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Processing JSON data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Searching JavaScript objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sorting JavaScript objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Caching JSON and AJAX requests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a search feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an autosuggest feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Waiting for an AJAX response
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery allows the developer to make AJAX calls that will update website content
+    without the need for refreshing a complete web page. jQuery's AJAX functionality
+    adds an additional dimension to a website that allows it to become more of a web
+    application. This chapter looks at how a developer can make these AJAX requests,
+    receive data, and process it. In addition to processing and utilizing data received
+    from an AJAX request, this chapter also looks at some of the other major features
+    of AJAX including search and suggestion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For most of the recipes in this chapter, you will either need to run a web
+    server on your local machine or have access to an online web server. Some basic
+    knowledge of PHP and MySQL will be useful as the required web server will make
+    use of these technologies. To learn more about these technologies, you can refer
+    to the following resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To learn more on PHP, refer to [http://www.php.net](http://www.php.net)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To learn more on MySQL, refer to [http://www.mysql.com](http://www.mysql.com)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loading HTML from a web server into a page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At the most basic level, AJAX allows us to update a single page element with
+    new content from a web server. This recipe looks at how we can set up some data
+    to be received from a web server with PHP and how we can then receive this data
+    and apply it to our web page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ensure that you have a web server running and have access to its web root.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Perform the following steps to create the required PHP, MySQL, and HTML in
+    order to understand how to use jQuery with AJAX:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we can request for any data from the web server to be displayed within
+    our web page, we need to be able to serve this data from a web server. Create
+    a PHP file named `request-1.php`. Add the following PHP code and save it within
+    the web root of your web server:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The second step is to create a jQuery-powered HTML page that can request data
+    from our PHP script. Within the web root of your web server, create an HTML file
+    named `recipe-1.html` and add the following HTML code to it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We are now going to use CSS in order to add styles to our HTML page. Add the
+    following CSS code within the `<style type="text/css"></style>` tags in the `recipe-1.html`
+    file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The final step is to add some jQuery code in order to request data from the
+    PHP script and load it into our web page. Within the script tags in the header
+    of the `recipe-1.html` file, add the following jQuery code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, let us understand the steps performed previously in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PHP
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The aim of using the PHP script is to provide a random quote by Albert Einstein
+    as a string. To be able to do this at random, we first need to generate a random
+    number. This is done using the PHP `rand()` function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will create a variable with a random integer value between `1` to `5`.
+    We can then use this random number to determine which quote to output. We use
+    a switch statement based on the `$num` variable to create a `$quote` variable
+    with a random Einstein quote:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we echo the value of `$quote`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you were to visit this file served from a web server (that is, `http://localhost/request.php`)
+    in your browser, you will be presented with a random quote every time you refresh
+    the page, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![PHP](img/08960S_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: HTML
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We need an HTML page to load our PHP-generated quote. Within the HTML, we define
+    a simple HTML layout. We create a division element with the class `left`. This
+    box simply holds the title **Famous Einstein Quotes**. We define a second div
+    element with the class `right` and two child elements, a paragraph and a button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![HTML](img/08960S_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the preceding screenshot, the box on the right-hand side made up of the paragraph
+    element with a `quote` class is where we will load our dynamic content using jQuery.
+    We will use the button to allow the user to trigger the dynamic load of the quote.
+    Note that you could also load the quote on page load without the need of user
+    interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To make the web page containing our dynamic quotes, we use some very basic
+    CSS to style and align the various elements we have created in our HTML as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: We make the div element with the `left` class have a static width and height
+    and then force it to float on the left-hand side of the browser window. A static
+    height is set to ensure that both the left and right div elements are of equal
+    height. We also add some basic text formatting including `line-height`, `text-align`,
+    and `font-size`, which are self-explanatory. We also change the background color
+    of the div element and add some padding for further text alignment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We add very similar styles to the right-hand side division element with the
+    addition of `position: relative;`, which allows us to prevent sibling elements
+    with an absolute position from floating outside this div element.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: As the parent `.right` division element has a relative position, we can make
+    the position of the `.refresh` button absolute and set the top and right position
+    values as static, forcing the button to float to the top-right corner of our `.right`
+    division box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using jQuery, we can make a request to the `request.php` page we created earlier,
+    which is on our web server. First, we create an event handler and attach it to
+    the refresh button, so we can make a request when the user clicks on this button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any code within `function(){}` will be executed when the user clicks on the
+    `.refresh` button. Within this callback function, we can make the AJAX request
+    using `$ajax`, which is provided by jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: We provide `$.ajax()` with an object, which allows us to specify a set of parameters
+    required to make the AJAX call. In this example, we provide the `url` and `type`
+    parameters that tell jQuery where to make the request and what kind of request
+    it should be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Read the documentation on `$.ajax()` to learn more about other parameters that
+    can be provided. The API documentation can be found at [http://api.jquery.com/jQuery.ajax/](http://api.jquery.com/jQuery.ajax/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, we append a `.done()` function after the AJAX request method
+    and provide it with a callback function that accepts the argument `data`. This
+    `data` argument will hold the response from the server. Within the callback function,
+    we use `$(''.quote'').html(data);` to replace the HTML in the `.quote` paragraph
+    with the response from our PHP script. If a user visits this HTML page and clicks
+    on the **Get Quote** button, they will be presented with a result as shown in
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![jQuery](img/08960S_03_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Creating a search feature*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Creating an autosuggest feature*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Waiting for an AJAX response*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using AJAX and handling server errors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In an ideal world, your web application would never go wrong. Unfortunately,
+    this is not the case, and web developers need to gracefully handle errors and
+    provide the user with useful feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, system errors occur when a server cannot be reached or a file/web
+    page is missing. System errors are typically unavoidable and out of the user's
+    control. They differ from application errors such as invalid data input, which
+    a user can correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since this recipe deals with AJAX errors and we will be calling a PHP script
+    that does not exist, we only require HTML and JavaScript for this recipe. Create
+    a blank HTML document named `recipe-2.html` and ensure that you have the latest
+    version of jQuery downloaded and ready for use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Learn how to handle AJAX errors by carefully performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following HTML code to create a simple web page with a single button
+    that will trigger an AJAX request:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Within the script tags, add the following jQuery code that will make an AJAX
+    request to a nonexistent file when the `#makeRequest` button has been clicked:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Under the AJAX request (but still within `$(function(){});`), add the following
+    code, which will create a global AJAX error event handler that is fired every
+    time an AJAX request fails:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML page we created is self-explanatory. We create a button that can trigger
+    the AJAX request. This is obviously the simplest example to illustrate the error
+    handling concept, which can then be applied to any AJAX request situation using
+    jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We create an event handler for the `#makeRequest` button and provide a callback
+    function to be executed on-click as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: We add the AJAX request within the callback function using the `$.ajax()` function
+    provided by jQuery. We then pass a JavaScript object to this method, where we
+    specify the URL of a nonexistent file and the type of the request; in this case,
+    `GET`. Note that the `.done()` function chained onto the `$.ajax()` function will
+    never be executed if the AJAX request fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We create a global AJAX error handler and attach it to the document so that
+    it will catch all AJAX errors within our page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are three arguments provided to the callback function of the `.ajaxError`
+    method that we can use to learn more about the error. In this example, we extract
+    the target URL from the `settings` variable and the status information from the
+    `request` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you open this HTML file in a web browser and click on the `#makeRequest`
+    button, you will be presented with a JavaScript alert box that provides you information
+    about the error, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works…](img/08960S_03_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this example, we created a global AJAX error handler to catch all the AJAX
+    request errors within our page. A global AJAX error handler is ideal for request
+    errors such as file missing or host unreachable. In these cases, errors can be
+    handled in the same way for all AJAX requests, and more specific information about
+    an individual request is not required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There might be instances in your application where you may need to handle one
+    or more AJAX request errors differently. For this, you can use the `.fail()` function,
+    which is used in the same way as `.done()`. The following jQuery code provides
+    an example usage of `.fail()` to achieve the same result for a simple AJAX request
+    as our global error handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that there is less information directly available about the error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Processing JSON data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**JavaScript Object Notation** (**JSON**) provides web developers with a clean
+    and efficient way to encode data. JSON is a widely adopted format. It simplifies
+    data processing and manipulation. To read more about why you should use JSON,
+    visit [http://www.revillweb.com/why-use-json/](http://www.revillweb.com/why-use-json/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ensure that your web server is running and you have access to the web root where
+    you can save/upload the files that you will create as part of this recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Learn how to use JSON-formatted data with JavaScript by performing the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a PHP file named `request-3.php` and save it to the web root of your
+    web server. Use the following PHP code to create and output a list of names as
+    JSON data:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create an HTML page named `recipe-3.html` within the web root of your web server.
+    Add the following HTML to this page, which creates an unordered list element that
+    can be populated with our JSON data once processed:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Within the script tags in the head tag of the HTML page, add the following
+    jQuery code to perform an AJAX request to the `request-3.php` page created earlier:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Within the `.done()` callback function, use the jQuery `$.each()` function
+    to process the JSON data returned from our PHP page and add a new list item for
+    each person to the list within our HTML page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, let us understand the steps performed previously in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PHP
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In a real-world application, you would typically be retrieving data from a database.
+    In this recipe, we are creating a simple, two-dimensional array of names that
+    will act as our database, allowing us to concentrate on the jQuery code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we manually specify the response content type and character set. The
+    content type and character set of the response should be specified so that the
+    web browser and jQuery code know the format in which to expect the data. Most
+    web browsers will work this out without an issue. However, Internet Explorer 9
+    and lower versions are particularly problematic in this area, and it is always
+    good practice to manually specify the content type and charset using the PHP''s
+    `header()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we have set the charset as `UTF-8`, not `utf8` or `utf-8`. Once again,
+    most browsers will be fine with either, but some earlier Internet Explorer versions
+    will produce undesirable effects if the character set is not formatted correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The browser-related issues mentioned in this recipe are not likely to occur
+    within this example with such simple data. This is a best practice and will provide
+    a greater benefit to larger and more complex web applications that use AJAX and
+    JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we encode our PHP array in the JSON format using the PHP provided
+    `json_encode()` function and output the results using `echo` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you visit the `request-3.php` page directly, you will see the output of
+    the `people` array within the browser window in the following format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Alternatively, using the browser developer tools and selecting the network tab,
+    you can view the response in a more readable manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our HTML page does nothing more than include the jQuery library and creates
+    an HTML unordered list element, which we can populate with the JSON data once
+    processed by jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Putting our code within `$(function(){});`will lead to its execution on page
+    load. We use jQuery''s `$.ajax()` functionality to make the AJAX request to our
+    previously created PHP file as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: By providing the `url` and `type` parameters within an object to this method,
+    we tell a method to make a `GET` request to the `request-3.php` file present in
+    the web root of our web server. We then append a `.done()` function onto the `$.ajax();`
+    method, which will be executed when the request has been made successfully. The
+    `.done()` method takes a callback function as an argument with the `data` variable
+    that contains all the response data from the request—the JSON data from the PHP
+    file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have the response data available within the `data` variable, we
+    can process the JSON data and populate our HTML list element using the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$.each();` is another function provided by jQuery which allows us to loop
+    through a set of data that is specified as the first argument in this example
+    (that is, `data`). The second argument is the callback function to execute for
+    each of the items found within the `data` variable. This callback function also
+    takes two arguments, `key` and `value`. Using these variables, we can get all
+    the information from the JSON data including the array key (for example, 1, 2,
+    3, and so on) and the values; the first and last names for each object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we select the `#peopleList` element, and we use the `append()` function
+    to append an HTML list item to the unordered list with the data from each of the
+    `people` JSON objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Searching JavaScript objects*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Sorting JavaScript objects*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Searching JavaScript objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With objects being the main method of holding data within your application,
+    it can be very useful to be able to find objects matching a certain criteria.
+    jQuery does not provide a direct method for us to search through objects and arrays
+    of objects; however, we can easily create this functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Using your favorite text editor, create a blank HTML document named `recipe-4.html`,
+    and ensure that you have the latest version of jQuery installed. Add the following
+    HTML code to this HTML file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ensure that you update the reference to the jQuery library to point out the
+    location where it is saved on your computer. This HTML page provides us with a
+    web page where we can execute JavaScript for this recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create a JavaScript function that will make searching through an object easy
+    by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within the script tags of the newly created `recipe-4.html` page, create an
+    array of objects on which we can perform searches:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Below this array of objects, add the following recursive function that we can
+    use to iterate through the preceding objects and find matches based on the provided
+    arguments:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Call the function by specifying the parameter you would like to look for, the
+    value you would like to match, and then the object/objects you would like to search
+    through:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open `recipe-4.html` in a browser and then the JavaScript console (*Ctrl* +
+    *Shift* + *J* in Chrome); you will be presented with the results of the search.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First of all, an array of objects representing people is created. This does
+    not need to be a static set of data and could have been loaded from an AJAX request
+    as seen in the previous recipes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our `findObjects()` function will allow us to search through an object or an
+    array of objects. This function takes three arguments. The first argument is `parameter`,
+    which is the object we want to search within; in this example, `title`. The second
+    argument is the actual value we want to find matches against; the above example
+    uses `Sir`. The final argument is the array of objects we created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We first create an empty array within the function, which will hold each of
+    the objects that match our specified criteria:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the native JavaScript `for` loop, we can iterate through the object/objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we provide an array of objects, `object[i]` will represent a different object
+    within the array on each iteration. If we provided a single object, then `i` will
+    be a different property within the provided object on each iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since JavaScript objects can also hold other objects or arrays, we need to
+    allow for recursion so that we can search through an infinite depth of objects.
+    To do this, we first check to see if `object[i]` (the currently iterated object
+    or property value) is an object. If it is, we call our `findObjects()` function
+    from within itself and provide the current object as the last argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: As the `findObjects()` function will return an array of matches, we use `matches
+    = matches.concat()` to add the array of returned results to the current array
+    of matches. We add an `else if` statement to filter instances where the value
+    is not an object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Within the `else if` statement, we check to see if the current property (represented
+    by `i`) matches the parameter we provided as an argument. If this is true, we
+    check whether the value for this property matches the value we provided as an
+    argument. If this is also true, we use `matches.push(object)` to add the current
+    object to the `matches` array. Finally, once we have iterated through all the
+    objects and properties, we return the `matches` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the preceding example, we then simply use `console.log();` to output the
+    array of matching objects to the browser's JavaScript console. This array can
+    be used in any manner, such as to populate an HTML list element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Searching through JavaScript objects will often become a common part of your
+    application. Be sure to make functions such as this as universal as possible,
+    and do not code them for a single operation. You will then be able to make this
+    function globally available within your application and re-use it throughout.
+    Also, be careful when writing recursive functions, as it is easy to create infinite
+    loops and complex, unreadable code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Processing JSON data*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Sorting JavaScript objects*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sorting JavaScript objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Along with the ability to efficiently find objects that match a criteria, you
+    will often require your objects to be in a certain order for outputting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As with the previous recipe, create an HTML page named `recipe-5.html` where
+    we can add and execute JavaScript code for this recipe using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Update the reference to the jQuery library in order to ensure that it includes
+    the correct file on your computer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create a reusable function to sort a JavaScript object by performing the following
+    step-by-step instructions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within the script tags in the `recipe-5.html` file you have just created, add
+    the following JavaScript code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Below this array, add the following function that can be used to sort JavaScript
+    objects within an array:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use this function with the native JavaScript `.sort()` function as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Opening this web page in a browser and looking at the JavaScript console will
+    provide you with a list of the objects we created in the JavaScript array in step
+    1\. The difference is that they will be ordered by the last name as opposed to
+    their original order.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We must have an array of objects to successfully use our `.sort()` function
+    to reorder them. This array of objects can be static, as in the example, or can
+    be loaded from a server via an AJAX request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'JavaScript provides a `.sort()` function, which takes a function as an argument
+    and provides two arguments to this callback function. The typical usage of `.sort()`
+    would be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `a` and `b` arguments are two objects from the array. We can compare these
+    two objects and determine which object needs to be placed before the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our example, we require some additional functionality; we need to be able
+    to specify which parameter on which we want to sort the objects. As we cannot
+    provide the `.sort()` callback function with an additional argument, we wrap the
+    callback in another function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can then specify a property on which to sort the objects, which can then
+    be used within the callback function. The callback function must return either
+    `0` or a positive or negative number. In our example, `0` means that no sorting
+    is required and that both objects are equal. `1` means that `a` should be placed
+    before `b` and `-1` means that `b` should be placed before `a`. We can do this
+    evaluation within the callback function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We use `a[param]` and `b[param]` to check only the specified parameter of the
+    objects. We can now use this function in conjunction with the native JavaScript
+    `.sort()` function to reorder our objects based on the specified parameter as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: This would alphabetically reorder the array of objects we created earlier by
+    their last name. So, the object `Mr John Andrews` would be the first in the array
+    and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Similar to the function used for searching objects, this function should not
+    be coded for a single operation so that it can be used throughout your application.
+    Reusable code will make your application more manageable and easier to debug.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Processing JSON data*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Searching JavaScript objects*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Caching JSON and AJAX requests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One way by which a web developer can increase the speed of his/her web application
+    is by limiting the number of requests made to the web server. It is very important
+    to ensure that you are making data calls only when you need to. We can use caching
+    to ensure that requests are made only when a new set of data is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ensure that your web server is up and running and you have permission to add
+    files to the server's web root directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Learn how to speed up your JavaScript applications using simple caching methods
+    by performing the following instructions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a PHP file named `request-6.php` in the web root of your web server.
+    Use the following PHP code to create and output a list of names as JSON data:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Use the following HTML code to create a page named `recipe-6.html` within the
+    web root of your web server so that you can make AJAX requests to your PHP file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Within the script tags in the head tag of the HTML page, add the following
+    jQuery code to make an AJAX request to retrieve the `people` array created in
+    the PHP file and then cache the results:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, let us understand the steps performed previously in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PHP
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Please refer to the previous recipe, *Processing JSON data*, of this chapter
+    for a detailed look at how this PHP code works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The HTML page we created is very basic and does not require a great deal of
+    explanation. We simply create an unordered list element, which we can populate
+    with jQuery, and a button, which the user can click on to trigger the AJAX request
+    to load the JSON data from the PHP file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'First, we create an empty JavaScript array that we can use to cache the data
+    received from AJAX requests as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, within `$(function(){});`, which will be executed on page load, we attach
+    a click event handler to the `.getPeople` button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Within the callback function for this event handler, we check to see if there
+    is currently anything within the `cache` array by evaluating its length:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: If there is nothing in the `cache` array, we do not have any cached data. We
+    need to make an AJAX request to our PHP file in order to get the JSON data as
+    shown in the following code snippet. This will ensure that an AJAX request is
+    made only when data is required, and a request will not be made every time the
+    button is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: On the success of the AJAX request, we store the results within our `cache`
+    array. Note that we have set the `async` property to `false`, meaning that any
+    JavaScript code below the AJAX request will not be executed until there has been
+    a response. This is to prevent the HTML list being populated before the `cache`
+    array has been populated with data. This would not be the ideal solution for large
+    applications because this can cause the browser to hang or crash if the AJAX request
+    takes a long time to respond. Read the *Waiting for an AJAX response* recipe of
+    this chapter to learn the preferred method of waiting for AJAX request completion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the `cache` array populated, we can use it to add items to our HTML unordered
+    list. We use the jQuery `$.each()` function, which allows us to iterate through
+    each of the objects within the `cache` array. For each of these objects, we use
+    `.append()` to add a list item along with the data from the object to the `#peopleList`
+    list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before we populate the list, we first use `$('#peopleList').empty();` to empty
+    the list in the DOM. This is to prevent additional button clicks from adding duplicate
+    items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This method of caching data can speed up your web application. This method,
+    however, will not be suitable for situations where the requested data is changing
+    frequently, as the user will only get updated data when they refresh or revisit
+    the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: AJAX requests in jQuery have their own form of caching, which is essentially
+    the same as the browser cache. Through the settings provided to the `$.ajax()`
+    function, you can control how this type of cache works. Although this cache can
+    be useful, it does not offer the same level of control as the manual caching method
+    we implemented in this recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a search feature
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Allowing your users to search through data within your web application is a
+    basic principle. This recipe will show you how to create a fast and efficient
+    search feature that uses jQuery and AJAX with a PHP and MySQL backend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This recipe not only requires that you have a running web server that has PHP5,
+    but you will also need a MySQL server that is ready to accept connections from
+    PHP scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Learn how to create a search feature from scratch, which will show you valuable
+    jQuery principles in action, by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need to create a database and a table to store the data that the users will
+    be able to search. Create a database named `jquerycookbook` on your database server,
+    and use the following SQL code to create and populate a table with some data:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In order to allow the users to search the data present in our database from
+    their browser (the client), we need to be able to extract the information from
+    the database based on their search. We can do this using PHP to query the MySQL
+    database for data based on the search term, which will be provided by the user
+    via the client. Before we can do this, we need to be able to connect to the database
+    we just created. Create a PHP file named `db.inc.php` within the web root of your
+    web server and add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Be sure to change the `$dbhost`, `$dbuser`, and `$dbpass` values to match your
+    configuration.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Create a PHP file named `search.php` in the web root of your web server and
+    add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create an HTML file named `recipe-7.html` in the web root of your web server
+    using the following HTML code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To make our search feature more attractive, we can use CSS to style the HTML
+    page we have just created. You may have noticed that within the HTML page header,
+    we included a CSS file named `style-7.css`. Create the `style-7.css` file, save
+    it to the web root of your web server, and add the following CSS code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Using jQuery, we will be able to accept the user''s search query and send the
+    request to our PHP script. Create a JavaScript file named `script-7.js` within
+    the web root of your web server. Note that this was also included within the header
+    of the HTML file. Add the following jQuery code to this file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Visiting the `recipe-7.html` file on your web server will present you with a
+    simply-styled search input, allowing you to perform a search on the stationary
+    items we added to our MySQL database. The following screenshot is similar to the
+    one you will see after a search is completed:![How to do it…](img/08960S_03_05.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, let us understand the steps performed previously in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: SQL
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: With the SQL code, we simply tell the SQL script to use the `jquerycookbook`
+    database that we created; we create a table named `stationary` and then insert
+    five stationary items into the table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PHP
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first PHP script we created, `db.inc.php`, was simply to connect to the
+    database we created, which will then allow us to query the data within it. We
+    created four variables to hold the hostname of the database server (typically
+    localhost), the username, the password, and finally the name of the database to
+    which we wish to connect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: After we have this information available within our PHP script, we create a
+    new `mysqli` connection and select the `jquerycookbook` database for use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we add some basic error handling code that would stop any further execution
+    if the connection to the database server failed. We also provide some information
+    about the error for debugging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have a script that we can call in order to connect to our database,
+    it is possible for us to write the PHP script that will take information from
+    the client and perform queries on the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we create an object named `$data` to hold the results and any errors
+    from the script. We create this object using PHP''s `stdClass` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we check to see if the request from the client included some `POST` information
+    with `text` as the key. This prevents the script from running needlessly if we
+    have no query text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: PHP's `isset()` function simply checks to see if the provided argument is set
+    and available for use. If there has been some data posted to the script with the
+    key `text`, we can continue to connect to the database by including our database
+    connection script using `require_once();`. There are various ways by which you
+    can include additional PHP files. We use `require_once()` because we cannot continue
+    with the execution without the database connection. If the specified file is not
+    found when using `require_once()`, the script provides a fatal error and ceases
+    the execution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: After including the database connection file and connecting to the database,
+    we can refer to the `$db` connection variable that is instantiated within that
+    file. We then use the `real_escape_string()` function that will remove any harmful
+    characters from the provided `text` string with the aim to prevent a security
+    breach, such as MySQL injection (read more on this at [http://dev.mysql.com/tech-resources/articles/guide-to-php-security-ch3.pdf](http://dev.mysql.com/tech-resources/articles/guide-to-php-security-ch3.pdf)).
+    We put `$_POST['text']` through this function and store the result in a `$text`
+    variable, which we can now safely use within MySQL queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs: []
+  type: TYPE_PRE
+- en: We construct a MySQL `LIKE` query using the `$text` string and then use `$result
+    = $db->query($q);` to execute the query on the database. We first evaluate the
+    `$result` variable for a `false` value to determine if the query was executed
+    successfully. If the query isn't executed successfully, we store an error within
+    the `$data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the query is executed successfully, we can prepare the results to send back
+    to the client as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs: []
+  type: TYPE_PRE
+- en: By using a `while` loop with `$result->fetch_assoc()`, we are able to iterate
+    through each of the results returned from the database query. We can then extract
+    the information we require and store each item within the results array in the
+    `$data` object. Once this is complete, we set the `success` variable of the `$data`
+    object to `true`, which will tell the jQuery within the client that everything
+    went according to plan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we set the headers in order to force the jQuery to expect JSON data,
+    encode our `$data` object into JSON, and output the encoded data as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs: []
+  type: TYPE_PRE
+- en: HTML
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The HTML page we created provides the user with an input where they can type
+    in their search query and a button to submit the search. It provides us with an
+    unordered list element to display the results to the user. We also create a div
+    element showing a **Loading…** message with the help of jQuery, which will be
+    displayed when the AJAX request is made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The CSS we created positions our HTML elements on the page and styles each item
+    to provide a greater user experience. Note that we are using Google Fonts to add
+    additional aesthetics to our search feature; you can read more about this at [http://www.google.com/fonts/](http://www.google.com/fonts/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Within the `script-7.js` file, we perform three actions on page load as shown
+    in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs: []
+  type: TYPE_PRE
+- en: Firstly, we hide the results list using `$('#results-list').hide();` so that
+    it will be hidden by default. We then attach a click event handler to the search
+    button which will perform the search when this button is clicked. Within the callback
+    function for this event handler, we call the `doSearch();` function, which is
+    declared later in our JavaScript file. The final action that we perform on page
+    load is adding a `keydown` event handler to the search input which allows us to
+    detect if the *Enter* key has been pressed. If it has, we can call the `doSearch();`
+    function to trigger the search.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `doSearch()` function performs the AJAX request, sending the search query
+    text to the PHP script. It also processes the response and updates the HTML page
+    appropriately. The function gets the inputted text from the search input using
+    `$('#text').val();` and stores it in the `searchText` variable for use. It also
+    hides `#results-list` to ensure that it is always hidden before the AJAX request
+    is made, providing room to display the loading text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function uses the jQuery-provided `$.ajax()` method to set up and make
+    an AJAX request to our `search.php` script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE69]'
+  prefs: []
+  type: TYPE_PRE
+- en: The initial parameters we provide to the AJAX function are the URLs in which
+    we wish to make the request, the type of request we would like to make, and the
+    data we would like to send with the request. We specify the request target as
+    the `search.php` file and the request type as `POST`, so we can send data to the
+    PHP file without needing it to be within the URL. Within the data object, we put
+    the `searchText` variable with a key of `text`, which will be picked up by our
+    PHP script that we created earlier, allowing it to use the user-inputted text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We include `beforeSend` after these initial parameters, which allows us to specify
+    a callback function to be executed just before the AJAX request is made. We are
+    able to add some animation and show the `.loading` div element within this function
+    using `$('.loading').fadeIn();`. This will display the **Loading…** text, informing
+    the user that the request is in progress. Within the `success` callback function,
+    which is executed once the request is successful and a response has been received,
+    we are able to hide the **Loading…** div element with some additional animation
+    using `$('.loading').fadeOut();`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `success` callback function has the data argument which will hold all of
+    the response data from the PHP file. Looking back at the PHP script, you will
+    remember the `$data` object we created to store information about the response.
+    We check to see if the `success` property of this object is set to `true`, meaning
+    that the query was successful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE70]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the `success` property is not set to `true` and something does go wrong,
+    we then use `alert(data.error);` to alert the user with the error message created
+    by the `search.php` script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If `data.success` is set to `true`, we can process the search results and update
+    the HTML page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE71]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Within the `if` statement, we empty the results list of any data to prevent
+    multiple searches from duplicating results. We do this using `$(''#results-list'').empty();`.
+    Then, we check the length of `results`. If there are results, we need to process
+    them; otherwise, we display a message to the users informing them that their search
+    did not return any results. This is done with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE72]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the `data.results.length > 0` condition is evaluated as `true`, it means
+    that there are results to display, and hence, we use the jQuery `$.each()` function
+    to iterate through each of the results in the response and append them to the
+    results list as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE73]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, the users' search results will be visible within the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Creating an autosuggest feature*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an autosuggest feature
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Autosuggest features are in abundance on the Internet. There are many plugins
+    available for jQuery and jQuery UI which will allow you to add the autosuggest
+    feature to your site quickly and easily. This recipe will show you how to create
+    one from scratch which you can customize and add your own unique features to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The server-side code for this recipe mirrors that of the previous one. Ensure
+    that you have a web server and a MySQL database server running and ready to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following are the steps to create an autosuggest feature:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Please refer to the previous recipe of this chapter, *Creating a search feature*,
+    to create and set up a stationary database and the `search.php` script. We will
+    be using the exact same code for the autosuggest feature.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Within the web root of your web server, create an HTML file named `recipe-8.html`.
+    Add the following HTML code to create the basics of the autosuggest user interface:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE74]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You may have noticed that within the header of our `recipe-8.html` file, we
+    have included a cascading stylesheet named `style-8.css`. Create this file and
+    save it within the web root of your web server. Add the following CSS code, which
+    will style and position the HTML elements within `recipe-8.html`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE75]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Along with the CSS file, we are also including `script-8.js` into our HTML
+    page. Create this JavaScript file and add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE76]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Visiting `recipe-8.html` served by a web server will present you with the autosuggest
+    feature. It will suggest items based on the text inputted into the textbox as
+    you type. There will be no suggestions until the user inputs more than two characters.
+    This is shown in the following screenshot:![How to do it…](img/08960S_03_06.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, let us understand the steps performed previously in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: SQL and PHP
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Please refer to the previous recipe of this chapter, *Creating a search feature*,
+    which will explain in detail how the SQL and PHP code is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The HTML file we created is very simple. We create an input box which allows
+    the user to input text, and we create an unordered list element which we can populate
+    with suggestions using jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The CSS code we created adds basic styling to our feature, which includes the
+    positioning of the main text input area.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main task of this CSS code is to position the suggestion list such that
+    suggestions are displayed directly below the input box. For this to be possible,
+    we first need to set the position of the `.suggest-input` div element to `relative`.
+    This will allow us to have sibling elements which are absolutely positioned, without
+    them floating off to other areas of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE77]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this positioning set, we can go ahead and add the required styles to our
+    `.suggest-list` element, which will hold the suggestions. We need to position
+    the element directly below the input box. This means that we will need to make
+    the `.suggest-list` element the same width as the input box. We also need to ensure
+    that the left and top positions of the `.suggest-list` element are specified,
+    taking into account the size and padding of the input textbox.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE78]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this section of CSS, we remove any default padding and margins from the
+    list element and set its position to absolute. Any element with absolute positioning
+    will not be affected by other elements on the page, apart from their parents if
+    they have a relative position. This leaves us to be able to set its left and top
+    positional values to control exactly where it will sit in relation to the text
+    input. We also set the `z-index` value of this element to `100` to ensure that
+    it will always float above the other elements on the page. Finally, we use `display:
+    none;`, which will make this element hidden by default as we want to display this
+    dynamically with jQuery.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Within our `script-8.js` file, we perform two actions when the page is loaded
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE79]'
+  prefs: []
+  type: TYPE_PRE
+- en: The former action is to attach a `keyup` event handler to the text input. This
+    event handler will execute when the user enters a character into the input box
+    and releases a key. Within the callback function, we check the current length
+    of the text input using `$('#text').val();`. If this value is greater than `2`,
+    we need to look for some suggestions; so, we call the `makeSuggestion()` function,
+    which is declared further down in the JavaScript file. We also show the `.suggest-list`
+    element using `$('.suggest-list').show();` so that it is visible to the user.
+    If the inputted text is less than two characters in length, all we do is ensure
+    that the `.suggest-list` is hidden with `$('.suggest-list').hide();`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The latter action we perform on page load is to attach another event handler.
+    This event handler will listen for clicks on any element with the `.suggestion`
+    class. We use the `.on()` function provided by jQuery so that we can listen for
+    click events on elements that have been dynamically added to the DOM, which is
+    not possible using the `.click()` function. Please refer to the *Detecting button
+    clicks* recipe in [Chapter 2](ch02.html "Chapter 2. Interacting with the User
+    by Making Use of jQuery Events"), *Interacting with the User by Making Use of
+    jQuery Events*, to learn more about these event handler functions. Within the
+    callback function of this event handler, we get the HTML code of the clicked element
+    using `$(this).html()`. Provide this to the `$('#text').val();` function, which
+    will update the value of the text input. This will be used to allow the user to
+    click on a suggestion and update the text input with its value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our `makeSuggestion()` function takes the text from the input element and sends
+    an AJAX request to our `search.php` file to query the database and look for anything
+    similar to what the user has inputted. This function then takes the results and
+    populates the `.suggest-list` list for the user to select.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first part of the function gets the current value of the text input and
+    empties the `.suggest-list` unordered list element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE80]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we use the `$.ajax()` function to set up the AJAX request. We specify
+    the `search.php` file as the target, using the `url` parameter, the request type
+    as `POST`, and provide the inputted text as data to be sent to the PHP file. Please
+    refer to the *Creating a search feature* recipe for greater detail on this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE81]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We use the `beforeSend` parameter and provide a callback function that appends
+    a list item with the `.suggest-list` element with the text **Loading…**. This
+    callback function will be executed just before the AJAX request is made, allowing
+    us to inform the user that the request is loading, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![jQuery](img/08960S_03_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `success` callback function, which is executed when the request has been
+    successful, is the function where we check to see if the database query has returned
+    the desired results; if there are any suggestions to populate the list with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE82]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `data` argument within the `success` callback function holds all the data
+    sent from the PHP file. The object we created to send back to the client in the
+    PHP has a `success` parameter, which we can use to check if everything went according
+    to plan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE83]'
+  prefs: []
+  type: TYPE_PRE
+- en: If something went wrong, we display the error message as an alert, which is
+    provided by the PHP within the `error` parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the query is executed successfully, we first empty the suggestion list once
+    more to remove the loading item that was added in the `beforeSend()` callback
+    function. We then check the length of the results using `data.results.length`
+    to see if there are any suggestions with which we can populate our list element.
+    If there are, we use the jQuery `$.each()` function to iterate through each item
+    and append it to our `.suggest-list` element. We also wrap the suggestion in the
+    `<a></a>` tags with the `.suggestion` class. Clicking on these suggestions will
+    fire the event handler we created earlier and then update the text input with
+    the suggested text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since the autosuggest feature is such a common implementation on modern websites
+    and web applications, there are many jQuery plugins available to help you add
+    this feature to your application. jQuery UI, which is jQuery's own user interface
+    framework, has an autosuggest module readily available. You should investigate
+    this further to see if your application can benefit from this ready-built solution.
+    [Chapter 9](ch09.html "Chapter 9. jQuery UI"), *jQuery UI*, is dedicated to jQuery
+    UI, as the name suggests, and you will also find an entire recipe on implementing
+    the autocomplete feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Creating a search feature*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Waiting for an AJAX response
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The default behavior of jQuery AJAX requests is that they run asynchronously,
+    which means that you can run many AJAX requests or other JavaScript processes
+    at the same time. If you call the `$.ajax()` function with the default settings,
+    any JavaScript code after this AJAX request will be executed without waiting for
+    a response. In most cases, this is the desired behavior, but there are some situations
+    where you will want to prevent further execution until there has been a response
+    to the AJAX call. This may be because you require some information from the first
+    AJAX call to make a second, or just that your application requires data from the
+    first call before it can run the second. There are a few ways to achieve this;
+    refer to the *Caching JSON and AJAX requests* recipe of this chapter to see a
+    very basic implementation where you simply turn off the asynchronous behavior.
+    The preferred implementation though uses jQuery's `.when()` and `.done()` functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ensure that your web server is up and running and you have access to add files
+    to the web root.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Understand the correct way to wait for an AJAX response with jQuery by performing
+    the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create an HTML file named `recipe-9.html` in the web root of your web server.
+    Add the following code, which has a button that can trigger a series of AJAX requests
+    and an element that can be updated with information about the responses:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE84]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: To be able to wait for a set of AJAX requests, we need to be able to make successful
+    calls to the web server. Create a PHP file named `loading1.php` in the web root
+    of your web server and add the following code to simulate a working PHP script.
+    In your application, this could be any PHP script.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE85]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create another PHP file named `loading2.php` within the web root of your web
+    server and add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE86]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You may have noticed that within the header of the HTML page, we included `script-9.js`.
+    Create this file and save it in the web root of your web server, adding the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE87]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Opening `recipe-9.html` within a web browser and clicking on the **Load** button
+    will give you the output from each of the AJAX calls. Finally, you will see the
+    output from the `.done()` function, which is only executed once both the AJAX
+    requests have been completed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How it works…
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, let us understand the steps performed previously in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our very basic HTML page simply creates a button that will trigger the AJAX
+    requests and provides an HTML element for us to update with data from the responses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PHP
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The two PHP scripts we created are just to simulate the end points for the AJAX
+    calls. Both scripts are nearly identical, with two subtle differences. The `loading1.php`
+    script loops twice, calls the PHP `sleep()` method, and provides `1` as an argument.
+    This will pause the script for 1 second on each iteration of the `for` loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE88]'
+  prefs: []
+  type: TYPE_PRE
+- en: After the execution of the `for` loop, the script outputs the `Call 1 complete`
+    message, which can then be displayed in the web browser using jQuery. The second
+    script, `loading2.php`, is the same, except that its `for` loop iterates five
+    times and we provide a different output to differentiate between the two scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two scripts loop a different number of times to make sure that the former
+    script will complete first, allowing us to demonstrate that we can wait for both
+    scripts to complete within our jQuery code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In our JavaScript file, we attach a click event handler to the `.load` button
+    that will be created on page load. Within the callback function for this event,
+    we use the jQuery `$.when()` function and provide the results of the `call1()`
+    and `call2()` functions as arguments. We then chain `.done()` at the end of the
+    `$.when()` function, which will be executed once the `when()` function is complete.
+    Within the `.done()` function, we provide a callback, which allows us to provide
+    an argument for each of the functions we provided to `$.when()`. As the functions
+    we provided to `$.when()` are AJAX requests, the arguments provided within the
+    callback of the `.done()` function will all contain the response, status, and
+    the `jqXHR` object from each of the AJAX requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `jqXHR` object is the return value of the jQuery `$.ajax()` function, which
+    holds a lot of information regarding the AJAX request. The `.done()` function
+    will not be executed until `call1()` and `call2()` have received a complete response
+    from their respective AJAX requests and have finished executing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE89]'
+  prefs: []
+  type: TYPE_PRE
+- en: Within the callback for the `.done()` function, we append some text to the `.info`
+    HTML element showing that both the AJAX calls within `$.when()` are complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two call functions we created simply return `$.ajax()`, which both make
+    a `GET` request to the PHP files we created. For each of these AJAX requests,
+    we append the `.success()` function that will be executed once the respective
+    AJAX call has been successful. Within the callback function for `.success()`,
+    we append the response of the call to the `.info` HTML element using `$('.info').append();`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you visit the root of your web server with a browser and select the load
+    button, you will first see the response from the `loading1.php` script added to
+    the `.info` div element. Shortly after, you will see the response from the `loading2.php`
+    script and the text from the `.done()` callback added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '*Caching JSON and AJAX requests*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

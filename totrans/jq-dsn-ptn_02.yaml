@@ -1,0 +1,863 @@
+- en: Chapter 2. The Observer Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will showcase the Observer Pattern and the convenient way
+    in which we can utilize it in our pages using jQuery. Later on, we will also explain
+    the Delegated Event Observer Pattern variant, which when properly applied to web
+    pages can lead to code simplifications and also lessen the memory consumption
+    that a page requires.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduce the Observer Pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See how the Observer Pattern is used by jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Compare the Observer Pattern with using the event attributes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to avoid memory leaks from observers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the Delegated Event Observer Pattern and showcasing its benefits
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing the Observer Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The key concept of the Observer Pattern is that there is an object, often referred
+    to as the observable or the subject, whose internal state changes during its lifetime.
+    There are also several other objects, referred as the observers, that want to
+    be notified in the event that the state of the observable/subject changes, in
+    order to execute some operations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The observers may need to be notified about any kind of state change of the
+    observable or only specific types of changes. In the most common implementation,
+    the observable maintains a list with its observers and notifies them when an appropriate
+    state change occurs. In case a state change occurs to the observable, it iterates
+    through the list of observers that are interested for that type of state change
+    and executes a specific method that they have defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing the Observer Pattern](img/00007.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: According to the definition of the Observer Pattern and the reference implementation
+    in Computer Science books, the observers are described as objects that implement
+    a well-known programming interface, in most cases, specific to each observable
+    they are interested in. In the case of a state change, the observable will execute
+    the well-known method of each observer as it is defined in the programming interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on how the Observer Pattern is used in traditional, object-oriented
+    programming, you can visit [http://www.oodesign.com/observer-pattern.html](http://www.oodesign.com/observer-pattern.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the web stack, the Observer Pattern often uses plain anonymous callback functions
+    as observers instead of objects with well-known methods. An equivalent result,
+    as defined by the Observer Pattern, can be achieved since the callback function
+    keeps references to the variables of the environment that it was defined in—a
+    pattern commonly referenced as a **Closure**. The main benefit of using the Observer
+    Pattern over callbacks as invocation or initialization parameters is that the
+    Observer Pattern can support several independent handlers on a single target.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on closures, you can visit [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Defining a simple callback**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A callback can be defined as a function that is passed as an argument to another
+    function/method or is assigned to a property of an object and expected to be executed
+    at some later point of time. In this way, the piece of code that was handed our
+    callback will invoke or call it, propagating the results of an operation or event
+    back to the context where the callback was defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the pattern of registering functions as observers has proven to be more
+    flexible and straightforward to program, it can be found in programming languages
+    outside the web stack as well. Other programming languages provide an equivalent
+    functionality through language features or special objects such as subroutines,
+    lambda expressions, blocks, and function pointers. For example, Python also defines
+    functions as first-class objects such as JavaScript, enabling them to be used
+    as callbacks, while C# defines Delegates as a special object type in order to
+    achieve the same result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Observer Pattern is an integral part of developing web interfaces that respond
+    to user actions, and every web developer has used it to some degree, even without
+    noticing it. This is because the first thing that a web developer needs to do
+    while creating a rich user interface is to add event listeners to page elements
+    and define how the browser should respond to them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is traditionally achieved by using the `EventTarget.addEventListener()`
+    method on the page elements that we need to listen to for events such as a "click",
+    and providing a callback function with the code that needs to be executed when
+    that event occurs. It is worth mentioning that in order to support older versions
+    of Internet Explorer, testing for the existence of `EventTarget.attachEvent()`,
+    and using that instead, is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the `addEventListener()` and `attachEvent()` methods,
+    you can visit [https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
+    and [https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/attachEvent](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/attachEvent).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it is used by jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The jQuery library heavily uses the Observer Pattern in several parts of its
+    implementation, either directly by using the `addEventListener` method or creating
+    its own abstraction over it. Moreover, jQuery offers a series of abstractions
+    and convenient methods to make working with the Observer Pattern easier on the
+    web and also uses some of them internally to implement other methods as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery on method
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `jQuery.fn.on()` method is the central jQuery method for attaching event
+    handlers to elements, providing an easy way to adopt the Observer Pattern, while
+    keeping our code easy to read and reason. It attaches the requested event handler
+    over all the elements of a composite jQuery collection object returned by the
+    `$()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Searching for `jQuery.fn.on` in jQuery''s Source Viewer (which is available
+    at [http://james.padolsey.com/jquery](http://james.padolsey.com/jquery)), or directly
+    searching jQuery''s source code for `on: function` (the first character is a tab),
+    will lead us to the method''s definition, which counts 67 lines of code. Actually,
+    the first 55 lines of the internal `on` function are just handling all the different
+    ways that the `jQuery.fn.on()` method can be invoked; near its end, we can see
+    that it actually uses the internal method `jQuery.event.add()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let's see how the Observer Pattern is implemented by `jQuery.event.add()`,
+    by referring to the preceding highlighted code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `handler` variable in the arguments of the `jQuery.event.add()` method stores
+    the function that was originally passed as an argument to the `jQuery.fn.on()`
+    method. We can refer to this function as our observer function, since it is executed
+    when the appropriate event fires on the element that it was attached to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first highlighted code area, jQuery creates and assigns a `guid` property
+    to the observer function that is stored in the `handler` variable. Keep in mind
+    that assigning properties to functions is possible in JavaScript, since functions
+    are first-class objects. The `jQuery.guid++` statement is executed right after
+    the assignment of the old value and is required since `jQuery.guid` is a page-wide
+    counter used by jQuery and jQuery plugins internally. The `guid` property on the
+    observer function is used as a way to identify and locate the observer function
+    inside the observer list that jQuery has for each element. For example, it is
+    used by the `jQuery.fn.off()` method to locate and remove an observer function
+    from the observer list associated with an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`jQuery.guid` is a page-wide counter that is used by the plugins and jQuery
+    itself as a centralized way to retrieve unique integer IDs. It is often used to
+    assign unique IDs to elements, objects, and functions, in order to make it easier
+    to locate them in collections. It is the responsibility of each implementer that
+    retrieves and uses the current value of `jQuery.guid` to also increase the property
+    value (by one) after each use. Otherwise, and since this is a page-wide counter
+    that is used by both jQuery plugins and jQuery themselves for identification,
+    the page will probably face malfunctions that are hard to debug.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second and third highlighted code areas, jQuery initializes an array
+    to hold the observer lists for each individual event that may fire on that element.
+    One thing to note in the second highlighted code area is that the observer lists
+    found in the `elemData` variable are not a property on the actual DOM element.
+    As shown in the `dataPriv.get( elem )` statement, near the start of the `jQuery.event.add()`
+    method, jQuery uses separate mapping objects to hold the associations between
+    DOM elements and their observer lists. By using this data cache mechanism, jQuery
+    is able to avoid polluting the DOM elements with the extra properties that are
+    needed by its implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can easily locate the data cache mechanism implementation in the source
+    code of jQuery by searching for `function Data()`. This will bring you to the
+    constructor function of the `Data` class that is also followed by the implementation
+    of the class methods that are defined in the `Data.prototype` object. For more
+    information, you can visit [http://api.jquery.com/data](http://api.jquery.com/data).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next highlighted code area is where jQuery checks whether the `EventTarget.addEventListener()`
+    method is actually available for that element and then uses it to add the event
+    listener to the element. In the final highlighted code area, jQuery adds the observer
+    function to its internal list, which holds all the observers of the same event
+    type that are attached to that specific element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Depending on the version you are using, you might get different results to some
+    degree. The most recent stable jQuery version released and used as reference while
+    writing this book was v2.2.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case you need to provide support for older browsers, for example, Internet
+    Explorer lower than version 9, then you should use the v1.x versions of jQuery.
+    The latest version as of the writing of this book was v1.12.0, which offers the
+    exact same API as the v2.2.x versions, but also has the required code to work
+    on older browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to cover the implementation inconsistencies of older browsers, the
+    implementation of `jQuery.event.add()` in jQuery v1.x is a bit longer and more
+    complex. One of the reasons for this is because jQuery also needs to test whether
+    `EventTarget.addEventListener()` is actually available in the browser that it
+    is running and try to use `EventTarget.attachEvent()` if this is not the case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we saw in the preceding code, the jQuery implementation follows the operation
+    model that the Observer Pattern describes, but it also incorporates some implementation
+    tricks in order to make it work more efficiently with the APIs available to web
+    browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The document-ready observer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another convenient method that jQuery offers, which is widely used by developers,
+    is the `$.fn.ready()` method. This method accepts a function parameter and executes
+    it only after the DOM tree of the page has been fully loaded. Such a thing can
+    be useful in case your code is not loaded last in the page and you don't want
+    to block the initial page render, or the elements that it needs to manipulate
+    are defined later than its own `<script>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that the `$.fn.ready()` method works slightly differently than
+    the `window.onload` callback and the "load" event of the page, which wait until
+    all the resources of the page are loaded. For more information, you can visit
+    [http://api.jquery.com/ready](http://api.jquery.com/ready).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code demonstrates the most common way to use the `$.fn.ready()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we try to locate the implementation of `jQuery.fn.ready`, we will see that
+    it actually uses `jQuery.ready.promise` internally to work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in the preceding highlighted code areas of the implementation,
+    jQuery uses `addEventListener` to observe when the `DOMContentLoaded` event is
+    fired on the `document` object. Moreover, to ensure that it will work across a
+    wide range of browsers, it also observes for the `load` event to be fired on the
+    `window` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery library also provides shorter methods to add the above functionality
+    in your code. Since the aforementioned implementation does not actually need a
+    reference to the document, we can instead just write `$().ready(function() {/*
+    ... */ })`. There also exists an overload of the `$()` function that achieves
+    the same result, which is used like `$(function() {/* ... */ })`. These two alternative
+    ways to use `jQuery.fn.ready` have been heavily criticized among developers, since
+    they commonly lead to misunderstandings. The second, shorter version in particular
+    can lead to confusion, since it looks like an **Immediately Invoked Function Expression**
+    (**IIFE**), a pattern that JavaScript developers use heavily and have learned
+    to recognize. In fact, it only differs by one character (`$`) and as a result,
+    its use is not suggested before a discussion with the rest of your developer team.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `$.fn.ready()` method is also characterized as a method that provides an
+    easy way to implement the Lazy Initialization/Execution Pattern in our code. The
+    core concept of this pattern is to postpone the execution of a piece of code or
+    load a remote resource at a later point of time. For example, we can wait for
+    the page to be fully loaded until we add our observers or wait for a certain event
+    to happen before downloading a web resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Demonstrate a sample use case
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to see the Observer Pattern in action, we will create an example showcasing
+    a skeleton implementation of a dashboard. In our example, the user will be able
+    to add information boxes to his dashboard related to some sample items and categories
+    that are available for selection on the header.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our example will have three predefined categories for our items: **Products**,
+    **Sales**, and **Advertisements**. Each of these categories will have a series
+    of related items that will appear in the area right below the category selector.
+    The user will be able to select the desired category by using a drop-down selector
+    and this will change the visible selection items of the dashboard.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Demonstrate a sample use case](img/00008.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Our dashboard will initially contain a hint information box about the dashboard
+    usage. Whenever a user clicks on one of the category items, a new information
+    box will appear in our three-column layout dashboard. In the preceding image,
+    the user has added two new information boxes for **Product B** and **Product D**
+    by clicking on the associated buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Demonstrate a sample use case](img/00009.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The user will also be able to dismiss any of these information boxes by clicking
+    on a red close button on the top-right of each information box. In the preceding
+    image, the user dismissed the **Product D** information box, then added information
+    boxes for the **Advertisement 3** and later the 1st, 2nd, and 3rd week items of
+    the **Sales** category.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By just reading the above description, we can easily isolate all the user interactions
+    that are required for the implementation of our dashboard. We will need to add
+    observers for each one of these user interactions and write code inside the callback
+    functions that execute the appropriate DOM manipulations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In detail, our code will need to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Observe changes done to the currently selected element and respond to such event
+    by hiding or revealing the appropriate items
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Observe the clicks on each item button and respond by adding a new information
+    box
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Observe the clicks on the close button of each information box and respond by
+    removing it from the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Now let''s proceed and review the HTML, CSS, and JavaScript code required for
+    the preceding example. Let''s start with the HTML code and for reference, let''s
+    say that we saved it in a file named `Dashboard Example.html`, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding HTML, we placed all our dashboard-related elements inside a
+    `<div>` element with the `dashboardContainer` CSS class . This will enable us
+    to have a centric starting point to search for our dashboard's elements and also
+    scope our CSS. Inside it, we define two `<section>` elements in order to divide
+    the dashboard into logical areas using some HTML5 semantic elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first `<section>` with the `dashboardCategories` class is used to hold the
+    categories selector of our dashboard. Inside it, we have a `<select>` element
+    with the ID `categoriesSelector` that is used to filter the visible category items
+    and three subsections with the `dashboardCategory` class that are used to wrap
+    the `<button>` elements that will populate the dashboard with information boxes
+    when clicked. Two of them also have the `hidden` class so that only the first
+    one is visible when the page loads by matching the initially selected option (`<option>`)
+    of the category selector. Also, at the end of the first section, we also added
+    a `<div>` with the `clear` class that, as we saw in the first chapter, will be
+    used to clear the floated `<button>` elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second `<section>` with the `boxContainer` class is used to hold the information
+    boxes of our dashboard. Initially, it contains only one with a hint about how
+    to use the dashboard. We use a `<div>` element with the `boxsizer` class to set
+    the box dimensions and an HTML5 `<article>` element with the `box` class to add
+    the required border padding and shadow, similar to the box elements from the first
+    chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each information box, besides its content, also contains a `<header>` element
+    with the `boxHeader` class and a `<button>` element with the `boxCloseButton`
+    class that, when clicked, removes the information box that contains it. We also
+    used the `&#10006;` HTML character code as the button's content in order to get
+    a better-looking "x" mark and avoid using a separate image for that purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, since the information boxes are also floated, we also need a `<div>`
+    with the `clear` class at the end of the `boxContainer`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `<head>` of the preceding HTML, we also reference a CSS file named as
+    `dashboard-example.css` with the following content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in our CSS file, first of all we add some space below the element
+    with the `dashboardCategories` class and also define the same styling for the
+    `<select>` element and the buttons inside it. In order to differentiate it from
+    the default browser styling, we add some padding, a border with rounded corners,
+    a different background color when hovering the mouse pointer, and some space in
+    between them. We also define that our `<select>` element should be displayed alone
+    in its row as a block and that the category item buttons should float next to
+    each other. We again use the `boxsizer` and `box` CSS classes, as we did in [Chapter
+    1](part0014_split_000.html#DB7S2-e8d3cd3d052d4ee0b4673af57a64ddef "Chapter 1. A
+    Refresher on jQuery and the Composite Pattern"), *A Refresher on jQuery and the
+    Composite Pattern*; the first one to create a three-column layout and the second
+    one to actually provide the styling of an information box. We continue by defining
+    the `boxHeader` class that is applied to the `<header>` elements of our information
+    boxes, and define some padding, a grey background color, a light shadow, and also
+    some negative margins so that it counterbalances the effect of the box's paddings
+    and places itself next to its border.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To complete the styling of the information boxes, we also define the `boxCloseButton`
+    CSS class that (i) floats the box's close buttons to the upper-right corner inside
+    the box `<header>`, (ii) defines a `20px` width and height, (iii) overrides the
+    default browser's `<button>` styling to zero padding, and (iv) adds a single-pixel
+    black border with rounded corners and a red background color. Lastly, like in
+    [Chapter 1](part0014_split_000.html#DB7S2-e8d3cd3d052d4ee0b4673af57a64ddef "Chapter 1. A
+    Refresher on jQuery and the Composite Pattern"), *A Refresher on jQuery and the
+    Composite Pattern* we define the `clear` utility CSS class to prevent the element
+    from being placed next to the previous floating elements and also define the `hidden`
+    class as a convenient way of hiding elements of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our HTML file, we reference the jQuery library itself and also a JavaScript
+    file named as `dashboard-example.js` that contains our dashboard implementation.
+    Following the best practices of creating performant web pages, we have placed
+    them right before the `</body>` tag, in order to avoid delaying the initial page
+    rendering:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: We have placed all our code inside a `$(document).ready()` call, in order to
+    delay its execution until the DOM tree of the page is fully loaded. This would
+    be absolutely required if we placed our code in the `<head>` element, but it is
+    also a best practice that is good to follow in any case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first add an observer for the `change` event on the `categoriesSelector`
+    element using the ``$.fn.change()`` method, which is actually a shorthand method
+    for the `$.fn.on('change', /* … */)` method. In jQuery, the value of the `this`
+    keyword inside a function that is used as an observer holds a reference to the
+    DOM element that the event was fired. This applies to all jQuery methods that
+    register observers, from the core `$.fn.on()` to the `$.fn.change()` and `$.fn.click()`
+    convenient methods. So we use the `$()` function to make a jQuery object with
+    the `<select>` element and store it in the `$selector` variable. Then, we use
+    `$selector.val()` to retrieve the value of the selected `<option>` and cast it
+    to a numeric value by using the `+` operator. Right after this, we retrieve the
+    `<section>` elements of `dashboardCategory` and cache the result to the `$dashboardCategories`
+    variable. Then, we proceed by finding and revealing the category whose position
+    is equal to the value of the `selectedIndex` variable and also store the resulting
+    jQuery object to the `$selectedItem` variable. Finally, we are using the `$selectedItem`
+    variable with the `$.fn.not()` method to retrieve and hide all the category elements,
+    except from the one we just revealed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next code section, we define the `setupBoxCloseButton` function that
+    will be used to initialize the functionality of the close button. It expects a
+    jQuery object with the box elements as a parameter, and for each of them, searches
+    their descendants for the `boxCloseButton` CSS class that we use on the close
+    buttons. Using `$.fn.click()`, which is a convenient method for `$.fn.on('click',
+    /* fn */)`, we register an anonymous function to be executed whenever a click
+    event is fired that uses the `$.fn.closest()` method to find the first ancestor
+    element with the `boxsizer` class and removes it from the page. Right after this,
+    we call this function once for the box elements that already existed in the page
+    at the time when the page was loaded. In this case, the box element with the usage
+    hint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An extra thing to keep in mind when using the `$.fn.closest()` method is that
+    it begins testing the given selector from the current element of the jQuery collection
+    before proceeding with its ancestor elements. For more information, you can visit
+    its documentation at [http://api.jquery.com/closest](http://api.jquery.com/closest).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the final code section, we use the `$.fn.on()` method to add an observer
+    for the click event on each of the category buttons. In this case, inside the
+    anonymous observer function, we use the `this` keyword, which holds the DOM element
+    of the `<button>` that was clicked, and use the `$()` method to create a jQuery
+    object and cache its reference in the `$button` variable. Right after this, we
+    retrieve the button's text content using the `$.fn.text()` method and along with
+    it, construct the HTML code for the information box. For the close button, we
+    use the `&#10006` HTML character code that will be rendered as a prettier "**X**"
+    icon. The template we created is based on the HTML code of the initially visible
+    hint box; for the needs of this chapter's example, we use plain string concatenation.
+    Lastly, we append the generated HTML code for our box to the `boxContainer`, and
+    since we expect it to be the last element, we use the `$()` function to find it
+    and provide it as a parameter to the `setupBoxCloseButton`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it is compared with event attributes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before the `EventTarget.addEventListener()` was defined in the DOM Level 2 Events
+    specification, the event listeners were registered either by using the event attributes
+    that are available for HTML elements or the element event properties that are
+    available for DOM nodes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the DOM Level 2 Event specification and event attributes,
+    you can visit [http://www.w3.org/TR/DOM-Level-2-Events](http://www.w3.org/TR/DOM-Level-2-Events)
+    and [https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Event_attributes](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Event_attributes),
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The event attributes are a set of attributes that are available to HTML elements
+    and provide a declarative way of defining pieces of JavaScript code (preferably
+    function calls) that should be executed when a specific event is triggered on
+    that element. Because of their declarative nature and how simply they can be used,
+    this is often the first way that new developers get introduced to events in web
+    development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we used event attributes in the above example, then the HTML code for the
+    close buttons in the information boxes will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Also, we should change the template that is used to create new information
+    boxes and expose the `closeInfoBox` function on the `window` object, in order
+    for it to be accessible from the HTML event attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Some of the disadvantages of using event attributes over the Observer Pattern
+    are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It makes it harder to define multiple separate actions that have to be executed
+    when an event fires on an element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It makes the HTML code of the page bigger and less readable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is against the separation of concerns principle, since it adds JavaScript
+    code inside our HTML, possibly making a bug harder to track and fix
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Most of the time, it leads to the functions being called in the event attribute
+    getting exposed to the global `window` object, thereby "polluting" the global
+    namespace
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Using the element event properties would not require any changes to our HTML,
+    keeping all the implementation in our JavaScript files. The changes required in
+    our `setupBoxCloseButton` function will make it look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that, for convenience, we are still using jQuery for DOM manipulations,
+    but the resulting code still has some of the aforementioned disadvantages. More
+    importantly, in order to avoid memory leaks, we are also required to remove the
+    function assigned to the `onclick` property before removing the element from the
+    page, if it contains references to the DOM element that it is applied on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using the tools that today''s browsers offer, we can even match the convenience
+    that the declarative nature of event attributes offers. In the following image,
+    you can see how the Firefox developer tools provide us with helpful feedback when
+    we use them to inspect a page element that has an event listener attached:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it is compared with event attributes](img/00010.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see in the preceding image, all the elements that have observers
+    attached also have an **ev** sign right next to them, which when clicked, displays
+    a dialog showing all the event listeners that are currently attached. To make
+    our developing experience even better, we can directly see the file and the line
+    that these handlers were defined in. Moreover, we can click on them in order to
+    expand and reveal their code, or click on the sign in front of them to navigate
+    to their source and add breakpoints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the biggest benefits of using the Observer Pattern over event attributes
+    is clearly visible in the case where we need to take more than one action when
+    a certain event happens. Suppose that we also need to add a new feature in our
+    example dashboard, which would prevent a user from accidentally double-clicking
+    a category item button and adding the same information box twice to the dashboard.
+    The new implementation should ideally be completely independent from the existing
+    one. Using the Observer Pattern, all we need to do is add the following code that
+    observes for button clicks and disables that button for 700 milliseconds:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code is indeed completely independent from the basic implementation
+    and we could place it inside the same or a different JS file and load it to our
+    page. This would be more difficult when using event attributes, since it would
+    require us to define both actions at the same time inside the same event handler
+    function; as a result, it would strongly couple the two independent actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoid memory leaks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we saw earlier, there are some strong advantages of using the Observer Pattern
+    to handle events on a web page. When using the `EventTarget.addEventListener()`
+    method to add an observer to an element, we also need to keep in mind that in
+    order to avoid memory leaks, we also have to call the `EventTarget.removeEventListener()`
+    method before removing such elements from the page so that the observers are also
+    removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on removing event listeners from elements, you can visit
+    [https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener),
+    or for the jQuery equivalent method, visit [http://api.jquery.com/off/](http://api.jquery.com/off/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery library developers understood that such an implementation concern
+    could easily be forgotten or not handled properly, thereby making the adoption
+    of the Observer Pattern look more complex, so they decided to encapsulate the
+    appropriate handling inside the `jQuery.event` implementation. As a result, when
+    using any event handling jQuery method, such as the core `$.fn.on()` or any of
+    the convenient methods such as `$.fn.click()` or `$.fn.change()`, the observer
+    functions are tracked by jQuery itself and are properly unregistered if we later
+    decide to remove the element from the page. As we saw earlier in the implementation
+    of `jQuery.event`, jQuery stores a reference to the observers of each element
+    in a separate mapping object. Every time we a use a jQuery method that removes
+    DOM elements from the page, it first makes sure to remove any observers attached
+    to those elements or any of the descendant elements, by checking the mapping object.
+    As a result, the example code we used earlier is not causing memory leaks even
+    though we are not using any method that explicitly removes the observers we add
+    to the created elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Be careful when mixing jQuery and plain DOM manipulations**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though all jQuery methods keep you safe from memory leaks caused from observers
+    that are never unregistered, keep in mind it can't protect you if you remove elements
+    using plain methods from the DOM API. If methods such as `Element.remove()` and
+    `Element.removeChild()` are used and the removed elements or their descendants
+    have observers attached, then they are not going to be unregistered automatically.
+    The same applies when assigning to the `Element.innerHTML` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing the Delegated Event Observer Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have learned some advanced details about how to use the Observer
+    Pattern using jQuery, we will get introduced to a special variation of it that
+    fits perfectly to the web platform and provides some extra benefits. The Delegated
+    Event Observer Pattern (or simply Delegate Observer Pattern) is often used in
+    web development and it utilizes the bubbling feature that most events that are
+    fired on DOM elements have. For example, when we click on a page element, the
+    click event is immediately fired on it, and right after this it also fires on
+    all its parent elements until it reaches the root of our HTML document. Using
+    a slightly different overloaded version of the jQuery's `$.fn.on` method, we can
+    easily create and attach observers on page elements for delegated events that
+    are fired on specific child elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The term "Event Delegation" describes the programming pattern where the handler
+    of an event is not attached directly to the element of interest, but is instead
+    attached to one of its ancestor elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it simplifies our code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Reimplementing our dashboard example using the Delegated Event Observer Pattern
+    will require us to change only the code of the included JavaScript file to the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The most obvious difference is that the new implementation is shorter. The benefits
+    come by defining just one observer to a common ancestor element, for each action
+    that applies to more than one page element. For this reason, we use the `$.fn.on(events,
+    selector, handler)` overload variation of the `$.fn.on()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specifically, we add an observer to the page element with the `dashboardCategories`
+    CSS class and listen for the `click` events that originate from any of its `<button>`
+    descendants. Similarly, we add a single observer to the `boxContainer` element
+    that will be executed whenever a click event fires on any of its descendants that
+    match the `.boxCloseButton` CSS selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the above observers apply not only to the elements that existed in the
+    page at the moment they were registered, but also to any element that is added
+    at any later point of time and matches the specified CSS selector; we are able
+    to decouple the code that handles the clicks on the close buttons and place it
+    in a separate observer, instead of registering a new one every time a new information
+    box is added. As a result, the observer that adds the new information boxes in
+    the dashboard is simpler and only has to deal with creating the HTML of the box
+    and insert it into the dashboard, leading to a greater separation of concerns.
+    Moreover, we no longer need to handle the registration of the observer for the
+    close button of the hint box in a separate piece of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compare the memory usage benefits
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We will now compare the difference in memory usage when using the `$.fn.on()`
+    method with the simple and Delegated Event Observer Pattern variation. To achieve
+    this we will open the two implementations of our dashboard example and compare
+    their memory usage on Chrome. To open Chrome's developer tools, just press *F12*
+    and then navigate to the **Timeline** tab. We press the "record" button in the
+    Chrome's **Timeline** tab and then press each category item button 10 times, resulting
+    in the addition of 120 information boxes to our dashboard. After adding all the
+    boxes, we end up with 121 open boxes in total, since the hint box will still be
+    open and then stop the timeline recording.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The results in the timeline for our initial Observer Pattern implementation
+    will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Compare the memory usage benefits](img/00011.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Repeating the same process for the Delegated Event Observer Pattern implementation
+    will give a smoother timeline, revealing less object allocations and Garbage Collections,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Compare the memory usage benefits](img/00012.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see in the preceding images, we end up with 1192 page elements in
+    both cases, but in the first implementation we are using 134 event listeners,
+    as compared to the implementation with event delegation where we initially created
+    three event listeners and never actually added another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, as you can see from the blue line in the graph, the memory consumption
+    of the delegate version stayed relatively the same, adding up to just around 200
+    KB. On the other hand, in the original implementation, the heap size increased
+    more than five times, gaining more than 1 MB of increase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding so many elements may not be an actual use case, but the dashboard will
+    probably not be the only dynamic part of your page. As a result, in a relatively
+    complex web page, we could get similar improvements if we reimplemented every
+    applicable part of it using the Delegated Event Observer Pattern variant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned about the Observer Pattern, how it can make the
+    HTML code of our web pages cleaner, and the way that decouples it from our application's
+    code. We learned how jQuery adds a protection layer to its methods in order to
+    protect us from undetected memory leaks, which may occur by adding observers to
+    elements, when not using the jQuery DOM manipulation methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also tried the Delegated Event Observer Pattern variant and used it to rewrite
+    our initial example. We compared the two implementations and saw how it simplifies
+    writing code that applies to many page elements when they are generated after
+    the page has been loaded. Finally, we had a comparison regarding the memory consumption
+    of the plain Observer Pattern with its delegate variant and highlighted how it
+    also lessens the memory consumption of our page by reducing the required number
+    of attached observers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have completed our introduction on how the Observer Pattern is used
+    to listen to user actions, we can move on to the next chapter where we will learn
+    about custom events and the Publish/Subscribe Pattern and the way they can lead
+    to a more decoupled implementation.
+  prefs: []
+  type: TYPE_NORMAL

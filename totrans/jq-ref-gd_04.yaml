@@ -1,0 +1,2002 @@
+- en: Chapter 4. DOM Manipulation Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Washed his hands of a deadly fate
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: He put himself in an altered state
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"Mecha-mania Boy"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: All of the methods in this chapter manipulate the DOM in some manner. A few
+    of them simply change one of the attributes of an element, while others set an
+    element's style properties. Still others modify entire elements (or groups of
+    elements) themselves—inserting, copying, removing, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A few of these methods such as `.attr(), .html()`, and `.val()` also act as
+    **getters**, retrieving information from DOM elements for later use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: General Attributes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .attr(attribute)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the value of an attribute for the first element in the set of matched
+    elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'attribute: The name of the attribute to get'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string containing the attribute value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can get any attribute of an element rather easily without jQuery, by using
+    the native JavaScript function `getAttribute`. Additionally, most of these attributes
+    are available through JavaScript as DOM node properties. Some of the more common
+    properties are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`className`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`tagName`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`id`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`href`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`title`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`rel`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`src`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s consider the following link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using jQuery''s `.attr` method to get an element''s attribute has two main
+    advantages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Convenience**: it can be chained to a jQuery object.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Cross-browser consistency**: The `.attr` method always gets the actual attribute
+    text, regardless of which browser is being used. On the other hand, when using
+    `getAttribute()` with attributes such as `href, src`, and `cite`, some browsers
+    (correctly) get the attribute text, while others get the absolute URL, regardless
+    of whether the attribute has an absolute URL or a relative one.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In order to use `getAttribute()` or any of an element's properties as a substitute
+    for `.attr()`, we need to make sure that we are working with a DOM node rather
+    than a jQuery object. To convert the first element represented in a jQuery object
+    to a DOM node, we can use either `[0]` or `.get(0)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All of the following use `getAttribute(''title'')` to get its `title` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`document.getElementById(''myid'').getAttribute(''title'')`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''#myid'').get(0).getAttribute(''title'')`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''#myid'')[0].getAttribute(''title'')`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: With any of these options, we could replace `.getAttribute('title')` with `.title`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .attr()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets one or more attributes for the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (first version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'attribute: The name of the attribute to set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'value: A value to set for the attribute'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (second version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'map: A map of attribute-value pairs to set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (third version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'attribute: The name of the attribute to set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'function: A function returning the value to set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `.attr` method is a convenient and powerful way to set the value of attributes
+    especially when setting multiple attributes or values returned by a function.
+    Let''s consider the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: .attr(attribute, value)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We change the `alt` attribute by putting `''alt''` followed by a comma and
+    the new value inside the `.attr` method''s parentheses:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can *add* an attribute in the same way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: .attr({map})
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To change the `alt` attribute and add the `title` attribute at the same time,
+    we can pass both sets of names and values into the method at once using a map
+    (JavaScript object syntax). We join each attribute to its value with a colon and
+    separate each pair with a comma:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: When setting multiple attributes, the quotation marks around the attribute names
+    are optional.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .attr(attribute, function)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'By using a function to set attributes, we can concatenate a new value with
+    an existing value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This use of a function can be even more useful when we apply the attributes
+    to multiple elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .removeAttr()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Removes an attribute from each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'attribute: An attribute'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.removeAttr` method uses the JavaScript `removeAttribute` function, but
+    it has the advantage of being able to be chained to a jQuery selector expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Style Properties
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .css(property)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the value of a style property for the first element in the set of matched
+    elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'property: A CSS property'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string containing the CSS property value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `.css` method is a convenient way to get a style property from the first
+    matched element, especially in the light of the different terms browser''s use
+    for certain properties. For example, Internet Explorer''s DOM implementation refers
+    to the `float` property as `styleFloat`, while Mozilla-based browsers refer to
+    it as `cssFloat`. The `.css` method accounts for such differences, producing the
+    same result no matter which term we use. For example, an element that is floated
+    left will return the string `left` for each of the following three lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''div.left'').css(''float'')`;'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''div.left'').css(''cssFloat'')`;'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''div.left'').css(''styleFloat'')`;'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Also, jQuery can equally interpret the CSS and DOM formatting of multiple-word
+    properties. For example, jQuery understands and returns the correct value for
+    both `.css('background-color')` and `.css('backgroundColor')`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .css()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets one or more CSS properties for the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (first version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'property: A CSS property name'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'value: A value to set for the property'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (second version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'map: A map of property-value pairs to set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (third version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'property: A CSS property name'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'function: A function returning the value to set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As with the `.attr` method, the `.css` method makes setting properties of elements
+    quick and easy. This method can take either a comma-separated key-value pair or
+    a map of colon-separated key-value pairs (JavaScript object notation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, jQuery can equally interpret the CSS and DOM formatting of multiple-word
+    properties. For example, jQuery understands and returns the correct value for
+    both `.css({''background-color'':''#ffe'', ''border-left'': ''5px solid #ccc''})`
+    and `.css({backgroundColor:''#ffe'', borderLeft: ''5px solid #ccc''})`. Notice
+    that with the DOM notation, quotation marks around the property names are optional,
+    but with CSS notation they''re required due to the hyphen in the name.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the `.css` method calls the `.attr` method internally, we can also pass
+    a function as the property value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example sets the widths of the matched elements to incrementally larger
+    values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .height()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the current computed height for the first element in the set of matched
+    elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The height of the element, in pixels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The difference between `.css('height')` and `.height()` is that the latter returns
+    a unit‑less pixel value (for example, `400`) while the former returns a value
+    with units intact (for example, `400px`). The `.height` method is recommended
+    when an element's height needs to be used in a mathematical calculation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .height(value)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets the CSS height of each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'value: An integer representing the number of pixels, or an integer with an
+    optional unit of measure appended'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: With `.height('value')`, unlike with `.css('height','value')`, the value can
+    be either a string (number and unit) or a number. If only a number is provided
+    for the value, jQuery assumes a pixel unit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .width()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the current computed width for the first element in the set of matched
+    elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The width of the element, in pixels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The difference between `.css(width)` and `.width()` is that the latter returns
+    a unit‑less pixel value (for example, `400)` while the former returns a value
+    with units intact (for example, `400px)`. The `.width` method is recommended when
+    an element's width needs to be used in a mathematical calculation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .width(value)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets the CSS width of each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'value: An integer representing the number of pixels, or an integer along with
+    an optional unit of measure appended'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: With `.width('value')`, unlike with `.css('width','value')`, the value can be
+    either a string (number and unit) or a number. If only a number is provided for
+    the value, jQuery assumes a pixel unit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Class Attribute
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .addClass()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Adds one or more classes to each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'class: One or more class names to be added to the class attribute of each matched
+    element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's important to note that this method does *not* replace a class; it simply
+    *adds* the class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'More than one class may be added at a time, separated by a space, to the set
+    of matched elements, like so: `$(''p'').addClass(''myclass yourclass'')`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This method is often used with `.removeClass()` to switch elements'' classes
+    from one to another, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `myclass` and `noclass` classes are removed from all paragraphs, while
+    `yourclass` is added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .removeClass()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Removes one or all classes from each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'class (optional): A class name to be removed from the class attribute of each
+    matched element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If a class name is included as a parameter, then only that class will be removed
+    from the set of matched elements. If no class names are specified in the parameter,
+    all classes will be removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'More than one class may be removed at a time, separated by a space, from the
+    set of matched elements, like so: `$(''p'').removeClass(''myclass yourclass'')`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This method is often used with `.addClass()` to switch elements'' classes from
+    one to another, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the class `myclass` is removed from all the paragraphs, while yourclass
+    is added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To replace all existing classes with another class, use `.attr('class','new-class')`
+    instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .toggleClass()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| If the class is present, `.toggleClass()` removes it from each element in
+    the set of matched elements; if it is not present, it adds the class.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'class: A class name to be toggled in the class attribute of each element in
+    the matched set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This method takes one or more class names as its parameter. If an element in
+    the matched set of elements already has the class, then it is removed; if an element
+    does not have the class, then it is added. For example, we can apply `.toggleClass()`
+    to a simple `<div>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first time we apply `$(''div.tumble'').toggleClass(''bounce'')`, we get
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The second time we apply `$(''div.tumble'').toggleClass(''bounce'')`, the `<div>`
+    class is returned to the single `tumble` value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Applying `.toggleClass('bounce spin')` to the same `<div>` alternates between
+    `<div class="tumble bounce spin'>` and `<div class="tumble'>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM Replacement
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .html()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the HTML contents of the first element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string containing the HTML representation of the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This method is not available on XML documents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In an HTML document, we can use the `.html` method to get the contents of any
+    element. If our selector expression matches more than one element, only the first
+    one''s HTML content is returned. Consider this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order for the following `<div>` tag''s content to be retrieved, it would
+    have to be the first one in the document:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result would look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: .html(HTML)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets the HTML contents of each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'HTML: A string of HTML to set as the content of each matched element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.html(HTML)` is not available in XML documents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we use `.html(HTML)` to set elements'' contents, any contents that were
+    in those elements is completely replaced by the new contents. Consider the following
+    HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can set the HTML contents of `<div class="demo-container">` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That line of code will replace everything inside `<div class="demo-container">`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: .text()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the combined text contents of each element in the set of matched elements,
+    including their descendants.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string containing the combined text contents of the matched elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Unlike the `.html` method, the `.text` method can be used in both XML and HTML
+    documents. The result of the `.text` method is a string containing the combined
+    text of all matched elements. Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code `$(''div.demo-container'').text()` would produce the following result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: .text(text)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets the content of each element in the set of matched elements to the specified
+    text.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'text: A string of text to set as the content of each matched element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Unlike the `.html(html)` method, `.text(text)` can be used in both XML and HTML
+    documents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need to be aware that this method replaces `<` and `>` with `&lt`; and `&gt`;,
+    respectively. Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code `$(''div.demo-container'').text(''<p>This is a test.</p>'')` will
+    produce the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It will appear on a rendered page as though the tags were exposed, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: .val()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the current value of the first element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string containing the value of the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.val` method is primarily used to get the value of form elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .val(value)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets the value of each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'value: A string of text to set as the value property of each matched element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This method is typically used to set the value of form fields.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM Insertion, Inside
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .prepend()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts content, specified by the parameter, at the beginning of each element
+    in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'content: An element, HTML string, or jQuery object to insert at the beginning
+    of each element in the set of matched elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.prepend` and `.prependTo` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.prepend()`, the selector expression preceding the method is the container into
+    which the content is inserted. With `.prependTo()`, on the other hand, the content
+    precedes the method, either as a selector expression or as markup created on the
+    fly, and it is inserted into the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description.prepend()about](img/3810_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can insert an HTML structure into the beginning of `<div class="demo-box">`
+    like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements as well as the text nodes are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned just before
+    the **Demonstration Box** text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description.prepend()about](img/3810_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the beginning of `<div class="demo-box">` as well. The following code,
+    for example, moves the document''s first paragraph by using a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: .prependTo()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts every element in the set of matched elements at the beginning of
+    the target.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'target: A selector, element, HTML string, or jQuery object; the matched set
+    of elements will be inserted at the beginning of the element(s) specified by this
+    parameter'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.prepend` and `.prependTo` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.prepend()`, the selector expression preceding the method is the container into
+    which the content is inserted. With `.prependTo()`, on the other hand, the *content*
+    precedes the method, either as a selector expression or as markup created on the
+    fly, and it is inserted into the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Using `.prependTo()`, we can insert an HTML structure into the beginning of
+    `<div class="demo-box">` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements, as well as the text nodes, are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned just before
+    the **Demonstration Box** text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the beginning of `<div class="demo-box">` as well. The following code,
+    for example, moves the document''s first paragraph by using a selector expression
+    both for the content to be inserted and for the target:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: .append()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts content specified by the parameter at the end of each element in
+    the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'content: A selector, element, HTML string, or jQuery object to insert at the
+    end of each element in the set of matched elements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.append` and `.appendTo` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.append()`, the selector expression preceding the method is the container into
+    which the content is inserted. With `.appendTo()`, on the other hand, the *content*
+    precedes the method, either as a selector expression or as markup created on the
+    fly, and it is inserted into the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can insert an HTML structure into the end of `<div class="demo-box">` like
+    so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements, as well as the text nodes, are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned just after
+    the **Demonstration Box** text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the end of `<div class="demo-box">` as well. The following code, for
+    example, moves the document''s first paragraph by using a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: .appendTo()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts every element in the set of matched elements at the end of the target.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'target: A selector, element, HTML string, or jQuery object; the matched set
+    of elements will be inserted at the end of the element(s) specified by this parameter'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.append` and `.appendTo` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.append()`, the selector expression preceding the method is the container into
+    which the content is inserted. With `.appendTo()`, on the other hand, the *content*
+    precedes the method, either as a selector expression or as markup created on the
+    fly, and it is inserted into the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Using `.appendTo()`, we can insert an HTML structure into the end of `<div
+    class="demo-box">` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements, as well as the text nodes, are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned just after
+    the **Demonstration Box** text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the end of `<div class="demo-box">` as well. The following code, for
+    example, moves the document''s first paragraph by using a selector expression
+    both for the content to be inserted and for the target:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: DOM Insertion, Outside
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .before()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts content specified by the parameter before each element in the set
+    of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'content: An element, HTML string, or jQuery object to insert before each element
+    in the set of matched elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.before` and `.insertBefore` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.before()`, the selector expression preceding the method is the container into
+    which the content is inserted. With `.insertBefore()`, on the other hand, the
+    *content* precedes the method, either as a selector expression or as markup created
+    on the fly, and it is inserted before the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can insert an HTML structure before `<div class="demo-box">` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements, as well as the text nodes, are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned outside
+    of, just before, `<div class="demo-box">`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the DOM position just before `<div class="demo-box">` as well. The following
+    code, for example, moves the document''s first paragraph by using a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: .insertBefore()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts every element in the set of matched elements before the set of elements
+    specified in the parameter.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'content: A selector or element before which the matched set of elements will
+    be inserted'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.before` and `.insertBefore` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.before()`, the selector expression preceding the method is the container into
+    which the content is inserted. With `.insertBefore()`, on the other hand, the
+    *content* precedes the method, either as a selector expression or as markup created
+    on the fly, and it is inserted before the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can insert an HTML structure just before `<div class="demo-box">` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements, as well as the text nodes, are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned outside
+    of, just before, `<div class="demo-box">`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the DOM position just before `<div class="demo-box">` as well. The following
+    code, for example, moves the document''s first paragraph by using a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs: []
+  type: TYPE_PRE
+- en: .after()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts content specified by the parameter after each element in the set
+    of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'content: An element, HTML string, or jQuery object to insert after each element
+    in the set of matched elements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.after` and `.insertAfter` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.after()`, the selector expression preceding the method is the container after
+    which the content is inserted. With `.insertAfter()`, on the other hand, the *content*
+    precedes the method, either as a selector expression or as markup created on the
+    fly, and it is inserted after the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can insert an HTML structure after `<div class="demo-box">` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements, as well as the text nodes, are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned outside
+    of, just after, `<div class="demo-box">`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the DOM position just after `<div class="demo-box">` as well. The following
+    code, for example, moves the document''s first paragraph by using a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs: []
+  type: TYPE_PRE
+- en: .insertAfter()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Inserts every element in the set of matched elements after the set of elements
+    specified in the parameter.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE69]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'content: A selector or element after which the matched set of elements will
+    be inserted'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.after` and `.insertAfter` methods perform the same task. The only difference
+    is in the syntax—specifically, in the placement of the content and target. With
+    `.after()`, the selector expression preceding the method is the container after
+    which the content is inserted. With `.insertAfter()`, on the other hand, the *content*
+    precedes the method, either as a selector expression or as markup created on the
+    fly, and it is inserted after the target container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE70]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Using `.insertAfter()`, we can insert an HTML structure after `<div class="demo-box">`
+    like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE71]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` and `<strong>` elements, as well as the text nodes, are created
+    on the fly and added to the DOM. The result is a new `<div>` positioned outside
+    of, just after, `<div class="demo-box">`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An element (or array of elements) that already exists on the page could be
+    moved to the DOM position just after `<div class="demo-box">` as well. The following
+    code, for example, moves the document''s first paragraph by using a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE72]'
+  prefs: []
+  type: TYPE_PRE
+- en: DOM Insertion, Around
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .wrap()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Wraps a structure of elements around each element in the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE73]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (first version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'html: A string of HTML tags to wrap around the set of matched elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (second version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'element: An existing element to wrap around the set of matched elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Note: The HTML must include only well-formed, valid element structures. If
+    any text is included, or if any tags are left unclosed, the `.wrap()` will fail.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE74]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Using `.wrap()`, we can insert an HTML structure around `<div class="demo-box">`
+    like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE75]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new `<div>` element is created on the fly and added to the DOM. The result
+    is a new `<div>` wrapped around `<div class="demo-box">`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Using a DOM node as our parameter instead, we could wrap the new `<div>` around
+    an element with `id="demo-box1"` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE76]'
+  prefs: []
+  type: TYPE_PRE
+- en: DOM Copying
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .clone()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Creates a copy of the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE77]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'deep (optional): A Boolean. Default is `true`. If set to `false`, the `.clone`
+    method copies only the matched elements themselves, excluding any child/descendant
+    elements and text.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A new jQuery object, referencing the created elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `.clone` method, when used in conjunction with one of the insertion methods,
+    is a convenient way to duplicate elements on a page. Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE78]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_19.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To copy `<div class="demo-box">` and paste that copy after the original, we
+    could write the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE79]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we have **Demonstration Box twice**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_20.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Notice that we use the `:last` selector here so that we are sure to only copy
+    (`.clone()`) and paste (`.insertAfter()`) a single copy. We need to be aware of
+    the potential to inadvertently clone or insert more than we intend, and take the
+    necessary precautions to prevent that from occurring.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: With the `.clone` method, we can modify the cloned elements or their contents
+    before inserting them into the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The optional `deep` parameter accepts a Boolean—`true` or `false`. Since in
+    most cases we want to clone child nodes as well, and since the default is `true`,
+    the parameter is rarely used. However, imagine that we wanted to copy the **Demonstration
+    Box** without its text and then append a paragraph to every `<div class="demo-box">`.
+    We could make this happen with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE80]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now the two boxes look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_21.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The first box now has both the original **Demonstration Box** text and the additional
+    **New Message** text while the new, cloned box has only the additional text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM Removal
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: .empty()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Removes all child nodes of the set of matched elements from the DOM.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE81]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This method removes not only child (and other descendant) elements, but also
+    any text within the set of matched elements. This is because, according to the
+    DOM, any string of text within an element is considered a child node of that element.
+    Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE82]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_22.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If we apply `$(''div.demo-box'').empty()`; to it, the **Demonstration Box**
+    text string is removed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_23.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If we had any number of nested elements inside `<div class="demo-box">`, they
+    would be removed, too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .remove()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Removes the set of matched elements from the DOM.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE83]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector (optional): A selector that filters the set of matched elements to
+    be removed'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Similar to.empty, the `.remove` method takes elements out of the DOM. We use
+    `.remove()` when we want to remove the element itself, as well as everything inside
+    it. Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE84]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two `<div>`s, with a little CSS, are rendered on the right side of the
+    page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_24.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If we apply `$(''div.demo-box'').remove()` to it, the entire `<div class="demo-box>`
+    along with everything in it is removed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Description](img/3810_04_25.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can also include a selector as an optional parameter. For example, we could
+    rewrite the previous DOM removal code as follows: `$(''div'').remove(''.demo-box'')`.
+    Or, if we had multiple elements with the same class name and wanted to remove
+    only the first one the one with `id="temporary-demo-box"`, we could write the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE85]'
+  prefs: []
+  type: TYPE_PRE

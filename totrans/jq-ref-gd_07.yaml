@@ -1,0 +1,1309 @@
+- en: Chapter 7. AJAX Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: She's out of sync
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: She entered through the exit
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: And never stopped to think
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"Out of Sync"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The AJAX capabilities in jQuery help us to load data from the server without
+    a browser page refresh. In this chapter, we'll examine each of the available AJAX
+    methods and functions. We'll see various ways of initiating an AJAX request, as
+    well as several methods that can observe the requests that are in progress at
+    any time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Low-Level Interface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods can be used to make arbitrary AJAX requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.ajax()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Perform an asynchronous HTTP (AJAX) request.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'settings: A map of options for the request can contain the following items:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`url`: A string containing the URL to which the request is sent.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`type` (optional): A string defining the HTTP method to use for the request
+    (`GET` or `POST`). The default value is `GET`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`dataType` (optional): A string defining the type of data expected back from
+    the server (`xml, html, json`, or `script`).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ifModified` (optional): A Boolean indicating whether the server should check
+    if the page is modified before responding to the request.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`timeout` (optional): Number of milliseconds after which the request will time
+    out in failure.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`global` (optional): A Boolean indicating whether global AJAX event handlers
+    will be triggered by this request. The default value is `true`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`beforeSend` (optional): A callback function that is executed before the request
+    is sent.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`error` (optional): A callback function that is executed if the request fails.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`success` (optional): A callback function that is executed if the request succeeds.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`complete` (optional): A callback function that executes whenever the request
+    finishes.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data` (optional): A map or string that is sent to the server with the request.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`processData` (optional): A Boolean indicating whether to convert the submitted
+    data from an object form into a query-string form. The default value is `true`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`contentType` (optional): A string containing a MIME content type to set for
+    the request. The default value is `application/x-www-form-urlencoded`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`async` (optional): A Boolean indicating whether to perform the request asynchronously.
+    The default value is `true`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object that was created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `$.ajax()` function underlies all AJAX requests sent by jQuery. This function
+    is seldom directly called as several higher-level alternatives like `$.post()`
+    and `.load()` are available and are easier to use. If less common options are
+    required, though, `$.ajax()` can be used for more flexibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At its simplest, the `$.ajax()` function must atleast specify a URL from which
+    the data is to be loaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even this sole required parameter can be made optional by setting a default
+    using the `$.ajaxSetup()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This example, using the only required option, loads the contents of the specified
+    URL, but does nothing with the result. To use the result, we can implement one
+    of the callback functions. The `beforeSend, error, success`, and `complete` options
+    take callback functions that are invoked at the appropriate times:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`beforeSend`: called before the request is sent; the `XMLHttpRequest` object
+    is passed as a parameter to it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`error`: called if the request fails. The `XMLHttpRequest` object is passed
+    as a parameter as a string indicating the error type, and an exception object
+    if applicable.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`success`: called if the request succeeds. The returned data is passed as the
+    parameter to it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`complete`: called when the request finishes, whether in failure or success.
+    The `XMLHttpRequest` object as well as a string containing the success or error
+    code are passed as a parameters to it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To make use of the returned HTML, we can implement a `success` handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Such a simple example would generally be better served by using `.load()` or
+    `$.get()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `$.ajax()` function relies on the server to provide information about the
+    retrieved data. If the server reports the return data as XML, the result can be
+    traversed using normal XML methods or jQuery's selectors. If another type is detected,
+    such as HTML in the example above, the data is treated as text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Different data handling can be achieved by using the `dataType` option. Besides
+    plain `xml`, the `dataType` can be `html, json`, or `script`. If `html` is specified,
+    any embedded JavaScript inside the retrieved data is executed before the HTML
+    is returned as a string. Similarly, `script` will execute the JavaScript that
+    is pulled back from the server and return the script itself as textual data. The
+    `json` option uses `eval()` to parse the fetched data file as a JavaScript object,
+    and return the constructed object as the result data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We must ensure that the MIME type that is reported by the web server matches
+    our choice of `dataType`. In particular, `xml` must be declared by the server
+    as `text/xml` for consistent results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, AJAX requests are sent using the `GET HTTP` method. If the `POST`
+    method is required, the method can be specified by setting a value for the `type`
+    option. This option affects how the contents of the `data` option are sent to
+    the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `data` option can contain either a query string of the form `key1=value1&key2=value2`,
+    or a map of the form `{key1: ''value1'', key2: ''value2''}`. If the latter form
+    is used, the data is converted into a query string before it is sent. This processing
+    can be prevented by setting `processData` to `false`. The processing might be
+    undesirable if we wish to send an XML object to the server; in this case, we would
+    also want to change the `contentType` option from `application/x-www-form-urlencoded`
+    to a more appropriate MIME type.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The remaining options—`ifModified, timeout, global`, and `async`—are rarely
+    required. For information on `ifModified`, please refer to the `$.getIfModified()`
+    function. Request timeouts can usually be set as a global default using `$.ajaxSetup()`
+    rather than for specific requests with the `timeout` option. The `global` option
+    prevents registered handlers that use `.ajaxSend(), .ajaxError()`, or similar
+    methods from firing when triggered by this request. This can be useful to, for
+    example, suppress a loading indicator that we implemented with `.ajaxSend()` if
+    the requests are frequent and brief. Lastly, the default value for `async` option
+    is `true`, indicating that the code execution can be continued after the request
+    is made. Setting this option to `false` is strongly discouraged as it can cause
+    the browser to become unresponsive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Rather than making requests synchronous using this option, better results can
+    be achieved using the *blockUI* plug-in..
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `$.ajax()` function returns the `XMLHttpRequest` object that it creates.
+    This can generally be discarded, but it does provide a lower-level interface for
+    observing and manipulating the request. In particular, calling `.abort()` on the
+    object will halt the request before it completes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.ajaxSetup()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sets default values for future AJAX requests.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'settings: A map of options for future requests. Same possible items as in `$.ajax()`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For details on the settings available for `$.ajaxSetup()`, please refert to
+    `$.ajax()`. All subsequent AJAX calls using any function will use the new settings,
+    unless overridden by the individual calls, until the next invocation of `$.ajaxSetup()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, we could set a default value for the URL parameter before pinging
+    the server repeatedly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now each time an AJAX request is made, this URL will be used automatically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Shorthand Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods perform the more common types of AJAX requests in less code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.get()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Loads data from the server using a GET HTTP request.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'url: A string containing the URL to which the request is sent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'data: (optional): A map of data that is sent with the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'success: (optional): A function that is executed if the request succeeds'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object that was created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This is a shorthand AJAX function, which is equivalent to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The callback is passed the returned data, which will be an XML root element
+    or a text string depending on the MIME type of the response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most implementations will specify a success handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example fetches the requested HTML snippet and inserts it on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.getIfModified()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Loads data from the server using a `GET HTTP` request if it has changed since
+    the last request.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'url: A string containing the URL to which the request is sent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'data: (optional): A map of data that is sent with the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'success: (optional): A function that is executed if the request succeeds'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object that was created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This is a shorthand AJAX function, which is equivalent to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The callback is passed the returned data, which will be an XML root element
+    or a text string depending on the MIME type of the response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most implementations will specify a success handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example fetches the requested HTML snippet and inserts it on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the AJAX request is sent, an `If-Modified-Since` HTTP header is added.
+    Web servers are supposed to honor this and omit the data if the file is unchanged.
+    This can be exploited to save bandwidth when refreshing data from within a page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A response that the page is not modified is still treated as a `success`. In
+    this case the callback will still be executed, but no data will be available.
+    The callback should trap for this to avoid discarding previously-fetched data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .load()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Loads data from the server and places the returned HTML into the matched
+    element.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'url: A string containing the URL to which the request is sent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'data (optional): A map of data that is sent with the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'success (optional): A function that is executed if the request succeeds'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This method is the simplest way to fetch data from the server. It is roughly
+    equivalent to `$.get(url, data, success)` except that it is a method rather than
+    a global function and it has an implicit callback function. When a successful
+    response is detected, `.load()` sets the HTML contents of the matched element
+    to the returned data. This means that most uses of the method can be quite simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The provided callback, if any, is executed after this post-processing has been
+    performed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The POST method is used if data is provided; otherwise, GET is assumed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The event handling suite also has a method named `.load()`. Which one is fired
+    depends on the set of arguments passed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .loadIfModified()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Loads data from the server, if it has changed since the last request, and
+    places the returned HTML into the matched element.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'url: A string containing the URL to which the request is sent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'data: (optional): A map of data that is sent with the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'success: (optional): A function that is executed if the request succeeds'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This method is roughly equivalent to `$.getIfModified(url, data, success)`
+    except that it is a method rather than a global function and it has an implicit
+    callback function. When a successful response is detected, `.loadIfModified()`
+    sets the HTML contents of the matched element to the returned data. This means
+    that most uses of the method can be quite simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The provided callback, if any, is executed after this post-processing has been
+    performed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The POST method is used if data is provided; otherwise, GET is assumed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information on how the modification date checking works, see `$.getIfModified()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.post()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Loads data from the server using a `POST HTTP` request.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'url: A string containing the URL to which the request is sent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'data: (optional): A map of data that is sent with the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'success: (optional): A function that is executed if the request succeeds'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object that was created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This is a shorthand AJAX function, which is equivalent to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The callback is passed the returned data, which will be an XML root element
+    or a text string depending on the MIME type of the response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most implementations will specify a success handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example fetches the requested HTML snippet and inserts it on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pages fetched with `POST` are never cached, so the `ifModified` option has no
+    effect on these requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.getJSON()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Loads JSON-encoded data from the server using a `GET HTTP` request.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'url: A string containing the URL to which the request is sent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'data: (optional): A map of data that is sent with the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'success: (optional): A function that is executed if the request succeeds'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object that was created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This is a shorthand AJAX function, which is equivalent to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The callback is passed the returned data, which will be a JavaScript object
+    or array as defined by the JSON structure and parsed using the `eval()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For details on the JSON format, see [http://json.org/](http://json.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most implementations will specify a success handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This example, of course, relies on the structure of the JSON file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using this structure, the example inserts the first string and second number
+    from the file onto the page. If there is a syntax error in the JSON file, the
+    request will usually fail silently; avoid frequent hand-editing of JSON data for
+    this reason.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $.getScript()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Loads a JavaScript from the server using a `GET HTTP` request, and executes
+    it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'url: A string containing the URL to which the request is sent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'success: (optional): A function that is executed if the request succeeds'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object that was created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Descritpion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This is a shorthand AJAX function, which is equivalent to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: The callback is passed the returned JavaScript file. This is generally not useful
+    as the script will already have run at this point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The script is executed in the global context, so it can refer to other variables
+    and use jQuery functions. Included scripts should have some impact on the current
+    page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The script can then be included and run by referencing the file name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: In Safari, the script is not guaranteed to execute before the success callback
+    is invoked. Practically speaking, this means that the code in the callback should
+    not call functions or reference variables defined in the external script without
+    at least a small delay.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Global AJAX Event Handlers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods register handlers to be called when certain events take place
+    for any AJAX request on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .ajaxComplete()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Registers a handler to be called when AJAX requests complete.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'handler: The function to be invoked'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Whenever an AJAX request completes, jQuery triggers the `ajaxComplete` event.
+    All the handlers that have been registered with the `.ajaxComplete()` method are
+    executed at this time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To observe this method in action, we can set up a basic AJAX load request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can attach our event handler to any element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can make an AJAX request using any jQuery method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks the button and the AJAX request completes, the log message
+    is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All `ajaxComplete` handlers are invoked, regardless of what AJAX request was
+    completed. If we must differentiate between the requests, we can use the parameters
+    passed to the handler. Each time an `ajaxComplete` handler is executed, it is
+    passed the event object, the `XMLHttpRequest` object, and the settings object
+    that was used in the creation of the request. For example, we can restrict our
+    callback to only handling events dealing with a particular URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: .ajaxError()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Registers a handler to be called when AJAX requests complete with an error.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'handler: The function to be invoked'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Whenever an AJAX request completes with an error, jQuery triggers the `ajaxError`
+    event. All the handlers that have been registered with the `.ajaxError()` method
+    are executed at this time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To observe this method in action, we can set up a basic AJAX load request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can attach our event handler to any element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can make an AJAX request using any jQuery method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks the button and the AJAX request fails, because the requested
+    file is missing, the log message is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All `ajaxError` handlers are invoked, regardless of what AJAX request was completed.
+    If we must differentiate between the requests, we can use the parameters passed
+    to the handler. Each time an `ajaxError` handler is executed, it is passed the
+    event object, the `XMLHttpRequest` object, and the settings object that was used
+    in the creation of the request. If the request failed because JavaScript raised
+    an exception, the exception object is passed to the handler as a fourth parameter.
+    For example, we can restrict our callback to only handling events dealing with
+    a particular URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: .ajaxSend()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Registers a handler to be called when AJAX requests begins.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'handler: The function to be invoked'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Whenever an AJAX request is about to be sent, jQuery triggers the `ajaxSend`
+    event. All the handlers that have been registered with the `.ajaxSend()` method
+    are executed at this instant of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To observe this method in action, we can set up a basic AJAX load request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can attach our event handler to any element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can make an AJAX request using any jQuery method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks the button and the AJAX request is about to begin, the
+    log message is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All `ajaxSend` handlers are invoked, regardless of what AJAX request is to
+    be sent. If we must differentiate between the requests, we can use the parameters
+    passed to the handler. Each time an `ajaxSend` handler is executed, it is passed
+    the event object, the `XMLHttpRequest` object, and the settings object that was
+    used in the creation of the request. For example, we can restrict our callback
+    to only handling events dealing with a particular URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: .ajaxStart()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Registers a handler to be called when the first AJAX request begins.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'handler: The function to be invoked'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Whenever an AJAX request is about to be sent, jQuery checks whether there are
+    any other outstanding AJAX requests. If none are in progress, jQuery triggers
+    the `ajaxStart` event. All the handlers that have been registered with the `.ajaxStart()`
+    method are executed at this instant of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To observe this method in action, we can set up a basic AJAX load request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can attach our event handler to any element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can make an AJAX request using any jQuery method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks the button and the AJAX request is sent, the log message
+    is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .ajaxStop()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Registers a handler to be called when all AJAX requests have completed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'handler: The function to be invoked'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Whenever an AJAX request completes, jQuery checks whether there are any other
+    outstanding AJAX requests; if none are remaining, jQuery triggers the `ajaxStop`
+    event. All the handlers that have been registered with the `.ajaxStop()` method
+    are executed at this instant of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To observe this method in action, we can set up a basic AJAX load request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can attach our event handler to any element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can make an AJAX request using any jQuery method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks the button and the AJAX request completes, the log message
+    is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Because `.ajaxStart(), .ajaxStop(), .ajaxSend(), ajaxError()`, and `.ajaxComplete()`
+    are implemented as a methods rather than global functions, we can use the keyword
+    `this` as we do here to refer to the selected elements within the callback function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .ajaxSuccess()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Registers a handler to be called when AJAX requests are successfully completed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'handler: The function to be invoked'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Whenever an AJAX request is successfully completed, jQuery triggers the `ajaxSuccess`
+    event. All the handlers that have been registered with the `.ajaxSuccess()` method
+    are executed at this instant of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To observe this method in action, we can set up a basic AJAX load request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can attach our event handler to any element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can make an AJAX request using any jQuery method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the user clicks the button and the AJAX request successfully completes,
+    the log message is displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Because `.ajaxSuccess()` is implemented as a method rather than a global function,
+    we can use the `this` keyword as we do here to refer to the selected elements
+    within the callback function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All `ajaxSuccess` handlers are invoked, regardless of what AJAX request was
+    completed. If we must differentiate between the requests, we can use the parameters
+    passed to the handler. Each time an `ajaxSuccess` handler is executed, it is passed
+    the event object, the `XMLHttpRequest` object, and the settings object that was
+    used in the creation of the request. For example, we can restrict our callback
+    only to handling events dealing with a particular URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: Helper Function
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This function assists with common idioms encountered when performing AJAX tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .serialize()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Encodes a set of form elements as a string for submission.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string containing the serialized representation of the elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `.serialize()` method creates a text string in standard URL-encoded notation.
+    It operates on a jQuery object representing a set of form elements. The form elements
+    can be of several types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can serialize all of these element types after selecting them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This produces a standard-looking query string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: The string is close to, but not exactly the same as, the one that would be produced
+    by the browser during a normal form submission. The `.submit()` method uses the
+    `.name` and `.value` properties of each element to create the string, so in cases
+    where these properties do not reflect the actual form values, the string can be
+    incorrect. For example, the checkbox in the example above always has a `.value`
+    of `8`, whether or not the box is checked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a more robust solution, the *form* plug-in is available. Its methods provide
+    an encoding that matches the one provided by a browser.
+  prefs: []
+  type: TYPE_NORMAL

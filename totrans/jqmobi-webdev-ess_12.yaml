@@ -1,0 +1,327 @@
+- en: Chapter 12. Creating Native Applications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will look at how to turn jQuery Mobile based web applications
+    into native applications for mobile devices. We'll discuss the PhoneGap framework
+    and how it allows you to tap into your device's hardware.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discuss the PhoneGap project and what it does
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Demonstrate how to use PhoneGap's Build service to create native applications
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HTML as a native application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For most folks, creating a native application on a platform like Android or
+    iOS requires learning an entirely new programming language. While it is always
+    good to learn new languages and expand your skill set, wouldn't it be cool if
+    you could take your existing HTML skills and use them natively on a mobile device?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily there is just such a platform. PhoneGap ([http://www.phonegap.com](http://www.phonegap.com))
+    is an open source project that allows you to take HTML pages and create native
+    applications. This code is entirely free and can be used to develop applications
+    for iOS (both iPhone and iPad), Android (again both phones and tablets), Blackberry,
+    WebOS, Windows Phone 7, Symbian, and Bada. PhoneGap works by creating a project
+    in the native environment and pointing to an HTML file. Once setup, you can use
+    your existing HTML, CSS, and JavaScript skills to create the UI and functionality
+    of your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Even better, PhoneGap provides additional APIs to your JavaScript code. These
+    APIs allow for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Accelerometer: Allows your code to detect basic movement on the device'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Camera: Allows your code to work with the camera'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Compass: Gives you access to the compass on the device'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Contacts: Provides basic search and contact creation support'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'File: Read/write access to the device''s storage'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Geolocation: Provides a way to detect the location of the device'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Media: Allows for basic video/audio capture support'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Network: Determines the network connectivity settings of the device'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Notification: A simple way to create a notification (via a pop up, sound, or
+    vibration)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Storage: Access to a simple SQL database'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By using these APIs, you can take normal HTML sites and turn them into powerful,
+    native-like applications that users can download and install on their devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we go any further, let's take a quick note on **PhoneGap**. PhoneGap
+    is an open source project currently in incubation status at Apache. It has been
+    renamed as **Cordova**. You may hear people refer to it by either name. At the
+    time this book was written, most people still referred to the project as PhoneGap
+    and that is the term we will use. The important thing to remember is that PhoneGap
+    is free and open source!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we go further, let's talk quickly about how a PhoneGap application compares
+    to a native application. Native applications — in most cases — will perform faster
+    than applications created with PhoneGap. PhoneGap is not meant to replace native
+    development. But by allowing you to use existing skills and deploy to multiple
+    platforms at once, the benefits can far outweigh any concerns over performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with PhoneGap
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Creating a PhoneGap project is done via two main methods. The primary way people
+    use PhoneGap is by using the development tool of the platform they are building
+    for first. So, for an Android project, that involves using the Eclipse editor
+    with the right plugins, and on iOS it involves XCode. The *Get Started Guide*
+    ([http://www.phonegap.com/start](http://www.phonegap.com/start)) provides details
+    on how to set up your environment for the device platform of your choice:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with PhoneGap](img/7263_12_1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Detailing the setup for each platform would be too much for this book (and
+    would just duplicate what''s on the PhoneGap website), so instead we will focus
+    on the other option for creating native applications, the **PhoneGap Build** service.
+    PhoneGap Build ([https://build.phonegap.com](https://build.phonegap.com)) is an
+    online service that simplifies and automates the process of creating native applications.
+    It allows you to simply upload code (or use a public source control repository)
+    to generate the native binaries. Even better, you can use PhoneGap Build to generate
+    binaries for all their supported platforms. That means you can write your code
+    and spit out code for an iPhone, Android, Blackberry, and other versions, all
+    from the site itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with PhoneGap](img/7263_12_2.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The PhoneGap Build service is not free, though. Pricing plans and other details
+    may be found on the site, but luckily there is a free Developer plan. That is
+    the service we'll be using for this chapter. Lets begin by creating an account.
+    (In the screen shots and examples that follow, be sure to change the details to
+    something specific for you.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Begin by clicking the **Creating an account** button and filling out the pertinent
+    details:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with PhoneGap](img/7263_12_3.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'After you sign up, you will be returned to the PhoneGap Build home page and
+    you will not see any type of confirmation message. This is a bit unfortunate,
+    but if you check your e-mail, you should see a message from them asking to verify
+    your sign-up. Click that link, and you''ll be taken to a page asking you to create
+    your first PhoneGap Build project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with PhoneGap](img/7263_12_4.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Notice that the Build service supports seeding a project from a new Github repository,
+    an existing Git or Subversion repository, or via an uploaded ZIP or HTML file.
+    At this point, let's switch away from the website and back to code. We want to
+    begin with a very simple set of code. Later on in the chapter we will do something
+    a bit more interesting, but for now, our objective is to just upload some HTML
+    and see what comes next. In the code you downloaded from GitHub, open the `c12`
+    folder and look at the `app1` folder. This contains a copy of one of the list
+    examples from [Chapter 4](../Text/ch04.html "Chapter 4. Working with Lists"),
+    *Working with Lists*. It uses jQuery Mobile to create a simple list of four people,
+    along with thumbnail pictures. Nothing too exciting, but it gets the job done
+    for our purposes here. You will notice that there is already an `app1.zip` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you go back to the website and select **upload an archive**, you can then
+    browse to the location on your computer where you extracted the files and select
+    that ZIP file. Be sure to also enter a name for the application. I chose `FirstBuildApp`.
+    After hitting **Create**, you are then taken to a page with all your apps, which
+    if you are a new Build user will only contain the one just created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with PhoneGap](img/7263_12_5.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Clicking on the app title then gives you the option to download various flavors
+    of the application. Believe it or not — you are already able to download a version
+    for most platforms. Working with iOS requires you to provide additional details
+    though:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with PhoneGap](img/7263_12_6.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you do not see a **Download** link but rather a **Queued** notice, please
+    give the Build service a minute or two to catch up. If you simply reload the page,
+    you will see the link show up eventually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Actually using the applications depends on your platform of choice. For Android,
+    you need to ensure that you have enabled the setting, **Allow installation of
+    non-Market applications**. The exact wording and location of that setting will
+    depend on your device. That phrase was found in the **Applications** setting on
+    my HTC Inspire device. You can sign the application by editing the settings on
+    the PhoneGap Build site. Once you''ve done that, you can actually submit your
+    application to the Android Market. But since Android allows you to play with applications
+    that are not signed, you can skip that step while testing. If you download the
+    APK (the actual file representing your application), you can get it on your device
+    in a few ways. The Android SDK includes tools to install applications from the
+    command line. The easiest way would be to use your e-mail. If you e-mail the file
+    to yourself and check your e-mail on your device, you should be able to install
+    it there. The following screenshot shows the application running on my phone:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with PhoneGap](img/7263_12_7.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding PhoneGap functionality
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We just demonstrated how to use the PhoneGap Build service to turn HTML (and
+    JavaScript, CSS, and images of course) into a real, native application for multiple
+    platforms. As mentioned earlier in the chapter though, PhoneGap provides more
+    than a simple wrapper to turn HTML into native applications. The PhoneGap JavaScript
+    API provides access to a number of cool device-centric services that can greatly
+    enhance the power of your application. For our second example, we''ll take a look
+    at one of these features — the Contacts API. (For full details, see the *Contacts
+    API documentation* which is available at: [http://docs.phonegap.com/en/1.4.1/phonegap_contacts_contacts.md.html#Contacts)](http://docs.phonegap.com/en/1.4.1/phonegap_contacts_contacts.md.html#Contacts)).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The application in `Listing 12-1` is a simple contact search tool. Let''s take
+    a look at the code and then cover what''s going on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s begin by looking at the layout portion of the application which resides
+    in the bottom half of the file. You can see our jQuery Mobile page structure,
+    and within it, an input field, a button, and an empty list. The idea here is that
+    the user will enter a name to search for, hit the button, and the results will
+    show up within the list. The following screenshot demonstrates the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding PhoneGap functionality](img/7263_12_8.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now take a look at the JavaScript code. The first change we''ve made is to
+    include the PhoneGap JavaScript library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This JavaScript library is available from the ZIP file you download from PhoneGap.
+    Even though we aren't going to be building our application locally (although you
+    certainly can), we need to include the JavaScript file in the ZIP file we send
+    up to the Build service. Here's the one tricky part. As of PhoneGap v 1.4.1, the
+    JavaScript file is unique per platform. That means there is a different JavaScript
+    file for each of the operating systems supported by PhoneGap. The Build service
+    is smart enough to swap out your file reference with the right file for the right
+    platform. If you use the code from the Github repository for this book, it is
+    the Android version. If you wish to take this code and work with it for iOS, be
+    sure to replace the JavaScript file locally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next interesting tidbit is the following line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `deviceready` event is a special event fired by PhoneGap. It essentially
+    means that your code can now make use of advanced functionality, such as the Contacts
+    API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the event handler `onDeviceReady`, we have a few things going on. The
+    first function of note is the event handler for the search button. The first few
+    lines simply get, trim, and validate the value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After we are sure there''s actually something to search for, you can see the
+    first actual use of the Contacts API, as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Contacts API has a search method. Its first argument is an array of fields
+    to both search and return. In our case, we are saying we want to search against
+    the name and e-mail values for contacts. The second and third arguments are the
+    success and error callbacks. The final option is a set of options for the search.
+    You can see it created before the call. The filter key is simply the search term.
+    By default, contact searches return one result, so we specifically ask for multiple
+    results as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s take a look at the success handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result of the contact search will be an array of results. Remember that
+    you only get back what you asked for, so our result objects contain the `displayName`
+    and `emails` property. For now, our code simply takes the `displayName` and adds
+    it to the list. Remembering what we learned from one of the previous chapters,
+    we also know that we need to refresh the jQuery Mobile listview whenever we modify
+    it. The following screenshot shows a sample search:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding PhoneGap functionality](img/7263_12_9.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we looked into the PhoneGap open source project and how it
+    allows you to take your HTML, JavaScript, and CSS, and create native applications
+    for a multitude of different devices. We played with the Build service and used
+    it to upload our code and download compiled native applications. While jQuery
+    Mobile isn't required with PhoneGap, the two make an incredibly powerful team.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll take this team and create our final application,
+    a full-fledged RSS reader.
+  prefs: []
+  type: TYPE_NORMAL

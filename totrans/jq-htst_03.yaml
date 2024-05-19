@@ -1,0 +1,1124 @@
+- en: Chapter 3. An Interactive Google Map
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we'll create a highly interactive Google map that works with
+    the latest version of Google's API to produce a map with custom overlays and markers,
+    geocoded addresses, and computed distances. We'll also look at how to keep our
+    simple UI in sync with the locations added to the map using a combination of Google
+    and jQuery event handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For the purposes of this project, we'll have a scenario where we need to build
+    a map-based application for a company that takes things from one place to another.
+    They want a page that their customers can visit to calculate the cost of, and
+    maybe order, the transport of something from one place to another by clicking
+    on different areas of a localized map.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll see how to listen for clicks on the map so that markers can be added and
+    the precise locations of each marker can be recorded. We can then update the UI
+    to show the actual street addresses of the locations that were clicked and allow
+    the visitor to generate a quote based on the computed distance between the two
+    addresses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Google Maps is a fantastic API to build on. Already highly interactive and packed
+    with features, we can build robust and highly functional applications on top of
+    the solid foundation it provides. Google provides the mapping data and interactivity
+    with the map, while jQuery is used to build the UI – a winning combination.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The page that we''ll end up with will resemble the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Why Is It Awesome?](img/9106OS_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This project will be broken down into the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the page and interface
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Initializing the map
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Showing the company HQ with a custom overlay
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Capturing clicks on the map
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Updating the UI with the start and end locations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling marker repositions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Factoring in weights
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displaying the projected distance and cost
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mission Checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll need to link to a script file provided by Google in order to initialize
+    the map and load in the API. We can also create the new files that we'll be using
+    in the project at this point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't worry, we don't need an API key from Google or anything like that for
+    this project to work, we can just use the script by linking directly to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Google Maps API is feature-rich and stable, and contains entry points for
+    all of the best known mapping features, including Street View, geolocation, and
+    the directions service. As well as the configuration options we used here, there
+    are many, many others. For further information, see the documentation site at
+    [http://developers.google.com/maps/](http://developers.google.com/maps/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: First we should save a new copy of the template file to our root project folder
+    and call it `google-map.html`. Also create a `google-map.css` file and a `google-map.js`
+    file and save them in the `css` and `js` folders respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can link to the style sheet for this example by adding the following `<link>`
+    element to the `<head>` of the page, directly after the `<link>` element for `common.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Don't forget, we're using `common.css` with each project so that we can focus
+    on the styles we actually need for the project, without all of the boring reset,
+    float-clears, and other common CSS styling required for most web pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can link to Google''s script file, as well as the JavaScript file we just
+    created, using the following `<script>` elements, directly after the `<script>`
+    element for jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: We'll also be using a couple of images in this project, `hq.png` and `start.png`,
+    which can both be found in the accompanying code download for this book. You should
+    copy them into the `img` directory in your local `jquery-hotshots` project directory.
+    Our page is now set up ready for the first task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the page and interface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In our first task we can add the different containers for the map, and the initial
+    UI elements needed by the page. We can also add some basic styling to lay things
+    out as we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We should add the following elements to the `<body>` element in the `google-map.html`
+    page that we just set up:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For some basic styling and to lay out the page ready for when we initialize
+    the map, we can add the following selectors and styles to the `google-map.css`
+    file that we just created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this task we're just getting started by adding the underlying HTML elements
+    that we'll populate properly over the next few tasks. A slightly boring, but somewhat
+    necessary, first step in getting the example page up and running, and the project
+    under way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first element we added is the container that the Google Maps API will render
+    the map tiles into. We give it an `id` of `map` so that it can be efficiently
+    selected, but it is completely empty to start with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next element is the container for the various UI elements the example requires.
+    It too has an `id` of `ui` for easy selecting from our script, as well as for
+    adding the CSS styling with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Styling with IDs**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoiding the use of ID selectors to add CSS styling is well on its way to becoming
+    a general best practice, with tools such as **CSSLint** advising against its use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the arguments for doing this and sticking to classes, element, or attribute
+    selectors are compelling, we'll be working with them in some of the projects throughout
+    this book for simplicity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSSLint is an open source CSS code quality tool that performs static analysis
+    of source code and flag patterns that might be errors or otherwise cause problems
+    for the developer. See [http://csslint.net/](http://csslint.net/) for more information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the interface container we have the name of the fictional company, some
+    basic instructions for using the page, a list of the different charges, and an
+    `<input>` element to allow weights to be entered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the CSS that we added in this task was purely decorative and specific
+    to this example. It could easily be wildly different if a different look and feel
+    was required. We've made the map container take up the full width and height of
+    the page, and styled the interface so that it appears to float over the right-hand
+    side of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Initializing the map
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Getting a zoomable and panable interactive Google map up and running takes a
+    ludicrously small amount of code. In this task we'll add that code, as well as
+    set up some of the variables that we'll use later in the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this task we''ll initialize the variables needed to configure the map and
+    make a call to the Google Maps API. We should start by adding the standard jQuery
+    wrapper to the empty `google-map.js` file that we created earlier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Remember, the `$(function () { … });` construct is a shortcut for jQuery's `document.ready`
+    event handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Within the wrapper we just added, we should add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this task we start by creating some variables that we'll need to initialize
+    the map. We'll be addressing the `google.maps` namespace throughout our code so
+    the first variable we set is the contents of the top two namespaces for convenience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Having a locally scoped copy that reaches right into the actual API that we
+    want to use will make our code marginally more efficient because it is easier
+    for our code to resolve a single variable. It's also much quicker to type in the
+    first place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All properties and methods used by the Google Maps API are namespaced. They
+    all sit within the `maps` namespace, which itself sits in the `google` namespace.
+    Google has such a large code-base for use in so many different applications that
+    it makes sense to keep everything isolated and organized using namespaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For an excellent in-depth discussion on the intricacies of namespacing in JavaScript,
+    see the excellent article on the subject by JavaScript supremo *Addy Osmani* ([http://addyosmani.com/blog/essential-js-namespacing/](http://addyosmani.com/blog/essential-js-namespacing/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we store the latitude and longitude that we'd like to center the map on.
+    This is done using the Google Maps API's `LatLng()` method, which takes two arguments,
+    the latitude and longitude values, and returns a `LatLng` object for use with
+    other API methods. Notice how we call the `LatLng` constructor using our local
+    `api` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then create an object literal containing some of the configuration options
+    that our map will need. These options include the zoom level, the location the
+    map should be centered on, the type of map, and an option which disables the default
+    map type and zoom/pan controls. We can use the `LatLng` object contained in `mapCenter`
+    for the `center` configuration option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Following this we create a new map instance using the map API''s `Map()` constructor
+    function. This function accepts two arguments: the first is the DOM element that
+    the map should be rendered into and the second is the object literal containing
+    the configuration options that we wish to set.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first argument takes an actual DOM element, not a jQuery-wrapped DOM element.
+    So although we could select the element from the page using jQuery and then extract
+    the raw DOM element, it is more efficient to use JavaScript's native `getElementById()`
+    function to retrieve the map container we added to the page in the previous task
+    and pass it to the `Map()` constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we cache a jQuery selector for the UI container so that we can access
+    it from the page repeatedly without having to actually select it from the DOM
+    each time, and define a variable called `clicks`, which we'll use to record how
+    many times the map has been clicked. We need to define it here in the top-level
+    function scope so that we can reference it from within a click handler later in
+    the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we add an empty array literal in the variable `positions`, which we'll
+    populate later on when we need to store the different areas of the map that have
+    been clicked on. The array needs to be in the scope of the top-level function
+    so that we can access it from within different event handlers later in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Showing the company HQ with a custom overlay
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll put the company HQ on the map, literally, by adding a custom
+    marker complete with an overlay that provides some basic information about the
+    company, and perhaps an image of the premises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this task we''ll cover the following subtasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a marker to the map
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a hidden element containing information about the company
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a custom overlay to display the company information when the new marker
+    is clicked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a click handler to show the overlay when the marker is clicked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Adding a custom marker to the map can be achieved with the following simple
+    code block, which should be added directly after the variables we added in the
+    previous task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To create an information overlay, or info window to use the correct Google
+    terminology, for our new marker, we should first add an HTML element that contains
+    the content we wish to display in the overlay. We can add the following new collection
+    of elements to `google-map.html` directly after the UI container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We're using the `placehold.it` service again so that we don't have to worry
+    about sourcing or creating an actual image for this bit of example content. It's
+    a great service to use when mocking up prototypes quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To tell the map about the new info window, we can use the following code, which
+    should be added directly after the `homeMarker` code back in `google-map.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need some extra CSS to style the contents of the info window and to
+    hide it until it is required. Add the following code to the bottom of `google-map.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we can add a simple click handler that displays the info window using
+    the following code, which should be added after the `infoWindow` variable that
+    we added a moment ago in `google-map.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First of all we defined a new marker, which is done using Google's `Marker()`
+    constructor. This function takes a single argument, which is an object literal
+    that defines different properties of the marker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set the `position` of the marker to be the center of the map for simplicity,
+    although when defining other markers you'll see that any `LatLng` object can be
+    used. We should also define the map that the marker belongs to, which we set to
+    the `map` variable that contains our map instance. To specify the image to use
+    as the marker, we can supply a relative path in string format to the `icon` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then added a new container to the page which contains the information we
+    want to display in our custom info window. The content here is not important;
+    it's the technique that matters. We also added some additional styling for the
+    contents of the info window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to add the info window to our map instance, we used Google's `InfoWindow()`
+    constructor. This method also takes a single argument, which again is an object
+    literal which contains the options we wish to set. In this example we just set
+    the `content` option to the element containing the content we just added to the
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This should be an actual DOM element, hence we use JavaScript's `document.getElementById()`
+    to get the element, instead of selecting it with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we added an event handler to the map using Google's `addListener()` method.
+    This method takes the element to attach the event handler to, which in this case
+    is the marker we added, as the first argument, the event we wish to listen for
+    as the second argument, and the callback function to handle the event as the third
+    argument. The signature of this method is very similar to the event handling methods
+    found in other common JavaScript libraries, although it is slightly different
+    to how events handlers are added in jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the anonymous function we pass as the third argument to the `addListener()`
+    method, all we do is call the `open()` method of our info window. The `open()`
+    method takes two arguments; the first is the map that the info window belongs
+    to, and the second is the location the info window is added to, which we set to
+    our marker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point we should be able to run the page in a browser, click on our
+    custom marker, and have the contents of our hidden `<div>` displayed in the info
+    window, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Capturing clicks on the map
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we need to add a click handler for our map so that visitors can
+    set the start and end of their transportation journey.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we need to add the function that will be executed when the map
+    is clicked. Directly after the listener that we added in the last task, add the
+    following function expression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, to attach a listener for clicks on the map which fires this function,
+    we can add the following code directly after it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First of all we added the function that will be executed every time the map
+    is clicked. The function will automatically be passed the event object by the
+    `addListener()` method, which will contain a `latLng` object for the coordinates
+    on the map that were clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we do in the function is store the `latLng` property of the
+    event object in our `positions` array. We'll need to know both of the locations
+    that were clicked so it is useful to add them both to the `positions` array, which
+    is visible throughout our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we check whether the `clicks` variable that we defined earlier is less
+    than or equal to `1`. Provided it is, we go ahead and create a new marker using
+    Google's `Marker()` constructor. We used the constructor earlier when we added
+    a marker to show the company's headquarters, but this time we set some different
+    properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set the `map` property to be our map instance, and this time set the `position`
+    of the marker to the `latLng` object contained in the event object, which will
+    match the point on the map that was clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll use a green marker image for the first click, which will represent the
+    start of the journey. The image we'll use already has its own shadow, so when
+    we add the first marker, which we can determine using a JavaScript ternary that
+    checks whether `clicks` is equal to `0`, we set the `flat` property to `true`
+    to disable the shadow that Google will otherwise add.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can easily add a nice drop animation so that when the map is clicked, the
+    new marker drops into place. The animation features a bounce easing effect, which
+    is also visually pleasing. The animation is set using the `animation` property,
+    which is set to `DROP` using the `Animation` API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also set a `title` for the marker, which is displayed when the cursor
+    hovers over it, using the `title` property. Again we use a simple JavaScript ternary
+    to set either the `Start` or `End` as the string depending on value of our `clicks`
+    variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `icon` property to specify the path to the image that we'll use for
+    the start marker. When `clicks` is not equal to `0` we just specify an empty string,
+    which causes the default red marker to be added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set the `draggable` property to `true` to make the markers draggable.
+    This will let users modify the start or end locations of the journey if they wish.
+    We can add the code that will handle this a little later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we can use Google's `event` API to trigger a custom event. We use the `trigger()`
+    method, specifying the `map` instance as the object that the event will originate
+    from, `locationAdd` as the name of our custom event, and pass the event object
+    that we've worked with in our `addMarker()` function (stored in `e`) as a parameter
+    to any handlers that may be listening for our custom event. We add a handler for
+    this event in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we can set a unique `id` attribute on the marker so that we can differentiate
+    each marker. We'll need this when we want to update our UI following a marker
+    drag, which we'll look at a little later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is everything we want to do at this point while the `clicks` variable is
+    still less than or equal to `1`. The second branch of the outer conditional in
+    our `addMarker()` function deals with situations when `clicks` is greater than
+    `1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we know the map has already been clicked twice, so when this occurs
+    we want to stop listening for clicks on the map. We can unbind our handler using
+    the `event` API's `removeListener()` method. This method simply takes a reference
+    to the `eventListener` returned by the `addListener()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we bind the click event on the map to our `addMarker` function, we store
+    what is returned in the `mapClick` variable, which is what is passed to the `removeListener()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we should be able to run the page in a browser and add new markers
+    to the map by clicking at different locations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used a **function expression** in this task, by assigning the event handler
+    to a variable, instead of perhaps the more familiar **function declaration**.
+    This is generally considered a good practice, and while not essential in this
+    situation, it is certainly a good habit to get into. For a thorough understanding
+    of why function expressions are generally better than function declarations, see
+    *John Resig's* blog post at [http://ejohn.org/blog/javascript-as-a-first-language/](http://ejohn.org/blog/javascript-as-a-first-language/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the UI with the start and end locations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Once the two markers have been added to the map, we want to display their locations
+    in the UI sidebar at the right of the page ready for when we compute the cost
+    of the journey.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll want to show the full street address of each location that is clicked
+    and also add a button that triggers the computation of a quote based on the locations
+    that the visitor has chosen on the map.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the last task we used Google's `trigger()` method to trigger a custom event
+    each time a new marker was added to the map following a click. In this task we'll
+    add a handler for that custom event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far in this project, we've stuck almost entirely to Google's map API and
+    haven't really used jQuery at all other than to add the initial `document.load`
+    wrapper for the rest of code. In this part of the project we'll rectify that and
+    fire up jQuery in order to update our UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The handler for our custom `locationAdd` event should be as follows, which
+    can be added directly after the `mapClick` variable from the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we''ll be adding some new elements to the page, we''ll also need to update
+    our style sheet for this project. Add the following new styles to the bottom of
+    `google-map.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We add the event handler for our custom `locationAdd` event in the same way
+    that we added our click events, using Google's `addListener()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the event handler we first define some variables. The first is a cached
+    jQuery object that represents the element that displays the start and end points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next variable we set is then one of two things. If the jQuery object we
+    set as the first variable has length, we know the journey element exists on the
+    page, so we just store a reference to it. If it doesn't exist, we create a new
+    element to use as the journey element and set its `id` to `journey`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the map is clicked for the first time, the journey element won't exist
+    and will be created. The second time the map is clicked, the element will exist,
+    so it will be selected from the page instead of being created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we use the `geocode()` method of Google's `Geocoder()` API, which allows
+    us to reverse-geocode a `latLng` object to get a street address. This method takes
+    two arguments. The first is a configuration object, which we can use to specify
+    the `latLng` object that we want to convert.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second argument is a callback function that is executed once the geocoding
+    is complete. This function is automatically passed a `results` object that contains
+    the address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this callback function we can use jQuery to create new elements to display
+    the address and then append them to the journey element. The complete street address
+    is found in the `formatted_address` property of the `results` object, which we
+    can set as the text of one of the new elements. We can also set an `id` attribute
+    on this element so that we can easily select it programmatically when required,
+    and store the `latLng` object of the location using a custom `data-latLng` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `results` object also contains a range of other useful properties about
+    the address, so be sure to check it out in the object explorer of your favorite
+    browser-based developer toolkit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the journey element doesn't exist we can then append it to the UI in order
+    to display the address of the location. If it does exist, we know that it is the
+    second click and can then create a new `<button>` that can be used to generate
+    a quote based on the distance between the two locations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We disable the `<button>` element using jQuery's `prop()` method to set the
+    `disabled` property. We can enable the button later when a weight is added to
+    the `<input>` in the UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have added the new elements showing the journey start and end points
+    in the UI, we can then increment the `clicks` variable so that we can keep track
+    of how many markers have been added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now when we run the page and click on the map twice to add both the markers,
+    the address of the points that we clicked should be displayed in the UI area at
+    the right of the page. We should also now see the red end marker and be limited
+    to adding only two markers now that we're incrementing the `clicks` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling marker repositions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ve made our map markers draggable, so we need to handle address changes
+    following a marker drag. This task will show just how easily that can be done.
+    This will take just two steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Binding each marker to the `dragend` event
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding the handler function for the event
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First we need to bind each marker to the `dragend` event when the marker is
+    created. To do this, we should add the following highlighted line of code to the
+    `addMarker()` function, directly after the marker''s constructor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we should add the `markerDrag()` function itself. This can go directly
+    after the `locationAdd` handler that we added in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this task we first updated the `addMarker()` function to bind each new marker
+    to the `dragend` event, which will be fired once the marker stops being dragged.
+    We specify the marker as the first argument to Google's `addListener()` method,
+    which is the object to bind to the event. The name of the event, `dragend`, is
+    specified as the second argument, and `markerDrag` as the name of the function
+    that will handle the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we added `markerDrag()` as a function expression. Because it's an event
+    handler it will automatically be passed to the event object, which once again
+    contains the `latLng` that we need to pass to a `Geocoder()` to get the new address
+    that the marker was dragged to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the handler we first set a new variable that will be used as the selector
+    for the element in the UI we want to update. Instead of concatenating a string
+    together, we use the `array.join()` technique for performance reasons. The first
+    and last items in the array we join are simply text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second item will be a string containing either `start` or `end` depending
+    on which marker was dragged. Inside our event handler this refers to the marker,
+    so we can use it get the custom `id` property that we added to each marker when
+    it was created, allowing us to update the right element in the UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have constructed the selector we just get the street address using Google's
+    `geocode()` method exactly as we did before, which will give us the new address
+    of the marker after the drag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the callback function for `geocode()` we use the selector we just created
+    to select the `<p>` element in the UI and update its text content to the newly
+    geocoded address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now when we view the page, we should be able to add the markers to the map as
+    before, then drag them around and see the new address in the UI area at the right
+    of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Factoring in weights
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have two addresses – the start and end markers for the journey. All the
+    visitor needs to do now is enter a weight and we'll be able to calculate and display
+    the distance and cost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All we need to do in this task is add a handler for the `<input>` element in
+    the UI area so that once a weight is entered the `<button>` becomes clickable.
+    We can achieve this with the following code, which can be added directly after
+    the `markerDrag()` function from the previous task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can add the event handler for the user-generated `keyup` DOM event using
+    jQuery's `on()` method. Using the `on()` method is now the standard way of attaching
+    event handlers in jQuery. Old methods such as `live()` or `delegate()` have now
+    been deprecated and should not be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the event handler we first check whether a timeout has been set, and
+    if it has, we clear it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then cache a selector for the `<input>` element so that we can see it inside
+    our `enableButton()` function. We add the `enableButton()` function, again as
+    a function expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All this function does is check whether the `<input>` element has a value, and
+    if it does, we set the `disabled` property to `false` using jQuery's `prop()`
+    method. If it doesn't have a value, we just disable it once more by setting the
+    `disabled` property to `true`. Lastly we set a timeout using the JavaScript `setTimeout()`
+    function, passing it the `enableButton()` function as the first argument. We set
+    `250`, or a quarter of a second, as the timeout length. The timeout is stored
+    in the `timeout` variable, ready for us to check the next time the function is
+    executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The reason we use the timeout here is to rate-limit the number of times the
+    `enableButton()` function is executed. The function will be invoked after every
+    character is entered into the field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A quarter of a second is a barely discernible delay, but if someone types a
+    long number into the field quickly, it can drastically reduce the number of times
+    the function runs. Within the function, we select an element from the page and
+    create a jQuery object. That's not too intense and in this example we probably
+    don't even need to worry about it. But using a timeout like this is a robust solution
+    that can help out when doing more intense operations inside a frequently fired
+    event handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could have just used jQuery's `one()` method to attach an event handler that
+    simply enables the `<button>` and then removes itself. However, this wouldn't
+    allow us to disable the `<button>` once more if the figure entered into the field
+    is removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying the projected distance and cost
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our last task in this project is to get the distance between the two markers
+    and calculate the cost of the journey. Once calculated, we should probably display
+    the results to the visitor too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First we should attach a click event handler for our `<button>`. Add the following
+    code directly after the handler for the `keyup` event that we added in the last
+    task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can get the distance between the two points. Directly after the `remove()`
+    method we just added (but still inside the click handler function), add the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we just need to compute and display the cost, which we can do by adding
+    the following code to the empty callback function we just added. First we can
+    add the variables we''ll need:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can generate the HTML structure that we''ll use to display the computed
+    figures:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we should probably add some additional styling for the new elements
+    that we just created and added to the page. At the bottom of `google-map.css`,
+    add the following new styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We started out by binding a click event handler to the `body` of the page using
+    jQuery's `on()` method. This time we use the 3-argument form of the method where
+    the first argument is still the name of the event, the second argument is a selector
+    to filter the event by, and the third argument is the function to trigger when
+    the event occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events in JavaScript bubble up through their containers and when the event hits
+    the `body`, it will be filtered by the selector used as the second argument and
+    the function will only be executed if it was dispatched by an element that matches
+    the selector. In this example, only events dispatched by the `<button>` will trigger
+    the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the `on()` method in this form gives us a means of employing powerful
+    event delegation that allows us to bind events for elements which may or may not
+    exist at the time of the binding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the handler function, we first prevent the default behavior of the browser.
+    There shouldn't be any default behavior because we don't have a `<form>` on the
+    page so there is nothing for the `<button>` to submit. But if someone were to
+    try and run this on an ASPX page, which usually does have a `<form>` enclosing
+    most, if not all, of the elements on the page, it could behave in unexpected ways.
+    Unless strictly necessary, `preventDefault()` should always be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then remove the `<button>` from the page. Note that even though the event
+    handler is bound to the `<body>`, the `this` object inside the handler function
+    still points at the `<button>` element that triggered the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then used another of Google's APIs – the `DistanceMatrixService()`, which
+    allows us to compute the distance between two or more points on the map. Because
+    we don't need to reference the object returned by the `DistanceMatrixService()`
+    constructor, we can chain the `getDistanceMatrix()` method directly onto it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This method takes two arguments with the first being a configuration object
+    and the second a callback function to execute when the method returns. The callback
+    function will automatically be passed an object containing the response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set several configuration options using the first argument. The `origins`
+    and `destinations` options both take arrays where each item in each array is a
+    `latLng` object. We can easily get the `latLng` objects for both of the markers
+    using the custom `data-latLng` attribute that we set when we showed the addresses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set the `travelMode` option to the distance it would be via road using
+    the `google.maps.TravelMode.DRIVING` constant, and set the `unitSystem` option
+    to `google.maps.UnitSystem.IMPERIAL` to give a distance in miles instead of kilometers,
+    for no other reason than because I'm a Brit, and I'm used to using miles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The callback function we supply is automatically passed a results object that
+    contains, of course, the results returned by the distance matrix. The first half
+    of the callback function is concerned with creating variables and computing values.
+    The second part of the function deals with displaying the information that has
+    been computed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first create a new `<dl>` element and give it a `class` that is required
+    for use with our `common.css` style sheet, and an `id` attribute, mostly for decorative
+    styling. Then we add a simple function expression that receives a number as an
+    argument, rounds it, and then fixes it to two decimal places before returning
+    it. We'll use this function to ensure that our financial figures are in the required
+    format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also create a new `<dt>` element and a new `<dd>` element that we can clone
+    as many times as required without having to repeatedly create new instances of
+    jQuery, and then store the value entered into the weight text field using jQuery's
+    `val()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we extract the `distance` property from the object passed to the callback
+    function. Its structure may look complex, as the object we are actually interested
+    in for this example is buried within a multidimensional array, but as the method's
+    name suggests, it is able to return a complex matrix of results for multiple origins
+    and destinations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following this we concatenate a string that includes the `text` property of
+    the `distance` object that we just stored and the full word `miles`. The distance
+    matrix returns imperial results as `mi` instead of the full `miles`, so we add
+    the string `les` to the end of the value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then get the numerical distance by splitting the string on the space between
+    the number of miles and the letters `mi`. JavaScript's `split()` function will
+    return an array of two items containing the part of the string up to, but not
+    including, the split-character and the part after the split-character. We are
+    only interested in the first item in this array, and also use JavaScript's `parseFloat()`
+    function to ensure that this value is definitely a number and not a string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we have enough information to actually work out the cost of the journey.
+    We've specified the charge per mile to be £3 so we multiply the distance by `3`
+    and pass the result to our `format()` function so that the number is in the correct
+    format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also work out the charge per kilogram per mile in a very similar way,
+    first multiplying the weight by the cost per kilogram, then multiplying by the
+    distance. Again we pass this figure into our `format()` function. Then we can
+    work out the total cost by adding these two figures together. The figures that
+    we've been working with somehow become strings. To fix this, we can still use
+    our `format()` function, but we prefix each of the values we want to add with
+    the `+` character, which will force them to be numbers and not strings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have created the figures we wish to display, we can then create the
+    new elements that we need to use to display them, starting with a nice heading
+    to help clarify the new set of information we're adding to the UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can then create the clones of the `<dt>` and `<dd>` elements which hold
+    each label and figure. Once these have been created, we append them to the `<dl>`
+    element we created, before finally appending the new list as a whole to the UI,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_03_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The astute of you will notice that the number rounding solution we've used in
+    this example isn't that robust, and won't round all fractions as precisely (or
+    correctly) as would be required for a genuine system that deals with real currency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript does not handle floating point arithmetic as gracefully as some other
+    languages do, and so creating the perfect rounding system that rounds correctly
+    100 percent of the time is beyond the scope of this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For those who are interested, the stackoverflow site has some extremely illuminating
+    answers posted to questions around currency formatting in JavaScript. For example,
+    see: [http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript](http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ve covered a lot of both Google and jQuery functionality in this project.
+    Specifically we looked at the following subjects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding markers and overlays to the map using the `Marker()` and `InfoWindow()`
+    constructors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reacting to map-driven events such as clicks on markers or marker drags. Event
+    handlers are attached using the `addListener()` method of the `google.maps` API.
+    We also saw how to fire custom events using the `trigger()` method.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Google's services to manipulate the data generated by the map. The services
+    we used were the `Geocoder()` to reverse-geocode the `latLng` of each point on
+    the map that was clicked in order to obtain its address, and the `DistanceMatrixService()`
+    to determine the distance between the points.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Taking advantage of jQuery's event capabilities to add both standard and delegated
+    events using the `on()` method to detect when different parts of our UI were interacted
+    with, such as the `<button>` being clicked or the `<input>` being typed into.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using jQuery's powerful DOM manipulation methods to update the UI with addresses
+    and the quote. We used a range of these methods including `clone()`, `html()`,
+    `text()`, and `prop()`, as well both selecting and creating new elements.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this example, visitors are only able to generate a single quote. Once the
+    `getQuote` `<button>` is clicked, the results are displayed and no further interaction
+    is possible. Why don't you change it so that a reset button is added to the UI
+    when the quote is generated? The visitor can then clear the quote and the markers
+    from the map and start over from scratch.
+  prefs: []
+  type: TYPE_NORMAL

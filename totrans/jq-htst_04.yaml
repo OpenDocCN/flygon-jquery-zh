@@ -1,0 +1,1326 @@
+- en: Chapter 4. A jQuery Mobile Single-page App
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery mobile is an exciting project that brings the power of jQuery to the
+    world of handheld and mobile experience. Like jQuery UI, it builds on and extends
+    the jQuery core with a series of UI widgets and helpers. In this case these are
+    optimized for mobile display and a touch interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're also going to use JsRender, the official templating solution for jQuery
+    and the successor to the jQuery template plugin `tmpl`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we'll build a simple application that looks for questions on
+    stack overflow that have an un-awarded bounty on them. We'll call it Bounty Hunter.
+    It will contain just a few individual pages, but will be made to feel like a native
+    application rather than as a standard website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although sites and apps built with jQuery Mobile will work perfectly fine on
+    a laptop or desktop, jQuery Mobile subscribes to the mobile-first philosophy of
+    building the smallest layouts first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the layout that we'll be focusing on throughout this project. If you
+    don't have a smartphone or other capable mobile device, the example app we'll
+    be building will still work in a normal desktop browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The app we''ll be building in this project will look as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mission Briefing](img/9106OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery Mobile offers full support and, importantly, consistency across all of
+    the major modern smartphones and tablets. It also offers limited support to a
+    much wider sphere of common, but perhaps older, and definitely less capable mobile
+    devices. It builds on the solid foundation of jQuery itself and borrows a lot
+    of best-practices from jQuery UI, certainly with regard to how widgets are initialized
+    and configured.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery Mobile offers two ways in which widgets can be initialized; we can use
+    the extensive HTML5 `data-` attribute system, which will trigger the initialization
+    of widgets automatically without any additional configuration, or we can create
+    widgets dynamically and invoke them purely via script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both techniques have their advantages and disadvantages and we'll get to look
+    at both techniques over the course of this project, so you'll be able to decide
+    which way suits you best.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'These are the tasks that this project will be broken down into:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the welcome screen
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a second page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating the script wrapper
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting some bounties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a JsRender template
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building the list view
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building an item view
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling paging
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mission Checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The jQuery Mobile site provides a page template to use as a starting point when
+    developing with the framework. We can use that template as the basis for this
+    project. To get set up we should visit [http://jquerymobile.com/demos/1.2.0/docs/about/getting-started.html](http://jquerymobile.com/demos/1.2.0/docs/about/getting-started.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Copy the template shown in the **Create a basic page template** section and
+    save it as `bounty-hunter.html` in our main working directory. This template contains
+    everything we need to get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should also link to JsRender at this point; add the following code directly
+    after the `<script>` element that links to jQuery Mobile in the template we just
+    saved:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At the time of writing, the current version of jQuery Mobile is not compatible
+    with jQuery 1.9\. The template that we'll get from the jQuery Mobile site will
+    already link to a compatible version of jQuery, and 1.9 support will shortly be
+    available once jQuery Mobile hits the 1.3 milestone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to test our mobile app, we should also use a web server for this project
+    so that the test page is viewed using a proper `http://` URL and not a `file:///`
+    URL. You may already have an open source web server, such as Apache, installed
+    on your computer, and if so that should be fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you don't have a web server already installed and configured, I'd recommend
+    downloading and installing Microsoft's **Visual Web Developer Express** (**VWDE**).
+    This is a free version of Microsoft's industry-standard IDE Visual Studio, and
+    as well as including a built-in development web server, it's also a very capable
+    IDE with Intellisense support for JavaScript and jQuery and a range of features
+    for frontend developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For developers who prefer open source software, the Apache web server, along
+    with PHP and MySQL, can be installed on both Mac and Windows systems. To make
+    installation and configuration easier, a range of packages have been created which
+    install the software together and configure it automatically, such as XAMPP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: VWDE can be installed by visiting [http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-web-developer-express](http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-web-developer-express).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The XAMPP downloads are available at [http://www.apachefriends.org/en/xampp.html](http://www.apachefriends.org/en/xampp.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the welcome page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Many apps have a welcome or home screen that the user can return to in order
+    to select common actions. In our first task of this project, we'll build the welcome
+    screen, which will consist of some simple page furniture such as a header, footer,
+    a logo, and will also feature a search box and button that will trigger a call
+    to Stack Exchange's API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point we can create the additional resources that we'll be using in
+    the project. We should create a new style sheet called `bounty-hunter.css` in
+    the `css` folder, and a new script file called `bounty-hunter.js` in the `js`
+    folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should add a `<link>` element to the `<head>` of the page for the style
+    sheet. The following code should be added directly after the jQuery mobile style
+    sheet (and before the jQuery mobile `<script>` elements):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can add the `<script>` element in the usual place right before the closing
+    `</body>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since jQuery Mobile provides its own baseline styling that includes a reset
+    and typography defaults, we won't need to link to our `common.css` file in this
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The jQuery Mobile template that we downloaded contains the recommended basic
+    structure that most jQuery Mobile pages should be built from. We'll use the recommended
+    structure, but we'll be adding some extra attributes to the existing markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should add an `id` attribute to the `<div>` element that has the `data-role="page"`
+    attribute in `bounty-hunter.html`; set the `id` attribute to `welcome`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we should change the original markup so that it appears as follows. First
+    we can add a header area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can add the main content area directly after the header area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly we can add a footer area after the main content area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add a few styles for our welcome screen. Add the following selectors
+    and rules to `bounty-hunter.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First we updated the text inside the `<h1>` element within the container `<div>`
+    that has the `data-role="header"` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then added some content to the content container, including a paragraph of
+    introductory text and a container `<div>`. Inside the container we added the `<label>`,
+    `<input>`, and `<button>` elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery Mobile recommends using a `<label>` element with a valid `for` attribute
+    for all `<input>` elements for accessibility reasons, so we add one, but then
+    hide it using the `ui-hidden-accessible` class. This will allow assistive technologies
+    to still see it, without it cluttering up the page visually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<input>` is just a simple text field with an `id` attribute for easy selection
+    from scripts and a `placeholder` attribute, which adds the specified text inside
+    the `<input>` as placeholder text. This is nice to use to give a visual cue now
+    that the label is hidden, but may not be supported in older browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<button>` element has several custom jQuery Mobile `data-` attributes and
+    will be enhanced automatically by the framework when the page initially loads.
+    jQuery Mobile automatically enhances a range of different elements based on which
+    element they are and any `data-` attributes they have. Enhancements usually include
+    wrapping the original element in a container or adding other additional elements
+    to sit alongside it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `data-inline="true"` attribute sets the container that is wrapped around
+    the `<button>` to `inline-block` so that it doesn't span the full width of the
+    viewport. The `data-icon="search"` attribute gives it a search icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We added some extra `data-` attributes to the container `<div>` element in the
+    original template with the `data-role="footer"` attribute. The `data-position="fixed"`
+    attribute works in conjunction with the `data-id="footer"` attribute to fix the
+    element to the bottom of the viewport, and to ensure that is not transitioned
+    when we change pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the footer container, we added a `<small>` element with some fake copyright
+    info, such as would usually be found in a web page's footer. We also added a new
+    `<a>` element that links to another page, which we'll add in the next task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This element is also given several custom `data-` attributes. The `data-icon="info"`
+    attribute gives the enhanced element an icon. The `data-role="button"` attribute
+    triggers enhancement by the framework and gives this simple link its button-like
+    appearance. The `data-transition="slide"` attribute uses the slide transition
+    when navigating to the new page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we added some basic styling to the style sheet for this project. We floated
+    the search button to the right and changed the margin given to it by jQuery Mobile.
+    The style is added using the class we added to our container and a class added
+    by the framework. We need to use both classes to ensure that our selector is more
+    specific than the one used by the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also styled our footer elements to float them left and right and position
+    them as desired. Again we have to beat the specificity of the selector used by
+    the default jQuery Mobile theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, we should be able to run the page in a browser and see the home
+    page with the header and footer at the top and bottom respectively, the super-simple
+    search form, and the big orange image that gives the application a basic identity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery Mobile is built upon a custom `data-` attribute system in which we can
+    give certain attributes to elements and have the framework initialize widgets
+    based on them. This custom `data-` attribute framework isn't mandatory; we can
+    manually initialize and configure widgets if we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But using the attributes is convenient and allows us to focus on the custom
+    script code to add the behavior we want without worrying about the setup and initialization
+    of the jQuery Mobile widgets we wish to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a second page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll add the page that the **About** hyperlink we added to the
+    footer container of the welcome page links to. This allows us to experience jQuery
+    Mobile transitions in action, configured purely via the `data-` attributes system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information, see the jQuery Mobile `data-`attributes reference at [http://jquerymobile.com/demos/1.2.0/docs/api/data-attributes.html](http://jquerymobile.com/demos/1.2.0/docs/api/data-attributes.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Save a new copy of the jQuery Mobile page template that we used in the last
+    task but this time call it `bounty-hunter-about.html` and save it in the main
+    project directory (alongside the `bounty-hunter.html` page).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also still need to link to our `bounty-hunter.css` file, our `bounty-hunter.js`
+    file, and JsRender as we did before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on JsRender, see the documentation at [https://github.com/BorisMoore/jsrender](https://github.com/BorisMoore/jsrender).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In our new `bounty-hunter-about.html` page, change the markup inside the `<div>`
+    with a `data-role="page"` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This time, along with setting some different text in the `<h1>` inside the header
+    container, we also added a new link. This links back to the welcome screen of
+    the app and uses several custom `data-` attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `data-icon`, as before, sets the icon that should be used for the button.
+    We can disable the default shadow applied to the outer container element of the
+    icon using `data-shadow="false"`, and set the `data-iconpos="notext"` attribute
+    to make the button an image-only button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also specified the `data-transition="slide"` attribute, so that the page
+    transitions nicely back to the welcome page, but this time we also set the `data-direction="reverse"`
+    attribute so that the page appears to go *backwards* (that is, it slides in the
+    opposite direction) to the home page. Because we put this link before the `<h1>`
+    element it will be automatically floated to the left by the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We added some basic content to the `content` container. This isn't important,
+    and as you can see, I've added a shameless plug for my personal website. This
+    external link isn't completely useless however, because it does show that when
+    a link is prefixed with `http://`, jQuery Mobile knows that it's an external link
+    and doesn't hijack the click and try and transition it into view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll notice that the footer container has the same `data-` attributes as before,
+    including the same `data-id="footer"` attribute. This is what gives the footer
+    container persistence. When the page transitions into view, the footer will appear
+    outside of the transitioned area and remain fixed at the bottom of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've modified the `<a>` element in the footer container slightly. We've removed
+    the `data-transition` attribute and added the `ui-disabled` class instead. We've
+    also changed the `href` to a simple hash. As we're already on the About page,
+    the **About** link will do nothing, so we disable it to avoid the page being reloaded
+    if it is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: jQuery Mobile adds its beautiful page-to-page transitions by hijacking any relative
+    links. When a relative link is clicked, jQuery mobile will fetch the page via
+    AJAX, insert it into the DOM of the current page, and transition it into view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generally when using a jQuery Mobile site, you will never move away from the
+    page that you started on because the framework will silently hijack same-domain
+    links and dynamically insert the content into the page. You might therefore think
+    that each page need not link to all of the CSS and script resources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is not the case however – what if someone lands directly on one of the
+    internal pages? Or what if an external link is followed, but then the visitor
+    returns using their browser's back button? In both of these scenarios, they will
+    be greeted with an unenhanced, dysfunctional page that looks and feels nothing
+    like the page they expected to see.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we should be able to reload the home page, then click on the **About** button
+    in the footer, and see the About page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the script wrapper
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We won't be making use of jQuery's `$(document).ready() { }` function (or the
+    `$(function() { })` shortcut) to execute our code when the page has loaded. However,
+    we still need to protect our top-level variables and functions from the global
+    scope so we still need a wrapper of some kind. In this task we'll create that
+    wrapper, as well as our top-level variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the empty `bounty-hunter.js` file, we can start by adding the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our script wrapper consists of a self-executing anonymous function (or an immediately-invoked
+    function expression if you prefer). This outer function is wrapped in parentheses,
+    and has an extra pair of brackets at the end which cause the anonymous function
+    to execute and return immediately. This is an established JavaScript pattern often
+    used in large-scale applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This creates a closure which encapsulates all of the code within it and shields
+    it from the global namespace, which makes the code more robust and less likely
+    to break or fail when used in conjunction with other libraries or plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you aren't sure of what a closure is or what it can do, there is an excellent
+    discussion about it on the Stack Overflow website ([http://stackoverflow.com/questions/111102/how-do-javascript-closures-work](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: It also allows us to run code almost as soon as the document has loaded. As
+    the `<script>` element it lives within is right at the bottom of the `<body>`,
+    it will not be executed until the rest of the page has been parsed by the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the anonymous outer function we first define some variables. The first,
+    called `tags`, will be used in various functions over the course of this project,
+    so it needs to be accessible everywhere. Initially it can be set to an empty string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next variable is a function called `getBounties()`, which again we define
+    in our top-level scope so that it can be called from elsewhere in the code without
+    issue. We'll use the function to issue AJAX requests at different points in the
+    app's lifecycle, and most of the parameters of the request will not need to change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We make an AJAX request to the Stack Exchange API using jQuery's `ajax()` method.
+    This method is jQuery's de facto method for making AJAX requests and is what the
+    library's helper methods, such as `getJSON()`, delegate to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `ajax()` method accepts an object literal that can be used to configure
+    any of the standard AJAX options supported by jQuery in order to control how the
+    request is performed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `url` property sets the URL that the request is made to, which we set to
+    the entry point of the Stack Exchange API that we'd like to use. We set the `dataType`
+    to `JSONP` so that we can get the data from the Stack Exchange domain without
+    triggering the browser's cross-domain security restrictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**JSON** (**JavaScript Object Notation**) is a data format, with an extremely
+    similar syntax to object literals in JavaScript, and it is used to exchange data
+    across different platforms or systems. **JSONP** (**JSON with padding**) is a
+    technique that dynamically injects new scripts into the page, which exposes JSON
+    data to the JavaScript parser in the browser. It is necessary because of the browser''s
+    same-origin security policy, which restricts the domains that data can be loaded
+    from to the current domain.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Stack Exchange API can be configured, and the data we receive filtered in
+    very specific ways, using standard query string parameters to enable or disable
+    particular functionality. We can use jQuery's `data` AJAX property to add the
+    query string parameters we wish to set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the Stack Exchange API, see the documentation at [https://api.stackexchange.com/](https://api.stackexchange.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `page` parameter to specify which page of the results we'd like to
+    get, which will be received by the function as a parameter. We set the number
+    of questions returned to `10` to page the amount of data shown at any one time.
+    This is set using the `pagesize` parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `tagged` parameter uses the value of the tags variable, which we can manipulate
+    when required later in the project. The Stack Exchange API won't complain if we
+    send this parameter without a value, so we can safely set it regardless of whether
+    there are actually any tags or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We specify that we'd like the results in descending order, and sort by activity,
+    so questions with the most recent activity will be listed first. The `site` is
+    set to `stackoverflow`, so that questions are not received from the entire Stack
+    Exchange network of sites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last configuration property is a predefined filter that I have already created
+    and saved on Stack Exchange. There is a tool included for doing this when browsing
+    any of the API methods. The purpose of the filter is to control exactly which
+    fields are returned in the response, to ensure that we aren't receiving more data
+    than we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In this example we're just using the Stack Exchange API anonymously. For full
+    production-ready applications intended for public use, we must always register
+    the application with Stack Applications, and use an API key with any requests
+    we make.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some fields that we want are not included in the default filter (which is used
+    if no filter is provided when making the request), and a lot of fields that we
+    don't need are returned. The filter we will use here gives us just the fields
+    we need for this project, and does not require authentication to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are most of the AJAX options that we need to set for this request; those
+    which are not known at this point can be passed to the function when it is invoked.
+    We'll see how to do this in the next task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can make use of jQuery's `beforeSend` AJAX event to show the jQuery Mobile
+    AJAX spinner directly before the request is made. jQuery Mobile uses a spinner
+    every time a page is transitioned, but we can subvert it for our own requirements
+    when making the AJAX request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The framework will automatically attach a `mobile` object to the instance of
+    jQuery running on the current page. This object contains various properties used
+    to configure the jQuery Mobile environment, and various methods to trigger different
+    behavior with the framework. We can use some of these now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To ensure the message we wish to add is displayed, because by default the spinner
+    uses accessibly-hidden text, we set the `loadingMessageTextVisible` property of
+    the `mobile` object to `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At page load, jQuery Mobile creates an object called `mobile`, which contains
+    a range of useful properties and methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To actually show the spinner, we can use the jQuery Mobile `showPageLoadingMsg()`
+    method. This method takes the theme swatch to use as the first argument, which
+    in this case we can set to the default theme `a`, and the text to display inside
+    the spinner as the second argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the `ajax()` method, we chain the `done()` method. This is the new way
+    of handling successful AJAX requests as of jQuery 1.8 and replaces jQuery's `success()`
+    method. We pass an anonymous function to this method to be executed when the request
+    object returns, and this function receives the response as an argument. Within
+    this function we simply invoke the `callback()` function that will be passed into
+    `getBounties()` as the second argument, passing it the data from the response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this task we made use of the `done()` method to handle the successful response
+    from the Stack Exchange API instead of the more familiar `success()` method. This
+    is now the preferred way of handling successful responses (as of jQuery 1.8).
+    The `error()` and `complete()` callback methods of the `jqXHR` object returned
+    by any of jQuery's AJAX methods have been deprecated in favor of `fail()` and
+    `always()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As of jQuery 1.5, the AJAX suite of methods have returned the `jqXHR` object
+    as a promise, or deferred, object, so this change to the API brings the AJAX methods
+    in line with other implementations of the promise API within jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting some bounties
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we need to get some bounties from stack overflow. We'll want to
+    initialize a part of our script once the welcome page of our application has been
+    initialized. Once this happens we can attach a handler for the `<button>` on the
+    page to trigger an AJAX request using the `getBounties()` function that we add
+    in the last part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Inside the outer function, but after the `getBounties()` function in `bounty-hunter.js`,
+    add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add a handler for the `pageshow` event directly after the code
+    we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We use the `pageinit` event to execute code when the page is initialized for
+    the first time. Due to the AJAX nature of how new pages are pulled into the DOM
+    of the existing page and displayed, this event is more reliable than `document
+    ready` when using jQuery Mobile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use jQuery's `on()` method to bind an event handler for this event to the
+    document object, and set the first argument of the method to the `pageinit` event.
+    Because our script will be used on every page, but the code we've added here is
+    only relevant on the welcome page, we use the second argument of the method to
+    ensure that the event handler (which we add as the third argument) is only executed
+    when the event originates from the welcome page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then bind a handler for the `click` event to the search `<button>`, again
+    using jQuery's `on()` method. Within the handler we first add the `ui-disabled`
+    class to the outer `<button>` container to stop further requests being initiated.
+    We then get any tags that may have been entered in the text field using jQuery's
+    `val()` method. This will return the value of the text input, which we then store
+    in our top-level `tags` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we can call the `getBounties()` function that we added in the last task.
+    As the request is being initiated by the welcome page we need to get the first
+    page of the results, so we pass `1` to the function as the first argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We pass an anonymous function as the second argument to `getBounties()`. Remember,
+    the handler we added for the `done()` method will execute the function and automatically
+    pass the data from the response to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this function we first need to add a new property to our `data` object
+    to store the current page number. We can then store the `data` object so that
+    we can use it in the next page. We can do this using `localStorage`, but because
+    only arrays and primitive types can be stored in `localStorage`, we need to convert
+    the object to a JSON string using the browser's native `JSON.stringify()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use the jQuery Mobile `changePage()` method to change the current page
+    to the page on which we'll display the response. This method is passed the URL
+    of the page to change to as the first argument, and a configuration object as
+    the second argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use this configuration object to set the transition to use when showing the
+    new page with the `transition` option, which in this case we set to `slide`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the `pageinit` handler we also added an event handler for the `pageshow`
+    event. This event is dispatched every time a page is shown, unlike the `pageinit`
+    event which is dispatched only the first time a given page is initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We bind the event to the `document` object again and filter the event by the
+    `#welcome` selector once again to ensure that the code only runs when the welcome
+    page is shown. Within the event handler we simply remove the `ui-disabled` class
+    from the outer `<button>` container. If we've returned to the welcome page, it's
+    probably because we want to perform a new search, maybe with a different tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a JsRender template
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At the end of the last task we used the `changePage()` method to call a new
+    page, so now we need to create that page. We can add our JsRender template to
+    the new page ready for when we build the list view in the next task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create a new page using the starting template from jQuery Mobile once again.
+    Call it `bounty-hunter-list.html` and save it in the root of our project folder.
+    Change the `id` attribute of the `data-role="page"` wrapper to `list`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<h1>` in the header `<div>` can be changed to something like `Active Bounties`,
+    and we can add the home icon again as we did on the About page. The footer can
+    stay the same as on the welcome page. The content `<div>` can be empty to begin
+    with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Near the bottom of the new page we just created, inside the page container,
+    add the following JsRender template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `<script>` element that the template resides in is given a non-standard
+    `type` attribute to stop the browser parsing the script. It's also given an `id`
+    attribute so that we can easily select it from the page when we want to interpolate
+    the template with data and render it to the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `<script>` element, we first create the `<ul>` element that will
+    be turned into a Listview widget by jQuery Mobile. We give this element a `data-role`
+    attribute of `listview`. We then use JsRender's loop construct `{{for}}`, which
+    accepts the object or array to loop over. In this case we're interested in the
+    `items` array that is part of the `data` object that is saved in localStorage
+    at the end of the last task, and which will be passed to the template function
+    that renders the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code we add within the `{{for}}` loop will be repeated for each item in
+    the `items` array, which will consist of a series of questions from stack overflow.
+    The object the template will iterate will be passed into the loop when we call
+    JsRender's `template()` method a little later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first element we add is `<li>` as this should naturally be a child of the
+    outer `<ul>` list. We give the `<li>` element several `data-` attributes including
+    `data-shadow="false"` to disable shadows under each `<li>`, `data-icon="arrow-r"`
+    to give each list item a right-pointing arrow icon, and `data-iconpos="right"`
+    to position the icon at the right of the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Listitem icons**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order for the icons we've added to our list items to be displayed, each item
+    should contain a link. If no `<a>` elements are found within the item when the
+    widget is initialized, no icon will be added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the list item, we add an `<a>` element and a unique `id` for when we
+    come to display the item view later on. We can create a unique `id` using the
+    loop index of the template, which is available to us within the loop as `#index`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `<a>` element we have several other elements. The first is a container
+    for the bounty offered on the current question. Inside this container we have
+    another JsRender token that will be replaced with the data from the object we
+    are iterating. To access a property of the object within our template, we use
+    `{{:` followed by the property name and ending with `}}`. The colon inside the
+    opening double curly braces indicates that no HTML encoding should be carried
+    out. The Stack Exchange API will sanitize the data for us so we can just use it
+    as is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also display some text and the date that the bounty expires using some
+    nested `<span>` elements, one of which has a `class` for some specific styling,
+    and another property from our data object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can output the title of the question using an `<h1>` element and another
+    JsRender template tag that pulls out the `title` property from the current item
+    from inside the `data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we can display some meta-information about the question such as the number
+    of answers it has and the last time there was activity on the question. This information
+    is added in the same way as before, using a combination of `<span>` elements and
+    JsRender template tags to display various properties from our data object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the list view
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our application should now be at the point where it has received some data that
+    needs to be formatted and displayed. We've also added a JsRender template ready
+    to be used to build the Listitem elements for a Listview widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we need to do now is render the template and display the results in our
+    widget. We can also add some additional controls to the widget to let the visitor
+    navigate through the paged results, although we won't make these functional just
+    yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we can add some additional markup to the content container in
+    our list page (`bounty-hunter-list.html`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we need to update our script in order to render the template and display
+    the data. In `bounty-hunter.js`, add the following code directly after the event
+    handler for the `pageshow` event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to change our template slightly. There are two places in our template
+    where we show date properties; these both need to be changed so that they appear
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we need to add some additional styling for our new elements, as well
+    as the items that will be added to the Listview widget. Add the following styles
+    to the bottom of `bounty-hunter.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the first step of this task we added some new HTML elements to the content
+    container on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first element we added will be used as a toolbar that sits above the Listview
+    widget. Within this toolbar are links for the visitor to navigate between different
+    results pages. The toolbar will pick up a lot of styling from jQuery Mobile because
+    we have given it the `ui-bar` and `ui-theme` class names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The links are enhanced into Button widgets by jQuery Mobile because they have
+    the `data-role="button"` attribute. We also add icons to them using the `data-icon`
+    attribute, make them `inline-block` with the `data-inline` attribute, and make
+    them smaller than standard buttons using the `data-mini` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we give the buttons the `ui-disabled` class name initially. We can enable
+    each button based on which page we are on and whether there are previous or next
+    pages to navigate to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Along with the buttons, the toolbar also contains an `<h2>` element that will
+    tell the visitor which page they are on, and how many pages there are in total.
+    The contents of the element are split into spans with `id` attributes so that
+    we can easily update them later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also add an empty container `<div>` to the page with an `id` of results.
+    This container will be the element that we render our Listview widget into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second toolbar, which we added directly after the empty Listview container,
+    is identical to the first toolbar in every respect except that it has an additional
+    class of `footer-bar`. We use this to add a little CSS, which is only required
+    by the bottom toolbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our script we first added a new event handler for the `pageinit` event of
+    the list page. This is bound in the same way as before using jQuery's `on()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the event handler, we first set a series of variables. We store a reference
+    to the data that was stored in localStorage in an earlier task, and store the
+    `total` number of results and the `page_size` properties of the `data` object
+    ready to use in various places in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also calculate the total number of pages based on the `total` and `size`
+    variables that we just saved, and create an array containing shortened month names,
+    which we'll use when we format the dates returned by Stack Exchange.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we need to add a new method that we can use as a helper function inside
+    our template. We call the method `createDate` and specify that the method may
+    accept a single argument, which will be a date string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the method, we first create a new date using the date string passed to
+    the method. This will be in UNIX epoch format, so we need to multiply it by 1000
+    for it to work with JavaScript's `Date()` constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The date string returned by the `Date()` constructor will be a full UTC date
+    string, which is way too long for displaying in our little bounty box, so next
+    we define a new array where each item in the array is part of the date string
+    that we want to format the existing string into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can get the day of the month with the `getDay()` function. The `getMonth()`
+    function will return a zero-based number so we can use this to extract the correct
+    shortened month name from the array we created earlier. Lastly we get the four-digit
+    year using the `getFullYear()` function. Once the array has been filled, we join
+    it straight away using a space character as the join character and return the
+    resulting string from the method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we need to register our new method as a helper function so that the template
+    we are using can access it. This is done using the `helpers()` method of the `views`
+    object, which is created by JsRender and attached to jQuery. This method takes
+    an object as its argument where each key in the object is the name of a helper
+    method, and each value is the actual function we wish to use as the helper. In
+    this example we map the `CreateDate` helper method to the `createDate` function
+    we just defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then select the Listview widget using its `id` and append to it the rendered
+    template. The template is rendered using JsRender's `render()` method, which accepts
+    the object containing the data to be rendered as an argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we define another simple function that will add or remove the `ui-disabled`
+    class name for the buttons based on the `currentPage` property that we stored
+    on the `data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can now update the headings to show the current page and the total number
+    of pages. We can do that using jQuery's `text()` method and displaying `data.currentPage`
+    and `totalPages` variables that we stored earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As this will only be the first time the list page is loaded, we know that only
+    the **Next** button needs to be enabled. We use an attribute selector to select
+    just the two forward buttons based on their `data-icon` attribute. We'll add the
+    functionality that will make this button work in the next and final task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we do in our script is enable the forward buttons so that the
+    next page can be viewed, but only if there are more pages to display, which we
+    can determine by checking the `totalPages` variable again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After adding the script we then updated our template to make use of the new
+    date formatting helper method we created. To use a helper method inside a template
+    we just need to use the `~` character followed by the registered name of the method.
+    Any arguments that need to be passed, such as the `bounty_closes_date` and `last_activity_date`
+    properties from each item in the array the template iterates, are passed using
+    parentheses as would be used when calling a normal JavaScript function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the template has been rendered, we need to initialize the Listview. We
+    do this by first getting the new `<ul>` element inside the container and then
+    using its widget method, `listview()` in this case, to enhance it into a Listview
+    widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we added some additional CSS styling to tweak the styling applied by
+    the default theme in jQuery Mobile. We need to make the toolbars full-width to
+    match the Listview widget, which we can do in the same way as the Listview widget
+    itself does – simply by using negative margin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Listview has negative margin for its `top` and `bottom` properties as well
+    as its `left` and `right` properties, so we need to counteract this by adding
+    some positive margin to the `bottom` of the top toolbar, and some positive `top`
+    margin to the bottom toolbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also float the back and forward buttons left and right respectively and
+    center the heading text. We also shrink down the size of the heading text by a
+    couple of pixels to help ensure that it doesn't interfere with our buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The styling for the elements inside the Listview is almost entirely for the
+    visual appearance of the elements we added using the template. The Listview itself
+    will inherit a lot of styling from the framework, so it's just the elements inside
+    each Listitem we need to worry about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once the bounties button has been clicked and the results have been returned,
+    the list view page should appear like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Like jQuery UI, jQuery Mobile widgets can be initialized completely from script,
+    without using any hardcoded `data-` attributes in the underlying markup. We could
+    just as easily have built the entire Listview widget from script instead of keeping
+    the outer `<ul>` element in the markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To initialize a widget we can just call its widget method. If we are creating
+    a Listview, the widget method is simply `listview()`. Other widgets can be initialized
+    in the same way. Also like jQuery UI widgets, jQuery Mobile widgets can accept
+    configuration options and event handlers, and have methods that can be called
+    from script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building an item view
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Listview provides links for each list item containing a question. In this
+    task we can add the page that is displayed when one of the questions is selected.
+    This will be a much more detailed view of a single question so we can make use
+    of some of the other properties returned to us by Stack Exchange. This time, instead
+    of linking to an existing page, we'll create a new one dynamically and inject
+    it into the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use another template to render the item view because it''s so convenient;
+    add the following code to `bounty-hunter-list.html` directly after the list template.
+    We can start by adding the outer `<script>` wrapper, the outer page container,
+    and the header:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can add the content area wrapper and the content header. This should
+    go into the page container, directly after the header area:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can add the question and the list of answers. This should come directly
+    after the header element (but still inside the content `<div>`) we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly we can add the footer for the page. This should go directly after the
+    content area, but still inside the outer page container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to add some script to render the template and handle the page
+    change behavior. We can do this in the `pageinit` handler for the list page that
+    we added in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we need some CSS for the new elements that are in the template we added.
+    In `bounty-hunter.css`, add the following code to the end of the file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We started out by adding a new template for the page to display a single question.
+    This template was considerably larger than the first one we added, for several
+    reasons. Primarily, because we're using this template to build an entire page,
+    but also because we're showing more stuff with this template. This is the detailed
+    view of a question so we would naturally want to show more than the summary shown
+    in the list view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The outer page container that we specify is given an `id`, which we'll add in
+    our script, so that we can easily select the correct page in order to show it.
+    Aside from this we add some of the same elements to our template as we have been
+    adding in our actual pages, such as the header, content, and footer containers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the content container is where most of the action is, although we're
+    using the template in exactly the same way as before – defining HTML elements
+    and interpolating them with properties from the object passed to the `render()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only new technique in this template is the creation of the tags list. We
+    use the `for` construct to iterate the list of tags, but this time the property
+    we are iterating is a flat string array instead of an object. As there isn't a
+    key for us to use in the template tags to get the value, we can instead use the
+    special value `#data`, which will give us the current item in the array being
+    iterated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of the code we added to our script was contained within a click handling
+    function that we bind to the list of results display on the page, because we want
+    to react to an individual list item being clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the handler function, we first set the variable which will contain the
+    numerical part of the `id` attribute of the list item that was clicked. We can
+    easily get the numerical portion by using JavaScript's `split()` function and
+    specifying a hyphen as the character to split on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we render the template, we only want to show a single item, so we don't
+    need to pass in the entire object received from the AJAX request. Instead we use
+    the `index` variable that we just set to pull just the object representing the
+    question we are interested in from the `items` array within the `data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we stored the object we'll be passing to our template to render, we need
+    to add a new property to it that is added as the `id` attribute for the page container
+    in the template. This is the `pageid` property that we set on the `question` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we render our template using JsRender's `render()` method once more. We
+    pass it the `question` object that we just prepared and this time the template
+    is rendered to the body of the page. Because it gets rendered outside of the page
+    container it won't be visible immediately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the template has been rendered to the page, we select the outer page container
+    and store a reference to it in the `page` variable. When a new page is created
+    dynamically and appended to the page, jQuery Mobile will keep its markup in the
+    page, even if we navigate away from it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To stop this from happening, we need to do two things; first of all we need
+    to set the `data-external-page` attribute of the page to `true`. Secondly we need
+    to set a handler for the `pageinit` event of the dynamic page. Once the new page
+    has been initialized, we mark it for deletion when the visitor navigates away
+    from it using the internal jQuery Mobile `_bindPageRemove` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this is done, we can transition to the new page using the `changePage()`
+    method. We pass the method the page element that we stored earlier, and use the
+    configuration object to set the transition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because we've passed the `changePage()` method a DOM element and not specified
+    a URL, the address bar of the browser will not be updated and an entry will not
+    be left in the browser's history.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point we should be able to run the page on a smartphone or tablet,
+    click on one of the list items on the list view page and see the item view, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Handling paging
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For our last task we'll look at wiring up the paging elements we added earlier.
+    The Stack Exchange API makes it easy to get results in a paged format, so we can
+    leverage that to our advantage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The trade-off for requesting all available data from Stack Exchange, saving
+    ourselves that massive one-off hit, is that we make much smaller requests in response
+    to the user initiating a request for more data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Directly after the `click` handler we added for the `<li>` elements inside
+    the Listview, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We attach a listener for all four buttons using the `data-icon` attribute once
+    more to select them from the page. Don't forget that this will only be done once,
+    the first time the list page loads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then store a reference to the button that was clicked, the value of the data-icon
+    attribute of the clicked button, and the current page. We then check the value
+    of the `dir` attribute and if it is equal to `forward` we increment the current
+    page, otherwise we decrement it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then call our `getBounties()` method once more, passing it the updated
+    `page` variable and the handler function to execute after the request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this handler function, we first update the stored data by updating the
+    `data` variable with the new object returned by the most recent call to `getBounties()`.
+    We add a `currentpage` property to the `data` object once more and update the
+    copy we have in localStorage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then hide the spinner manually using the `hidePageLoadingMsg()` jQuery
+    Mobile method and then re-render the list template using the new data. Once this
+    is done we can update the display showing the current page, and call our `setClasses()`
+    utility function to enable or disable the forward and back buttons respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point we should have a fully working jQuery Mobile app than runs on
+    both desktop and mobile devices. It's a simple app, but we've gotten to explore
+    a reasonable amount of the framework. There is much more to learn, but seeing
+    the bits that we've used in this project should be more than enough to inspire
+    you to delve deeper into the framework and what it offers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One thing that we haven't looked at in this project so far is the theming capabilities
+    of jQuery Mobile. Like jQuery UI, jQuery Mobile benefits from the advanced theming
+    capabilities of Themeroller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your challenge for this project is to head on over to Themeroller at [http://jquerymobile.com/themeroller/](http://jquerymobile.com/themeroller/)
+    and build yourself a custom theme for the finished application.
+  prefs: []
+  type: TYPE_NORMAL

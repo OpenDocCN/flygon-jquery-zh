@@ -1,0 +1,1353 @@
+- en: Chapter 3. DOM Traversal Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Cause there's a train coming into the station
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: But it's heading for a new destination
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"It Doesn''t Matter to Me"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In addition to the selector expressions described in [Chapter 2](ch02.html
+    "Chapter 2. Selector Expressions"), jQuery has a variety of DOM traversal methods
+    to help us select elements in a document. These methods offer a great deal of
+    flexibility, even allowing us to act upon multiple sets of elements in a single
+    chain, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: At times the choice between a selector expression and a corresponding DOM traversal
+    method is simply a matter of taste, but there is no doubt that the combined set
+    of expressions and methods makes for an extremely powerful toolset for getting
+    anything we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As of jQuery 1.1, DOM traversal methods do not modify the jQuery object they
+    are sent to. Instead, a new jQuery object is constructed, which contains a reference
+    to the original object. The original object can be retrieved with the `.end` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery Factory Function
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The following function underpins the entire jQuery library as it allows us to
+    create the jQuery objects that all of the other methods are attached to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $()
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '| Creates a new jQuery object matching elements in the DOM.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (first version)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'selector: A string containing a selector expression'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'context (optional): The portion of the DOM tree within which to search'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (second version)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'element: A DOM element to wrap in a jQuery object'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (third version)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'elementArray: An array containing a set of DOM elements to wrap in a jQuery
+    object'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (fourth version)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'object: An existing jQuery object to clone'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (fifth version)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'html: A string containing an HTML snippet describing new DOM elements to create'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The newly constructed jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the first formulation listed above, `$()` searches through the DOM for any
+    element that match the provided selector and creates a new jQuery object that
+    references these elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In [Chapter 2](ch02.html "Chapter 2. Selector Expressions") we explored the
+    range of selector expressions that can be used within this string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selector Context
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default, selectors perform their searches within the DOM starting at the
+    document root. However, an alternative context can be given for the search by
+    using the optional second parameter to the `$()` function. For example, if within
+    a callback function we wish to do a search for an element, we can restrict that
+    search:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since we've restricted the span selector to the context of `this`, only spans
+    within the clicked element will get the additional class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Selector context is also useful for XML documents, as they do not form part
+    of the default DOM tree. For example, if an AJAX call has returned an XML structure
+    in the variable data, then we can perform searches within that structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Internally, selector context is implemented with the `.find` method, so `$(selector,
+    context)` is equivalent to `$(context).find(selector)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While the jQuery API only specifies DOM elements, arrays of DOM elements, and
+    jQuery objects as valid contexts, in practice selectors and HTML snippets can
+    be used here as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wrapping DOM elements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The second and third formulations of this function allow us to create a jQuery
+    object using a DOM element or elements that we have already found in some other
+    way. A common use of this facility is to perform jQuery methods on an element
+    that has been passed to a callback function in the keyword `this`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example causes elements to be hidden with a sliding animation when clicked.
+    An element must be wrapped in a jQuery object before we call jQuery methods on
+    it because the handler receives the clicked item in the keyword `this` as a bare
+    DOM element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cloning jQuery Objects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When a jQuery object is passed as a parameter to the `$()`, a new jQuery object
+    is created that references the same DOM elements. The initial object can then
+    be modified without affecting the new one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating New Elements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If a string is passed as the parameter to `$()`, jQuery examines the string
+    to see if it looks like HTML. If not, the string is interpreted as a selector
+    expression, as explained above. But if the string appears to be an HTML snippet,
+    jQuery attempts to create new DOM elements as described by the HTML. Then a jQuery
+    object is created and returned that refers to these elements. We can perform any
+    of the usual jQuery methods on this object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The actual creation of the elements is handled by the browser''s **innerHTML**
+    mechanism. Specifically, jQuery creates a new `<div>` element and sets the innerHTML
+    property of the element to the HTML snippet that was passed in. This means that
+    to ensure cross‑platform compatibility, the snippet must be well-formed. Tags
+    that can contain other elements should always be paired with a closing tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Tags that cannot contain elements should be quick-closed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Filtering Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods remove elements from the set matched by a jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .filter()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Reduces the set of matched elements to those that match the selector or pass
+    the function''s test.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (first version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector: A string containing a selector expression to match elements against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (second version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'function: A function used as a test for each element in the set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.filter` method
+    constructs a new jQuery object from a subset of the matching elements. The supplied
+    selector is tested against each element; all elements matching the selector will
+    be included in the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can apply this method to the set of list items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping items `1, 3`, and `5` as
+    they match the selector (recall that :even and :odd use 0-based indexing).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a Filter Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The second form of this method allows us to filter elements against a function
+    rather than a selector. Suppose we have a more involved HTML snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can select the list items, and then filter them based on their contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this expression will be the first list item only, as it contains
+    exactly one `<strong>` tag. Within the filter function, `this` refers to each
+    DOM element in turn. The parameter passed to the function tells us the index of
+    that DOM element within the set matched by the jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also take advantage of the `index` passed through the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this expression will be the third and sixth list items, as it
+    uses the modulus operator (%) to select every item with an index value that, when
+    divided by 3, has a remainder of 2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .not()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Removes elements from the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (first version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector: A string containing a selector expression to match elements against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (second version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'elements: One or more DOM elements to remove from the matched set'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.not` method
+    constructs a new jQuery object from a subset of the matching elements. The supplied
+    selector is tested against each element; the elements that don't match the selector
+    will be included in the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can apply this method to the set of list items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping items `2` and `4`, as they
+    do not match the selector (recall that :even and :odd use 0-based indexing).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing Specific Elements
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The second version of the `.not` method allows us to remove elements from the
+    matched set, assuming we have found those elements previously by some other means.
+    For example, suppose our list had an identifier applied to one of its items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can fetch the third list item using the native JavaScript `getElementById`
+    function, then remove it from a jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This expression yields a jQuery object matching items `1, 2, 4`, and `5`. We
+    could have accomplished the same thing with a simpler jQuery expression, but this
+    technique can be useful when other libraries provide references to plain DOM nodes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .contains()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Reduces the set of matched elements to those containing the specified text.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'text: A string of text to search for'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.contains`
+    method constructs a new jQuery object from a subset of the matching elements.
+    The supplied text is searched for in each element; all elements containing the
+    text (even within a descendant element) will be included in the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can apply this method to the set of list items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping `item 2`, as it contains
+    the specified text. The search is performed using jQuery's `.text` method, so
+    the search text can be located anywhere within the concatenation of the text strings
+    in the matched set of elements or any of their descendants.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .eq()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Reduces the set of matched elements to the one at the specified index.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'index: An integer indicating the *0-based* position of the element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.eq` method
+    constructs a new jQuery object from one of the matching elements. The supplied
+    index identifies the position of this element in the set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can apply this method to the set of list items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping `item 3`. Note that the
+    supplied index is *0-based*, and refers to the position of the element within
+    the jQuery object, *not* within the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .lt()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Reduces the set of matched elements to the ones before the specified index.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'index: An integer indicating the *0-based* position before which the elements
+    are selected'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.lt` method
+    constructs a new jQuery object from a subset of the matching elements. The supplied
+    `index` identifies the position of one of the elements in the set; all elements
+    before this one will be included in the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can apply this method to the set of list items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping items `1` and `2`. Note
+    that the supplied index is *0-based*, and refers to the position of elements within
+    the jQuery object, *not* within the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .gt()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Reduces the set of matched elements to the ones after the specified index.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'index: An integer indicating the *0-based* position after which the elements
+    are selected'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.gt` method
+    constructs a new jQuery object from a subset of the matching elements. The supplied
+    `index` identifies the position of one of the elements in the set; all elements
+    after this one will be included in the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can apply this method to the set of list items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping items 4 and 5\. Note that
+    the supplied index is *0-based*, and refers to the position of elements within
+    the jQuery object, *not* within the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tree Traversal Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods use the structure of the DOM tree to locate a new set of elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .find()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the descendants of each element in the current set of matched elements,
+    filtered by a selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector: A string containing a selector expression to match elements against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.find` method
+    allows us to search through the descendants of these elements in the DOM tree
+    and construct a new jQuery object from the matching elements. The `.find` and
+    `.children` methods are similar, except that the latter only travels a single
+    level down the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method accepts a selector expression of the same type that we can pass to
+    the `$()` function. The elements will be filtered by testing whether they match
+    this selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a basic nested list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we begin at item II, we can find list items within it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping items `A, B, 1, 2, 3`, and
+    `C`. Even though item `II` matches the selector expression, it is not included
+    in the results; only descendants are considered candidates for the match.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As discussed in the section *The jQuery Factory Function*, selector context
+    is implemented with the `.find` method; therefore, `$('li.item-ii').find('li')`
+    is equivalent to `$('li', 'li.item-ii')`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Unlike in the rest of the tree traversal methods, the selector expression is
+    required in a call to `.find()`. If we need to retrieve all of the descendant
+    elements, we can pass in the selector * to accomplish this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .children()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets children of each element in the set of matched elements, optionally
+    filtered by a selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector (optional): A string containing a selector expression to match elements
+    against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.children`
+    method allows us to search through the immediate children of these elements in
+    the DOM tree and construct a new jQuery object from the matching elements. The
+    `.find` and `.children` methods are similar, except that the latter only travels
+    a single level down the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method optionally accepts a selector expression of the same type that we
+    can pass to the `$()` function. If the selector is supplied, the elements will
+    be filtered by testing whether they match the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a basic nested list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we begin at the level-2 list, we can find its children:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping items `A, B`, and `C`. Since
+    we do not supply a selector expression, all of the children are part of the object.
+    If we had supplied one, only the matching items among these three would be included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .parents()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the ancestors of each element in the current set of matched elements,
+    optionally filtered by a selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector (optional): A string containing a selector expression to match elements
+    against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.parents`
+    method allows us to search through the ancestors of these elements in the DOM
+    tree and construct a new jQuery object from the matching elements. The `.parents()`
+    and `.parent()` methods are similar, except that the latter only travels a single
+    level up the DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method optionally accepts a selector expression of the same type that we
+    can pass to the `$()` function. If the selector is supplied, the elements will
+    be filtered by testing whether they match the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a basic nested list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we begin at item `A`, we can find its ancestors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping the `level-2` list, `item
+    ii`, and the `level-1` list (and on up the DOM tree all the way to the `<html>`
+    element). Since we do not supply a selector expression, all of the ancestors are
+    part of the object. If we had supplied one, only the matching items among these
+    would be included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .parent()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the parent of each element in the current set of matched elements, optionally
+    filtered by a selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector (optional): A string containing a selector expression to match elements
+    against.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.parent` method
+    allows us to search through the parents of these elements in the DOM tree and
+    construct a new jQuery object from the matching elements. The `.parents` and `.parent`
+    methods are similar, except that the latter only travels a single level up the
+    DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method optionally accepts a selector expression of the same type that we
+    can pass to the `$()` function. If the selector is supplied, the elements will
+    be filtered by testing whether they match the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a basic nested list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we begin at item `A`, we can find its parents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping the `level-2` list. Since
+    we do not supply a selector expression, the parent element is unequivocally included
+    as part of the object. If we had supplied one, the element would be tested for
+    a match before it was included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .siblings()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the siblings of each element in the set of matched elements, optionally
+    filtered by a selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector (optional): A string containing a selector expression to match elements
+    against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.siblings`
+    method allows us to search through the siblings of these elements in the DOM tree
+    and construct a new jQuery object from the matching elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method optionally accepts a selector expression of the same type that we
+    can pass to the `$()` function. If the selector is supplied, the elements will
+    be filtered by testing whether they match the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we begin at the third item, we can find its siblings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping items `1, 2, 4`, and `5`.
+    Since we do not supply a selector expression, all of the siblings are part of
+    the object. If we had supplied one, only the matching items among these four would
+    be included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The original element is not included among the siblings, which is important
+    to remember when we wish to find all elements at a particular level of the DOM
+    tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .prev()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the immediately preceding sibling of each element in the set of matched
+    elements, optionally filtered by a selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector (optional): A string containing a selector expression to match against
+    the elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.prev` method
+    allows us to search through the predecessors of these elements in the DOM tree
+    and construct a new jQuery object from the matching elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method optionally accepts a selector expression of the same type that we
+    can pass to the `$()` function. If the selector is supplied, the elements will
+    be filtered by testing whether they match the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we begin at the third item, we can find the element that comes just before
+    it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping `item 2`. Since we do not
+    supply a selector expression, this preceding element is unequivocally included
+    as part of the object. If we had supplied one, the element would be tested for
+    a match before it was included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .next()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Gets the immediately following sibling of each element in the set of matched
+    elements, optionally filtered by a selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector (optional): A string containing a selector expression to match against
+    the elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.next` method
+    allows us to search through the successors of these elements in the DOM tree and
+    construct a new jQuery object from the matching elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method optionally accepts a selector expression of the same type that we
+    can pass to the `$()` function. If the selector is supplied, the elements will
+    be filtered by testing whether they match the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we begin at the third item, we can find the element that comes just after
+    it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping `item 4`. Since we do not
+    supply a selector expression, this following element is unequivocally included
+    as part of the object. If we had supplied one, the element would be tested for
+    a match before it was included.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Miscellaneous Traversal Methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods provide other mechanisms for manipulating the set of matched DOM
+    elements in a jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .add()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Adds elements to the set of matched elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (first version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector: A string containing a selector expression to match additional elements
+    against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (second version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'elements: one or more elements to add to the set of matched elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (third version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'html: An HTML fragment to add to the set of matched elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The new jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Given a jQuery object that represents a set of DOM elements, the `.add` method
+    constructs a new jQuery object from the union of those elements and the ones passed
+    into the method. The argument to `.add` can be pretty much anything that `$()`
+    accepts, including a jQuery selector expression, references to DOM elements, or
+    an HTML snippet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a page with a simple list and a paragraph following it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can select the list items and then the paragraph by using either a selector
+    or a reference to the DOM element itself as the `.add` method''s argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this call is a jQuery object wrapping all four elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using an HTML snippet as the `.add` method''s argument (as in the third version)
+    we can create additional elements on the fly and add those elements to the matched
+    set of elements. Let''s say, for example, that we want to add a class `foo` to
+    the list items, the paragraph, and a newly created paragraph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although the new paragraph has been created and its `foo` class added, it still
+    does not appear on the page. To place it on the page, we can add one of the insertion
+    methods to the chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information about the insertion methods please refer to [Chapter 4](ch04.html
+    "Chapter 4. DOM Manipulation Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: .is()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Checks the current matched set of elements against a selector and returns
+    `true` if at least one of these elements matches the selector.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'selector: A string containing a selector expression to match elements against'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A boolean indicating whether an element matches the selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Unlike the rest of the methods in this chapter, `.is()` does not create a new
+    jQuery object. Instead, it allows us to test the contents of a jQuery object without
+    modification. This is often useful in callbacks, such as event handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose we have a list, with two of its items containing a child element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can attach a click handler to the `<ul>` element, and then limit the code
+    to be triggered only when a list item itself, not one of its children, is clicked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, when the user clicks on the word `list` in the first item or anywhere in
+    the third item, the clicked list item will be removed from the document. However,
+    when the user clicks on `item 1` in the first item or anywhere in the second item,
+    nothing will occur, because for those target of the event would be `<strong>`
+    and `<span>` respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .end()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Ends the most recent filtering operation in the current chain and returns
+    the set of matched elements to its previous state.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The previous jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Most of the methods in this chapter operate on a jQuery object and produce a
+    new one, matching a different set of DOM elements. When this happens, it is as
+    if a new set of elements is pushed onto a stack that is maintained inside the
+    object. Each successive filtering method pushed a new element set onto the stack.
+    If we need an older element set, we can use `.end()` to pop the sets back off
+    of the stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose we have a couple of short lists on a page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.end` method is useful primarily when exploiting jQuery''s chaining properties.
+    When not using chaining, we can usually just call up a previous object by variable
+    name, so that we don''t need to manipulate the stack. With `.end()`, though, we
+    can string all the method calls together:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs: []
+  type: TYPE_PRE
+- en: This chain searches for items with the class `foo` within the first list only
+    and adds the class `some-class` to them. Then `.end()` returns the object to its
+    state before the call to `.find()`, so the second `.find()` looks for `.bar` inside
+    `<ul class="first">`, not just inside that list's `<li class="foo">`, and adds
+    the class `another-class` to the matching element. The result is that items `1`
+    and `3` of the first list have a class added to them, and none of the items from
+    the second list do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A long jQuery chain can be visualized as a structured code block, with filtering
+    methods providing the openings of nested blocks and `.end` methods closing them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last `.end()` is unnecessary, as we are discarding the jQuery object immediately
+    thereafter. However, when the code is written in this form the `.end()` provides
+    visual symmetry and closure—making the program, at least to the eyes of some developers,
+    more readable.
+  prefs: []
+  type: TYPE_NORMAL

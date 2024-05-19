@@ -1,0 +1,568 @@
+- en: Chapter 9. Plug-In API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I do two at a time now
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: I've developed a technique
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"Fräulein"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Whenever a task is to be performed two or more times, it is a good idea to apply
+    the **DRY** principle—Don't Repeat Yourself. To facilitate this, jQuery provides
+    several tools for developers that go beyond simple iteration and function creation.
+    **Plug-in** development is a technique that proves rewarding time and time again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we'll take a brief look at the basics of using another developer's
+    plug-in, and then delve into the various ways of extending jQuery with plug-ins
+    we define ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a Plug-in
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Taking advantage of an existing jQuery plug-in is very straightforward. A plug-in
+    is contained in a standard JavaScript file. There are many ways to obtain the
+    file, but the simplest is to browse the jQuery plug-in repository at [http://jquery.com/plugins](http://jquery.com/plugins).
+    The latest releases of many popular plug-ins are available for download from this
+    site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make a plug-in''s methods available to us, we just include it in the `<head>`
+    of the document. We must ensure that it appears *after* the main jQuery source
+    file, and *before* our custom JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, we''re ready to use any of the methods made public by the plug-in.
+    For example, using the *Form* plug-in, we can add a single line inside our custom
+    file''s `$(document).ready` method to submit a form via AJAX:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each plug-in is independently documented. In the subsequent chapters, we will
+    examine a couple of the more prominent plug-ins in detail, describing each of
+    their methods. To find out more about other plug-ins, we can explore the documentation
+    linked from the jQuery plug-in repository, or read the explanatory comments found
+    in the source code itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we can't find the answers to all of our questions in the plug-in repository,
+    the author's website, or the plug-in's comments, we can always turn to the jQuery
+    discussion list. Many of the plug-in authors are frequent contributors to the
+    list and are always willing to help with any problems that new users might face.
+    Instructions for subscribing to the discussion list can be found at [http://docs.jquery.com/Discussion](http://docs.jquery.com/Discussion).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing a Plug-in
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As we discussed above, plug-in development is a useful technique whenever we
+    are going to perform a task more than once. Here we will itemize the components
+    that can populate a plug-in file of our own design. Our plug-ins can use any combination
+    of the following four types of jQuery enhancements: object methods, global functions,
+    selector expressions, and easing styles.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Object Method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Adds a new method to all jQuery objects created with the `$()` factory function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Components
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`methodName`: A label for the new method.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`methodDefinition`: A function object to execute when `.methodName()` is called
+    on a jQuery object instance.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When a function needs to act on one or more DOM elements, creating a new jQuery
+    object method is usually appropriate. Object methods have access to the matched
+    elements that are referenced by the jQuery object, and can inspect or manipulate
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The jQuery object can be retrieved from within the method implementation by
+    referencing the keyword `this`. We can either call the built-in jQuery methods
+    of this object, or we can extract the DOM nodes to work with them directly. As
+    we saw in [Chapter 8](ch08.html "Chapter 8. Miscellaneous Methods"), we can retrieve
+    a referenced DOM node using array notation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we use `this[0]` to find one element, but we need to remember that a
+    jQuery selector expression can always match zero, one, or multiple elements. We
+    must allow room for any of these scenarios when designing a plug-in method. The
+    easiest way to accomplish this is to call `.each()` on the method context; this
+    enforces **implicit iteration**, which is important for maintaining consistency
+    between plug-in and built-in methods. Within the function argument of the `.each()`
+    call, `this` refers to each DOM element in turn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can apply our method to a jQuery object referencing multiple items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our method produces a separate alert for each element that was matched by the
+    preceding selector expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note also that in these examples, we return the jQuery object itself (referenced
+    by `this`) when we are done with our work. This enables the **chaining** behavior
+    that jQuery users should be able to rely on. We must return a jQuery object from
+    all plug-in methods, unless the method is clearly intended to retrieve a different
+    piece of information and is documented as such.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Global Function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Makes a new function available to scripts, contained within the jQuery namespace.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Components (First Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`pluginName`: The name of the current plug-in.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fnDefinition`: A function object to execute when `$.pluginName()` is called.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Components (Second Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`pluginName`: The name of the current plug-in.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`function1`: A label for the first function.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fnDefinition1`: A function object to execute when `$.pluginName.function1()`
+    is called.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`function2`: A label for the second function.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fnDefinition2`: A function object to execute when `$.pluginName.function2()`
+    is called.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: What we call **global functions** here are technically methods of the `jQuery`
+    function object. Practically speaking, they are functions within a jQuery namespace.
+    By placing the function within the jQuery namespace, we reduce the chance of name
+    conflicts with other functions and variables in scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Single Functions**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first usage opposite illustrates the creation of a global function when
+    the plug-in needs only a single function. By using the plug-in name as the function
+    name, we can ensure that our function definition will not be trod on by other
+    plug-ins (as long as the others follow the same guideline!). The new function
+    is assigned as a property of the `jQuery` function object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now in any code that uses this plug-in, we can write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also use the `$` alias and write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will work just like any other function call, and the alert will be displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Multiple Functions**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the second usage, we see how to define global functions when more than one
+    is needed by the same plug-in. We encapsulate all of the plug-ins within a single
+    namespace, named after our plug-in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To invoke these functions, we address them as members of an object named after
+    our plug-in, which is itself a property of the global jQuery function object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Functions are now properly protected from collisions with other functions and
+    variables in the global namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, it is wise to use this second usage from the start, even if it seems
+    that only one function will be needed, as it makes future expansion easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selector Expression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Adds a new way to find DOM elements using a jQuery selector string.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Components
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`selectorType`: The prefix character for the selector string, which indicates
+    which type of selector is being defined. In practice, the useful value for plug‑ins
+    is `'':''`, which indicates a pseudo-class selector.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`selectorName`: A string uniquely identifying this selector.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`elementTest`: A string containing a JavaScript expression to evaluate. If
+    the expression evaluates to `true` for an element `a`, that element will be included
+    in the resulting set; otherwise, the element will be excluded.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Plug-ins can add selector expressions that allow scripts to find specific sets
+    of DOM elements using a compact syntax. Generally, the expressions that plug-ins
+    add are new pseudo-classes, identified by a leading `':'` character.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The pseudo-classes that are supported by jQuery have the general format `:selectorName(param1(param2))`.
+    Only the `selectorName` portion of this format is required; `param1` and `param2`
+    are available if the pseudo-class allows parameters to make it more specific.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The element test expression can refer to two special variables, named `a` and
+    `m`. The DOM element being tested is stored in `a`, and the components of the
+    selector expression are held in `m`. The contents of `m` are the result of a regular
+    expression match, which breaks `:selectorName(param1(param2))` down as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For example, we can build a pseudo-class that tests the number of child nodes
+    of an element, and call this new selector expression `:num-children(n)`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can, for example, select all `<ul>` elements with exactly two child
+    nodes, and turn them red:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: If it is necessary to add selector expressions other than pseudo-classes, `jQuery.parse`
+    inside `jquery.js` should be consulted to find the relevant regular expression
+    matches for other selector types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Easing Style
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Defines an acceleration curve for future animations.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Components
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`easingStyleName`: A label for the new easing style.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easingFunction`: A function object that determines the animation value at
+    any given moment. Easing functions are passed the following arguments:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fraction`: The current position of the animation, as measured in time between
+    0 (the beginning of the animation) and 1 (the end of the animation).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`elapsed`: The number of milliseconds that have passed since the beginning
+    of the animation (seldom used).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`attrStart`: The beginning value of the CSS attribute that is being animated.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`attrDelta`: The difference between the start and end values of the CSS attribute
+    that is being animated.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`duration`: The total number of milliseconds that will pass during the animation
+    (seldom used).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Most effect methods trigger an animation with a fixed **easing style**, called
+    **swing**. An easing style defines how the animation will speed up and slow down
+    over time. The `.animate` method gives us more flexibility; a parameter to the
+    method allows a custom easing style to be specified. New easing styles can be
+    created using this plug-in mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An easing function must return the value of the property being animated at
+    any moment within the animation. Because of the arguments that are passed to an
+    easing function, the calculation usually takes the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this calculation, `f` represents a mathematical function whose value varies
+    from 0 to 1 as its parameter varies from 0 to 1\. For example, an easing style
+    that caused the animation to proceed at a constant rate would require a linear
+    function (`f(x) = x`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussioneasing styleabout](img/3810_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In a plug-in, this easing style would be expressed with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the other hand, if we wished our animation to begin slowly and speed up
+    gradually, we could use a quadratic function (`f(x)` `=` `x` `2` `)`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussioneasing styleabout](img/3810_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In a plug-in, this easing style would be expressed with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With an easing plug-in such as this one installed, we can choose the new easing
+    style any time we invoke the `.animate` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this call, all elements with a class of `myClass` attached will move and
+    fade to the specified values, starting slowly and speeding up gradually until
+    they reach their destinations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example: Maintaining Multiple Event Logs'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the various examples in preceding reference chapters, we have had the need
+    to display log events when various events occur. JavaScript's `alert` function
+    is often used for this type of demonstration, but does not allow for the frequent,
+    timely messages we needed on occasion. A better alternative is the `console.log`
+    function available to Firefox and Safari, which allows printing messages to a
+    separate log that does not interrupt the flow of interaction on the page. As this
+    function is not available to Internet Explorer, however, we used a custom function
+    to achieve this style of message logging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Firebug Lite script (described in [Appendix B](apb.html "Appendix B. Development
+    Tools")) provides a very robust cross‑platform logging facility. The method we
+    develop here is tailored specifically for the examples in the preceding chapters;
+    for general utility, Firebug Lite is typically preferable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A simple way to log messages would be to create a global function that appends
+    messages to a specific element on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can get a bit fancier, and have the new message appear with an animation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we can call `$.log('foo')` to display `foo` in the log box on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We sometimes had multiple examples on a single page, however, and it was convenient
+    to be able to keep separate logs for each example. We accomplished this by using
+    a method rather than global function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now calling `$('.log').log('foo')` has the effect our global function call did
+    previously, but we can change the selector expression to target different log
+    boxes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Ideally, though, the `.log` method would be intelligent enough to locate the
+    most relevant box to use for the log message without an explicit selector. By
+    exploiting the context passed to the method, we can traverse the DOM to find the
+    log box nearest the selected element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code looks for a log message box within the matched elements, and if none
+    is found, walks up the DOM in search of one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, at times we require the ability to display the contents of an object.
+    Printing out the object itself yields something barely informative like `[object
+    Object]`, so we can detect the argument type and do some of our own pretty-printing
+    in the case that an object is passed in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we have a method that can be used to write out both objects and strings
+    in a place that is relevant to the work being done on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ve viewed plug-ins from two angles in this chapter: usage and development.
+    We''ve looked at four types of additions we can make to jQuery with our own plug-ins.
+    Plug-ins can introduce new global methods and jQuery object methods; moreover,
+    they can add selector expressions and easing styles.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Often, though, we'll be more interested in using plug-ins that others have created.
+    While we've already pointed to available documentation for many plug-ins, we will
+    go into more detail about two of the more popular ones in the following chapters.
+  prefs: []
+  type: TYPE_NORMAL

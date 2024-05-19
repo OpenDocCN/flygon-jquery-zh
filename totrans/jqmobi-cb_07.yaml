@@ -1,0 +1,895 @@
+- en: Chapter 7. Configurations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the active classes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring `ajaxEnabled`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring `autoInitializePage`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring the default transitions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring `ignoreContentEnabled`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring the page loading and error messages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring the default namespace
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring `hashListeningEnabled` and `subPageUrlKey`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring `pushStateEnabled` and `linkBindingEnabled`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework enhances the markup and elements in a document as
+    soon as the document is loaded. You can tweak the default configurations used
+    for these enhancements by setting their values in the `mobileinit` event handler,
+    which gets fired at startup on the document object. This chapter shows you how
+    to use the various configurations available in the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the active classes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework uses the CSS class `activeBtnClass` to style a button
+    in an active state with theme `b` by default. The `activeBtnClass` class has a
+    default string value `ui-btn-active`. To style the active page (the page in view
+    or in transition), the framework uses the CSS class `activePageClass`, which has
+    a default string value `ui`-`page-active`. This recipe shows you how to configure
+    the framework to use custom classes instead of these default classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/07/active-class` sources folder.
+    You can launch this code using the URL: `http://localhost:8080/07/active-class/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following style to the `<head>` tag of the page to
+    define your own custom active button class and active page class:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script before including the jQuery Mobile script:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the #`main` page with a link to open #`page1` as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create #`page1` with a link to go back to the #`main` page as follows; this
+    is a multi-page document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add a style tag and define the class `ui-custom-btn-active`
+    to set a different gradient background (green shade) on the active button. The
+    default active button background is a bright blue shade. Also add a `ui-custom-page-active`
+    class that sets a `3px` thick-dotted border for the page. Next, add the given
+    script in the code before including the reference to `jquery.mobile.js`. In the
+    script, add an event handler for the `mobileinit` event that gets triggered at
+    the start of the app. Here, set the `$.mobile.activePageClass` and `$.mobile.activeBtnClass`
+    properties to the two new classes. Finally, add the `#main` and `#page1` page
+    containers. When you launch the app, the `#main` page is now displayed with a
+    dotted border as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When you click on the **Open Page 1** button, the active state of the button
+    shows the green shade when pressed, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_2.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, the page `#page1` opens and it too has the dotted border:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_3.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The **Go Back** button also gets a green shade when you click on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_4.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can customize and configure the default settings for the jQuery Mobile framework
+    using the `mobileinit` event handler. You have to add this custom script before
+    the `jquery.mobile.js` script is included to ensure that the framework gets initialized
+    with your settings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the jQuery .extend() call
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Instead of setting the property directly on `$.mobile`, you can also use the
+    `.extend()` jQuery call to extend the `$.mobile` object, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. Pages and Dialogs"), *Pages and Dialogs*,
+    *Using CSS to create a bouncing page transition*: This recipe provides and overview
+    of vendor prefixes'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring ajaxEnabled
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Whenever possible, the jQuery Mobile framework automatically uses Ajax for handling
+    link clicks and form submissions. This can be configured using the `$.mobile.ajaxEnabled`
+    property, which has a Boolean value of `true` by default. If Ajax is disabled
+    or if its not supported, then an ordinary HTTP request is used and a full page
+    load occurs. URL hash listening is also disabled. This recipe shows you how to
+    configure the `$.mobile.ajaxEnabled` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/07/ajax-enabled` sources folder.
+    You can launch this code using the URL: `http://localhost:8080/07/ajax-enabled/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the main page with a link to open `page1.html`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, create `page1.html` with a link to go back to `main.html`, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Add the given script in the code before including the reference to `jquery.mobile.js`.
+    In the script, add an event handler for the `mobileinit` event that gets triggered
+    at the start of the app. Here, set the configuration `$.mobile.ajaxEnabled=true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since `$.mobile.ajaxEnabled` is `true` by default, you don't have to explicitly
+    set it in your code. It is included in this recipe, because you will be changing
+    this value to `false` later in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the `#main` page. Create `page1.html` as shown in the code (note that the
+    `<head>` element is not present in `page1.html`). The `#main` page is displayed,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_5.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Click on the **Open Page 1** button to open `page1.html` as follows. This page
+    gets loaded via Ajax, and the framework enhances the controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_6.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, set the `ajaxEnabled` property to `false` in `main.html`, and reload
+    the page. Now, when `page1.html` is opened, the elements are not enhanced, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_7.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When Ajax is disabled, the entire page is loaded. In `page1.html`, since the
+    `<head>` element with the links to the jQuery Mobile framework library is missing,
+    the page does not get any style or enhancements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring autoInitializePage
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you navigate to a new page or when a page is loaded in the DOM, the framework
+    initializes the page and makes it visible. This is controlled by the `$.mobile.intializePage`
+    property, which has a Boolean value of `true` by default. If this is set to `false`,
+    the page is not shown. You will have to manually set this back to `true` to show
+    the page. This recipe shows you how to do the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/07/auto-initialize` sources
+    folder. You can launch this code by using the URL: `http://localhost:8080/07/auto-initialize/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the main page with the following content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add the given `autoInitializePage` script to the code before including the
+    reference to `jquery.mobile.js`. In the script, add an event handler for the `mobileinit`
+    event that gets triggered at the start of the app. Here, set the configuration
+    `$.mobile.autoInitializePage=false`. Finally, add the `#main` page. The page content
+    will be similar to the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_8.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The contents are initialized and visible as the value of `$mobile.autoInitializePage`
+    is manually set to `true`, as shown in the code. You can comment this line (in
+    the page content section) and reload the page to find that nothing gets shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can use this feature to delay displaying the page while you do some background
+    work or while you fetch data in the background from a server. It is useful when
+    you manually handle the changing of pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the default transitions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By default, the jQuery Mobile framework uses the **fade** transition while loading
+    pages with Ajax. The **pop** transition is used by default while opening dialogs
+    with Ajax. This recipe shows you how to set different default transitions for
+    your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/07/default-transitions` sources
+    folder. You can launch this code using the URL: `http://localhost:8080/07/default-transitions/main.hml`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#main` page as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create `#page1` as follows; this is a multi-page document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html` and add the given script in the code before including the
+    reference to `jquery.mobile.js`. In the script, add an event handler for the `mobileinit`
+    event that gets triggered at the start of the app. Here, set the default transitions
+    for pages and dialogs using the `$.mobile.defaultDialogTransition` and `$.mobile.defaultPageTransition`
+    properties. Finally, add the `#main` and `#page1` page containers as shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In `#main`, there are two buttons. The first one opens `#page1` as a page and
+    the second one opens it as a dialog. You will see that the default transitions
+    are changed. The page now uses the `turn` transition and the dialog uses the `flow`
+    transition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can also set both the page and the dialog default transitions to `none`.
+    This will just load the pages or dialogs without using any transitions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using custom transitions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can configure the framework to use your own custom transitions as default
+    transitions. You have to set the transition name as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Transition fallbacks
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The `fade` transition is the default transition and it uses 2D. All other transitions
+    use 3D. Older browsers and devices that do not support 3D transformations will
+    fall back to using `fade`. You can configure this default fall back transition
+    to `none` or you can set it to your own custom 2D transition. This can be done
+    for each of the individual 3D transitions, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. Pages and Dialogs"), *Using CSS to create
+    a bouncing page transition*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Chapter 2](ch02.html "Chapter 2. Pages and Dialogs"), *Using JS to create
+    a Slide ''n Fade transition*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring ignoreContentEnabled
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework automatically enhances controls and markup found
+    in a page. To skip enhancing certain sections of markup, you can use the `$.mobile.ignoreContentEnabled`
+    configuration (which is `false` by default). This recipe shows you how to do the
+    same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/07/content-enabled` sources
+    folder. You can launch this code using the URL: `http://localhost:8080/07/content-enabled/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#main` page with the following content :'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html` and add the given script in the code before including the
+    reference to `jquery.mobile.js`. In the script, add an event handler for the `mobileinit`
+    event that gets triggered at the start of the app. Here, set the property `$.mobile.ignoreContentEnabled=true`.
+    In `#main`, add two divs. Add a checkbox and a radio button to each `div`. Set
+    the attribute `data-enhance=false` to the first `div`. Now, the elements added
+    to this `div` are not enhanced by the framework. The elements in the second `div`
+    are automatically enhanced. The page is displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_9.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When you use the `$.mobile.ignoreContentEnabled=true` configuration, it tells
+    the framework to avoid enhancing certain sections of markup. This is done by using
+    the `data-enhance="false"` attribute as shown in this recipe. Now, when the framework
+    encounters each control or markup, it first checks if the parent element has the
+    `data-enhance` attribute set to `false`. If so, it skips applying the style or
+    any enhancements to the control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using `$.mobile.ignoreContentEnabled` and `data-enhance` could cause performance
+    degradation while the pages are enhanced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the page loading and error messages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By default, the jQuery Mobile framework shows a spinning animation with theme
+    `a` and without any text when loading a new page. If there is an error, the page
+    load times out and an error message `Error Loading Page` is shown, with theme
+    `e`. This recipe shows you how to change and customize the page loading and error
+    messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the sources `code/07/load-message` folder.
+    To try out this recipe, launch the simple `nodejs` web server that is available
+    in the folder code, by using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then you can launch the code by using the URL: `http://localhost:8080/07/load-message/main.hml`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#main` page with the following content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create `main.html`, and add the given script before including the reference
+    to `jquery.mobile.js`. In the script, add an event handler for the `mobileinit`
+    event that gets triggered at the start of the app. Here, set the default page
+    load messages and error messages as shown in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `#main`, there is a link that tries to open the `"/delay"` page. This is
+    a `GET` operation on the `nodejs` server. The server handles this request and
+    returns an error code after pausing for a few seconds. The spin control with a
+    text message is shown for this duration, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The error response causes the following error message to be shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Configuring the default namespace
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to configure the jQuery Mobile framework to use your
+    custom namespace for the `data-` attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/07/namespace` sources folder.
+    You can launch this code using the URL: `http://localhost:8080/07/namespace/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following style to the `<head>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the main page as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#dialog` page as follows; this is a multi-page document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To use a custom namespace, you will have to override one specific selector in
+    the `jquery.mobile.css` file, the `.ui-mobile [data-my-role=page]`, and the `.ui-mobile
+    [data-my-role=dialog]` selector. Override this style as shown in the code. Using
+    `data-my-role` means that the namespace is set to `my`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create `main.html`, and set this configuration by adding the preceding script
+    before including the reference to `jquery.mobile.js`. In the script, add an event
+    handler for the `mobileinit` event that gets triggered at the start of the app.
+    Here, set the default namespace by using the `$.mobile.ns="my-"`configuration
+    . Add the `#main` and `#dialog` pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the page as seen through a DOM inspector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You will note that the code also used the `data-my-` attributes. You will also
+    observe that the framework has added enhancements, and even these enhancements
+    use the custom namespace all across the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Use a trailing hyphen as in `"my-"` for the custom namespace. It is easier to
+    read the enhanced code this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring hashListeningEnabled and subPageUrlKey
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you use a nested `listview`, the jQuery Mobile framework generates a sub
+    page in the form of `pagename.html&ui-page=subpageidentifier`. The hash segment
+    before the sub page URL key `(&ui-page)` is used by the framework for navigation.
+    This recipe shows you how to use a custom sub page URL key. It also shows you
+    how to use the `$.mobile.hashListeningEnabled` configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the sources folder `code/07/sub-page`.
+    You can launch this code using the URL: `http://localhost:8080/07/sub-page/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#main` page with a nested list in its content as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html,` and add the given script in the code before including the
+    reference to `jquery.mobile.js`. In the script, add an event handler for the `mobileinit`
+    event that gets triggered at the start of the app. Here, set the `$.mobile.subPageUrlKey="my-page"`
+    and `$.mobile.hashListeningEnabled=false` configurations. Finally, add the `#main`
+    page with a nested list as shown in the code. The output will be similar to the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Click on **Sub Page Items**, and open the nested list in a sub page. The address
+    bar shows the custom sub page URL key `my-page`, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, go back using the browser **Back** button. The URL in the address bar
+    gets updated, but the page does not change back to the previous screen, as shown
+    in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is because `hashListeningEnabled` was configured to `false` at startup.
+    This will prevent the framework from listening and handling the location hash
+    changes. If you set the `hashListeningEnabled` to `true` (the default value) and
+    reload the page, the page navigation will work fine and the main list is shown
+    again from the nested list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Configure `hashListeningEnabled` only if you want to custom manage the hash
+    changes instead of allowing the framework to handle it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Chapter 7](ch07.html "Chapter 7. Configurations"), *Configurations*, *Configuring
+    pushStateEnabled and link**BindingEnabled*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring pushStateEnabled and linkBindingEnabled
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When you click on a link, navigation happens and the URL hash is updated. The
+    framework allows you to replace the URL hash to a full path in browsers that support
+    the `history.replaceState` API. This recipe shows you how to do this using the
+    `$.mobile.pushStateEnabled` configuration. It also shows you how to use the `$.mobile.linkBindingEnabled`
+    configuration that allows the framework to automatically bind the clicks on the
+    anchor links in a document. Both these are `true` by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the sources `code/07/push-state` folder.
+    You can launch this code using the URL: `http://localhost:8080/07/push-state/main.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script before including `jquery.mobile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `#main` page with the following content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create `page1.html` as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Create `main.html`, and add the given script in the code before including the
+    reference to `jquery.mobile.js`. In the script, add an event handler for the `mobileinit`
+    event that gets triggered at the start of the app. Here, set the `$.mobile.pushStateEnabled=false`
+    and `$.mobile.linkBindingEnabled=true` configurations. Finally, add the `#main`
+    page contents and `page1.html`, as shown in the code. The output will be similar
+    to the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When you open **Page 1**, the URL address bar has the full path appended to
+    `main.html`, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_07_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is because `pushStateEnabled` was set to `false` at startup. If you set
+    this to `true` (the default value) and reload the page, the URL hash is replaced
+    and is shown as `http://localhost:8080/07/push-state/page1.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Set the `pushStateEnabled` configuration to `false` when Ajax is not used or
+    when external links are used extensively in your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this recipe, the `linkBindingEnabled` configuration was set to `true` at
+    startup (its default value). If you set this to `false` and reload the page, you
+    will notice that the **Go to Page 1** button does not get the active state when
+    clicked. The framework does not automatically bind the link clicks in this case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Use the `linkBindingEnabled` configuration only if you want your custom code
+    (or another library) to handle the link clicks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Chapter 7](ch07.html "Chapter 7. Configurations"), *Configurations*, *Configuring
+    hashListeningEnabled and subPageUrlKey*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,698 @@
+- en: Chapter 7. Making a Multiplayer Game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Single player games are fun, and as we've already seen, there is a large variety
+    of them you can make with JavaScript. However, having your game run in a web browser,
+    there is a huge temptation to make it multiplayer. This is exactly what we will
+    do in this chapter and what better example of a multiplayer game than an MMORPG!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will take our small single-player RPG from [Chapter 5](ch05.html "Chapter 5. Putting
+    Things into Perspective"), *Putting Things into Perspective*, and transform it
+    into a brand new MMORPG: *World of Ar''PiGi*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, first a word of warning—the technology we will use to implement the
+    server-side of our game is PHP + MySQL. The reason for this is it's by far the
+    most common technology around. If you have some sort of hosting, chances are it's
+    supported out of the box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are many reasons why this is not necessarily the best solution. When
+    writing a game where the server-side usage is not reduced to simply serving a
+    static page, you have to think very carefully about scaling:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How many users will be able to play simultaneously on your system?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What will you do when the number of players grows past this limit?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How much are you ready to pay to make your server run?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is the quality of service you want to provide to the player?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The answer to these questions should dictate what technology and infrastructure
+    you will choose. It is not the purpose of this book to elaborate on this; the
+    solution we will implement should scale up to a few tens of players without any
+    problems, but the techniques you will learn here can be applied no matter what
+    software solution or hosting you choose!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following subjects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiplayer game specification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing a player's account
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Synchronizing a player's state
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing the enemies' server-side
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: World of Ar'PiGi
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The game we will create based on our previous RPG will have the following features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A player can create an account and log into the game with it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When they come back to the game, their avatar will reappear where it was when
+    they left
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each player can see all the other players that are playing at the same time
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The name of the other players will appear above their avatar
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The state of the enemies is managed server side: if someone kills a monster,
+    it will be dead for all the other players as well'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This game will have some of the same limitations of the game it's based on.
+    The monster won't fight back and won't move around.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing the player's account
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s start with the basics: let the player create an account and log into
+    the game. To store information server side, we will use a database (MySQL). The
+    table structure we will use is very simple as there is not much to store. The
+    player''s account will be stored in a table we will creatively call `players`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This table will have the following rows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'NAME: This is a string holding the name of the player. It will be unique so
+    that no two players can have the same name.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'PW: This is a string holding the player''s password. It is hashed (more on
+    this in the next section, *Searching elements in the database*).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'X: This is a double that will hold the player''s x coordinate.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Y: This is a double that will hold the player''s y coordinate.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'DIR: This is an integer that we will use to store the direction the player
+    is facing.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'STATE: This is an integer that holds the state of the player: standing, walking,
+    or fighting.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'LASTUPDATE: This is a time stamp that will hold the last time the server heard
+    from the player.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A SQL script is provided that creates all the tables you need for the game in
+    the file `create_tables.sql`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create the user interface that allows creating an account or logging into
+    the game, we will use a series of divs that will overlap the game screen. Only
+    one of them will be visible at any time. The following figure shows the possible
+    user interactions and the corresponding screens:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Managing the player''s account](img/5060OT_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Each of those screens will be a `div` holding a few input fields and/or buttons.
+    For example, the screen that lets the player create an account would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It will be styled with CSS and the interactive part will be written in jQuery.
+    For this screen, the code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The ID of the link used to connect the JavaScript code to the HTML code has
+    been highlighted. Nothing too fancy, but it does the trick.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The interesting part has been intentionally left out of the preceding code,
+    that is, the actual interaction with the server. All the interactions between
+    our client (the game running into a browser) and the server will be done using
+    JSON and the `$.getJSON` function that we talked about in the last chapter (this
+    is a shorthand for `$.ajax`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To transmit information to the server, we will use the second argument of the
+    `$.getJSON` function. To transmit information to the client, the server will generate
+    a JSON file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will use the server-side file to create an account called `createUser.php`,
+    so the `$.getJSON` call will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we've already mentioned, we submit the name and password the user chose by
+    wrapping them in an object literal and pass it as the second argument to the function
+    call. As already said, the third argument is a function that will handle the JSON
+    file once the server returns it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Searching elements in the database
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For the first time, we will have to generate a JSON file. This one is pretty
+    trivial; it should tell the client if the account creation was successful or not
+    and if it is, the information about the player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've chosen to write it as the following code snippet, but it's really up to
+    you to create the JSON files in a way that makes the most sense to you. If you
+    are not familiar with the exact syntax a JSON file should follow, have a quick
+    read at [http://www.json.org/](http://www.json.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It''s quite easy to implement the function that will read this JSON file and
+    react accordingly. We will launch the game if the operation is a success and display
+    an error message if something went wrong. The following code does just that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is pretty simple as most of the complicated stuff is running on the server.
+    Let''s see what has to be done there. First, we have to retrieve the parameters
+    sent by the client. As we use `$.getJSON`, the request to the JSON file is a `GET`
+    request. This means that we will use PHP''s `$_GET` super-global variable to access
+    them. When passing sensible information to the server, you may want to use a `POST`
+    request instead (though that alone won''t prevent someone motivated enough to
+    still access the parameters). `$_GET` is a variable that holds all the parameters
+    sent by the client, so in our case, we can write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will have stored the name and password the user chose into variables. Now
+    we have to probe the database to check if a user with this name isn''t already
+    defined. To run a SQL query in PHP, we will use mysqli ([http://php.net/manual/en/book.mysqli.php](http://php.net/manual/en/book.mysqli.php)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the preceding code is not to be used for production as we directly
+    insert the parameters provided by the user into the database query and that creates
+    a huge risk of SQL injection! The best practice would be to always escape all
+    the strings before injecting them into SQL queries. A simple way would be to use
+    `mysqli_escape` ([http://www.php.net/manual/en/mysqli.real-escape-string.php](http://www.php.net/manual/en/mysqli.real-escape-string.php)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We won't go into the detail of writing the SQL query. They are pretty easy to
+    read and, for a basic query like this one, to write. If you want to learn more
+    about SQL, you can search the Web or read one of the many books available on the
+    subject.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we have the result of the query, we need to check if the query returned
+    an element to see if the name was already present in the DB. This is simply done
+    with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if `$obj` is zero, we can create the new account.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a new player in the database
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before looking at the query that will create the player in the database let's
+    talk about passwords. You should never store raw passwords in the database because
+    history has shown that databases get hacked quite often. The recommended solution
+    is to hash the password before storing it. Then you can simply compare the hashed
+    version of the submitted password with the one stored in the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a new player in the database](img/5060OT_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: That's what we will do here with PHP's `hash` function. Then we will simply
+    insert the username and the hash into the database along with the starting position
+    of the player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As this is also a query, we use the exact same function we used to find out
+    if an account already existed with this name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first argument that we passed to the `hash` function is highlighted in the
+    preceding code. It's the hash method, and the `'md5'` that we used here is not
+    recommended for production because it's considered too easy to break nowadays.
+    If you want to find out more about what methods are available, have a look at
+    the function documentation at [http://www.php.net/manual/en/function.hash.php](http://www.php.net/manual/en/function.hash.php).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we can generate the JSON that the client will receive. This is done by using
+    PHP's `json_encode` function ([http://php.net/manual/en/function.json-encode.php](http://php.net/manual/en/function.json-encode.php)).
+    This function takes an object and transforms it into a JSON-formatted string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, just to give you a global picture of what the client file looks like.
+    The complete code is reproduced as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, you can see that we are including a file called `dbconnect.php`, which
+    allows us to write the database configuration only once in this file and use it
+    from every file that needs to connect to it. This is the same basic function we
+    will use for every other functionality we will implement server side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping the player connected
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There is, however, one thing in this implementation that we haven't explained
+    yet. If you look at the highlighted code, you will see that the name of the user
+    is stored into the session.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This will allow the server to continue knowing the name of the player without
+    having to submit it with every following request. It will also allow us to permit
+    the user to continue playing the game without having to give his/her username
+    and password again if he/she comes back while the session is still valid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you look at the user-interaction flow graph at the beginning of this chapter,
+    you will see there is a screen that proposes to the user to continue playing.
+    We will display it only if the server still has a valid session it can use for
+    him/her. To check this, we will create another PHP file named `session.php` that
+    looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we simply check if the `name` is present in the session. However, if it
+    is, there is one more thing we need to do; that is, retrieve the player from the
+    database. This will give us its last coordinate and check once more that the username
+    and password really match.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We don't save the coordinate in the session itself because we want the player
+    to be able to connect to the same account using many different machines or browsers
+    (although not simultaneously).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once a request has been executed by the database, we can use `mysql_result`
+    to read the result. This function takes three arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result of the query, generated by `mysql_query`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The index of the result we want to read. This is needed because a query can
+    return more than one result (for example, if we search for all the accounts in
+    the `players` table).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The name of the field we want to read.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once we have this information, we can send it to the client by formatting it
+    into a JSON file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the client side, we will call this function at the very beginning of the
+    game to choose which screen to display (the continue screen or the login one).
+    This is done as usual with a `$.getJSON` call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is very similar to what we have done before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logging the user into the game
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is done in almost the exact same way we checked for an existing session.
+    On the server side, we need to make a request to prove if the username and password
+    match and get the player position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the client side, we need to display a warning if the password was wrong and
+    start the game if everything went well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The JSON we use for this is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the username and password don't match, success will be false. Otherwise,
+    the JSON will look as shown earlier. We won't show you the server and client-side
+    code as they are very similar to what we have already seen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping the players in sync
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'With what we''ve seen until now, we can log into the game, but that''s about
+    it; what we need now is a way to keep the server informed of the player''s movement
+    and to give the client the position of all the other players. The following figure
+    shows you how the client and the server will interact:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Keeping the players in sync](img/5060OT_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We will do both these things in one JSON call. We will use it to pass to the
+    server the player's current position as we did before for the username and password.
+    In return, the server will generate a JSON file with the list of all the other
+    players.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s first have a look at the server side. There we need to write two queries:
+    the first one to retrieve the list of all players and the second one to update
+    the state of the current player.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving all the other players
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This simply means finding all the entries in the `players` table except the
+    one for the current player. There is, however, one thing we have to be careful
+    about: we only want to display the players that are currently playing the game.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a lot of things can happen online, we cannot be sure that the player will
+    be able to log out before being disconnected, so instead, we choose to use a time
+    stamp. Each time that the player updates its position, we will set the time stamp
+    to the current time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This way we can know which players are not online anymore by comparing this
+    time stamp to the current time. We''ve arbitrarily decided that player will be
+    considered offline if we haven''t heard from him/her in more than 10 minutes.
+    The corresponding MySQL query would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we test if the name is not the same as the current player (`<>` means
+    "not equal to" in SQL).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code that reads the result and prints it to the server''s response is as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is very similar to when we retrieve just the current user from the database,
+    so you should already be familiar with this code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the current player position
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To update the entry in the database that holds the information about the player,
+    we can use the following query:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we don't expect any result from this query, we don't need to store it anywhere.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Client-side code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now we need to write the code that will send the current player position to
+    the server. This is not too complicated as it's just passing the parameters to
+    the `$.getJSON` call. We will, however, need to encode the player direction and
+    status to integers (as we decided to store them that way in the database).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this, we will extend the player''s object with two new methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we will simply call them when we call `getJSON`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The callback function is probably the most complicated part of this whole chapter.
+    Go through the returned list of all players. If a new player was created, we need
+    to add him/her to the map. If a player moved, we need to update his/her position,
+    and if a player quit the game, we need to remove him/her.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is exactly what the following code does:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first part is to either update the position or create the other players.
+    The second part is to set the correct animation based on the player orientation
+    and status.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we go through the list of all players and if some of them weren't on the
+    list of updated players, we remove them from the game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we set a timeout for the function calling `$.getJSON` to be called
+    again in 100 milliseconds. The frequency you choose will be a trade-off between
+    server usage and game fluidity, so you probably will have to fine-tune this value
+    to your game needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking care of monsters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now the game starts to get interesting. There is, however, one small thing missing.
+    If one player kills a monster, it will only be dead for him and not for all the
+    other players. This can be fine in some very special cases, but most of the time
+    this is not what we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The solution is to implement the logic that takes care of the enemies and the
+    fights server side. This means that we need another database table that will hold
+    all of our enemies. This table will need to hold the following information:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ID of the enemy, to identify it uniquely
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The type of the enemy—a skeleton, an ogre, and so on—to define how it will look
+    to the player
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The x and y coordinate of the enemy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Its life to allow the player to kill it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Its defense for the combat system
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Its spawn rate to determine when the monster should be spawned again once it
+    has been killed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Then, periodically, we will transmit to the clients the position and properties
+    of those enemies. As we already have a page that is being pooled regularly to
+    get the position of the other players, we can simply enhance it to return the
+    state of the enemies too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This simply means that the JSON file will now look like this (with the new
+    part highlighted):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will need another query to find all the enemies still alive in the database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code that writes the JSON and parses it to create or update the enemies
+    is exactly the same as the one for the other players, so we won't reproduce it
+    here, but you can have a look at the full source if you want to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing server-side combat
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To implement combat with those server-side enemies, we could still use the code
+    we have client side and send the result to the server. This has some serious disadvantages,
+    as it is very easy to cheat the system and modify the client to simply send the
+    information that the enemy has been defeated without really doing the combat.
+    Secondly, it makes dealing with combat between one enemy and many players very
+    difficult.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will instead implement it server side, as it is shown in the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing server-side combat](img/5060OT_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The code that used to get executed client side was as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will now simply have a JSON call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, you can see that the JSON contains two flags to give information about
+    the combat. The first is `hit`; it is true if the combat really happened. This
+    is necessary because there is a chance that the enemy is already dead without
+    the client knowing it. Then, `success` conveys the success of the attack and is
+    `false` if the enemy successfully defended itself and `true` otherwise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete logic of the combat will be implemented server side in the `fight.php`
+    file, but is the exact replica of what used to happen client side:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: The highlighted part represents the code that was taken out of the client and
+    put into the server. And that's all you really need for the combat to work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once an enemy is dead, you may want to periodically respawn it. The most obvious
+    way is to use a server-side script that gets executed at regular intervals through
+    the use of a `cron` command. Alternatively, you could cheat and use any of the
+    other files we created to respawn the enemies; for example, each time a player
+    logs in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The game we've created here is by far the most complex we've written in this
+    book so far. It could of course be enhanced a lot by adding PvP combat, a chat
+    system, and so on, but this chapter has covered all the basics to allow you to
+    implement those!
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, calling a bunch of files asynchronously is not a very elegant solution,
+    and if you target very recent browsers, you may want to take a look at the WebSocket
+    API that allows you to establish and maintain a bi-directional communication channel
+    between the browser and the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another way to maintain a permanent connection to the server is by using long
+    polling methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will modify our platformer to integrate with Facebook
+    and Twitter as well as keep a list of high scores!
+  prefs: []
+  type: TYPE_NORMAL

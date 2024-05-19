@@ -1,0 +1,414 @@
+- en: Chapter 6. Working with Forms and jQuery Mobile
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will look at forms. Forms are a critical part of most websites
+    as they provide the primary way for users to interact with the website. jQuery
+    Mobile goes a long way to making forms both usable and elegantly designed for
+    mobile devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Talk about what jQuery Mobile does with forms
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Work with a sample form and describe how the results are handled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discuss specifics about how to build certain types of forms and make use of
+    jQuery Mobile conventions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Before you begin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we're going to talk about forms and how jQuery Mobile enhances
+    them. As part of our discussion, we will be posting our forms to the server. In
+    order to have the server actually do something with the response we're going to
+    make use of an application server from Adobe called ColdFusion. ColdFusion is
+    not free for production use, but is 100% free for development and is a great server
+    for building web applications. You do not need to download ColdFusion. If you
+    do not, the forms you use within this chapter should not be submitted. This chapter
+    does talk about how forms are submitted, but the response to the forms isn't really
+    critical. If you know another language, like PHP, you should be able to simply
+    mimic the code ColdFusion is using to echo back the form data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ColdFusion (currently version 9) can be downloaded at [http://www.adobe.com/go/coldfusion](http://www.adobe.com/go/coldfusion).
+    Versions exist for Windows, OS X, and Linux. As stated above, you can run ColdFusion
+    for free on your development server with no timeout restrictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What jQuery Mobile does with forms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Before we get into the code, there are two very important things you should
+    know about what jQuery Mobile will do with your HTML forms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All forms will submit their data via Ajax. That means the data is sent directly
+    to the action of your form and the result will be brought back to the user and
+    placed within the page that held the form. This prevents a full page reload.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All form fields are automatically enhanced, each in their own way. As we go
+    on in the chapter you will see examples of this, but basically jQuery Mobile modifies
+    your form fields to work better on a mobile device. A great example of this are
+    buttons. jQuery Mobile automatically widens and heightens buttons to make them
+    easier to click in the small form factor of a phone. If for some reason you don't
+    like this, jQuery Mobile provides a way to disable this, either on a global or
+    per use basis.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With that in mind, let's look at our first example in `Listing 6-1:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As usual, the template begins with the proper includes and wraps the main content
+    of our page with our specially marked up `div` tags. We will focus on the form
+    fields with the main content area. It is recommended that every form field be
+    wrapped with the following tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will help jQuery Mobile align the label and form field. You''ll see why
+    in a moment. Our form has two text fields, one for name and one for e-mail. The
+    last item is just the submit button. So outside of using a `fieldcontain` wrapper
+    and ensuring we had labels for our form fields, nothing else special is going
+    on here. Right away though you can see some pretty impressive changes to the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What jQuery Mobile does with forms](img/7263_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Notice how the labels are presented above the form fields. This gives the fields
+    more space on the mobile device. Also notice the submit button is large and easy
+    to click. If we rotate the device, jQuery Mobile updates the display to take advantage
+    of the additional space:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What jQuery Mobile does with forms](img/7263_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Notice that the fields now line up directly to the right of their labels. So
+    what happens when the form is submitted? As mentioned at the beginning of this
+    chapter, we''re making use of ColdFusion to handle responding to the form requests.
+    Our `echo.cfm` template will simply loop over all the form fields and display
+    them back out to the user:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you do not want to install ColdFusion, you can simply edit the form action
+    value in `listing 6-1` to point to a PHP file, or any other server-side processor.
+    You may also simply change it to `test1.html`, the file itself. Nothing will happen
+    when you submit, but you will not get an error either. Here''s what the device
+    will show after hitting submit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What jQuery Mobile does with forms](img/7263_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Another great example of how jQuery Mobile updates form fields is with `textarea.
+    textarea`, by default, can be very difficult to work with on a mobile device,
+    especially as the amount of text grows beyond the size of the `textarea` and a
+    scroll bar is added. In the following code listing, we''ve simply modified the
+    previous form to include a third item, a bio field that uses `textarea`. The complete
+    file may be found in the book''s code ZIP file. The following code snippet is
+    the `div` block added after the previous two fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When viewed on the device, the `textarea` expands to take in more width like
+    the regular text fields, and grows taller:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What jQuery Mobile does with forms](img/7263_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'But once you begin typing, and entering multiple lines of text, the `textarea`
+    automatically expands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What jQuery Mobile does with forms](img/7263_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is much easier to read than if scroll bars had been used. Now let's look
+    at another common form option — radio buttons and checkboxes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with radio buttons and checkboxes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Both radio buttons and checkboxes are also updated to work nicely on a mobile
+    device, but require a tiny bit more code. In the earlier examples, we wrapped
+    form fields with a `div` tag that made use of `data-role="fieldcontain"`. When
+    working with radio buttons and checkboxes, one more tag is required:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This `fieldset` tag will be used to group together your radio buttons or checkboxes.
+    `Listing 6-3` demonstrates one set of radio buttons and one checkbox group:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our form has two main questions — what is your favorite movie and what are
+    your favorite colors? Each block is wrapped in the div tag we mentioned before.
+    Inside this is the `fieldset` using `data-role="controlgroup"`. Finally, you then
+    have your radio and checkbox groups. It is important to include the labels within
+    a proper label tab, as each of the previous examples have. Once rendered, jQuery
+    Mobile groups these into a nice looking, singular control:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with radio buttons and checkboxes](img/7263_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Notice the wide, clickable regions for each item. This makes it much easier
+    to select items on a mobile device. Another interesting feature of both of these
+    controls is the ability to turn them into horizontal button bars. In `test4.html`,
+    both `fieldset` tags were modified to include a new data attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Working with radio buttons and checkboxes](img/7263_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, the effect doesn't work well with the longer text in the first
+    group, so be sure to test it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with select menus
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Yet another example of jQuery Mobile form enhancement is with select menus.
+    As with our earlier examples, we make use of a `fieldcontain div` and `label`
+    tag, but outside of that, the `select` tag is used as normal. The following code
+    snippet is from `test5.html:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the mobile device, the initial display of the select is modified to be easier
+    to hit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with select menus](img/7263_06_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'However, once clicked, the device''s native menu will take over. This will
+    look different on the platform you are using. The following screenshot shows how
+    Android renders the menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with select menus](img/7263_06_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Another option to use with select fields is grouping. jQuery Mobile allows
+    you to vertically or horizontally group together multiple select fields. In both
+    cases, all that''s required is to wrap your select fields in a `fieldset` using
+    the `data-role` of `controlgroup`, much like we did earlier for radio and checkboxes.
+    The following code snippet is an example of a vertically aligned group of select
+    fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The rest of this template can be found in `test6.html`. The following screenshot
+    shows how it looks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with select menus](img/7263_06_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note how jQuery Mobile groups them together and nicely rounds the corners. The
+    horizontal version can be achieved by adding a `data-type="horizontal"` attribute
+    to the fieldset tag. It's also important to remove the `div` using "fieldcontain".
+    Here is an example (the complete file may be found in `test7.html):`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with select menus](img/7263_06_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Search, toggle, and slider fields
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Along with taking regular form fields and making them work better, jQuery Mobile
+    also helps make some of the newer HTML5 form fields work correctly across multiple
+    browsers. While support still isn't nailed down on the desktop across every major
+    browser, jQuery Mobile provides built-in support for search, toggle, and slider
+    fields. Let's take a look at each one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Search fields
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The simplest of the three new fields, search fields simply adds a quick delete
+    icon to the end of the field after you begin typing. Some devices will also put
+    an hourglass icon in front as well, to help convey the idea of the field being
+    used for some type of search. To use this field, simply switch your type from
+    text to search. As in the following example from `test8.html:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot is the result. Notice that I''ve typed a bit and the
+    field automatically adds a **Delete** icon at the end:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Search fields](img/7263_06_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Flip toggle fields
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Flip toggle fields are controls that flip back between one and two values. Creating
+    a toggle field involves using a select control with a particular data-role value.
+    Now, here is where things may get a bit confusing. To enable a select field to
+    turn into a toggle field, you use `data-role="slider"`. In a little bit we're
+    going to look at another slider control, but it uses a different technique. Just
+    keep in mind that even though you'll be seeing`"slider"` in the HTML, it's really
+    a toggle control we are creating. Let's look at a simple example. (You can find
+    the complete source for this in `test9.html):`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once rendered by jQuery Mobile, the following screenshots show the result, first
+    with the default **Male** option, and then **Female:**
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Flip toggle fields](img/7263_06_13.jpg)![Flip toggle fields](img/7263_06_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Slider fields
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For the last of our special fields, we take a look at sliders. Like search
+    fields, this is based on an HTML5 specification that works in some browsers and
+    not others. jQuery Mobile simply makes it work everywhere. To enable this field,
+    we take a regular text field and switch the type to`"range"` To give our slider
+    a range we also provide a `min` and `max` value. You can also add additional color
+    to the slider by adding the attribute: `data-highlight="true"`. The following
+    code snippet is a sample. (You can find the complete file in `test10.html):`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result is a slider control and an input field. Both allow you to modify
+    the value between the minimum and maximum value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Slider fields](img/7263_06_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note the HTML5 specification for the range supports a step attribute. While
+    this works in some browsers, it is not yet directly supported by jQuery Mobile.
+    In other words, jQuery Mobile won't try to add this support on a browser that
+    doesn't have it built-in. You can add the attribute as long as you are aware it
+    may not always work as intended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using native form controls
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now you''ve seen how far jQuery Mobile will go to enhance and empower your
+    form fields to work better on mobile devices, but what if you don''t like what
+    jQuery Mobile does? What if you love its updates to buttons but despise its changes
+    to drop-downs? Luckily jQuery Mobile provides a simple way to disable automatic
+    enhancement. In each field you want to be left alone, simply add `data-role="none"`
+    to the markup. So given the following HTML, the first item will be updated while
+    the second will not:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Using native form controls](img/7263_06_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Another option is to disable it when jQuery Mobile is initialized. That option
+    will be discussed in [Chapter 9](../Text/ch09.html "Chapter 9. Working with Events"),
+    *JavaScript Configuration and Utilities in jQuery Mobile*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with "mini" fields
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous examples, we saw how jQuery Mobile automatically enhanced form
+    fields to make them easier on smaller, touch based devices. In general, jQuery
+    Mobile took your fields and made them nice and fat. While that''s desirable most
+    of the time, you may want to put your form fields on a bit of a diet. This is
+    especially true for placing form fields in a header or footer. jQuery Mobile supports
+    an attribute on any form field that creates a smaller version of the field: `data-mini="true"`.
+    The following code snippet is a complete example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result is a bit subtle, but you can see the height difference in the second
+    field in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with "mini" fields](img/7263_06_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This example may be found with the rest of the files in a file named `test12.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we discussed forms and how they are rendered in a jQuery Mobile
+    application. We discussed how jQuery Mobile automatically turns all form submissions
+    into Ajax based calls and updates form fields to work better on mobile devices.
+    Not only are all your form fields automatically updated, but you can also make
+    use of new controls like the toggle, slider, and search inputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll take a look at modal dialogs, widgets, and layout
+    grids. These provide additional UI options for your mobile optimized site.
+  prefs: []
+  type: TYPE_NORMAL

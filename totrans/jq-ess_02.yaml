@@ -1,0 +1,787 @@
+- en: Chapter 2. jQuery Selectors and Filters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The name "jQuery" comes from the library's ability to quickly and intelligently
+    query the **DOM** (**Document Object Model**).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will learn how to query the DOM ourselves and, once we
+    have a set of items, how to use filters to further refine our dataset. We will
+    cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What selectors and filters are
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a filter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to query based on element attributes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How chaining allows us to quickly and neatly continue queries
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Underneath every browser web page is the DOM. The DOM keeps track of all the
+    individual objects that are rendered to the page. Being able to find DOM elements
+    is the first step toward creating a dynamic web page. The browser comes with built-in
+    methods to query the DOM. These methods usually begin with the word `document`.
+    There is `document.getElementById`, `document.getElementsByClass`, and so on.
+    The problem with these methods is that their interface is neither consistent nor
+    complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery gets its name from its ability to query the DOM. Unlike browser methods,
+    its interface is both complete and feature-rich. Querying the DOM begins by creating
+    a selector. A selector is a string that tells jQuery how to find the elements
+    you want. Since it is a string of text, the possible number of selectors is limitless.
+    But don't panic; they all fall into a few broad classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The chapter code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The code for this chapter is contained in a directory named `chapter02`. Keep
+    in mind that this is sample code meant to teach, and it is not intended for production.
+    The code does two things that are particularly tedious and worth mentioning. First,
+    it uses inline JavaScript, which means that the JavaScript is contained in a script
+    tag with the main page''s HTML. This violates the rule of separation of concerns
+    and can lead to poorly performing code. Second, it makes heavy use of alerts.
+    The browser `alert` method is a quick and dirty way to display something on a
+    screen, and unlike the `console.log` method, all browsers support it. But it is
+    not recommended for use in production. Alerts can''t be styled, so they will stick
+    out like a sore thumb unless your website is not styled as well. Second, alerts
+    cause the browser to stop everything and force the user to acknowledge them, which
+    is obviously something that can quickly become annoying to the user:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The method used to display the jQuery object is named `showJqueryObject()`.
+    It iterates through the jQuery object, showing each of the nodes in turn. Now,
+    to be perfectly honest, I only use this method for the purpose of this book. When
+    working on issues while developing my own programs, I normally rely on the browser's
+    `console.log` method. But since not all browsers support it, and for those that
+    support it differently, the easiest way to display something on the screen is
+    to roll my own method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Protocol-relative URLs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A curious thing that keen-eyed readers might notice is that the protocol is
+    missing from the URL in the script tag. I am not a web security expert, but I
+    am smart enough to pay heed to the warnings of web security experts, all of whom
+    will say that mixing HTTP protocols is dangerous. Protocol-relative URLs make
+    it easy to keep your site secure. These days, many sites will run on either open
+    HTTP or secured HTTP (HTTPS). Achieving this feat previously required loading
+    all JavaScript libraries from your own site, foregoing the benefits of CDNs, or
+    including some complicated bit of inline JavaScript that detects your site's protocol
+    and uses `document.write` to inject some new JavaScript onto the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With protocol-relative URLs, you simply omit the protocol from the URL. Then
+    when your site is loaded, if it is loaded from HTTP, the libraries will also be
+    loaded from HTTP. If it is loaded via HTTPS, then all of the libraries will also
+    be loaded via HTTPS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we take a look at the classes of jQuery selectors, let's first look at
+    what gets returned by the selector. The result of a call to a selector is always
+    a jQuery object. A jQuery object has a lot of array-like features, but it is not
+    an array. If you use the jQuery `isArray()` function on it, it will return false.
+    For many things, the difference doesn't matter, but occasionally, you may want
+    to execute something like `concat()`, but unfortunately, this array method doesn't
+    exist on a jQuery object though it has a nearly equivalent method, `add()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If no elements matching the selector are found, then the length of the jQuery
+    object is zero. The null value is never returned. The result is a jQuery object
+    with a length of zero or more. This is an important thing to understand since
+    it reduces the amount of work you need to do when checking the results of a jQuery
+    call. You only have to check whether the length is greater than zero.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When making a call to jQuery, you can use its formal name, `jQuery`, or its
+    shortened name, '`$`'. Also, keep in mind that strings in JavaScript can begin
+    with either a single or double quote just so long as they end with the same quotation
+    mark. So, in the examples, you may see either single or double quotes, and there
+    is usually no rhyme or reason why I chose one over the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One of the interesting things about JavaScript in the browser is that some methods
+    are not actually part of JavaScript; instead, they are provided by the browser.
+    This becomes clear when you use JavaScript in an environment that is not browser-based,
+    such as `node.js`. The methods of the document method, for example, are not part
+    of JavaScript; they are part of the browser. In `node.js`, there is no document
+    object and hence no document method. Two other sources of browser methods are
+    window and navigator objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the things that makes jQuery selectors so cool and easy to learn is that
+    they are based on the selectors used by CSS; this is not the case with the browser
+    methods. So, if you already know how to create CSS selectors, you will have no
+    trouble learning about jQuery selectors. If you don't know about CSS selectors,
+    don't worry; jQuery selectors are still easy to learn, and knowing about them
+    will give you a head start on learning about CSS selectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ID selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The first kind of selector we will look at is the ID selector. It begins with
+    a hash sign and is followed by the same string used in the ID attribute of the
+    desired element. Take a look at this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: From the preceding example, note that the result of the selector call is a jQuery
+    object. We are free to use either style of quote marks. Also, we can make the
+    call using either the formal name or the shortened one. For the remainder of this
+    book, I will use the short name, `$`. The `ID` selector returns an array that
+    contains either zero or one element. It will never return more than one element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: According to the **W3C** (**World Wide Web Consortium**) specification, each
+    DOM element can have one `ID selector` at most, and each `ID selector` must be
+    unique to the web page. Now, I've seen a lot of websites that violate the uniqueness
+    rule. These are bad sites; don't emulate them. Also, they have unpredictable code.
+    When more than one element with the same ID exists, only one will be returned,
+    but there is no specification that says which one should be returned. So, code
+    may behave differently depending on which browser it is run on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Class selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The next type of selector that we will examine is the class selector. The class
+    selector begins with a period and is followed by the name of a class that all
+    of desired elements have. Unlike the ID selector that will return one element
+    at most, the class selector can return zero, one, or more elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The order of the class in the element makes no difference. It can be the first,
+    the last, or some class in the middle, and jQuery will find it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tag selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Sometimes, your desired elements don''t have an ID or a class name; they simply
+    have the same tag name. This is when you will use the tag selector. It searches
+    for elements with a specific tag name, such as `div`, `p`, `li`, and so on. To
+    create a tag selector, you pass the name of the tag surrounded by quote marks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Combining selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'What should we do if we want all of the paragraph tags in a single set on the
+    page and all elements that contain the `active` class? We could make two calls
+    and then use the jQuery `add` method to add the resulting objects together. A
+    better way is to combine the selectors and let jQuery do the grunt work of combining
+    the results together. To combine selectors, simply put two or more selectors together
+    in the string and separate them with a comma:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is important to remember that a comma is used to separate the selectors.
+    If you forget the comma, you won't get an error; you will get a result, only not
+    the result you were expecting. Instead, it will be the end result of a descendent
+    selector, which is something we will cover in just a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Descendent selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Sometimes, the elements you want don''t have an easy-to-design selector. Maybe
+    they are all children or grandchildren of a specific element. This is where descendent
+    selectors come in. They allow you to narrow the focus of the query to a specific
+    ancestor and then query from there. There are two types of descendent selectors:
+    child selectors and descendant selectors. The desired child must be a direct child
+    of the parent. To create a child selector, you create the parent selector, add
+    a greater than symbol, and then add the selector to find the children from within
+    the result of the parent''s results set.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Take a look at the following code as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code sample will return all of the `<li>` tags that are children
+    of the `<ul id="languages">` element. It will not return the `<li>` tags that
+    are children of the `<ul class="greetings">` tag because these are its grandchildren:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: A descendant selector is nearly identical to a child selector except that it
+    lacks the greater than sign. The second query will return all of the `<li>` tags
+    contained in `<ul id="languages">` regardless of how far down the descendant tree
+    they are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attribute selectors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to selecting elements based on their basic characteristics, such
+    as the name, tag, and classes, we can also select elements based on their attributes.
+    Attribute selectors are a bit tricky to work with because their syntax is more
+    complicated. Also, keep in mind that like other jQuery selectors, if you get the
+    syntax wrong, you will not get an error; you will simply get a jQuery object of
+    zero length.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are only nine attribute selectors, so they are fairly easy to remember,
+    and they are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Has Attribute` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Attribute Equals` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Attribute Not Equal` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Attribute Contains` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Attribute Starts With` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Attribute Ends With` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Attribute Contains Prefix` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Attribute Contains Word` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `Multiple Attribute` selector
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s begin with the simplest one: the `Has Attribute` selector. This selects
+    all of the elements that have the specified attribute. The value of the attribute
+    doesn''t matter; in fact, it doesn''t even have to have a value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: As far as selectors go, this one is very simple. It consists of the name of
+    the desired attribute surrounded by square braces. The next two selectors are
+    only slightly more complicated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `Has Attribute` selector doesn''t care about the attribute''s value, but
+    sometimes, you need the attribute to either have or not have a specific value.
+    This is where the `Attribute Equals` selector and its opposite, the `Attribute
+    Not Equals` selector, come in. The former returns all of the elements that have
+    both the desired attribute and the desired value. Keep in mind that this must
+    be an exact match; something close won''t count. The latter returns all of the
+    elements that either don''t have the desired attribute or have it but don''t have
+    the desired value. The `Attribute Not Equals` selector returns all of the elements
+    that weren''t returned by the `Attribute Equals` selector. This is confusing to
+    people sometimes, but it shouldn''t be. Just remember that these two selectors
+    are opposites:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next three selectors are also related to each other. Each looks for an
+    attribute with a value, only now the value is a substring instead of an exact
+    match. The thing that differentiates the three is where they look for the substring.
+    The first one, the `Attribute Contains` selector looks for a substring anywhere
+    in the attribute''s value. So as long as the string is contained with the value,
+    it passes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `Attribute Starts With` selector is more specific about where the specified
+    substring is located. With it, the string must be at the beginning of the value.
+    The value string doesn''t have to be a complete match; only the beginning of the
+    strings must match:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `Attribute Ends With` selector matches the specified string to the end
+    of the value string. If the end of the value string matches the specified string,
+    all is good. Just like with the `Attribute Starts With` selector, the rest of
+    the string doesn''t have to match:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Telling these selectors apart can be a bit of a pain since they only vary by
+    one character, but if you know JavaScript regular expressions, you will recognize
+    that jQuery borrowed from them. The '`^`' in a regular expression refers to the
+    beginning of a string, and it is used by the `Attribute Begins With` selector.
+    The '`$`' in a regular expression refers to the end of a string, and it used in
+    the `Attribute Ends With` selector. The `Attribute Contains` selector uses the
+    asterisk, `*`, which is the regular expression wildcard character.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Attribute Contains Prefix` selector looks for the specified string at the
+    beginning of the value string. It differs from the `Attribute Begins With` selector
+    in that the string must match the value exactly if there is no hyphen. If there
+    is a hyphen in the value, then the string needs to match the hyphen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `Attribute Contains Word` selector checks for the specified string anywhere
+    in the value string. This may sound suspiciously like the `Attribute Contains`
+    selector, but there is a subtle difference. The specified string must be surrounded
+    by whitespace, whereas the `Attribute Contains` selector doesn''t care where the
+    string is or what is delimiting it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final attribute selector is the `Multiple Attribute` selector, which is
+    just a combination of any of the previous attribute selectors. Each selector is
+    contained within its own square brackets and is concatenated together. There is
+    no need for any separation character:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have learned some ways to select elements, let's learn how to filter
+    the result set of our selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating basic filter selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Filters take the results of a selector call and whittle it down some more.
+    There are three types of filter selectors: basic, child, and content. Basic selectors
+    just operate on the jQuery object result set. Child selectors operate on the parent-child
+    relation between elements. And the content filters work on the contents of each
+    of the elements of the result set.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are 14 basic filter selectors. The first group deals with the position
+    of a result in the result set. Let's deal with them first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the easiest to understand is the `:eq()` filter selector. It retrieves
+    the result when the index number is passed. It is very much like accessing an
+    element in a JavaScript array. And like an array, it is zero-based, so the first
+    element is zero, not one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: You create an `:eq()` filter selector by adding a colon and `eq(x)` to a regular
+    selector. The `x` here refers to the element's index. If your index is out of
+    bounds, no error will be generated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `:eq()` filter selector allows you to access any item in the result set
+    as long as you know the range of possible indexes. But sometimes, this is too
+    much work. You may only want to know the first or the last element. For these
+    occasions, jQuery provides the `:first` and `:last` filter selectors. Each does
+    exactly as their name says: it gets the first or last element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Sticking with the theme of index operations, there are times when we want all
+    of the elements up to a certain index or all of those with an index greater than
+    a number. For these times, there are the `:lt()` and `:gt()` selectors. The `:lt()`
+    selectors return all of the elements whose index is less than the passed value.
+    The `:gt()` selectors return all of the elements that are greater than it. Both
+    of these selectors also accept negative values, which count from the end of the
+    result set rather than the start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The final two of the basic filters are super handy. They are the `:even` and
+    `:odd` selectors. They are pretty simple except for one small weirdness. JavaScript
+    is zero-based, so 0 is the first element and zero is even, which means that the
+    even selector will grab the first, third, fifth (and so on) elements. Also, the
+    odd selector will get the second, fourth, sixth (and so on) elements. It seems
+    weird, but it makes perfect sense as long as you remember that JavaScript is zero-based.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The remaining basic attribute filters don't fit neatly into any category. So,
+    we will just walk through them one by one, beginning with the `:animated` selector.
+    The `:animated` selector returns all of the elements that are currently performing
+    animation. Keep in mind that it won't autoupdate, so the state of things that
+    were there at the time the query was run, but things will change afterwards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `:focus` selector returns the currently selected element if it is in the
+    current result set. Be careful with this selector. I will deal with performance
+    issues in a later chapter, but this one can have extremely poor performance if
+    it is not used with a result set. Consider that you simply make the following
+    call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: It will search the entire DOM tree for the focused element, which may or may
+    not exist. While the preceding call will work, there are much faster ways to do
+    this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `:header` selector is a handy utility method that returns all of the elements,
+    which are `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, and `<h6>`. It would be pretty
+    easy to make an equivalent to this method yourself, but why bother when this shortcut
+    is readily at hand:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `:lang` selector will find all of the elements that match the specified
+    language. It will match either the language code by itself, `en`, or the language
+    code paired with the country code, `en-us`. With the increased emphasis on creating
+    global websites, this selector grows more important everyday:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `:not` selector is not one of my favorite selectors. It does a logical `not`
+    operation on the passed selectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It has been around since the beginning of jQuery, but in my humble opinion,
+    it leads to confusing code. And the last thing that jQuery needs is even hard-to-read
+    code. I will talk more about writing readable jQuery code in [Chapter 6](part0047_split_000.html#1CQAE2-6309aac535bb4c1b83b0d7aa1f605023
+    "Chapter 6. Better Forms with jQuery"), *Better Forms with jQuery*, but for now,
+    you should avoid this one if you can:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `:target` selector sounds complicated, but given the abundance of single
+    page JavaScript apps, it can be very useful. It looks at the URL of the current
+    page. If it has a fragment, which is identified with a hash sign, it will match
+    the element whose ID matches that fragment. This is one of the more recent additions
+    to jQuery, having been added with the 1.9 version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And finally, let''s talk about the `:root` selector. I will be honest and admit
+    I haven''t needed to use this one yet. It returns the root element of the document,
+    which is always the `<html>` element in HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Content filters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are only four content filter selectors. I will give a general word of
+    caution with all of these selectors since they can be performance-challenged.
+    I will go into more details on performance in [Chapter 7](part0054_split_000.html#1JFUC1-6309aac535bb4c1b83b0d7aa1f605023
+    "Chapter 7. Talking to Your Server"), *Talking to Your Server*, but until then
+    use these selectors only if you must.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first two of these selectors, `:empty` and `:parent`, are inverses of each
+    other. The first one, the `:empty` selector, returns all of the elements that
+    have no children. The second one, the `:parent` selector, selects all the elements
+    that have at least one child.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `:contains` selector returns all of the elements that have the specified
+    string. The case of the strings must match. The string can be on any descendent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `:has()` selector selects all the elements that contain at least one match
+    for the specified selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, there are child selectors. These all deal with the parent-child relationship
+    between elements. The first group is pretty easy to understand; it deals with
+    the position of the child among all of the children. All of the example code will
+    reference the following markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'First up is the `:first-child` selector; it selects all of the elements that
+    are the first child of their parent. Unlike the `:first` selector, it can return
+    multiple elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first line of the example code says that you should grab all of the paragraph
+    descendants of the `div` tags. There are three defined `<div>` tags; the first
+    one has five paragraphs, the second one has three paragraphs, and the third one
+    has only one paragraph. The `:first-child` selector looks at those nine paragraphs
+    and finds the three that are the first children of their respective parents. Here
+    they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `:last-child` selector operates in a manner similar to `first-child` except
+    that it searches for the last child of their respective parent:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Again, we are asking for all of the paragraph children of the `div` tags and
+    then filtering the return set with the child selector. This example is nearly
+    identical to the previous, except that the elements returned by it are counted
+    from the end, not the beginning:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you did a double-take on the fact that the last paragraph, `<p>I am the
+    only child of div #3.</p>`, is identical for both method calls, don''t be alarmed.
+    Remember, it is the only child of the third `<div>`, so it is both the first and
+    the last child.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we have the `:nth-child()` selector. It returns the children whose index
+    is passed to the method. The `first-child` selector can be thought of as a special
+    case of this selector where the passed index is 1\. As I''ve mentioned previously,
+    if you pass an index value that is out of range, there is no error; you simply
+    get a jQuery object of a length that equals 0:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A special thing about this and the `:nth-last-child()` selectors is that in
+    addition to passing an index value, you can also pass in some special values.
+    The first two special values are `even` and `odd`. These will return the even
+    and the odd children of their respective parents. The result set is different
+    from that of the `:even` selector. Because these selectors are based on CSS, counting
+    begins with one, not the zero of JavaScript. So, take a look at the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The odd parameter will return the first, third, fifth (and so forth) elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `:nth-last-child()` selector is essentially the same as the `nth-child()`
+    selector except that it counts backwards from the end of the list instead of the
+    beginning. The `:last-child` selector can, likewise, be thought of as a special
+    case of this selector with a passed index of 1\. And like the `:nth-child` selector,
+    it can accept the special parameters of even, odd, or a formula:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result set from the example code consists of two elements, the third child
+    from the end of their respective parents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The last of the child selectors is `:only-child`. It returns the elements that
+    only children of their respective parents can:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since there is only one paragraph that is an only child, the following element
+    is displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next selectors are the `of-type` selectors. All of these selectors work
+    on siblings of the same element type. The first of these is the `:first-of-type`
+    selector, which will return the first element of the type for each parent:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: The difference between the child selectors and the `of-type` selectors is subtle
+    but important. The `of-type` selectors don't specify the parent element. You simply
+    tell jQuery about the children, and it figures out which ones are siblings and
+    who the parents are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `:last-of-type` selector does exactly what we should expect based on everything
+    we''ve already learned about jQuery. It returns the last element of the type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The last of the `of-type` selectors will seem familiar; it is the `:only-of-type`
+    selector. Like the `:only-child` selector, it returns the only children. But unlike
+    the :`only-child` selector, it looks at the type of the element. So, consider
+    that we change the third `<div>` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We make the change when we run the following code sample:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This returns the following element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, the corresponding code written using the `:only-child` selector returns
+    no elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using chaining to quickly and neatly continue queries
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the nice things about jQuery is its ability to chain queries. Any method
+    call that returns the jQuery object can be chained, which means that all you need
+    to do is add a period and your next method call. Be careful since not all methods
+    return the jQuery object. Some methods, such as `.width()`, return a value that
+    can't be chained. Each method of the chain performs its operations on the result
+    set of the previous method call. If you perform filter operations further down
+    the chain, then the result set is reduced, and the chained methods will work on
+    the reduced set and not the original.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next example isn''t the greatest, but hopefully, it will begin to demonstrate
+    the power of chaining:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this example, we first ask for all of the `<li>` elements on the page. Then,
+    with the results set in hand, we ask for all of the `<ul>` elements it contains.
+    We can ask for this more succinctly with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: The point here is that we used jQuery's chaining ability to perform more operations
+    on the result set. Often, you will use chaining to perform different operations
+    in each link in the chain. You might want to add a CSS class at one step, perform
+    DOM manipulations on another, and so on. For the sake of clarity, try to keep
+    all of the operations related, or you may end up writing code that can't be read
+    easily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we began to dig into jQuery, and hopefully, we found out that
+    it isn't as hopelessly complicated as it looks from the outside. We also saw that
+    jQuery makes a habit of using preexisting ways of doing things. For example, it
+    uses CSS selectors and symbols similar to those used by JavaScript regular expressions.
+    It also follows a regular pattern of breaking things down. Once you get used to
+    these patterns, you can almost predict the existence of certain methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have learned how to read elements from the DOM, in the next chapter,
+    we will learn how to write markups to the DOM and begin to make dynamic web pages.
+  prefs: []
+  type: TYPE_NORMAL

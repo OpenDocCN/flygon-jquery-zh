@@ -1,0 +1,2312 @@
+- en: Chapter 8. Other Popular Animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*This chapter will follow a similar format to the previous one and will consist
+    of a series of recipe-style examples that show the real-world implementations
+    of animations in action. We won''t restrain ourselves—anything goes!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll look at the following examples in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Proximity animations, where the animation is a reaction to the proximity of
+    the mouse pointer to a target element or area of the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An animated header element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A text-scrolling marquee widget
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding Proximity animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Proximity animations, which are usually driven by the position of the mouse
+    pointer relative to an element or series of elements on the page, are an awesome
+    effect. While not suitable on all sites and in all contexts, it can add real flair
+    when used in certain situations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The effect isn't often very accessible, and pretty much shuts the door on non-mouse
+    users, but it can be implemented as an additional bonus (often called progressive
+    enhancement) to visitors that are able to make use of it, while at the same time
+    providing other, more accessible forms of interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we'll create an image scroller that is triggered when the mouse
+    pointer enters its container. The speed with which the images will scroll will
+    be determined by the distance of the mouse pointer from the center of the container.
+    Moving the pointer will slow down or speed up the animation accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating and styling the page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this part of the example we'll create the underlying page that the animation
+    will run on, and add the styling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we''ll create the default page, and add the CSS for the example. Add
+    the following elements to the `<body>` element of our template file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="proximity">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity1.jpg" alt="CH-47 Chinook">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity2.jpg" alt="Mi-24W">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity3.jpg" alt="Mil Mi-24A">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity4.jpg" alt="AH-1J Cobra">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity5.jpg" alt="Mi-24P">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity6.jpg" alt="AH-1Z Viper">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity7.jpg" alt="AH-1W Cobra">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity8.jpg" alt="UH-1Y Huey">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity9.jpg" alt="AH-64 Apache">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity10.jpg" alt="AH-1W Super Cobra">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity11.jpg" alt="MI-28 Havoc">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity12.jpg" alt="AH-1W Super Cobra">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity13.jpg" alt="AH-1W Cobra">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity14.jpg" alt="Mi-24 HIND E">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity15.jpg" alt="AH-1W Super Cobra">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity16.jpg" alt="UH-1N Huey">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity17.jpg" alt="AH-64D Apache">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity18.jpg" alt="UH-1N Huey">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity19.jpg" alt=" Lempira Bell 412">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <img src="img/proximity20.jpg" alt="UH-60L Blackhawk">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Save this file as `proximity.html`. Next, we''ll add some CSS. In a new file,
+    add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: /* base classes (scripting disabled) */
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#proximity {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:960px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #000;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: -moz-border-radius:8px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: -webkit-border-radius:8px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: border-radius:8px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#proximity img { border:1px solid #000; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: /* scripting enabled classes */
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#proximity.slider {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:550px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:250px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:relative;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: overflow:hidden;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '.slider #scroller {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '.slider #scroller img {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:150px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:150px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:50px 0 0 50px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:#fff;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:#000;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '.slider #scroller img:first-child { margin-left:0; }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#message {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:100%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:30px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding-top:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: -moz-border-radius:0 0 8px 8px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: -webkit-border-bottom-radius:8px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: -webkit-border-bottom-right-radius:8px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: border-radius:0 0 8px 8px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bottom:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:#000;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:#fff;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-align:center;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: font:18px "Nimbus Sans L", "Helvetica Neue",
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"Franklin Gothic Medium", Sans-serif;'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this in the `css` folder as `proximity.css` and don't forget to link to
+    it from the `<head>` of the HTML page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Keeping the HTML as simple and as light as possible, we simply add the images
+    that we want to show to a container element. Any extra elements that we need can
+    be added dynamically in the nature of progressive enhancement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two sections in the CSS file. The first section is a collection of
+    base styles which are used if the page is loaded by a visitor that has JavaScript
+    disabled. This ensures that all of the images are visible and therefore accessible—none
+    of them are hidden or otherwise obscured.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second section changes the appearance of the container element and adds
+    styling to elements or classes that are added dynamically, transforming the appearance
+    of the slider, provided JavaScript is enabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set the `height` and `width` of the container so that only three images are
+    visible at any one time, and set its `overflow` style property to `hidden` so
+    that all of the other images are hidden, ready to be scrolled into view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also add positioning for an element with an `id` of `scroller`. This element
+    doesn't yet exist and will be added by the script, which we'll look at shortly.
+    This element will also need a `width`, but we can assign this dynamically based
+    on the number of images in the container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also change the styling of the images themselves, setting them to block-level
+    elements and floating them to the left so that they stack up horizontally in a
+    long line, without wrapping onto two lines as this would destroy the functionality
+    of the scroller. It is the combination of floating the images and setting the
+    `width` of the container to accommodate them all, that allows them to stack up
+    as horizontally as required. We'll add a message that tells the visitor how to
+    use the scroller so we also include some styling for this, as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows how the page will appear with scripting disabled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What just happened?](img/9642_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the previous image we can see that the images are all visible. It's not pretty,
+    but it's highly accessible and doesn't hide the content when scripting is disabled
+    on the client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – preparing the page for sliding functionality
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When scripting is enabled, we can enhance the page to add the additional elements
+    that the proximity slider requires. Add the following code to the empty function
+    at the bottom of the HTML page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: var prox = $("#proximity"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: scroller = $("<div></div>", {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'id: "scroller"'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs: []
+  type: TYPE_NORMAL
+- en: pointerText = "Use your pointer to scroll, moving to "+
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"the edge scrolls faster!",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: keyboardMessage = "Use your arrow keys to scroll the images!",
+  prefs: []
+  type: TYPE_NORMAL
+- en: message = $("<p></p>", {
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'id: "message",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'text: keyboardMessage'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: prox.addClass("slider").wrapInner(scroller).append(message);
+  prefs: []
+  type: TYPE_NORMAL
+- en: var middle = prox.width() / 2;
+  prefs: []
+  type: TYPE_NORMAL
+- en: scroller = $("#scroller");
+  prefs: []
+  type: TYPE_NORMAL
+- en: scroller.width(function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var total = 0;
+  prefs: []
+  type: TYPE_NORMAL
+- en: scroller.children().each(function(i, val) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var el = $(this);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: total = total + (el.outerWidth() + parseInt(el.css("marginLeft")));
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: return total;
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}).css("left", "-" + (scroller.width() / 2 - middle) + "px");'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, we cache the selector for the proximity container, which we'll use a
+    couple of times in this chunk of code, and a couple of times a little later on
+    in the script. Next, we create a new `<div>` element and give it an `id` attribute
+    so that we can easily select it again when necessary. We also use this `id` for
+    styling purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we store a couple of text strings in variables for convenience. These
+    will be used as messages to display to the visitor at different points. We also
+    create a new paragraph element as a container for the message text, give the element
+    an ID (again for selecting purposes), and use the jQuery `text()` method to set
+    its `innerText` to one of the text strings. We then use the property `text` on
+    the object passed as the second argument to the element creation jQuery method
+    format, which automatically maps to the `text()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we add a class name to the outer proximity container. Remember, this class
+    name is used to differentiate between scripting being disabled and enabled so
+    that we can add the required styling. We also wrap the contents of the proximity
+    container (the 20 `<img>` tags) in our newly created scroller element, and append
+    the message to the proximity container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we set a variable which is equal to the `width` of the proximity container
+    divided by two. This gives us the horizontal middle of the element, which we'll
+    need to use in some calculations to position the scroller element, and work out
+    where the mouse pointer is relative to the proximity container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could just as easily have set the number that the `middle` variable needs
+    to contain, instead of calculating it in this way. The `width` of the proximity
+    container (with scripting enabled) is set in our CSS file and is highly arbitrary
+    to this particular example. If we changed its `width` however, the script would
+    break if we set the figure directly in the variable instead of working it out
+    programmatically. It is always best to avoid hardcoding 'magic' numbers into scripts
+    whenever possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we also need to cache a reference to the scroller element now
+    that it has been appended to the page. We can't use the contents of the `scroller`
+    variable that we created at the start of the script, so we overwrite it with a
+    fresh reference to the element by selecting it from the page again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We now need to set the `width` of the `scroller` element so that it is wide
+    enough to accommodate all of the images in a single row. To do this we pass a
+    function to jQuery's `width()` method, which returns the `width` to be set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function calculates this figure by iterating over each image and adding
+    both its `width` and horizontal `margin` to the `total` variable. This means that
+    an indeterminate number of images can be used without changing the script, and
+    images with different widths and spacing can be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've set the `width` of the `scroller` element, we then need to position
+    it so that the center of the scroller is at the center of the proximity container.
+    This is so that when the page loads, the visitor can move it to the left or right,
+    depending on where they move their pointer or which arrow key is pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we load the page in a browser at this point, we should find that the appearance
+    of the elements on the page has changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What just happened?](img/9642_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the previous screenshot, we can see that the proximity container is resized
+    and the `scroller` element is centered within it. We can also see the default
+    message at the bottom of the proximity container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – animating the scroller
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The next section of code deals with actually animating the `scroller` element
+    based on where the mouse pointer is relative to the outer proximity container.
+    Add the following code below the `}).css("left", "-" + (scroller.width()` line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function goAnim(e) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var offset = prox.offset(),
+  prefs: []
+  type: TYPE_NORMAL
+- en: resetOffset = e.pageX - offset.left - middle,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'normalizedDuration = (resetOffset > 0) ? resetOffset :  -resetOffset,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: duration = (middle - normalizedDuration) * 50;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: scroller.stop().animate({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: (resetOffset < 0) ? 0 : "-" + (parseInt(scroller.width()) - parseInt(prox.width()))'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, duration, "linear");'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Within the `goAnim()` function, we first get the `offset` value of the proximity
+    container so that we know its position relative to the document. We then work
+    out where the mouse pointer is relative to the middle of the proximity container.
+    This means that numerically, the pointer offset will be `0` when it is in the
+    center.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the mouse pointer is in the left half of the proximity container, the number
+    in the `resetOffset` variable will be negative. This would cause our calculations
+    later in the function to be incorrect, so we need to check whether the `resetOffset`
+    variable is greater than `0`, and if it isn't, we invert the number using its
+    minus value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ultimately, what we want to happen is for the speed of the scroller to increase
+    as the pointer moves towards either end of the proximity container, and slow down
+    as it moves into the center. In other words, the speed of the animation needs
+    to be inversely proportionate to the distance of the pointer from the middle of
+    the proximity container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem that we have at this point is that the figure representing the distance
+    of the pointer from the middle of the proximity container gets larger as it moves
+    towards the edge, so the animation would slow down instead of speeding up if we
+    were to use this figure as the duration of the animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To invert the value stored in the `normalizedDuration` variable, we subtract
+    it from the value representing the middle of the proximity container, and then
+    multiply the resulting figure by `50`. The duration argument is in milliseconds,
+    so if we don't use a multiplier (`50` was arrived at by trial and error) to increase
+    our value, the animations will occur too quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can now initiate the animation. We use the JavaScript ternary statement to
+    test whether the `resetOffset` figure is less than `0`, and if it is, we know
+    that to get the scroller to slide to the right we just need to set the `left`
+    style property of the scroller element to `0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the variable is greater than `0`, we have to move the scroller element negatively
+    (to the left) in order to show the images hidden at the right. To align the right
+    edge of the scroller `<div>` element to the right edge of the proximity container,
+    we set the end point of the animation to the `width` of the scroller `<div>` element,
+    minus the `width` of the proximity container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding the mouse events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now, we need to add the mouse events that will trigger the animations. The
+    following code will be added below these two lines that we previously added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}, duration, "linear");'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below the preceding lines, add the following lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: prox.mouseenter(function(e) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: message.text(pointerText).delay(1000).fadeOut("slow");
+  prefs: []
+  type: TYPE_NORMAL
+- en: goAnim(e);
+  prefs: []
+  type: TYPE_NORMAL
+- en: prox.mousemove(function(ev) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: goAnim(ev);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: prox.mouseleave(function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: scroller.stop();
+  prefs: []
+  type: TYPE_NORMAL
+- en: prox.unbind("mousemove");
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, we set a `mouseeenter` event handler so that we can detect when the pointer
+    initially enters the proximity container. When this occurs we change the message
+    text so that it shows what to do with the mouse pointer and then fades out the
+    message slowly after a delay of one second.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then call our `goAnim()` function to start the animation. At this point,
+    we set a `mousemove` event so that we can increase or decrease the speed of the
+    animation as the pointer moves within the proximity container. Each time the pointer
+    moves, we call the `goAnim()` function once more. Each time this function is called
+    we pass in the event object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set a `mouseleave` event handler on the proximity container so that
+    we can detect when the pointer leaves this element altogether. When this occurs
+    we stop the currently running animation and unbind the `mousemove` event handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we should have a fully working proximity slider. Earlier, we discussed
+    how the proximity effect is only useful to mouse users, so let's add a keyboard
+    event handler to our script that will let keyboard users navigate the scroller
+    as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding keyboard events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now, we'll be enabling keyboard-driven animations. We'll specifically be adding
+    triggers for the left and right arrow keys on the keyboard.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following code below the `prox.mouseleave` function that we just added
+    in the preceding section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(document).keydown(function(e) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: //37 = left arrow | 39 = right arrow
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (e.keyCode === 37 || e.keyCode === 39) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: message.fadeOut("slow");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (!scroller.is(":animated")) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: scroller.stop().animate({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: (e.keyCode === 37) ? 0 : -(scroller.width() - prox.width())'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, 6000, "linear");'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '}).keyup(function() {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: scroller.stop();
+  prefs: []
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We attach the `keydown` event handler to the `document` object so that the visitor
+    doesn't have to focus the proximity container somehow. Within the anonymous function,
+    we first check whether the left or right arrow keys were pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key code `37` refers to the left arrow key and the code `39` refers to the
+    right arrow key. The `keyCode` property, normalized by jQuery so that it is accessible
+    to all browsers, will contain the code for whichever key was pressed, but we only
+    want to react to either of the specified keys being pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When either of these keys is pressed, we first fade out the message and then
+    check that the scroller is not already being animated using jQuery's `is()` method
+    in conjunction with the `:animated` filter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As long as the `scroller` element is not already being animated (denoted by
+    the `!` symbol at the start of the condition), we then animate it. We check the
+    `keyCode` property once again with a JavaScript ternary conditional so that we
+    can move the scroller in the correct direction, depending on which key is pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we add a `keyup` event handler that stops the scroller animation once
+    the key is released. This improves the interactivity of animation, as it allows
+    the visitor to intuitively stop the scroller whenever they wish.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero – extending proximity animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The obvious way to extend our example would be to trigger animations on the
+    vertical axis as well. We could have a grid of images instead of a single row
+    and animate the grid up and down as well as left and right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing to do to extend the example would be to add additional keyboard functionality.
+    Check for additional keys, such as the home and end keys, for example, which could
+    navigate to the start or end of the `scroller` element accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – implementing proximity animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. We provided additional functionality by adding keyboard navigability in
+    the previous example; why?
+  prefs: []
+  type: TYPE_NORMAL
+- en: For fun
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To look good
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To provide an alternate way for the content to be explored by users that aren't
+    using a mouse
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Keyboard events must be bound whenever mouse events are used
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. Why should we avoid hardcoding 'magic' numbers into our scripts?
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make our code more readable
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So that our scripts are less reliant on the content that they act upon
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Hardcoded integers take longer to process
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because jQuery prefers working with strings
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Animating page headers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Another quite fashionable technique is to have an animation that runs in the
+    header of the page when the home page loads. Sometimes the animations run continually
+    on every page of the site; others run once on the home page only.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This technique is an easy and effective way to make your site stand out, and
+    they needn't be complex or heavily apparent animations; a short, subtle animation
+    can be enough to add the WOW! factor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Earlier in the book, we looked at using **cssHooks** in conjunction with a pre-written
+    file that makes use of cssHooks, which extends jQuery's `css()` method to allow
+    an element's `background-position` style property to be animated. In this example,
+    we'll look at how we can do this manually without the use of the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well-written plugins can be an effective and easy solution, but there are times
+    when a plugin adds much more functionality than we actually need, and therefore
+    increases a page's script overhead. It's not often that reinventing the wheel
+    is necessary or advised, but there can be times when it's beneficial to write
+    a custom script that does only what we require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating an animated header
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The underlying page for this example will be relatively straightforward, with
+    just a `<header>` element whose `background-position` we''ll animate manually:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The header of the example page will consist of just an empty `<header>` element
+    placed inside the `<body>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <header>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </header>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Save this as `animated-header.html`. The CSS is even simpler, with just a single
+    selector and a few rules:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: header {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:960px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:200px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:url(../img/header.jpg) repeat 0 0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this as `animated-header.css`. We'll need to link to the file from the
+    `<head>` of the page we just created.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The script itself is also surprisingly simple. Add the following code to the
+    function at the end of the `<body>` element:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var header = $("header");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: header.css("backgroundPosition", "0 0");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var bgscroll = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var current = parseInt(header.css(
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"backgroundPosition").split(" ")[1]),'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: newBgPos = "0 " + (current - 1) + "px";
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: header.css("backgroundPosition", newBgPos);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: setInterval(function() { bgscroll() }, 75);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: When we run the file in a browser, we should find that the background image
+    used for the `<header>` slowly scrolls.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the script we cache the `header` selector outside of our main function for
+    efficiency, so that we aren't creating a new jQuery object every time the function
+    is executed. Even though the `<header>` element is cached in a variable outside
+    of the function, the variable is still accessible by the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the function we first get the current vertical `background-position`
+    of the `header` element, extracting just the part of the returned string we require
+    using the JavaScript `split()` function. We also use `parseInt` to convert the
+    string into an integer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then decrement the integer by one. This means that the background image will
+    scroll up. This is not important. There's no reason why the image couldn't scroll
+    down, I, personally, just happen to prefer motion in the upward direction for
+    some reason. Finally, we set the new `background-position` using jQuery's `css()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the function definition, we use the JavaScript `setInterval()` method
+    to repeatedly call the function every 75 milliseconds. This is relatively quick,
+    but is quite smooth—much higher than this and the animation begins to get a bit
+    jerky. There's no reason, however, that different background images might not
+    need to run as quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero – extending the animated header
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As the example is so small, there is a lot that could be done to build on it.
+    Depending on the background image in use, it could be extended to move along the
+    horizontal axis instead, or even both, perhaps moving diagonally in a north-westerly
+    direction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating text using the marquee effect
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The use of the `<marquee>` element died out many years ago, but a similar effect,
+    created with JavaScript, is resurfacing in recent years thanks to its use on high-profile
+    sites, such as the tickers for headlines on news sites, and the animated trending
+    topics on the old Twitter home page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is an effective and attractive way to present potentially relevant content
+    to the visitor without taking up too much content space. It won't suit all sites,
+    of course, but used sparingly, and in as non-intrusive a way as possible, it can
+    be a great effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating and styling the underlying page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this example, we can see how easy it is to grab a series of text strings
+    and display them in a smoothly scrolling marquee style. We'll use jQuery's built-in
+    AJAX capabilities to grab a JSON file out of the latest posts on my blog. Let's
+    get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following markup to the `<body>` element of the template file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div id="outer">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <header>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <hgroup>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h1>Site Title</h1>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h2>Site Description</h2>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </hgroup>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <nav>Main site navigation along here</nav>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </header>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <article>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h1>A Blog Post Title</h1>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p>The post copy</p>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </article>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <aside>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h2>Ads</h2>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p>Probably a bunch of ads here that take up a reasonable section of this aside
+    vertically</p>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h2>Popular Posts</h2>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p>Some links here to other posts, which may or may not be related to the current
+    post, but are deemed popular based on the number of comments</p>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h2>Related Posts</h2>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p>Some links here to other posts that are definitely related to this post,
+    based on post tags</p>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <h2>Twitter Feed</h2>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p>Maybe a twitter feed here that displays recent tweetsor something. Aside
+    could be quite long by now</p>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </aside>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </div>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save the new page as `marquee.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We can also add some basic CSS at this point to layout the example in an acceptable,
+    generic manner. In a new file in your text editor, add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#outer {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:960px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:#3c3c3c;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: font:normal 17px "Palatino Linotype", "Book Antiqua",
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Palatino, serif;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: header {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:0 20px 0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin-bottom:40px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:3px solid #d3d1d1;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:#e5e5e5;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: hgroup { float:left; }
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: h1,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: h2 { margin-bottom:10px; }
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: nav {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:100%;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:40px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clear:both;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-align:right;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: article {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:700px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:900px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:3px solid #d3d1d1;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:#e5e5e5;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: article h1,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: article p { margin:20px; }
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: p, nav{
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: font:normal 17px "Nimbus Sans L", "Helvetica Neue",
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"Franklin Gothic Medium", Sans-serif;'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: p { margin-top:0; }
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: aside {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:220px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:900px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:3px solid #d3d1d1;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:#e5e5e5;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:right;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: aside div { padding:0 20px 20px; }
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this file as `marquee.css` in the `css` directory. Link to this stylesheet
+    from the `<head>` element of the page we just created.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The underlying HTML represents a typical blog. We've added a series of elements
+    for two reasons, primarily so that we have somewhere to insert the marquee, but
+    also so that we can see why this approach can be necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Having the latest posts scrolling across the page near the top of the site ensures
+    that this content is seen straight away, and the fact that it's animated also
+    helps to draw the visitor's attention to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The CSS used so far is purely to layout the example elements in a precise and
+    mildly aesthetic way, giving us a generic layout and a light skinning. We''ll
+    add some more CSS a little later in the example for our dynamically created marquee.
+    At this point, the page should appear as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![What just happened?](img/9642_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Remember, all of the elements in the previous screenshot are there for the marquee
+    to be inserted between. They are not specifically required, and are there for
+    this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – retrieving and processing the post list
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now, we're ready to retrieve the list of latest posts and process them, making
+    them ready to be displayed as items in the marquee. In order to access this data
+    across the Internet from another domain, we need to use **JSONP**, which stands
+    for **JSON with Padding**, and involves dynamically creating and injecting a `<script>`
+    element to the page, although jQuery actually handles this aspect of it for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'More about JSONP can be found in these great articles: [http://remysharp.com/2007/10/08/what-is-jsonp](http://remysharp.com/2007/10/08/what-is-jsonp)
+    and [http://jquery4u.com/json/jsonp-examples](http://jquery4u.com/json/jsonp-examples)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery provides native support for JSONP and allows us to bypass the same-origin
+    security policy of the browser. In order to output JSON in the correct format,
+    I''m using the JSON API ([http://wordpress.org/plugins/json-api](http://wordpress.org/plugins/json-api))
+    plugin on a WordPress-powered blog, which outputs JSON in the following format:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '{'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"status": "ok",'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"count": 1,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"count_total": 1,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"pages": 1,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"posts": ['
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '{'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"id": 1,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: etc...
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '{'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"id": 2,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Etc...
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ']'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: There are more properties in the `posts` array shown in the previous code block,
+    as well as other arrays and properties in the outer object, but the previous snippet
+    should give you an idea of the structure of the data we'll be working with.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Add the following code to the anonymous function of our HTML page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $.getJSON("http://adamculpepper.net/blog?json=1&count=10&callback=?", function(data)
+    {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var marquee = $("<div></div>", {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'id: "marquee"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: h2 = $("<h2></h2>", {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'text: "Recent Posts:"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: fadeLeft = $("<div></div>", {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'id: "fadeLeft"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}),'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: fadeRight = $("<div></div>", {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'id: "fadeRight"'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for(var x = 0, y = data.count; x < y; x++) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("<a></a>", {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'href: data.posts[x].url,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'title: data.posts[x].title,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'html: data.posts[x].title'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}).appendTo(marquee);'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: marquee.wrapInner("<div></div>").prepend(h2).append(fadeLeft).append(fadeRight).insertAfter("header").slideDown("slow");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("#marquee").find("div").eq(0).width(function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var width = 0;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).children().each(function() {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var el = $(this);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width += el.width() + parseInt(el.css("marginRight"));
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: return width;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: marquee.trigger("marquee-ready");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We can also add some more CSS, this time for the newly-created elements. Add
+    the following code to the bottom of `marquee.css`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#marquee {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:none;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:58px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:-20px 0 20px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:3px solid #d3d1d1;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:relative;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: overflow:hidden;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background-color:#e5e5e5;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#marquee h2 {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:20px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#marquee a {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin-right:20px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: font:normal 15px "Nimbus Sans L", "Helvetica Neue",
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"Franklin Gothic Medium", Sans-serif;'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#marquee div {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:20px 0 0 210px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: overflow:hidden;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#marquee div:after {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: content:"";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: visibility:hidden;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clear:both;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#fadeLeft,'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#fadeRight {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:48px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height:21px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: position:absolute;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: top:17px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:210px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:url(../img/fadeLeft.png) no-repeat;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#fadeRight {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: left:906px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:url(../img/fadeRight.png) no-repeat;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: When we run the page now, we should see that the new marquee element, along
+    with its links, is inserted into the page.![Time for action – retrieving and processing
+    the post list](img/9642_08_04.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The previous screenshot shows the elements in the new marquee section including
+    the heading, the links themselves, and the fade elements, which are added purely
+    for aesthetics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All of our JavaScript is wrapped up in jQuery's `getJSON()` method, which uses
+    jQuery's AJAX functionality to make a request to the URL specified as the first
+    argument to the method. The second argument is an anonymous function that is executed
+    if the request is successful. The returned JSON data is passed to this function
+    automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the function we first create some of the elements that make up our marquee
+    including the outer container, the heading, and two purely aesthetic `<div>` elements
+    used to add the left and right fade effects at the start and end of the row of
+    links. All of these elements are stored in variables so that we can access them
+    easily when required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we process the JSON object passed into the function. Remember, this object
+    contains a series of properties where the values of some of these properties are
+    arrays, such as the `posts` array, which contains each of the returned posts as
+    objects within each of its array items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use a `for` loop to iterate over each object in the `posts` array that is
+    returned with the JSON object. This object contains a property called `count`,
+    where the number of posts that are returned is stored as an integer, so we can
+    use this to tell the `for` loop how many times to execute, which is marginally
+    easier than counting the objects in the `posts` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For each post that has been returned, we create a new `<a>` element, setting
+    its `href` to point to the `url` property of the current object, and the `title`
+    and `text` of the element set to the `title` property of the current object, and
+    then append the new `<a>` element to the `marquee` element that we created a minute
+    ago.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've created and appended a link for each post, we then wrap the contents
+    of the marquee element (the links) in a new `<div>` element, prepend the `<h2>`
+    element to the start of the marquee, and append the `<div>` elements for the fades
+    to the end of the `marquee` element. We then append the marquee to the page before
+    sliding it into view with the `slideDown()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we need to set a `width` on the container's `<div>` element that
+    we wrapped the links in a moment ago. This is so that the links can all line up
+    in a single row. We need to take into account the `width` value of each link,
+    plus any `margin` it has (which we set in the CSS).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use a function as the value of jQuery's `width()` method to iterate over
+    each link and add its `width` and `margin` to a running total. We can't do this
+    until the marquee has been appended to the page because it is not until this point
+    that each element actually has a `width` or `margin` that we can retrieve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last thing we do in the callback function for our `getJSON()` method is
+    fire off a custom event with the `trigger()` jQuery method. The custom event is
+    called `marquee-ready` and is used to tell our script when the `marquee` has been
+    added to the page. We'll use this custom event shortly to animate the post links.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also added some new CSS to our stylesheet. Some of this code is to give our
+    `marquee` elements the same light skin as the rest of the page. But other parts
+    of it, such as floating the links, and setting the marquee's `overflow` property
+    to `hidden` is so that the links line up in a single row, and so that the majority
+    of the links are hidden, ready to be scrolled into view. We also add the fade
+    images to the last two `<div>` elements inside the `marquee` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – animating the post links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're now ready to begin scrolling the post links within the marquee. We can
+    do this using our custom event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the `getJSON()` method, add the following code to the page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("body").on("marquee-ready", "#marquee", function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var marquee = $(this),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: postLink = marquee.find("a").eq(0);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width = postLink.width() + parseInt(postLink.css("marginRight")),
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: time = 15 * width;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: postLink.animate({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'marginLeft: "-=" + width'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}, time, "linear", function() {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).css({
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'marginLeft: 0'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}).appendTo(marquee.find("div").eq(0));'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: marquee.trigger("marquee-ready");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Our example is now complete. When we run the page at this point, the posts should
+    begin scrolling from left to right.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We use the jQuery `on()` method to bind an event handler to our custom `marquee-ready`
+    event. We need to use the `on()`event to achieve this, because when this part
+    of the code is executed, the JSON response is unlikely to have returned so the
+    `marquee` element won't even exist. Attaching the event handler to the `<body>`
+    element of the page is an easy way to prepare the page for when the `marquee`
+    element does exist.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the anonymous event-handling function, we first cache a reference to
+    the marquee element using the `this` object, which is scoped to our `marquee`
+    element. We then select the first link in the marquee and determine its total
+    `width` including `margin`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also work out what is effectively the speed of the animation. jQuery animations
+    use a duration to determine how quickly an animation should run, but the problem
+    this causes us is that posts with longer titles will move faster, because they
+    have a greater distance to animate in the same amount of time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To fix this, we work out a duration to pass to the animation method based on
+    an arbitrary speed of `15` multiplied by the `width` of the current `<a>` element.
+    This ensures that each post will scroll at the same speed regardless of how long
+    it is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have obtained the total `width` and `duration`, we can then run the
+    animation on the first link in the `marquee`, using our `width` and `time` variables
+    to configure the animation. We animate the post link by setting a negative `margin`
+    of the first link, which drags all of the other links along with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the animation is complete, we remove the `margin-left` from the link, re-append
+    it to the end of the `<div>` within the `marquee` element, and fire the `marquee-ready`
+    event once more to repeat the process. This occurs repeatedly, creating the ongoing
+    animation and bringing us to the end of this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero – extending the marquee scroller
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One feature that would certainly be beneficial to our users would be if the
+    post titles stopped being animated when the mouse pointer hovered over them. The
+    animation could then be restarted when the pointer moves off the titles again.
+    Have a go at adding this functionality in, by yourself. It shouldn't be too tricky
+    at all and should involve adding the `mouseenter` and `mouseleave` event handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll need to work out how much of any given link is already outside of the
+    visible area of the marquee in order to ensure the animation restarts at the same
+    speed that it stopped at, but this should be quite similar to how we worked out
+    the duration in this version of the example. See how you get on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – creating a marquee scroller
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. Why did we create a dynamic-duration variable (time) instead of using one
+    of jQuery's predefined durations?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because its quicker using an integer, even if that integer has to be calculated,
+    than using one of the duration strings
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because it's more fun
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To make sure the links are appended to the correct element after being animated
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To ensure that the links all animate at the same speed regardless of how long
+    they are
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, the second of our heavily example-based as opposed to theory-based
+    chapters, we looked at some more common animations that are increasingly found
+    on the web. Specifically, we looked at the following types of animations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A proximity-driven image scroller, where the images scrolled in a certain direction
+    and at a certain speed, depending on the movements of the mouse pointer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Background-position animations, in which we created a continuous-header animation
+    manually with just a few lines of code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A text marquee, where a series of headlines were grabbed from a live Internet
+    feed and displayed in a scrolling marquee-style banner
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll move to look at some pure CSS animations that were
+    introduced with CSS3, and how jQuery can be used to enhance them and generally
+    make working with them easier.
+  prefs: []
+  type: TYPE_NORMAL

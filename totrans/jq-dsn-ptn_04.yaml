@@ -1,0 +1,961 @@
+- en: Chapter 4. Divide and Conquer with the Module Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will be introduced to the concepts of Modules and Namespacing
+    and see how they can lead to more robust implementations. We will showcase how
+    these design principles can be used in applications, by demonstrating some of
+    the most commonly used development patterns to create **Modules** in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Review the concept of Modules and Namespacing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the Object Literal Pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the Module Pattern and its variants
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the Revealing Module Pattern and its variants
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Have a small dive into ES5 Strict Mode and ES6 Modules
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Explain how Modules can be used and benefit jQuery applications
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modules and Namespaces
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The two main practices of this chapter are Modules and Namespaces, which are
+    used together in order to structure and organize our code. We will first analyze
+    the main concept of Modules that is code encapsulation and right after this, we
+    will proceed to Namespacing, which is used to logically organize an implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encapsulating internal parts of an implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While developing a large-scale and complex web application, the need for a well-defined,
+    structured architecture becomes clear from the beginning. In order to avoid creating
+    a spaghetti code implementation, where different parts of our code call each other
+    in a chaotic way, we have to split our application into small, self-contained
+    parts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These self-contained pieces of code can be defined as **Modules**. To document
+    this architecture principle, **Computer Science** has defined concepts such as
+    **Separation of Concerns**, where the role, operation, and the exposed API of
+    each Module should be strictly defined and focused on providing a generic solution
+    to a specific problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on **Encapsulation** and **Separation of Concerns**, you
+    can visit [https://developer.mozilla.org/en-US/docs/Glossary/Encapsulation](https://developer.mozilla.org/en-US/docs/Glossary/Encapsulation)
+    and [http://aspiringcraftsman.com/2008/01/03/art-of-separation-of-concerns/](http://aspiringcraftsman.com/2008/01/03/art-of-separation-of-concerns/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Avoiding global variables with Namespaces
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In JavaScript, the `window` object is also known as the **Global Namespace**,
+    where each declared variable and function identifier is attached by default. A
+    **Namespace** can be defined as a naming context where each identifier has to
+    be unique. The main concept of **Namespacing** is to provide a way to logically
+    group all the related pieces of a distinct and self-contained part of an application.
+    In other words, it suggests that we create groups with related functions and variables
+    and make them accessible under the same umbrella identifier. This helps to avoid
+    naming collisions between different parts of an application and other JavaScript
+    libraries that are used, since we only need to keep all the identifiers unique
+    under each different Namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good example of Namespacing is the mathematical functions and constants that
+    JavaScript provides, which are grouped under the built-in JavaScript object called
+    `Math`. Since JavaScript provides more than 40 short-named mathematical identifiers,
+    such as `E`, `PI`, and `floor()`, in order to avoid naming conflicts and grouping
+    them together, it was designed to make them accessible as properties of the `Math`
+    object that acts as the Namespace of this built-in library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Without proper Namespacing, each function and variable needs to be uniquely
+    named through the entire application, and collisions could happen between the
+    identifiers of different application parts or even with those of a third-party
+    library that an application uses. Finally, while Modules provide a way to isolate
+    each independent part of your application, Namespacing provides a way to structure
+    your different Modules to what becomes the architecture of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The benefits of these patterns
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Designing an application architecture based on Modules and namespacing leads
+    to better code organization and clearly separated parts. In such architectures,
+    Modules are used to group together parts of the implementation that are related,
+    while Namespaces connect them to each other to create the application structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The benefits of these patterns](img/00017.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This architecture helps to coordinate large developer teams, enabling the implementation
+    of independent parts to take place in parallel. It can also shorten the development
+    time needed to add a new functionality to the existing implementation. This is
+    because the existing pieces that are used can be located easily and the added
+    implementation has less chance of conflicting with the existing code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The resulting code structures are not only cleanly separated, but since each
+    Module is designed to achieve a single goal, there is a good chance that it can
+    also be used in other similar applications. As an added benefit, since the role
+    of each Module is strictly defined, it also makes tracing the origin of a bug
+    a lot easier in a large codebase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The wide acceptance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Both the community and the enterprise world realized that, in order to have
+    maintainable, large frontend applications written in JavaScript, they should end
+    up with a set of best practices that should be incorporated in every part of their
+    implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The acceptance and adoption of Modules and Namespacing in JavaScript implementations
+    is clearly visible in the best practices and coding style guides that the community
+    and enterprises have released.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, Google''s JavaScript Style Guide (available at [https://google.github.io/styleguide/javascriptguide.xml#Naming](https://google.github.io/styleguide/javascriptguide.xml#Naming))
+    describes and suggests adopting namespacing in our implementations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ALWAYS prefix identifiers in the global scope with a unique pseudo namespace
+    related to the project or library.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Moreover, the jQuery JavaScript Style Guide (available at [https://contribute.jquery.org/style-guide/js/#global-variables](https://contribute.jquery.org/style-guide/js/#global-variables))
+    suggests using global variables so that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each project may expose at most one global variable.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Another example of acceptance among the developer community, comes from the
+    Mozilla Developer Network. Its guide for object-oriented JavaScript (available
+    at [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#Namespace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#Namespace))
+    also suggests using Namespaces, to wrap the implementation of our application
+    under a single exposed variable, using something as simple as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Object Literal Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Object Literal Pattern is probably the simplest way to wrap all the related
+    parts of an implementation under an umbrella object that works as a Module. The
+    name of this pattern accurately describes the way it is used. The developer just
+    needs to declare a variable and assign an object with all the related parts that
+    need to be encapsulated into this Module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see how we can create a Module that provides unique integers to a page,
+    in a similar way how `jquery.guid` does it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: As seen above, a simple rule that you can follow in order to adopt this pattern
+    is to define all the variables and functions that each implementation needs as
+    properties of an object. Our code is reusable and does not pollute the Global
+    Namespace, other than just defining a single variable name for our Module, `simpleguid`
+    in this case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can access the Module properties internally, either by using the `this` keyword,
+    such as `this.guid`, or using the full name of the Module such as `simpleguid.guid`.
+    In order to use the above Module in our code, we just need to access its property
+    by using its name. For example, calling the `simpleguid.getNext()` method will
+    return to our code the next-in-order numeric guid and also change the Module's
+    state by increasing the internal counter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the negatives of this pattern is that it does not provide any privacy
+    to the internal parts of the Module. All the internal parts of the Module can
+    be accessed and be overridden by external code, even though we ideally prefer
+    to only expose the `simpleguid.init()` and `simpleguid.getNext()` methods. There
+    are several naming conventions that describe prepending or appending an underscore
+    (_) to the names of properties that are intended only for internal use, but this
+    technically doesn't fix this disadvantage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another disadvantage is that writing a big Module using an object literal can
+    easily get tiring. It's true that JavaScript developers are used to end their
+    variables and function definitions with semicolons (`;`), and trying to write
+    a big Module using commas (`,`) after each property can easily lead to syntactic
+    errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Even though this pattern makes it easy to declare nested Namespaces for a Module,
+    it can also lead to big code structures with bad readability in case we need several
+    levels of nesting. For example, let''s take a look at the following skeleton of
+    a Todo application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Fortunately, this can be easily fixed by splitting the object literal to multiple
+    assignments for each submodule (and preferably to different files) as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Module Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The key concept of the basic Module Pattern is to provide a simple function,
+    class, or object that the rest of the application can use, through a well-known
+    variable name. It enables us to provide a minimal API for a Module, by hiding
+    the parts of the implementation that do not need to be exposed. This way, we also
+    avoid polluting the Global Namespace with variables and utility functions that
+    are needed for internal use by our Module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The IIFE building block
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this subsection, we will get a small introduction to the IIFE Design Pattern
+    since it's an integral part for all the variants of the Module Pattern that we
+    will see in this chapter. The **Immediately Invoked Function Expression** (**IIFE**)
+    is a very commonly used Design Pattern among JavaScript developers because of
+    the clean way in which it isolates blocks of code. In the Module Pattern, an IIFE
+    is used to wrap all the implementation in order to avoid polluting the Global
+    Namespace and provide privacy to the declarations to the Module itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each IIFE creates a Closure with the variables and functions declared inside
+    it. The Closure that is created enables the exposed function of the IIFE to keep
+    references to the rest of the declarations of their environment and access them
+    normally when executed from other parts of an implementation. As a result, the
+    non-exposed declarations of the IIFE do not leak outside it, but are kept private
+    and are accessible only by the functions that are part of the created Closure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on IIFEs and Closures, you can visit [https://developer.mozilla.org/en-US/docs/Glossary/IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
+    and [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An IIFE is most commonly used as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since the preceding code construct might look bizarre on first sight, let''s
+    see the pieces that it is composed from. An IIFE is almost equivalent to declaring
+    an anonymous function, assigning it to a variable, and then executing it, as shown
+    in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the preceding code, we define a function expression and execute it using
+    `tmp()`. Since, in JavaScript, we can use parentheses around an identifier without
+    changing its meaning, we can also execute the stored function with `(tmp)();`.
+    The final step, in order to turn the preceding code into an IIFE, is to replace
+    the `tmp` variable with the actual anonymous function declaration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we saw earlier, the only difference is that, with an IIFE, we do need to
+    declare a variable just to hold the function itself. We only create an anonymous
+    function and invoke it immediately right after defining it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the creation of an IIFE can be achieved in several ways, which might look
+    like an exercise of JavaScript's rules, the community of JavaScript developers
+    has concluded to the above code structure as a point of reference for this pattern.
+    This way of creating an IIFE is considered to have better readability and is used
+    by large libraries and as a result of its adoption, developers can easily recognize
+    it inside large JavaScript implementations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example of the less-widely-used ways to create an IIFE is the following
+    code structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The simple IIFE Module Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Since there is no actual name for this pattern, it is recognized by the fact
+    that the defined Module returns a single entity. For reference on how to create
+    a reusable library using this pattern, we will rewrite the `simpleguid` Module
+    that we saw earlier. The resulting implementation will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This pattern uses an IIFE to define an object that acts as the Module container,
+    attaches properties to it, and later returns it. The variable `simpleguid` in
+    the first line of the preceding code is used as the Namespace of the Module and
+    is assigned with the value that is returned by the IIFE. The methods and properties
+    that are defined on the returned object are the only exposed parts of the Modules
+    and constitute its public API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, this pattern allows us to use the `this` keyword, in order to access
+    the exposed methods and properties of our Module. Furthermore, it also provides
+    the flexibility to execute any required initialization code before completing
+    the Module's definition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike the **Object Literal Pattern**, the **Module Pattern** enables us to
+    create actual private members in our Modules. Variables declared inside the IIFE,
+    that are not attached to the return value, such as the `guid` variable, act as
+    private members and are only accessible inside the Module by rest members of the
+    created Closure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lastly, in case we need to define a nested Namespace, all we have to do is
+    change the assignment of the value returned by the IIFE. As an example of an application
+    structured with submodules, let''s see how we will define the exporting submodule
+    for the Todo application skeleton that we saw earlier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Given that our application's Namespace `myTodoApp` has already been defined
+    earlier, the `exports` submodule can be defined as a simple property on it. A
+    good practice to follow will be to create one file for each one of the above Modules,
+    using the IIFEs as the landmarks to split your code. A widely used naming convention,
+    which is also suggested by Google's JavaScript Style Guide, is to use lowercase
+    naming for your files and add dashes to separate submodules. For example, by following
+    this naming convention, the preceding code should be defined in two files named
+    as `mytodoapp.js` and `mytodoapp-exports.js` for each Module, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it is used by jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The **Module** **Pattern** is used within jQuery itself, in order to isolate
+    the source code of the CSS selector engine (**Sizzle**), which powers the `$()`
+    function, from the rest of the jQuery source. From the beginning, Sizzle was a
+    big part of the jQuery source, which is currently counting about 2135 lines of
+    code; since 2009, it has been split into a separate project named Sizzle, so it
+    can be more easily maintained, be developed independently, and be reusable by
+    other libraries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Sizzle** is added to the jQuery''s source inside an IIFE, while its main
+    function is returned and assigned to `jQuery.find` for use.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on Sizzle, you can visit [https://github.com/jquery/sizzle](https://github.com/jquery/sizzle).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Namespace Parameter Module variant
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this variant, instead of returning an object from our IIFE and then assigning
+    it to the variable that acts as the Namespace of the Module, we create the Namespace
+    and pass it as a parameter to the IIFE itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last line of the Module definition tests whether the Module is already defined;
+    in case it is not, it initializes it to an empty object literal and assigns it
+    to the global object (`window`). In any case, the `simpleguid` parameter in the
+    first line of the IIFE will hold the Module's Namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The above expression is almost equivalent to writing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the logical OR operator (`||`) makes the expression both shorter and more
+    readable. Moreover, this is a pattern that most web developers have learned to
+    easily recognize, and it appears in a lot of development patterns and best practices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, this pattern allows us to use the `this` keyword to access public
+    members from within the exported methods of the Module. At the same time, it allows
+    us to keep some functions and variables private, which will be accessible only
+    by other functions of the Module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though it's considered a good practice to define each Module to its own
+    JS file, this variant also allows us to split the implementation of large Modules
+    to more than one file. This benefit comes as a result of checking whether the
+    Module is already defined, before initializing it to an empty object. This might
+    be useful in some cases, with the only limitation being that each partial file
+    of a Module can access the private members defined in its own IIFE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Moreover, in order to avoid repetition, we can use a simpler identifier for
+    the parameter of the IIFE and write our Module as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When it comes to applications with nested Namespaces, this pattern might start
+    feeling a little uncomfortable to read. The last line of the Module definition
+    will start to get longer for every extra level of nested namespacing that we define.
+    For example, let''s see how the `exports` submodule of our Todo application would
+    look:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you can see, each extra level of the nested Namespace needs to be added
+    on both sides of the assignment that is passed as a parameter to the IIFE. For
+    applications with complex features that lead to multiple levels of nested Namespaces,
+    this could lead to Module definitions looking something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Moreover, if we want to provide the same safety guaranties, as in the original
+    code sample, then we would need to add similar safe checks for each Namespace
+    level. With this in mind, the `exports` Module of our Todo application that we
+    saw earlier would need to have the following form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: As seen in the preceding code, we used the comma operator (`,`) to separate
+    each namespace existence check and wrapped the whole expression in an extra pair
+    of parenthesis so that the whole expression is used as the first parameter of
+    the IIFE. Using the comma operator (`,`) to join expressions will lead them to
+    be evaluated in order and pass the result of the last evaluated expression as
+    the parameter of the IIFE, and that result will be used as the Namespace of the
+    Module. Keep in mind that, for each extra nested Namespace level, we need to add
+    an extra existence check expression using the comma operator (`,`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A disadvantage of this pattern, especially when used for nested namespacing,
+    is that the Namespace definition of the Module is at the end of the file. Even
+    though it is highly recommended to name your JS files so that they properly represent
+    the Modules that they contain, for example, `mytodoapp.exports.js`; not having
+    the Namespace near the top of the file can sometimes be counterproductive or misleading.
+    An easy work-around for this problem would be to define the Namespace before the
+    IIFE and then pass it as a parameter. For example, the preceding code using this
+    technique would be transformed to something as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The IIFE-contained Module variant
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Like in the previous variants of the Module Pattern, this variant does not
+    actually have a specific variant name, but is recognized by the way the code is
+    structured. The key concept of this variant is to move all the Module''s code
+    inside the IIFE:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: This variant looks very similar to the previous one and mainly differs in the
+    way that the Namespace is created. First of all, it keeps the Namespace check
+    and initialization near the top of the Module, like a heading, making our code
+    more readable regardless of whether we use a separate file for the Module or not.
+    Like other variants of the Module Pattern, it supports private members for our
+    Modules and also allows us to use the `this` keyword to access public methods
+    and properties, making our code look more object-oriented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Regarding implementations with nested Namespaces, the code structure of the
+    `exports` submodule of our Todo application skeleton will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: As seen in the preceding code, we also borrowed the Namespace definition checks
+    from the previous variant and, likewise, applied it to every level of nested namespacing.
+    Even though this is not absolutely necessary, it brings the benefits that we discussed
+    earlier such as enabling us to split a Module definition into several files and
+    even results in a more error-tolerant implementation regarding the import order
+    of the application's Modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Revealing Module Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The **Revealing Module Pattern** is a variant of the **Module Pattern** with
+    a known and widely recognized name. What makes this pattern special is that it
+    combines the best parts of the **Object Literal Pattern** and the **Module Pattern**.
+    All the members of the Module are declared inside an IIFE, which at the end, returns
+    an **Object Literal** containing only the public members of the Module and is
+    assigned to the variable that acts as our Namespace:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: One of the main benefits of this pattern that differentiates it from other variants
+    is that it allows us to write all the code of our Module inside the IIFE, just
+    like we would if they would be declared on the **Global Namespace**. Moreover,
+    this pattern does not require any variation on the way that the public and private
+    members are declared, making the code of the Module look uniform.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the returned Object Literal defines the publicly available members of
+    the Module, it is also a convenient easy way to inspect its public API, even if
+    it is written by someone else. Moreover, in case we need to expose a private method
+    on our Module's API, all we need to do is add an extra property to the returned
+    Object Literal without changing any part of its definition. Additionally, the
+    use of an Object Literal enables us to change the exposed identifiers for the
+    Module's API, without changing the names used by the Module's implementation internally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even if this is not clearly visible, the `this` keyword can be used for calls
+    between the public members of the Module. Unfortunately, using the `this` keyword
+    *is discouraged* for this pattern, since it breaks the uniformity of the function
+    declarations and can easily lead to errors, especially when changing the visibility
+    of a public method to private.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the Namespace definition is kept outside the body of the IIFE, this pattern
+    clearly separates the Namespace definition from the actual implementation of the
+    Module. Using this pattern to define a Module in a nested Namespace does not affect
+    the Module''s implementation, which will not look different at any point from
+    a top-level Namespace Module. Rewriting the `exports` submodule of our Todo skeleton
+    application using this pattern will make it look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: As a result of this separation, we have less code repetition and we can easily
+    change the Namespace of a Module without affecting its implementation at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using ES5 Strict Mode
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A small but precious addition to all the Module Patterns that use IIFEs as their
+    basic building blocks, is the use of **Strict Mode** for JavaScript execution.
+    This was standardized in the fifth edition of JavaScript, and is an opt-in execution
+    mode with slightly different semantics, in order to prevent some of the common
+    pitfalls of JavaScript, but also having backwards compatibility in mind.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Under this mode, the JavaScript runtime engine will prevent you from accidentally
+    creating a global variable and polluting the Global Namespace. Even in not-so-large
+    applications, it is quite possible that a `var` declaration before the initial
+    assignment of a variable can be missing, automatically promoting that to a global
+    variable. To prevent this case, strict mode throws an error in case an assignment
+    is issued to an undeclared variable. The following image show the error that is
+    thrown by Firefox and Chrome when a Strict Mode violation happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using ES5 Strict Mode](img/00018.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This mode can be enabled by adding the `"use strict";` or `'use strict';` statement
+    before any other statements. Even though this can be enabled on the global scope,
+    it is highly recommended that you enable it only inside the scope of a function.
+    Enabling it on the global scope might make third-party libraries that are non-strict-mode
+    compliant stop working or misbehave. On the other hand, the best place to enable
+    Strict Mode is inside the IIFE of a Module. The Strict Mode will be recursively
+    applied to all nested Namespaces, methods, and functions of that IIFE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on JavaScript's strict execution mode, you can visit [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing ES6 Modules
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Even though JavaScript initially had no built-in packaging and namespacing support
+    like other programming languages, web developers filled the gaps by defining and
+    adopting some design patterns for this purpose. These software development practices
+    worked around the missing features of JavaScript and allowed large and scalable
+    implementations of complex applications on a programming language that some years
+    ago was mostly used for form validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was until the 6th version of JavaScript, commonly referred to as ES6, was
+    released as a standard on June 2015 and introduced the concept of Modules as part
+    of the language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: ES6 is an abbreviation of ECMAScript 6th edition, which is also referred to
+    as Harmony or ECMAScript 2015, where ECMAScript is the term that is used for the
+    standardization process of JavaScript. The specification can be found at [http://www.ecma-international.org/ecma-262/6.0/index.html#sec-modules](http://www.ecma-international.org/ecma-262/6.0/index.html#sec-modules).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example of ES6 Modules, we will see one of the many ways in which the
+    `simpleguid` Module can be written:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we save this as a file named `es6simpleguid.js`, then we can import and
+    use it in a different file by simply writing the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since **ES6 Modules** are by default in Strict Mode, writing your Modules today
+    using your preferred Module Pattern variant with Strict Mode enabled will make
+    your transition to ES6 Modules easier. Some of the above patterns require very
+    few changes to achieve this. For example, in the IIFE-contained Module Pattern
+    variant, all that is needed is remove the IIFE and the `"use strict";` statement,
+    replace the creation of the Module's Namespace with a variable, and use the `export`
+    keyword on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, at the time of writing this book, no browser has 100% support
+    for ES6 Modules. As a result, special loaders or tools that transpile ES6 to ES5
+    are required so that we can start writing our code using the new features of ES6.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information, you can visit ES6 Module loader's documentation page at
+    [https://github.com/ModuleLoader/es6-module-loader](https://github.com/ModuleLoader/es6-module-loader),
+    and Babel transpiler (earlier known as ES6toES5) at [http://babeljs.io/](http://babeljs.io/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Modules in jQuery applications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In order to demonstrate how the Module Pattern can lead to a better application
+    structure, we will reimplement the dashboard example that we saw in the previous
+    chapters. We will include all the functionalities that we have seen until now,
+    including the counter of the open information boxes. The HTML and CSS code used
+    is exactly the same as in the previous chapter and, as a result, our dashboard
+    looks exactly the same as before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Modules in jQuery applications](img/00019.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For this demonstration, we will refactor our JavaScript code into four small
+    Modules using the simple IIFE-contained Module variant. The `dashboard` Module
+    will act as the main entry of code execution and also as the central coordination
+    point of the dashboard application. The `categories` submodule will be responsible
+    for the implementation of the upper-top part of our dashboard. This includes category
+    selection, the presentation of appropriate buttons, and the handling of button
+    clicks. The `informationBox` submodule will be responsible for the main part of
+    our dashboard. It will provide methods to create and remove information boxes
+    from the dashboard. Finally, the counter submodule will be responsible for keeping
+    the field with the number of the currently open information boxes up-to-date,
+    responding to the user actions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A single change that we need to make to the HTML of the page in order to support
+    this multimodule architecture is limited to the way in which the JavaScript files
+    are included:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Even if this multifile structure makes the development and debugging processes
+    a lot easier, it is recommended that we combine all these files before moving
+    our application to a production environment. Several tools specialized for this
+    job exist; for example, the very simple and effective grunt-contrib-concat project
+    that is available at [https://github.com/gruntjs/grunt-contrib-concat](https://github.com/gruntjs/grunt-contrib-concat).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main dashboard module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The resulting code for the `dashboard` module will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we already mentioned, the `dashboard` module will be the central point of
+    our application. Since this is the starting point of execution for our application,
+    its main duty is to do all the required initializations for itself and each submodule.
+    The invocation of the `init()` method is wrapped inside a call to the `$(document).ready()`
+    method so that its execution is delayed until the DOM tree of the page is fully
+    loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One important thing to note is that, during the initialization, we do a DOM
+    traversal in order to find the container element of the dashboard and store it
+    to a public property of the Module named `$container`. This element will be used
+    by all the methods of the dashboard that need to access the DOM tree, in order
+    to scope their code inside that container element, removing the need to constantly
+    traverse the whole DOM tree using complex selectors. Keeping references to key
+    DOM elements and reusing them in the different submodules, can make the application
+    snappier and also lessen the chance of accidentally interfering with the rest
+    of the page; thus, leading to less bugs that are also easier to resolve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Cache elements but avoid memory leaks.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep in mind that maintaining references to DOM elements that are constantly
+    added and removed from the page adds extra complexity to our application. This
+    can even lead to memory leaks in case we are accidentally keeping a reference
+    to an element that has already been removed from the page. For such elements,
+    such as the information boxes, it might be safer and more effective to have delegated
+    handling for the events triggered on them and to do a scoped DOM traversal when
+    needed, in order to retrieve a jQuery object with fresh references of the elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The categories module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s proceed with the `categories` submodule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: This submodule's initialization method uses the reference to the `$container`
+    element that the main Module provides and adds two observers to the page. The
+    first handles the `change` event on the `<select>` category and calls the `selectCategory()`
+    method with the numeric value of the selected category. The `selectCategory()`
+    method of this submodule will then handle revealing the appropriate category items,
+    decoupling it from the event handling code and making it a reusable functionality
+    available to the entire application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right after this, we create a single **Delegated Event Observer** that handles
+    the `click` event on the `<button>` category item. It extracts the text of the
+    `<button>` pressed and calls the `openNew()` method of the `informationBox` submodule
+    that contains all the implementation related to information boxes. In a non-demo
+    grade application, a parameter to such a method would probably be an identifier
+    instead of a text value that would be used to retrieve more details from a remote
+    server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The informationBox module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `informationBox` submodule that contains the implementation parts related
+    to the main area of our dashboard has the following form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first thing that this submodule's initialization code does is retrieve and
+    store a reference of the container that holds the information boxes to the `$boxContainer`
+    variable, using the `$container` property of the dashboard for scoping.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `openNew()` method is responsible for creating the HTML required for a new
+    information box and adding it to the dashboard using the `$boxContainer` variable,
+    which acts like a private member of the Module, and is used for caching the reference
+    of the previously assigned DOM element. This is a good practice that can improve
+    the application's performance, since the stored element is never removed from
+    the page and is used during the initialization and the `openNew()` methods of
+    the Module. This way, we no longer need to execute slow DOM traversals every time
+    the `openNew()` method is called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `close()` method, on the other hand, is responsible for removing an existing
+    information box from the dashboard. It receives a jQuery composite collection
+    object as a parameter related to the target information box, which is based on
+    the way that the `$.fn.closest()` method works, and can either be the box element
+    container or any of its descendants.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Implementations of methods that provide flexibility regarding the way that they
+    can be called can make them usable by more parts of a large application. The next
+    logical step for this method, which is left as an exercise to the reader, would
+    be to make it accept as a parameter, the index, or an identifier of the information
+    box that needs to be closed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The counter module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Lastly, here is how we rewrote the `counter` implementation, which we saw in
+    the previous chapter, as an independent submodule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: For this submodule, we are using the `$counter` variable as a private member
+    to cache a reference to the element that displays the count. Another private member
+    of the Module is the `dashboardItemCounter` variable, which at any point of time
+    will hold the number of visible information boxes in the dashboard. Keeping such
+    information on the members of our Modules reduces the times we need to reach the
+    DOM tree to extract information on the state of the application, making the implementation
+    more efficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Preserving the state of the application in the properties of JavaScript objects
+    or Modules instead of reaching the DOM to extract them, is a very good practice
+    that makes the application's architecture more object-oriented, and is also adopted
+    by most of the modern web development frameworks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: During the initialization of the Module, we are giving an initial value to our
+    counter variable so that we are no longer dependent on the initial HTML of the
+    page and have a more robust implementation. Moreover, we are attaching two **Delegated
+    Event Observers**, one for clicks that will lead to the creation of new information
+    boxes and another one for clicks that will close them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview of the implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With the above, we completed the rewrite of the dashboard skeleton application
+    to a modular architecture. All the available actions are exposed as public methods
+    of each of our submodules that can be invoked programmatically and this way they
+    are decoupled from the events that trigger them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good exercise for the reader would be to promote the decoupling even further,
+    by also adopting the Publisher/Subscriber Pattern in the above implementation.
+    The fact that the code is already structured into Modules will make such change
+    a lot easier to implement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another part that can be implemented in a different way is the way in which
+    the submodules are initialized. Instead of explicitly orchestrating the initialization
+    of each Module in our main dashboard Module, we could instead initialize each
+    submodule on its own by wrapping the invocation of the `init()` method in a `$(document).ready()`
+    call and issuing its initialization right after its declaration. On the other
+    hand, not having a central point to coordinate the initializations and relying
+    on page events can feel less deterministic. Another way to implement it would
+    be like the Publisher/Subscriber Pattern, by exposing a `registerForInit()` method
+    on our main Module, which would keep track of the Modules that have been requested
+    to be initialized using an array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more jQuery code organization tips, you can visit [http://learn.jquery.com/code-organization/concepts/](http://learn.jquery.com/code-organization/concepts/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned the concepts of Modules and Namespaces and also
+    the benefits that come from their adoption in large applications. We had an in-depth
+    analysis of the most widely adopted patterns and compared their benefits and limitations.
+    We learned by example how to develop Modules using the Object Literal Pattern,
+    the variants of the Module Pattern, and the Revealing Module Pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We continued with a small introduction to ES5's Strict Mode and saw how it can
+    benefit today's Modules. Then we proceeded by learning some details about the
+    standardized but not yet widely supported **ES6 Modules**. Lastly, we saw how
+    the architecture of the dashboard application can change dramatically after using
+    the Module Pattern in its implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have completed our introduction on how to use Modules and Namespaces,
+    we can move on to the next chapter where we will be introduced to the facade pattern.
+    In the next chapter, we will learn about the philosophy of facades and the uniform
+    way that they define how code abstractions should be created so that they are
+    easily understandable and reusable by other developers.
+  prefs: []
+  type: TYPE_NORMAL

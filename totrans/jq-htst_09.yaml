@@ -1,0 +1,1231 @@
+- en: Chapter 9. A jQuery Heat Map
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A heat map can tell you a lot about how your website is used. It's a valuable
+    tool in the world of analytics that can tell you which features of your website
+    are the most used, and which areas might need some improvement in order to truly
+    engage visitors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we're going to build our own heat map to record which areas
+    of any page are clicked the most. We'll need to build a way of actually recording
+    where every click occurs and a way of transmitting that information somewhere
+    so that it can be stored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll actually be building two different bits of the overall heat map – the
+    client-side part that is executed in visitors' browsers to capture the clicks,
+    and an admin console that displays the heat map to the owner of the site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll need to account for different resolutions and devices in order to capture
+    the maximum amount of information and ensure that our script is efficient enough
+    to run in the background unnoticed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Nothing visible will happen at the client side of course (all that part will
+    do is record and store the clicks) but at the end of the project we''ll be able
+    to display detailed information in the admin console on the number and positions
+    of all clicks on a page, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mission Briefing](img/9106OS_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All analytics are useful to the owner of a website and can give detailed information
+    about the people visiting the site, including things such as their computing environment,
+    which pages they enter the site on, which pages they leave from, and how many
+    pages they visit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A heat map can be just as informative, but from a developer's point of view
+    instead of an owner's. Which bits of your pages are clicked most frequently? A
+    heat map can tell you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The heat map that we'll build will be for responsive websites that are able
+    to change their layout to suit the screen width of the device being used to view
+    the site. A single project is not nearly enough to cover all aspects of responsive
+    design, and because we're focusing mainly on the script itself, we won't be covering
+    it in much detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you've used responsive techniques already then you won't need the additional
+    information. If you haven't worked with responsive principles before, this should
+    be a gentle introduction to the subject that should act as a primer for the subject.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this project we''ll cover the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Determining and saving the environment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Capturing visitor clicks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Saving the click data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding the management console
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Requesting click data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displaying a heat map
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Allowing different layouts to be selected
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Showing heat maps for each layout
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mission Checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is the only project where we aren't going to build the HTML and CSS that
+    we need ourselves. We want our heat map to work with a variety of layouts and
+    the best way to test that is with a responsive layout. Were we to code this ourselves,
+    it would take us most of this project to code and discuss just the layout, before
+    we even got to the heat map.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use a prebuilt responsive template for this project then, so that we
+    can jump straight into the fun part without getting distracted. The template that
+    we''ll use is called Simplex, but unfortunately it''s no longer available online.
+    You''ll need to use the template files found in the accompanying download for
+    this book. Simply copy the `simplex` folder from the downloaded archive in to
+    the main `jquery-hotshots` project directory. All we need to do is add a few script
+    references to each of the HTML pages in the template. The files that should be
+    updated are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`contact.html`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`gallery.html`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`index.html`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`who-we-are.html`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The new `<script>` elements can go at the bottom of the `<body>` in each of
+    the four pages. First we need jQuery obviously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ll also be making use of the imagesLoaded plugin that we used in the last
+    project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this project we''ll create two scripts, one to run on the client and one
+    for the admin console. Initially we''ll be working with the client script, so
+    we should add the following to each page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This file doesn't exist yet of course, so while we're getting set up we can
+    go ahead and create this now. It should be saved in the `js` directory along with
+    our other scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Determining and saving the environment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In our first task we'll store some information about the current browsing environment,
+    such as the URL of the current page. We'll also parse any attached style sheets
+    looking for media queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll start with our `document ready` shortcut, as we have in most of our
+    other projects. In the `heat-map-client.js` file, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: All the additional code we add to this file will go into this callback function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll first set a series of variables that will be used throughout the script.
+    We'll also need to parse any attached style sheets and look for **media queries**
+    so that we can determine which breakpoints are defined for the different layouts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Media queries are a way to specify in CSS that a group of styles should only
+    be applied if certain conditions are met, such as the width of the screen. For
+    more information see [http://en.wikipedia.org/wiki/Media_queries](http://en.wikipedia.org/wiki/Media_queries).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following code inside the callback function we just added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We start out by defining a series of variables. We cache a reference to the
+    `document` object and wrap it with jQuery functionality. We then create an object
+    called `clickStats` which we'll use as a general storage container for the session.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the object we store the URL of the page and define an empty array called
+    `clicks` which will be used to store each click that occurs. Lastly we create
+    another array, this time outside of our `clickStats` object, which we'll use to
+    store objects representing each layout for the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set some defaults for any AJAX requests using jQuery's `ajaxSetup()`
+    method, which accepts an object containing the options to set. We'll be making
+    a couple of requests, so it makes sense to set defaults for any options that we
+    set in both requests. In this example we'll need to set the `type` to `POST`,
+    the `contentType` to `application/json`, and the `dataType` to `json`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our next block of code is concerned with parsing any style sheets attached to
+    the document via `<link>` elements and extracting any media queries defined in
+    them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We start by using jQuery's `each()` method to iterate the style sheet objects
+    stored in the `StyleSheets` collection of the `document` object. For each style
+    sheet, there will be an object in the collection that contains all of its selectors
+    and rules, including any media queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The collection that we're iterating consists of objects, so the callback function
+    we pass to the `each()` method will receive the index of the current object, which
+    we set to `x`, and the current object itself, which we set to `ss` as arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within our callback function we again use jQuery's `each()` method. This time
+    we're iterating the `rules` collection of the `ss` object passed into the callback
+    function. This collection will contain a series of objects. The callback function
+    we pass to this incantation of the method will receive the index once again, this
+    time set to `y`, and the current object, this time set to `rule`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The type of object will differ depending on what it is. It may be a `CSSImportRule`
+    for `@import` statements, a `CSSFontFaceRule` for `@font-face` rules, a `CSSStyleRule`
+    for any selectors defined by the style sheet, or a `CSSMediaRule` for any media
+    queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are only interested in the `CSSMediaRule` objects, so within the callback
+    in the nested `each()` we first check whether the rule object has a `media` property
+    and if the media property has a `length`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Only `CSSMediaRule` objects will have a `media` property, but this property
+    may be empty, so we can check for the presence of this property and check that
+    it has `length` using an `if` conditional within the nested callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If both of these conditions are `true` (or truthy) we know we've found a media
+    query. We first set a couple of new variables. The first variable is the first
+    item of the `media` collection, which will contain the text string defining the
+    media query, and the second is an object called `mq` that we'll use to store the
+    breakpoints of the media query.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set two properties of this object – the `min` and `max` values of the media
+    query. We set the `min` property by checking whether the text string contains
+    the word `min`. If it does we first split the string on the term `min-width:`
+    and take the second item in the array that the `split()` function will return,
+    and then split this resulting string on the term `px` and take the first item.
+    We can chain `split()` like this because the function returns an array, which
+    is also what it is called on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the string does not contain the word `min` we set the value to `0`. We do
+    the same to extract the `max-width` if there is one. If there isn't a `max-width`,
+    we set it to the string `none`. Once we've created our `layout` object we push
+    it into the `layouts` array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we sort our breakpoints array so that it is in ascending order. We can
+    do this by passing a sorting function to JavaScript's `sort()` method, which is
+    called on an array. The function we pass in will receive two items from the array
+    we are sorting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `min` property of first object is less than the `min` property of the
+    second `b` object, the function will return a negative number, which puts the
+    smaller number before the larger number in the array – exactly what we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So we'll end up with an array where each item is a specific breakpoint, which
+    increases throughout the array, making checking against it later on to detect
+    which breakpoint is being applied much easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we need to send this data to the server, potentially so that it can be
+    saved. The only options we need to set for this request are the URL to make the
+    request to, and the `data` option which we use to post the URL of the page and
+    the array of media queries to the server. The AJAX defaults we set earlier will
+    also be used of course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you're familiar with media queries already, feel free to skip to the start
+    of the next task; if not we'll just look at them briefly here so that we all know
+    what our script is trying to do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A media query is like an `if` conditional, but expressed in CSS. A media query
+    in a CSS file will look something like the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The statement begins with `@media` to signify a media query. The query specifies
+    a medium, such as `screen`, and optionally additional conditions, such as `max-width`
+    or `min-width`. The styles contained within the query will only be applied if
+    the query is satisfied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Media queries are one of the staples of responsive web design, the other being
+    relative dimensions. Typically, a responsively built web page will have one or
+    more media queries that allow us to specify different layouts for a range of screen
+    sizes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each media query we include will set a breakpoint between layouts. When a breakpoint
+    is exceeded, such as when the maximum width of the device is less than `320px`
+    in the previous media query, the layout changes as directed by the media query.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Capturing visitor clicks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we need to build the part that captures any clicks that occur on
+    the page. While the page is open we want to record information about the layout
+    and the click itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can capture clicks and record the other information we want to store using
+    the following code, which should be added directly after the `ajax()` method that
+    we added to `heat-map-client.js` in the last task:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can listen for clicks on the page by adding a handler using jQuery's `on()`
+    method, and we'll also want to ensure that any images in the page have loaded
+    fully before we start capturing clicks, because images will affect the height
+    of the document, and that in turn will affect our calculations. Therefore we need
+    to attach our event handler inside the callback function for the `imagesLoaded()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We specify `click` as the event to listen for as the first argument, but also
+    namespace the event with `jqHeat`. We'll probably want to use this on a range
+    of pages, each of which may have its own event handling code that we don't want
+    to interfere with this code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the event handler we first need to set up some variables. The function
+    receives the event object as an argument and we use this to set our first two
+    variables, which store the `x` and `y` positions of the click. This figure will
+    represent pixel points on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then store the width and height of the document. The reason we store this
+    on every click is because the width, and therefore the height of the document,
+    may change while the page is open.
+  prefs: []
+  type: TYPE_NORMAL
+- en: People say that only developers resize their browsers while they are testing
+    responsive builds, but this is not always the case. Depending on the breakpoints
+    defined by any media queries in use, a change in device orientation could affect
+    the width and height of the document, which could happen at any time after the
+    page has loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We define the `layout` variable next but we don't assign a value to this for
+    now. We also create a new object to represent the click. Within this object we
+    initially store the click coordinates as percentages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Converting the pixel coordinates into percentage coordinates is a trivial operation
+    that simply involves dividing the pixel coordinate by the width (or height) of
+    the document and then multiplying the figure by `100`. We use JavaScript's `Math.ceil()`
+    function so that the number is rounded up to the next integer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we need to determine which layout we are in. We can iterate our `layouts`
+    array using jQuery's `each()` method again. The callback function receives the
+    index of the current item in the `layouts` array as the first argument and the
+    second is the actual object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the callback function we first set our variables. This time the variables
+    we need are the minimum width of the layout, which we set to either the `min`
+    property of the object, or zero if there is no `min` defined. We also set the
+    `max` variable to either the `max` property of the current item, or the `width`
+    of the document if there is no `max` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our last variable simply adds `1` to the current index. The index will be zero-based
+    but it makes more sense for our layouts to be labeled `1` to the number of layouts
+    instead of `0` to the number of layouts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use an `if` conditional to figure out which layout is currently being
+    applied. We first check whether the current document width is greater or equal
+    to the minimum value for the media query and less than or equal to the maximum.
+    If it is, we know we're inside the current layout and so save the converted layout
+    index to our `click` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we haven't matched any of our layouts, the browser must be larger than the
+    highest `max-width` value defined by a media query, so we set the layout to the
+    converted layout plus one again. Lastly we add the `click` object that we've created
+    to the `clicks` array in our `clickStats` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Saving the click data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Someone has visited a page on which our heat map client script is running, they've
+    clicked around, and our script so far has recorded each of those clicks. Now what?
+    Now we need a way of transmitting that information to the server for permanent
+    storage and display in the management console. This is what we'll look at in this
+    task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can ensure that any captured clicks are sent to the server for permanent
+    storage using the following code, which should be added after the `imagesLoaded()`callback
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We attached a handler for the `beforeunload` event to the `window` object in
+    order to post the data to the server before leaving the page. Unfortunately, this
+    event isn't handled 100 percent of the time – there may be occasions when it doesn't
+    fire.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to minimize this as much as possible we've attached the event handler
+    directly to the native `window` object, not the jQuery wrapped one, which we can
+    access via the first item in the array that is the jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using any jQuery method, including `on()`, adds overhead in that jQuery method,
+    and as the underlying JavaScript functions are invoked. To reduce this overhead
+    as much as possible we avoid using jQuery here and revert back to the old-school
+    way of attaching event handlers by prefixing the event name with `on` and assigning
+    a function as their value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we need to do inside this function is post the data to the server so that
+    it can be inserted into a database. We use jQuery's `ajax()` method to make the
+    request, and set the `async` option to `false` to make the request synchronous.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is important and will ensure the request is made in Chrome. We're not interested
+    in a response from the server anyway – we just need to ensure the request is made
+    before the page unloads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set the `type` to `POST` as we're sending data to the server, and set
+    the `contentType` to `application/json`, which will set the appropriate headers
+    for the request to ensure that the data is handled correctly on the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `url` is clearly the URL for the web service that we're sending the data
+    to, and we set the `dataType` to `json`, which again can help to make consuming
+    the data on the server easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we stringify the `clicks` array and wrap it in an object using the browser's
+    native JSON engine. We send the stringified data to the server using the `data`
+    option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, when a page that this script is attached to is opened, the script
+    will run quietly in the background recording the coordinates of any points on
+    the page that are clicked. When the user leaves the page, the click data they've
+    generated is dispatched to the server for storage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Browsers that do not have a JSON engine, such as Version 7 of Internet Explorer
+    and below, will not be able to run the code we added in this task, although there
+    are polyfill scripts that can be used in these situations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information see the JSON repository at Github ([https://github.com/douglascrockford/JSON-js](https://github.com/douglascrockford/JSON-js)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the management console
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I said at the start of this project that we wouldn't need to write any HTML
+    or CSS. That was a minor exaggeration; we'll have to build the management console
+    page ourselves, but don't worry, we won't have to write much – most of what we'll
+    display on the page will be created dynamically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create a new HTML page based on our standard template file called `console.html`
+    and save it in the `simplex` directory that we've been working in for this project.
+    Next create a new script file called `console.js` and save it in the same folder.
+    Lastly, create a new style sheet called `console.css` and save it in the `css`
+    folder inside the `simplex` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should link to the new style sheet from the `<head>` of our new HTML page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We should also link to jQuery and our new script file at the bottom of the
+    `<body>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we should add the class name `jqheat` to the `<body>` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The page will need to display an interface that can be used to select a page
+    to view the click stats for. Add the following code to the `<body>` of `console.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add some very basic CSS for these elements. Add the following code
+    to `console.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this task we won''t add any real functionality, but we can prepare our script
+    file with the usual `document ready` handler in preparation for the next task.
+    In `console.js`, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our page starts out with a `<header>` element that contains a heading for the
+    page in `<h1>` and `<fieldset>`. Inside the `<fieldset>` is the mandatory `<legend>`
+    and a very simple UI for the page, which consists of a single `<input>` and a
+    `<button>` element. Both the `<input>` and the `<button>` elements have `id` attributes
+    so that we can easily select them from the page in our script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main content area of the page consists of a `<section>` element, which is
+    given a `role` attribute of `main`. It's standard practice to markup the main
+    content area of the page using this attribute, which helps clarify the intent
+    of the area to assistive technologies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `<section>` is an `<iframe>`. We'll use the `<iframe>` to display
+    the page the user wants to view click statistics for. For now it just has an `id`
+    attribute, again so that we can select it easily, and the non-standard `scrolling`
+    attribute set to `no`. I'm not a huge fan of using non-standard attributes, but
+    in this case it is the simplest way to prevent the `<iframe>` having a pointless
+    scrollbar when the content document is loaded into it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a high chance of the page causing a scrollbar, and rather than have
+    the movement that occurs when the scrollbar appears, we may as well set the `<body>`
+    of our page to have a vertical scrollbar permanently, which we do in the CSS.
+    Other than this, the CSS is mostly just positional stuff which we won't look at
+    too deeply.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used the HTML5 `placeholder` attribute on our `<input>` element, which in
+    supporting browsers displays the text added as the value of the attribute inside
+    the `<input>`, acting as an inline label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is useful because it means we don't have to add a whole new element just
+    to display a `<label>`, but support, while good at the time of writing, is not
+    100 percent. Luckily there are some excellent `polyfills` that handle providing
+    a sensible fallback in un-supporting browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are a whole range of `placeholder` polyfills (and many more besides) recommended
+    by the Modernizr team. You can see the list in full by visiting [https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills](https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Requesting click data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The console page starts out almost empty, containing mostly a form for loading
+    the page that we want to view click data for. In this task we'll look at how we
+    can load that page and request its data from the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Start out by adding the following code to the empty function in `console.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can then add a click handler for the `<button>` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, we can add an event handler for the custom `iframeloaded` event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We began, as we usually do, by setting some variables. We stored a reference
+    to the `document` object wrapped in jQuery, which we can use to select any element
+    on the page using this reference as a starting point, without creating a new jQuery
+    object each time we select an element or bind an event handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also stored a reference to the `<input>` element that will contain the URL
+    of the page, a reference to the `<button>` next to the `<input>`, and the `<iframe>`
+    that we'll render the requested page into. Lastly we set an undefined variable
+    called canvas, which we'll use to store a reference to a `<canvas>` element that
+    we create using JavaScript's `createElement()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could use jQuery to create this element of course, but we're only creating
+    a single element as opposed to a complex DOM structure, so we may as well use
+    plain JavaScript and get a performance boost at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As before we can use the `ajaxSetup()` method to set the `type`, `contentType`,
+    and `dataType` options for the requests that we'll be making to the server. We
+    also used a converter to transform the data that will be returned by the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `converters` option takes an object where the data type the converter should
+    be used for is specified as a key, and the function to use as the converter is
+    specified as a value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some servers will return JSON data wrapped in an object and stored in the property
+    `d` for security, while other servers do not do this. Usually the `text json`
+    data type would be parsed using jQuery's `parseJSON()` method, but in this case
+    our code would still need to extract the actual data from the object before it
+    could be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead our converter parses the JSON using the browser's native JSON parser
+    and then returns either the contents of `d` if it exists, or the parsed data.
+    This means that the code which processes the data is the same regardless of whether
+    the data is wrapped in an object or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While not critical in this particular example, converters can be extremely useful
+    in situations where code is being distributed and the platform on which it will
+    run is not known in advance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we added a click handler to the `document` using jQuery's `on()` method
+    in event-delegation mode. To add a delegated handler, we attach the handler to
+    a parent element, in this case `document`, and use the second argument to `on()`
+    to provide a selector that events should be filtered against.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events bubble up the page, from the triggering element right up to the outer
+    `window` object. The handler is only executed when the triggering element matches
+    the selector passed as the second argument. The first argument is of course the
+    type of event, and the third argument is the handler function itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the function we first prevent the default browser action for the event
+    and then store the value of the `<input>` element in the variable `url`. We also
+    set an undefined variable called `len`. We don't need to use that yet, but we
+    will later on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we check whether the `url` variable we set has a truthy value, like a string
+    with length for example. If it does, we remove the class name `empty` if the `<input>`
+    element has it, then set the contents of the `<input>` as the element's data using
+    jQuery's `data()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Associating the URL to the element in this way is a great way to persist the
+    data so that it can be obtained from other functions in the code which do not
+    have access to the event handler's scope. We also disable the `<button>` to prevent
+    duplicate requests. We can enable it later on when the heat map has been painted
+    to the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then added the URL that we obtained from the `<input>` element as the `src`
+    property of the `<inframe>`, which causes the `<iframe>` to load the page the
+    URL is for. We add a handler for the `load` event that will be fired by the `<iframe>`
+    once the page has loaded. Inside this handler we fire a custom `iframeloaded`
+    event using jQuery's `trigger()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `url` variable does not contain a truthy value, we add the `empty` class
+    to the `<input>` and enable the `<button>` once more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we added an event handler for the custom `iframeloaded` event. Custom
+    events will bubble up to the `document` just like regular events so we can attach
+    the handler to our cached `<body>` element and it will still be triggered at the
+    appropriate time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this handler we get the URL for the page that has been loaded by recalling
+    the data associated with the `<input>` element. We then make a request to the
+    server using jQuery's `ajax()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've already set some of the required AJAX options as defaults using `ajaxSetup()`
+    once again, so for this request we just set the `url` and the `data` options.
+    This time the data we send is a stringified object containing the URL of the page,
+    and the layout to get click data for. In response to this, we expect a JSON object
+    containing a series of click objects, where each object contains `x` and `y` coordinates
+    that refer to a specific point on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that at this point, we're hardcoding which layout to load into the request,
+    which we set to number `4`. We'll come back to this in the next part and allow
+    the user to select which layout to view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying a heat map
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're all set to display a heat map. In this task we'll process the click data
+    in order to generate the heat map, and then display it using the `<canvas>` element
+    on top of the `<iframe>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we can add a success handler for the AJAX request we made at the
+    end of the last task. We can do this by chaining the `done()` method to the `ajax()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can then add a handler for the custom `canvasready` event. This should be
+    added directly after the `iframeloaded` event handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once the AJAX request has completed, we first store the height of the document
+    that has been loaded in the `<iframe>`. The jQuery method may be passed a second
+    argument after the selector, which sets the context that should be searched to
+    match the selector. We can set the context to be the `contentDocument` object
+    of the first `<iframe>` on the page, which we can access using `frame[0]`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the `height` of the `<section>` element will automatically make the
+    `<iframe>` and the `<canvas>` element that we created earlier the `width` and
+    `height` of the `<section>` so that the page can be viewed full size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we set the `width` and `height` properties of the `<canvas>` element we
+    created in the last task. We haven't set the `width` or `height` attributes of
+    the `<canvas>` element yet, so by default it will only be 300 x 300 pixels in
+    size, regardless of its visible size as set by the CSS. We therefore set the attributes
+    to the correct sizes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then append the new `<canvas>` to the `<section>` element on the page,
+    and then fire the custom `canvasready` event. We're going to want to use the data
+    passed by the server in an event handler for this event, so we pass this to the
+    handler function using the second argument of the `trigger()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then added a handler for the `canvasready` event. This function receives
+    the event object and the click data as parameters. Within the function we first
+    get the `width` and `height` of the `<canvas>` element. We stored the click data
+    as percentages and we'll need to convert them back to pixel values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to paint on the `<canvas>`, we'll need to get a context. We can get
+    a 2D context for the `<canvas>` and store it in a variable using the `getContext()`
+    function of the canvas object. If the `<canvas>` element isn't supported, the
+    `ctx` variable will be set to `null`. We can then only proceed to interact with
+    the canvas if the context is not `null`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `ctx` is not `null`, we first clear the `<canvas>` using the `clearRect()`
+    function of the canvas API and then set the color that we'll be painting on the
+    canvas. We can set it to the RGBA (Red, Green, Blue, Alpha) string `0,0,255,.05`
+    which is a semi-transparent blue. This only needs to be set once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then iterate over the click data returned by the server using jQuery's `each()`
+    method. The iterator function, which will be executed for the number of items
+    in the clicks array, is passed the index of the current item in the array and
+    the `click` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first store the `x` and `y` positions of each pixel that was clicked. These
+    figures are currently percentages, so we need to convert them back to pixel values.
+    This is just the opposite calculation that we performed in the client part of
+    the heat map. We just multiply the percentage by the `width` or `height` of the
+    `<canvas>` and then divide that figure by `100`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can then paint a dot on the `<canvas>` where the click occurred. We do this
+    by starting a new path using the `beginPath()` method of the canvas object. The
+    dot is drawn using the `arc()` method, which is passed a number of arguments.
+    The first two are the coordinates of the center of the arc, which we set to the
+    `x` and `y` values we've just calculated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The third argument is the radius of the circle. If we set the dot to be a single
+    pixel the data would be quite difficult to interpret, so using a large dot instead
+    of a single pixel improves the appearance of the heat map dramatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The third and fourth arguments are the angles to start and stop the arc at,
+    and are in radians not degrees. We can paint a complete circle by starting at
+    zero radians and ending on about 6.5 radians.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the arc has been defined, we can close the path using the `closePath()`
+    method and fill the arc with color using the `fill()` method. At this point we
+    should be able to run the console in a browser, enter the URL of one of the template
+    pages, and see the page with dots on it corresponding to the clicks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Allowing different layouts to be selected
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task of the project, we need to allow the user to select each layout
+    supported by the page. We can do this by using a `<select>` box which we populate
+    at page load with each of the different layouts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we can add the `<select>` element to the page. This can go in
+    between the search field and the button at the top of the page in `console.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next we need to make a request at page load to populate the `<select>`element
+    with an `<option>` for each of the different layouts. We can do this in the click
+    handler for the `<button>` that we added in `console.js` earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It will need to go into the first branch of the conditional that checks a URL
+    has been entered into the `<input>`, directly before where we set the `src` of
+    the `<iframe>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add a little CSS for our new `<select>` element. We can just drop
+    this into the bottom of `console.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First of all, we make the request to the server to get the layout information.
+    The `url` is set to a web service that returns the layouts and the `data` is the
+    URL of the page we'd like the layouts for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set a success handler using the `done()` method as is the recommended technique
+    for adding success handlers to promise objects for when they become resolved.
+    Within the handler we first set some variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We create an `<option>` element as we'll need one of these for each layout and
+    so can clone it as many times as we need by using the `clone()` method. We also
+    update the `len` variable that we created earlier but left undefined, to the number
+    of layouts, which is the `length` of the array the function will receive, and
+    an undefined variable called `max`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we define a function called `optText()` that we can use to generate the
+    text for each `<option>` element we create. This function will accept the type
+    of string to create, the index, and the min and max values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside this function we set a couple of variables. The first, called `s`, is
+    undefined at this point. The second variable `t1` is used to store some simple
+    text that is used in each variant of the string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we use a `switch` conditional to determine which string to build based
+    on the type, which will be passed into the function as the first parameter and
+    will be set to `normal`, `lastNoMax`, or `lastWithMax`, and which should account
+    for the different types of media query that may be found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the `normal case`, we specify the `min` and `max` values. When there is no
+    `max` value, we build the string using the `min` value and when there is a `max`
+    value, we build the string using the `max` value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each string is constructed using an array, then at the end of the function we
+    return a string by joining whichever array was created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use jQuery's `each()` method to iterate over the `layouts` object returned
+    by the server. As always, the iterator function is passed the index of the current
+    item and the current item itself as parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the iterator function, we set our variables, which in this case are the
+    `min` and `max` property values from the current layout object, and the normal
+    variant of the text string, which we're definitely going to use at least once.
+    We call our `optText()` function and store the result for later use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check whether we're on the last iteration, which we'll know when the
+    index is equal to the length of the `layouts` array, which we stored earlier,
+    minus `1`. If we are on the last iteration we then check whether the `max` value
+    is equal to the string `none`. If it is, we call our `optText()` function again
+    and set the text to the `lastNoMax` type, which generates the required text string
+    for us. If it isn't we set the `max` variable, which we initially declared as
+    undefined to the `max` value of the current object. Lastly, we create the `<option>`
+    element required for each object in the `layouts` array. The `<option>` is given
+    the text that we've set, and the value of the index plus `1`. Once created, the
+    `<option>` is appended to the `<select>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we check whether the `max` variable has a truthy value. If it does, we
+    call our `optText()` function once more, this time using the `lastWithMax` type,
+    and create another `<option>` element, which we set as the selected item. This
+    is required because we have one more layout than we have objects in the `layouts`
+    array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run the page in a browser now, we should find that as soon as we enter
+    a URL into the `<input>` and hit the load page, the `<select>` element becomes
+    populated with an `<option>` for each of the layouts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The middle `case` (`lastNoMax`) in the `switch` statement in our `optText()`
+    function actually won't be used in this example because of how the media queries
+    in the template we're using are structured. In this example the media query for
+    the last break point is `769px` to `1024px`. Sometimes, media queries may be structured
+    so that the final breakpoint contains just a `min-width`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I've included this `case` of the `switch` to make the code support this other
+    type of media query format as it is quite common and you're likely to run into
+    it when using media queries yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Showing heat maps for each layout
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have each of the layouts in the `<select>` element, we can wire
+    it up so that when the selected layout is changed, the page is updated to show
+    the heat map for that layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this task we'll need to modify some of the code written in a previous task.
+    We need to change the click handler for the `<button>` so that the layout isn't
+    hardcoded into the request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all we need to pass the `len` variable to the handler for the `iframeloaded`
+    event. We can do this by adding a second argument to the `trigger()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we need to update the callback function so that this object is received
+    by the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can change the bit where we hardcoded layout `4` into the data passed
+    to the server when making the request for click data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we''re ready to update the heat map when `<select>` is changed. Add the
+    following code directly after the `canvasready` handler in `console.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We begin by delegating our handler to the document as we have with most of our
+    other event handlers. This time we're listening for the `change` event triggered
+    by the element with an `id` of `layouts`, which is the `<select>` element we added
+    in the last task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then continue following the previous form by setting a few variables. We
+    get the URL saved as the `data` of the `<input>` element. We also cache the `<select>`
+    element and the value of the selected `<option>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we need to make an AJAX request to get the heat map for the selected layout.
+    We set the `url` to a web service that will return this information, and send
+    the `url` we want the heat map for, and the layout, as part of the request. Don't
+    forget that this request will also use the defaults we set using `ajaxSetup()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `done()` method once again to add a success handler for the request.
+    When the response is received we first remove the existing `<canvas>` element
+    from the page, and then set some more variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first two variables are undefined to begin with; we'll populate these in
+    just a moment. We store the `<option>` that was selected so that we can get its
+    text, which is stored in the next variable. We get the minimum width of the breakpoint
+    by splitting the text that we've just stored, and then cache a reference to the
+    `<section>` on the page. Lastly we create a new `<canvas>` element to display
+    the new heat map.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The conditional if statement that follows the variable deals with setting the
+    first of our undefined variables – `width`. The first branch tests whether the
+    layout requested is the last layout, and if so, sets the new `<canvas>` to the
+    width of the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the last layout was not requested, the next branch of the conditional checks
+    whether the minimum width of the layout is greater than `0`. If it is, the `width`
+    variable is set to the minimum breakpoint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final branch is used when the minimum width of the breakpoint is `0`. If
+    the minimum width is `0`, we use the maximum `width` of the breakpoint instead,
+    which we can obtain by splitting the text of the `<option>` once more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then set the width of the `<section>` element and the new `<canvas>` element
+    using the width that we've just computed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following this we can define our second undefined variable – `loadedHeight`.
+    This is calculated in the same way as it was before, by reaching into the document
+    loaded into the `<iframe>` and getting the height of its `document` object using
+    jQuery's `outerHeight()` method, which includes any padding the element may have.
+    Once we have this value, we can then set the height of the `<section>` element
+    and the new `<canvas>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're about to trigger our `canvasready` event once more, as this will consume
+    the click data and generate the heat map. Before we do that however, we just need
+    to save the newly created `<canvas>` element back to the `canvas` variable that
+    we set right at the top of `console.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point we should be able to load the default heat map for a URL, then
+    use the `<select>` element to view the heat map for another layout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: I've used an **MS SQL** database to store the data, and a **c#** web service
+    containing various web methods required for this project. Included in the code
+    download accompanying this book is a backup of the database and a copy of the
+    web service file for you to use if you wish.
+  prefs: []
+  type: TYPE_NORMAL
+- en: MS SQL express is a free version of SQL server which the database can be restored
+    to, and Visual Studio 2012 for web, which is also free, will happily run the web
+    service through its built-in development server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you don't have these products installed, and you have access to a Windows
+    machine, I'd strongly recommend you install them so that you can see the code
+    used in this project in action. The open source alternatives PHP and MySQL could
+    also be used just as easily, although you'll need to write this code yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we built a simple heat map generator that captured click data
+    on web pages built using responsive techniques. We built two parts to the heat
+    map generator – some code that runs in the browsers of the visitors of the website
+    to capture every click on the screen, and a part that is used in conjunction with
+    a simple management console in which the URL of the page the heat map is for,
+    and the layout to display can be selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While we have to allow a margin of error to account for the pixel-to-percentage
+    conversion and back again, different screen resolutions, and the range between
+    different breakpoints, this easy-to-implement heat map can still give us valuable
+    information about how our site is used, which features are popular, and which
+    features are wasted screen space.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One thing we haven't dealt with is color. Our heat map is built by dots of a
+    uniform blue. As they're semi-opaque, they get darker as more dots appear in a
+    condensed area, but with enough data, we should aim to change the color, going
+    through red, yellow, and right up to white for the most-clicked areas. See if
+    you can add this functionality yourself to really top the project off.
+  prefs: []
+  type: TYPE_NORMAL

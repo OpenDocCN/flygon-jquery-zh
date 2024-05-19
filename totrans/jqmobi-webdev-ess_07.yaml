@@ -1,0 +1,269 @@
+- en: Chapter 7. Creating Modal Dialogs, Grids, and Collapsible Blocks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will look at dialogs, grids, and collapsible blocks. In
+    the previous chapters we've dealt with pages, buttons, and form controls. While
+    jQuery Mobile provides great support for them, there are even more UI controls
+    you get within the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discuss how to link to and create dialogs also how to handle leaving them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Demonstrate grids and how you can add them to your pages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Show how collapsible blocks allow you to pack a lot of information in a small
+    amount of space
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating dialogs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Dialogs: at least under the jQuery Mobile framework: are small windows that
+    cover an existing page. They typically provide a short message or question for
+    the user. They will also typically include a button that allows the user to dismiss
+    the dialog and return back to the site. Creating a dialog in jQuery Mobile is
+    done by simply adding a simple attribute to a link: `data-rel="dialog"`. The following
+    listing demonstrates an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a simple, multi-page jQuery Mobile site. Notice how we link to the
+    second and third page. The first link is typical. The second link, though, includes
+    the `data-rel` attribute mentioned earlier. Notice that both the second and third
+    page are defined in the usual manner. So the only change we have here is in the
+    link. When that second link is clicked, the page is rendered completely differently:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating dialogs](img/7263_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Remember, that page wasn't defined differently. The change you see in the previous
+    screenshot is driven by the change to the link itself. That's it! Clicking the
+    little **X** button will hide the dialog and return the user back to the original
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Any link within the page will handle closing the dialog as well. If you wish
+    to add a cancel type button, or link, you can do so using `data-rel="back"` in
+    the link. The target of the link should be to the page that launched the dialog.
+    `Listing 7-2` shows a modified version of the earlier template. In this one, we've
+    simply added two buttons to the dialog. The first button will launch the second
+    page, while the second one will act as a **Cancel** action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The major change in this template is the addition of the buttons in the dialog,
+    contained within `page3 div`. Notice the first link is turned into a button, but
+    outside of that is a simple link. The second button includes the addition of the
+    `data-rel="back"` attribute. This will handle simply dismissing the dialog. The
+    following screenshot shows how the dialog looks with the buttons added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating dialogs](img/7263_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Laying out content with grids
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Grids are one of the few features of jQuery Mobile that do not make use of particular
+    data attributes. Instead, you work with grids simply by specifying CSS classes
+    for your content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Grids come in four flavors: Two column, Three column, Four column, and Five
+    column. (You will probably not want to use the five column on a phone device.
+    Save that for a tablet instead.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You begin a grid with a `div` block that makes use of the class `ui-grid-X`,
+    where `X` will be either `a, b, c`, or `d. ui-grid-a` represents a two column
+    grid. `ui-grid-b` is a three column grid. You can probably guess what `c` and
+    `d` create.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So to begin a two column grid, you would wrap your content with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Within the `div` tag, you then use a `div` for each "cell" of the content. The
+    class for grid calls begins with `ui-block-X`, where `X` goes from `a` to `d.
+    ui-block-a` would be used for the first cell, `ui-block-b` for the next, and so
+    on. This works much like HTML tables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting it together, the following code snippet demonstrates a simple two column
+    grid with two cells of content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Text within a cell will automatically wrap. `Listing 7-3` demonstrates a simple
+    grid with a large amount of text in one of the columns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the mobile browser, you can clearly see the two columns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Laying out content with grids](img/7263_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Working with other types of grids then is simply a matter of switching to the
+    other classes. For example, a four column grid would be set up similar to the
+    following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, keep in mind your target audience. Anything over two columns may be too
+    thin on a mobile phone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create multiple rows in a grid, you simply repeat blocks. The following
+    code snippet demonstrates a simple example of a grid with two rows of cells:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Notice that there isn''t any concept of a row. jQuery Mobile handles knowing
+    that it should create a new row when the block starts over with the one marked
+    `ui-block-a`. The following code snippet, `Listing 7-4` is a simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Laying out content with grids](img/7263_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Working with collapsible content
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The final widget we will look at in this chapter supports collapsible content.
+    This is simply content that can be collapsed and expanded. Creating a collapsible
+    content widget is as simple as wrapping it in a div, adding `data-role="collapsible"`,
+    and including a title for the content. Consider the following simple example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Upon rendering, jQuery Mobile will turn the title into a clickable banner that
+    can expand and collapse the content within. Let''s look at a real example. Imagine
+    you want to share the location of your company''s primary address. You also want
+    to include satellite offices. Since most people won''t care about the other offices,
+    we can use a simple collapsible content widget to hide the content by default.
+    The following code snippet, `Listing 7-5` demonstrates an example of this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can see that the other offices are all wrapped in the `div` tag using the
+    new collapsible content role. When viewed, notice that they are hidden:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with collapsible content](img/7263_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Clicking the **+** next to the title opens it, and can be clicked again to
+    reclose it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with collapsible content](img/7263_07_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'By default, jQuery Mobile will collapse and hide the content. You can, of course,
+    tell jQuery Mobile to initialize the block open instead of closed. To do so, simply
+    add `data-collapsed="false"` to the initial `div` tag. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This region will still have the ability to collapse and open, but will simply
+    default to being opened initially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another option for collapsible content blocks is the ability to theme the content
+    of the area that is collapsed. By providing a `data-content-theme` attribute,
+    you can specify a background color that makes the region a bit more cohesive.
+    Theming is covered in [Chapter 11](../Text/ch11.html "Chapter 11. Enhancing jQuery
+    Mobile"), *Theming jQuery Mobile*, but we can take a look at a quick example.
+    In the following screenshot, the first region does not make use of the feature,
+    while the second one does:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with collapsible content](img/7263_07_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Notice that the icon is also shifted to the right. This demonstrates another
+    option, `data-iconpos`. The following code snippet, found in the code folder as
+    `test5-2.html`, demonstrates these options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, you can take multiple collapsible regions and combine them into one
+    called an accordion. This is done by simply taking multiple collapsible blocks
+    and wrapping them in a new `div` tag. This `div` tag makes use of `data-role="collapsible-set"`
+    to make the inner blocks as one unit. `Listing 7-6` demonstrates an example of
+    this. It takes the earlier office address example and uses a collapsible set for
+    each unique address:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In `listing 7-6`, we simply wrap four collapsible blocks with a `div` tag that
+    makes use of a collapsible set. Once done, jQuery Mobile will group them together
+    and automatically close one once another is open:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with collapsible content](img/7263_07_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned more about how jQuery Mobile enhances basic HTML
+    to provide additional layout controls to our mobile pages. With dialogs, we learned
+    how to provide a basic, quick, modal message to users. With grids, we learned
+    a new way to easily layout content in columns. Finally, with the collapsible content
+    blocks, we learned a cool way to share additional content without taking up as
+    much screen space.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we demonstrate a full, real example that creates a basic
+    Note Tracker. It makes use of additional HTML5 features, as well as some of the
+    UI tips you've learned over the past few chapters.
+  prefs: []
+  type: TYPE_NORMAL

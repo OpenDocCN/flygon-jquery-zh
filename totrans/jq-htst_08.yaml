@@ -1,0 +1,656 @@
+- en: Chapter 8. Infinite Scrolling with jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Infinite scrolling is a technique employed by a lot of popular sites that minimizes
+    the amount of data loaded on a page initially, and then incrementally loads more
+    data when the user has scrolled to the bottom of the page. You can see this effect
+    on the Facebook or Twitter timelines among others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we'll build an infinite scrolling system using jQuery that mimics
+    the effect seen on sites such as those mentioned earlier. We'll make a request
+    for some data and display it on the page. Once the user has scrolled to the bottom
+    of the page, we'll make another request for the next page of data, and so on and
+    so forth as the user continues scrolling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we''ve built our infinite scrolling system, we should end up with something
+    similar to the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mission Briefing](img/9106OS_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have a lot of data to display and it can easily be arranged in reverse-chronological
+    order, using the infinite scrolling technique is an easy way to maximize the user
+    experience of the page with progressive disclosure – showing incrementally more
+    to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A small subset of the data, which will make the page load quicker, as well as
+    prevent your visitor being overwhelmed with data, can be displayed at first, which
+    gradually increases following user interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The data that we'll consume in this project will be a list of videos uploaded
+    to the TEDTalks channel on YouTube, in JSON format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember, JSON is a lightweight, text-based data format perfect for transportation
+    across networks. For more information on JSON, see [http://www.json.org/](http://www.json.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are thousands of videos that can be found on this channel, so it makes
+    a good test bed for our project. Data that can be sorted into a time-based order
+    makes a great basis for an infinite scroller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The TEDTalks channel can be viewed directly on the YouTube website at [http://www.youtube.com/user/tedtalksdirector](http://www.youtube.com/user/tedtalksdirector).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This project will be broken down into the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the underlying page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting the initial feeds
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displaying the initial set of results
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling scrolling to the bottom of the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mission Checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can link to the hosted version of JsRender like we did in some of our previous
+    examples, but in this project we're going to make use of a handy little jQuery
+    plugin called imagesLoaded, which allows us to fire a callback function when all
+    the images with a selected container have finished loading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The imagesLoaded plugin can be downloaded from [https://github.com/desandro/imagesloaded](https://github.com/desandro/imagesloaded)
+    and should be saved in our project's `js` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the underlying page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll set up the files that we're going to use throughout this
+    project and prepare the underlying page that our infinite scroller will reside
+    on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As usual we'll be using a custom style sheet for this project and a custom script
+    file, so let's add them first. Create a new JavaScript file called `infinite-scroller.js`
+    and save it in the `js` directory. Then create a new style sheet called `infinite-scoller.css`
+    and save it in the `css` directory. Lastly, save a copy of the `template.html`
+    file in the root project folder and call it `infinite-scroller.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The underlying markup used by the example page will be minimal – a lot of the
+    elements that we'll be working with will be generated dynamically by our template,
+    which we can also add in this task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all we should add references to our new files to the HTML page. Start
+    by adding a `<link>` element for the style sheet to the `<head>` of `infinite-scroller.html`,
+    directly after the link to `common.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can link to the two new JavaScript files. Add the following `<script>`
+    elements directly after jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to add a simple container to render our data into. Add the following
+    code to the `<body>` of the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we can add the templates we'll use. In this project we'll use two templates
+    – one to render the outer container and user data, which will be rendered once,
+    and one to render the list of videos, which we can use repeatedly as required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As before, they will sit inside the `<script>` elements in the `<body>` of
+    the page. Before the existing `<script>` elements, add following new templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now for the video template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also add the styling for these elements now as well. In `infinite-scroller.css`,
+    add the following selectors and rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `ajax-loader.gif` image used in this project can be found in the accompanying
+    code download for this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So practically the entire page is built from the templates we added to the `<body>`
+    of the page, except for an empty `<div>` that will give us a container to render
+    the data into. The template contains the markup used not just for the list of
+    videos, but also information about the user whose videos we're displaying.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first template, the outer container for the data is a `<section>` element.
+    Within this is a `<header>` which displays information about the user, including
+    his/her profile picture, name, and bio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The actual bio returned by YouTube for a specified user can be quite long, so
+    we'll use the JavaScript `substring()` function to return a shortened version
+    of this summary. This function is passed two arguments; the first is the character
+    to start copying from and the second is the character to end on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second template the actual list of videos will be displayed in the`<ul>`
+    element added in the first template, with each video occupying an `<li>`. Within
+    each `<li>`, we have an `<article>` element, which is an appropriate container
+    for an independent unit of content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the `<article>`, we have a `<header>` containing some of the key information
+    about the video such as its title and a thumbnail. Following the `<header>`we
+    display a short summary of the video in a `<p>`, element. We also use our shortening
+    helper function `Truncate()`, starting at character 12.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we display some meta-information about the video such as the number of
+    plays, the number of likes, and the video's duration, using a `<dl>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use another helper function to display the duration in the video, `FormatTime()`.
+    YouTube returns the length of the video in seconds, so we can convert this into
+    a nicely formatted time string instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We used the `>` character to HTML-encode any data we insert into the page. It's
+    always best to do this as a security measure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS that was added was purely presentational; merely used to lay out the
+    page in a list format, and make it look slightly interesting and presentable.
+    Feel free to change any aspect of how the layout is styled, or the elements are
+    themed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The SEO-conscious among you will realize that a page that is built almost entirely
+    from AJAX delivered content is unlikely to be well placed in search results. Traditionally,
+    this would almost certainly have been true, but now we can use the awesome `pushState()`
+    method of the HTML History API to deliver a dynamic website that is completely
+    indexable by search engines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A complete description of `pushState()`is beyond the scope of this book, but
+    there are plenty of great examples and tutorials out there. Considered by many
+    to be the definitive guide to the History API is the documentation on Mozilla's
+    Developer Network, which includes a section on `pushState()`. You can see the
+    documentation at [https://developer.mozilla.org/en-US/docs/DOM/Manipulating_the_browser_history](https://developer.mozilla.org/en-US/docs/DOM/Manipulating_the_browser_history).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the initial feeds
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll focus on getting the initial set of data in order to create
+    the page when it first loads. We need to write our code so that the function for
+    getting the first page of data is reusable for any page of data so that we can
+    make use of it later on in the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can use the standard `document ready` shortcut provided by jQuery, just
+    like we have in a number of previous projects. We can get ready by adding the
+    following code to the `infinite-scroller.js` file that we create earlier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we can add the code that retrieves the data from YouTube. Replace
+    the comment in the preceding snippet of code with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we need to process the response a little. We can use the following code
+    to execute a callback function once both of the AJAX requests have completed,
+    which should be added directly after the code we added a moment ago:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We started out by defining a couple of variables. The first is an empty object
+    that we'll populate with the results of our AJAX requests. The second is an integer
+    that represents the index number of the first video we wish to get. YouTube videos
+    are not zero-based like regular JavaScript arrays, so we initially define the
+    variable with a value of `1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we added our two functions that we'll use to get our data. The first is
+    the request to get the profile data of the user whose feed we're going to be displaying.
+    We're only going to be using this function once, when the page initially loads,
+    but you'll see why it's important that we define the function as a variable in
+    this way in just a moment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second function will be reused, so storing it in a variable is a great way
+    to store it ready to be invoked whenever we wish to get a new page of video data.
+    It's important that these functions both return the `jqXHR` objects returned by
+    the `getJSON()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both of the requests use jQuery's `getJSON()` method to make the requests. In
+    the user request we only need to set the `v` and `alt` query parameters, which
+    are set in the object passed to `getJSON()` as the second argument. The user whose
+    profile data we want actually forms part of the URL we are making the request
+    to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The callback function for this request simply adds the contents of the `user.entry`
+    object received from the request to the `userdata` property of our `data` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second request requires slightly more configuration. We still set the API
+    version we want to use with the `v` parameter, but this time we set the format
+    of the response to be `jsonc` instead of `json`. In the callback function for
+    this request we store the array of videos in the `videodata` property of our `data`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**JSON-C** stands for json-in-script and is a format that Google can respond
+    with for some requests. Data returned in JSON-C format is generally more lightweight
+    and more efficient to process than the same response in JSON due to how Google''s
+    API has been engineered.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The properties that we need to use are only returned when this format is used.
+    The only reason we don't use it when requesting the user data is because there
+    is not a JSON-C response for that particular query.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on JSON-C responses from Google's APIs, see the documentation
+    at [https://developers.google.com/youtube/2.0/developers_guide_jsonc](https://developers.google.com/youtube/2.0/developers_guide_jsonc).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we make use of jQuery's `when()`method to initiate both of our requests,
+    and then use the `done()` method to execute a callback function once both of the
+    `jqXHR` objects have been resolved. This is why it was important that the single-use
+    `getUser()` function is structured in the same way as the reusable `getData()`
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the callback function for `done()`, we first increment the `startIndex`
+    variable by 25 so that when we make another request we get the next "page" of
+    25 videos. As we have the first page of data now, when we use the `getData()`
+    function later on, we'll automatically get the "next" page of results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `when()` and `done()` methods are the preferred way of handling asynchronous
+    operations since jQuery 1.5.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we just need to do a little processing of our `userdata` object.
+    There's a whole bunch of data we don't need to use, and some of the data we do
+    need to use is buried within nested objects, so we simply create a new object
+    called `clean` and set just the data we need on this object directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once this has been done we can save our clean object back to our `data` object,
+    overwriting the original `userdata` object. This should make the object easier
+    to process in our template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying the initial set of results
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have data being returned by YouTube's API, we can render our template.
+    However, in order to render our template, we need to add helper functions used
+    to format some of the data. In this task we can add those helper functions and
+    then render the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The template helpers don''t need to reside within the `$.done()`callback function.
+    We can add them directly before this code in `infinite-scroller.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we just need to register the helper functions. Directly after the previous
+    code add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly we can render our template. We want a function that we can call from
+    anywhere in our code, ready for when we make further requests later on. Add the
+    following code after registering the helper functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we just need to call this function at the end of our `$.done()` callback
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our first helper function, `truncate()` is ultra-simple. We simply return a
+    shortened version of the string that the function receives as an argument. The
+    `substring()` function takes two arguments; the first is the position in the string
+    to begin copying at, and the second argument is the number of characters to copy,
+    which we fix at `200`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To show that the string has been shortened, we also append an ellipsis to the
+    end of the returned string, which is why we use a helper function here, instead
+    of using a substring in the template directly as we did earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `formatTime()` helper function is a little more complex, but still relatively
+    straightforward. This function will receive a time in seconds, which we want to
+    format into a slightly nicer string that shows the hours, if there are any, the
+    minutes, and seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first create an empty array to store the different components of the string.
+    We then create a number of variables to hold the hours, minutes, and seconds portions
+    of the time string we're going to create.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The hours are calculated by dividing the total number of seconds by 3600 (the
+    number of seconds in an hour). We use `Math.floor()`on it so that we only get
+    a whole number result. We need to calculate the minutes slightly differently because
+    we need to take into account the hours if there are any.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the modulus operator (`%`) here to remove any hours first and then divide
+    the remainder by `60`, which will tell us either the total number of minutes or
+    the remaining minutes after the hours have been accounted for. To work out the
+    number of seconds, we just need to use the modulus operator again and the value
+    `60`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use a series of conditionals to determine which of the variables to
+    add to the array. If there are any hours (which is unlikely given the nature of
+    the videos) we push them into the array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there are less than `10` minutes, we add `0` to the minutes figure and then
+    push it into the array. If there are more than `10` minutes we just push the `mins`
+    variable into the array. The same logic is applied to the `secs` variable before
+    it is pushed into the array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This function returns a nicely formatted time by joining the items in our array
+    and using a colon as the separator. The string will be in the format `H:MM:SS`
+    or `MM:SS` depending on the length of the video. Then we registered the helper
+    functions with the template using JsRender's `helpers` object, which is itself
+    nested within the `views` object, which is added to jQuery by the templating library.
+    The helper functions we wish to add are set as the values in an object literal,
+    where the keys match the function calls in our template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we added a function that we can call in order to render our template. The
+    `renderer()` function takes a single argument, which is a Boolean specifying whether
+    to render both the container template and video template, or just the video template.
+    Inside the function we first cache a reference to the outer container of the video
+    list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `renderOuter` argument has a truthy value (that is if it specifically
+    holds the value `true`), we render the `containerTemplate` and append it to the
+    empty `<div>` we added to the `<body>` of the page. We then render the `videoTemplate`,
+    appending the rendered HTML to the `<ul>` that is added by the `containerTemplate`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly we called our `renderer()` function for the first time, passing `true`
+    as the argument to render both the containers and the initial list of videos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling scrolling to the bottom of the page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we've got the first page of videos, we want to add a handler that monitors
+    the window for scroll events and detects when the page has been scrolled right
+    to the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First of all we need to add a couple of new variables. Change the very first
+    set of variables near the top of the file so that they appear as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we need to update our `renderer()` function so that when the templates
+    have been rendered we update the new `listHeight` variable. Add the following
+    code after where we render the `videoTemplate`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we can add a handler for the scroll event. Directly after the `when()`
+    method in `infinite-scroller.js`, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''re using a spinner to show the user that more data is being retrieved.
+    We need a few extra styles to handle the position of the spinner, so we can also
+    add the following code to the bottom of our `infinite-scroller.css` style sheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We attach a handler to the window using our cached `win` object and the `on()`
+    method. The event type is specified as `scroll`. Inside the callback function
+    we first check whether the current `scrollTop` property of the `window`, plus
+    the `height` of the viewport is greater than or equal to the `height` of our `videolist`
+    container. We need to do this to know when the page has been scrolled to the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the heights are equal, we create a temporary loader to provide visual feedback
+    to the user that something is happening. We append a new `<li>` element to the
+    `<ul>` containing the videos and give it a class name of `loading` so that we
+    can easily target it with some CSS. We set a `<span>` element as the content of
+    the new list item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can get the current value of the `scrollTop` property using jQuery's `scrollTop()`
+    method. We're using a cached value for the window's `height`. Our scroll handler
+    will be fairly intensive as it will be invoked every time the user scrolls, so
+    using a cached value for the window `height` makes this process slightly more
+    efficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It does mean however that if the window is resized, this value will no longer
+    be accurate. We fix this by adding a resize handler for the window which recalculates
+    this value every time the window is resized. This is done by chaining another
+    call to the `on()`method after the scroll handler, which looks for the resize
+    event of the `window` object and updates the `winHeight` variable accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use jQuery's `when()` method once again, which invokes our `getData()`
+    function to retrieve the next 25 videos. We also use the `done()` method again
+    to execute a callback function once the request has completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this callback function we increment our `startIndex` variable by `25`
+    again, ready to request the next set of videos. The `getData()` function will
+    populate our `data` object with the new video data so all we need to do is call
+    our `renderer()` function to display the new videos, and then remove the temporary
+    loader.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point we should have a fully functional infinite loader that loads
+    more videos when the user scrolls to the bottom of the page. We should be able
+    to run the page and see something like the following when we scroll to the bottom:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A lot of the code we've written in this project has been concerned with getting
+    the data we want to display. Actually adding the infinite scroll feature itself
+    requires only a minimal amount of code – a single handler that watches for the
+    scroll event and triggers a new request for more data when the document is scrolled
+    to the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see this is a feature that would be easy to retrofit to existing
+    functionality as an additional layer. This technique is best suited to data that
+    can easily be arranged in reverse-chronological order, with new items appearing
+    at the top and older items appearing at the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not necessarily a complete replacement for paged data, but certainly makes
+    sense when dealing with things such as news stories, blog posts, tweets, or status
+    updates. It works very well with social data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we're simply providing links back to a full-screen video player
+    for each video on the YouTube site. So when the visitor clicks on a video thumbnail
+    or title, they'll be sent off to YouTube to actually watch the video.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While there's nothing inherently wrong in doing this, a much cooler thing to
+    do would be to open up a lightbox containing a video player embedded in an `<iframe>`.
+    This would let the visitor view the video without ever leaving your site. The
+    response from YouTube for the videos contains a link that can be used as the `src`
+    attribute of an `<iframe>`, so why not see if you can hook this up yourself?
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll notice that if you scroll to the bottom of the page, but then carry on
+    scrolling down immediately, the same set of videos are requested multiple times.
+    As an alternative task, see if you can prevent this from happening by only requesting
+    more data if there is not currently a request in progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This should be very easy to set up and simply involves setting a flag when the
+    request begins, and removing the flag when it ends. We can then only make requests
+    if the flag is not set.
+  prefs: []
+  type: TYPE_NORMAL

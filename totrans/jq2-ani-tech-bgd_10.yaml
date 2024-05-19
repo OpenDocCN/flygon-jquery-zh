@@ -1,0 +1,3027 @@
+- en: Chapter 10. Canvas Animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*In the last chapter, we looked at one of the latest CSS3 features, the `transform`
+    property, which enabled us to create animated rotations, skews, scales, and translates.
+    In this chapter, we''re going to look at one of the new additions to HTML5—the
+    `<canvas>` element.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The best way to think of the `<canvas>` element is to treat it like the kind
+    of canvas on which an artist would paint. We can draw simple lines or complex
+    shapes using JavaScript API methods, and there is also support for images and
+    text. The canvas is two-dimensional at this point, but may be extended to include
+    3D support in the future.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The `<canvas>` element, first proposed and used by Apple, has been implemented
+    by most modern browsers, and is considered one of the most stable elements from
+    the HTML5 specification.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The best description of the `<canvas>` element I''ve seen states, "*A canvas
+    is a rectangle in your page where you can use JavaScript to draw anything you
+    want*, from [diveintohtml5.info](http://diveintohtml5.info)", which sums it up
+    quite nicely I feel.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Subjects that we''ll look at in this chapter will include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The HTMLCanvasElement interface
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Drawing to the `<canvas>` element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating the `<canvas>` element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `<canvas>` with jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a `<canvas>` based game
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learning the HTMLCanvasElement interface
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The HTMLCanvasElement interface exposes methods and properties allowing us to
+    define and control the shapes that are drawn on the canvas. The HTMLCanvasElement
+    interface can be broken down into distinct sections depending on what the methods
+    do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the canvas element
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `<canvas>` element itself has methods that can be called on it, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `getContext(a)` | Returns an object (a `CanvasRenderingContext2D` object
+    to be precise) which can then have other methods from the API called on it to
+    manipulate the `<canvas>` element. The argument specifies the type of context
+    to retrieve. Only two-dimensional contexts are available at present. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `toDataURL()` | Returns a data URL representing the image on the `<canvas>`
+    element. Optional arguments include the type of image represented by the data
+    URL (with the default being image/PNG), and any arguments specific to the type,
+    such as the quality for image/JPG data URLs. |'
+  prefs: []
+  type: TYPE_TB
+- en: The `<canvas>` element can be thought of as being similar to an `<img>` element
+    that doesn't have a `src` attribute. Allowed attributes include the `width` and
+    `height` parameters of the element, along with an `id` and a `class` attributes,
+    among others. There are no special attributes associated with the `<canvas>` element,
+    although it can contain other elements. When the browser cannot display the `<canvas>`
+    element, it can display the element's content as a fallback. The only properties
+    of the `<canvas>` element we have access to, are the `width` and `height` parameters.
+    Setting either of these properties causes the `<canvas>` element to reset its
+    contents to nothing, which can be useful when we want to clear it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding context methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are two methods that relate directly to the context object returned by
+    the `getContext()` method. These are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `save()` | Saves the current state of the canvas; only transforms are saved,
+    not shapes or paths. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `restore()` | Restores the saved state. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'We can also set a couple of global properties that apply to all shapes on the
+    `<canvas>` element. These properties are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `globalAlpha` | Sets the alpha transparency of shapes. Takes a decimal value
+    between 0.0 and 1.0. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `globalCompositeOperation` | Sets how shapes stack up on top of one another.
+    Can be used to create masks and clear areas of shapes. |'
+  prefs: []
+  type: TYPE_TB
+- en: Native shapes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `<canvas>` element has just one native shape defined: the rectangle. One
+    important point to note here is that the `<canvas>` element does not have an internal
+    DOM tree—shapes or paths we draw on the `<canvas>` element are not created as
+    child elements of the `<canvas>` element and cannot be accessed with standard
+    DOM manipulation methods. They are not individual objects, they are just pixels.
+    Methods from the scripting API used specifically when working with rectangles
+    include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `clearRect(a,` `b,` `c,` `d)` | Removes all shapes and paths from an area
+    of the canvas. Arguments `a` and `b` specify the coordinates to begin clearing
+    at and arguments `c` and `d` specify the width and height of the area to clear.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `fillRect(a,` `b,` `c,` `d)` | Draws a rectangle. Arguments `a` and `b` specify
+    the coordinates to begin drawing at and arguments `c` and `d` specify the width
+    and height of its sides. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `strokeRect(a,` `b,` `c,` `d)` | Draws the outline of a rectangle. Arguments
+    `a` and `b` represent the starting coordinates of the shape, and arguments `c`
+    and `d` represent the width and height of its sides. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'We can set the color of strokes (outlines) or fills, as well as drop-shadows
+    using the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `fillStyle` | Sets the color of the fill. Can be set to a CSS color or a
+    gradient object. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `shadowBlur` | Sets the amount of blur on the shadow. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `shadowColor` | Sets the color of the shadow. Can be set to a CSS color or
+    a gradient object. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `shadowOffsetX` | Sets the relative position of the shadow along the x axis.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `shadowOffsetY` | Sets the relative position of the shadow along the y axis.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `strokeStyle` | Sets the color of the stroke. Can be set to a CSS color or
+    a gradient object. |'
+  prefs: []
+  type: TYPE_TB
+- en: These properties can be set on paths and text as well. They aren't limited strictly
+    to the native shape.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Drawing using a path
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Any shape other than a rectangle must be drawn using a path. This gives us
+    a flexible way of drawing custom and complex shapes. Some of the methods used
+    for creating paths include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `arc(a, b, c, d, e, f)` | Draws a circular subpath. Arguments `a` and `b`
+    are the starting coordinates of the subpath, `c` is the radius, `d` is the starting
+    angle in radians, and `e` is the ending angle in radians. The last parameter `f`
+    accepts a Boolean indicating whether the subpath should be drawn anticlockwise
+    or not. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `arcTo(a, b, c, d, e)` | Draws a circular subpath to a specified point. Arguments
+    `a` and `b` are the starting coordinates, `c` and `d` are the ending coordinates.
+    Argument `e` is the radius. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `beginPath()` | Starts a new path. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `bezierCurveTo(a, b, c, d, e, f)` | Draws a subpath along a Bezier curve,
+    which is a curve featuring two control points. Arguments `a`, `b`, `c`, and `d`
+    represent the coordinates of the two control points and arguments `e` and `f`
+    represent the end coordinates of the subpath. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `closePath()` | Closes the path by drawing a line from the current position
+    to the starting position of the first subpath in the current path list. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `fill()` | Colors the shape created by the current path. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `lineTo(a, b)` | Creates a new subpath from the current location to the coordinates
+    specified as arguments. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `moveTo(a, b)` | Moves to the coordinates specified by the arguments without
+    drawing a new subpath. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `quadraticCurveTo(a, b, c, d)` | Draws a subpath along a quadratic curve,
+    which is a curve with a single control point. Arguments `a` and `b` represent
+    the coordinates of the control point, while arguments `c` and `d` represent the
+    end coordinates of the subpath. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `stroke()` | Colors the outline of the current path list. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Paths have several properties that can be set including the style, the line,
+    or cap, or how paths are joined:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `lineCap` | Can be set to either butt (the default), round, or square. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `lineJoin` | Can be set to either miter (the default), round, or bevel. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `lineWidth` | A decimal specifying the width of the path. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `miterLimit` | Determines the length between the inner point where two paths
+    connect and the outer point before the join is mitered. |'
+  prefs: []
+  type: TYPE_TB
+- en: Drawing images and patterns
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The canvas allows us to draw images to the canvas in the same way that we might
+    assign a background image to another element. We can also draw patterns based
+    on images or gradients. This category of methods includes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `drawImage(a,` `b,` `c)` | Draws an image on the `<canvas>` element. Argument
+    `a` is the image to be drawn and arguments `b` and `c` are the coordinates to
+    place the top-left point of the image. Note that other variants of this method
+    exist which allow different combinations of arguments allowing images to be scaled
+    and sliced. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `createPattern(a,` `b)` | Draws a repeated pattern on the `<canvas>` element.
+    Argument `a` is the image to be used as the pattern and `b` is the type of repeat.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `createLinearGradient(a,` `b,` `c,` `d)` | Creates a linear gradient between
+    two points. Arguments `a` and `b` are the start coordinates of the gradient and
+    `c` and `d` are the end coordinates. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `createRadialGradient(a,` `b,` `c,` `d,` `e,` `f)` | Creates a radial gradient
+    between two circles. Arguments `a` and `b` are the start coordinates, and `c`
+    is the radius of the first circle. Arguments `d` and `e` are the start coordinates
+    of the second circle, and `f` is its radius. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `addColorStop(a,` `b)` | Adds color to a gradient. The first argument is
+    a decimal between 0.0 and 1.0 and is the relative position within the gradient
+    to add the color. The second argument is the color to use. |'
+  prefs: []
+  type: TYPE_TB
+- en: The `drawImage()` and `createPattern()` methods are very similar; in that they
+    are both used to draw an image on the `<canvas>` element. The difference is that
+    the pattern is repeated. The gradient methods return a gradient object which can
+    then be used as the fill or stroke style for a shape.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text strings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Text strings can be written to the canvas, but there is little styling we can
+    perform on them as there is no associated box model with the text; so that means,
+    no padding, margins, or borders. However, we can set the font and alignment, along
+    with the fill color or stroke color using other properties. These methods include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `fillText(a,` `b,` `c)` | Creates solid text strings on the `<canvas>` element.
+    The first argument, `a`, is the text to write and arguments `b` and `c` are the
+    start coordinates of the text. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `measureText(a)` | Measures the specified text string and returns a metrics
+    object with a width property. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `stroketext(a,` `b,` `c)` | Creates outline text strings on the `<canvas>`
+    element. The first argument is the text to write and arguments `b` and `c` are
+    the start coordinates of the text. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The properties we can set on text include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `font` | Sets the size and the font-family of the text. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `textAlign` | Sets the alignment of the text. Can be either `start` (the
+    default), `end`, `left`, `right`, or `center`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `textBaseline` | Sets the baseline of the text. Can be either `alphabetic`
+    (the default), `top`, `hanging`, `middle`, `ideographic`, or `bottom`. |'
+  prefs: []
+  type: TYPE_TB
+- en: Applying transformation methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `<canvas>` element can have the same transforms applied to it that we saw
+    in the last chapter, which can be applied using the following methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `rotate(a)` | Rotates a shape by the specified number of radians. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scale(a,` `b)` | Scales a shape along each axis by the specified amount,
+    with `a` being the x axis and `b` the y axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `translate(a,` `b)` | Translates the shape along each axis by the specified
+    amount, with `a` being the x axis and `b` the y axis. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `transform(a,` `b,` `c,` `d,` `e,` `f)` | The `transform()` method is equivalent
+    to the matrix transform form function and can be used in the same way to scale,
+    translate, and/or skew the shape. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `setTransform(a, b, c, d, e, f)` | Resets the current transform to the identify
+    matrix, and then invokes the `transform()` method using the same arguments. This
+    essentially undoes the current transformation, and then sets the specified transform,
+    all in one step. |'
+  prefs: []
+  type: TYPE_TB
+- en: Pixel manipulation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `<canvas>` element even allows us to work directly with the pixels in the
+    canvas and can retrieve shapes as `imageData` objects, or create shapes directly
+    by manipulating the `<canvas>` element at pixel-level. We have the following methods
+    for manipulating pixels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `createImageData(a,` `b)` | Creates a new, blank `imageData` object using
+    the supplied arguments as width and height properties. This method can also be
+    passed to another `imageData` object, which will cause the method to return an
+    (empty) `imageData` object the same width and height as the original. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `getImageData(a,` `b,` `c,` `d)` | Returns an `imageData` object containing
+    the pixel data for the specified area of the `<canvas>` element. Arguments `a`
+    and `b` are the start coordinates of the area, and arguments `c` and `d` are the
+    width and height. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `putImageData(a,` `b,` `c)` | Paints the pixel data to the `<canvas>` element.
+    The first argument is the `imageData` object to use, the second and third are
+    the start coordinates of the resulting shape. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'All `imageData` objects, either those we get from the `<canvas>` element, or
+    those we create with the `createImageDate()` method have several properties we
+    can make use of, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `data` | This property is a `CanvasPixelArray`, and is read-only when we
+    get an `imageData` object from the `<canvas>` element. We can also use it to set
+    the pixel data in an `imageData` object we create. The array contains four items
+    per-pixel: the `r`, `g`, and `b` values for the pixel, and the alpha. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `height` | The height of the image is represented by the `imageData` object.
+    This property is read-only. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `width` | The width of the image is represented by the `imageData` object.
+    This property is read-only. |'
+  prefs: []
+  type: TYPE_TB
+- en: Drawing to the canvas
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Drawing to the `<canvas>` element programmatically is very straightforward in
+    theory. The methods and properties are easy to use, and are quite consistent between
+    supporting browsers. Direct pixel manipulation is the trickiest part of the API
+    to master, but other than that there is nothing really complicated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing we do find is that our code can very quickly mount up. As soon as
+    we're drawing multiple complex shapes, and setting various properties, our code
+    can easily run to a few hundred lines or more even for relatively simple drawings.
+    This is especially true when animating the contents of the `<canvas>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – drawing to the canvas
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's take a look at a quick example of drawing a non-animated shape. We don't
+    even need jQuery for this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the `<canvas>` element to the `<body>` tag of our template file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <canvas id="c" width="500" height="300">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p>Your browser doesn't support the canvas element!</p>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </canvas>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next we can add the JavaScript that will draw to the `<canvas>` elements. We''ll
+    draw a Union Jack flag. Function in the `<script>` element at the bottom of the
+    template file and add the following code in its place:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var canvas = document.getElementById("c"),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context = canvas.getContext("2d");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#039";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillRect(50, 50, 400, 200);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.strokeStyle = "#fff";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineWidth = 50;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(250, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(250, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(50, 150);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(450, 150);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(50, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(450, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(50, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(450, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.stroke();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.strokeStyle = "#C00";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineWidth = 30;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(250, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(250, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(50, 150);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(450, 150);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.stroke();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineWidth = 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#C00";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(50, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(195, 125);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(165, 125);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(50, 66);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fill();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(450, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(305, 125);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(275, 125);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(422, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(450, 50);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fill();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(450, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(310, 175);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(335, 175);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(450, 235);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(450, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fill();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(50, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(200, 175);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(225, 175);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(80, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(50, 250);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fill();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save the file as `canvas.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we run the page now in any modern browser, we should see something like the
+    following screenshot:![Time for action – drawing to the canvas](img/9642OS_10_01.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the previous screenshot, we can see the simple arrangement of geometric shapes
+    that make up the British flag (note that the flag is not completely to the scale).
+    Images like this are easy to produce using the `<canvas>` element but even simple
+    shapes can require a lot of code.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we do is get the `<canvas>` element using the JavaScript's `getElementById()`
+    method, and then get the two-dimensional context object from the `<canvas>` element
+    with the `getContext()` method. We can now interact with the `<canvas>` element
+    via the context object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We set some of the color for the context using the `fillStyle` property, and
+    then draw a solid rectangle using the `fillRect()` method. The arguments specified
+    are the starting x and y locations of the rectangle, and the width and height.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The filled rectangle picks up the fill style that we have just set, which is
+    deep blue, and will form the background of the flag. We now need to create a white
+    horizontal and diagonal cross on top of the blue background. We can do this by
+    drawing two thick lines across the middle of the flag, one vertical and one horizontal.
+    We'll use paths for this, so we start a new path using the `beginPath()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we set the color of the stroke to white using the `strokeStyle` property,
+    and the width of the path using the `lineWidth` property. To draw a path we have
+    to tell the `<canvas>` element (or the context object actually) where to start
+    the path, which we do using the `moveTo()` method, specifying the coordinates
+    to move to as arguments (the top middle of the rectangle).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make the path, we then use the `lineTo()` method and specify the coordinates
+    of where to end the path (the bottom-middle of the rectangle). This gives us the
+    vertical line. To make the horizontal path, we repeat the same process, moving
+    to the left-middle of the rectangle and drawing to the right-middle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Coordinates specified using the `moveTo()` method are always relative to the
+    canvas itself with `0,` `0` representing the top-left corner of the canvas. This
+    is the same for the `lineTo()` method as well, even though the line that is drawn
+    begins at the point specified by the last call of `moveTo()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we need to make a diagonal white cross over the background rectangle and
+    the vertical cross, which we'll do by drawing paths in the same way as before
+    using the combinations of `moveTo()` and `lineTo()` methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of the paths we've added so far are part of the same path—they are subpaths,
+    and at this point, they aren't actually visible. To make them visible, we need
+    to either fill or stroke them, so we stroke them with the `stroke()` method and
+    then close the path with the `closePath()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the next part of the flag, we need to draw a slightly thinner red cross
+    over the white cross. We'll use another path for this. We set the new color style
+    and width, and draw a new path across the center of the rectangle vertically and
+    horizontally again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To complete the flag, we need to add four more shapes to make the diagonal parts
+    of the red cross. We can't use straight-line paths for these because they don't
+    intersect, and they are all positioned slightly differently. This means that we
+    have to draw them manually as custom shapes and fill them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These four shapes actually make up the majority of the code, but we're basically
+    doing very similar things as before. Each shape is made by drawing subpaths and
+    filling them. We use a new path for each shape to preserve the anti-aliasing of
+    the lines. If we used one big path for all four shapes, the edges of the shapes
+    would be jagged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – drawing to the canvas
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. What arguments are required for the `fillRect()` method?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The x and y location of the rectangle
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The width and height of the rectangle
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The x and y location of the rectangle, its width and height, and its color
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The x and y location of the rectangle, and its width and height
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. What method is required to make a path visible?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`strokeStyle` and `lineWidth`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`moveTo()` and `lineTo()`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`stroke()` or `fill()`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`closePath()`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Have a go hero – creating the flag of your nation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you're not from the UK, have a go at drawing the flag of your own nation
+    on the canvas. We can create compositions of repeated shapes using standard JavaScript
+    for loops, so use this to your advantage in keeping the code required for your
+    flag as minimal as possible. If you are from the UK, try recreating a favorite
+    logo or icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If part of your flag (or logo) is extremely complex, remember that we can draw
+    images to the `<canvas>` element as well as lines and shapes, so feel free to
+    draw out the basic part of your flag using the `<canvas>` element drawing methods,
+    and then use an image for the complex part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating the canvas
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `<canvas>` methods we've looked at so far are easy to use and nothing, if
+    not a little, repetitive. Animating the objects on the `<canvas>` element is where
+    things start to get interesting. Animating is harder than simply drawing on the
+    `<canvas>` and as we have no real way of debugging it other than trial and error,
+    solving bugs can quickly become problematic and somewhat time-consuming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our flag example, there was no real benefit to using the `<canvas>` element.
+    We could have got exactly the same effect, with much less code and processing,
+    by simply including an image of the flag on our page. However, animating the `<canvas>`
+    element is where its benefits really begin. This is where we can do much more
+    than anything we could achieve with a simple image. The additional complexity
+    that animating the `<canvas>` element entails is totally worth it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating an animation on the canvas
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this example, we'll draw the same flag as we did before, except that this
+    time we'll animate different shapes. The underlying HTML used in this example
+    is exactly the same as in the previous examples. All that changes is the content
+    of the `<script>` element at the end of the `<body>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make the working file for this example, just remove everything in the `<script>`
+    element at the bottom of `canvas-explorer.html` and resave the file as `canvas-animated.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll do is bring the blue rectangle in from the side of the
+    canvas to the center of the `<canvas>` element. Add the following code to the
+    now empty `<script>` element at the bottom of the page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: (function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var canvas = document.getElementById("c"),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: init = function(context) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var width = 0,
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos = 0,
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: rectMotion = function() {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (width < 400) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width = width + 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#039";
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillRect(0, 50, width, 200);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (pos < 50) {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos = pos + 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: canvas.width = 500;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#039";
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillRect(pos, 50, 400, 200);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(rectInt);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: whiteLines(context);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: rectInt = setInterval(function() { rectMotion() }, 1);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (window.ActiveXObject) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: window.onload = function() {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var context = canvas.getContext("2d");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: init(context);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var context = canvas.getContext("2d");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: init(context);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})();'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous examples in this chapter all of our variables were global, which
+    is generally bad practice when coding for the real world. In this example, our
+    code is within the scope of the anonymous function, so the variables are only
+    accessible within that function and are therefore not considered global.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the `init()` function, we declare the `width` and `pos` variables and
+    then define another inline function called `rectMotion()`, which will be called
+    repeatedly by an interval. Any shapes drawn outside of the bounds of the `<canvas>`
+    element do not exist, so we can't draw a rectangle out of view and then animate
+    it into view. Instead, we gradually build up the rectangle by starting at the
+    left edge and incrementally widening the rectangle until it is the correct width.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is done using the first branch of the `if` statement, which will be executed
+    while the `width` variable is less than 400\. To speed the animation up, we actually
+    increase the width of the rectangle by two pixels at a time (although the speed
+    of the animation is also considerably different between browsers) by increasing
+    the `width` variable and then using the variable as the `width` argument in the
+    `fillRect()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the `width` variable has reached 400, we then change over to use the `pos`
+    variable instead. In this part of the condition, we increase the `pos` variable
+    by two (the rectangle will appear to move two pixels at a time, again for speed),
+    reset the `<canvas>` element by setting its width, and set the `fillStyle` property.
+    We then draw the new rectangle, using the `pos` variable as the argument for the
+    x axis position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It will look as if the rectangle is being moved to the right, but this is not
+    the case at all. We are actually destroying the rectangle and then drawing a completely
+    new one that's two pixels to the right of the original.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the rectangle is in the correct location, we clear the interval and then
+    call the next function, (we'll add this shortly) passing in the context object.
+    After the `rectMotion()` function, we add a final variable that contains the ID
+    of the interval which calls the function to animate the rectangle. We use this
+    variable to clear the interval once the animation is complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you run the page in a browser at this point, the blue rectangle appears to
+    move into the `<canvas>` element from the left before stopping in the middle.
+    Next, we need to animate the horizontal and diagonal white crosses over the blue
+    rectangle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – animating the white crosses
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this part of the animation, we''ll draw a white line down the middle and
+    across the center of the rectangle, and then make the diagonal cross grow out
+    from the center to the corners. The following code should be added in between
+    the `canvas` and `init` variables in the code so far:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: whiteLines = function(context) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#fff";
+  prefs: []
+  type: TYPE_NORMAL
+- en: context.strokeStyle = "#fff";
+  prefs: []
+  type: TYPE_NORMAL
+- en: context.lineWidth = 50;
+  prefs: []
+  type: TYPE_NORMAL
+- en: var width = 0,
+  prefs: []
+  type: TYPE_NORMAL
+- en: height = 0,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos = {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'ne: { x: 250, y: 150 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'se: { x: 250, y: 150 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'nw: { x: 250, y: 150 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'sw: { x: 250, y: 150 }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: growDiagonal = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (pos.ne.x >= 50) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.ne.x, pos.ne.y);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.ne.x - 4, pos.ne.y - 2);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.se.x, pos.se.y);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.se.x - 4, pos.se.y + 2);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.nw.x, pos.nw.y);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.nw.x + 4, pos.nw.y + 2);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.sw.x, pos.sw.y);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.sw.x + 4, pos.sw.y - 2);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.stroke();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.ne.x = pos.ne.x - 2;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.ne.y = pos.ne.y - 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.se.x = pos.se.x - 2;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.se.y = pos.se.y + 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.nw.x = pos.nw.x + 2;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.nw.y = pos.nw.y + 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.sw.x = pos.sw.x + 2;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.sw.y = pos.sw.y - 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(crossInt);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: redCross(context);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: growVertical = function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (height < 200 || width < 400) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (height < 200) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height = height + 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillRect(225, 50, 50, height);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (width < 400) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width = width + 4;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillRect(50, 125, width, 50);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(rectInt);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: crossInt = setInterval(function() { growDiagonal() }, 1);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: rectInt = setInterval(function() { growVertical() }, 1);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Essentially we have another inline function, which contains another function
+    that gets repeatedly called with another interval. As we're drawing white crosses
+    this time, we need to set some style properties (we'll be drawing both lines and
+    rectangles in this function and so set the `fillStyle` and `strokeStyle`) as well
+    as the `lineWidth` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We initialize the `width` and `height` control variables, which will be used
+    to control how many times the interval runs, and we also store the starting positions
+    of the vertical and diagonal crosses in an object called `pos`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then define two inline functions, one to create the vertical cross and the
+    other to create the diagonal cross. The `growVertical()` function is called first
+    with an interval and we just draw one white rectangle from top to bottom, and
+    one from left to right in the center of the background using the `width` and `height`
+    variables to repeat the interval as many times as necessary. The interval is cleared
+    once the rectangles are of the correct size and then the `growDiagonal()` function
+    is called with another interval.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this function we need to draw four lines, each starting in the middle of
+    the vertical cross. We use the different properties in our `pos` object to do
+    this. Each time the function is executed, we move to the x and y positions specified
+    for each line in the object and then draw towards the relevant corner. We then
+    update the properties in the object ready for the next iteration of the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each property needs to be updated by different amounts, for example, the line
+    moving from the center to the top-left of the rectangle needs to move negatively
+    along both the x and y axes, whereas the line to move to the top-right corner
+    needs to move positively along the x axis, but negatively along the y axis. We
+    use a new path on each iteration of the function to preserve the anti-aliasing
+    of the lines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the lines are drawn, we clear the interval and call the next function.
+    We'll define this function now. It should be placed after the `canvas` variable,
+    but directly before the `whiteLines()` function that we just added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – animating the red crosses
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'All we need to do now is draw the vertical red cross and the four custom red
+    shapes. Add the following code in between the `rectInt` variable declaration near
+    the top of the `<script>` element and the `whiteLines` function we defined in
+    the previous section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: redCross = function(context) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#C00";
+  prefs: []
+  type: TYPE_NORMAL
+- en: context.strokeStyle = "#C00";
+  prefs: []
+  type: TYPE_NORMAL
+- en: context.lineWidth = 30;
+  prefs: []
+  type: TYPE_NORMAL
+- en: var width = 0,
+  prefs: []
+  type: TYPE_NORMAL
+- en: height = 0,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos = {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'up : { x: 250, y: 150 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'down : { x: 250, y: 150 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'left: { x: 250, y: 150 },'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'right: { x: 250, y: 150 }'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: addStripes = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineWidth = 1;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: function makeStripe(props) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(props.startX, props.startY);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(props.line1X, props.line1Y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(props.line2X, props.line2Y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(props.line3X, props.line3Y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fill();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: setTimeout(function() { makeStripe({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'startX: 50, startY: 50,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line1X: 195, line1Y: 125,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line2X: 165, line2Y: 125,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line3X: 50, line3Y: 66'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})}, 1);'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: setTimeout(function() { makeStripe({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'startX: 450, startY: 50,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line1X: 305, line1Y: 125,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line2X: 275, line2Y: 125,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line3X: 422, line3Y: 50'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})}, 50);'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: setTimeout(function() { makeStripe({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'startX: 450, startY: 250,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line1X: 310, line1Y: 175,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line2X: 335, line2Y: 175,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line3X: 450, line3Y: 235'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})}, 100);'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: setTimeout(function() { makeStripe({
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'startX: 50, startY: 250,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line1X: 200, line1Y: 175,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line2X: 225, line2Y: 175,'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'line3X: 80, line3Y: 250'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '})}, 150);'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: growVertical = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (height < 100 || width < 200) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (height < 100) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.up.x, pos.up.y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.up.x, pos.up.y - 2);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.down.x, pos.down.y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.down.x, pos.down.y + 2);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.stroke();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: height = height + 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.up.y = pos.up.y - 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.down.y = pos.down.y + 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (width < 200) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.beginPath();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.left.x, pos.left.y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.left.x - 2, pos.left.y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.moveTo(pos.right.x, pos.right.y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.lineTo(pos.right.x + 2, pos.right.y);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.stroke();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.closePath();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width = width + 2
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.left.x = pos.left.x - 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: pos.right.x = pos.right.x + 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(crossInt);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: addStripes();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: crossInt = setInterval( function() { growVertical() }, 1);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Again, we have an outer inline function (called `redCross()`) containing some
+    properties that set the color and line styles, and some nested functions that
+    will be used to draw the red cross and the four custom shapes. As with the previous
+    function, we declare the `width` and `height` control variables, and an object
+    called `pos` containing the starting positions for the lines that make up the
+    cross. The cross is drawn first with the `growVertical()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This function is very similar to the function in the last section of code. We
+    draw four lines starting in the middle of the rectangle which radiate to the top
+    and bottom-center, and the right and left-center.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The four custom shapes are drawn using a single master function that accepts
+    a configuration object specifying the start point (passed to the `moveTo()` method),
+    and the points that make up each subpath (passed to the `lineTo()` methods). We
+    then use the `setTimeout` JavaScript function to create each shape one after the
+    other, using the object passed to the master function to specify the relevant
+    points on the canvas to draw each shape.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is all the code we need; so now when we run the page, we should see the
+    animation of the flag being drawn. The code works in all browsers, with varying
+    levels of performance for each browser. Animating the `<canvas>` element is all
+    about conditional `if` statements, intervals, and timeouts. As we saw, the code
+    itself is quite straightforward. We just need rather a lot of it in order to produce
+    even simple animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – animating the canvas
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. Why did we store each call to `setInterval()`in a variable?
+  prefs: []
+  type: TYPE_NORMAL
+- en: For performance reasons
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In order to clear the interval when appropriate
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because of the closure created with the anonymous function as the first argument
+    to the function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So that we can pass arguments to the function called by the interval
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. In the first function, where we drew the blue rectangle, we set the width
+    of the `<canvas>` element each time the `rectMotion()` function is called by the
+    interval. Why?
+  prefs: []
+  type: TYPE_NORMAL
+- en: To make sure the `<canvas>` element was big enough to contain the rectangle
+    as it grew
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To correct a bug in Internet Explorer
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To reset the state of the `<canvas>` element, ensuring there was only one rectangle
+    at each point in the animation
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As a requirement for setting the `fillStyle` property
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Have a go hero – creating canvas animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Go back to the static version of the flag you drew of your home country (or
+    the logo or image of your choice), and convert it so that the different parts
+    of the flag are animated and brought into existence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a canvas game
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The best animations are those that are interactive and engage the user, and
+    this is exactly how a game can be seen, as one continuous, user-driven animation.
+    The power of the `<canvas>` element is best demonstrated when it is used to create
+    games, as we'll see over the course of this section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll create a very basic clone of the arcade classic *Space Invaders* with
+    a series of alien ships that slowly advance down the screen, and a user-controlled
+    space ship at the bottom that can shoot the incoming aliens:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a canvas game](img/9642OS_10_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Time for action – creating the initial page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The initial page that we''ll use for this example is similar to that used in
+    the previous example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a new page in your text editor that contains the following markup:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <!DOCTYPE html>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <html lang="en">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <head>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <meta charset="utf-8">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <title>A canvas and jQuery Game</title>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <link rel="stylesheet" href="css/canvas-game.css">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </head>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <body>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <canvas tabindex="1" id="c" width="900" height="675">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <p>Your browser doesn't support the canvas element!</p>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </canvas>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <script src="img/jquery.js"></script>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <script>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(function() {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </script>
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </body>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </html>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Save the file as `canvas-game.html`. We also require a very basic stylesheet
+    for our game. All we''re styling is the `<canvas>` element itself. Create a new
+    stylesheet containing the following style rules:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: canvas {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #000;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: outline:none;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:url(../img/bg.gif) no-repeat;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Save this file in the `css` directory as `canvas-game.css`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The main element on the page is of course the `<canvas>` element. The only difference
+    between this and the element used in previous examples is that we have set the
+    `tabindex` attribute on it so that it can receive keyboard events, which is necessary
+    for detecting and reacting to the input from the user. We're also using jQuery
+    in this example and using the standard anonymous function and the `$` aliasing
+    construct we've used throughout the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The styles we've used simply position the `<canvas>` element in the center of
+    the page, give it a border, and remove the dotted outline that appears around
+    focused elements in some browsers. We also set a background image on the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The background image applied to the `<canvas>` element helps to set a scene
+    for our game, and using CSS to set a background image on the `<canvas>` element
+    is much easier than drawing the image within it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the initial script
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The script for the game is quite long, so we''ll look at it in different sections,
+    starting with the initial structure of the script. The following code should go
+    into the anonymous function at the bottom of the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: var canvas = document.getElementById("c"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: context = canvas.getContext("2d"),
+  prefs: []
+  type: TYPE_NORMAL
+- en: motionInt = null,
+  prefs: []
+  type: TYPE_NORMAL
+- en: dirCounter = 0,
+  prefs: []
+  type: TYPE_NORMAL
+- en: alienSpeed = 1000,
+  prefs: []
+  type: TYPE_NORMAL
+- en: aliens = [],
+  prefs: []
+  type: TYPE_NORMAL
+- en: alienMotion = function(dir) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: addAliens = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ship = new Image(),
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: shipPos = [430, 600];
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ship.src = "img/ship.png";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: ship.onload = function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.drawImage(ship, shipPos[0], shipPos[1]);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: addAliens();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Essentially, all we've done here is define a series of variables and an `onload`
+    event handler. The `canvas` and `context` variables are defined first, as in previous
+    examples, in order to access and manipulate the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set a variable called `motionInt`, which will be used to hold the ID
+    of a `setInterval()` function later on, a variable called `dirCounter` which will
+    be used to determine which direction the aliens move in, an `alienSpeed` variable
+    to set the speed that the aliens move at, and an empty `aliens` array which we'll
+    use to keep track of each alien on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following this we define two inline functions, one to move the aliens and one
+    to add the aliens to the page. These are empty at the moment but we'll populate
+    each of them next. We also create a new image, which will be the user-controlled
+    space ship, and a `shipPosition` array which will be used to keep track of the
+    ship's location on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've defined all our variables, we set the `src` of the new image object
+    we created to represent the space ship. We then attach an `onload` event handler
+    to the ship object, which will be executed once the image has finished loading.
+    Within this function, we draw the ship on the canvas using the values stored in
+    the `imagePosition` array. We then call the `addAliens()` function, which will
+    add the aliens to the canvas. We can add the code to the `addAliens()` function
+    next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding the aliens to the page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Replace the `addAliens()` inline function in the previous code block with the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: addAliens = function() {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var alienPos = [13, 0],
+  prefs: []
+  type: TYPE_NORMAL
+- en: alien = new Image();
+  prefs: []
+  type: TYPE_NORMAL
+- en: alien.src = "img/alien.gif";
+  prefs: []
+  type: TYPE_NORMAL
+- en: alien.onload = function () {
+  prefs: []
+  type: TYPE_NORMAL
+- en: for (var x = 0; x < 15; x++) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for (var y = 0; y < 3; y++) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.drawImage(alien, alienPos[0], alienPos[1]);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var data = {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'img: alien, posX: alienPos[0], posY: alienPos[1]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: aliens.push(data);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (alienPos[1] < 100) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: alienPos[1] = alienPos[1] + 50;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: alienPos[0] = alienPos[0] + 50;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: alienPos[1] = 0;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: motionInt = setInterval(function () { alienMotion("right"); }, alienSpeed);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We first define a new array that we'll use to incrementally set the position
+    of each alien ship while the aliens are initially being drawn to the canvas. We
+    define a new `Image` object for the image that will be used by all of the alien
+    ships and set its `src` attribute. We then set an `onload` handler for the new
+    alien image so that we can manipulate the image once it has finished loading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We want to create three rows of 15 aliens, so within the `onload` handler, we
+    start with two nested `for` loops where the outer loop runs 15 times and on each
+    loop, the inner `for` loop executes three times. Within the nested loops, we first
+    draw the new alien to the canvas using the values stored in the `alienPos` array.
+    We then create a new `data` object which stores a reference to the image object,
+    and the x and y position of the image on the canvas. The new `data` object is
+    then pushed into the `aliens` array which we defined earlier at the start of the
+    script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then update the values in the `alienPos` array. If the second item in the
+    array (the item with an index of `1`) is less than 100, we add 50 to the value
+    of the array item. The second item in the array corresponds to the position on
+    the y axis of the canvas. This will give us a single column of three aliens. Note
+    that we start the x position of the first three aliens at `13` instead of `0`
+    so that there is a gutter between the edge of the canvas and the first column
+    of aliens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the second array item is more than `100`, we add `50` to the first item in
+    the array instead, which corresponds to the x axis on the canvas, and reset the
+    second array item to zero. This will give us 15 columns of three aliens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once all of the aliens have been drawn on the canvas, we set an interval that
+    will repeatedly execute the next function, `alienMotion()`, according to the number
+    of milliseconds contained in the `alienSpeed` variable, which is initially set
+    to `1000` at the start of the script. The interval ID is stored in the `motionInt`
+    variable we also created at the start of the script. We can add the code to our
+    `alienMotion()` function next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – moving the aliens
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Our next block of code will give the aliens their motion, causing them to advance
+    to the right along the canvas first, then down a line, then to the left, and so
+    on and so forth. Replace the `alienMotion()` function we previously defined with
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: alienMotion = function (dir) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: var alienLength = aliens.length;
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (dirCounter < 4) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: for (var x = 0; x < alienLength; x++) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.clearRect(aliens[x].posX, aliens[x].posY, aliens[x].img.width, aliens[x].img.height);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for (var y = 0; y < alienLength; y++) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'aliens[y].posX = (dir === "right") ?  aliens[y].posX + 35 : aliens[y].posX
+    - 35;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.drawImage(aliens[y].img, aliens[y].posX, aliens[y].posY);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: dirCounter++;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs: []
+  type: TYPE_NORMAL
+- en: clearInterval(motionInt);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: dirCounter = 0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for (var z = 0; z < alienLength; z++) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.clearRect(aliens[z].posX, aliens[z].posY, aliens[z].img.width, aliens[z].img.height);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (aliens[alienLength - 1].posY > 530) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: canvas.width = 900;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#fff";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.textAlign = "center";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.font = "bold 36px Tahoma";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillText("GAME OVER!", 450, 350);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(canvas).blur().unbind("keydown");
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for (var a = 0; a < alienLength; a++) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: aliens[a].posY = aliens[a].posY + 29;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.drawImage(aliens[a].img, aliens[a].posX, aliens[a].posY);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'motionInt = (dir === "right") ? setInterval(function () { alienMotion("left");
+    }, alienSpeed) : setInterval(function () { alienMotion("right"); }, alienSpeed);'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '},'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we do is store the length of the aliens array in a local variable.
+    We'll use several `for` loops in this function, so it makes sense to retrieve
+    this value only once and compare the counter variables of the `for` loops to the
+    variable instead of checking the length on each iteration of the various loops.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use an `if` statement to check whether the `dirCounter` variable is
+    less than `4`. Remember, this was one of the variables we set at the start of
+    the script. If the variable is less than `4`, we first use a `for` loop to cycle
+    through each item in the `aliens` array and use the `clearRect()` function to
+    remove the alien from the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use a second `for` loop that cycles through the `aliens` array once
+    more, this time updating the x position of each alien by either adding or removing
+    35 from the current x position stored in the current item in the array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whether 35 is added or removed is determined by the parameter passed into the
+    function. The first time the `alienMotion()` function is called, it will receive
+    the parameter `right`, so the aliens will initially move across to the canvas
+    to the right. We then draw each alien in its new position. Once the `for` loop
+    has finished and all of the aliens have been drawn in their new positions, we
+    update the `dirCounter` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `dirCounter` variable is equal to `4`, the aliens have moved horizontally
+    across the canvas as far as they should, so this time we need to move the aliens
+    down the canvas line instead of across it. In this branch of the condition, we
+    clear the interval that controls the horizontal movement, then reset the `dirCounter`
+    variable back to `0`. We then remove the aliens from the canvas by clearing the
+    rectangle that each alien covers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before moving the aliens down a line, we first check whether the y position
+    of the last alien in the array is greater than `530`, as this is the maximum distance
+    from the top of the canvas that an alien should get. If it is greater than this
+    figure, at least one alien has reached the bottom of the canvas and it's game
+    over for the player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we clear the whole canvas, removing the space ship and any surviving
+    aliens, and print the text **GAME** **OVER!** on the center of the canvas. We
+    also use jQuery to unbind the keyboard events that control the space ship (we'll
+    add these bindings shortly).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the aliens have not reached the bottom of the canvas, we instead use another
+    `for` loop to iterate over each alien in the array and move each of their y positions
+    down by one line, and then draw each alien in its new location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then set a new interval, passing the string in the opposite direction to
+    the `alienMotion()` function that was used previously. These loops of four steps,
+    to the right, one step down, four steps to the left, and so on, will continue
+    until the aliens reach the bottom of the canvas and the game is over. Next, we
+    need to add the handlers that enable the player to control the space ship.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding handlers to control the ship
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following block of code should replace the `onload` event handler for the
+    ship image object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ship.onload = function () {
+  prefs: []
+  type: TYPE_NORMAL
+- en: context.drawImage(ship, shipPos[0], shipPos[1]);
+  prefs: []
+  type: TYPE_NORMAL
+- en: addAliens();
+  prefs: []
+  type: TYPE_NORMAL
+- en: $(canvas).focus().bind("keydown", function (e) {
+  prefs: []
+  type: TYPE_NORMAL
+- en: if (e.which === 37 || e.which === 39) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.clearRect(shipPos[0], shipPos[1], ship.width, ship.height);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (e.which === 37 && shipPos[0] > 4) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: shipPos[0] = shipPos[0] - 4;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (e.which === 39 && shipPos[0] < 896 - ship.width) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: shipPos[0] = shipPos[0] + 4;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.drawImage(ship, shipPos[0], shipPos[1]);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else if (e.which === 32) {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillStyle = "#fff";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var bulletPos = shipPos[0] + 20,
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: newBulletPos = [bulletPos, 596],
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: alienLength = aliens.length,
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: fire = function () {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (newBulletPos[1] > 0) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.clearRect(newBulletPos[0], newBulletPos[1], 3, 6);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: newBulletPos[1] = newBulletPos[1] - 2;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.fillRect(newBulletPos[0], newBulletPos[1], 3, 6);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: for (var x = 0; x < alienLength; x++) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (newBulletPos[1] === aliens[x].posY || newBulletPos[1] === aliens[x].posY
+    + aliens[x].img.height) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (newBulletPos[0] > aliens[x].posX && newBulletPos[0] - aliens[x].posX < aliens[x].img.width
+    + 13) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.clearRect(aliens[x].posX, aliens[x].posY, aliens[x].img.width, aliens[x].img.height);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: aliens.splice(x, 1);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(bulletInt);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.clearRect(newBulletPos[0], newBulletPos[1], 3, 6);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (!aliens.length) {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(motionInt);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: dirCounter = 0;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: alienSpeed = alienSpeed - 100;
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: addAliens();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: context.clearRect(newBulletPos[0], newBulletPos[1], 3, 6);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: clearInterval(bulletInt);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: bulletInt = setInterval(function () { fire(); }, 1);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '};'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We use jQuery to attach an event handler to the `<canvas>` element that listens
+    for the `keydown` events. Although we're not providing support for IE and so don't
+    need jQuery for its cross-browser normalization when attaching events, it still
+    makes the event handling process much easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the function that is executed whenever a `keydown` event is detected,
+    we check for the presence of either the left or right arrow keys, which have a
+    `which` property in the event object of `37` and `39`, or the spacebar, which
+    has the code `32`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the code `37` or `39` is detected, we then use a nested `if` statement to
+    determine between the two keys. We also check that the ship hasn't reached either
+    the left edge, or the right edge of the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use the `clearRect()` function to remove the ship and draw a new one
+    either 4 pixels to the left, or 4 pixels to the right depending on which key was
+    pressed. This gives the ship left and right motion along the bottom of the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second branch of the outer conditional deals with the spacebar being pressed,
+    which causes a bullet to leave the ship and travel in a straight line to the top
+    of the canvas. The bullets will be white, so we set the `fillStyle` property of
+    the canvas to `#fff`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also declare some more local variables here including `bulletPos`, which
+    is the current position of the bullet plus half of the width of the ship, and
+    an array to hold the x and y coordinates of the bullet. The values for this array
+    are set to the `bulletPos` variable for the x position, and directly above the
+    nose of the ship for the y position. We also store the length of the aliens array
+    as a local variable for use in a `for` loop once again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We define an inline function along with our variables called `fire()`. This
+    function is used in conjunction with an interval to create the motion of the bullet.
+    Within this function, we check that the bullet hasn't reached the top of the canvas,
+    and provided it hasn't, that is, if its y position is greater than `0`, we remove
+    the bullet with the `clearRect()` function, then update the values in the `bulletPos`
+    array and draw the bullet in its new location using the updated values from the
+    array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the position of the bullet has been updated, we then need to check whether
+    the bullet, in its new position, has collided with an alien or not, so we use
+    a `for` loop to iterate over each alien in the aliens array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On each iteration, we first check whether the bullet falls within the y axis
+    of an alien, that is, whether its position is less than the bottom edge of an
+    alien, but more than its top edge. The aliens are positioned according to their
+    top-left corner, so to work out whether the bullet has passed its bottom edge
+    we just add the height of an alien to its y position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the bullet does fall within the alien on the y axis, we then check whether
+    it falls within the space an alien is taking up along the x axis. If it does,
+    we remove the alien from the canvas with the `clearRect()` function and splice
+    the alien out of the array so that it stays removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then remove the bullet from the canvas using the `clearRect()` function again,
+    and clear the `bulletInt` interval. If there are no more aliens left, we clear
+    the interval producing the motion of the aliens, reset the `dirCounter` variable,
+    reduce the `alienSpeed` variable by `100`, and then call the `addAliens()` function
+    to redraw the aliens at the top of the canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is effectively how the player moves up to the next level, and each time
+    the aliens are redrawn they move faster, creating basic progression of the game.
+    This now brings us to the end of the code. If we run the game now in a standard-compliant
+    browser, such as Firefox or Chrome, we should find that we have a perfectly playable
+    game, implemented entirely using JavaScript and the `<canvas>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – creating canvas-based games
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. In this example, a lot of features related to the player's space ship was
+    put into an `onload` event handler. Why?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because we cannot interact with an image until it has loaded completely
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To make the code work correctly in Internet Explorer
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because the code runs faster once the image has finished loading
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To help make our code more modular
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. Why did we set the `textAlign` property of the canvas to center when writing
+    the **GAME** **OVER!** message?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the alignment is a prerequisite for writing text to the canvas
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because it is easier than working out the width of the text and then setting
+    its position on the x axis in order to position the text in the center of the
+    canvas
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To anti-alias the text
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Because it is more efficient than using padding
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Have a go hero – extending the space invaders clone
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our game is a much simpler version of the original space invaders. The original
+    arcade game had many other features including aliens that fired back at the player's
+    ship, bases to hide behind, and one-off special aliens that appeared randomly
+    throughout the game and dropped bonuses when hit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Certainly, one thing that the game needs is a scoring mechanism; otherwise there
+    is simply no incentive to play. Implement a scoring system that tracks a player's
+    score throughout the game and saves the highest score to the player's machine.
+    This could be done easily with jQuery and the cookie plugin, or using LocalStorage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'd also urge you, as this is the last example of the book, to implement some
+    of the other missing features, such as giving the aliens the ability to fire back
+    and adding bases or shields that the player can hide beneath when the going gets
+    tough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we looked at the HTML5 `<canvas>` element and saw how it can
+    be used to create simple and static images, basic animations, and even complex
+    interactive games. It provides a rich API that allows us to interact with it programmatically
+    and gives us complete pixel-level control over an area of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we covered the `HTMLCanvasElement` interface, drawing to the
+    `<canvas>` element, creating animations on the `<canvas>` element, and we also
+    created an interactive game with the `<canvas>` element. Like with the CSS3 examples
+    from the last chapter, there are no methods or properties in jQuery specifically
+    for use with `<canvas>`, although there has been a number of plugins that combine
+    the power of `<canvas>` with the ease of jQuery, and several projects that extend
+    the jQuery's `animate()` method to allow it work on objects drawn to the canvas.
+    For more information on this, a good starting point is Steven Wittens' blog at
+    [http://acko.net/blog/abusing-jquery-animate-for-fun-and-profit-and-bacon](http://acko.net/blog/abusing-jquery-animate-for-fun-and-profit-and-bacon).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've now reached the end of the book. I hope that over these 10 chapters, I've
+    given you a solid foundation for producing animations using jQuery that acts as
+    a solid starting point for you to bring your web-based UIs to life.
+  prefs: []
+  type: TYPE_NORMAL

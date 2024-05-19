@@ -1,0 +1,632 @@
+- en: Chapter 8. Integrating jQuery Mobile into Existing Sites
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can't all be so lucky enough to only work on new sites. Maybe the customer
+    is unwilling to pay for a mobile-first site or maybe they like their desktop site
+    as it is and just want a mobile site. Your mobile implementation could be the
+    gateway to future business with the client. We need to be ready with a few techniques
+    to wedge jQuery Mobile into their existing site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we''ll cover is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting mobile – server-side, client-side, and the combination of the two
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mobilizing full site pages – the hard way
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mobilizing full site pages – the easy way
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Detecting mobile – server-side, client-side, and the combination of the two
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Not everyone is doing responsive design so there's a pretty good chance you're
+    going to need to know how to detect mobile devices. We've approached the topic
+    lightly before but now let's get serious.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browser sniffing versus feature detection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This topic has the potential to start a geek war. On one side you have people
+    who proclaim the virtues of community-maintained databases that perform mobile
+    detection on the server side. WURFL is a prime example. Using it, we can get a
+    lot of information about the device that is visiting our sites. Listing it all
+    here would just be a waste of space. Check out [http://www.tera-wurfl.com/explore/index.php](http://www.tera-wurfl.com/explore/index.php)
+    to see it in action or view the entire list of capabilities at [http://www.scientiamobile.com/wurflCapability/](http://www.scientiamobile.com/wurflCapability/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other side of the debate, people point out that the server-side detection
+    (even when it is database driven) can lead to brand new devices not being recognized
+    until they're in the database and the site administrator updates their local copy.
+    This is not completely true. All Androids say so. It is the same with iPhone,
+    iPad, Blackberry, and Microsoft. Still, a much more future-friendly ([http://futurefriend.ly/](http://futurefriend.ly/))
+    approach is to use feature detection. For instance, does the device support canvas
+    or perhaps touch events? Almost certainly, if you support such technologies and
+    events, you're primed for a mobile experience with jQuery Mobile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Regardless, at this point we're going to assume that we're working with a company
+    that already has a website and now wants a mobile site too. Therefore, we'll need
+    to be able to detect mobile and route them to the correct site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WURFL – server-side database-driven browser sniffing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'WURFL has APIs for Java, PHP, and .NET. Pick up a copy of the version that
+    works for you at [http://wurfl.sourceforge.net/apis.php](http://wurfl.sourceforge.net/apis.php).
+    Since virtually every single hosting provider out there supports PHP out of the
+    box, we''re going to go with the PHP example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![WURFL – server-side database-driven browser sniffing](img/0069_08_00.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: I simply used the built-in server that comes on Mac OS X but you could also
+    use MAMP ([http://www.mamp.info/en/index.html](http://www.mamp.info/en/index.html)).
+    You can easily run the example on any hosting platform such as 1&1, GoDaddy, Host
+    Gator, take your pick. If you want to try the examples on your own Windows computer,
+    you can use XAMPP ([http://www.apachefriends.org/en/xampp.html](http://www.apachefriends.org/en/xampp.html))
+    or WAMP ([http://www.wampserver.com/en/](http://www.wampserver.com/en/)) as a
+    quick shortcut. I'm not going to get into the particulars of server setup and
+    environment configuration in this book. That could probably justify a book of
+    its own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, PHP… here we go. Start at [http://wurfl.sourceforge.net/php_index.php](http://wurfl.sourceforge.net/php_index.php).
+    From there you can download the latest copy of **WURFL API package** and unzip
+    it. Take the entire unzipped folder and dump it anywhere in your site. If all
+    is well, you should be able to hit the demo page and see details about your browser
+    and device. On my Mac, it was [http://127.0.0.1/~sgliser/wurfl-php/examples/demo/index.php](http://127.0.0.1/~sgliser/wurfl-php/examples/demo/index.php)
+    but your path will vary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you run the default example, you can instantly see how useful it is, but
+    let''s make it even better. This version I created puts the most useful at the
+    top and lists all other options below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we create the only real page, in a jQuery Mobile fashion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we start listing out the entire set of known data from WURFL simply by
+    looping through the array of properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note, we've *conditionally* made this a jQuery Mobile page by using the server-side
+    detection to see if the user is mobile. Only then do we inject the jQM libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The attributes under the *Very Useful* section are probably all you really
+    need for most day-to-day work but be sure you at least skim over the other options.
+    The most useful features are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`is_wireless_device`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`mobile_browser`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`is_tablet`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`pointing_method`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resolution_width`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resolution_height`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Now, granted, this does not tell us everything about the browser/device. For
+    instance, an iPhone 4S or 5 will be recognized as an original iPhone. There''s
+    also no distinguishing the iPad mini using WURFL. This is because the user agents
+    have never been updated as the Apple devices have evolved. WURFL has no way of
+    knowing that a device has a high pixel density and should thus be sent higher
+    resolution images. Therefore, we''ll still need to use media queries to determine
+    pixel ratios and adapt our graphics appropriately. Here is a brief example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Using media queries is pretty much the only way to detect an iPad mini. It has
+    the same resolution as the iPad 2, just in a smaller format. However, as we can
+    see from the preceding code, we can qualify a media query using DPI. The iPad
+    2 has 132 dpi. The iPad mini has 163\. For more on this, check out [http://www.mobilexweb.com/blog/ipad-mini-detection-for-html5-user-agent](http://www.mobilexweb.com/blog/ipad-mini-detection-for-html5-user-agent).
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, we've pretty much assumed smartphones but remember that jQuery Mobile
+    is a framework that is also perfect for … not-so-smart-phones. You may have customers
+    in a market that is not as developed and uses cell connections for nearly everything.
+    There may not be as many JavaScript-enabled touchscreen phones there. In a case
+    like that, you won't be able to use JavaScript-based feature detection. Very quickly,
+    WURFL or some other server-side detection will become your only reasonable option
+    for detecting wireless devices and serving them up something useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript-based browser sniffing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It is arguable that this may be (academically) the worst possible way to detect
+    mobile but it does have its virtues. This pragmatic example is very useful in
+    that it gives you a lot of options. Perhaps our budget is limited and so we''ve
+    only tested for certain devices. We want to be sure we''re only letting in people
+    that we know will have a good experience. Case in point: no BlackBerry device
+    below Version 6 will be allowed because we''ve chosen to do some fancy JavaScript
+    templating that Version 5 and lower just can''t handle. Perhaps we''ve also not
+    taken the time yet to optimize for tablets but in the mean time we can start providing
+    a better experience for any smartphones. In any case, this could come in quite
+    useful:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We've done a little work here to future-proof the detection by creating a classification
+    for unknown mobile devices as being anything running WebKit that has a small screen.
+    Chances are, any new platforms that come out will be using WebKit as its browser.
+    Microsoft is the only exception that still seems to think it has something more
+    to offer on its own and their platform is easy enough to sniff. This approach,
+    while flexible, would require direct intervention if a new platform was launched
+    without a WebKit browser. But, that doesn't happen very often. Even if it does,
+    it would take a while for that platform to gain a critical mass worth considering.
+    If you're going by the 80/20 rule (worry about reaching 80 percent successfully
+    and reach the last 20 percent when you can), this gets you well into the upper
+    90s.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript-based feature detection using Modernizr
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are several ways that you can perform feature detection. Probably the
+    easiest way is to use a tool such as Modernizr ([http://modernizr.com/](http://modernizr.com/)).
+    You can customize a download to only detect the features that you care about.
+    If you want to do HTML5 audio/video, it might be nice to know if you can:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![JavaScript-based feature detection using Modernizr](img/0069_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The platform is not exactly light. Just the options shown in the preceding screenshot
+    led to a 12 K minified JS. But hey, we throw around images of that size like they're
+    nothing. At least a JavaScript library is useful. This still won't tell you if
+    the user coming to you is mobile but is that even the right question to be asking?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps, all we need to know is that the device we're looking at supports touch
+    events. The other options are great for knowing what you can and cannot do but
+    if the user interface is touch, even if it's a tablet or a full-sized touch based
+    monitor, give the user the interface they deserve. Give them jQuery Mobile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript-based lean feature detection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This useful little snippet of code is something cobbled together for detecting
+    mobile. It is a blending of feature detection and browser sniffing. Most modern
+    smartphones will support all the event and APIs we''re looking for here. Microsoft,
+    being the special case they always seem to be, has to be browser sniffed. According
+    to their Windows Phone developer blog, you can simply check the user agent for
+    IEMobile. Fair enough, here''s the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: If for some reason we decided that we didn't want to send tablets to our jQM
+    masterpieces, we could always throw in some of the other tests from the previous
+    section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Server-side plus client-side detection
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here's an idea, when the user first hits your server, send them a page whose
+    only job is to run Modernizer and then send the resulting capabilities back to
+    the server so all collected knowledge is in one place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This file is `test.html` in the code files package for the chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Just to make the circle complete. Here is a version of the WURFL detection
+    scripts that will return the values as JSON so we can store it to HTML5 `sessionStorage`.
+    This file is found at `/wurfl-php/examples/demo/session_set.php`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This example has commented out the easy way of JSON encoding an associative
+    array. Replacing that is some PHP code that will send back JSON encoding that
+    uses real Boolean and numeric values instead of storing everything as a string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With these files, you now know everything that can be known about your visitors
+    on both the server side and client side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mobilizing full-site pages – the hard way
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Why would we do it the hard way? Why? Really there''s only one good reason:
+    to keep the content on the same page so that the user doesn''t have one page for
+    mobile and one page for desktop. When e-mails and tweets and such are flying around,
+    the user generally doesn''t care if they''re sending out the mobile view or the
+    desktop view and they shouldn''t. As far as they''re concerned, they''re sending
+    content to someone. This is one of the prime arguments for responsive design.
+    But don''t worry, we''ll take this this into consideration later when we do things
+    the easy way too.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generally, it's pretty easy to tell what parts of a site would translate to
+    mobile. Almost regardless of the site layout there are data attributes you'll
+    be throwing onto existing tags to mobilize them. When jQuery Mobile's libraries
+    are not present on the page, these attributes will simply sit there and cause
+    no harm. Then you can use one of our many detection techniques to decide when
+    to throw the jQM libraries in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Know your role
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s consider some of key data-role attributes that are needed to mobilize
+    a page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`data-role="page"`: This contains everything that will show in the mobile view.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-role="header"`: This wraps `h1`, `h2`, `h(x)`, and up to two links in
+    the appearance of a bar and turns the links into buttons. You can put more into
+    a header but it''s not advisable. If you''ve got that much to try to squeeze into
+    the header, you might be better off having a single "Menu" button. Header bars
+    can have their positions fixed. Anything within the header bar will remain fixed
+    at the top.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-role="content"`: This provides a margin around your content.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-role="button"`: This turns a link into a button.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-role="navbar"`: This creates a navbar when wrapped around a list of links.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-role="footer"`: This wraps anything you want at the bottom. It''s a great
+    place for secondary links, next-step navigation, contact us, and all that legal
+    stuff that signals the end of all usefulness. This can also be given a fixed position.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-role="none"`: This prevents jQuery Mobile from styling the content.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From an ideal user experience perspective, pages would contain nothing more
+    than what was necessary for the user to accomplish the task for which they came
+    to that page. *Let us have a moment of silence for the dream lost…* With that
+    in mind, remember that anything inside of `data-role="page"` will show up on the
+    mobile view. So, the best thing you can do on most full-site pages is to determine
+    which chunk of the page the user actually came for, tag that section with a role
+    of `content`, and then immediately wrap that with a tag whose role is `page`.
+    In so doing, you will automatically cut out the rest of the cruft that fills the
+    rest of most web pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 1 of 2 – focus on content, marketing cries foul!
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'At this point anyone with a marketing background might be crying foul because
+    this approach cuts out their messaging and targeted advertising and such. However,
+    it is worth noting that people have had the ability to do this very thing on their
+    own for a while now. Controversial services such as Pocket (formerly known as
+    Read it Later), Instapaper, and even the simple Reader tool on iOS Safari are
+    providing the user with exactly what they want. Here is an example of a normal
+    desktop site on the left and how the iOS Reader strips away everything but the
+    content itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Step 1 of 2 – focus on content, marketing cries foul!](img/0069_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We have a choice; provide the user with what they want in the format they want
+    or possibly lose the chance to reach them at all as they turn to such tools. This
+    will require a more creative approach to marketing activities on mobile. But make
+    no mistake, ejecting everything else but the core of the page should be your first
+    step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After gutting everything but the main content of the page, we'll also need to
+    gut the styles and scripts that are currently in the head. If we have access to
+    modify the page itself we can easily do this on the server side using WURFL. Otherwise,
+    we could always use JavaScript to remove the stylesheets and scripts we don't
+    want and then inject ours. We could also simply highjack the first stylesheet
+    and then remove the rest and do the same with the scripts to first bring in jQuery
+    and then jQuery Mobile. There are a thousand ways to tackle the situation but
+    I'd really recommend using WURFL if you're going to mobilize an existing page
+    in this fashion. Otherwise, it's just going to get messy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 2 of 2 – choose global navigation style and insert
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So, at this point, we've got the beginnings of the page but there may still
+    be some minor things that need removing. Having a mobile stylesheet to take care
+    of those few overrides will be quite helpful and quicker than cleaning up with
+    JavaScript DOM manipulation. That's pretty simple, the next big question is, how
+    do we deal with the global navigation since we just explicitly excluded it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Global nav as a separate page
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This is probably the simplest approach and keeps the interface as clean as
+    possible (mentioned in the following steps):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wrap the global nav in its own separate roles of `page` and `content` and be
+    sure they're easily selectable.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'At the bottom of the page (or really anywhere after the global nav and content
+    are complete) put in a script that moves the containing page of global nav below
+    the content. This is particularly important because we are now in a multipage
+    view and the first "page" in the DOM will be shown to the user when jQuery Mobile
+    kicks in. We want to do this before jQuery Mobile even knows it should do anything.
+    If we don''t, the user who came to the site expecting to read something will first
+    be greeted by a global nav. Here is a very simple example based on the pages we
+    previously saw:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Append headers to these internal pages so they can link to each other:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Global nav as a separate page](img/0069_08_03.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Global nav at the bottom
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In pages such as articles where the user is likely to read all the way to the
+    bottom, it is not uncommon to put the menu at the bottom of the page. It''s an
+    approach that fosters continued engagement. They''re already there, right? Perhaps
+    you might throw a link to a related article or two and then append the global
+    menu to the bottom of the page. This would give the user something more to read
+    without having to scroll all the way back to the top:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Global nav at the bottom](img/0069_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Personally, I think it's best to take this two-pronged approach. The menu at
+    the top links to the bottom and the menu at the bottom includes a link to return
+    to the top. This is accomplished by the `$.mobile.silentScroll` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Global nav as a panel
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As of jQuery 1.3 there is now a `Panel` component that can be embedded directly
+    into a page and then revealed by button click. It''s exactly like the Facebook
+    app:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Global nav as a panel](img/0069_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is probably the simplest approach to global navigation. It also has the
+    benefit of not changing pages or cluttering the interface. For the full API and
+    options around the new panel widget, check out [http://view.jquerymobile.com/1.3.0/docs/widgets/panels/](http://view.jquerymobile.com/1.3.0/docs/widgets/panels/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The hard way – final thoughts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All in all, the approach of injecting attributes into a full-site page and invoking
+    jQuery Mobile can work pretty well. The biggest problem that you will encounter
+    is the sheer amount of cruft that is thrown onto most pages. There's a lot to
+    remove and/or CSS-out. This also has the unfortunate effect of being rather brittle.
+    If somebody comes along and even slightly modifies the page, it could break your
+    implementation. I could really only recommend this approach if the pages are created
+    using a template or a **content management system** (**CMS**) so that changes
+    to the site structure won't happened often and will be uniform when they do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mobilizing full-site pages – the easy way
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There is nothing easier and cleaner than just creating a standalone jQuery Mobile
+    page. Let's just do that and simply import the page we want with AJAX. We can
+    then pull out the parts we want and leave the rest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The biggest disadvantage to this approach is mostly academic. Progressive enhancement
+    is shot. The site completely breaks for anyone who doesn't have JavaScript on
+    their device. My contention is that it probably doesn't matter. I can't speak
+    for everywhere, but here in the United States, if you're not on a smartphone,
+    you're not on the web with your device. Simple as that. There are of course exceptions
+    that only prove the rule. However, if your market is different, you would want
+    to consider if this option is right for you. So, let's continue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On any given page, all we''ll really need is a simple redirect for anyone on
+    mobile using one of the many methods we''ve laid out. Then, just use a simple
+    `location.replace`. This code sample does a little more than that. It checks to
+    see if the user was on a mobile and clicked the full-site link. If so, we''ll
+    insert an `iframe` tag to allow the user to switch back to the mobile view manually.
+    Otherwise, we''re just going to bounce them to the mobile view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is the code for a page to allow the full site to link back into mobile.
+    This file is `gomo.html` within the chapter code files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: These two pages are both using scripts that do not require jQuery. It sure would
+    be nice if every page had jQuery but there are competing platforms out there and
+    we can't count on the base page that we're mobilizing to have it ready for us.
+    Native JavaScript is faster anyway. We can put it right at the top of the page
+    without having to pull in a library first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mobilizing full-site pages – the easy way](img/0069_08_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here is the jQuery Mobile page that houses the mobilized content. It also links
+    back to the full site view and sets a cookie so the user doesn't just get bounced
+    back to mobile if they click on the full-site link.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As mentioned earlier, we're pulling in the next top 3 articles and placing them
+    before the menu at the bottom to keep the user engaged. It's far easier to do
+    in this view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The example also takes advantage of `replaceState`. For all browsers that support
+    it, when the user comes to the mobile page, the URL in the address bar and history
+    will be updated to show the URL of the original article.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, without further delay, we will now see the best example of how to easily
+    mobilize full-site pages. It is generic enough that you could probably just take
+    this to whatever project you''re working on and only have to tweak the code that''s
+    doing the pulling and injection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This section is the new panel available in jQuery Mobile 1.3\. It will receive
+    the global menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: What we're doing here to replace the state in the users history is not fully
+    supported by all mobile browsers. Just to be on the safe side, I've wrapped that
+    line in a try/catch block. This is a good technique for anything that has partial
+    support across your customer base.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This next section takes care of pulling apart the imported page and injecting
+    it to the right places. Note at the beginning where I''m selecting objects and
+    using a dollar sign at the beginning of the name. We preselect them for the sake
+    of performance. Anything you''re going to reference more than once should be stored
+    to a variable to reduce DOM traversal to select it again. The reason for the dollar
+    sign is that it indicates to the coder that the variable they''re looking at has
+    already been jQueried:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The cookie management that is being used here comes from the jQuery cookie plugin
+    at [https://github.com/carhartl/jquery-cookie](https://github.com/carhartl/jquery-cookie).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Earlier in this book we looked at mobile detection in depth. Now you know all
+    there is to know. Before, we were creating mobile sites from scratch with little
+    care what their desktop experiences were. Now you know how to unify them. The
+    hard part is knowing when to craft mobile experiences from scratch and when to
+    simply mobilize the full-site experience. It's a pity there's no simple answer
+    to that. But, whether by using JavaScript on page to manipulate it into mobile
+    (the hard way) or by AJAXing in the content and picking the pieces you want (the
+    easy way) or by leveraging responsive design + server side components (RESS) as
+    we mentioned in the previous chapter, you're ready to handle virtually every possible
+    situation now. The only thing we haven't really tackled yet is integrating with
+    a CMS which we'll do in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL

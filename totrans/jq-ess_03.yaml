@@ -1,0 +1,649 @@
+- en: Chapter 3. Manipulating the DOM
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we learned how to use jQuery's selectors to find elements
+    that we are looking for in the DOM. In this chapter, we will use this knowledge
+    to first find elements and then modify them. We will learn the different methods
+    that jQuery provides in order to help make our websites both beautiful and dynamic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery has over three dozen methods that manipulate the DOM in some way, but
+    don''t let that number scare you. All of the methods are readily broken down into
+    just four different categories: dimensions and positions, classes and styles,
+    attributes and properties, and content. Like most things in jQuery, once you dive
+    in, you will quickly see the pattern of how the different groups of methods are
+    related.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Many of the methods operate in one of two modes: getter or setter. In the getter
+    mode, the method retrieves or gets values from the element and returns them to
+    the caller. In the setter mode, the caller passes values to the method so that
+    it can modify the matched set of elements. I think we are now ready to begin with
+    dimensions and positions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many of the methods have two forms that only differ in the order of the selector
+    and the content. One version will be in the more traditional form, which is the
+    selector and then the content form, and the other will be in the content and then
+    the selector form. The main reason for having the order reversed is chaining.
+    When a method returns a jQuery object that contains the content we need for the
+    next method in the chain, being able to use the content-first version gives us
+    a method we can use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This chapter will cover a lot of material. Here are the topics we will delve
+    into:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dimensions and positions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading the size of the screen and elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Classes and styles
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The JSON object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attributes and properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keeping images proportional
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Removing attributes and properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dimensions and positions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In web development, we usually tend to not want to deal with the specifics of
+    element sizes, but occasionally, such information comes in handy. Before we get
+    into the details of reading the size, you need to know a few things. First, only
+    the size of the first element in the matched set is returned. Two, reading a size
+    kills the jQuery chain, so you can't have any other methods after it. Finally,
+    there is more than one way to read the size of an element. The kind of method
+    you choose depends on what you want to know. Let's take reading the width as an
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous chapter, we began with an empty web page and added just enough
+    HTML to explain what each method does. In the real world, we seldom get a blank
+    canvas to work on. So in this chapter, we are going to use a more complete looking
+    web page instead, and it will be based on the very popular Bootstrap Jumbotron
+    template. Bootstrap is one of the most popular CSS frameworks around, and using
+    it in our examples will help you get familiar with modern website designs since
+    it is not too common to write all of your own CSS these days. We aren't going
+    to talk much about Bootstrap or how it works, but there are lots of good books
+    on it at the Packt Publishing website, including *Learning Bootstrap*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Examples](img/00002.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Developer tools
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most modern browsers have a built-in set of developer tools. How you activate
+    the tools varies with the browser. In Internet Explorer, pressing *F12* activates
+    the developer tools. In Chrome and Firefox, *Ctrl + Shift + I* does the job. We
+    will be using the developer tools in order to see the console log output. By writing
+    information to the log instead of displaying it using the `alert()` method, we
+    won't break the flow of the site or annoy you with popups that you must respond
+    to before being allowed to continue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The console object of most modern browsers will have quite a few methods attached
+    to it, but we are only concerned about one method, `log()`. We will use the `log()`
+    method in its simplest form: to simply output strings. My hope is that the example
+    code will run without any issue on any browser you run it on.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading the size of the screen and elements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are three methods to read the width: `.width()`, .`innerWidth()`, and
+    `.outerWidth()`. The first method, `.width()`, returns only the width of the element.
+    The next method, `.innerWidth()`, returns the width of the element and its border
+    and padding. The final method, `.outerWidth()`, returns the width of the element
+    plus the border and padding, and if you pass true, it will also include the width
+    of its margins.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For each method that deals with the elements' width, there is a matching method
+    for the element's height. The methods are `.height()`, `.innerHeight()`, and `outerHeight()`.
+    Each of these behaves similar to its width counterpart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to determine the size of the display, you call the `.width()` and
+    `.height()` methods of the window:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code retrieves a jQuery object pointing to the window element.
+    The first line of code gets the width of the window and the second line gets its
+    height.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try not to get the window and the document confused. At times, they can give
+    the same results, but keep in mind that the document can exceed the size of the
+    window. When it does, scroll bars will appear. They are not equivalent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the dimensions of a screen element is nice, but sometimes, you need
+    to know its position too. There is only one method that returns the position,
+    and it is named `.position()`. Like the other value methods, it breaks the chain
+    since it returns an object that contains the top and left values of the element's
+    position relative to its parent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is a companion method to `.position()` called `.offset()`. The difference
+    between them is important. The `.offset()`method returns the element''s position
+    relative to the document and not to its parent. Using the `.offset()` method allows
+    us, for example, to compare two elements that have different parents, which is
+    something that would be almost meaningless with the `.position()` method. We won''t
+    normally see the difference between the two methods unless we use either absolute
+    or relative positioning instead of the browser default of static positioning:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The final two methods in this group are `.scrollLeft()` and `.scrollTop()`.
+    These two methods are different from the rest since they are both getters and
+    setters. If passed an argument, `.scrollLeft()` uses it to set the horizontal
+    position of the scroll bar. The `.scrollTop()` method does something similar,
+    setting the vertical position of the scroll bar. Both methods will set the position
+    of every element in the matched set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classes and styles
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The first method in the classes and styles group is `.css()`. This method is
+    very powerful and shows why jQuery is a required and useful library even in the
+    age of HTML5 browsers. The `.css()` method operates as both a getter and a setter.
+    As a getter, it returns the computed style property or properties. It takes as
+    arguments either a single string that is the name of a CSS property you would
+    like to retrieve or an array of strings representing all of the CSS properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The results of the preceding code are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Background Color = "rgb(51, 122, 183)"**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Colors = {"background-color":"rgb(51, 122, 183)","color":"rgb(255, 255, 255)"}**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The JSON object
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most modern browsers include the JSON object. JSON, like XML, is a data interchange
+    format. It is language-independent, lightweight, and easy to understand. The JSON
+    object added to browsers has two important methods. The first method, `.parse()`,
+    takes a string representing a JSON object and converts it into a JavaScript object.
+    The second function, `.stringify()`, takes a JavaScript object and converts it
+    into a JSON string. These methods are intended to be used to serialize and deserialize
+    objects. But we can also use the methods in our example code. The `.stringify()`
+    method can render JavaScript objects as strings, and we can send these strings
+    to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the things that make the `.css()` method powerful is that it understands
+    which properties you are referencing in a variety of different formats. Take,
+    for example, the CSS property, `margin-left`. The DOM refers to it as `marginLeft`;
+    jQuery understands both terms as the same thing. Likewise, it understands the
+    browser method used to actually access properties with which most browsers call
+    `getComputedStyle()`, but different versions of Internet Explorer call either
+    `currentStyle()` or `runtimeStyle()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The setter mode of the `.css()` method has several ways to set properties.
+    The first and easiest way is to simply pass in a property name and its new value
+    as arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also remove a property in the same fashion by setting the value to
+    an empty string. The next way in which we can change properties is to pass them
+    in as key-value pairs in an object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final way in which we can change properties is by passing in a property
+    and a function. The return value of the function is used by jQuery to set the
+    property. If the function either doesn''t return anything or returns "undefined,"
+    then no change is made to the property''s value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first method of this group is `.addClass()`, which adds a class to an element.
+    If you assigned a class using the DOM methods, you will have to make sure that
+    the class isn't being duplicated, but with `.addClass()`, if the class is already
+    assigned to the element, it is not assigned twice. You aren't limited to assigning
+    only one class at a time. You can add as many as you'd like just so long as you
+    make sure that you separate each one with a space.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Like many other jQuery methods, `.addClass()` too has a really cool extra feature:
+    it can accept a function as well. What''s so cool about this? Well, imagine that
+    you have a set of buttons and you would like to give each one a different color
+    class depending on its place in the set. You can easily write a function to handle
+    this scenario. jQuery passes two parameters to the function. The first is the
+    index of the element in the matched set. The second parameter is a string that
+    has all of the currently applied classes, each separated by a space. Here''s an
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Eventually, we are going to need to delete a class, which is why we use `.removeClass()`.
+    Depending on the parameters you pass to it, its behavior changes. If you pass
+    a single class name to it, it removes that class. If you pass multiple class names
+    separated by spaces, it removes those classes. And if you pass no arguments, it
+    removes all of the currently assigned classes. If a passed class name doesn't
+    exist, there is no error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like `.addClass()`, `.removeClass()` can also accept a function. jQuery passes
+    an index to your function and all of the currently assigned classes as a string.
+    To remove classes, your function should return a string containing the names of
+    all of the classes you would like to remove.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.hasClass()`method returns `true` if any element in the matched set has
+    the passed class. It returns false if none of them have the passed class. Keep
+    in mind that if you pass it a matched set that has 100 `<div>` and only one of
+    them has the passed class name, the method returns true:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `.toggleClass()`method is a time-saving convenience feature. Often, we will
+    find ourselves simply adding a class if it doesn't exist and removing it if it
+    does. This is exactly the scenario that `.toggleClass()` was created to solve.
+    You pass it one or more classes to toggle on or off.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can also pass `.toggleClass()` a second parameter, a boolean to indicate
+    whether the class should be added or removed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The advantage this has over simply calling `.removeClass()` is that you can
+    pass in the boolean as a variable and decide whether you want to add or remove
+    the class at runtime.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like its siblings, you can also pass a function to `.toggleClass()`. The function
+    is passed an index that is the object's position in the matched set, the current
+    class names, and the current state. It returns true to add the class and false
+    to remove it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Behavior classes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Normally, you add a class to an element in order to affect its appearance. Sometimes,
+    you may want to add a class in order to affect how JavaScript processes the element.
+    Why would you want to use a class for a behavior? This is because classes are
+    booleans, and an element either has a given class or it doesn't. Properties, on
+    the other hand, are key-value pairs, and you need to know whether property exists
+    and what value it holds. This generally makes dealing with classes easier and,
+    in some cases, syntactically cleaner than dealing with the equivalent property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attributes and properties
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Before we get to the methods that deal with attributes and properties, we must
+    first discuss a bigger issue: what''s the difference between an attribute and
+    a property? They are different, but how?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the DOM is constructed from the HTML attributes, the key-value pairs that
+    are included in the markup are built. Most of these attributes are translated
+    into properties, which are placed onto the DOM element node. The important thing
+    to understand is that once the element node is constructed, properties are used
+    to keep track of the state of the node, not the attributes. Attributes are not
+    updated as jQuery; if they are, JavaScript changes the DOM. They represent the
+    state of the DOM when it was first loaded, and this is the problem. Think about
+    a checkbox:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the DOM parses this checkbox, it creates a checked property on the node
+    for this element. It also creates a `defaultChecked` property in accordance with
+    the rules laid out in the W3C specification. The difference between attributes
+    and properties becomes clear. No matter how many times the user clicks on the
+    checkbox, .`attr()` will always return `checked` because that was its state when
+    the HTML was parsed. On the other hand, `.prop()` will alternate from "true" to
+    "false" depending on the current actual state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The .`attr()` method has been in jQuery since the beginning. It was originally
+    used to both read and set the values of attributes and properties. This was a
+    mistake; attributes and properties are different, but understanding the difference
+    is difficult. In jQuery 1.6, the `.prop()` method was introduced and the scope
+    of the `.attr()` method was limited to just attributes. This broke a lot of websites
+    that had been using the `.attr()` method to set properties. This caused quite
+    a furor among the jQuery community, which has since subsided. In general, if you
+    want the current value of a property, use `.prop()` and not `.attr()`. Now that
+    we understand the difference between attributes and properties, let's learn how
+    to use the methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.attr()`method acts as both a getter and a setter of attributes. When
+    used in the getter form, it will get the attribute of the first element in the
+    matched set. It accepts only one parameter: the name of the attribute to be retrieved.
+    When used in the setter form, it will set one or more attributes on all of the
+    members of the matched set. You can call it in a few different ways. The first
+    is with an attribute name in a string and its set value. The second is by passing
+    it an object containing all of the attribute value pairs you wish to set. The
+    final is with an attribute name and a function. The function will be passed an
+    index and the old value of the attribute. It returns the desired set value. Here
+    are some examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `.prop()`method is called in both its getter and setter forms in the same
+    way as the `.attr()` method. In general, when manipulating properties of an element,
+    this is the preferred method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping images proportional
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using the `.attr()` method, you can adjust the size of images by tweaking the
+    height and width attributes. If you wish to keep the image size proportional without
+    having to calculate the correct height for the width or vice versa, there is an
+    easy cheat. Rather than changing both the width and height, remove the height
+    attribute and only modify the width. The browser will then automatically adjust
+    the height to proportionally match the width.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing attributes and properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to remove an attribute from an element, we use `.removeAttr()`. You
+    call it with either a single attribute name or with the names of several attributes
+    separated by spaces. It has the extra benefit of not leaking memory when removing
+    the attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.removeProp()`method closely mirrors `.removeAttr()`. Keep in mind that
+    you should only remove custom properties from an element, not native ones. If
+    you remove native properties, such as checked, disabled, and so on, it can't be
+    added back to the element. Instead of removing the property, you may want to set
+    it to false using the `.prop()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.val()` method is mainly used to retrieve values from form elements. It
+    gets the value of the first element in a matched set from the input, select, and
+    `textarea method` elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is easy to retrieve values from an input tag, as shown in the preceding code.
+    The `.val()` method extracts the current string value of the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The type of data that''s returned varies depending on the type of element it
+    retrieves the data from. If it gets data from an input tag, the return type is
+    a string. If the tag is selected with multiple attributes, then the return type
+    is null if no items are selected. If one or more items are selected, then the
+    return type is an array of strings, and each item in the array is the value of
+    a selected option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When used in its setter form, you can pass either a single string value, an
+    array of strings, or a function to `.val()`. Passing a single string is the most
+    typical use case. It does exactly what you''d expect: it sets the element''s value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you pass in an array of strings to a select element with the multiple
+    attribute set, it first clears any previously selected options, and then it selects
+    all of the options whose values match those in the passed array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Like the other two methods, `.attr()` and `.prop()`, you can also pass in a
+    function. jQuery will send two parameters to the function: an integer representing
+    the elements index in the matched set and a value representing the element''s
+    current value. Your function should return a string that represents the element''s
+    new value.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To retrieve the HTML contents of an element, we use the `.html()` method. It
+    returns the markup as a string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When `.html()` is passed a string, it sets all of the elements of the matched
+    set to the new markup. You can also pass a function to `.html()`. The function
+    is passed to these parameters: an index and a string to hold the old HTML. You
+    return a string from the function that holds the new HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.text()` method retrieves the text content of all of the elements in the
+    matched set. It is important to note that this method operates very differently
+    from other methods in this regard. Normally, getters only get the data from the
+    first element in the set. This method will concatenate the text from all of the
+    elements, which can be a surprising result if you weren''t expecting it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is important to note that the `.text()` method is for text, not HTML. If
+    you try to send the HTML markup to it, it will not be rendered. As an example,
+    let''s try to send the same markup that we sent successfully to the `.html()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we would like to add more HTML instead of replacing it, we can use the `.append()`
+    and `.appendTo()` methods. They will both add the passed content to the end of
+    the each element in the matched set. The difference between the two is readability,
+    not functionality. With `.append()`, the selector comes first; then comes the
+    new content. The `.appendTo()` method reverses this so that the new content comes
+    before the selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.prepend()` and `.prependTo()`methods are just like `.append()` and `.appendTo()`,
+    except that the content is placed at the beginning of each element instead of
+    at the end:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The previous methods make the new content a child of the parent. The next few
+    methods make the new content a sibling of the parent. The `.after()` and `.insertAfter()`
+    methods add the new content as the sibling after the parent. Like `.append()`
+    and `.appendTo()`, the only difference between the two is the order of the content
+    and the selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.before()` and `.insertBefore()` methods add the new content as the sibling
+    before the parent element. Again, the only difference between them is the order
+    of the content and the selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.wrap()` method allows you to surround each member of a matched set with
+    a new element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This method should not be confused with the `.wrapInner()`method. The difference
+    between the two is that `.wrap()` takes each member of the matched set and wraps
+    it with a new element. However, `.wrapInner()` takes each of the children of the
+    matched set and wraps them with the new content. The difference between these
+    two methods is extremely clear in the example code. The `.wrap()` method surrounds
+    each of the buttons, `<a>` tags with `role=button`, with a dotted border. The
+    `.wrapInner()` method on the other hand, surrounds the text of the buttons with
+    dotted borders:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.wrapAll()` method surrounds all of the elements in the matched set with
+    a new HTML element. Be careful with this method; it can radically change your
+    web page. If the members of the set are widely separated, it can have a big and
+    perhaps adverse effect. You definitely want to have the narrowest possible selector
+    when using this method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The last member of this group of methods is `.unwrap()`. It removes the parents
+    of a matched set. Essentially, it is the inverse of `.wrap()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Keeping with the theme of removing the markup, we have these methods: `.remove()`,
+    `.empty()`, and `.detatch()`. The first of these methods, `.remove()`, deletes
+    the matched set of elements from the DOM. The elements and all of their children
+    are removed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The very closely related `.empty()` method also removes content from the DOM.
+    The difference between the two is that `.empty()` deletes the children of the
+    matched set, while `.remove()` deletes the matched elements themselves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final method of the group, `.detached()`, behaves like the `.remove()`method
+    with one difference: the removed content is returned to the caller as a set of
+    jQuery objects. If you ever need to move the markup from one part of the web page
+    to another, this is your method. Don''t forget that you can use chaining on this
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.replaceAll()` and the closely related `.replaceWith()`methods each replace
+    the matched set with the passed content. The only difference between the two is
+    the order of the selector and the content. In the `.replaceWith()` method, the
+    selector comes first; then comes the new content. In the `.replaceAll()` method,
+    the new content comes first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `.clone()` method makes a copy of the matched set of elements. It copies
+    each element, and all of their children then return them to the caller as a jQuery
+    object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter has been a pretty arduous journey, but hopefully, you've seen that
+    jQuery's DOM manipulation methods are logically thought out. We learned how to
+    add content to the page before and after the existing elements. We also learned
+    how to remove content from the page and even how to move content from one location
+    to another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also learned that many jQuery methods have two different forms in order to
+    provide us with a way to get the page content with one method and set it with
+    another. There were also a couple of simple but handy bits of information on keeping
+    our images proportional using the JSON object and determining the size of elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though we've learned a lot, our site is still static; after it executes
+    its JavaScript, it doesn't do anything else. In the next chapter, we will change
+    that. We will learn how to use events to allow our site to be interactive.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,803 @@
+- en: Chapter 1. A Refresher on jQuery and the Composite Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Until the **Web 2.0** era started, the Web was just a document-based media and
+    all it offered was just interconnecting different pages/documents and client-side
+    scripting that was mostly limited to form validation. By 2005, Gmail and Google
+    Maps were released, and JavaScript proved itself as a language used by big enterprises
+    to create large-scale applications and provide rich user interface interactions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though JavaScript has had very few changes since its original release,
+    there was a tremendous change in the expectations that the Enterprise world had
+    about what web pages should be capable of doing. Since then, web developers were
+    required to deliver complex user interactions and, finally, the term "web application"
+    appeared on the market. As a result, it started to become obvious that they should
+    create some code abstractions, define some best practices, and adopt all the applicable
+    **Design Patterns** that computer science had to offer. The wide adoption of JavaScript
+    for enterprise-grade applications helped the evolution of the language, which
+    with the **EcmaScript2015**/**EcmaScript6** (**ES6**) specification was expanded
+    in a way that allowed even more Design Patterns to be easily utilized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In August 2006, the jQuery library was first released by John Resig at [http://jquery.com](http://jquery.com),
+    as an effort to create a convenient API to locate DOM elements. Since then, it
+    has been an integral part of a web developer's toolkit. jQuery in its core uses
+    several Design Patterns and tries to urge their use to the developer through the
+    methods that it provides. The Composite Pattern is one of them and it is exposed
+    to the developer through the very core `jQuery()` method, which is used for DOM
+    traversal, one of the highlights of the jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a refresher on DOM scripting using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the Composite Pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See how the Composite Pattern is used by jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discuss the gains offered by jQuery over plain JavaScript DOM manipulations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduce the Iterator Pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use the Iterator Pattern in an example application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery and DOM scripting
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By DOM scripting, we refer to any procedure that alters or manipulates the elements
+    of a web page after it has been loaded by the browser. The DOM API is a JavaScript
+    API that was standardized in 1998 and it provides to web developers a collection
+    of methods that allow the manipulation of the DOM tree elements that the browser
+    creates after loading and parsing the web page's HTML code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the **Document Object Mode** (**DOM**) and its APIs,
+    you can visit [https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction).
+  prefs: []
+  type: TYPE_NORMAL
+- en: By utilizing the DOM API in their JavaScript code, web developers can manipulate
+    the DOM's nodes and add new elements or remove existing elements from the page.
+    The primary use case for DOM scripting was initially limited to client-side form
+    validation, but as the years passed and JavaScript gained the trust of the Enterprise
+    world, more complex user interactions started to be implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The initial version of the jQuery library was first released in August 2006
+    and it tried to ease the way the web developers were traversing and manipulating
+    the DOM tree. One of its main goals was to provide abstractions that resulted
+    in shorter, easier-to-read, and less error-prone code, while also ensuring cross-browser
+    interoperability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These core principles that jQuery follows are clearly visible in its homepage,
+    where it presents itself as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '...a fast, small, and feature-rich JavaScript library. It makes things like
+    HTML document traversal and manipulation, event handling, animation, and Ajax
+    much simpler with an easy-to-use API that works across a multitude of browsers.
+    With a combination of versatility and extensibility, jQuery has changed the way
+    that millions of people write JavaScript.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The abstracted APIs that jQuery provided from the beginning, and the way that
+    different Design Patterns were orchestrated, led to wide acceptance among the
+    web developers. As a result, the jQuery library is referenced by more than 60%
+    of the most visited websites worldwide, according to several sources such as BuiltWith.com
+    ([http://trends.builtwith.com/javascript/jQuery](http://trends.builtwith.com/javascript/jQuery)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating the DOM using jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To have a refresher on jQuery, we will go through an example web page that
+    does some simple DOM manipulations. In this example, we will load a simply structured
+    page that initially looks like the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Manipulating the DOM using jQuery](img/00002.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We will use some jQuery code to change the page''s content and layout and,
+    in order to make its effects clearly visible, we will set it to run about 700
+    milliseconds after the page has loaded. The result of our manipulations will look
+    like the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Manipulating the DOM using jQuery](img/00003.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now let''s review the HTML code required for the preceding example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CSS code used is quite simple, containing only three CSS classes as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The preceding code results in a page looking like the first figure when opened
+    in a browser and before our JavaScript code is executed. In the preceding CSS
+    code, we first defined some basic styles for the `box`, `boxsizer`, and `clear`
+    CSS classes. The `box` class styles the associated elements found in the page
+    by using some padding, a thin border, some margin around, and a small shadow below
+    the elements in order to make them look like a box. The `boxsizer` class will
+    make the elements that use it to take just 1/3rd of the width of their parent
+    element and create a three-column layout. Finally, the `clear` class will be used
+    on an element as a break point for the column layout so that all the elements
+    that follow will be positioned below it. The `boxsizer` and `clear` classes are
+    not initially used by any element defined in the HTML code, but will be used after
+    the DOM manipulations that we will do in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the `<body>` element of our HTML, we initially define an `<h1>` heading element
+    with ID `pageHeader` so that it is easily selectable through JavaScript. Right
+    below it, we define five paragraph elements (`<p>`) with the `box` class, having
+    the first three of them wrapped inside the three `<div>` elements and then inside
+    another `<div>` element with the `boxContainer` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Reaching our two `<script>` tags, we first include a reference to the jQuery
+    library from jQuery CDN. For more information, you can visit [http://code.jquery.com/](http://code.jquery.com/).
+    In the second `<script>` tag, we reference the JavaScript file with the required
+    code, for this example, which looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: All our code is wrapped inside a `setTimeout` call to delay its execution, according
+    to the use case described earlier. The first parameter of the `setTimeout` function
+    call is an anonymous function that will be executed after a timer of 700 milliseconds
+    has expired, as defined in the second argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the first line of our anonymous callback function, we use the jQuery `$()`
+    function to traverse the DOM and locate the element with the ID `pageHeader`,
+    and use the `css()` method to increase its `font-size` to `3em`. Next we provide
+    a more complex CSS selector to the `$()` function, to locate all the elements
+    with the `box` class that are descendants of the element with the `boxContainer`
+    class, and then store the result in a variable named `$boxes`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Variable naming conventions**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is a common practice among developers to use naming conventions for variables
+    that hold objects of a certain type. Using such conventions not only helps you
+    remember what the variable is holding, but also makes your code easier to understand
+    by other developers of your team. Among jQuery developers, it is common to use
+    variable names starting with a "$" sign when the variable stores the result of
+    the `$()` function (also know as a jQuery collection object).
+  prefs: []
+  type: TYPE_NORMAL
+- en: After we get a hold of the `box` elements that we are interested in, we append
+    two breaking spaces and some extra text in italics, at the end of each of them.
+    Then, we use the `$boxes` variable and traverse the DOM tree one level up, using
+    the `parent()` method. The `parent()` method returns a different jQuery object
+    holding the parent `<div>` elements of our initially selected boxes and then we
+    chain a call to the `addClass()` method to assign them the `boxsizer` CSS class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you need to traverse all the parent nodes of a selected element, you can
+    use the `$.fn.parents()` method. If you just need to find the first ancestor element
+    that matches a given CSS selector, consider using the `$.fn.closest()` method
+    instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, since the `boxsizer` class uses floats to achieve the three-column
+    layout, we need to clear the floats in the `boxContainer`. Once again, we traverse
+    the DOM using the simple `.boxContainer` CSS selector and the `$()` function.
+    Then, we call the `.append()` method to create a new `<div>` element with the
+    `.clear` CSS class and insert it at the end of the `boxContainer`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After 700 milliseconds, our jQuery code will have finished, resulting in the
+    three-column layout as shown earlier. In its final state, the HTML code of our
+    `boxContainer` element will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Method Chaining and Fluent Interfaces
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Actually, in the preceding example, we can also go one step further and combine
+    all three box-related code statements into just one, which looks something as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This Syntax Pattern is called **Method Chaining** and it is highly recommended
+    by jQuery and the JavaScript community in general. Method Chaining is part of
+    the Object Oriented Implementation Pattern of Fluent Interfaces where each method
+    relays its instruction context to the subsequent one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most jQuery methods that apply on a jQuery object also return the same or a
+    new jQuery element collection object. This allows us to chain several methods,
+    not only resulting in a more readable and expressive code but also reducing the
+    required variable declarations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Composite Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The key concept of the Composite Pattern is to enable us to treat a collection
+    of objects in the same way as we treat a single object instance. Manipulating
+    a composition by using a method on the collection will result in applying the
+    manipulation to each part of it. Such methods can be applied successfully, regardless
+    of the number of elements that are part of the composite collection, or even when
+    the collection contains no elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, the objects of a composite collection do not necessarily have to provide
+    the exact same methods. The Composite Object can either expose only the methods
+    that are common among the objects of the collection, or can provide an abstracted
+    API and appropriately handle the method differentiations of each object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's continue by exploring how the intuitive API that jQuery exposes is highly
+    influenced from the Composite Pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Composite Pattern is used by jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Composite Pattern is an integral part of jQuery's architecture and is applied
+    from the very core `$()` function itself. Each call to the `$()` function creates
+    and returns an element collection object, which is often simply referred as a
+    jQuery object. This is exactly where we see the first principle of the Composite
+    Patterns; in fact, instead of returning a single element, the `$()` function returns
+    a collection of elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The jQuery object returned is an Array-like object that acts as a wrapper object
+    and carries the collection of the retrieved elements. It also exposes a number
+    of extra properties as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `length` of the retrieved element collection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `context` that the object was constructed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The CSS `selector` that was used on the `$()` function call
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A `prevObject` property in case we need to access the previous element collection
+    after chaining a method call
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Simple Array-like object definition**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An Array-like object is a JavaScript object `{ }` that has a numeric `length`
+    property and the respective number of properties, with sequential numeric property
+    names. In other words, an Array-like object that has the `length == 2` property
+    is expected to also have two properties defined, `"0"` and `"1"`. Given the above
+    properties, Array-like objects allow you to access their content using simple
+    `for` loops, by utilizing JavaScript''s Bracket Property Accessor''s syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can easily experiment with the jQuery objects returned from the `$()` function
+    and inspect the properties described above, by using the developer tools of our
+    favorite browser. To open the developer tools on most of them, we just need to
+    press *F12* on Windows and Linux or *Cmd* + *Opt* + *I* on Mac, and right after
+    that, we can issue some `$()` calls in the console and click on the returned objects
+    to inspect their properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following figure, we can see what the result of the `$(''#pageHeader'')`
+    call, which we used in the example earlier, looks like in Firefox Developer Tools:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How the Composite Pattern is used by jQuery](img/00004.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The result of the `$(''.boxContainer .box'')` call looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How the Composite Pattern is used by jQuery](img/00005.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The fact that jQuery uses Array-like objects as a wrapper for the returned
+    elements allows it to expose some extra methods that apply on the collection returned.
+    This is achieved through prototypical inheritance of the `jQuery.fn` object, resulting
+    in each jQuery object also having access to all the methods that jQuery provides.
+    This completes the Composite Pattern, which provides methods that, when applied
+    to a collection, are appropriately applied to each of its members. Because jQuery
+    uses Array-like objects with prototypical inheritance, these methods can be easily
+    accessed as properties on each jQuery object, as shown in the example in the beginning
+    of the chapter: `$(''#pageHeader'').css(''font-size'', ''3em'');`. Moreover, jQuery
+    adds some extra goodies to its DOM manipulating code, following the goal of smaller
+    and less error-prone code. For example, when using the `jQuery.fn.html()` method
+    to change the inner HTML of a DOM node that already contains child elements, jQuery
+    first tries to remove any data and event handlers that are associated with the
+    child elements, before removing them from the page and appending the provided
+    HTML code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look at how jQuery implements these collection-applicable methods.
+    For this task, we can either download and view the source code from the GitHub
+    page of jQuery ([https://github.com/jquery/jquery/releases](https://github.com/jquery/jquery/releases)),
+    or we can use a tool such as the jQuery Source Viewer that is available at [http://james.padolsey.com/jquery](http://james.padolsey.com/jquery).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Depending on the version you are using, you might get different results to some
+    degree. The most recent stable jQuery version that was released and used as a
+    reference while writing this book, was v2.2.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the simplest methods to demonstrate how methods that apply to collections
+    are implemented, is `jQuery.fn.empty()`. You can easily locate its implementation
+    in jQuery''s source code by searching for `"empty:"` or using the jQuery Source
+    Viewer and searching for `"jQuery.fn.empty"`. Using either one of the ways will
+    bring us to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the code is not complex at all. jQuery iterates over all the
+    items of the collection object (referred to as `this` since we are inside the
+    method implementation) by using a plain `for` loop. For each item of the collection,
+    that is, an Element Node, it clears any data-* property values using the `jQuery.cleanData()`
+    helper function, and right after this, it clears its content by setting it to
+    an empty string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the different specified Node Types, you can visit [https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing the benefits over the plain DOM API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To clearly demonstrate the benefits that the Composite Pattern provides, we
+    will rewrite our initial example without the abstractions that jQuery offers.
+    By using just plain JavaScript and the DOM API, we can write an equivalent code
+    that looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once again, we use `setTimeout` with an anonymous function and set `700` milliseconds
+    as the second parameter. Inside the function itself, we use `document.getElementById`
+    to retrieve elements that are known to have a unique ID in the page, and later
+    `document.getElementsByClassName` when we need to retrieve all the elements that
+    have a specific class. We also use `boxContainerElement.getElementsByClassName('box')`
+    to retrieve all the elements with the `box` class that are descendants of the
+    element with the `boxContainer` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most obvious observation is that, in this case, we needed 18 lines of code
+    in order to achieve the same results. For comparison, when using jQuery, we only
+    needed 9 lines of code, that's half the number of lines of code compared to the
+    later implementation. Using the jQuery `$()` function with a CSS selector was
+    an easier way to retrieve the elements that we needed, and it also ensures compatibility
+    with browsers that do not support the `getElementsByClassName()` method. However,
+    there are more benefits than just the code line count and the improved readability.
+    As an implementer of the Composite Pattern, the `$()` function always retrieves
+    element collections, making our code more uniform when compared to the differentiated
+    handling of each `getElement*` method we used. We use the `$()` function in exactly
+    the same way, regardless of whether we just want to retrieve an element with a
+    unique ID or a number of elements with a specific class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As an extra benefit of returning Array-like objects, jQuery can also provide
+    more convenient methods to traverse and manipulate the DOM, such as those we saw
+    in our first example, `.css()`, `.append()` and `.parent()`, which are accessible
+    as properties of the returned object. Additionally, jQuery also offers methods
+    that abstract more complex use cases such as `.addClass()` and `.wrap()` that
+    have no equivalent methods available as part of the DOM API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the returned jQuery collection objects do not differ in anything other
+    than the elements they wrap, we can use any method of the jQuery API in the same
+    way. As we saw earlier, these methods apply to each element of the retrieved collection,
+    regardless of the element count. As a result, we do not need a separate `for`
+    loop to iterate over each retrieved element and apply our manipulations individually;
+    instead, we apply our manipulations (for example, `.addClass()`) directly to the
+    collection object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To continue providing the same execution safety guaranties in the later example,
+    we also need to add some extra `if` statements to check for `null` values. This
+    is required because, for example, if the `headerElement` is not found, an error
+    will occur and the rest of the lines of code will never be executed. Someone could
+    argue that these checks, such as `if (headerElement)` and `if (boxContainerElement)`,
+    are not required in this example and can be omitted. This might appear to be correct
+    in this example, but actually this is among the top reasons for errors while developing
+    large-scale applications, where elements are created, inserted, and removed from
+    the DOM tree continuously. Unfortunately, programmers in all languages and target
+    platforms tend to first write their implementation logic and fill such checks
+    at a later time, often after they get an error when testing their implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following the Composite Pattern, even an empty jQuery collection object (one
+    that contains no retrieved elements) is still a valid collection object, where
+    we can safely apply any method that jQuery provides. As a result, we do not need
+    the extra `if` statements to check whether a collection actually contains any
+    element before applying a method such as `.css()`, just for the sake of avoiding
+    a JavaScript runtime error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overall, the abstractions that jQuery offers by using the Composite Pattern
+    lead to fewer lines of code, which is more readable, uniform, and with fewer typo-prone
+    lines (compare typing `$('#elementID')` versus `document.getElementById('elementID')`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Composite Pattern to develop applications
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have seen how jQuery uses the Composite Pattern in its architecture
+    and also did a comparison on the benefits it provided, let's try to write an example
+    use case of our own. We will try to cover all concepts that we have seen earlier
+    in this chapter. We will structure our Composite to be an Array-like object, operate
+    on totally different structured objects, provide a Fluent API to allow chaining,
+    and have methods that apply on all the items of the collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A sample use case
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s say that we have an application that at some point needs to perform
+    operations on numbers. On the other hand, the items that it needs to operate on
+    come from different sources and are not uniform at all. To make this example interesting,
+    let''s suppose that one source of data provides plain numbers and another one
+    provides objects with a specific property that holds the number we are interested
+    in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The objects returned by the second source of our use case could have a more
+    complex structure and probably some extra properties. Such changes wouldn't differentiate
+    our example implementation in any way, since when developing a Composite we are
+    only interested in providing a uniform handling over the common parts between
+    the targeted items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Composite Collection Implementation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s proceed and define the Constructor Function and the prototype that will
+    describe our Composite Collection Object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `ValuesComposite()` constructor function in our example is quite simple.
+    When invoked with the `new` operator, it returns an empty object with a `length`
+    property equal to zero, representing that the collection it wraps is empty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the Prototype-based programming model of JavaScript,
+    visit [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first need to define a way that will enable us to populate our composite
+    collection objects. We defined the `append` method that checks whether the provided
+    parameter is one of the types that it can handle; in this case, it appends the
+    parameter on the Composite Object on the next available numeric property and increments
+    the `length` property value. For example, the first appended item, whether it
+    is an object with a value property or a plain number, will be exposed to the "`0`"
+    property of the Composite Object and will be accessible with the Bracket Property
+    Accessor's syntax as `myValuesComposition[0]`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `increment` method is presented as a simple example method that can manipulate
+    such collections by operating over all the collection items. It accepts a numeric
+    value as a parameter and then appropriately handles it by adding it to each item
+    of our collection, based on their type. Since our composite is an Array-like object,
+    `increment` uses a `for` loop to iterate over all the collection items and either
+    increases the `item.value` (in case the item is an object) or the actual numeric
+    value stored (when the collection item stored is a number). In the same manner,
+    we can continue and implement other methods that will, for example, enable us
+    to multiply the collection items with a specific number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to allow chaining the methods of our Composite Object, all the methods
+    of the prototype need to return a reference to the instance of the object. We
+    achieve this goal by simply adding a `return this;` statement as the last line
+    for all the methods that manipulate the collection, such as `append` and `increment`.
+    Keep in mind that methods such as `getValues` that do not manipulate the collection
+    but are used to return a result, by definition, can't be chained to relay the
+    collection object instance to subsequent method calls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we implement the `getValues` method as a convenient way to retrieve
+    the actual numeric values of all the items in our collection. Similar to the `increment`
+    method, the `getValues` method abstracts away the handling between the different
+    item types of our collection. It iterates over the collection items, extracts
+    each numeric value, and appends them to a `result` array that it returns to its
+    caller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An example execution
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s now see an actual example that will use the Composite Object we just
+    implemented:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When the preceding code is executed in a browser, by writing the code either
+    in an existing page or directly in the browser''s console, it will log a result
+    that looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: We are using our data sources such as the `numberValues` and `objectsWithValues`
+    variables that were shown earlier. The preceding code iterates over both of them
+    and appends their items to a newly created Composite Object instance. We then
+    proceed by incrementing the values of our composite collection by 2\. Right after
+    this, we chain the three item insertions using `append`, with the first two appending
+    numeric values and the third appending an object with a value property. Finally,
+    we use the `getValues` method in order to get an array with all the numeric values
+    of our collection and log it in our browser's console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternative implementations
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that a Composite does not need to be an Array-like object, but
+    is commonly preferred since JavaScript makes it easy to create such an implementation.
+    Additionally, Array-like implementations also have the benefit of allowing us
+    to iterate over the collection items using a simple `for` loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, in case an Array-like object is not preferred, we can easily
+    use a property on the Composite Object to hold our collection items. For example,
+    this property can be named as `items` and be used to store and access the items
+    of the collection inside our methods using `this.items.push(item)` and `this.items[i]`,
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Iterator Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The key concept of the Iterator Pattern is the use of a function with the single
+    responsibility to traverse a collection and provide access to its items. This
+    function is known as the iterator and provides a way to access the items of the
+    collection, without exposing implementation specifics and the underlying data
+    structure used by the collection object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Iterators provide a level of encapsulation regarding the way the iteration occurs,
+    decoupling the iteration over the items of a collection from the implementation
+    logic of their consumers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the **Single Responsibility principle**, you can visit
+    [http://www.oodesign.com/single-responsibility-principle.html](http://www.oodesign.com/single-responsibility-principle.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Iterator Pattern is used by jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we saw earlier in this chapter, the jQuery core `$()` function returns an
+    Array-like object that wraps a collection of page elements and it also provides
+    an iterator function to traverse it and access each element individually. It actually
+    goes one step further and provides a generic helper method `jQuery.each()` that
+    can iterate over arrays, Array-like objects, and also object properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A more technical description can be found in jQuery API documentation page
+    at [http://api.jquery.com/jQuery.each/](http://api.jquery.com/jQuery.each/), where
+    the description of `jQuery.each()` reads as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A generic iterator function, which can be used to seamlessly iterate over both
+    objects and arrays. Arrays and Array-like objects with a length property (such
+    as a function's arguments object) are iterated by numeric index, from 0 to length-1\.
+    Other objects are iterated via their named properties.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The `jQuery.each()` helper function is used internally in several places of
+    the jQuery source code. One of its uses is iterating over the items of a jQuery
+    object and applying manipulations on each of them, as the Composite Pattern suggests.
+    A simple search for the keyword `.each(` reveals 56 matches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As of writing this book, the latest stable version is v2.2.0 and this was used
+    for the above statistics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can easily trace its implementation in jQuery''s source, either by searching
+    for `"each:"` (note that there are two occurrences) or using the jQuery Source
+    Viewer and searching for `"jQuery.each()"` (like we did earlier in this chapter):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This helper function is also accessible on any jQuery object by using the same
+    prototypical inheritance that we saw earlier for methods such as `.append()`.
+    You can easily find the code that does exactly this, by searching for `"jQuery.fn.each()"`
+    in jQuery Source Viewer or directly searching jQuery source code for `each:` (note
+    that there are two occurrences):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the method version of `".each()"` enables us to directly iterate over
+    the elements of a jQuery collection object with a more convenient syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The example code that follows showcases how the two flavors of `.each()` can
+    be used in our code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When executed, the preceding code will log the following on the browser''s
+    console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How the Iterator Pattern is used by jQuery](img/00006.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it pairs with the Composite Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since the Composite Pattern encapsulates a collection of items into a single
+    object and the Iterator Pattern can be used to iterate over an abstracted data
+    structure, we can easily characterize these two patterns as complementary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where can it be used
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Iterator Pattern can be used in our applications to abstract the way we
+    access items from a data structure. For example, let''s suppose we need to retrieve
+    all the items that are greater than 4 from the following tree structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s now implement our iterator function. Since tree data structures can
+    have nesting, we end up with the following recursive implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we end up with an implementation that looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When executed, the preceding code will log the following on the browser''s
+    console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can clearly see that the iterator simplified our code. We no longer bother
+    with the implementation specifics of the data structure used every time we need
+    to access some items that fulfill certain criteria. Our implementation works on
+    top of the generic API that the iterator exposes, and our implementation logic
+    appears in the callback that we provide to the iterator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This encapsulation allows us to decouple our implementation from the data structure
+    used, given that an iterator with the same API will be available. For instance,
+    in this example, we can easily change the data structure used to a sorted binary
+    tree or a simple array and preserve our implementation logic the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we had a refresher on JavaScript's DOM Scripting API and jQuery.
+    We were introduced to the Composite Pattern and saw how it is used by the jQuery
+    library. We saw how the Composite Pattern simplifies our workflow after we rewrote
+    our example page without using jQuery, and later showcased an example of using
+    the Composite Pattern in our applications. Finally, we were introduced to the
+    Iterator Pattern and saw how well it pairs when used along with the Composite
+    Pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have completed our introduction on how the Composite Pattern plays
+    an important role in the way we use jQuery methods every day, we can move on to
+    the next chapter where we will showcase the Observer Pattern and the convenient
+    way to utilize it in our pages using jQuery.
+  prefs: []
+  type: TYPE_NORMAL

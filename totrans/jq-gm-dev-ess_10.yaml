@@ -1,0 +1,885 @@
+- en: Chapter 10. Making Some Noise
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This is the last chapter of this book, but it's far from the least important
+    subject. Music and sound effects are a crucial part of a game's user experience.
+    The right music can completely change the way a level feels. The right sound effects
+    can help the player understand a game's mechanics or give him/her just the feedback
+    that he/she needs to perform the right action at the right time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, the player expects to have sound in a game since it's been present
+    in games since the early days of gaming. Sadly, when it comes to sound, HTML games
+    have some big problems. There is not one single powerful solution you can use
+    that will make it possible to add sound to your game and have it work on all browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover four different techniques to add sound to your
+    game:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Embedding**: This is the oldest way to include sound in a page. It was used
+    a lot in the old days to make a page play a MIDI file as background music. It''s
+    not standard, doesn''t offer a consistent JavaScript API, and you have no guarantee
+    that a given audio format is supported. On the plus side though, it''s supported
+    by almost all the browsers you can find.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**HTML5 Audio**: You can use the `audio` tag to produce sound. On the plus
+    side, almost all browsers support it. The downside is that you will have to deal
+    with the fact that each browser supports a different variety of codec and that
+    you will not be able to manipulate the sound.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Web Audio API**: This is basically a JavaScript wrapper around OpenAL. This
+    means that you can do anything you want with the sound. Sadly, at the moment only
+    Chrome and Safari (on iOS too) support it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Flash**: It''s possible to use Flash just to play the sound. This may seem
+    like a strange idea since we''re making a JavaScript game here, but you could
+    typically use this as a fallback for older browsers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Then we will have a look at a few interesting tools you could use to generate
+    sound for your game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Abstracting audio
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'First let''s create a very simple library to abstract interactions between
+    our framework and the sound implementation we chose. The following code represents
+    a "contract" that all our implementations will have to respect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: For the Web Audio API implementation, we will add more capabilities to our object,
+    but this is the basic functionality you might expect for any audio library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using our small library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To use a sound in our game we will simply link the corresponding implementation
+    to our HTML file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we will add background music to our levels; we need to set up the sound
+    and preload it. We will do this by splitting the `initialize` function into two
+    parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `waitForSound` function checks whether the sound is preloaded. If it isn''t,
+    we create a timeout to check its state again later (100 milliseconds later, to
+    be precise). As you can see, once the sound is preloaded, we start the level and
+    play the sound. Now we need to stop the sound when the level is finished as shown
+    in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Start it again when the next level begins:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: With these modifications, and if the sound library respects the contract we
+    just specified, we will have background music. Now let's have a look at different
+    implementations for this sound library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Embedding sound
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'HTML possesses a very handy way to delegate the reading of some content to
+    a plugin: the `embed` tag. It''s not a standard tag but is supported by all browsers
+    and is used widely to include Flash in websites.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This same HTML tag can be used to include sound in a web page. This is far
+    from an ideal solution for many reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no standard way to know programmatically whether browsers support this
+    feature.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is no standard way to control the sound playback since the exposed API
+    depends on the plugin used to play the sound. It's possible to try to detect what
+    plugin is loaded, but this process is not very reliable. Furthermore, it will
+    be a lot of work to provide implementation for each possible plugin.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The supported format depends on the plugins installed and not only on the browser.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Even if the sound format is supported, the browser may ask permission to start
+    the plugin. As long as the user hasn't accepted the launch of the plugin, no sound
+    will be played.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There may be some use cases where it's reasonable to use this method to include
+    sounds in your game, but if any of the other techniques presented in the rest
+    of this chapter work for you, I would recommend using those instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at the part of the implementation that takes care of the
+    preloading:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Implementing preloading with the `embed` tag would require the knowledge of
+    the exact plugin being used to play the sound. Sadly, this isn't possible. Instead
+    we've chosen to create a completely generic implementation. As a side effect,
+    we cannot support preloading. The previous code simply bypasses preloading by
+    always returning `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This creates a major problem: the file will only start to load when you want
+    to play it. This means that there will be quite a large delay between the call
+    to the `play` function and the time when the player hears the sound. This isn''t
+    a big issue for background music, but for sound effects it makes this time almost
+    worthless. On the plus side, the second time you play the sound it will probably
+    have been cached, so the delay should be reduced.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we don't want to use any JavaScript API to interact with the plugin, we
+    will simply inject the `embed` tag into the page and configure it to automatically
+    start playback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We store the generated tag in order to remove it during the `stop` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The disadvantage of this is that we don't reuse the tag we've created. But as
+    you won't use this technique in situations where you need to create lots of sound,
+    this is not a big issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supported format
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since the list of supported formats using the `embed` tag depends on the installed
+    plugin, it's not possible to guarantee that a given file will be playable. However,
+    if you use WAV and MIDI, you should be safe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you choose to use WAV files, be careful because there are many different
+    ways the sound can be encoded in this format, and to maximize the compatibility
+    you should use uncompressed waves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 Audio element
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In order to match Flash's multimedia capabilities, `video` and `audio` elements
+    were added to HTML5\. They both come with matching JavaScript APIs that allow
+    you to create and manipulate the video or sound with JavaScript without needing
+    to write to the document (just like the `Image` object allows you to load an image
+    without having to use the `img` tag).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First let''s have a quick look at what the `audio` tag looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you can see here, it''s possible to provide multiple sources to the `audio`
+    tag. This is to circumvent the single biggest issue with this API: compatibility
+    with file formats. Indeed, even though all modern browsers support the `audio`
+    element, there is not one single audio format that you can use that will be recognized
+    by all of them. The solution is to provide multiple formats.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is far from ideal since it will force you to maintain multiple versions
+    of your sound files on your server. The following table shows the compatibility
+    of existing sound formats with current browser versions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|   | **MP3** | **AAC** | **WAV** | **Ogg Vorbis** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **Chrome** | ✓ |   | ✓ | ✓ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **Firefox** |   |   | ✓ | ✓ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **Internet Explorer** | ✓ | ✓ |   |   |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **Opera** |   |   | ✓ | ✓ |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **Safari** | ✓ | ✓ | ✓ |   |'
+  prefs: []
+  type: TYPE_TB
+- en: This means that if you want to support all browsers, you'll have to provide
+    at least two file formats. The consensus is that you should choose MP3 and Ogg
+    Vorbis (sound files ending with `.ogg`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For a game, you typically won''t use an HTML tag but will instead directly
+    work with the JavaScript API. Before we begin, a small note of warning: even though
+    the specification for this standard has not yet been finalized, most modern browsers
+    support this feature quite well. Since the standard has changed during the past
+    years, some older versions of current browsers may have slightly different implementations.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s have a look at how you create an `audio` element in JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To find out what format the browser can play with JavaScript, you can use the
+    `canPlayType` method. The basic usage would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The problems begin with the possible values returned by this function: `"probably"`,
+    `"maybe"`, `"no"`, and `""`. This is probably far from what you would have expected,
+    but there is a very good reason for this: depending on the format, it''s not always
+    possible for a decoder to know for sure if it''s supported before accessing the
+    file itself. Here is what those values mean:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`"probably"`: It''s almost a yes! The browser knows the file type and is pretty
+    sure it can decode almost all files of this type.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`"maybe"`: The browser knows the file format but also knows it doesn''t support
+    all variants of it. Another reason might be that the browser delegates the reading
+    of this file to a plugin and has no way of being sure that the plugin can handle
+    this particular file.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`""`: The browser doesn''t know about this file type and won''t delegate the
+    reading to a plugin either. With this response, you can safely assume that the
+    file won''t be played.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`"no"`: This is the same answer as `""`; it was used by some early implementations
+    of the standard. If you want to support older browsers too, you should expect
+    this response sometime.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'With this knowledge, what you would do to mimic the behavior of the HTML code
+    we saw earlier is something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This has given the priority to Ogg Vorbis but gives the priority to `"probably"`
+    over `"maybe"`, so if the browser can only *maybe* play Ogg Vorbis but thinks
+    it can *probably* play MP3, we will load the MP3 version of the file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preloading a sound
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In contrast to the `embed` tag, the `audio` element provides a way to manage
+    the preloading of the sound. This is done through the `readyState` property of
+    the `audio` element. It can have many possible values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`HAVE_NOTHING`: Either the file is not accessible or no data at all has been
+    loaded until now; probably the former. The numerical value corresponding to this
+    state is `0`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`HAVE_METADATA`: The very beginning of the file has been preloaded; this is
+    enough to parse the metadata part of the sound. With that data, the duration of
+    the sound can be parsed. The numerical value corresponding to this state is `1`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`HAVE_CURRENT_DATA`: The sound has been loaded up to the current playback position
+    but not enough to continue playback. Most likely, this is due to the playback
+    position being the end of the file since, usually, a state transition occurs very
+    fast to the file below. The numerical value corresponding to this state is `2`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`HAVE_FUTURE_DATA`: The sound has been preloaded enough to start playing the
+    rest of the file from the given playback position, but you have no guarantee that
+    the playback won''t stop soon to allow for more buffering. The numerical value
+    corresponding to this state is `3`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`HAVE_ENOUGH_DATA`: Enough of the sound has been preloaded so that the sound
+    should play entirely without interruption (this is an estimate based on the playback
+    rate and download speed). The numerical value corresponding to this state is `4`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For our implementation, we will consider a sound preloaded only if it''s in
+    the `HAVE_ENOUGH_DATA` state. Let''s have a look at the preloading implementation
+    of our small library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are two parts in the preceding code; we've already seen the highlighted
+    one—it's used to determine the supported sound format. It's wrapped in a function
+    that will be executed only once and stores the supported format in the `sound`
+    object as an object variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The rest of the code is the preloading implementation. First we create an `audio`
+    object. Then we set the preloading mode to `auto`. This tells the browser that
+    it can download as much as it wants from the file. After that, we point to the
+    correct version of our file. Here you can see that the `src` argument is expected
+    to omit the extension to allow the function to choose the correct version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we call the `load` function. This is necessary for some implementations
+    to actually start loading the file. We will consider the sound preloaded only
+    for the value `HAVE_ENOUGH_DATA` of the `readyState` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Playing and stopping sounds
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Controlling the playback is pretty easy. Let''s first have a look at our implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The implantation of the `play` part is pretty straightforward. However, some
+    older browsers don't support the `loop` attribute. For these, we need to loop
+    manually. To achieve this, we register an event handler that will be called when
+    the sound reaches its end. This event handler will simply rewind the sound and
+    play it again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see, there is no `stop` function for the `audio` element, but there
+    is a `pause` one. This means that if we call `start` again after a `pause` function,
+    the sound will continue from where it was and will not start at the beginning.
+    To rewind the sound, we set the current time to `0`, which means "at the beginning".
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Having a `pause` function could be handy, so we will add one to our library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now you may think that this is a pretty good solution, and in most cases, it
+    is. There are, however, a few problems with it; you cannot manipulate the sound
+    much beyond changing its playback speed. Effects, panning (control of the repartition
+    of the sound among the available output channels), and such are out of the question.
+    Furthermore, on some devices (mostly mobile ones), you cannot play two sounds
+    simultaneously. Most of the time, this is due to hardware limitations, but the
+    result is that you cannot have background music and sound effects at the same
+    time. If you want to use this API on iOS, you have to be aware that you can only
+    start to play the sound in response to an event generated by the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web Audio API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Web Audio API aims to give the JavaScript developer basically the same tool
+    he is used to having when writing a native application. It replicates the capabilities
+    of OpenAL, a very widely used API for game development. Furthermore it's a standard
+    API. Sadly, for the moment, it's only implemented on Webkit-based browsers including
+    the mobile version in iOS 6.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before work on this standard began, Mozilla added a similar API to Firefox called
+    Audio Data and is currently working on migrating to the Web Audio API. It should
+    probably be available in a stable version before the end of 2013\. As for Internet
+    Explorer, nothing has been announced yet. If you want to use the Web Audio API
+    in Firefox, you can now use the `audionode.js` library ([https://github.com/corbanbrook/audionode.js](https://github.com/corbanbrook/audionode.js)),
+    but it's incomplete and hasn't been updated in years. However, if you stick to
+    simple usage, it will probably do the trick!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of simply providing a way to play a sound, this API provides a full
+    stack to generate sound effects. This has the side effect of producing a slightly
+    more complex API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic usage
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The idea behind the Web Audio API is that you connect nodes together in order
+    to route a sound to the speakers. You can imagine those nodes as real-life devices
+    such as amplifiers, equalizers, effect pedals, or CD players. All that is done
+    in the Web Audio API is done through the Audio context. It's an instantiated object,
+    but you can only have one instance of it at any given time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with a very basic example by connecting an MP3 source to the speaker,
+    as shown in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Basic usage](img/5060_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To create an MP3 source, you first need to load the sound. This is done through
+    an asynchronous XML HTTP request. Once this is done, we have a file encoded as
+    an MP3 that we will need to decode to obtain the bytes describing the sound wave
+    and store them into a buffer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At this point, the `soundBuffer` object holds the decoded sound data. We then
+    need to create a source node and connect it to the buffer. Metaphorically, this
+    would be like putting a CD in the CD player:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we need to connect the source to the speakers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is like connecting our CD player to a headset or some speakers. At this
+    point, you won''t hear anything because we still haven''t played the sound. To
+    do this, we can write the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the name of this method changed recently to make it more understandable,
+    it used to be called `noteOn` so you may want to support this too, since the change
+    is fairly recent and a few browsers may still have the old name implemented. If
+    you want to stop playback, you will call `stop` (or its new name `noteOff`). You
+    are probably wondering why we need to pass an argument to this function. That
+    would be because this API allows you to synchronize audio in a very precise way
+    to do whatever you want (another sound or a visual effect). The value you pass
+    is the moment at which the sound should start to play (or stop). This value is
+    given in seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With what we''ve seen until now, we can already implement our small library,
+    so let''s do it before we have a look at the more complex usage:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's nothing new here except that the `play` and `stop` functions can only
+    be called once. This means that you have to create a new `bufferSource` object
+    each time you want to play the sound.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Connecting more nodes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s add a new node to our context: a `gain` node. This node allows you to
+    change the volume of your sound. The real-life version of this sound would be
+    an amplifier. The following figure shows how our node will be connected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Connecting more nodes](img/5060_10_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'First let''s create the node:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we will connect our source to the node input and the speakers to the node
+    output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once this is done, we can modify the volume by changing the value of the `gain.value`
+    property, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `gain` parameter is something called `AudioParams`. It''s a parameter you
+    will find in a lot of nodes, and it possesses a series of functions that allow
+    you to manipulate a value, not only immediately but also making it change over
+    time. Here are the functions you can call on this object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`setValueAtTime(value,` `time)`: This will change the value at the specified
+    time. The time is the absolute time given in seconds, just as for the `start`
+    function.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`linearRampToValueAtTime(value, time)`: This will make the current value change
+    linearly until it reaches the specified value at the provided time.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`exponentialRampToValueAtTime(value, time)`: This will make the current value
+    change exponentially until it reaches the specified value at the provided time.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setTargetAtTime(target, time, constant)`: This will make the current value
+    approach the target value from the given time at a constant rate.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setValueCurveAtTime(valuesArray, time, duration)`: This will make the value
+    go through all the values in the provided array from the provided time during
+    the provided duration.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`cancelScheduledValues(time)`: This will cancel all the programmed value changes
+    from the given time.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following figure shows examples of those functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Connecting more nodes](img/5060_10_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: All these functions can be set up to chain one after the other. The exact way
+    in which they will interact can sometimes be complex, and some transitions will
+    create an error. For more details, you should have a look at the specs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading more than one sound
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This sound is just one among many available nodes you can use to create your
+    sound graph. You can combine them as you want, and of course, connect more than
+    one source to your `context.destination` object. If you want to use more than
+    one sound, you will want to preload them all at once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You could use the API we''ve seen to do this, but there is a way to do this
+    out of the box in Web Audio by using `BufferLoader`. The following code shows
+    how this works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: The callback will be executed when the sound is buffered, just as with the `onload`
+    callback in the previous example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So many nodes, so little time
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There is quite a number of effect nodes provided by this API; let's now have
+    a quick overview of the nodes. This list is taken from the specifications ([http://www.w3.org/TR/webaudio/](http://www.w3.org/TR/webaudio/)).
+    Keep in mind that the specifications are still evolving and the implementation
+    is not always complete or up-to-date with the specifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delay node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The **delay** node will simply delay the sounds coming in. It has only one parameter
+    that represents the amount of time the sound should be delayed by.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Delay node](img/5060_10_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: ScriptProcessor node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This node is a general-purpose node that allows you to write your own effect
+    in JavaScript. It has two parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`bufferSize`: This defines the size of the buffer, which has to be one of the
+    following values: 256, 512, 1024, 2048, 4096, 8192, or 16384\. The buffer is the
+    part of the sound your JavaScript function will work on.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`onaudioprocess`: This is the function that will modify your sound. It will
+    receive an event as a parameter with the following properties: the node that called
+    it, the input buffer, and the time at which the audio from the buffer will be
+    played. The function will have to write the sound to the event''s output buffer.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![ScriptProcessor node](img/5060_10_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Panner node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This node will allow you to spatialize the sound in a 3D environment. You can
+    define the sound source's spatial properties with the `setPosition`, `setOrientation`,
+    and `setVelocity` functions. To modify the listener's spatial properties, you
+    will have to access the `context.listener` object and use those same functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many mode parameters you can set on this node to fine-tune the ways
+    the spatialization is done, but you'll have to look at the specs for the details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Panner node](img/5060_10_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Convolver node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This node creates a **Convolver** effect ([http://en.wikipedia.org/wiki/Convolution](http://en.wikipedia.org/wiki/Convolution)).
+    It takes two parameters: the buffer holding the sound wave used as an **impulse**
+    for the convolution and a Boolean value that specifies whether the effect should
+    be normalized or not.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Convolver node](img/5060_10_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Analyser node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This node doesn't change the sound at all; instead, it can be used to do frequency
+    and time-domain analyses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Analyser node](img/5060_10_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: DynamicCompressor node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This node implements a compressor effect. You can configure the effect with
+    the following parameters: **threshold**, **knee**, **ratio** , **reduction** ,
+    **attack** , and **release**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![DynamicCompressor node](img/5060_10_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: BiquadFilter node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This node can be used to apply a series of low-order filters. To specify which
+    one you can use the node''s `type` property to assign it one of the following
+    values: `lowpass`, `highpass`, `bandpass`, `lowshelf`, `highshelf`, `peaking`,
+    `notch`, and `allpass`. You can configure the chosen effect by setting some properties
+    of the node. For details, you can have a look at the specs.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: WaveShaper node
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This node implements a waveshaper effect ([http://en.wikipedia.org/wiki/Waveshaper](http://en.wikipedia.org/wiki/Waveshaper))
+    defined by its shaping function provided as an array in the curve properties of
+    the node.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flash fallbacks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This may seem strange, but there are a few situations where you may want to
+    use Flash for sound. For example, you may have designed a simple game with HTML
+    because you wanted to target iOS devices and desktops at the same time. But you
+    want older browsers such as IE 6 to have sound too. Or you want to use only MP3
+    and provide Flash for devices that don't support it. Those are some situations
+    where you may want to use Flash if the HTML5 Audio element is not supported.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are some libraries that allow you to abstract this; we will take a detailed
+    look at one of them—SoundManager 2—and then a quick overview of some available
+    alternatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: SoundManager 2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To use SoundManager 2 ([http://www.schillmania.com/projects/soundmanager2/](http://www.schillmania.com/projects/soundmanager2/)),
+    you only need to include a smallish JavaScript code on your page and provide a
+    link to the Flash files (hosted on the same server to comply with the same-origin
+    policy). Let's have a quick look at what the implementation of preloading would
+    look like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: To use SoundManager 2, we first have to configure it; that's what the highlighted
+    part of the preceding code does. The `url` parameter is the path to the Flash
+    file that will be used to play the sound. We've chosen Flash Version 8 because
+    you don't need a higher version if you want to mimic the HTML5 Audio element.
+    We then set a flag to make the library use HTML5 to play the sound when Flash
+    is not available. Since this method can take some time before all is loaded and
+    ready to be used, we set an event handler to detect whether the `SoundManager`
+    object is ready. This event handler simply sets a flag. There are more available
+    parameters, and I recommend that you take a look at them in the well-written documentation
+    for `SoundManager`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To implement the `preload` function, we have to take into account that SoundManager
+    may not be ready. If that is the case, we wait for the next call to `isPreloaded`
+    to start the preloading (if `SoundManager` is ready at this point).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To query the status of the sound we can use the `readyState` parameter, but
+    be careful; the available values are not the same as the ones for the HTML5 Audio
+    element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`0`: Sound is not initialized; preloading has not started yet'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`1`: Sound is loading'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`2`: An error occurred during the loading of the sound'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`3`: The file has been loaded'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Obviously, we will consider a sound as being ready if the `readyState` parameter
+    has the value `3`. Here is the implementation of the last three methods; there
+    is nothing special here since each of them has an exact match in `SoundManager`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it for the SoundManager implementation of our sound library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternatives to SoundManager
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are many other libraries that do what SoundManager does. jPlayer ([http://www.jplayer.org/](http://www.jplayer.org/))
+    is one of them. Contrary to what SoundManager does, it allows you to play video
+    too and was conceived from the ground up around the HTML5 Audio and Video elements
+    whereas this was added later to SoundManager. Furthermore, it's conceived as a
+    jQuery plugin. However, it's conceived to be used as a media player, with a UI
+    visible to the user. This can be disabled if you want to use it in your game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another possibility is that of using SoundJS ([http://www.createjs.com/#!/SoundJS](http://www.createjs.com/#!/SoundJS)).
+    It's a part of the CreateJS suite of tools and is well adapted to game programming.
+    SoundJS supports HTML5 Audio, Web Audio API, and Flash. If you're familiar with
+    CreateJS, using it should not be a problem; otherwise, it will probably seem a
+    little harder to use than the two previous ones. I would argue that this is worth
+    the effort since it's a very clean and modern library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you don't want to learn yet another library to play your sounds, you could
+    use `mediaelement.js` ([http://mediaelementjs.com/](http://mediaelementjs.com/));
+    it provides an implementation of the HTML5 Audio and Video elements for browsers
+    that don't support it. If you use this library, you will simply write your code
+    using the `audio` element, and a Flash or Silverlight script will be used to play
+    it where needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating sound effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Until now, we mostly spoke about music. Of course, the same techniques can
+    be used to play sound effects. There is however a very elegant solution for dealing
+    with them: generating them at runtime. This mimics the way a lot of effects were
+    created on old game consoles. To do this in JavaScript, you can use `SFXR.js`
+    ([https://github.com/humphd/sfxr.js](https://github.com/humphd/sfxr.js)). It''s
+    a port of the popular SFXR. Sadly, it only works with Firefox''s Audio Data API.
+    Nevertheless, I would encourage you to check it out!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You have now learned lots of different ways to play sounds in your games using
+    standard APIs, plugins, and Flash libraries, and your head is probably hurting
+    right now! The state of audio in the browser is not very nice at the moment, but
+    in a few years, when the Web Audio API is supported across all browsers, we will
+    be in a much better situation! So, I would recommend spending some time on learning
+    it well even if it's slightly more complex than the HTML5 Audio element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You now have all the tools you need to create the perfect jQuery game! I really
+    hope you enjoyed reading this book and that it will inspire you to create many
+    wonderful games.
+  prefs: []
+  type: TYPE_NORMAL

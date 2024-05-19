@@ -1,0 +1,368 @@
+- en: Chapter 5. The Facade Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will showcase the **Facade Pattern**, a structural design
+    pattern that tries to define a uniform way regarding how developers should create
+    abstractions in their code. Initially, we will use this pattern to wrap complex
+    APIs and expose simpler ones that focus on the needs of our application. We will
+    see how jQuery embraces the concepts of this pattern in its implementation, how
+    it achieves encapsulating complex implementations that are integral parts of the
+    web developer's tool-belt into easy-to-use API's, and how this plays a critical
+    role for its wide adoption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduce the Facade Pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Document its key concepts and benefits
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: See how jQuery uses it in its implementation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Write an example implementation where Facades are used to completely abstract
+    and decouple a third-party library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing the Facade Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Facade is a structural software design pattern that deals with how abstractions
+    of the various parts of an implementation should be created. The key concept of
+    the Facade Pattern is to abstract an existing implementation and provide a simplified
+    API that better matches the use cases of the developed application. According
+    to most Computer Science bibliographies describing this pattern, a Facade is most
+    commonly implemented as a specialized class that is used to segment the implementation
+    of an application into smaller pieces of code, while providing an interface that
+    completely hides the encapsulated complexity. In the web development world, it
+    is also common to use plain objects or functions for the implementation of a Facade,
+    taking advantage of the way in which JavaScript treats functions as objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In applications that have a modular structure, like the examples of the previous
+    chapter, it is also common to implement Facades as separate modules with their
+    own namespace. Moreover, for a larger implementation with very complex parts,
+    an approach with multiple levels of Facades can also be followed. Once again,
+    the Facades will be implemented as modules and submodules, having the top-level
+    Facade orchestrating the methods of its submodules, while providing an API that
+    completely hides the complexity of the entire subsystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The benefits of this pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Most of the time, the Facade Pattern is adopted for implementation parts that
+    have a relatively high degree of complexity and are used in several places of
+    an application, wherein large pieces of code can be replaced with a simple call
+    to the created Facade, leading not only to less code repetition, but also helping
+    us to increase the readability of the implementation. Since the Facade methods
+    are usually named by the higher-level application concepts that they encapsulate,
+    the resulting code is also easier to understand. The simplified API that a Facade
+    provides through its convenient methods, leads to an implementation that is easier
+    to use, understand, and also write unit tests for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The benefits of this pattern](img/00020.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Moreover, having Facades to abstract complex implementations proves its usefulness
+    in cases where there is a need to introduce a change to the business logic of
+    the implementation. In case a Facade has a well-designed API with a prediction
+    for future requirements, such changes can often require modifications just to
+    the Facade's code, leaving the rest of the application's implementation untouched
+    and following the **Separation of Concerns** principle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the same manner, using Facades to abstract the API of a third-party library
+    to better match the needs of each application, provides a degree of decoupling
+    between our code and the used library. In case the third-party library changes
+    its API or needs to be replaced with another one, the different modules of the
+    application will not need to be rewritten, since the implementation changes would
+    be limited to the wrapper Facade. In this case, all that is needed is to provide
+    an equivalent implementation using the new library API while keeping the Facade's
+    API intact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The benefits of this pattern](img/00021.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As an example of orchestrating method calls and using sensible defaults for
+    specific use cases, take a look at the following sample implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it is adopted by jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A very large part of the jQuery implementation is dedicated to providing simpler,
+    shorter, and more convenient-to-use methods for things that the different JavaScript
+    APIs already allow us to achieve, but with more lines of code and effort. By taking
+    a look at the provided APIs of jQuery, we can distinguish some groups of related
+    methods. This grouping can also be seen in the way in which the source code is
+    structured, placing methods for related APIs near to each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even if the word **Facade** does not appear in jQuery's source code, the use
+    of this pattern can be witnessed by the way in which the related methods are defined
+    on the exposed jQuery object. Most of the time, the related methods that form
+    a group are implemented and defined as properties on an O**bject Literal** and
+    then attached to the jQuery object with a single call to the `$.extend()` or the
+    `$.fn.extend()` method. As you might remember, from the beginning of this chapter,
+    this matches almost exactly with the implementation that Computer Science commonly
+    uses to describe how a Facade is implemented, with the exception that, in JavaScript,
+    we can create a plain object without needing to first define a class. As a result,
+    jQuery itself can be seen as a collection of Facades, where each one independently
+    adds great value to the library with the API of convenient methods that it provides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on `$.extend()` and `$.fn.extend()`, you can visit [http://api.jquery.com/jQuery.extend/](http://api.jquery.com/jQuery.extend/)
+    and [http://api.jquery.com/jQuery.fn.extend/](http://api.jquery.com/jQuery.fn.extend/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some of the abstracted API groups that are big parts of the jQuery implementation
+    and play a critical role to its adoption are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The DOM Traversal API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The AJAX API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The DOM Manipulation API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Effects API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Also, a great example of how this pattern can be used to provide simplified
+    APIs is jQuery's Events API, which provides a variety of convenient methods for
+    the most common use cases that are easier to use than the respective plain JavaScript
+    APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery DOM Traversal API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At the time that jQuery was released, web developers could locate specific DOM
+    elements of a page only by using the very limited `getElementById()` and `getElementsByTagName()`
+    methods, since other methods, such as `getElementsByClassName()`, were not widely
+    supported by the existing browsers. The jQuery team realized how the web development
+    could be leveraged if there was a simple API that would ease such DOM traversals,
+    which would work the same way across all browsers, be as effective as the familiar
+    **CSS Selectors**, and did their best to make such an implementation a reality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result of this effort is the now famous jQuery DOM Traversal API that is
+    exposed through the `$()` function, which played a serious role in the standardization
+    of the `querySelectorAll()` method as part of the **Level 2 Selector API**. The
+    implementation under the hood uses the methods provided by the **DOM API** and
+    counts about 2,135 lines of code in jQuery v2.2.0, while it is even bigger in
+    the v1.x versions that needed to support older browsers as well. As we saw in
+    this chapter, because of its complexity this implementation is now part of a separate
+    stand-alone project that is named **Sizzle**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on Sizzle and the `querySelectorAll()` method, you can
+    visit [https://github.com/jquery/sizzle](https://github.com/jquery/sizzle) and
+    [https://developer.mozilla.org/en-US/docs/Web/API/document/querySelectorAll](https://developer.mozilla.org/en-US/docs/Web/API/document/querySelectorAll).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Regardless of its complex implementation, the exposed APIs are quite easy to
+    use, mostly using simple CSS Selectors as string parameters, making it an excellent
+    example of how a Facade can be used to completely hide the complexity of its inner
+    workings and expose a convenient API. Since Sizzle''s API is still quite complex,
+    the jQuery library actually wraps it with its own API acting as an extra Facade
+    level:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The jQuery library first keeps a reference of Sizzle to the internal `jQuery.find()`
+    method and then uses it to implement all its exposed DOM Traversal methods, which
+    work on Composite Objects such as `$.fn.find()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, the famous `$()` function can actually be invoked in several ways,
+    but even when it is invoked with a CSS Selector as a string parameter, it actually
+    has an extra level of hidden complexity:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, in the preceding code, the `$()` is actually creating a new
+    object with `$.fn.init()`. Instead of being just an entry point to `$.fn.find()`
+    or `jQuery.find()`, it is actually a `Facade` that hides a level of optimization.
+    Specifically, it makes jQuery faster by avoiding invoking `$.fn.find()` and Sizzle,
+    when simple ID selectors are used by directly invoking the `getElementById()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The property access and manipulation API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another very interesting abstraction that follows the principles of the Facade
+    Pattern and can be found in jQuery's source, is the `$.fn.prop()` method. Like
+    the `$.fn.attr()`, `$.fn.val()`, `$.fn.text()`, and `$.fn.html()`, it belongs
+    to a family of methods that is characterized by the fact that each method is both
+    a getter and a setter of the related subject. The distinction of the method's
+    execution mode is done by inspecting the number of parameters that are passed
+    during its invocation. This convenient API allows us to have to remember less
+    method signatures and make the setters differ only by one extra parameter. For
+    example, `$('#myCheckBox').prop('checked')` will return true or false, based on
+    the state of the selected checkbox. On the other hand, `$('#myCheckBox').prop('checked',
+    true);` will programmatically check that checkbox for us. In the same concept,
+    `$('button').prop('disabled', true);` will disable all the `<button>` elements
+    on a page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `$.fn.prop()` method does the jQuery Composite Object handling, but the
+    actual implementation of the Facade is the internal `jQuery.prop()` method. An
+    extra concern that adds complexity to the Facade''s implementation is the fact
+    that there are some HTML attributes that have different identifiers for the corresponding
+    properties on the DOM elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first highlighted code area efficiently resolves the property to attribute
+    identifier mismatch by using the `propFix` and `propHooks` objects to do the matching.
+    The `propFix` object acts like a simple dictionary to match the identifiers, while
+    the `propHooks` object holds a function that does the matching in a less-hard-coded
+    way, with programmatic testing. This is a generic implementation that can easily
+    be extended by adding extra properties to those two objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The rest of the highlighted areas are responsible for the getter/setter mode
+    of the method. The overall implementation is to perform the following tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Check whether a value is passed as an argument and, if the property finds that
+    the assignment is successful, do the assignment and return the value.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Alternatively, if there was no value passed, return the value of the requested
+    property if it is retrievable.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Facades in our applications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In order to demonstrate how facades can be used both to encapsulate complexity,
+    helping us enforce the Separation of Concerns principle, and also abstract third-party
+    library APIs into more convenient methods that are application centric, we are
+    going to demonstrate a very simple lottery application. Our "Element Lottery"
+    application will populate its container with some Lottery Ticket elements that
+    will have a unique ID and contain a random number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Facades in our applications](img/00022.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The winning ticket will be picked by randomly selecting one of the lottery
+    elements, based on a random index among the created unique IDs. The winning number
+    will then be announced to be the numeric content of the picked element. Let''s
+    see the modules of our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The main `elementLottery` module of our application initialized itself right
+    after the page was fully loaded. The `add` method is used to populate the lottery
+    container element with tickets. It uses the `uidProvider` submodule to generate
+    unique identifiers for the ticket elements, keeps track of them on the `elementIDs`
+    array, uses the ticket submodule to construct the appropriate HTML code, and finally
+    appends the element to the lottery. The `pick` method is used to randomly select
+    the winning ticket by randomly selecting one of the generated identifiers, retrieving
+    the page element with that ID, and displaying its content inside an alert box
+    as the winning result. The `pick` method is triggered by clicking on the button
+    that we have added an Observer during the initialization phase:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `ticket` submobule acts as a Facade with a single method that is used to
+    encapsulate the generation of a random number and the creation of the HTML code
+    that will be used as the ticket. On the other hand, the `uidProvide` submodule
+    is a Facade that provides a single get method that encapsulates the way we use
+    the `simpleguid` module that we saw in the previous chapters. As a result, we
+    can easily change the library that is used to generate unique identifiers and
+    the only place that we will have to modify the existing implementation will be
+    the `uidProvide` submodule. For example, let''s see how it will look if we decided
+    to use the great node-uuid library that generates 128-bit unique identifiers as
+    strings of hexadecimal characters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on the node-uui library, you can visit [https://github.com/broofa/node-uuid](https://github.com/broofa/node-uuid).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned what a Facade actually is. We learned its philosophy
+    and the uniform way in which it defines how code abstractions should be created
+    so that they are easily understandable and reusable by other developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Starting from the simplest use cases of this pattern, we learned how to wrap
+    a complex API with a Facade and expose a simpler one that is focused on the needs
+    of our application and is a better match to its specific use cases. We also saw
+    how jQuery embraces the concepts of this pattern in its implementation and how
+    providing simple APIs for more basic web-developing techniques, such as DOM Traversals,
+    played a critical role for its wide adoption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have completed our introduction to how the Facade Pattern can be
+    used to decouple and abstract parts of an implementation, we can move on to the
+    next chapter where we will be introduced to the Builder and Factory Patterns.
+    In the next chapter, we will learn how to use these two Creational Design Patterns
+    to abstract the process of generating and initializing new objects for specific
+    use cases and analyze how their adoption can benefit our implementations.
+  prefs: []
+  type: TYPE_NORMAL

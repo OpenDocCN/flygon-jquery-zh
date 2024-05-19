@@ -1,0 +1,647 @@
+- en: Chapter 10. Benefiting from the Work of Others with Plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, we learned how to time our code and then about things
+    we can do to improve the performance of our jQuery code. With that out of the
+    way, let's turn our attention in the tenth and final chapter about jQuery plugins.
+    Plugins hold true to the jQuery motto of write less, do more. They enable you
+    to take advantage of the work of others and easily plug their work into your app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will learn about jQuery plugins. In the core of jQuery
+    is its prototype object. A plugin is an object that extends the jQuery prototype
+    object enabling new features in all jQuery objects. jQuery has an officially supported
+    set of UI plugins called jQuery UI. There are thousands of free plugins available
+    but finding the good ones requires patience and caution. Here are the things we
+    will cover in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding and installing plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery UI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing your own plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plugin best practices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finding plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you click on the **Plugins** menu on any of jQuery's websites, you will be
+    taken to the jQuery Plugin Register. Although the site does have a lot of plugins,
+    they are old and haven't been updated in years. Not to worry, the folks at the
+    jQuery Foundation decided that given their limited resources there was no point
+    in packaging plugins themselves. The Internet already has a few popular package
+    managers; two of the more popular ones are npm and Bower. The jQuery team recommends
+    that plugin publishers switch to using npm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Node Package Manager, or npm, was originally just for providing packages
+    for the Node.js web framework. But their ease of use and native cross-platform
+    ability has led to npm's adoption as a package manager for all manner of applications.
+    Many command-line tools, mobile frameworks, and other utility applications are
+    implemented as npm modules. It is no wonder that the jQuery team made it the package
+    manager of choice for jQuery plugins as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding jQuery plugins on npm is easy. Simply go to the website at [https://www.npmjs.com/](https://www.npmjs.com/).
+    In the search box, enter `jquery-plugin`. At the time of writing, there were more
+    than 1,200 jQuery plugins available. Finding plugins is easy; it is harder to
+    decide which of the many plugins to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Imagine that you are looking for a tooltip plugin. Ignore, for this example,
+    that there is a plugin in the jQuery UI library. The first thing you would do
+    is enter `jquery-plugin tooltip`" in the npm search bar. What kinds of questions
+    should you ask yourself before deciding to use a plugin in your code? The first
+    might be is the project actively maintained? Others would include does it have
+    passing unit tests? Is the source code clean and well written? Does it have dependencies
+    on other plugins? Is there clear documentation with sample code? What kind of
+    licensing does it use? Does it have any open issues? If the source code is on
+    GitHub, does it have any stars?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Only after you have done your due diligence and are satisfied that it is a quality
+    plugin should you use it in your code. The barrier for adding a plugin to npm
+    is pretty low, so there are a lot of bad plugins. Some were built poorly, some
+    are old and haven't been maintained, and there may even be some malicious ones
+    out there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: npm manages packages, not plugins. jQuery plugins are a special kind of npm
+    package. Throughout this chapter, I will use the word plugin but I will actually
+    be referring to an npm package containing a jQuery plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You have found a plugin or two that you like, so now what? Installing a plugin
+    via npm is also easy but first you need to make sure that you have a `package.json`
+    file located in the root of your application. This is a JSON file that is required
+    by npm. If you don''t have a `package.json` file, npm will not install your plugin.
+    The following is an example of a rather minimalistic `package.json` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Please note that it is a JSON file and not a JavaScript object. The first field
+    is the name of the application. Name is a required field; without it, npm will
+    not install a package. If you are creating a plugin and plan to upload it to npm,
+    the name must be unique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second field is the version number of the application. It is also required.
+    The value placed here is very important when you are creating your own plugins.
+    Whether or not to upgrade a plugin is based on the value of this field stored
+    in npm when compared to the user's local copy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next three fields are not required but will cause warnings to be generated
+    if they are missing when installing a plugin. The first is the description field,
+    which is a short statement describing the app. Then there is the repository field.
+    If there is a valid repository, it will contain a sub-object with two fields:
+    type and URL. The type identifies the type of source control used, with values
+    like `git` and `svn`. Finally, there is the license field, which is the type of
+    software license the plugin is released under. Create a `package.json` file at
+    the root of your application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before you can install an npm package, you will need to install Node.js. npm
+    is included with Node.js, so head over to [https://nodejs.org/](https://nodejs.org/)
+    and download and install the version for your system. Once you have installed
+    Node, you will want to upgrade npm. I know that seems strange, but Node and npm
+    are on different release cycles and the version of npm included with Node is usually
+    out of date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To upgrade npm, enter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On Mac and Linux systems, you may need to use a `sudo` command. With npm installed
+    and upgraded, you are finally ready to install a plugin. Enter the following at
+    the terminal or command prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The example `package.json` file showed one more field: dependencies. It is
+    a dictionary of key-value pairs. The key is the name of a package that your app
+    is dependent upon and the value is normally its version number. This field is
+    created for you automatically when you install packages with `--save` appended
+    to the end of the command.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Care should be taken anytime you use the `sudo` command. It executes the command
+    with root privileges. If the command being executed has malicious intents, it
+    would be able to do almost anything it wanted. Instead of using the `sudo` command,
+    you can set your account as the owner of the directory where npm installs packages:
+    /user/local. Simply execute the following command once:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the change owner (`chown`) command. It sets your account as the owner
+    of the `/usr/local directory`. `–R` tells `chown` to recursively walk all of the
+    subdirectories making your account their owner as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating a plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Occasionally, a package that your application depends on will be improved. In
+    order to upgrade all of your dependencies, you run the update command without
+    specifying a package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will check every package in your `package.json` file and update
+    all of the out of date packages. When it is finished, it will also update the
+    `package.json` file with the new version numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you would prefer to be a bit more surgical in your use of the update command,
+    you can supply the name of the package you would like to update.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command will update only the package specified in the command. If it updates
+    the package, it will update its version number in the `package.json` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Uninstalling plugins
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you ever need to delete a plugin, use the `uninstall` command. The `uninstall`
+    command will delete a package by removing all of its files from `node_modules`
+    and updating the `package.json` file. Think carefully before executing this command
+    since it can't be undone. If you use the `–save` option, it will also update the
+    `package.json` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding a plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we know how to install, update, and remove npm packages, let''s add
+    the popular `m-popup` plugin to our app. It is a plugin that creates lightweight
+    and customizable modal popups. You can find it in npm at [https://www.npmjs.com/package/m-popup](https://www.npmjs.com/package/m-popup).
+    This is the plugin''s main page, where you will find lots of information about
+    the plugin. It usually contains the author''s name, the type of license, coding
+    samples, and installation instructions. The installation instructions are usually
+    in the upper right-hand corner. To install `m-popup`, enter the command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Remember to execute the command from the root directory of your app and please
+    note there is no `–g` here. The `–g` option is only used when we are installing
+    a package globally, but this is not the case here. When we install plugins locally,
+    it is from the root directory of our application where the `package.json` file
+    is located.
+  prefs: []
+  type: TYPE_NORMAL
+- en: During installation, npm creates a directory, `node_modules`, if it was not
+    present already. Inside of it, another directory will be created, `m-popup`. The
+    name of the directory is always the name of the package. This is part of the reason
+    why npm packages must have unique names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The contents of every package is different, so you might need to explore around
+    a bit to find the files you need; generally they will be in a directory named
+    `dist` or possibly one named `src`. We are looking for the files we need to add
+    to our app for the plugin to work. The instructions on the package page will normally
+    tell us the names of the files, but not the directory that they are in. In our
+    case, we need two files, one CSS and the JS, and both are in the `dist` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code links in m-popup's CSS file and its JavaScript file, then creates
+    a CSS class, which sets the width and height for the popup modal. It would be
+    better to move the CSS to its own file. Next, we add some HTML to the end of our
+    markup just before the script tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the HTML that defines the popup. The class, `mPopup`, also makes the
+    markup initially hidden on the page. The plugin defines two sections, header and
+    body, represented by the classes `popup-header` and `popup-body`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code to activate the plugin is pretty simple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code waits for the document ready event then calls the `init` method. In
+    the `init` method, we get a reference to our popup and hook the click event of
+    the button. When the button is clicked, we call the `mPopup` method with a string,
+    `open`, which is the name of the `popup` method we are calling. To exit the modal,
+    click the **close** button in the upper right-hand corner of the modal or anywhere
+    on the grayed-out overlay.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is plenty more that this plugin can do. To learn more about it, you should
+    read the plugin's package page on npm. You may even want to study its source code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery UI
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery team manages a collection of UI widgets, interactions, effects, and
+    themes called jQuery UI. This collection is a collection of plugins. The home
+    page for the jQuery UI is [http://jqueryui.com/](http://jqueryui.com/). Let's
+    take a quick look at what jQuery UI is and how to use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery UI is made up of four main components: interactions, widgets, effects,
+    and the core. Only the core is required, so the download system allows you pick
+    just the components you want in your own customized version.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery UI Interactions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Interactions are a way to make page elements come alive and able to move in
+    new ways. For instance, you can make a div, which is draggable and droppable.
+    Other interactions are: resizable, selectable, and sortable. Interactions may
+    be used either individually or in combination and help you to make your site fluid
+    and interactive. And like most of jQuery UI, interactions are easy to use. Let''s
+    see how easy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's walk through this example and make sure we understand what it is doing.
+    In order to use jQuery UI, we include its CSS and JavaScript files. Then we do
+    an inline `<style>` to make our divs look like pink boxes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the body section, we lay out our page, creating four pink boxes inside of
+    a container div. Although it is a container div, it will not contain the boxes
+    after we drag them around. The boxes are only constrained by the browser window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In JavaScript, we wait for the document ready event; we call the `init()` method
+    then call `draggable` on every div with a class of `box`. When rendered in a browser,
+    this example allows you to move the numbered boxes anywhere you like so long as
+    it is within the browser's window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery UI widgets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Widgets are interactive and customizable UI elements. jQuery UI comes with
+    12 widgets. Unlike HTML elements, all of jQuery UI''s widgets are themeable, meaning
+    that they can be styled and colored to match your website''s design. In alphabetical
+    order, they are: accordion, autocomplete, button, datepicker, dialog, menu, progressbar,
+    selectmenu, slider, spinner, tabs, and tooltip.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the nice things about jQuery UI widgets is that, unlike HTML elements,
+    they are customizable and themeable. You can make all of the jQuery UI widgets
+    match. One possible problem is that not every element has a jQuery UI equivalent.
+    One noticeable omission is the input element. But luckily, it isn't difficult
+    to take care of this omission yourself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code creates three elements. Two jQuery UI elements: the select
+    and the button. And it creates an input element. There is no jQuery UI input widget,
+    but that isn''t a problem for us. We use the button''s creation method on the
+    input. This mostly works except there are a few unpleasant side effects. A button''s
+    label is centered, so this makes our input centered as well. Also, a button uses
+    a pointer cursor style, but an input normally has a text caret cursor. We fix
+    these and a couple of other small issues with a class, "styled-text". In the end,
+    we have three styled inputs that all match the theme of our site.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery UI widget factory
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the next section, we will write our own jQuery plugin using only jQuery and
+    JavaScript, but before we do that let's take a look at another way to write a
+    plugin, using the jQuery UI widget factory. Widgets, unlike regular jQuery plugins,
+    have a standard structure enforced on them. This is good because it makes them
+    easier to write, but on the downside it also means that in order to use them,
+    the user must have both jQuery and the jQuery UI core, instead of just having
+    jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You create widgets by passing them to the widget factory. Widgets are JavaScript
+    objects. They must have a property named `_create`, which must be a function.
+    This will be the function that is called to instantiate the widget. The `create`
+    function is passed a `this` object that has two properties on it: `this.element`
+    is a jQuery object pointing to current element. It is also passed `this.options`,
+    an object holding all of the current option values. In order to make this clearer,
+    let''s look at some code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The program kicks off by waiting for the document ready event. Once it is received,
+    it calls its `init` method. We create the widget by calling `$.widget()`, which
+    is the widget factory. Inside the object, we must define a `_create()` method.
+    The `create` method is called with the this context holding two values: element
+    and options. Element is a jQuery object pointing to the current element. It is
+    important to note that this is always a single element. Even if the original selector
+    referenced multiple elements, the widget factory passes them to us one by one.
+    Options contain your widget''s default values, if you created it and the user
+    didn''t override them.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A widget may define other methods. Private methods must start with an underscore.
+    Private methods are not visible from outside of the widget. Attempting to call
+    one will generate an error. Any method lacking an underscore as the first character
+    is public. Public methods are invoked in a rather unusual way. The name of the
+    method is passed in a string to the widget function, like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The widget in the example is a bit on the whimsical side. It replaces the text
+    in an element with the phrase `yada yada`. It only does so if the element doesn't
+    have any children and has a text function. The user can replace `yada yada` with
+    a more personal message. The widget also has a public method name, `len`, which
+    will return the length of message rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The widget factory is probably the easiest way to get started writing plugins.
+    Having a more rigid structure makes it more Plug and Play than regular plugins,
+    which we will look at next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing your own plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want to write a plugin that you can share with the whole world, your
+    best bet is to create a regular jQuery plugin. It is only a bit more difficult
+    than a jQuery UI widget, but it doesn't require jQuery UI, can easily be uploaded
+    to npm, and shared with the world. So let's turn our `yada yada` widget into a
+    plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prep work
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Before we can really get going, we need to have a few tools sitting in the
+    wings; the first of these is Node.js. If you didn''t install it earlier, you should
+    do so now and while you are at it, be sure to update npm. Once you have done that,
+    you will need to log in. First, see if npm shows you as logged in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If npm displays your username, you are OK. If not, you will need to add yourself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will be prompted for a username, password, and e-mail address. The e-mail
+    address will be public. Anyone browsing the npm website will be able to see it.
+    You should only need to do this once. Your credentials will be stored in a hidden
+    file for future reference. With our prep work out of the way, let's make our plugin
+    then publish it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The structure of a plugin is very different to that of a jQuery UI widget. First,
+    let's see the code then we'll step through it so we can understand what it is
+    doing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Plugins generally begin with a semicolon. This is a safety precaution. If the
+    plugin is used in a minified website and the file that precedes it forgets to
+    add a terminating semicolon, the code in both files will get merged together in
+    an unpredictable but bad way. Adding the semicolon fixes this issue if it exists,
+    and does no harm if it doesn't.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The entire plugin is wrapped in an IIFE (pronounced "iffy"), which stands for
+    Immediately Invoked Function Expression. An IIFE allows us to protect our code
+    from whatever environment it is invoke. Nothing outside of the IIFE can affect
+    it except through a predetermined interface. The interface in this case is the
+    single variable that we pass in, which is the jQuery variable. Please note that
+    we spell it out and don't just assume it is assigned to the dollar sign; it might
+    not be. By passing it in, we can assign it to the dollar sign for our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We only use the jQuery variable once, to create our plugin. Traditionally, plugins
+    only assign one function to the jQuery prototype. Nothing stops you from doing
+    so, but it is considered bad.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside of the actual code of the plugin, we handle our options first. In the
+    jQuery UI widget, the framework does the grunt work of merging user options into
+    your options. In a plugin, we have to take care of that ourselves. Luckily, we
+    can make jQuery do the heavy lifting by using the `$.extend()` method. Here, we
+    create our default values then merge the values from the user on top of them.
+    The order of the parameters is very important; items are copies right to left.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we set up to return the `this` object. If we don''t return `this`, the
+    user won''t be able to chain our plugin. The widget factory sent us one element
+    at a time to operate on. Unfortunately, we aren''t so lucky with a plugin: we
+    have to iterate on our own. Again, we let jQuery do the grunt work. We use the
+    `$.each()` method. This method sends us one element at a time. The elements are
+    actual DOM elements so we convert them into jQuery objects since the code was
+    written initially for them. Most of the rest of the code is pretty much the same
+    as it was in the widget.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `package.json` file is mandatory, as we''ve mentioned before. The name
+    and version number fields are required, but you should feel out as many fields
+    as you can. It will help your users to decide if this is the right plugin for
+    them. Here is our `package.json` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Besides the required fields we include `description`, `repository`, `license`,
+    `author`, `main` so the user will know what the `main` file is, and `keywords`
+    so we can be found by people looking for jQuery plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have both the code and the `package.json` files, let''s publish
+    our work to npm. Keep in mind if you decide to publish this code, I''ve already
+    claimed the name `yada-yada`, so you can''t use it. You have to come up with a
+    unique name of your own. Navigate to the directory holding your plugin and `package.json`
+    files. In order to publish, simply type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you've done everything right, after a few minutes npm will display your plugin's
+    name and version number and that's it. Then go to [https://www.npmjs.com/](https://www.npmjs.com/),
+    enter your plugin's name into the search box, and it should show up in the results
+    list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Best practices
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If everything goes well, your plugin may be used by lots of people all over
+    the world, so it is really important that it is well written. Here are a few tips
+    to help make your plugin all it can be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preserve chaining
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Chaining is one of jQuery's best features. It allows developers to do everything
+    they want to a set of elements in one neat package. Every jQuery developer uses
+    it, so if you break the chain, they won't like your plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use an IIFE
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: It is impossible for you to know what kind of environment your plugin will be
+    used in. Wrapping the code in an IIFE may seem unnecessary but it helps to keep
+    your code from affecting others' code and vice versa.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add only one function to jQuery
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Your plugin may be the greatest thing since the Swiss Army knife, but you should
+    still only use one function. Even though our little example plugin doesn't need
+    additional functions, you should only use one. If you need more, do what other
+    plugins and pass in the name of the function as a string and call a handler inside
+    the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let the user theme it
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: jQuery is all about customization; your plugin should be too. The example plugin
+    allows the user to change the message via options. This concept could be extended
+    to include styles and classes. Your plugin may be incredibly useful, but if it
+    doesn't match the rest of the user's site, they won't use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Test, test, test
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Before you send it out into the wild, make sure your plugin is up to the task.
+    Test on every browser you can find, think about services like `BrowserStack`,
+    and don't forget to ask your friends and colleagues to check it out too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Document it
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: No developer will use your plugin if they don't understand it. You should document
+    it as much as possible. Publish the code somewhere public like GitHub. Add to
+    your `package.json` file in order to make your npm page as full as possible. Be
+    sure to include example code with as many examples as possible of using the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minify it
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Be like jQuery. It provides both a minified and un-minified version. Developers
+    like to examine what's in the un-minified version and use the minified one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Plugins are one of the most popular jQuery features. In this chapter, we learned
+    about the switch from plugins being kept at the jQuery Plugin Repository to the
+    new way of storing them in npm. Then we learned how to install, update, and remove
+    plugins from our application and even what the purpose of the `--save` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From npm, we moved over to jQuery UI, the official support library of UI widgets.
+    We learned how to use them and how to create a customize download of only the
+    widgets we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last topic we tackled was how to write our own plugin. We explained each
+    of the steps necessary to create a plugin and explained why we should let jQuery
+    do most of the heavy lifting. We ended by showing how to upload our plugin to
+    npm so that others can benefit from our work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We began this book by learning why jQuery was created: to make cross-browser
+    web development easier. In [Chapter 2](part0021_split_000.html#K0RQ1-6309aac535bb4c1b83b0d7aa1f605023
+    "Chapter 2. jQuery Selectors and Filters"), *jQuery Selectors and Filters* we
+    used jQuery''s selectors and filters to find elements on the page then manipulated
+    those elements in the following chapter. We''ve used events to make our site interactive
+    and animation to make it snazzy. We learned how to get validated form data and
+    send it to the server. We learned techniques to write clean and fast code in [Chapter
+    8](part0060_split_000.html#1P71O1-6309aac535bb4c1b83b0d7aa1f605023 "Chapter 8. Writing
+    Code that You can Read Later"), *Writing Code that You can Read later*, and [Chapter
+    9](part0065_split_000.html#1TVKI2-6309aac535bb4c1b83b0d7aa1f605023 "Chapter 9. Faster
+    jQuery"), *Faster jQuery*. And we finished things up by learning to use and write
+    plugins.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery is still an important part of modern web development. Although browsers
+    have become more web-standards compliant over the years, jQuery still makes development
+    easier. There is one area where jQuery doesn''t help: writing big web apps. Frameworks
+    like Angular or Ember or a library like React are much better choices when writing
+    large web applications.'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,756 @@
+- en: Chapter 2. Enhancing Links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We take links for granted these days, but the truth of the matter is that the
+    humble link is the thing that revolutionized documents and made the Web as we
+    know it today possible. Being able to link a reader directly to another document
+    or to another place within a document had never been possible before.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Because of this, you could say that hyperlinks are the backbone of the Internet
+    — without them search engines wouldn't be possible, nor would most websites. Let's
+    take a look at some ways we can make links work even harder for us.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to open links in a new window
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to add icons to links to identify what type of document we are linking to
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to turn a list of links into simple tabs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Opening links in a new window
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As common as it is to open links in new windows, the practice itself is a little
+    bit controversial. Some argue that the site visitors themselves should decide
+    if they want to open a link in a new window, and many browsers make it easy for
+    them to do just that. Some argue that opening a link in a new window breaks the
+    expected behavior of the **Back** button and should be avoided. Others argue that
+    not opening links in a new window is confusing and disorienting for the site visitors
+    when they suddenly find themselves on a different website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wherever you stand on the issue, it's a common request from clients and the
+    practice probably isn't going away any time soon, so it's important to know your
+    options for handling this kind of functionality. I'm going to assume that you're
+    aware of the issues surrounding opening a link in a new window and have carefully
+    weighed all the options and presented an informed argument to your client.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why not just use the target attribute?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As you may know, HTML makes a `target` attribute available that can be used
+    with links to specify where a link should open. For example, the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: will create a link that will do its best to open in a new window or a new tab,
+    depending on the preferences a user has set in their browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The W3C the body that develops web standards such as HTML — deprecated the use
+    of the `target` attribute for strict document types, but have reintroduced the
+    tag to the HTML5 specification. However, the `target` attribute was intended to
+    be used with frames to control how new pages were loaded into frames and iframes.
+    It was not intended to be used to open a link in a new window for pages that aren't
+    using frames, so strictly speaking, using it for that purpose is incorrect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, we can use a little bit of JavaScript to create the behavior that we
+    want without using invalid or deprecated code. Let's take a look at how to do
+    that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — opening a link in a new window
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll get started with our basic HTML file and associated files and folders
+    that we created in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"),
+    *Designer, Meet jQuery*. Inside the`<body>` of the HTML document, we''ll add some
+    links as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is just a heading and two simple paragraphs, each with a link — one that
+    should open in a new window and one that won't.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We need some way to select the link that should open in a new window. This is
+    similar to the situation we would have if we wanted to style one of the links
+    differently from the other with CSS.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If we were using CSS, we could assign the link an `ID` or a class. An `ID`
+    would be pretty limiting, as an `ID` must be unique on a page — it would only
+    apply to this one particular link. A `class` would let us style any link that
+    opens in a new window, so that''s what we''re going to use. Add a `class` to the
+    link that should open in a new window as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we can use this class name for both CSS styling and to make the link open
+    in a new window with jQuery. It''s a great idea to add an icon to this link you
+    can add some padding to the left or right side of the link and then add a background
+    image to the link. Open up the empty `styles.css` file inside your `styles` folder
+    and add a bit of CSS as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next up, we''ll open up the `scripts.js` file inside our `scripts` folder,
+    and outside of our document ready statement we''ll start off by writing our function
+    to get our `new-window` links and make them open in a new window. Start off by
+    declaring a new function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here we've created a new function and named it `externalLinks` as that's a name
+    that makes sense for opening links in new windows. It's always helpful to give
+    your JavaScript functions and variables names that will help you remember what
+    they do.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, we'll use jQuery to select all the links with the class `new-window`.
+    We'll take advantage of jQuery's CSS selectors to select those links just like
+    we did when we styled them with CSS.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ve used the `$` shortcut for the jQuery function and passed the CSS selector
+    to the function. It''s important to remember to wrap the CSS selector in either
+    single quotes or double quotes. We don''t want the link to open a new window until
+    the user clicks on the link, so our next step is to tell the link to run a function
+    when it''s clicked on. jQuery makes this very easy. We can use the `bind()` method
+    provided by jQuery to bind a function to the link that will be called when the
+    link is clicked. That will look like this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This bit of code binds a function to our link — when our link is clicked, any
+    code we write inside this new function will be called. But so far, our function
+    is empty and doesn't actually do anything.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'What we need to do next is get the location the link is sending us to:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Let's examine this new line of code one bit at a time. First, we've declared
+    a new variable named `location`. As you remember, a variable is just a container.
+    So we've got a new empty container, so now let's look at what we've put inside
+    our container.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`$(this)` is the jQuery way of referring to the jQuery object that we''re currently
+    working with. In this case, we''re selecting all links with a class of `new-window`
+    and we''ve attached this function to be called whenever a site visitor clicks
+    the link. When a site visitor clicks a link, we want to examine the link that
+    was clicked to get the location of where the link is going. A simple and quick
+    way of referring to the current link is to use `$(this).`'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next we use the `attr()` method to get an attribute of the link. The location
+    where a link is heading is contained in the `href` attribute, so we pass `href`
+    to the `attr()` method.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: So our container that we've named `location` now contains the URL where the
+    link is pointing, or in this particular case, [http://packtpub.com.](http://packtpub.com)
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now that we know where we want to go, all we have to do is open that location
+    in a new window. Opening a new window in JavaScript is simple and straightforward:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '`window` is a global object in JavaScript that is always available to us. The
+    window object has an `open()` method, and we just have to pass a location to that
+    method so that the browser knows what location to open in a new window.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, if you open this HTML page in a browser and try clicking the links, you
+    might be disappointed to see that our link does not open in a new window. It's
+    like our JavaScript isn't even on the page at all. We've written a very nice function,
+    but it's not working. That's because functions don't do anything until we tell
+    them to. Telling a function to do its thing in JavaScript speak is 'calling the
+    function'.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We would like this function to fire up, find all the links with the class `new-window`,
+    and bind our new window function to them as soon as the page is loaded in the
+    browser window. That way, our links that should open in new windows will be ready
+    to fire off a new window as soon as our site visitor clicks on one of them.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We just have to add a line inside our document ready statement to call our
+    function:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This new bit of code will call our `externalLinks` function as soon as the page
+    loads up in the browser.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: There's just one thing left to do. Right now if you load the page in a browser
+    and click on a link, you'll find that the link does indeed open in a new window,
+    but it also opens in the current window — so we end up with our new page loaded
+    into two different windows. Not exactly what we had in mind. What we need to do
+    is cancel the default behavior of the link — we've already taken care of opening
+    the location in a new window, so now we need to tell the browser that it can take
+    a break and it doesn't need to do anything when the site visitor clicks on the
+    link. So let's add a parameter to our function and a line of code to cancel the
+    default link behavior.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You'll notice that the function we've attached to the click action on the link
+    now has an e inside the parentheses. This is a parameter that we're passing to
+    this function. In this case e represents the click event of the link.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The line of code we add to the function is:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This tells the browser to stop the default behavior of the link. If you reload
+    the page in your browser and click on the link, you''ll see that it correctly
+    opens the destination page in a new window, and it no longer opens the link in
+    the current window:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — opening a link in a new window](img/6709OS_02_001.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Now, what do you think will happen if we have a second link on the page that
+    should open in a new window? Let''s go back to the`<body>` of the document and
+    add a second link that should open in a new window. After the other links, add
+    a new paragraph and link to a new page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Be sure to add the `new-window` class to your link.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, when you refresh the page in the browser, the new link appears on the page.
+    Try clicking it and you'll see that it opens in a new window too, just like the
+    other `new-window` link.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We added a CSS class name to the links that we wanted to open in a new window.
+    Now, any link we create on our page with the `new-window` class will open in a
+    new window but how does JavaScript know which page to open in a new window when
+    there are multiple links?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The answer lies in our `externalLinks` function. We selected all links with
+    the `new-window` class and bound a function to fire when those links were clicked.
+    Inside that function, we captured the link's location. This function doesn't run
+    until a link is clicked. Until then, it's just sitting on the sidelines, waiting
+    to be called into action. When a link with the `new-window` class is clicked,
+    our function springs into action, capturing the location of that specific link
+    and opening up a new window pointed at that link's location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding icons to links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Adding icons to links is one of the simplest ways to communicate the link type
+    to your site visitor. You might have different icons for different sections of
+    your site, or you might want to provide some downloadable files to your site visitors
+    — for example, a PDF or e-book that you've written, the slides for a presentation
+    you gave, or some stock icons or photography that you've created. Adding icons
+    to these types of links can help give a visual clue to your site visitors so they
+    know what to expect when they click on the link. Let's take a look at how we can
+    add appropriate icons to different link types with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example of what our page will look like after we''ve added icons
+    to our links:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding icons to links](img/6709OS_02_002.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Time for action — creating a list of links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll get started with our basic HTML file and associated folders, like we
+    created in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"), *Designer,
+    Meet jQuery*. We''ll add a list of links to a few different types of downloadable
+    files to the`<body>` of the HTML document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: When we view this list in a browser, we'll see a bulleted list of links — there's
+    no visual indication what type of file lies behind each link — the user has to
+    guess based on the text of the link. Let's get all of our links and add an appropriate
+    class name to each one based on which file type the link is pointing to. To do
+    this, we'll use jQuery's attribute selectors.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next up, we'll get ready to add our JavaScript to our page. Open up the `scripts.js`
+    file inside the `scripts` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let''s figure out how we can distinguish one type of link from another. The
+    `<a>` link has an `href` attribute. That `href` attribute tells us the URL of
+    the page or file the link is taking us to, but it also gives us the information
+    that we need to select links with different values in that attribute. Let''s take
+    a look at how jQuery attribute selectors work:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will select all of the links on the page. If we wanted to get only the
+    `<a>` tags with an `href` attribute, we could modify our selector as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We could take that a step further and get only the links where the attribute
+    was equal to a certain value:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This selector is only going to select the link that links to the `video.mp4`
+    file. Note the way that single and double quotes are nested here — I can use either
+    single or double quotes to wrap my selector, but if I need to quote something
+    inside my selector, I have to be careful to choose the other type of quotes.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We want to add a class name to each of these links so that we can style them
+    with CSS to add our icon as a background image. To do that, we''ll use the `.addClass()`
+    method of the jQuery object. Using what we''ve learned so far, we could do something
+    like this inside of our document ready statement:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '...but that''s not very flexible. What if we wanted to add a second video or
+    another PDF file? We would have to adjust our jQuery to match. Instead, let''s
+    make our links a little more flexible by simply looking at the file extension
+    of the link''s `href` attribute. jQuery will allow us to check if an attribute
+    begins with certain characters, ends with certain characters, or contains certain
+    characters. You can get the full list of possible attribute selectors in the jQuery
+    documentation at [http://api.jquery.com/category/selectors/.](http://api.jquery.com/category/selectors/).'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To check if an attribute begins with certain characters, use `^=` as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To check if an attribute contains certain characters anywhere in the name,
+    use `*=` as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In this case, the file extension is always the last part of the link, so we''ll
+    use the ends with attribute selector, which uses `$=` as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, any links we add with a `.pdf` extension, for example, will automatically
+    have the `pdf` class given to them. If you refresh the page in a browser at this
+    point, you won''t see any difference in the page, but if you inspect the **DOM**
+    **(Document Object Model)** using a browser inspection tool such as the ones built
+    into Chrome and WebKit or Firebug for Firefox, you''ll see that the links have
+    the class names assigned to them. All that''s left to do is to write the CSS to
+    include the icons. Open up the `styles.css` file inside the `styles` folder and
+    add some lines of code as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You'll have to make sure that you place your icon images inside the `images`
+    folder. You can use the icon images included with the sample code for this chapter
+    or create your own.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, if you refresh the page in the browser, you'll see each of the links show
+    the appropriate icon. If you add new links to these four file types to your page,
+    they'll all have the icons as well. We've created a flexible and easy solution
+    for adding icons to links.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a list of links](img/6709OS_02_002.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We selected all the links on our page according to the file extension in the
+    `href` attribute and used that to add appropriate class names with jQuery. We
+    then used those class names in our CSS to add icons to each link type with some
+    CSS styles. Site visitors without JavaScript enabled will still be able to click
+    the links and download the associated files. They'll just miss out on the icons
+    that tip them off to the file type behind each link.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now you can see how jQuery and CSS can work together to add new functionality
+    to your pages. jQuery can modify elements' class names, and CSS can then be used
+    to style those elements according to their class name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simple tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If we have a large amount of information to present that might not be relevant
+    to all site visitors, we can compress the amount of space the information takes
+    by hiding selected bits of information until the site visitor requests it. One
+    of the most common ways of making all the information available but hidden until
+    requested is tabs. Tabs echo the real-world example of a tabbed notebook or labeled
+    folders in a filing cabinet and are easy for site visitors to understand. And
+    believe it or not, they're also easy to implement with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an idea of what our page will look like after we''ve created our tabs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Simple tabs](img/6709OS_02_003.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Time for action — creating simple tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll get started with our basic HTML file and associated folders, like we
+    created in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"), *Designer,
+    Meet jQuery*. Inside the`<body>` tag, we''ll start by setting up our simple example
+    that will work even for users with JavaScript disabled: we''ll put a list of anchor
+    links to different areas of the page at the top, then wrap each of our content
+    sections in a `div` with an `id` as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we view this HTML in a browser, we'll see a list of links at the top of the
+    page that when clicked, jump down the page to the appropriate section so that
+    the site visitor can easily find each section without scrolling on their own.
+    We've basically created a clickable table of contents for our page.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now we want to enhance this for our site visitors that have JavaScript enabled.
+    We'll start by adding an `id` to the`<ul>` that contains our table of contents
+    and we'll add a class name to each of the`<div>s` that contain our sections of
+    content — this will make it easier for us to select just the pieces of the page
+    we want with jQuery and will also make it easier for us to style our tabs with
+    CSS.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll use jQuery to hide all of our `tab-sections`. Open up the `scripts.js`
+    file inside your `scripts` folder and inside the document `ready` statement, select
+    the `tab-sections` and hide them:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now when we load the page, we'll only see our table of contents.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we need to show the appropriate section when one of our tabs is clicked.
+    We''ll start by binding a function to the click event of the links inside our
+    table of contents — just like we did when we opened a link in a new window:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With this bit of code, we've selected all of the links inside the `<ul>` with
+    the id of `#tabs` and bound a function to the links on click. So far, all this
+    function does is cancel the click — if you load the page in a browser at this
+    point, you'll see that clicking on the links does nothing — the page no longer
+    jumps down to the associated section.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, we want to select the appropriate section and show it. To do that, we'll
+    use the hash — or the part of the `href` attribute that includes the `#` symbol.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'When I pass `this.hash` to the jQuery function, the `this` I''m dealing with
+    is the link that was just clicked and `this.hash` is the value of the href attribute
+    starting with the # symbol and continuing to the end. If I were to click on the
+    overview tab, for example, passing this.hash to the jQuery function is the same
+    as writing the following:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: But of course, this is done in a much more flexible way — it will work for any
+    tab linked to any section of the page. So, for example, if I wanted to replace
+    the customer reviews tab with a shipping information tab, I wouldn't have to update
+    my JavaScript, only the HTML markup itself — the JavaScript is flexible enough
+    to adjust to changes.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'So now when I click on one of the table of contents links, it will show me
+    the associated section, but if I keep clicking on links, the sections just keep
+    showing up, and after clicking all the links, all the sections are visible — that''s
+    not what we want. We''ll have to hide the visible section and show only the section
+    we want. Let''s add a line to our code to select the visible `tab-section` and
+    hide it before we show the new section:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You're probably familiar with **pseudoclass** selectors in CSS — they're often
+    used to select the hover, visited, and active states of links (`a:hover, a:visited`,
+    and `a:active`). jQuery makes a few additional `pseudoclass` selectors available
+    to us there are pseudoclass selectors for buttons, empty elements, disabled form
+    fields, checkboxes, and more. You can check out all the available selectors for
+    jQuery in the jQuery documentation at [http://api.jquery.com/category/selectors/](http://api.jquery.com/category/selectors/).
+    Here, we're using the `:visible` pseudoclass to select the `.tab-section` that's
+    currently visible. Once we've selected the visible .tab-section, we hide it and
+    then find the correct `tab-section` and show it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: All we need now is some CSS to get our tabs styles to look like a tabbed section
+    of content. Open the `styles.css` file that's inside your `styles` folder, and
+    add some CSS styles as follows. Feel free to customize them to suit your own taste.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now if you load this up in a browser, you''ll see that there''s a little something
+    missing — we should highlight the currently selected tab to make it obvious which
+    one is selected. We can do that by adding a CSS class to the current tab. Go back
+    to your `scripts.js` file and add a bit of code to add a class to the current
+    tab and remove the class from any non-current tabs as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: First, we'll find the tab that has the class `current`, and remove that class.
+    Then we'll get the tab that was just clicked and add the `current` class to it.
+    That way, we make sure that only one tab will be marked as the current tab at
+    any given time.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll add some styles in our CSS for our new class. Open up `styles.css`
+    and add a bit of code to distinguish the currently selected tab. Again, feel free
+    to customize this style to suit your own tastes:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'So now our tabs are working the way we expect, and the only thing left to do
+    is to make the first tab active and show the first content section when the page
+    is first loaded instead of leaving them all hidden. We''ve already written the
+    function to do this, so now all we have to do is call it for our first tab:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The jQuery object''s `filter()` method will allow us to filter a previously
+    selected set of elements — in this case we''re dealing with all of the `<a>` tags
+    inside the `<ul>` with the `id #tabs`. We bind a click function to all of those
+    links, then we''ll filter out just the first link using the `:first` pseudoclass
+    made available to us — in jQuery and tell jQuery to click the first tab for us
+    this will run our function, adding the `current` class to the first link, and
+    showing the first `.tab-section` — just the way we would expect the page to look
+    when we load it.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating simple tabs](img/6709OS_02_003.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up a set of simple tabs with jQuery. For site visitors with JavaScript
+    disabled, the tabs will function like a table of contents at the top of the document,
+    jumping them down to the various sections of content when they're clicked. For
+    site visitors with JavaScript, though, the sections of content will be completely
+    hidden until needed. Clicking on each tab reveals the content associated with
+    that tab. This is a great way to save space in a UI — making all the content available
+    on demand in a small space.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We hid the tab contents with JavaScript instead of with CSS to be sure that
+    users without JavaScript enabled would still be able to access all of our content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you learned how to take basic links — the backbone of the Internet
+    — and enhance them to add some new behaviors and capabilities. You learned how
+    to make a link open in a new window, how to add icons to links depending on which
+    type of file was linked to and how to set up a basic tabbed interface. These are
+    all very common requirements for websites and these will serve as great building
+    blocks for you as you learn more about jQuery and JavaScript.
+  prefs: []
+  type: TYPE_NORMAL

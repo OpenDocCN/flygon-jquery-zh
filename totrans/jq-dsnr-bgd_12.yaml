@@ -1,0 +1,1297 @@
+- en: Chapter 12. Improving Forms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you've ever tried to work with web forms, you know what a headache they can
+    be. Luckily, the authors of HTML5 are working hard to make sure that experience
+    improves. We're all waiting patiently for browsers to support those nice new features,
+    but in the meantime we have to build sites and turn out beautiful functioning
+    forms.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, you''ll learn the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Marking up a form with some of the new HTML5 attributes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Placing the cursor in the first form field
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using placeholder text in form fields
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Validating your site visitors' form entries
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Styling stubborn form elements such as file uploads and select drop downs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An HTML5 web form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll get started by taking advantage of some of the new attributes made available
+    to us in HTML5\. The great thing about these additions is that they are completely
+    backward compatible. Browsers that don't know how to handle them will either ignore
+    them or default to a simple text input, and our site visitors on older browsers
+    will be able to use our forms without even knowing what they're missing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, a word of warning about web forms. A web form doesn't work by itself
+    — it needs to have some fancy backend programming on a server somewhere to collect
+    the form entries and process them, whether that means writing fields to the database
+    or sending the form information via e-mail. Because of this, the forms we build
+    in this chapter won't actually work — nothing will happen after clicking the **Submit**
+    button on the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to add a functioning web form to a project, you have a few options.
+    They are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can learn to do server-side programming to handle your form, but server-side
+    programming is well beyond the scope of this book.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can use a CMS that will likely include form handling either in its core
+    functionality or as an add-on. Good candidates include Drupal, WordPress, and
+    Joomla!.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can hire a server-side developer to get your form working. Or make friends
+    with one and barter your design skills for their coding skills.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can use a web form service to handle all the server-side processing of your
+    form. My personal favorite is WuFoo, which I have used for years without a single
+    hiccup. ([http://wufoo.com](http://wufoo.com))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Any of these methods will help you create a working form to be included in your
+    project. However, let's take a look at how we can make the front end of our form
+    the best it can be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — setting up an HTML5 web form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll get started with a simple HTML document and the associated files and
+    folders, just like we set up in [Chapter 1](ch01.html "Chapter 1. Designer, Meet
+    jQuery"), *Designer, Meet jQuery*. We want to make sure to use the HTML5 doctype
+    in our document type declaration at the top of the document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: After all those long and convoluted document type declarations used by HTML
+    4 and xHTML, this one is a breath of fresh air, isn't it?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, inside the`<body>` tag, open up a`<form>` tag as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The `form` tag needs an `action` attribute in order to work. Since our forms
+    are just dummy forms for scripting and styling purposes, we''ll just use # as
+    the value of that attribute. The value of the action attribute is usually a URL
+    — the place on the server where we''re going to send our form data for processing.
+    We also added an `id` attribute to make it easy to select the form for CSS and
+    JavaScript purposes later.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next up, we'll create a section for our site visitor to create a username and
+    password. We'll wrap these two fields up in a `fieldset` with a `legend` to group
+    them together.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've wrapped each field and its associated label in a paragraph tag (`<p>`).
+    There is a world of opinion out there on the best tags to use to mark up your
+    form fields. Some developers swear by simple `<div>` tags, others like to make
+    the form a list (`<ul>`) with each field a list item (`<li>`). Others like to
+    use a definition list (`<dl>`) and place the labels inside the `<dt>` tags and
+    the form fields inside the `<dd>` tag. At the end of the day, any of these will
+    do just fine and your form will work as expected for your site visitors. Use whatever
+    tags are your personal preference.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Look carefully at the HTML markup we''ve written so far for our form. There
+    are a few important things to note. They are as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Each`<input>` has a `type` that is relevant to its purpose. **Username** has
+    a `text` type and **Password** has a `password` type.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each`<input>` has a unique `id`. Remember that an `id` has to be unique on the
+    page, so select the `id` of your form inputs carefully.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each`<input>` has a `name` attribute. This is passed to whatever code is handling
+    your form on the server side. It's a common practice to use the same value for
+    the `name` and `id` of a form element, but it's not compulsory. You may easily
+    select a different value for the `id` anytime you'd like, but if you'd like to
+    change the `name` value, you should first check with your server-side developer
+    to make sure the code he or she has written will continue to work.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each`<label>` has a `for` attribute that associates it with a particular form
+    element. The value in the `for` attribute is equal to the `id` of the form element
+    with which it is associated (not the `name)`. This makes some nice functionality
+    available to our site visitors clicking on a `label` will bring focus to the associated
+    form element. This behavior is especially useful for checkbox and radio button
+    inputs, which are small and can be difficult to click.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Each browser will have its own way of styling form elements, but here''s what
+    the **My Account** section looks like for me (Google Chrome on Mac OSX):'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — setting up an HTML5 web form](img/6709OS_12_img14.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Next up, we'll create an **About Me** section for our form.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Again, the `text` type was used for the **Name** input, since names are strings.
+    However, take a look at the `type` attribute for the **Email, Website**, and **Birth
+    Date** fields. We're using the new HTML5 input types here. In browsers where these
+    input types are not supported, these fields will look and work just like inputs
+    with a `type` of `text`. But in browsers where these input types are recognized,
+    they'll behave in a slightly different way. User input will automatically be validated
+    by the browser. For example, if a site visitor types an invalid e-mail address
+    into an input with the type email, the browser will warn them that they've entered
+    an invalid e-mail address.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Also, on devices with soft keyboards, the keyboard keys will be altered to reflect
+    the characters necessary for entering that data type. For example, an input with
+    a type of `email` will open a keyboard with the . and the `@` showing on an iPhone
+    or an iPad, making it easier for your site visitors on these devices to complete
+    the required information.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — setting up an HTML5 web form](img/6709OS_12_img15.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'The next section in my form will be a section about beverage preferences. I
+    want the site visitor to select their favorite beverages from a list and then
+    answer a question about how many days per year they drink a beverage. Here''s
+    a sample of what my list looks like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Time for action — setting up an HTML5 web form](img/6709OS_12_img16.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'A few new things to note with the HTML we''ve used to mark up this section
+    are as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`Fieldsets` can be nested. A `fieldset` is an excellent way to group a set
+    of checkboxes or radio buttons together, and we can use the `legend` of the `fieldset`
+    to create a header for our radio or checkbox group.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A set of checkboxes are identified as such because they will all share the same
+    `name`. As a site visitor can select more than one item in a set of checkboxes,
+    we add square brackets ([]) to the end of the name so that the server will collect
+    all of the answers into an array.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each checkbox in the set has its own unique `id` and `value`. The `id` and `value`
+    do not necessarily have to match, but it's often easy to make them the same.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, the number of days per year is given an input type of `number`, since
+    only a number would be acceptable here. Be careful with this input type. It is
+    very strict and will not accept any non-numeric characters. Some bits of data
+    appear to be numbers, but are actually strings&,mdash;for example, telephone numbers
+    and credit card numbers. If you wouldn't do some sort of math with your number
+    then it shouldn't be the `number` input type.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The next section we''ll add to our form is a payment information section:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Much like the checkboxes, we've grouped a set of radio controls inside a `fieldset`
+    with the `legend` acting as the header for this section. Just like checkboxes,
+    a set of radio controls all share the same name, but each has its own unique `id`
+    and value. However, in the case of radio buttons, only one can be selected at
+    a time, so there is no need to mark them as an array.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We've also added a field for collecting our site visitor's credit card number.
+    Note that we've assigned an input type of `text` to this field. Even though a
+    credit card number appears to be a number, we want to store it just as it is,
+    and won't ever be adding to or subtracting from this number. Also, customers may
+    wish to type spaces or hyphens in their credit card number.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — setting up an HTML5 web form](img/6709OS_12_img17.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Finally, we'll add a checkbox for our site visitor to accept our terms of service
+    and a submit button for them to submit the form information to us.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The only new thing here is the **Submit** button. By default, an input with
+    a type of `submit` will read **Submit.** We can change that by adding a `value`
+    attribute with the text we'd like to actually appear on the button.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — setting up an HTML5 web form](img/6709OS_12_img18.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'The only thing left to do is to style our form with a bit of CSS. The following
+    is the CSS I''ve used for my simple form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note that the `type` attribute of our inputs can be used to select them for
+    styling. In this case, I've styled them all identically, but it would also be
+    possible to give each one its own set of styles if desired.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Here's how the form looks with my CSS. Feel free to get creative and write your
+    own styles for the form.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — setting up an HTML5 web form](img/6709OS_12_img19.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We took a look at some of the new HTML5 input types and how to use them properly
+    to put together a web form. We saw how to use fieldsets and legends to group fields
+    together under a heading and how to associate labels with form elements. We learned
+    the proper use of the text, password, e-mail, URL, date, checkbox, radio, and
+    number input types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting focus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you head over to [http://google.com](http://google.com), you'll see that
+    they've made it really easy for you to conduct a web search — as soon as the page
+    is loaded up in the browser, the cursor is blinking in the search field. There
+    are other sites on the web that behave this way too, making it quick and easy
+    to get started filling in a form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Any time you have a page where the site visitor's main task on the page will
+    be completing a form, you can make things easy on your site visitor by placing
+    the cursor into the first form field so they can just start typing. And it's wicked
+    easy with jQuery. Here's how to do it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — setting focus to the first field
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll keep working with the sample form we set up in the last example. Here's
+    how to set the focus to the first field in the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open up your empty `scripts.js` file and add a document ready statement.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next up, we want to select the first field in our form. There are many different
+    ways to go about that. In this case, I'm going to use the `id` of the first form
+    element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: All that's left to do is call the `focus()` method for that element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you refresh the page in the browser, you'll see that the cursor is blinking
+    in the **Username** field of the form — the very first field.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used a couple of lines of jQuery to move focus to the first field in our
+    form to make it easy for our site visitors to jump right into completing our form.
+    It was as simple as selecting the first form element and then calling the `focus()`
+    method for that element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Placeholder text
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Isn't it nice when you visit a site, and there's some soft grayed-out text in
+    a form field giving you a hint about what you're supposed to put there? There
+    are umpteen different jQuery plugins that have been written over the past several
+    years to handle this because it can be a bit of a hassle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, I'm here with good news. HTML5 provides a `placeholder` attribute that
+    can be used to create this kind of text in form fields automatically without any
+    help from JavaScript. Of course, as with any other cutting-edge technology, browser
+    support can be a bit lacking. We don't have the luxury of waiting years for browser
+    support for this new feature to be universal—we have to build functioning websites
+    now. You could continue using all those old jQuery plugins, but why not take advantage
+    of support for the placeholder attribute if it's there and only use jQuery to
+    fill in the gaps for those browsers that don't recognize it yet?
+  prefs: []
+  type: TYPE_NORMAL
+- en: This type of script is called a **polyfill**. It's used to fill in functionality
+    that might be missing from some browsers. If a browser does support the `placeholder`
+    attribute, the polyfill script does nothing, and just lets the browser handle
+    the placeholders. For all those site visitors without support for the `placeholder`
+    attribute, the script springs into action, providing the placeholder text functionality
+    for everyone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding placeholder text
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Follow these steps to add placeholder text to your form fields for as many of
+    your site visitors as possible, whether or not their browser supports the new
+    HTML5 placeholder attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll keep using the same form that we''ve built in the last two sections.
+    The first thing we''ll do is revisit each form field and add a placeholder attribute
+    where it makes sense. Here are some examples from my form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here, I've added a hint about the required length of the username.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Because you can never say it too much, here I've reminded my site visitor to
+    create a secure password.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: It can be helpful to remind site visitors that valid URLs include the protocol
+    at the beginning.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Anytime a field requires special formatting, placeholder text can give a hint
+    to the site visitor what that should be.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: When you're finished adding placeholder text, view your page in Safari or Chrome
+    to see the placeholder text in action.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding placeholder text](img/6709OS_12_img20.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Now we need to add support for those browsers that don't yet support placeholder
+    text.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We'll use Dan Bentley's Placeholder polyfill. To download it, just head over
+    to [https://github.com/danbentley/placeholder](http://https://github.com/danbentley/placeholder).
+    Just like the other plugins we've downloaded from GitHub, click on the **ZIP**
+    button to download a zipped folder.![Time for action — adding placeholder text](img/6709OS_12_img1.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Unzip the folder and take a look inside. It's a pretty simple and straightforward
+    plugin.![Time for action — adding placeholder text](img/6709OS_12_img2.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You've got a sample `index.html` file, a `style.css` file, and a `jquery.placeholder.js`
+    file, along with a license and a readme.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The good news about this plugin is that it works its magic just by being on
+    the page. Copy `jquery.placeholder.js` to your own `scripts` folder. Then head
+    down to the bottom of your page and attach the script to the page after jQuery
+    and before your own `scripts.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, if you open the page in a browser that doesn't support placeholder attributes,
+    you'll see placeholders working. Those browsers are Firefox 3.6 and lower, Safari
+    3 and lower, Internet Explorer 9 and lower, and Opera 10 and lower.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used Dan Bentley's Placeholder polyfill to add placeholder support to browsers
+    where it is lacking. We added `placeholder` attributes to the form fields where
+    appropriate, then included Dan's script on our page to get those placeholder attributes
+    working in as many browsers as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validating user entry
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes it can feel frustrating for a site visitor when they have to submit
+    a form several times over, correcting errors that they've made filling it out.
+    Without JavaScript, the only way to validate the information the site visitor
+    has entered is to wait for them to submit the form, then identify the issues on
+    the server, and send back a page that contains the form along with any error messages
+    that might help the site visitor correct the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Showing errors as soon as they happen goes a long way toward making your form
+    feel snappy and responsive and helping your site visitors submit the form correctly
+    on the first try. In this section, we'll learn how to use the Validation plugin
+    from Jörn Zaefferer. This plugin is powerful and flexible and can handle validation
+    in several different ways. We'll take a look at the most straightforward way of
+    adding client-side validation to your form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — validating form values on the fly
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ll continue working with the form we''ve been creating through the last
+    three sections. Follow these steps to validate user entry into the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we'll do is download the Validation plugin and get it attached
+    to our page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Head over to [http://bassistance.de/jquery-plugins/jquery-plugin-validation/](http://bassistance.de/jquery-plugins/jquery-plugin-validation/)
+    and click on the **Download** button in the **Files** section to download a ZIP
+    file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — validating form values on the fly](img/6709OS_12_img3.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Open up the ZIP file and take a look at what we've got.![Time for action — validating
+    form values on the fly](img/6709OS_12_img4.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There's a lot going on here. Several different JavaScript files, a changelog,
+    and so on. Remember how I said this plugin is powerful and can handle lots of
+    different approaches to validation? That's what all this is for. Handling form
+    validation in just about any old crazy situation you might find yourself in.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Luckily, though, our situation is pretty simple, so we don't have to do anything
+    complicated.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Copy `jquery.validate.min.js` to your own `scripts` folder and attach it to
+    your page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In this case, there's no dependency between the placeholder script and the validation
+    script, so it doesn't matter which order they appear in, as long as they're both
+    after jQuery itself.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''re going to go back through our form and add some information that
+    the Validation plugin will use. Let''s start with the username field:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is a required field — any site visitor who completes this form must select
+    a username, so I'll simply add a `class` of `required`. I can use that class name
+    to create a special style for this form field with CSS if I'd like. Even if I
+    don't, Validation will use this to make sure this field is filled in.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, all usernames must be between 5 and 20 characters long. So I've added
+    a `minlength` and `maxlength` attribute.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next up is the password field, which is also required. So I'll add the required
+    class.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: While I'm at it, I'll add the required class to the e-mail field too.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, let''s take a look at that list of favorite beverages. Remember we had
+    a note on there for the site visitor to select at least three but no more than
+    six? We can actually enforce that with the Validation plugin. Go to the first
+    checkbox in the series and add `minlength` and `maxlength` attributes as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We only have to add this on the first checkbox, not all of them. Validation
+    is smart enough to figure out that we're talking about this set of checkboxes.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, let's take a look at the field where we ask the site visitor how many days
+    per year they drink a beverage. Obviously, since there are only 365 days in a
+    year, that's the highest number they could enter in this field. So we'll add a
+    `max` attribute to specify the highest possible number.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And that brings us to the payment section. Whatever we're selling, it's not
+    free, so we're going to require both the credit card type and credit card number.
+    To require entry for radio buttons, we just have to add the `required` class to
+    the first radio button in the set.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We don't have to make any other changes to the radio button series.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, let's handle the credit card number itself. We need to add the `required`
+    class. We also need to add a `creditcard` class to validate that the number entered
+    is, in fact, a valid credit card number.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And at the bottom of our form, we have our **Terms of Service** checkbox. This
+    is required too, so we'll add the `required` class.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, we just need to call the `validate()` method that Validation makes available
+    to us. Inside your document ready statement, select the form and call the `validate()`
+    method.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you refresh the page in the browser, you'll see that you can't submit
+    the form without filling anything in — the required fields will be marked with
+    an error message saying the field is required. If you try to type an invalid URL
+    or e-mail address into the **Website** or **Email address** fields, you'll get
+    an error message letting you know there's a problem to be corrected. Just one
+    problem those error messages are sort of in a weird place for our checkboxes and
+    radio buttons.![Time for action — validating form values on the fly](img/6709OS_12_img5.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: That doesn't really help people understand exactly what's going on. Luckily,
+    Validation allows us to add our own error messages to the page wherever we'd like
+    them to display.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We're going to add an error message after the list of credit card type radio
+    buttons.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We'll add a `<label>`. The for attribute will refer to the `name` of the field
+    in this case, all the radio buttons share the `cc-type` name. We'll add a class
+    of error, and add whatever `error` message we'd like inside.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note that for this case, the `for` attribute of our `label` is referring to
+    the `name` of the field rather than the ID. This is a special case created by
+    the Validation plugin. If you're not using custom error messages with the Validation
+    plugin, then your label's `for` attribute should always reference the `id` of
+    the form element.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we don''t want those error messages showing up on the page unless they''re
+    needed. We''d also like them to display in red so they stick out and are easy
+    to find. Open your `styles.css` file and add some styles for the error message:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're adding a width since I've set my other labels to be short and floated
+    to the left. And we're adding a little margin for some space between the error
+    message and the field it's referring to.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now if you refresh the browser and try to submit the form without selecting
+    a credit card type, you''ll get the error message in a much better place as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — validating form values on the fly](img/6709OS_12_img6.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Next we need to do the same thing for our favorite beverages and our **Terms
+    of Service** checkbox: Here''s what we''ll add for favorite beverages:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: And here's what we'll add for **Terms of Service:**
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, if you refresh the page in the browser and try to submit the form without
+    completing required fields or try to enter invalid information in the form, you'll
+    get an appropriate error message as soon as the problem is detected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used the Validation plugin to add some simple client-side validation to our
+    form. The simplest way to use the Validation plugin is to simply add some class
+    names and attributes to your form elements. Validation will take care of the rest
+    — it's smart enough to recognize the HTML5 input types and validate those and
+    offers some other useful validation rules such as required fields, a maximum number
+    value, minimum and maximum lengths, and credit card numbers. We dropped in a line
+    of CSS to style the error messages the way we wanted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving appearance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you've tried styling web forms with CSS, then you've probably discovered
+    that some form elements, like text inputs and buttons, are pretty easy to style.
+    There are a few quirks, but once you get those figured out, you can get those
+    form elements looking just about any way you'd like. Other form elements, however,
+    are much more stubborn and don't respond much, if at all, to CSS styles. It's
+    so frustrating to design a lovely form only to realize that it's technically impossible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These troublesome form elements are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Not only are these four form elements impossible to style with CSS, they also
+    look radically different from one browser and operating system to another, leaving
+    us with little control over the appearance of our form. Let's see how Pixel Matrix's
+    Uniform plugin can help us out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — improving form appearance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to take advantage of the styling options made possible by
+    the Uniform plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll get started with a basic HTML file and associated files and folders,
+    just like we set up in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"),
+    *Designer, Meet jQuery*. For this example, in the body of the HTML document, we''re
+    going to set up a simple form with examples of each type of hard-to-style form
+    element. Get started with a`<form>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then, inside our form we''ll add our form elements. We''ll start off with a
+    `select` drop down:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're following all the same rules we followed for the last form, making sure
+    the form works properly and is accessible.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Exactly what this `<select>` looks like will depend on your browser and operating
+    system, but here''s how mine looks in Chrome on Mac OSX:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — improving form appearance](img/6709OS_12_img21.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Next, we'll add a file input.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Hard to believe this innocent-looking little tag could be the source of so
+    much styling headache, but there you are. Here''s how it looks in Chrome on Mac
+    OSX:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — improving form appearance](img/6709OS_12_img22.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Next up, let''s add a few checkboxes as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Time for action — improving form appearance](img/6709OS_12_img23.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: And then some radio buttons.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Time for action — improving form appearance](img/6709OS_12_img24.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'And the last thing we''ll add to our form is just a few easily styleable elements,
+    so that we can learn how to style these to match our Uniform styles:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Time for action — improving form appearance](img/6709OS_12_img25.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now we've got our unstyled form set up. Exactly what our form looks like will
+    depend on your browser and operating system. We followed all the rules established
+    earlier in this chapter for setting up a correct and accessible form. Except this
+    time, we've included some difficult-to-style form elements. Let's take a look
+    now at how we can use the Uniform plugin — to get our form looking consistent
+    across as many browsers as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling the unstylable
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want to take a little time out and try writing some CSS to style these
+    form elements, you'll see that there's not much that touches them. Some of them
+    don't seem to be affected by CSS at all, and when they are, it's not always in
+    the way that you'd expect. No wonder these form fields give everyone so much trouble.
+    JQuery to the rescue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding uniform for styling the unstylable
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to use the Uniform plugin to gain styling control over your
+    form elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's get the Uniform plugin and take a look at how that works. Head over to
+    [http://uniformjs.com/](http://uniformjs.com/) and click on the big **Download
+    Uniform** button.![Time for action — adding uniform for styling the unstylable](img/6709OS_12_img7.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Unzip the folder and take a look inside.![Time for action — adding uniform for
+    styling the unstylable](img/6709OS_12_img8.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This is pretty straightforward, right? Some styles, a demo, some images, and
+    two versions of the Uniform plugin — one minified and one not. We've seen this
+    before.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By default, Uniform comes with a default stylesheet and images. However, other
+    styles are available. Back on `uniformjs.com`, if you click on **Themes** in the
+    navigation, you'll see the themes that are currently available. I really like
+    the look of Aristo, so I'm going to download that.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding uniform for styling the unstylable](img/6709OS_12_img9.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'This gets me a simple ZIP file with just some css and images inside:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![Time for action — adding uniform for styling the unstylable](img/6709OS_12_img10.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Next, we need to get these files into our own project and attached to our HTML
+    page. Let''s start with the JavaScript. Copy `jquery.uniform.min.js` to your own
+    `scripts` folder and attach the Uniform script between jQuery and your own `scripts.js`
+    file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now copy the CSS file for the theme you''d like to use to your own `styles`
+    folder and attach it in the head of the document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The last thing we need to grab is the associated images. Copy the contents of
+    your chosen theme's images folder to your own `images` folder. Your own project's
+    structure should now look similar to the following screenshot:![Time for action
+    — adding uniform for styling the unstylable](img/6709OS_12_img11.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now, we''re ready to call the `uniform()` method to style our unstylable form
+    elements. Open up your `scripts.js` file, and insert a document ready statement:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Uniform allows us to pick and choose which form elements we''d like to style.
+    In this case, we want to style all four stubborn elements, so our selector will
+    be:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then, all that''s left to do is call the `uniform()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you refresh the page in the browser, you'll see these stubborn and unstylable
+    form elements now match the Uniform theme that you've selected.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding uniform for styling the unstylable](img/6709OS_12_img26.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: There are still some funky CSS things to take care of, and our fieldsets, legends,
+    buttons, and text inputs don't match. Let's write a bit of CSS to bring it all
+    together.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Styles for all
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We still have some CSS things to clean up — our lists of checkboxes and radio
+    buttons still have their bullets and our text inputs, buttons, fieldsets, and
+    so on are still unstyled. Let's style everything to match the Uniform theme we've
+    selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — styling the styleable
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Open up your `styles.css` file. We''ll start off by styling the fieldsets and
+    legends:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've selected shades of blue that match the Aristo theme that I selected. If
+    you chose a different theme, feel free to use different colors and styles to match
+    your chosen theme.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll style some of the container elements we''re using in the form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll add some styles to that text input and textarea so they match
+    our Aristo form elements:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And last, but not least, we''ll style our buttons. The Aristo theme makes use
+    of a nice blue gradient, so I''m going to use a gradient for my buttons. I''ll
+    have to write quite a lot of code for supporting all the browsers, but here it
+    is:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I'm adding a subtle text color change on hover and reversing the gradient when
+    the buttons are clicked. Now, refresh the page in the browser and take a look
+    at our beautiful form.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — styling the styleable](img/6709OS_12_img12.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used the Pixelmatrix's Uniform jQuery plugin to style formerly stubborn and
+    unstyleable form elements. We chose one of the pre-made themes and attached all
+    relevant CSS and images to our page, then selected each type of form element we
+    wanted to style and called the `uniform()` method. We then used our CSS skills
+    to style the other form elements, a simple text input, a textarea, and some buttons,
+    to match the theme we selected. The result is a gorgeous form that will look consistent
+    across different browsers and will still work perfectly for users with JavaScript
+    disabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our own theme
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Sure, this Aristo theme is nice, but what if it doesn''t match our site? Do
+    we have any other option? Of course we do! If none of the prebuilt themes match
+    your site, you can make your own theme using your own styles and colors to match
+    any site you''d like. In fact, Pixelmatrix has made it super easy. Here''s how
+    you do it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a custom uniform theme
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Start off by downloading the theme kit from Pixelmatrix. It's available in the
+    themes section on [uniformjs.com:](http://uniformjs.com)![Time for action — creating
+    a custom uniform theme](img/6709OS_12_img9.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Unzip the folder and inside you'll find two PSD files — `sprite.psd` and `sprites.psd`.
+    Open up `sprite.psd` in Photoshop and style the form elements to your heart's
+    content. You can change the sizes of the elements if you'd like to have larger
+    or smaller form elements. `Sprites.psd` is only for explaining what each style
+    is for. You can use it as a reference to make sure you get all the possibilities
+    covered, but you won't actually need to use it to create your theme.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When your sprite is ready, head over to [http://uniformjs.com/themer.html](http://uniformjs.com/themer.html).![Time
+    for action — creating a custom uniform theme](img/6709OS_12_img13.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Fill out the form with height of your select sprite, the width and height of
+    your checkboxes and radio buttons, and the height of your file input. Then click
+    Generate code. The CSS that you'll need to have Uniform work with your sprite
+    will be generated for you. Copy and paste it into a CSS file and save it to your
+    project.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attach your new CSS file to your HTML document and save your sprite as a PNG
+    file to the `images` folder in your project, and you should be all set. You might
+    find a few things that need some minor tweaks, but setting up a custom Uniform
+    theme is that straightforward.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you'd like to contribute your theme back to the Uniform community for other
+    designers and developers to use, you can submit it to Pixelmatrix by e-mailing
+    a zip of your theme to `<[josh@pixelmatrixdesign.com](mailto:josh@pixelmatrixdesign.com)>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We learned how to use the theme kit and custom theme CSS generator provided
+    by Pixelmatrix to quickly and easily create our own Uniform theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Well, that wraps up the chapter on forms. We learned how to use the new HTML5
+    form elements properly to create a form that functions perfectly and is accessible
+    to boot. We learned how to focus the first field in the form, use placeholder
+    text in all browsers, validate our site visitor's form input and style those stubborn
+    and notoriously unstyleable form elements. Now you've got an arsenal of tools
+    on your side to create gorgeous-looking forms that enhance your site visitors'
+    experience on your site. And best of all, they all degrade gracefully for users
+    with JavaScript disabled since we approached our forms with the progressive enhancement
+    mindset — first building out a working form, then layering in enhancements for
+    those site visitors whose browsers support them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I know that JavaScript can be a scary subject for designers. Kudos to you for
+    sticking with me to the end of the book! I hope now that you have a basic understanding
+    of jQuery and feel sure that you'll be able to tackle your next JavaScript challenge
+    with confidence. You know how to put the jQuery library to good use to enhance
+    your sites. You know how to find good plugins to make coding up interactions quick
+    and easy. You know how CSS and JavaScript can work together to enhance the site
+    visitor's experience on your site. And you know that there is no shortage of tutorials,
+    resources, help forums, articles, and discussions online to help you along if
+    you get stuck.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For its part, jQuery gets better with every release — sleeker, faster, and more
+    capable. The jQuery team is careful to keep the documentation updated so you'll
+    always be able to figure out just how to use each method. The jQuery team is smart
+    and quick, and new jQuery updates are being announced on a regular schedule. All
+    of this points to a lively and useful library that will only continue to grow
+    in popularity across the Web. It's a favorite of many coders, from experienced
+    hackers to beginners like you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope that you've enjoyed this book and that it's given you many new ideas
+    for interactive elements you can design and build for your sites. Be sure to stay
+    connected to the jQuery community — it will be your best resource moving forward
+    with further improving and growing your JavaScript skills.
+  prefs: []
+  type: TYPE_NORMAL

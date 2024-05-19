@@ -1,0 +1,956 @@
+- en: Chapter 7. Build Your Own jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With the 1.8 release of jQuery, something new was introduced that the development
+    community as a whole had been wanting for a while – the ability to build custom
+    versions of jQuery that contained only the functionality that was required for
+    a given task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Briefing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this project we'll set up the environment we need in order to use jQuery's
+    build tool. We'll see what other software we need to use, how to run the build
+    tool itself, and what we can expect as output of the build tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Is It Awesome?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While it's fairly common for someone to say that they use jQuery in every site
+    they build (this is usually the case for me), I would expect it much rarer for
+    someone to say that they use the exact same jQuery methods in every project, or
+    that they use a very large selection of the available methods and functionality
+    that it offers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The need to reduce file size as aggressively as possible to cater for the mobile
+    space, and the rise of micro-frameworks such as **Zepto** for example, which delivers
+    a lot of jQuery functionality at a much-reduced size, have pushed jQuery to provide
+    a way of slimming down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As of jQuery 1.8, we can now use the official jQuery build tool to build our
+    own custom version of the library, allowing us to minimize the size of the library
+    by choosing only the functionality we require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on Zepto, see [http://zeptojs.com/](http://zeptojs.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Hotshot Objectives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To successfully conclude this project we''ll need to complete the following
+    tasks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Git and Make
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing Node.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing Grunt.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring the environment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a custom jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Running unit tests with QUnit
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mission Checklist
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll be using Node.js to run the build tool, so you should download a copy
+    of this now. The Node website ([http://nodejs.org/download/](http://nodejs.org/download/))
+    has an installer for both 64 and 32-bit versions of Windows, as well as a Mac
+    OS X installer. It also features binaries for Mac OS X, Linux, and SunOS. Download
+    and install the appropriate version for your operating system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The official build tool for jQuery (although it can do much more besides build
+    jQuery) is **Grunt.js,** written by *Ben Alman*. We don't need to download this
+    as it's installed via the **Node Package Manager** (**NPM**). We'll look at this
+    process in detail later in the project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on Grunt.js, visit the official site at [http://gruntjs.com](http://gruntjs.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: First of all we need to set up a local working area. We can create a folder
+    in our root project folder called `jquery-source`. This is where we'll store the
+    jQuery source when we clone the jQuery Github repository, and also where Grunt
+    will build the final version of jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Git and Make
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The first thing we need to install is Git, which we'll need in order to clone
+    the jQuery source from the Github repository to our own computer so that we can
+    work with the source files. We also need something called Make, but we only need
+    to actually install this on Mac platforms because it gets installed automatically
+    on Windows when Git is installed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As the file we'll create will be for our own use only and we don't want to contribute
+    to jQuery by pushing code back to the repository, we don't need to worry about
+    having an account set up on Github.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First we'll need to download the relevant installers for both Git and Make.
+    Different applications are required depending on whether you are developing on
+    Mac or Windows platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mac developers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Mac users can visit [http://git-scm.com/download/mac](http://git-scm.com/download/mac)
+    for Git.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next we can install Make. Mac developers can get this by installing XCode. This
+    can be downloaded from [https://developer.apple.com/xcode/](https://developer.apple.com/xcode/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Windows developers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Windows users can install **msysgit**, which can be obtained by visiting [https://code.google.com/p/msysgit/downloads/detail?name=msysGit-fullinstall-1.8.0-preview20121022.exe](https://code.google.com/p/msysgit/downloads/detail?name=msysGit-fullinstall-1.8.0-preview20121022.exe).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once the installers have downloaded, run them to install the applications. The
+    defaults selected by the installers should be fine for the purposes of this mission.
+    First we should install Git (or msysgit on Windows).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mac developers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Mac developers simply need to run the installer for Git to install it to the
+    system. Once this is complete we can then install XCode. All we need to do is
+    run the installer and Make, along with some other tools, will be installed and
+    ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Windows developers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once the full installer for msysgit has finished, you should be left with a
+    Command Line Interface (CLI) window (entitled MINGW32) indicating that everything
+    is ready for you to hack. However, before we can hack, we need to compile Git.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this we need to run a file called `initialize.sh`. In the MINGW32 window,
+    `cd` into the `msysgit` directory. If you allowed this to install to the default
+    location, you can use the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once we are in the correct directory, we can then run `initialize.sh` in the
+    CLI. Like the installation, this process can take some time, so be patient and
+    wait for the CLI to return a flashing cursor at the `$` character.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An Internet connection is required to compile Git in this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Windows developers will need to ensure that the `Git.exe` and MINGW resources
+    can be reached via the system's `PATH` variable. This can be updated by going
+    to **Control Panel** | **System** | **Advanced system settings** | **Environment
+    variables**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the bottom section of the dialog box, double-click on **Path** and add the
+    following two paths to the `git.exe` file in the `bin` folder, which is itself
+    in a directory inside the `msysgit` folder wherever you chose to install it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`;C:\msysgit\msysgit\bin;`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`C:\msysgit\msysgit\mingw\bin;`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Update the path with caution!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You must ensure that the path to `Git.exe` is separated from the rest of the
+    Path variables with a semicolon. If the path does not end with a semicolon before
+    adding the path to `Git.exe`, make sure you add one. Incorrectly updating your
+    path variables can result in system instability and/or loss of data. I have shown
+    a semicolon at the start of the previous code sample to illustrate this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the path has been updated, we should then be able to use a regular command
+    prompt to run Git commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Post-installation tasks
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In a terminal or Windows Command Prompt (I''ll refer to both simply as the
+    CLI from this point on for conciseness) window, we should first `cd` into the
+    `jquery-source` folder we created at the start of the project. Depending on where
+    your local development folder is, this command will look something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To clone the jQuery repository, enter the following command in the CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, we should see some activity on the CLI before it returns to a flashing
+    cursor to indicate that the process is complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Depending on the platform you are developing on, you should see something like
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Post-installation tasks](img/9106OS_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We installed Git and then used it to clone the jQuery Github repository in to
+    this directory in order to get a fresh version of the jQuery source. If you're
+    used to SVN, cloning a repository is conceptually the same as checking out a repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, the syntax of these commands is very similar on Mac and Windows systems,
+    but notice how we need to escape the backslashes in the path when using Windows.
+    Once this is complete, we should end up with a new directory inside our `jquery-source`
+    directory called `jquery`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we go into this directory, there are some more directories including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`build`: This directory is used by the build tool to build jQuery'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`speed`: This directory contains benchmarking tests'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`src`: This directory contains all of the individual source files that are
+    compiled together to make jQuery'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Test`: This directory contains all of the unit tests for jQuery'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'It also has a range of various files, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Licensing and documentation, including jQuery's authors and a guide to contributing
+    to the project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Git-specific files such as `.gitignore` and `.gitmodules`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Grunt-specific files such as `Gruntfile.js`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JSHint for testing and code-quality purposes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Make is not something we need to use directly, but Grunt will use it when we
+    build the jQuery source, so it needs to be present on our system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Node.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Node.js is a platform for running server-side applications built with JavaScript.
+    It is trivial to create a web-server instance, for example, that receives and
+    responds to HTTP requests using callback functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Server-side JS isn't exactly the same as its more familiar client-side counterpart,
+    but you'll find a lot of similarities in the same comfortable syntax that you
+    know and love. We won't actually be writing any server-side JavaScript in this
+    project – all we need Node for is to run the Grunt.js build tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To get the appropriate installer for your platform, visit the Node.js website
+    at [http://nodejs.org](http://nodejs.org) and hit the download button. The correct
+    installer for your platform, if supported, should be auto-detected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Installing Node is a straightforward procedure on either the Windows or Mac
+    platforms as there are installers for both. This task will include running the
+    installer, which is obviously simple, and testing the installation using a CLI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On Windows or Mac platforms, run the installer and it will guide you through
+    the installation process. I have found that the default options are fine in most
+    cases. As before, we also need to update the `Path` variable to include Node and
+    Node's package manager NPM. The paths to these directories will differ between
+    platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mac
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Mac developers should check that the `$PATH` variable contains a reference to
+    `usr/local/bin`. I found that this was already in my `$PATH`, but if you do find
+    that it's not present, you should add it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on updating your `$PATH` variable, see [http://www.tech-recipes.com/rx/2621/os_x_change_path_environment_variable/](http://www.tech-recipes.com/rx/2621/os_x_change_path_environment_variable/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Windows
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Windows developers will need to update the `Path` variable, in the same way
+    as before, with the following paths:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`C:\Program Files\nodejs\;`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`C:\Users\Desktop\AppData\Roaming\npm;`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Windows developers may find that the `Path` variable already contains an entry
+    for Node so may just need to add the path to NPM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Once Node is installed, we will need to use a CLI to interact with it. To verify
+    Node has installed correctly, type the following command into the CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CLI should report the version in use, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Objective Complete - Mini Debriefing](img/9106OS_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can test NPM in the same way by running the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Installing Grunt.js
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we need to install Grunt.js, which is extremely quick and easy
+    to do, just like the Node installation. We don't even need to download anything
+    manually and as before the same commands should work on either Mac or Windows
+    systems, with only very minor adjustments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We need to use **Node Package Manager** **NPM** to install it, and can do this
+    by running the following command (note that Node itself must not be running):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Mac users may need to use `superuser do` at the start of the command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Be prepared to wait a few minutes. Again, we should see a lot of activity as
+    the resources Grunt needs are downloaded and installed. The prompt will return
+    to a flashing cursor once the installation is complete. The CLI should appear
+    like the following screenshot, depending on which platform you are developing
+    on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Engage Thrusters](img/9106OS_07_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If all goes according to plan (which, unless you have problems with your system,
+    it generally should), you should see a lot of activity in the CLI while Grunt
+    and its dependencies are downloaded and installed globally via NPM, and once that
+    finishes Grunt will be installed and ready to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An Internet connection is required for packages to be downloaded and installed
+    automatically using NPM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To verify that Grunt has installed correctly, we can type the following command
+    into the CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will output the current version of Grunt and should work from any directory
+    as Grunt was installed globally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As well as building custom versions of jQuery, Grunt can also be used to create
+    a few different common projects. We start by choosing one of the following project
+    types:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`gruntfile`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`commonjs`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`node`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can run the built-in `init` task and specify one of these projects, and Grunt
+    will go ahead and set up a skeleton project containing resources commonly used
+    with that project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, running the `jquery init` task will set up a working directory
+    for creating a jQuery plugin. Inside the directory, Grunt will create folders
+    for the source script files and the unit tests, as well as create a range of files
+    including a `package.json` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is likely that at some point all new jQuery plugins will need to be structured
+    in the way that Grunt structures the working directory when creating this project
+    type, so Grunt will become an invaluable, time-saving tool for any jQuery plugin
+    developer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the environment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There're just a couple of things left we need to do before we're ready to build
+    our own version of jQuery. We can also test our installation and configuration
+    by building the full version of jQuery in order to test that everything is working
+    as it should.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll need to install some additional Grunt dependencies so that we can create
+    the jQuery Script files using the source files that we cloned from Github. There
+    are also a range of NPM modules that the project uses, which also need to be installed.
+    Fortunately the NPM can install everything for us automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Before we can build the jQuery source, we need to install some additional Grunt
+    dependencies in the `jquery` source folder. We can do this using NPM and so can
+    enter the following command into the CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Make sure you have already used the `cd` command to navigate to the `jquery`
+    directory before running the `install` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There should be a lot of activity in the CLI after running the `install` command,
+    and by the end of the process, the CLI should appear something like the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Engage Thrusters](img/9106OS_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To test that everything is working together as it should, we can build the
+    full version of jQuery. Simply run the `grunt` command in the CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you get any errors or warnings at this point, something has not been installed
+    or configured correctly. There could be any number of reasons why the process
+    has failed, so the best thing to do is to uninstall everything we have installed,
+    and start the process again, ensuring that all steps are followed to the letter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Again, we should see a lot of activity on the CLI to indicate that things are
+    happening:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Engage Thrusters](img/9106OS_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once the install process has completed, we should find that the Node dependencies
+    have been installed into a directory within the `jquery` directory called `node_modules`.
+    Within this folder are any additional files that Grunt needs for this specific
+    project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To test everything, we then ran the default build task for jQuery using the
+    `grunt` command. This task will do the following things:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Read all of the jQuery source files
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create a `/dist` directory for the output of the task
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the `jquery.js` distribution file
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lint the distribution file with `jshint`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Run the units tests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build a source map of the distribution file
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the `jquery.min.js` distribution file
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The script files should be 230 KB for the full file and 81 KB for the `.min`
+    file, although these figures may differ as the jQuery version number increases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a custom jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this task we'll build a custom version of jQuery, which will not consist
+    of all of the different modules that make up the "full" version of jQuery combined
+    into the single file which we would normally download from the jQuery site, just
+    like the files we built at the end of the last task, instead it will contain only
+    the core modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now we can build a custom version of jQuery. To build a barebones version of
+    jQuery, omitting all of the non-core components, we can enter the following command
+    into the CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once we have the source and have configured our local environment, we are able
+    to build a custom version of jQuery containing only the core components and omitting
+    all of the optional components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case we've excluded all of the optional components, but we could exclude
+    any one of them, or any combination of them to produce a script file that is only
+    as large as it needs to be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we check the `/dist` directory at this point, we should find now that the
+    full-fat script file is now 159 KB, while the `.min` version is just 57 KB, saving
+    us approximately 30 percent of the file size; not bad for a few minutes work!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Changes in the functionality or scope of your project may necessitate that the
+    source file be rebuilt and previously excluded modules included. Once excluded,
+    optional modules cannot be added to the built files without rebuilding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As jQuery evolves, especially once the 2.0 milestone is passed, more and more
+    of jQuery's components will be exposed to the build tool as optional components,
+    so that it will become possible to exclude a wider portion of the library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While at the time of writing the savings we make in file size may well be offset
+    by the fact that the majority of our visitors won't have our custom version of
+    jQuery in their cache and will therefore have to download it, there may come a
+    time when we are able to shrink the size of the file so much that it will still
+    be more efficient to download our super-light script file than it is to load the
+    full source from the cache.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running unit tests with QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: QUnit is the official test suite for jQuery and is included in the source that
+    we cloned from Git earlier in the project. If we take a look in the test folder
+    inside the `jquery` folder, we should find that there are a lot of unit tests
+    written to test the different components that make jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can run these tests against the individual components of jQuery in order
+    to look at the environment that QUnit needs, and to see how easy testing JavaScript
+    files using it can be. For this task we'll need to install a web server and PHP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on QUnit, see the documentation at [http://qunitjs.com](http://qunitjs.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare for Lift Off
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Mac developers should already have everything required in order to run QUnit
+    through a web server, because Mac computers come with Apache and PHP already installed.
+    Windows developers will probably have some setup to do however.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two options for the web server in this case, Apache or IIS. Both support
+    PHP. Those developers wishing to use Apache can install something like **WAMP**
+    (**Windows Apache Mysql PHP**) to have Apache installed and configured, and MySQL
+    and PHP installed as modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To download and install WAMP, visit the **Download** section of the Wamp Server
+    website ([http://www.wampserver.com/en/](http://www.wampserver.com/en/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pick the appropriate installer for your platform and run it. This should install
+    and configure everything necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those wishing to use IIS can install it via the **Add/Remove Windows Components**
+    area of the **Programs and Features** page in the control panel (the Windows installation
+    CD will be required in this case), or using the **Web Platform Installer** (**WPI**),
+    which can be downloaded from [http://www.microsoft.com/web/downloads/platform.aspx](http://www.microsoft.com/web/downloads/platform.aspx).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Download and run the installer. Once it has launched, search for IIS and let
+    the application install it. Once this has installed, search for PHP and install
+    that through the WPI also.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To run QUnit using a web server and PHP, you'll need to either copy the source
+    files from the `jquery` directory inside our project folder into the folder used
+    by the web server to serve files from, or configure the web server to serve files
+    from the `jquery` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On Apache, we can configure the default directory (the directory from which
+    pages are served when requested by the browser) by editing the `httpd.conf` file
+    (there should be an entry for this in the Start menu). Read down through the configuration
+    file until you find the line for the default directory and change it so that it
+    points to the `jquery` directory in your project folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On IIS, we can add a new website using the IIS Manager. Right-click on **Sites**
+    in the **Connections** pane at the left and choose **Add Web Site…**. Fill out
+    the details in the dialog that opens and we should be good to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Engage Thrusters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To run the tests, all we need to do is visit the `/test` directory using `localhost:8080`
+    (or whichever hostname/port is configured) in a browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The tests should appear as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Engage Thrusters](img/9106OS_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Objective Complete - Mini Debriefing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When the URL for the test suite is visited in a browser, QUnit will run all
+    of the unit tests that have been written for jQuery. There are currently over
+    6000 tests for the full build of jQuery, and around 4000 tests for a custom build
+    with all optional modules excluded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may find that some of the tests fail. Don't worry, this is normal and the
+    reason for it is because the default version of jQuery we get from Git will be
+    the latest development version. As I write this, the current version of jQuery
+    is 1.8.3, but the version cloned from Git is 2.0.0pre.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To fix this, we could switch to the current stable branch and do a build from
+    there instead. So if I wanted to get version 1.8.3, I could use the following
+    command in the CLI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: We could then build the source again, run QUnit, and all the tests should pass.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After checking out another version of the jQuery source, we'll need to run `npm
+    install` in the `jquery` directory to reinstall the node dependencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Classified Intel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unit testing is a process not always followed religiously by front-end developers,
+    but once your applications cross a rough threshold in size and complexity, or
+    when working in a team environment, unit testing becomes essential for maintenance,
+    so it is best to at least learn the basics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'QUnit makes writing unit test for JavaScript easy. It features a simple API
+    based around the concept of making assertions that we can prove with simple functions.
+    QUnit''s API includes methods we can use to make these assertions including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`equal()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`notEqual()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ok()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This makes it easy to check that a variable is equal to a particular value,
+    or the return value of a function does not equal a particular value, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A test in QUnit is built using the global `test()` method, which accepts two
+    arguments; a string describing the test and a function which is invoked to perform
+    the test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Within the function we can then use one or more of the assertions to check
+    the result of some operation performed by the method or function we''re testing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `equal()` method checks that the first and second arguments are equal and
+    the final argument is a string which describes what we expect to happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you open up some of the script files in the `jquery/test/unit` directory,
+    it is easy to see how the tests can be structured.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The documentation on the QUnit site is excellent. It not only describes the
+    API clearly and concisely, but it also has a lot of information about the concepts
+    of unit testing, and so is a great place to start for those new to unit testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the site you can also find the source files required to run QUnit outside
+    of Grunt and a HTML template page you can use to run the test suite in a browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mission Accomplished
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this mission we've learned not just how to build a custom version of jQuery
+    by excluding components that we don't require, and how to run jQuery's unit test
+    suite, but also, perhaps more importantly, we've learned how to set up a decent
+    build environment for writing clean, lint and error free, application-grade JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You Ready To Go Gung HO? A Hotshot Challenge
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've learned how to build our own jQuery, and excluded the maximum number of
+    components, so at the time of writing, there isn't much more we can do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're reading this after version 1.9 of jQuery has been released, there
+    may be more components that you can exclude, or other techniques for building
+    jQuery, so to really cement your understanding of the build process, build a new
+    custom build that also excludes any new optional components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there aren't any new optional components, I'd recommend you to spend some
+    time writing QUnit tests for any custom scripts that you've written. The idea
+    is to write a test that replicates a bug. Then you can fix the bug and watch the
+    test pass.
+  prefs: []
+  type: TYPE_NORMAL

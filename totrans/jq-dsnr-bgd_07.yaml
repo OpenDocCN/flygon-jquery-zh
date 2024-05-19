@@ -1,0 +1,784 @@
+- en: Chapter 7. Navigating Asynchronously
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Websites are often set up so that all pages of the site share a common header
+    and footer with only the content in between changing from page to page. Sometimes
+    there is also one or more sidebars on the left and/or right side of the main content
+    area that stay the same throughout the site as well. Why make our site visitors
+    re-download the same header, footer, and sidebar content over and over again while
+    they browse our site?
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up a website to navigate asynchronously
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enhancing asynchronous navigation to make it more user friendly
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simple asynchronous navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the early days of the Web, one solution to the repeated identical content
+    download problem was frames. If you're too new to web development to remember,
+    frames presented a way to break a single-page view into several different HTML
+    files — navigating through the site involved reloading one or more of the frames
+    while the others stayed the same. Frames helped a website to load faster and made
+    a site easier to maintain, but in the end, they created more problems than they
+    solved. Framed websites were easily broken, were difficult for search engines
+    to index, often broke the back and forward buttons, and made it difficult or impossible
+    for the site visitors to bookmark pages, share links, or print content. Because
+    of all these problems, the use of frames has fallen out of favor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More recently, single-page applications have started to become more popular.
+    If you log into your Twitter account and start clicking around, you'll notice
+    that the whole page refreshes only rarely—most of the interactions take place
+    inside one page. If you visit any of the Gawker Media sites, you'll notice that
+    after the initial page loads, the entire page isn't refreshed again as you browse
+    around the site. Let's take a look at how we can accomplish this same type of
+    interaction on our own site in a progressively enhanced way to make sure our site
+    still works without JavaScript and can be easily indexed by search engines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — setting up a simple website
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're going to get started by building out a small and simple website with a
+    few pages. They'll all share the same header, navigation, sidebar, and footer.
+    They'll all have a main content area where the unique content for each page will
+    be displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Get started by setting up an `index.html` file with all the associated files
+    and folders as we did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"),
+    *Designer, Meet jQuery*. The body of the `index.html` file will contain our header,
+    navigation, sidebar, and footer:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You''ll notice one extra `<div>` that you may not have been expecting: inside
+    `<div>` with an id of main-col, I''ve added a `<div>` tag with an id of main-col-wrap.
+    This is not used for layout or CSS purposes, but will be used once we create our
+    JavaScript for asynchronously loading the content.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll write some CSS to create a simple layout. Open your `styles.css`
+    file and add the following styles:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The final page will look similar to the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — setting up a simple website](img/6709OS_07_img1.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: If you're feeling inspired, feel free to write some extra CSS to style your
+    page to be a bit fancier.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll create the other pages of the site, namely the pages for cupcakes,
+    petits fours, tea cakes, and muffins. The HTML will be exactly the same as the
+    home page, with the exception of the content inside`<div>` with an `id` of `main-col-wrap`.
+    The following is a sample of my content for the cupcakes page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Outside of this`<div>`, the rest of my page is exactly the same as the home
+    page we created earlier. Go ahead and create the pages for muffins, tea cakes,
+    and petits fours in a similar manner so that you have a five-page website with
+    a shared header, navigation, sidebar, and footer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't forget that each page of your site should contain a link to the `styles.css`
+    file in the head section and a link to jQuery and the `scripts.js` file at the
+    bottom of the document, just before the closing`</body>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up a simple five-page website in HTML. Each page of our website shares
+    the same header, navigation, sidebar, and footer. Then we set up some simple CSS
+    to style our page. The only hint that something fancy is going to happen here
+    is an extra`<div>` wrapped around our main content area — the area of the page
+    that contains different content from page to page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding Ajax magic
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you click around this small and simple site in your browser, you'll see that
+    we're reloading the same header, navigation, sidebar, and footer over and over
+    again. Only the content in the main content area of the page is changing from
+    page to page. Let's use the magic of jQuery to fix that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just a reminder that these Ajax functions won''t work unless your pages are
+    being served by a server. To see this code in action, you''ll either have to upload
+    your pages to a server or create a server on your own computer. First, we''ll
+    open our `scripts.js` file and set to work writing our code. We''ll get started
+    as we often do with the document ready statement as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ll need to select all the links inside our navigation. That will look similar
+    to this:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'When those links are clicked by the site visitor, the browser responds by loading
+    the requested page. That''s the behavior that we''d like to override, so we''ll
+    bind a function to the links that overrides the link''s click behavior as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The first thing we need to do when a site visitor clicks a link is cancel the
+    default behavior. We can do that by telling the function to return `false:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you reload your simple site in the browser, you'll see that clicking
+    on the links in the main navigation doesn't do anything. The page you requested
+    no longer loads into the browser. We've set the stage for our own code.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If we''re going to fetch a page from the server, we need to know which page
+    we''re fetching. We need to know which URL we need to call. Luckily, our links
+    already contain this information in their `href` attributes. For example, by looking
+    at the HTML for our cupcakes link:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: we can see that the page we need to request to get information on cupcakes is
+    `cupcakes.html.`
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''re going to use jQuery to get the `href` attribute of the link that was
+    just clicked:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now we have a variable called `url` that contains the `href` attribute of the
+    link that was clicked. Remember, variables are just containers. If our site visitor
+    has just clicked the cupcakes link, then the `url` variable will contain `cupcakes.html`.
+    If the site visitor has just clicked the muffins link on the other hand, then
+    the url variable contains `muffins.html`. This function gets called each time
+    the site visitor clicks on any of the links in the main navigation - `$(this)`
+    will always refer to the link that was just clicked.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now that we know which page on the server contains the information the site
+    visitor has requested, what do we do with it? Luckily, jQuery provides us with
+    the `load()` method which makes loading content from the server into our page
+    very easy. We''re going to select the element on the page where we''d like to
+    load our content and then call the `load()` method for that element. In this case,
+    we''re going to select the`<div>` tag with the `id` of `main-col`, since that''s
+    the container of the content that changes from page to page:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If you reload the page in the browser and click on links in the main navigation,
+    you'll see that nothing happens. No errors are reported by the browser so what's
+    the problem?
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Remember Maggie the dog who was eating bacon back in [Chapter 1,](ch01.html
+    "Chapter 1. Designer, Meet jQuery") *Designer, Meet jQuery* Maggie had an eat
+    method like this:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'However, remember, she couldn''t just eat—she had to eat something. So we passed
+    `bacon` to the `eat()` method of Maggie as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The `load` method is similar. We can''t just load—we have to load something.
+    In this case, we know what we need to load in—the content at the URL contained
+    in our url variable:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now if you refresh the browser and try clicking on the cupcakes link in the
+    main navigation, you''ll see that the content of the cupcakes page is indeed loaded
+    into our `#main-col` div. However, it''s not quite what we had in mind, because
+    it''s loading up the entire page:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding Ajax magic](img/6709OS_07_img2.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'We don''t want to get the whole page. We just need the content inside the `#main-col`
+    div. That''s where that extra wrapper element,`<div>` with an `id` of `main-col-wrap`
+    comes in. We can tell jQuery to only load that`<div>` and its content into `#main-col
+    <div>` as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is sometimes referred to as jQuery's **partial load method**, since we're
+    not loading the entire contents of what we've fetched into the page, just the
+    part we care about. If you refresh the page in the browser and click through the
+    main navigation, you'll see that the content loads up as we expected now and only
+    the main content area of the page refreshes. The header, navigation, sidebar,
+    and footer remain on the page while the main content area reloads.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used jQuery's powerful CSS-based selectors to select all the links in the
+    main navigation. We identified the click behavior of the links as the behavior
+    we needed to override to get the result that we wanted. We bound a click function
+    to the links that would run each time a link was called. We cancelled the link's
+    default behavior of loading up a new page in the browser window. Next, we examined
+    the link to get the URL contained in the `href` attribute. We selected the container
+    on the page where we wanted to load up new content, and used jQuery's `load()`
+    method to call the content we needed. We passed a selector to the `load()` method
+    along with the URL so that jQuery would know we wanted only the content inside
+    that selected element to load rather than the entire page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We turned our simple website into a single-page application. And we did it using
+    progressive enhancement so that site visitors who don't have JavaScript enabled
+    will be able to use our site without any problems. Search engines will also be
+    able to index the content of our site. And we did all that with just a few lines
+    of JavaScript — thanks to jQuery!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deluxe asynchronous navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You''d be downright pleased with yourself for taking an ordinary site and turning
+    it into a single-page application in just a few lines of code, but let''s face
+    it: our simple asynchronous navigation leaves a little bit to be desired and could
+    definitely use a bit of polish.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Perhaps most obviously, we've broken the back and forward buttons in the browser.
+    We can no longer use them to navigate between the pages of our site. We've also
+    taken away our site visitor's ability to bookmark or share a link to a page of
+    our site. We also don't give any feedback to our site visitor that anything is
+    happening after they've clicked a link in our main navigation. Since our pages
+    are short and simple, they should usually load up pretty quickly, but the Internet
+    is notoriously unpredictable in the speed department. Sometimes it could take
+    a half second, a full second, or more to load up our content—and our site visitor
+    has no idea their browser is hard at work trying to get the new content for them—it
+    just looks like nothing's happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a few other nice touches we can add to make the whole thing nicer
+    and faster too, so let's get started on the deluxe version of asynchronous navigation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — building deluxe asynchronous navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To add some missing functionality to our asynchronous navigation, we're going
+    to use Ben Alman's excellent jQuery BBQ plugin. Even though that name might make
+    you feel hungry, BBQ stands for Back Button and Query in this case. We'll keep
+    working with the files we created in the last example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we'll need to get a copy of the BBQ plugin to work with. Head over to
+    [http://benalman.com/projects/jquery-bbq-plugin/](http://benalman.com/projects/jquery-bbq-plugin/)
+    to get the download file and the documentation and examples for the jQuery BBQ
+    plugin.![Time for action — building deluxe asynchronous navigation](img/6709OS_07_img3.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As usual, we're going to download the minified version of the plugin and drop
+    it into our `scripts` folder alongside jQuery and our `scripts.js` file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — building deluxe asynchronous navigation](img/6709OS_07_img4.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Next, open up each of the HTML pages of your mini website and add the BBQ plugin,
+    after jQuery and before `scripts.js:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now we're ready to get to work on building the deluxe version of our asynchronous
+    navigation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We downloaded the jQuery BBQ plugin and attached it to each of our pages. So
+    far, this hasn't made a difference on our site — we've attached the BBQ plugin,
+    but we aren't using it to do anything. Next up, we'll take a look at how to put
+    the BBQ plugin to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — using the BBQ plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our first order of business is to get those back and forward buttons working,
+    and allow our site visitors to bookmark and share links to individual pages. That's
+    why we've included the jQuery BBQ plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re going to write some new JavaScript, so erase the code we wrote earlier
+    in `scripts.js` and replace it with a simple document ready statement as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, we're going to select each of the links in our main navigation and replace
+    the URLs with hash links so that the browser thinks they are internal to our HTML
+    page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''re selecting all the links in the main navigation, then looping through
+    all of them to add a # character at the front of the URL. For example, the `cupcakes.html`
+    link is now `#cupcakes.html`. If you refresh the page in the browser, you''ll
+    see that clicking the links doesn''t change anything on the page, but it does
+    update the hash sin the URL in the browser''s location bar.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — using the BBQ plugin](img/6709OS_07_img5.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Next, we''re going to bind a function to the window''s `hashchange` event.
+    Modern browsers have provided an event called `hashchange` that fires whenever
+    the URL''s hash changes, just as it''s doing when you click the main navigation
+    links. Older browsers don''t support the `hashchange` event, but that''s where
+    the jQuery BBQ plugin comes in. It provides support for a pseudo `hashchange`
+    event in most browsers so that we only have to write our code once without worrying
+    about browser differences. Here''s how we bind a function to the `hashchange`
+    event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The function we write will now be called each time the window's hash changes,
+    which we know is going to happen each time the site visitor clicks on a link in
+    our main navigation. Now we can write the code to tell the browser what to do
+    when this happens.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: First, we're setting up a variable called `url` and setting it equal to `e.fragment.`
+    The `fragment` property is made available by the jQuery BBQ plugin. It's equal
+    to the hash of the URL without the hash symbol. So if the window's hash changes
+    to `#cupcakes.html, e.fragment` will be equal to `cupcakes.html.`
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The next line of code is the same as our basic Ajax navigation example. I'm
+    going to select the container on the page where I want to load my content, then
+    call the `load()` method. I'm going to pass the URL and jQuery selector for the
+    part of the page at that URL that I want to load into the browser.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If you refresh the page in the browser now, you'll see that our main navigation
+    is again working asynchronously. Clicking a link loads up only the main content
+    area of the page while the rest remains unchanged. There is one important difference,
+    though—if you click the back and forward buttons, they work. Once you've clicked
+    through to the cupcakes page, you can click the back button to return to the home
+    page.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'There''s just one thing left to do to get our navigation optimized and that''s
+    to make sure that our site visitors can bookmark and share links to our pages.
+    If you click on the cupcakes page, copy the URL from the browser''s location bar,
+    and open either a new browser window or a new tab and paste in the URL, you''ll
+    see that you get the site''s home page rather than the cupcake page. If you look
+    at the URL, the `#cupcakes.html` hash is there, we just have to tell our code
+    to look for it. The simplest way to do that is to fire the window''s `hashchange`
+    event as soon as the page loads in the browser. Here''s how we do that:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, you can open up that cupcakes link in a new window and you'll see the cupcakes
+    page load up, just as it should. Our `hashchange` function fires as soon as the
+    page is loaded, which loads in the correct content.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used jQuery to loop through each of our navigation links and replace them
+    with internal links or hash links. Why not just do this in HTML? Because we want
+    to make sure that our page continues to work for users with JavaScript disabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we used the jQuery BBQ plugin to change our asynchronous navigation to
+    enable both bookmarking and sharing of links and the back and forward buttons
+    in the browser. This allows our site to behave just like a single-page application
+    without breaking the site visitor's expected experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — highlighting the current page in the Navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've already made our asynchronous navigation much better than our simple example,
+    but I think we can keep going and make it even better. Next up, we're going to
+    highlight the page currently being viewed in the navigation to make it easy for
+    our site visitors to see which page they're on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Time for action — highlighting the current page in the Navigation](img/6709OS_07_img7.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'First up, let''s open up `styles.css` again and write a `.current` CSS class
+    for the navigation:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've made my navigation bar green, so I'm going to make the `.current` class
+    a slightly lighter shade of green so that the current item is highlighted in the
+    menu. You can follow my example or create your own style—whatever suits your taste.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now we just need to apply our `.current` class to the current navigation item.
+    We''re going to add a few lines to the `hashchange` event function we wrote earlier.
+    We''ll start by checking to see if there''s a hash in the window location:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, if there is a hash, then we want to find the link in my main navigation
+    that corresponds to the hash, find its parent container, and add the current class.
+    That sounds like a lot, but I can do that in one line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I'm using jQuery's powerful attribute selectors to select the link with the
+    `href` attribute equal to the window's hash. Then I'm using the `parents()` method
+    to get the link's parents. I'm passing `li` to the `parents()` method to tell
+    jQuery I'm only interested in one parent, the `<li>` that contains my link. Then
+    I'm using the `addClass()` method to add my current class to the current link.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'If there isn''t a hash, then I want to highlight the home page, which is the
+    first page in our main navigation. I''ll select the first`<li>` and add the current
+    class as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, if you refresh the page in the browser and click through the pages, you''ll
+    see that the current page is highlighted, but as you move through the site, more
+    and more of the navigation is highlighted — we''re not removing the old highlight
+    before adding a new one. We''ll add this line to remove the current highlight
+    before adding a new one:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Refresh the page in the browser and you'll see that the highlight is now working
+    as it should, highlighting only the current page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We added a few lines of code to our `hashchange` function to add a highlight
+    to the current page in the navigation. This will help the site visitor orient
+    themselves on the site and further enforce their current location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding a loading animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Next, we'd like to show the site visitor that something is happening as soon
+    as they click on the link in the navigation. Remember that if the response from
+    the server is slow, the site visitor can't see that anything is happening. Even
+    though the browser is hard at work fetching the content for the new page, there's
+    no indication to the site visitor that anything is happening. Let's add in a little
+    animation to make it obvious that something's happening on our page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Loading animations can take many different forms: spinning daisies, animated
+    progress bars, blinking dots — anything that will communicate that there''s an
+    action in progress will help make your site feel snappier and more responsive
+    for your site visitors.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Time for action — adding a loading animation](img/6709OS_07_img8.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: First, head over to [http://ajaxload.info](http://ajaxload.info) to create and
+    download a loading animation of your choice.![Time for action — adding a loading
+    animation](img/6709OS_07_img6.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Select the type, background color, and foreground color in the **Generator**
+    box, then click on the **Generate It!** button.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You'll see a preview of your button in the **Preview** box along with a link
+    to download your button. Click on the **Download It!** link to download a copy
+    of the loading animation you just created.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After you've downloaded your button, drop it in your `images` folder along with
+    the other images you're using on your website.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, let's think through the modifications we have to make to our page. We want
+    to fade out the content that is currently shown in the `#main-col` div and show
+    our loading animation in its place until the server sends back the content for
+    our new page. As soon as we get that content back, we want to hide the loading
+    animation and display the content.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'When we''re ready to show the loading animation to our site visitors, we want
+    it to be visible immediately. It would be no good at all if we were to have to
+    go and fetch the image from the server—the actual page content might be returned
+    before our image. So we''ll have to preload the image. Using jQuery, that''s very
+    simple. As soon as the document has loaded into the browser, we''ll create a new
+    image element as shown in the following code:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Just creating this element is enough to preload the image into the browser's
+    cache. Now when we're ready to show the image, it will be available immediately
+    without waiting.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we have to write a bit of CSS to handle how our loading image is displayed.
+    We''ll wrap it in a simple paragraph tag to which we''ll add a bit of padding
+    and center the image:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Note that we''re also setting the `display` to `none`—that way we won''t have
+    the image showing up until we''re ready for it. We only want our animation to
+    appear if the URL has a hash, so inside our `if/else` statement, we''ll append
+    the loading animation to the `#main-col` div:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We've added a paragraph with the `id` of `loading` to the document and we've
+    appended our pre-loaded loading image to that paragraph. Remember, even though
+    it's there, it's not visible yet, since we've hidden it with CSS.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll fade out the content that''s currently showing on the page. In
+    case our content returns quickly from the server, we want to make sure we''re
+    not getting in the way, so we''ll tell the animation to complete quickly:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, we want to show our loading animation, but we don''t want it to appear
+    until after the content has faded out. To make sure it doesn''t show up before
+    then, we''ll add it as a callback function to the `fadeOut()` method. A callback
+    function is a function that''s called after the animation completes. Here''s how
+    we add a callback function to the `fadeOut()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, when the site visitor clicks a link, the hash in the location bar will
+    update. That will fire off our code to fade the page's current content out, show
+    a loading animation, and then replace the loading animation with the new page
+    content as soon as it's returned by the server. If you're really lucky, your site
+    visitor won't even get a chance to see the loading animation because your server
+    will return the new page content quickly. However, if there's a slowdown anywhere
+    along the way, your site visitor will get a clear message that something's happening
+    and they won't be left wondering or feeling like your site is slow and unresponsive.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We added some animation effects to show the site visitor that something was
+    happening in the event that the server's response with the new page content was
+    delayed more than a fraction of a second. The site visitor will immediately see
+    the content fade out and a loading animation take its place until the server responds
+    with the new page content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're looking at your pages from your local computer using WAMP or MAMP,
+    chances are the new content will be returned so quickly you won't get a chance
+    to see the loading animation. However, if you upload your pages to a server and
+    access them via the Internet, you're almost guaranteed to see the loading animation
+    for at least a fraction of a second while the browser fetches the new content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to set up a simple website and then we enhanced
+    it to behave like a single-page application without breaking it for search engines
+    or site visitors who have JavaScript disabled. First, we set up a simple version
+    that might be suitable for use in some simple cases. Then we took a look at setting
+    up the deluxe version that allowed for bookmarking and sharing of links, working
+    back and forward buttons, current page highlighting in the navigation, and smooth
+    transition animations to show the site visitor the browser was hard at work. All
+    of this was relatively simple and straightforward thanks to jQuery and the jQuery
+    BBQ plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, we'll take a look at loading content into lightboxes.
+  prefs: []
+  type: TYPE_NORMAL

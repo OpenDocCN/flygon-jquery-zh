@@ -1,0 +1,658 @@
+- en: Chapter 5. Client-side Templating, JSON APIs, and HTML5 Web Storage
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've come a long way already and we've got some pretty hefty default templates
+    and boilerplates for business. In this chapter, we're going to simplify and focus
+    on some other things. We are going to create an aggregating news site based off
+    social media. Until now, we've paid close attention to progressive enhancement.
+    For this chapter, we leave that behind. This will require JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter you will learn the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Client-side templating options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JsRender
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Patching into JSON API (Twitter)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Programmatically changing pages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generated pages and DOM weight management
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Leveraging RSS feeds (natively)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HTML5 Web Storage
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Leveraging the Google Feeds API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Client-side templating
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: (In a grumpy old man's voice) Back in my day, we rendered all the pages on the
+    server, and we liked it! LOL! Times are changing and we are seeing a massive ground
+    swell in client-side templating frameworks. At their heart, they're pretty much
+    all the same in that they take JSON data and apply an HTML-based template contained
+    within a script tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you know what **JSON** is, skip this paragraph. I spent a little time last
+    chapter discussing this, but just in case you skipped ahead and don't know, JSON
+    is JavaScript written in such a way that it can be used as a data exchange format.
+    It's more efficient than XML and is instantly interpretable by the browser in
+    an object-oriented fashion. JSON can request data even across domains using JSONP.
+    For more on JSON, read [http://en.wikipedia.org/wiki/JSON](http://en.wikipedia.org/wiki/JSON).
+    For more on JSONP, read [http://en.wikipedia.org/wiki/JSONP](http://en.wikipedia.org/wiki/JSONP).
+  prefs: []
+  type: TYPE_NORMAL
+- en: All these client-side libraries have some sort of notation in them to show where
+    the data goes and gives ways to implement looping and conditionals. Some are "logic-less"
+    and operate on the philosophy that there should be as little logic as possible.
+    If you subscribe to this wonderfully academic approach, good for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Honestly, from a purely pragmatic perspective, I believe that the template is
+    the perfect place for code. The more flexible, the better. JSON holds the data
+    and the templates are used to transform it. To draw a parallel, XML is the data
+    format and XSL templates are used to transform. Nobody whines about logic in XSL;
+    so, I don't see why it should be a problem in JS templates. But, all of this discussion
+    is purely academic. In the end, they'll pretty much all do what you're looking
+    for. If you're more of a designer than a coder, you may want to look more at the
+    logic-less templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following is a fairly exhaustive list of client-side templating frameworks.
+    I'll probably miss a few and there will inevitably be more by the time this book
+    gets published, but it's a start.
+  prefs: []
+  type: TYPE_NORMAL
+- en: doT
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: dust.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Eco
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: EJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Google Closure Templates
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: handlebars
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: haml-js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: kite
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Jade
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQote2
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery templates (discontinued)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jsRender / jsView
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parrot
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: node-asyncEJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Nun
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mu
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mustache
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: montage
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stencil
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: underscore.js
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now, call me a fanboy, but, if it's officially jQuery, I love it. So, the first
+    thing I tried was **jQuery Templates** . Sadly, shortly after learning to love
+    it, the jQuery team abandoned the project and pointed people to **JsRender** as
+    the continuation of the project. Whether that will be the continued direction
+    in the future is another question, but, in the mean time, the features and power
+    of JsRender make it a compelling offering and the basis for template work for
+    the rest of this chapter. Not to mention, it's only 14k minified and fast as lightning.
+    You can download the latest edition from [https://github.com/BorisMoore/jsrender](https://github.com/BorisMoore/jsrender).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you''re looking for help to make the decision on the right template framework
+    for you, Andy Matthews was kind enough to offer the following link during the
+    review process for this chapter: [http://garann.github.com/template-chooser/](http://garann.github.com/template-chooser/).
+    It discusses the merits of several frameworks to help you make an informed choice.
+    Thanks, Andy!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Patching into JSON APIs (Twitter)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It's always fun to watch the trending topics on Twitter. It, like so many other
+    popular online destinations, has a JSON API. Let's have some fun. Here's what
+    we're going to build. You can see the listview on the left-side and the search
+    view on the right-side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Patching into JSON APIs (Twitter)](img/0069_05_00.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'At this point, I''m going to dispense with the academically correct practice
+    of separating the CSS and JS from the HTML. Aside from the libraries, all page-specific
+    code (HTML, CSS, and JS) will be located within the single page. The following
+    code is our starting base page. It is `twitter.html` in the code bundle for the
+    chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This next bit of styling will help our Twitter results look more Twitter-ish:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This page is pretty much just a placeholder that will be filled in once we
+    get back results from hitting the Twitter API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The following script is the processing core of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Following are the two JsRender templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: OK, that was a lot of code to throw at you all at once, but most of it should
+    look pretty familiar at this point. Let's start with explaining some of the newest
+    stuff.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Normally, to pull data into a web page, you are subject to the same-domain policy
+    even when you're pulling JSON. However, if it's coming from another domain, you'll
+    need to bypass the same-domain policy. To bypass the some-domain policy, you could
+    use some sort of server-side proxy such as PHP's **cURL** ([http://php.net/manual/en/book.curl.php](http://php.net/manual/en/book.curl.php))
+    or the Apache **HTTP Core** **Components** ([http://hc.apache.org/](http://hc.apache.org/))
+    in the Java world.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s just keep things simple and use **JSONP** (also known as **JSON with
+    Padding**). JSONP does not use a normal Ajax request to pull information. Despite
+    the fact that the configuration options are for the `$.ajax` command, behind the
+    scenes, it will execute the call for the data as a standalone script tag as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is worth noting that JSONP is called using a GET request. That means that
+    you can't use it to pass sensitive data, because it would be instantly viewable
+    through network traffic scanning or simply looking at a browser's request history.
+    So, no logging in over JSONP or passing anything sensitive. Got it?!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before the actual request is made, jQuery will create a semi-random function
+    name that will be executed once the response is received from the server. By appending
+    that function name as the callback within the URL, we are telling Twitter to wrap
+    their response to us with this function call. So, instead of receiving JSON script
+    like `{"trends": …},` we have a script written to our page that starts as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The reason this works is because the same-domain policy does not exist for scripts.
+    Handy, yes? After the script is loaded and the callback has processed, we will
+    have the data in JSON format. In the end, the execution under the sheets is vastly
+    different, but the results are the same as you would get with regular `getJSON`
+    requests from your own domain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is a slice of the response back from Twitter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we whittle down the response to only the part we want (the very latest
+    set of trending topics) and pass that array into JsRender for … well… rendering.
+    It may seem more simple to just loop through the JSON and use string concatenation
+    to build your output but take a look at the following template and tell me that''s
+    not going to be a lot cleaner to read and maintain:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `text/x-jsrender` type on the script will ensure that the page does not
+    try to parse the inner contents as JavaScript. Since we passed in an array to
+    JsRender, the template will be written for every object in the array. Now that
+    is simple! Granted, we're only pulling the name out of the data object, but you
+    get the idea of how this works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at the next significant block of JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'First, we pull the search term from the attribute on the link itself. The search
+    term itself is somewhat inappropriate as an `id` attribute for dynamically rendered
+    pages; so, we''ll strip out any spaces and non-alphanumeric content. We then append
+    the `pageId` and `searchTerm` attribute to the JSON object we received back from
+    Twitter. Following is a sample of returned data from this call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So, we''ll take this response and pass it into the renderer to be transformed
+    against `twitterSearchPageTemplate`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: These are simple implementations. The examples on GitHub show many more options
+    that are worth exploring. Check out [http://borismoore.github.com/jsrender/demos/](http://borismoore.github.com/jsrender/demos/)
+    for details on creating more complex templates. This is a rapidly changing library
+    (most client-side templating libraries are). So don't be surprised if, by the
+    time you read this, there are a lot more options and slightly changed syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have the results of the transformation, we'll be ready to append the
+    new page's source to the document's body and then programmatically change to this
+    new page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Programmatically changing pages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are two ways to programmatically change pages in jQuery Mobile, and the
+    differences are subtle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Call `$.mobile.changePage` and pass in a selector to the ID of the page you
+    want to go to. This works the same way with URLs. Either way will yield the same
+    results as if the user had clicked on a link. The page is inserted into the browser''s
+    history as one might expect. Following is the example code:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a jQuery object by selecting the page you want to change to first. Then,
+    pass that jQuery object into the `$.mobile.changePage` function. The result is
+    that the page is shown but the URL never updates, and, thus, it does not exist
+    in the browser''s history. This might be useful in situations where, if the user
+    refreshes the page, you would want them to start the process over at the first
+    screen. It prevents deep linking through bookmarks into other pages in a multipage
+    layout. Following is an example:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Generated pages and DOM weight management
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the normal course of events while surfing traditional mobile sites, jQuery
+    Mobile will mark each page as `external-page`, which will cause the page to be
+    removed from the DOM once the user navigates away from that page. The idea behind
+    this is that it will manage DOM weight because "budget" (crappy) devices may not
+    have as much memory to dedicate to their browsers. External pages will likely
+    still be in the device cache for quick recall. So reloading them should be lightning
+    fast. If you want to learn more about how jQuery Mobile handles this behavior,
+    check out [http://jquerymobile.com/demos/1.3.0/docs/pages/page-cache.html](http://jquerymobile.com/demos/1.3.0/docs/pages/page-cache.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery Mobile has done a great job at managing DOM weight through normal means.
+    However, when we dynamically create pages, they are not automatically deleted
+    from the DOM on exit. This can become especially overwhelming if there are a lot
+    of them. We could easily overwhelm the miserable browsers on dumb phones and even
+    some of the early-model or budget smartphones. If a dynamically-created page is
+    likely to be viewed again within a session, then it may well be worth leaving
+    in the DOM. However, since we're generating it in the browser to begin with, it's
+    probably safer and faster to just re-render the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can mark a page for deletion using this line of code *after* the page has
+    been rendered but *before* the page is initialized:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**WARNING**: This line of code comes almost verbatim from the library code
+    itself. This is how they do it behind the scenes. Please note that `$.mobile._bindPageRemove`
+    begins with an underscore. We are not dealing with a public method here.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This particular code is an undocumented and unofficial part of the API, which
+    means that it could be changed on any given release. As central as this is to
+    the framework, I doubt they'll change it; however, anytime you start introducing
+    code that relies on continued presence of non-public APIs, you run the risk of
+    an upgrade breaking your code without any warning in the release notes. Use freely,
+    but thoroughly test each library upgrade.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leveraging RSS feeds
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: What can I say? My editors made me do it. I hadn't initially planned on building
+    anything around RSS. I'm glad they did because after looking around, there's a
+    lot more information out there being fed by RSS than by JSON feeds. I figured
+    the digital world had advanced a little more than it really had. So, Usha, thank
+    you for making me include this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First things first, if we don't use a server-side proxy, we will crash right
+    into the unforgiving wall of the same-original policy. Examples include cURL in
+    PHP systems, Apache HTTP Core Components in Java, or something like HttpWebRequest
+    on .Net.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following is the page I created in PHP to leverage cURL to grab the Ars Technica
+    feed. The source for this file is in `ars.php` in the chapter code bundle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**WARNING**: cURL and other server-side proxy libraries are very powerful and,
+    thus, very dangerous tools. Do *not* parameterize the URL that you intend to hit
+    with this page. Hard code the URL. If you must take a parameter from the calling
+    URL to build your destination, then *you must escape all parameters*. If you do
+    not, you can rest assured that someday a hacker is going to have a lot of fun
+    with your site with cross-site scripting ([https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS))).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let''s add some buttons to the top. One for our Twitter feed, and one
+    for Ars Technica. The final source for this next part will be in the file `index.html`
+    in the code bundle for the chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, let''s add to our scripts to load the feed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here's what our new feed reader looks like!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Leveraging RSS feeds](img/0069_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Forcing responsive images
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When you're importing from a page where you have no control over the images
+    embedded in the content, you may have to tweak them to get it to look right in
+    mobile. As in the previous example, I've found it's best to remove the explicit
+    width and heights on the image itself and use CSS to make it fill 100 percent
+    of its current container. Then, use a CSS `max-width` property to ensure the image
+    is never scaled beyond it's original intended sizes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While not truly being responsive in terms of loading a different size of the
+    image that is appropriate for the resolution based on media queries, we've accomplished
+    the same visible effect with the limited resources at our disposal for cases like
+    this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 Web Storage
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'HTML5 Web Storage is ridiculously simple if you haven''t messed with it already.
+    If you have, skip to the next paragraph. There are really only two forms of web
+    storage: `localStorage`, and `sessionStorage`. `localStorage` will keep the information
+    indefinitely. `sessionStorage` will store only for the length of a single session.
+    It''s a simple key/value paired system. Everything is string-based. So you''ll
+    need to convert the values to other formats as needed, once you''ve extracted
+    them back out of storage. Check out [http://www.w3schools.com/html5/html5_webstorage.asp](http://www.w3schools.com/html5/html5_webstorage.asp)
+    for more information.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, this gets interesting with the definition of session. *Do not confuse*
+    the session on your server with the browser session. The user session on your
+    server might be set to expire within 20 minutes or so. However, just because your
+    server session has expired, doesn't mean that your browser knows anything about
+    that. *HTML5 session storage will persist until the browser is actually closed.*
+  prefs: []
+  type: TYPE_NORMAL
+- en: This gets especially tricky on mobile browsers. In both Android and iOS, when
+    you switch tasks or press the home button, the browser doesn't actually close.
+    In both cases, you have to actually use the task killer functions to completely
+    close the browsers. This is something that the end user might not actually do
+    on their own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But what's the big deal about web storage? Why not just use cookies to store
+    information on the client? After all, it will work with everyone, right? Yes,
+    cookies will work for everyone. However, they were never meant to store massive
+    amounts of data like we're using in this example, and there is a soft limit to
+    the number of cookies you can even store per domain (anywhere from 20-50 depending
+    on the browser). The worst part about trying to use cookies for client-side storage
+    is that they are sent back to the server as part of the request *for every single
+    asset served from that domain*. That means that every CSS, JS, image, and page/Ajax
+    request will carry every cookie with its payload. You can see how this could quickly
+    start to degrade your performance. Adding one cookie could result in that data's
+    transmission many times just to render a single page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browser-based databases (a work in progress)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Browser-based databases are in a state of extreme flux right now. There are
+    actually two different standards available at the moment. The first is **Web**
+    **SQL Database** ([http://www.w3.org/TR/webdatabase/](http://www.w3.org/TR/webdatabase/)).
+    You could use it, but, according to the W3C, this spec is no longer active. Many
+    browsers have implemented Web SQL Database, but how long will it be around?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The W3C has, instead, stated that the direction for database on the browser
+    will be **Indexed Database** ([http://www.w3.org/TR/IndexedDB/](http://www.w3.org/TR/IndexedDB/)).
+    The working draft has editors from Microsoft, Google, and Mozilla; so, we can
+    expect broad support in the future. The problem here is that the working draft
+    was published May 24, 2012\. As of the time of writing this chapter, only Firefox,
+    Chrome, and Internet Explorer 10 are supporting IndexedDB ([http://en.wikipedia.org/wiki/Indexed_Database_API](http://en.wikipedia.org/wiki/Indexed_Database_API)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSON to the rescue
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For now, we find ourselves in a terrible position of either using a doomed database
+    or waiting for everyone to catch up with the new spec. Web Storage looks like
+    the only safe bet in the near future. So, how can we best leverage that? With
+    JSON, of course! All major browsers support JSON natively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Think about the way we've always had to deal with relational databases in the
+    past. As object-oriented programmers, we've always done our query and then taken
+    the results data and turned it into an object in memory. We can do almost the
+    exact same thing by simply storing JSON directly to a key in Web Storage by using
+    the `JSON.stringify` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is an example to test if your system natively supports JSON. The source
+    is `jsonTest.html` in the chapter code bundle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: If all is well, you'll see an alert containing a timestamp.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If, for some reason, you find yourself in the unlucky position of having to
+    support some massively out-of-date system (Windows Phone 7 and BlackBerry 5 or
+    6, I'm looking at you), go get `json2.js` from [https://github.com/douglascrockford/JSON-js](https://github.com/douglascrockford/JSON-js)
+    and include it with your other scripts. Then, you'll be able to stringify and
+    parse JSON.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leveraging the Google Feeds API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So, we've seen how to natively pull in a normal RSS feed, parse, and build out
+    the pages using normal, tedious string concatenation. Now, let's consider an alternative
+    that I had no idea even existed when I first started writing this chapter. Thanks
+    go to Raymond Camden and Andy Matthews for pointing this out in their book, *jQuery
+    Mobile Web Development Essentials*. You need to follow those two on Twitter at
+    `@cfjedimaster` and `@commadelimited`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Google Feeds API can be fed several options, but at its core, it's a way
+    to specify an RSS or ATOM feed and get back a JSON representation. Naturally,
+    this opens up a few more interesting doors in this chapter. If we can now pull
+    in multiple feeds of different types without having to have any kind of server-side
+    proxy, we can greatly simplify our lives. Client-side templates are back in the
+    picture! No more string concatenation! Since they're all in a unified format (including
+    the publish date), we can pull them all together into one master view with all
+    feed stories sorted by date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sorting objects by their properties is actually pretty simple. You just have
+    to pass a function to do the comparison. The following code is what we''ll use
+    for the date:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s specify a JSON object to store the feeds we want to use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we''ll use our processor function to handle the stories as they come in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here''s our JsRender template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And finally, here is the function that will kick off the whole thing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: I've included this as part of my functional example in the `challenge.html`
+    file, but the source goes much deeper than that. The source of `challenge.html`
+    has several hidden gems for you to find as well. I tossed in Reddit, Flickr, and
+    a local search of Twitter while I was at it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You have been presented with a very wide array of choices for client-side templating.
+    At this point, you now know how to leverage JSON and JSONP and combine them effectively
+    to create pages on the fly. RSS should present no real challenge to you at this
+    point either, since you can do it either natively or using Google Feeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll combine some of these techniques as we continue to
+    build our technical tool chest and turn our eyes to HTML5 Audio.
+  prefs: []
+  type: TYPE_NORMAL

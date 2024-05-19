@@ -1,0 +1,339 @@
+- en: Chapter 8. Mock Object Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we will showcase the Mock Object Pattern, a pattern to facilitate
+    the development of applications without actually being part of the final implementation.
+    We will learn how to design, create and use this industry-standard design pattern
+    in order to coordinate and complete the development of multi-part jQuery applications
+    faster. We will analyze the characteristics that a proper Mock Object should have
+    and understand how they can be used as representative use cases and even as test
+    cases for our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will see how good application architecture makes it easier for us to use
+    Mock Objects & Services by matching individual parts of the application, and also
+    realize the benefits of using them during development. By the end of this chapter,
+    we will be able to create Mock Objects & Services to accelerate the implementation
+    of our application and also to get a sense of the overall functionality long before
+    all of its parts are completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we shall:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduce the Mock Object and Mock Service Patterns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Analyze the characteristics that Mock Objects & Services should have
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understand why they fit better with applications with good architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learn how to use them in jQuery applications as a way to drive the development
+    and accelerate it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing the Mock Object Pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The key concept of the Mock Object Pattern is in creating and using a dummy
+    object that simulates the behavior of a more complex object that is (or will be)
+    part of an implementation. The Mock Object should have the same API as the actual
+    (or real) object, return similar results using the same data structures, and also
+    operate in a similar manner with regards to how its methods alter its exposed
+    state (the properties).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mock Objects are usually created during the early development phases of an application.
+    Their primary use case is to enable us to proceed with the development of a Module,
+    even if it depends on others that have not yet been implemented. Mock Objects
+    can also be described as prototypes of the data exchanged between the different
+    parts of the implementation, acting like contracts between the developers and
+    easing the parallel development of interdependent modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the same way that the principles of the Module Pattern decouple the implementations
+    of the different parts of an application, creating and using Mock Objects and
+    Mock Services decouples their development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating Mock Objects for every Module before starting their implementation
+    clearly defines the data structures and APIs that will be used by the application,
+    removing any misconceptions and enabling us to detect insufficiencies in the proposed
+    APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Defining the data structures that are required to describe a problem before
+    starting the actual implementation allows us to focus on the needs of the application
+    and get an idea of its overall complexity and structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can always test any part of your implementation after any code change by
+    using the Mock Objects that were created for the original implementation. You
+    can be sure that the original use case still works by using the Mock Objects on
+    the modified methods. This is very useful when the modified implementation is
+    a part of a use case involving several stages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mock Objects are especially useful for tracing errors if the implementation
+    of a Module has changed and caused the rest of the application to misbehave. By
+    using the existing Mock Objects, we can easily identify the Module that diverged
+    from the original specification. Moreover, the same Mock Objects can be used as
+    the basis for high quality test cases since they often contain more realistic
+    sample data, something especially useful if your team is following a Test Driven
+    Development (TDD) paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In Test Driven Development (TDD), the developer firstly defines a test case
+    for a use case or a new feature that needs to be added and then proceeds with
+    its implementation by trying to satisfy the created test case. For more information,
+    you can visit: [https://www.packtpub.com/books/content/overview-tdd](https://www.packtpub.com/books/content/overview-tdd).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Mock Object Pattern is commonly used among frontend web developers to decouple
+    the client-side development from the web services that the backend will expose.
+    That has led to witty comments such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"The web service will always be late & change suddenly, so use a Mock instead."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Summarizing all of this, the main reasons to create Mock Objects and Services
+    include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The actual object or service is not yet implemented.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The actual object is difficult to set up for a specific use case.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We need to emulate a rare or non-deterministic behavior.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The actual object behaves in a way that is hard to reproduce, such as network
+    errors or UI events.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Mock Objects in jQuery applications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In order to demonstrate how the Mock Object Pattern can be used during the
+    development of a multi-part application, we will extend the dashboard example,
+    as we saw in [Chapter 4](part0026_split_000.html#OPEK1-e8d3cd3d052d4ee0b4673af57a64ddef
+    "Chapter 4. Divide and Conquer with the Module Pattern"), *Divide and Conquer
+    with the Module Pattern*, in order to present thumbnails of YouTube videos from
+    web developing conferences. The video references are grouped into four predefined
+    categories and the related buttons will be displayed based on the current category
+    selection, as illustrated below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Mock Objects in jQuery applications](img/00031.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The changes that need to be introduced to the HTML and the CSS are minimal.
+    The only extra CSS that is needed for the above implementation, when compared
+    to the existing implementation from [Chapter 4](part0026_split_000.html#OPEK1-e8d3cd3d052d4ee0b4673af57a64ddef
+    "Chapter 4. Divide and Conquer with the Module Pattern"), *Divide and Conquer
+    with the Module Pattern*, is related to the width of the thumbnails:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The change in the HTML is intended to organize the `<button>` elements of each
+    category. This change will make our implementation more straightforward since
+    the categories and their items are no longer statically defined in the HTML but
+    are instead created dynamically, driven by the available data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above piece of HTML, the `<div>` element with the `dashboardCategoriesList`
+    CSS class, will be used as a container for the grouped buttons of the different
+    video categories. After covering the UI elements, let's now move on to the analysis
+    of the JavaScript implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining the actual service requirements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The video references to be displayed in our dashboard could be retrieved from
+    various sources. For example, you could make a direct call to YouTube's client-side
+    API or an AJAX call to a backend web service . In all of the above cases, it is
+    considered a good practice to abstract this data retrieval mechanism into a separate
+    module, following the code structuring recommendations of the previous chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this reason, we need to add an extra module to the existing implementation.
+    This will be a service, responsible for providing the methods that will allow
+    us to retrieve the most relevant videos from each category and load information
+    for each video individually. This will be achieved by using the `searchVideos()`
+    and `getVideo()` methods respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we have already said, one of the most important phases of each implementation,
+    especially in case of parallel development, is the analysis and definition of
+    the data structures to be used. Since our dashboard will be using the YouTube
+    API, we need to create some sample data which follow its data structure rules.
+    After inspecting the API, we end up with a sub-set of the fields that are required
+    for our dashboard, and can proceed to create a JSON object with mock data to demonstrate
+    the used data structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For more information about the YouTube API, you can visit: [https://developers.google.com/youtube/v3/getting-started](https://developers.google.com/youtube/v3/getting-started).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our service provides two core methods, one for searching for videos in a specified
+    category and one for retrieving information about a specific video. The structure
+    of the sample object is used for the search method to retrieve a set of relevant
+    items, while the method for retrieving information for a single video uses the
+    data structure of each individual item. The resulting implementation for the video
+    information retrieval is in a separate module named `videoService`, which will
+    be available on the `dashboard.videoService` namespace, and our HTML would contain
+    a `<script>` reference like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Implementing a Mock Service
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Changing the `<script>` references of the service implementation with the Mock
+    Service and vice versa should leave us with a working application, helping us
+    progress and test the rest of the implementation before the actual implementation
+    of the video service is finished. As a result, the Mock Service needs to use the
+    same `dashboard.videoService` namespace, but its implementation should be in a
+    differently named file such as `dashboard.videoservicemock.js` that simply adds
+    the "mock" suffix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we have already mentioned, it is a good practice to place all our mock data
+    under a single variable. Moreover, if there are a lot of Mocked Objects, it is
+    common to place them in a different file altogether, with a nested namespace.
+    In our case, the file with the mock data is named `dashboard.videoservicemock.mockdata.js`
+    and its namespace is `dashboard.videoService.mockData`, while exposing the `searches`
+    and `videos` properties that will be used by the two core methods of our Mock
+    Service.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Even though the implementations of Mock Services should be simple, they have
+    their own complexity since they need to provide the same methods as the target
+    implementations, accept the same arguments, and look as if they are operating
+    in the exact same way. For example, in our case, the video retrieval service needs
+    to be asynchronous and its implementation needs to return Promises:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: As shown in the Mock Service implementation above, the `searchVideos()` and
+    `getVideo()` methods, are iterating over the arrays with the mock data and return
+    a Promise that is either Resolved with an appropriate Mock Object or Rejected
+    when such an object is not found. Finally, you can see below the code for the
+    sub-module containing the Mock Objects, following the data structure that we described
+    earlier. Note that we store the Mock Objects of all categories in the `allVideos`
+    property in order to make searching with the mock `getVideo()` method simpler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Experimenting with the implementation of some Mock Services will get you familiar
+    with their common implementation patterns in a very short period of time. Beyond
+    that, you will be able to easily create Mock Objects and Services, helping you
+    design the APIs of your applications, try them out by using the mocks and finally
+    settle on the best matching methods and data structures for each use case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Using the jQuery Mockjax library**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Mockjax jQuery Plugin library (available at [https://github.com/jakerella/jquery-mockjax](https://github.com/jakerella/jquery-mockjax))
+    focuses on providing a simple way of mocking or simulating AJAX requests and responses.
+    This reduces the code needed to fully implement your own Mock Services, if all
+    that you need is to intercept an AJAX request to a web service and return a Mock
+    Object instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Mock Service
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to add the functionality that we described earlier to the existing
+    dashboard implementation, we need to introduce some changes to the `categories`
+    and the `informationBox` modules, adding the code that will consume the methods
+    of our service. As a representative example of using the newly created Mock Service,
+    let''s take a look at the implementation of the `openNew()` method, in the `informationBox`
+    module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method initially opens a new information box with a **Loading...** label
+    as its content and uses the `dashboard.videoService.getVideo()` method to retrieve
+    the details of the requested video asynchronously. Finally, when the returned
+    Promise gets resolved, it replaces the **Loading...** label with an anchor containing
+    the thumbnail of the video.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to design, create and use Mock Objects and Mock
+    Services in our applications. We analyzed the characteristics that Mock Objects
+    should have and understood how they can be used as representative use cases. We
+    are now able to use Mock Objects & Services to accelerate the implementation of
+    our applications and get a better sense of its overall functionality, long before
+    all of its individual parts are completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will be introduced to client-side templating and learn
+    how to generate complex HTML structures in the browser from readable templates
+    efficiently. We will get an introduction to `Underscore.js` and `Handlebars.js`,
+    analyze their conventions, evaluate their features and find which one better suits
+    our taste.
+  prefs: []
+  type: TYPE_NORMAL

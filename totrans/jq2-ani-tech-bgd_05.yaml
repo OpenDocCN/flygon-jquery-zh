@@ -1,0 +1,882 @@
+- en: Chapter 5. Form and Input Animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '*In this chapter, we will look at examples and concepts of form animation using
+    jQuery. We can use almost any animation type for animating form inputs (because
+    of quirks and compatibility). However, keep in mind that a lot of animations won''t
+    make sense or will confuse our user, so we''ll be steering clear of those. These
+    animation types are ones that are too "jarring" to the eye. For example, if we
+    change the dimensions of the form inputs, our user might not know what it means.
+    For our first examples, we''re going to be sticking with color changes mostly.
+    Later in the chapter, we''ll strap on more animation support using jQuery UI to
+    really get our forms moving!*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our examples for this chapter, we'll be creating HTML forms so that we can
+    get the visual representation of form animation. For these examples, we won't
+    be adding a form action because we don't need them to submit properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating the form when our user moves their mouse cursor over the form fields
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Changing the background color of the input fields once our user clicks on one
+    of them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating the form's appearance based on the form validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These are the event handlers we''ll be using in this chapter to get our form
+    elements moving:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`hover()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`focus()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`blur()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using simple form animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Form animations can be used for many reasons, most notably when our user interacts
+    with our form. More specifically, forms can be used when his or her cursor enters
+    or leaves our form elements (text box). Animations are also great for indicating
+    form validation errors. These animations will generally have slight color changes
+    on the form inputs to give our user a better experience when filling out the form
+    and to make the flow easier to follow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We'll be using jQuery UI again in this chapter to make up for the lack of support
+    for color animation in jQuery 2.0\. Refer to [Chapter 3](ch03.html "Chapter 3. Background
+    Animation"), *Background Animation*, on where to download the jQuery UI library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – creating the form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We will be creating an HTML form using the following steps. After we create
+    our form, we'll be adding in our form validation animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start by creating a new document using our template (from [Chapter 1](ch01.html
+    "Chapter 1. Getting Started"), *Getting Started*) called `form-animation.html`
+    and save it in our `jquery-animation` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Then we''ll place the following code inside our `<body>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <form id="form1">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="First Name">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="Last Name">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="Email Address">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="Phone Number">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="submit" value="Submit">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </form>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''ll then need to add the jQuery UI library, following our jQuery library,
+    by adding the following code. (See information box mentioned previously on where
+    to get the jQuery UI library):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <script src="img/jquery-ui.min.js"></script>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In our anonymous function, add in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("input").hover(
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).addClass("hover", 500);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '},'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).removeClass("hover", 500);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: );
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("input").focus(function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).addClass("focus", 500);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("input").blur(function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).removeClass("focus", 500);
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Create a new file called `form-animation.css`, save it under our `jquery-animation`
+    folder, and add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: form {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: float:left;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: margin:5px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: input {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: display:block;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:200px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: padding:10px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: border-radius:3px;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#F5F5F5;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #D5D5D5;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: input[type=submit] {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: width:auto;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: border:0;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: color:#FFF;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: text-transform:uppercase;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: input:focus {outline:0;}
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#form1 input[type=submit] {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#FF6B6B;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #FF3A3A;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Attribute selectors (`input[type=submit]`) are a little quirky in Legacy versions
+    of Internet Explorer. Make sure your selectors are supported (or polyfill them)
+    before using them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s a great list of HTML5 cross-browser polyfills: [https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills](https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, our form should look like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Time for action – creating the form](img/9642OS_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first section of code we added in is the HTML skeleton structure we'll use
+    for the code examples in this chapter. We used an ID on the form for general targeting
+    purposes. We'll change this ID later in the chapter once we add another form.
+    Obviously, these forms don't have an action as we don't need them to submit in
+    order to see our animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Secondly, we added in the jQuery UI library to support color animation and give
+    us duration options for `addClass()` and `removeClass()`, and to add color animation
+    as we did in the previous chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery code we added next are the handlers we need for animating the styles
+    on our form by adding and removing CSS classes to our input elements. The `hover()`
+    handler has a `mouseenter` and `mouseleave` event. This is helpful in keeping
+    our code together in the same function. The jQuery equivalent to `onFocus` and
+    `onBlur` in JavaScript is `focus()` and `blur()`. Unlike `hover()`, these handlers
+    have to be separated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – adding our animation styles to the form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've added all of the code we needed for our forms; now, let's add some styles
+    to our form to get the animation styles working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add this code near the bottom of the stylesheet we created named `form-animation.css`
+    between the styles for `input:focus` and `#form1 input[type=submit]`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#form1 input.hover {border:1px solid #FF7F7F;}#form1 input.focus {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#FFD8D8;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #FF7F7F;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, let's preview the form with our newly added styles and take it for a spin.
+    You'll notice that when you hover over each of the text inputs, that a red border
+    slowly fades in and slowly fades out when we move our mouse cursor off of the
+    text input. Clicking on the text inputs will now fade the background color to
+    red as well. When we click away from the focused input, the red background color
+    then slowly fades back to its original color.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: These animations can also be achieved using CSS3 transitions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The order of the CSS styles we added is very important. The first state is the
+    `hover` state, so these styles go first. We want the focus class to override the
+    `hover` state while it's in transition between animations, so it goes under the
+    hover styles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, the submit button's styles go on the last line because we don't want
+    the styles to change when you hover over it. If you aren't familiar with this
+    method of ordering styles and why it's important, read up on CSS specificity.
+    Swapping the order of the styles we just added will illustrate why the order is
+    important.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Form validation animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Validating our user's form submission is a great way to ensure we get back the
+    correct information from our users. To enhance the usability of our form, we're
+    going to cover a few animation methods that deal with form validation. We're going
+    to start with basic form validation and build from there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action – basic dialog form validation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're going to create form validation through the use of an alert to tell the
+    user what's wrong with the form's submission.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First off, we''ll need to place the following code inside our anonymous function
+    after our previously added code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("#form1 input[type=submit]").click(function(e) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: var msg_error = "";
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("#form1 input[type=text]").each(function() {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if ($(this).val() == "") {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: msg_error += $(this).attr("placeholder") +
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '"can''t be left blank.\n";'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if (msg_error) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: alert(msg_error);
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: alert("Form submitted successfully!");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used the `click()` handler on our submit button to trigger our form validation
+    checking. For the sake of this example, we used `preventDefault()` so that when
+    we click on our submit button, the URL hash doesn't change. Make sure to remove
+    this line when you launch this code into the wilds of the Internet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `each()` method is used to target all of the form inputs in our form. An
+    if statement is used to narrow it down to all inputs (by using `$(this)` since
+    we're already in the `each()` method), whose value is blank. Each time our `if`
+    statement returns true, we're going to add to the variable `msg_error`. We used
+    the blank input's placeholder value we set previously as the first part of our
+    error message. We added on `can't be left blank` for the rest of the validation
+    error message and end it with a new line (`\n`), so that all of the error messages
+    aren't on the same line in the dialog window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we need to make sure if there is even an error message to display, so
+    we check if our `msg_error` variable returns `true`. If it is, we'll use `alert()`
+    with our variable `msg_error` inside to throw the dialog window. Otherwise, we'll
+    use `alert()` to let the user know the form was successfully submitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero – extending our form validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this example, we used very basic form validation to make sure that none
+    of our input fields were left blank. Have a go at extending the script to check
+    different types of values. Some examples of these validation types are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Contains only numbers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Contains only letters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Contains a certain amount of characters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Contains only letters and is within a certain range (example: 1-100)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Date is in the future
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Time for action – animating form validation errors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now, instead of giving our users a dialog box of all of the validation errors,
+    we're going to visually point out the form field errors that need to be fixed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by adding a new form to our page. Add the following code right
+    after our first `<form>` (new code is highlighted):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <form id="form2">
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="First Name">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="Last Name">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="Email Address">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="text" placeholder="Phone Number">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: <input type="submit" value="Submit">
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: </form>
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll add in our new form styles by placing the following code at the
+    bottom of our stylesheet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#form2 input.hover {border:1px solid #7FA1D1;}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#form2 input.focus {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#E6F0FF;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #7FA1D1;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#form2 input[type=submit] {'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: background:#8FACD7;
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'border:1px solid #638CC7;'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '#form2 input.error {border:1px dashed #F00;}'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Let''s then add in the code that''ll be used to check our form for proper validation:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("#form2 input[type=submit]").click(function(e) {
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: e.preventDefault();
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $("#form2 input[type=text]").each(function() {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: if ($(this).val() == "") {
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).addClass("error");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '} else {'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: $(this).removeClass("error");
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '}'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '});'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '```'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*What just happened?*'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used the same code as the previous example, but instead of triggering a dialog
+    box with all of the input validation errors, we changed the border color to a
+    dashed red border for each of the text inputs that require some attention before
+    they can be passed through the form. Our old friends `addClass()` and `removeClass()`
+    were used to style the inputs that had errors by adding or removing the class
+    `"error"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero – putting it all together
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now have a go at putting together all of the form validation animation types
+    we just learned. Also, try extending the styles a bit more. Here are some ideas
+    for extending the styles and animations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Display an error message on the side of the form field as to what the validation
+    error is.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Display a background image inside the form field to signify a problem with the
+    submission.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Automatically set the cursor focus to the first form field that has a validation
+    error.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If your form has labels (as opposed to placeholders), change the color of the
+    respective label.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Make the form fields that have validation errors pulsate to continuously signify
+    an error (using border colors and/or background colors).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Try playing with some jQuery UI animation effects on your own and come up with
+    some swanky animations. We''ll learn more about all of the great things jQuery
+    UI can do in [Chapter 6](ch06.html "Chapter 6. Extended Animations with jQuery
+    UI"), *Extending Animations with jQuery UI*, but here''s one jQuery UI animation
+    to get your feet wet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```js'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $("form").effect("bounce", { direction:"left", easing:"linear" }, 500);
+  prefs: []
+  type: TYPE_NORMAL
+- en: '```'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pop quiz – form animation and jQuery UI
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Q1\. When is it acceptable to use form animation?
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we want to direct our user's attention to a specific area of the form
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When our user interacts with our form
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To enhance the user's experience of our form
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: All of the above
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Q2\. Why did we add in jQuery UI in our examples in this chapter?
+  prefs: []
+  type: TYPE_NORMAL
+- en: To give us the ability to use animation effects not native to jQuery
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To add the `duration` option to `addClass()` and `removeClass()` and give us
+    the ability to animate color
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To allow us to use smooth scrolling options for `scrollTop()`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To make `preventDefault()` work properly for our examples
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we learned how to visually change the form's appearance based
+    on the interaction with the form. To take this a step further, you can create
+    custom animations using other CSS styles, altering the element using jQuery or
+    by using jQuery UI effects. Just remember — don't make the animations too sudden
+    or abrupt. Form animations are generally used to help a user through the flow
+    of filling out the form. Make sure to walk through each form step and animation
+    as if you are a user who is filling out the form for the very first time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we're going to be looking at the great animation effects
+    that can be added by using jQuery UI on top of the jQuery library. jQuery UI is
+    great because not only does it add new animation effects, but it adds in additional
+    options for native jQuery methods.
+  prefs: []
+  type: TYPE_NORMAL

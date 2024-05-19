@@ -1,0 +1,1683 @@
+- en: Chapter 10. Featuring Content in Carousels and Sliders
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In addition to slideshows, we can also feature images and text in sliders and
+    carousels. One or more slides can be visible at one time and a sliding animation
+    is used for transition between the slides. Carousels are ideal for creating a
+    featured content slider or for making many images available in a small space.
+    We'll take a look at the flexible and customizable jCarousel plugin from Jan Sorgalla
+    and how it can be used to create several different types of carousel and slider
+    solutions.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll learn the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the jCarousel plugin to create a basic horizontal slider
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a vertical news ticker
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a featured content slider with external controls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Combining a slideshow with a thumbnail carousel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic jCarousel
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's first take a look at creating a basic horizontal carousel of image thumbnails.
+    The jCarousel plugin includes two different skins, so setting up a basic carousel
+    is quick and easy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot is a sample of a basic carousel using the tango skin
+    that''s included with the plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Basic jCarousel](img/6709OS_10_img9.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There are a dozen or so thumbnail images in the carousel. Clicking one of the
+    side arrows slides the carousel left or right to reveal the next set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a basic carousel
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to set up a basic jCarousel of images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As usual, we''ll get started with our HTML. Set up a basic HTML document and
+    associated files and folders just like we did in [Chapter 1](ch01.html "Chapter 1. Designer,
+    Meet jQuery"), *Designer, Meet jQuery*. In the body of the HTML document, create
+    an unordered list of images. The carousel works best when the images are of uniform
+    size. I''ve made my images 200 pixels wide by 150 pixels tall. Here''s what my
+    HTML looks like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You can see that I''ve assigned an `id` of `thumb-carousel` to my unordered
+    list, and that the HTML is simple and straightforward: just a list of images.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll need to download the jCarousel plugin. The plugin is available
+    for download from GitHub here: [https://github.com/jsor/jcarousel](http://https://github.com/jsor/jcarousel).![Time
+    for action — creating a basic carousel](img/6709OS_10_img1.jpg)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To download the plugin, just click on the **ZIP** button.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Next, unzip the folder and have a look inside.![Time for action — creating a
+    basic carousel](img/6709OS_10_img2.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Inside, we'll find a folder called examples, which contains many examples of
+    the jCarousel plugin in action. There's an `index.html` file that contains the
+    documentation for the plugin. A `skins` folder contains the two skins that are
+    included with the plugin along with the images that those skins require. And finally,
+    a `lib` folder contains jQuery, and two copies of the jCarousel plugin—one minified
+    and one not.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We're going to use the `tango` skin and the minified version of the plugin.
+    Copy `jquery.jcarousel.min.js` to your own `scripts` folder and copy the entire
+    `tango` folder to your own `styles` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we need to attach the CSS and JavaScript to our HTML file. In the`<head>`
+    section of the document, attach the tango skin''s CSS file before your own `styles.css`
+    file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: At the bottom of the document, just before the closing`</body>` tag, attach
+    the jCarousel plugin file after jQuery and before your own `scripts.js:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The tango skin for the jCarousel slider is dependent on the `jcarousel-skin-tango`
+    class placed on a wrapper for the list. Wrap the list in a `div` tag and give
+    the `div` the appropriate class:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The next thing we''ll do is set up our own JavaScript. Open your `scripts.js`
+    file. Call the `ready` method on the document, select the image list, and call
+    the `jcarousel()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As usual, calling the `jcarousel()` method this way will load the carousel
+    with all of the default settings. Refresh the page in the browser and this is
+    what you''ll see:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a basic carousel](img/6709OS_10_img3.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Not exactly what we had in mind, but clicking the next arrow on the right will
+    advance the carousel. Let's take a look at getting some custom settings in place
+    so that we can view our complete images as intended.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The CSS for the tango skin assumes that our images are 75 pixels wide by 75
+    pixels tall, but that''s not the case with our carousel. We''ll add a few lines
+    of CSS to our `styles.css` to adjust the size of our images. First, we''ll specify
+    the width and height of a single item:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ll also have to adjust the overall size of the carousel''s container and
+    clip container:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You might wonder where that 830px-wide measurement came from. Each item is 200
+    pixels wide, and there are 10 pixels between each image.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 200 + 10 + 200 + 10 + 200 + 10 + 200 = 830
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The total width of images and the gaps between them is 830 pixels.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll need to bump the next and previous buttons down a bit since our
+    carousel is taller than the default and the buttons appear too high:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now the carousel looks just the way we''d like:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a basic carousel](img/6709OS_10_img4.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Finally, we''ll make a few adjustments to the settings for the jCarousel plugin
+    itself. Like many other plugins, we can make customizations by passing a set of
+    key/value pairs to the `jcarousel()` method inside a pair of curly braces. First,
+    let''s change the `scroll` value to `4` so that four items will scroll each time
+    we press the next or previous button. Go back to your `scripts.js` file and add
+    the new key/value pair to your script as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, the carousel currently reaches a hard stop at either the beginning or
+    the end. Instead, we''ll make the carousel wrap—if the site visitor is viewing
+    the last item in the carousel and presses the next button, the carousel will wrap
+    back to the beginning. And vice versa if the back button is clicked while viewing
+    the first item. We''ll add a `''both''` value for the `wrap` key so that the carousel
+    will wrap at either end:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Refresh the page in the browser and page through the carousel using either the
+    next or the previous button or any combination of the two. That's all there is
+    to creating a simple carousel with the jCarousel plugin.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We used the jCarousel plugin to create a basic animated image thumbnail carousel.
+    We used one of the default skins included with the plugin and made adjustments
+    for the size of our content with CSS. A few simple customizations were passed
+    to the carousel to make sure it worked just the way we wanted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animated news ticker
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A horizontal image carousel is nice, but it has pretty limited use. Luckily,
+    the jCarousel plugin is flexible enough to be used for a variety of different
+    purposes. In this section, we'll learn how to create an animated news ticker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating an animated news ticker
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Follow these steps to set up a vertical news listing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, up, we''ll set up a basic HTML file and associated files and folders
+    like we did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"), *Designer,
+    Meet jQuery*. In the body of the HTML document, create an unordered list of news
+    items. Each news item will have an image and a div that contains a headline and
+    an excerpt:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've created 12 items in total on my list, each with this same structure. Keep
+    in mind that each item in the carousel must be of the same width and height.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next up, we''ll open our `styles.css` file and add a few lines of CSS to get
+    each news item styled the way we''d like, with the image on the left and the headline
+    and excerpt on the right:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Feel free to add some additional CSS to style the list to suit your own taste.
+    If you open the page in a browser, at this point, you can expect to see something
+    similar to the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating an animated news ticker](img/6709OS_10_img5.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Just as in our simple carousel example, we'll attach the tango skin CSS in the`<head>`
+    section of the document, and the jCarousel plugin script at the bottom of the
+    document, between jQuery and our own `scripts.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, open your `scripts.js` file. We'll write our document ready statement,
+    select our news ticker, and call the `jcarousel()` method, just like we did in
+    the previous example.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ll pass some customization options to the `jcarousel()` method to adjust
+    our carousel to work the way that we''d like. First, it should be vertical rather
+    than horizontal, so pass `true` as a value for the `vertical` key:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''d also like to scroll only one item at a time:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And, we''d like the list of news items to loop endlessly as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''d like the carousel to automatically advance through the news stories in
+    true news-ticker fashion. We''ll advance the carousel every three seconds:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'And last but not least, we''ll slow the animation down a bit so that it''s
+    less jarring in case our site visitor is in the middle of reading when the animation
+    is triggered. 600 milliseconds ought to be slow enough:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now that we''ve got jCarousel configured just the way we''d like, all that''s
+    left to do is customize the appearance of the carousel. We''re currently using
+    the default tango skin, which is still assuming our individual items are 75 pixels
+    wide by 75 pixels tall. Open your `styles.css` file and we''ll get started by
+    adjusting the necessary widths and heights as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ve set the size of an individual item to 475 pixels wide by 150 pixels
+    tall. Then the size of the container and clip container are adjusted to show three
+    items. Just as a reminder—since each item in our carousel is 150 pixels tall and
+    there are 10 pixels of space between items, we can calculate the height of the
+    container as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 150 + 10 + 150 + 10 + 150 = 470px
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We're using heights instead of widths for our calculations since our carousel
+    is now vertical rather than horizontal.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll adjust the tango style a bit to fit in with my site''s design.
+    I''m going to start by replacing the pale blue color scheme of the container with
+    an orange color scheme, and adjust the rounded corners to be a bit less round:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, let''s replace the small blue arrows of the tango skin with a long orange
+    bar that spans the full width of our carousel. I''ve created my own arrow graphic
+    that I''ll show in the middle of each button:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, if you refresh the page in the browser, you''ll see that the carousel
+    is re-designed a bit with a different color scheme and appearance:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating an animated news ticker](img/6709OS_10_img6.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Moving your mouse over the top or bottom bar will lighten the color a bit, and
+    clicking a bar will advance the carousel in that direction by one item.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this case, we used the jCarousel plugin to create a vertical news ticker.
+    Our news ticker automatically advances one item every three seconds. We slowed
+    down the animation to make for a smoother reading experience for our site visitors.
+    We also saw how we can customize the tango skin's CSS to customize the color scheme
+    and appearance of the carousel to fit our site's design. Next up, we'll take a
+    look at how we can add some external controls to the carousel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a go hero — design your own carousel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that you've seen how to customize the appearance and behavior of the jCarousel
+    plugin, design your own carousel. It could be horizontal or vertical, contain
+    text, images, or a combination of both. Experiment with the settings that the
+    jCarousel plugin makes available to you — you'll find them all listed out and
+    explained in the plugin's documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Featured content slider
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In addition to carousels that show multiple items at one time, jCarousel can
+    also be used to build content sliders that show just one item at a time. It's
+    also possible to build external controls that add some additional functionality
+    to your carousels. Let's take a look at how to create a single-slide featured
+    content slider with external pagination controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a featured content slider
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We'll get started as usual by setting up our basic HTML file and associated
+    files and folders, just like we did in [Chapter 1](ch01.html "Chapter 1. Designer,
+    Meet jQuery"),*Designer, Meet jQuery*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the body of the HTML document, the HTML markup for our featured content
+    slider will be very similar to the HTML we set up for a news ticker. The only
+    difference is that I''m replacing the images with larger images since I want images
+    to be the main focus of the slider. I''m using images that are 600 pixels wide
+    by 400 pixels tall. The following is a sample of the HTML:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I have 12 items in total on my list, each marked up just the way you see here.
+    Note that I've wrapped my list in a `div` with the class `jcarousel-skin-slider`.
+    We'll be using this class to style our list with CSS.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next up, we''ll style our list of items. We''ll overlay the headline and paragraph
+    of text on the photo, the header along the top, and the paragraph of text along
+    the bottom. The following is the CSS we can use to accomplish that:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now each item in my list looks similar to the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a featured content slider](img/6709OS_10_img7.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: I want to draw your attention to a couple of handy CSS tricks I've put to use
+    here. First, notice that I've added a small white `text-shadow` to the headline
+    and have made the headline text black. Just in case this text happens to overlay
+    a dark area of the image, the subtle white outline around the text will help the
+    text to stand out. Then, note that I've added two background values for the short
+    paragraph of text. The first, a solid black, the second a transparent black color
+    denoted with an `rgba` value. The first value is for versions of Internet Explorer
+    before IE9\. Those browsers will display a solid black background. Newer and more
+    capable browsers will use the second value—the `rgba` value—to display a slightly
+    transparent black background behind the text—allowing the image to show through
+    a bit while making the text more readable.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, we'll attach the jCarousel JavaScript at the bottom of the page, between
+    jQuery and our `scripts.js` file, just as we've done in the other examples in
+    this chapter.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now we''re going to write a bit of CSS to customize the appearance of our content
+    slider. Open your `styles.css` file and add the following styles:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Yep, that's really it. Just a few lines. We'll set the width of an individual
+    item, the container, and the clip container to 600 pixels, the same as the width
+    of one image. The height of the individual item is also set to 400 pixels, but
+    we're going to set the clip container's height to 425 pixels to give us 25 pixels
+    to add in some external controls, which we'll be looking at in a minute.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now, open up your `scripts.js` file. The first thing we want to do is select
+    our list and store it in a variable. This is because we're going to be using the
+    list multiple times, and we don't want jQuery to have to query the DOM looking
+    for our list each time.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll set up our document ready statement and call the `jcarousel()`
+    method on the slider, and we''ll tell it that we want to scroll one pane at a
+    time:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''re going to be adding our own external controls, so we''ll need to remove
+    the ones that the `jcarousel()` method creates on its own. Here''s how we can
+    do that:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The `buttonNextHTML` and `buttonPrevHTML` keys are provided so that you can
+    specify your own HTML markup for those buttons. In this case, we're passing `null`
+    as the value for both keys which will prevent them from being created.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now we've done the basics to set up our slider. If you look at the page in your
+    browser, you'll see the first slide. We haven't yet provided a way to navigate
+    to the other slides, so let's jump on that next.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a featured content slider](img/6709OS_10_img7.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Pagination controls
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've set up a basic slider that shows one item at a time, but you've no doubt
+    noticed that there isn't a way to get to view any slide other than the first one.
+    We removed jCarousel's default next and previous buttons, and we haven't provided
+    any alternative yet. Let's add in some pagination controls so our site visitors
+    can get to any slide they like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding pagination controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Next, we want to set up the function that will create the next button, previous
+    button, and pagination buttons and makes them work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The jCarousel plugin provides a key called `initCallback` that will allow us
+    to pass in the name of a function that should be called when the carousel is created.
+    Let''s get started by creating an empty function and calling it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Whatever actions we write inside of our `carouselInit()` function, it will be
+    executed when the carousel is initialized or set up. Since any page numbers and
+    previous and next buttons would only be functional if JavaScript is enabled, we
+    want to create those buttons dynamically with JavaScript rather than coding them
+    in our HTML. Let's take a look at how we can create a list of page links to each
+    slide in the slider.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''ll get started by getting all of the slides in our slider. Remember that
+    our slider is an unordered list and each slide in the slider is an individual
+    list item in the list. Since we''ve already saved a reference to the slider itself,
+    we can get all the slides inside of it as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ll use these slides in a moment to create the page numbers. In the meantime
+    though, we need a place to put our page numbers, so let''s create a couple of
+    containers before the slider so that our pagination will display just above the
+    slider. Here''s how we insert two nested`<div>` tags just before the slider:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we''ll need to refer to these two newly created containers a couple of
+    times in our code, so we''ll store references to them in variables as shown in
+    the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we''re going to get fancy and create a page number for each slide in the
+    slider. The following is the code we''ll add:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're starting with `i = 1`, because the first page number will be 1\. Then
+    we're checking to see if `i` is less than or equal to the number of slides (`slides.length`
+    is the number of slides). If `i` is less than or equal to the number of slides,
+    we're going to increment i by one number—basically we're going to add 1 to `i`
+    and `i++` is a JavaScript shortcut way of saying `i = i+1`.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Each time through the loop, we're going to append a link to the pages container
+    we created. It's a link wrapped around a page number, and i represents our page
+    number.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If you refresh the page in a browser at this point, you'll see numbers 1 to
+    12 linked above the slideshow. They aren't styled, and clicking on them won't
+    do anything, because we haven't set that up yet—that's what we'll do next.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding pagination controls](img/6709OS_10_img10.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Next, we want to style the links so that they look the way we''d like. Open
+    up your `styles.css` file and add these few lines to the CSS:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This sets the height for our slider controls row to the 25 pixels that we allowed
+    for it previously. Then we put a green border around each link, which will turn
+    to a pink border when the link is hovered over. We adjusted margins and padding
+    to get a nicely spaced row of boxes. Finally, we added a `.current` class for
+    our links to allow us to mark the currently selected link in dark gray.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding pagination controls](img/6709OS_10_img11.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'Okay, we have our page numbers added to our document, so all we have to do
+    is make them work. We''ll bind a click function to those links, since we want
+    something to happen when our site visitor clicks on the links. We''ll get started
+    as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The first thing to do inside our function is to cancel the default action of
+    the click so that the browser doesn't try to do its own thing when the links are
+    clicked.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The jCarousel plugin offers us a nice way to scroll to a particular slide in
+    the slider. It looks as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The `number`s near the end is where we would pass in which slide we want to
+    scroll to. For example, if we wanted to scroll to the sixth slide, we''d say:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In our case, the number slide we want to scroll to is the page number in our
+    link. For example, if I click on the following link:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'That means I want to scroll to the third slide in the slider. I can get that
+    number by using jQuery''s `text()` method as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If I click on the fourth link, `$(this).text()` will be equal to 4; on the seventh
+    link, it will be equal to 7, and so on.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Refresh the page in the browser, and you'll see that clicking on a numbered
+    link will scroll the slider to that slide.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Clicking on the page numbers, you probably noticed that the current page number
+    isn't highlighted in the pagination. We already wrote the CSS to highlight a link
+    that has the `current` class—now we just have to be sure we're adding that class
+    to the current link. Here's how we'll do that.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now if you refresh the page in the browser, you''ll see that clicking a page
+    number applies the `current` class CSS to the link, highlighting it. However,
+    clicking a second page number highlights that link in addition to the previous
+    link. We have to make sure that we''re removing the class from the old link too.
+    Add the following line to take care of that:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This line checks all of the links' siblings for any that might have the class
+    of current. If it finds any, it removes the class.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, we just have to make sure the first link is highlighted when the carousel
+    is initialized. The easiest way to do that is to simply click the first link in
+    the pagination when the carousel is created, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Remember that jQuery allows us to chain methods—even though we've got a whole
+    function written inside the `bind()` method, we can still chain the next method
+    to the end of it. We call the `filter()` method to narrow down the list of links
+    to just the first one, then call the `click()` method to fire off the click function
+    we just bound to the link.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now if you refresh the page in the browser, you'll see that the first link is
+    highlighted with our current class CSS.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding pagination controls](img/6709OS_10_img12.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Next and previous buttons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now we've got our slider set up and page numbers working, but we also want to
+    have simple next and previous buttons to make it easy to flip through the slides
+    one at a time. We'll add those at either end of the pagination controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding next and previous buttons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now all that's left to add is a next and a previous button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll add the previous button at the beginning of the pagination, and the
+    next button at the end. Here''s how we can use jQuery to insert those links in
+    our document:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've used the `prepend()` method to insert the previous button before the page
+    numbers and the `append()` method to insert the next button after the page numbers.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If you refresh the page in the browser, you'll see the next and previous buttons
+    show up along with our pagination buttons.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding next and previous buttons](img/6709OS_10_img13.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: However, clicking them won't cause anything to happen—we have to hook up those
+    buttons so that they work. Let's start with the next button.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Just like with the pagination buttons, we need to bind a click event. Again,
+    the jCarousel plugin provides a nice way for us to advance to the next slide.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We're selecting the next button and binding a click event. We're canceling the
+    browser's default action so that the browser doesn't attempt to do anything when
+    the link is clicked. Then, all we have to do is call `carousel.next()` and jCarousel
+    will take care of advancing to the next slide for us.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Refresh the page in the browser, and you'll see that clicking the next button
+    advances the slider by one slide.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You'll also notice, however, that the currently highlighted page in the pagination
+    isn't updated. Let's take a look at how we can take care of that.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We''ll get started by finding the currently highlighted page number as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here we're just looking inside our page numbers to find the one with the `current`
+    class.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll remove the `current` class, move to the next page number link,
+    and add the `current` class to that one as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Ah, but not so fast, we only want to do that if there is a next link to go
+    to. If there''s not, then we don''t want to do anything at all. If we check `current.next().`
+    `length`, we can tell if there''s a next link or not. So, we just have to wrap
+    this bit of code in an `if` statement as shown in the following code:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you refresh the page in a browser, you'll see that the next button works
+    as expected. When we get to the last page, it does nothing, just as we'd expect.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now we''ll repeat that whole process with the previous button the function
+    is very similar. The following is what it will look like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Here''s what our complete `carouselInit()` function looks like:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now if you refresh the page in a browser, you'll see that the next and previous
+    buttons are both working as expected, along with the page numbers. You can navigate
+    to any slide in the slider by using these external controls.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding next and previous buttons](img/6709OS_10_img14.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We set up jCarousel to display a single slide at a time. We made sure that jCarousel
+    was not creating its own next and previous buttons. We used jQuery to add next,
+    previous, and pagination buttons to our document, and then used jCarousel's helpful
+    methods to control the carousel from these external controls. We made sure the
+    currently displayed slide is highlighted in the pagination to make it easy for
+    our site visitors to see where they are in the slides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Carousel slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we''ve learned how to set up external controls that control the carousel,
+    let''s take things the other way as well, and set up our carousel to control a
+    slideshow. In this section, we''ll be creating a simple crossfade slideshow that''s
+    controlled by a carousel of thumbnail images. The following is a sample of what
+    we''ll be creating:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Carousel slideshow](img/6709OS_10_img8.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Clicking on any of the thumbnails inside the carousel will load up the large
+    version of that image in the slideshow area. I've also provided next and previous
+    buttons near the slideshow that allow the site visitor to advance one photo at
+    a time through the slideshow without having to click individual thumbnails. Let's
+    take a look at how to put this together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — creating a thumbnail slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Setting up the carousel thumbnail slideshow will be the trickiest thing we've
+    done with jCarousel yet. But don't worry, we'll take it one step at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I bet you can guess how we''re going to get started, can''t you? That''s right,
+    by setting up our simple HTML file and associated files and folders, just as we
+    did in [Chapter 1](ch01.html "Chapter 1. Designer, Meet jQuery"), *Designer, Meet
+    jQuery*. In this case, we want just a simple list of thumbnails that are linked
+    to the full-size version of the image. And we''re going to wrap that up in a`<div>`
+    for styling purposes. Here''s what my list looks like:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've got twelve items in my list total, and they're all marked up identically.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll write the CSS for the carousel. It''s a custom design, so we won''t
+    be including one of the stylesheets provided with jCarousel. Open up your `styles.css`
+    file and add the following CSS:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I've created an image sprite containing the images for my next and previous
+    buttons and that's what's being used as the background image for those. The rest
+    of this should look familiar—setting up the appropriate sizes for the individual
+    items and the carousel itself.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, we''ll attach the jCarousel plugin at the bottom of the document, in between
+    jQuery and your `scripts.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Open up your `scripts.js` file and we''ll get the JavaScript started by getting
+    our thumbnail carousel up and running. Inside a document ready statement, select
+    the carousel and call the `jcarousel()` method as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We've assigned a value of `'circular'` to the `wrap` key—that means the carousel
+    will have neither beginning nor end—it will just continuously wrap around as the
+    site visitor scrolls through.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The continuous wrapping is nice — our site visitors will be able to click either
+    the forward or back carousel buttons no matter where they are, which feels a little
+    friendlier than disabled buttons. However, continuous scrolling can make it a
+    little more difficult for our site visitors to keep track of where they are in
+    the carousel. For that reason, we've set the scroll to `6`, even though our carousel
+    is capable of displaying seven images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's say our site visitor is looking at our carousel and there's a photo of
+    a gorgeous beach scene in the first slot in the carousel. The site visitor clicks
+    the previous button and that gorgeous beach scene slides over to fill the last
+    slot in the carousel. Seeing that same image in a new position helps to communicate
+    what just happened and ensures our site visitors that they didn't miss anything.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Time for action — creating a thumbnail slideshow](img/6709OS_10_img15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We followed steps similar to what we've done in earlier jCarousel examples.
+    Set up our HTML, wrote some CSS styles for the carousel, and then used jQuery
+    to select the list of thumbs and called the `jCarousel()` method. Now, let's get
+    more advanced and add a slideshow to our carousel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Slideshow
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we've got our simple carousel set up and styled the way that we'd like,
+    let's dive into adding the crossfade slideshow feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — adding the slideshow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jCarousel plugin has taken care of setting up the carousel for us, but we
+    want to get fancy and also add a slideshow area.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re on our own here, so we''ll create a separate function for creating the
+    slideshow area. Then we''ll call the new function inside our document ready statement:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'First up, we''ll wrap a container around our thumbnail list to create the slideshow
+    area. We find ourselves already in need of referring to the thumbnail list again,
+    so let''s store a reference to it in a variable and update the call to the `jcarousel()`
+    method as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, inside the `slideshowInit()` function, we'll call jQuery's `wrap()` method
+    to wrap the list in a`<div>`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, we need to create the actual stage where the full-size images will be
+    featured. We also need to create the next and previous buttons. We're going to
+    use the `prepend()` method so that these elements are inserted into `stage-wrap
+    div` before the thumbs list.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, we''ll pop back into our `styles.css` file and add some styles for these
+    new elements as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: All of our full-size images are the same size, 600x400, so we can set that as
+    the width and height of the stage and position the next and previous image buttons
+    accordingly. If you view the page in a browser now, you should see a large blank
+    area left for the stage and the next and previous image buttons on either side
+    of it, all positioned above the thumbnail carousel.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![Time for action — adding the slideshow](img/6709OS_10_img16.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: 'We''ve got a carousel, we''ve got an empty stage, and we''ve got next and previous
+    buttons on either side of our stage. Next, we''ll populate the stage with an image
+    slideshow. We''ll get started by setting up a variable to refer to the stage and
+    setting the `opacity` of the stage to `0` as shown in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We've hidden the stage from view so that we can load the images into it without
+    the site visitor seeing the images loading. This lets us have some control over
+    how the slideshow appears as it's being created. We're going to keep the stage
+    invisible until there's something to see.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll need to get all the links to the full-size images and get ready
+    to find the URL for each full-size image as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The links to the full-size images are contained in the thumbnail list, which
+    we can refer to with the `thumbs` variable. We're just finding all of the links
+    in that list and storing them in a variable called `imageLinks`. Next, we're setting
+    up an empty container called `src` where we're going to store the url for the
+    images. Though for now, we're leaving that container empty. We'll fill it up in
+    a moment.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We've got 12 links to full-size images. For each link, we need to create a new
+    image on the stage. We'll use jQuery's `each()` method to loop through each link
+    and create an image.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is the jQuery way of *saying For each link, do this thing.*
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Next, we''ll create an image for each of the links. First up, we know that
+    the `src` attribute of the image is going to equal the `href` attribute of the
+    link. In other words, a link as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'will be used to create an image as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'So the first thing we''ll do is get that empty `src` variable we created earlier
+    and store the URL for the image in it:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, we're going to create an image with this `src` attribute. I'm going to
+    store my newly created image in a variable called `img:`
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We've set the display of the image to none, to hide all of the images created
+    in this way. We've set the `src` attribute of the image to the `src` variable
+    that's holding the URL of the image.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that the image is created, we'll add it to the stage.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: jQuery's `appendTo()` method lets us append the image to the stage.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that the stage is full of images, let's go ahead and make it visible again.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, we want to show the appropriate image in the stage when one of the thumbnail
+    links in the carousel is clicked. If you click the thumbnails now, you'll see
+    that it opens the full-size image in the browser, but we want the image to show
+    in the stage instead. We just need a way to reference a particular image in the
+    stage from an image in the carousel. There are several different ways we could
+    go about that there's nearly always multiple ways to get something done. In this
+    case, we're going to take advantage of jQuery's `data()` method to store an index
+    number in each thumbnail link. I'll then use that index to find and show the appropriate
+    image.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Basically, we're going to number the links in the list. You'd think they'd be
+    numbered 1 through 12, but remember that JavaScript counting starts at 0, so the
+    thumbnail images will be numbered 0 through 11\. When a thumbnail is clicked,
+    we'll get the index number of that thumbnail, find the image on the stage with
+    that same index and show it. So if our site visitor clicks thumbnail number 6,
+    we'll find image number 6 on the stage and show it.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'First up, we have to assign the index numbers to the thumbnails. Inside the
+    document ready statement, add a small function to loop through each thumbnail
+    and add an index number as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now that all of the thumbnail links are numbered, we can write a function that
+    will find the appropriate image on the stage and show it when the thumbnail is
+    clicked. Inside of the `slideshowInit()` function, we''ll bind our function to
+    the click event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE69]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The first thing to do inside our new function is to cancel the browser's default
+    behavior. We don't want the link to open the image in the browser, so we'll return
+    false.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE70]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we need to get the number that we stored in our link. We''ll use the
+    `data()` method again to find the number:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE71]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, we need to search in the stage for the image with that index number. I'm
+    going to store the image in a variable called `nextImage` since it will be the
+    next image to show.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE72]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: jQuery allows us to find an element by its index number using the `:eq` selector.
+    For example, the `$('img:eq(1)')` selector would select the second image in a
+    list of images. (Remember, JavaScript counting starts at 0 instead of 1.) In this
+    case, I know which number image I want because it's the number stored in the link
+    that was just clicked.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we've got the next image, we need to show it. We're going to fade it
+    in and add a class of `active` to it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE73]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: But don't forget that there's already another image visible. We need to find
+    that one and fade it out. Since we're adding a class of `active` when the image
+    is shown, we can easily find the currently displayed image by looking for the
+    one with the class of `active:`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE74]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Don't forget that we'll have to be sure to remove that `active` class so that
+    only one image will be marked active at a time.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If you refresh the page in the browser now, you'll see that clicking one of
+    the thumbnail links in the carousel loads up the corresponding image in the slideshow.
+    One image fades out while the next image fades in, in a nice smooth manner. Next,
+    we'll get those next and previous buttons working so that we can use them to easily
+    flip from one image to the next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Phew! I hope you're still with me because this is a pretty awesome way to present
+    a slideshow of images to your site visitors. I hope that you're starting to see
+    that sometimes a plugin can be simply a beginning — you can get creative and invent
+    your own functionality to layer on top of the default plugin behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next and previous buttons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're definitely making some nice progress. Clicking the thumbnails loads up
+    the full-size version of the image in the slideshow, and we can use the carousel
+    controls to scroll through the thumbnails and see them all. Now, let's get the
+    next and previous image buttons working.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for action — activating the Next and Previous Buttons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Next up, we'll get those next and previous buttons around the image working
+    so that the site visitor can easily flip through all the images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just like when we hooked up external controls to the carousel in the last example,
+    we''ll get started by setting up a callback function for the carousel. We''ll
+    call the function `nextPrev` and set it up as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE75]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now the `nextPrev` function will be called when the carousel is initialized.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Inside the `nextPrev()` function, we''ll select the previous button and bind
+    a function to the click event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE76]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: When a site visitor clicks the previous button, we want to show the previous
+    image in the slideshow. As usual with JavaScript, there's more than one way to
+    go about that. Since we've already got a nice slide switch set up to happen when
+    one of the thumbnails in the carousel is clicked, let's just go ahead and re-use
+    that.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When our site visitor clicks the previous button, we'll find the previous thumbnail
+    in the carousel and click it. That will kick off the image transition and allow
+    us to re-use the code we've already written.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'So our first order of business is to find the currently selected thumbnail.
+    However, we haven''t made it easy to find the current thumbnail. So let''s go
+    back inside our `slideshowInit()` function and add a line of code to add a class
+    to the current thumbnail:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE77]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Here, we're adding a class of `current` to the `<li>` tag that contains the
+    clicked thumbnail. Then we're checking all the siblings to remove the `current`
+    class if it exists somewhere else. This ensures that only one item in the carousel
+    will have the `current` class at any given time.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, if you''ll humor me for a minute, we''ll take a sidetrip to the CSS. Since
+    we''re adding a class to the current thumbnail, we can make use of that for CSS
+    purposes to style the current thumbnail differently than the rest. Let''s reduce
+    the opacity of the thumbnails and make the current one 100 percent opaque to make
+    it stand out. Open up `styles.css` and add some styles for this as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE78]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Back to the JavaScript! Now that we''ve got an easy way to select the current
+    thumbnail, we just have to find the one with the `current` class. Inside the `prevNext()`
+    function, we can get the current link this way:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE79]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Since this is the function attached to the previous button, we''ll need to
+    find the previous thumbnail in the list. I''ll use jQuery''s `prev()` method to
+    find the previous thumbnail in the carousel:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE80]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'However, if the current slide is the first one, there isn''t a previous slide
+    to go to. In this case, if the site visitor is on the first slide and clicks the
+    previous button, I want them to go to the last slide in the list so that it continues
+    seamlessly. So, I''ll first check to see if there is a previous slide as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE81]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: There are a couple of things to explain here. First, this line, translated into
+    English from JavaScript, says *Is there a thumbnail before this one? If there
+    is, then that's where we're going. If there's not, then we're heading over to
+    the last thumbnail.*
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE82]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Here''s how a ternary operator works:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE83]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: It starts with the condition that we're checking which is followed by a ?. After
+    that, we have the value if that condition is true followed by a :, and the value
+    if the condition is false.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now that we''ve found the previous slide, all that''s left to do is click the
+    link inside as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE84]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will fire off the function we've written to change the slide in the browser.
+    If you reload the page in the browser at this point and click the previous button
+    a few times, you'll see that the image switches just as we'd expect.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: However, there's not much going on with the carousel. It's just sitting there.
+    And right away the currently selected thumbnail is out of view. If I click the
+    previous button once, then scroll the carousel, I can finally see the highlighted
+    thumbnail. Ideally, the carousel would update itself to be sure that the current
+    thumbnail was always visible.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The jCarousel plugin makes it easy for us to scroll to any slide in the carousel.
+    We only have to know which one we want to show. A part of the jCarousel's setup
+    script also assigns a `jcarouselindex` attribute to each list item in the carousel.
+    We can get that number and use it for scrolling purposes. First, let's figure
+    out what `jcarouselindex` of the `prevSlide` is, since that's where we want to
+    scroll.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE85]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I'm using `parseInt()` to make sure that I get a number instead of a string.
+    If I get a string back, it can mess up the scrolling in the carousel.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now, all that''s left to do is scroll to the right thumbnail:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE86]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now if you refresh the page in the browser, you''ll see that clicking the previous
+    button updates the carousel—the carousel will scroll so that the currently highlighted
+    slide is the first one in the carousel. However, what if I decide I want the currently
+    highlighted slide to appear in the middle? Easy! I''ve got seven slides showing.
+    If the highlighted slide is in the middle, that means there will be three slides
+    before it (and three slides after it). All I have to do is tell the carousel to
+    make the slide three before the highlighted slide the first slide visible as follows:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE87]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, for example, when I click the previous button, if the next slide is slide
+    number 5, slide number 2 will be shown first in the carousel, which means slide
+    number 5 will be right in the middle of the carousel. Refresh the page in the
+    browser and give it a try. Nice, right?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: All that's left to do is get the next button working as well as the previous
+    one. The function is almost identical with a few tweaks made.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE88]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: I'm using the `next()` method instead of the `prev()` method to get the next
+    slide rather than the previous one. Aside from that, the function is the same.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now if you refresh the page in the browser, you'll see that the next and previous
+    image buttons both work — they show the correct image in the slideshow and scroll
+    the carousel so that the current image is highlighted right in the middle of the
+    carousel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What just happened?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We combined some external carousel controls with a slideshow to create a robust
+    slideshow/carousel combination. The slideshow can be controlled from the carousel
+    — clicking a thumbnail in the carousel will load up the full-size version of the
+    image in the slideshow stage. And clicking the next and previous buttons in the
+    stage will update the carousel, scrolling it so that the currently highlighted
+    thumbnail appears in the middle of the carousel's viewable area.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started with some basic HTML, wrote a custom CSS skin for the carousel, and
+    called the `jcarousel()` method to get the carousel working. Next, we wrote a
+    function to dynamically create the slideshow stage and buttons. Finally, we made
+    it all work together with some fancy jQuery footwork.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We took a look at using the jCarousel plugin in a variety of situations we created
+    a simple horizontal thumbnail carousel, a vertical news ticker, a featured content
+    slider with external controls, and finally, a carousel/slideshow combo that really
+    showed off the capabilities of the jCarousel plugin. Now you've added another
+    powerful tool to your toolbox — the jCarousel plugin is flexible, powerful, and
+    can be customized to work in a variety of different situations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up, we'll take a look at creating an interactive data grid.
+  prefs: []
+  type: TYPE_NORMAL

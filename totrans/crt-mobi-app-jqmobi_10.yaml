@@ -1,0 +1,882 @@
+- en: Chapter 10. Putting It All Together – Flood.FM
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Flood.FM is a unique idea. This is a website where listeners will be greeted
+    with music from local, independent bands across several genres and geographic
+    regions. Building this will take many of the skills we've developed so far, and
+    we'll pepper in some new techniques that can be used in this new service. We've
+    already drawn interfaces on Post-its, and used GPS and client-side templates.
+    We've taken care of regular HTML5 audio and video. We've even started working
+    on multiple mobile sizes and used media queries to rework our layouts into responsive
+    designs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of these were simpler implementations meant to get the job done and be as
+    gracefully failing as possible. Let's see what technology and techniques we could
+    bring to bear on this venture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A taste of Balsamiq
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Organizing your code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction to the Web Audio API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Prompting the user to install your app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: New device-level hardware access
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To App or not to App, that is the question
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PhoneGap versus Apache Cordova
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A Taste of Balsamiq
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We started this book by learning a technique called paper prototyping. For your
+    own work with clients, it's a great tool. However, if you're dealing with larger
+    or distributed teams, you might need something more. Balsamiq ([http://www.balsamiq.com/](http://www.balsamiq.com/))
+    is a very popular UX tool for rapid prototyping. It is perfect for creating and
+    sharing interactive mockups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A Taste of Balsamiq](img/0069_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: And when I say very popular, I mean lots of major names that you're used to
+    seeing. Over 80,000 companies create their software with the help of Balsamiq
+    Mockups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A Taste of Balsamiq](img/0069_10_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: So, let's take a look at what the creators of Flood.FM had in mind. Here is
+    the first screen they drew; it looks like a pretty standard implementation so
+    far. It has an icon toolbar at the bottom and a listview in the content. Translating
+    that is pretty simple, really. We've done this before using Glyphish icons and
+    standard toolbars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![A Taste of Balsamiq](img/0069_10_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Ideally, we''d like to keep this particular implementation as pure HTML/JS/CSS.
+    That way, we could compile it into a native app at some point using PhoneGap.
+    However, we''d like to stay true to the DRY (Don''t Repeat Yourself) principle.
+    That means that we''re going to want to inject this footer onto every page without
+    using a server-side process. To that end, let''s set up a hidden part of our app
+    to contain all the global elements that we may want:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: We'll keep this code at the bottom of the page and hide it with a simple CSS
+    rule in the stylesheet, `#globalComponents{display:none;}`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let's set up our application to insert this global footer into each page,
+    just before they are created. Using the `clone()` method (shown in the next code
+    snippet) ensures that not only are we pulling over a copy of the footer, but also
+    any data attached with it. In this way, each page is built with the exact same
+    footer, just like it is in a server-side include. When the page goes through its
+    normal initialization process, the footer will receive the same markup treatment
+    as the rest of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Look at what we've done here in this piece of JavaScript code. It's a little
+    different from what we've done before. We're actually organizing our code a little
+    more effectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Organizing your code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapters, we structured our code very loosely. In fact, I'm
+    sure the academic types would laugh at the audacity of even calling it structured.
+    I believe in a very pragmatic approach to coding, which leads me to use more simple
+    structures and a bare minimum of libraries. However, there are values and lessons
+    to be learned out there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: MVC, MVVM, MV*
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For the last couple of years, serious JavaScript developers have been bringing
+    backend development structures to the web as the size and scope of their project
+    demanded a more regimented approach. For highly ambitious, long-lasting, in-browser
+    apps, this kind of structured approach can help. This is even more true if you're
+    on a larger team.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**MVC** stands for "Model-View-Controller" ( see [http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)),
+    **MVVM** is for "Model View ViewModel"(see [http://en.wikipedia.org/wiki/Model_View_ViewModel](http://en.wikipedia.org/wiki/Model_View_ViewModel)),
+    and **MV*** is shorthand for "Model View Whatever" and is the general term used
+    to sum up this entire movement of bringing these kinds of structures to the front-end.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some of the more popular libraries include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Backbone.JS ([http://backbonejs.org/](http://backbonejs.org/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Spine ([http://spinejs.com/](http://spinejs.com/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lumbar ([http://walmartlabs.github.com/lumbar/](http://walmartlabs.github.com/lumbar/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ember ([http://emberjs.com/](http://emberjs.com/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Knockout ([http://knockoutjs.com/](http://knockoutjs.com/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AngularJS ([http://angularjs.org/](http://angularjs.org/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Batman.js ([http://batmanjs.org/](http://batmanjs.org/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A very nice comparison of these, and more, is at [http://codebrief.com/2012/01/the-top-10-javascript-mvc-frameworks-reviewed/](http://codebrief.com/2012/01/the-top-10-javascript-mvc-frameworks-reviewed/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: An adapter and sample of how to make Backbone play nicely with jQuery Mobile
+    can be found at [http://view.jquerymobile.com/1.3.0/docs/examples/backbone-require/index.php](http://view.jquerymobile.com/1.3.0/docs/examples/backbone-require/index.php).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example for Ember can be found at [https://github.com/LuisSala/emberjs-jqm](https://github.com/LuisSala/     emberjs-jqm).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Angular also has adapters for jQM in progress. There are several examples at
+    [https://github.com/tigbro/jquery-mobile-angular-adapter](https://github.com/tigbro/jquery-mobile-angular-adapter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: MV* and jQuery Mobile
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Yes, you can do it. You can add any one of these MV* frameworks to jQuery Mobile
+    and make as complex an app as you like. Of them all, I lean toward the Ember platform
+    for desktop and Angular for jQuery Mobile. However, I'd like to propose another
+    alternative.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I''m not going to go in-depth into the concepts behind MVC frameworks. Essentially,
+    it''s all about separating the concerns of your application into more manageable
+    pieces, each having a specific purpose. We don''t need yet another library/framework
+    to do this. It is simple enough to write code in a more organized fashion. Let''s
+    create a structure similar to what I''ve started before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Under the application section, let's fill in some of our app code and give it
+    a *namespace*. Essentially, namespacing is taking your application-specific code
+    and putting it into its own named object so that the functions and variables won't
+    collide with other potential global variables and functions. It keeps you from
+    polluting the global space and helps preserve your code from those who are ignorant
+    regarding your work. Granted, this is JavaScript and people can override anything
+    they wish. However, this also makes it a whole lot more intentional to override
+    something like `floodApp.getStarted` than simply creating your own function called
+    `getStarted`. Nobody is going to accidentally override a namespaced function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Pay attention, in particular, to the function `fireCustomEvent` . With that,
+    we can now set up an event management system. At its core, the idea is pretty
+    simple. We''d like to be able to simply put tag attributes on our clickable objects
+    and have them fire events, like all the MV* systems. This fits the bill perfectly.
+    It would be quite common to set up a click event handler on a link or something
+    to catch the activity. This is far more simple. Just an attribute here and there,
+    and you''re wired in. The HTML code becomes more readable too. It''s easy to see
+    how declarative this makes your code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now instead of watching for clicks, we're listening for events. You can have
+    as many parts of your app as you like registering themselves to listen for the
+    event and then execute appropriately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we fill out our application more and more, we''ll start collecting a lot
+    of events; instead of letting them get scattered throughout multiple nested callbacks
+    and such, we''ll be keeping them all in one handy spot. In most JavaScript MV*
+    frameworks, this part of the code is referred to as the Router. Hooked to each
+    event, you will see nothing but namespaced application calls:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice the separation of concerns into interface events and application events.
+    We're using this as a point of distinction between events that are fired as a
+    result of natural jQuery Mobile events (interface events) and events that we have
+    thrown (application events). This may be an arbitrary distinction, but for someone
+    who comes along later to maintain your code, this could come in handy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The model section contains the data for your application. This is typically
+    the kind of data that is pulled in from your backend APIs. It''s probably not
+    as important here, but it never hurts to namespace what''s yours. Here, we have
+    labeled our data as `modelData`. Any information we pull in from the APIs can
+    be dumped right into this object, like we''ve done here with the station data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pair this style of programming with client-side templating, and you'll be looking
+    at some highly maintainable, well-structured code. However, there are some features
+    that are still missing. Typically, these frameworks will also provide bindings
+    for your templates. This means that you only have to render the templates once.
+    After that, simply updating your model object will be enough to cause the UI to
+    update itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem with these bound templates is that they update the HTML in a way
+    that would be perfect for a desktop application. But remember, jQuery Mobile does
+    a lot of DOM manipulation to make things happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In jQuery Mobile, a listview starts like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After the normal DOM manipulation, you get this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: And that's just a single list item. You really don't want to include all that
+    junk in your templates; so what you need to do is, just add your usual items to
+    the listview and then call `.listview("refresh")`. Even if you're using one of
+    the MV* systems, you'll still have to either find or write an adapter that will
+    refresh the listviews when something is added or deleted. With any luck, these
+    kinds of things will be solved at the platform level soon. Until then, using a
+    real MV* system with jQM will be a pain in the posterior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to the Web Audio API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we touched upon the subject of HTML audio in [Chapter 6](ch06.html "Chapter 6. HTML5
+    Audio"), *HTML5 Audio*, we were looking at it from a perspective of progressive
+    enhancement and maximum device support. We took regular pages with native audio
+    controls and used JavaScript to build a new interface to control the audio. We
+    then looked at ways to combine it all and go for the better experience. Now we'll
+    take it a few steps further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Web Audio API is a fairly new development and, at the time of writing this,
+    only existed within the mobile space on iOS 6\. The Web Audio API is available
+    on the latest versions of desktop Chrome, so you can still do your initial test
+    coding there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For now, this means no Android, no Windows Phone, and no Blackberry. At least,
+    not yet. However, it's only a matter of time before this is built into other major
+    platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the code for this part of the project and the full explanation of the
+    API can be found at [http://developer.apple.com/library/safari/#documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html](http://developer.apple.com/library/safari/#documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s use feature detection to branch our capabilities:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The original code for this page was designed to kick off simultaneous downloads
+    for every song in the queue. With a fat connection, this would probably be OK.
+    Not so much on mobile. Because of the limited connectivity and bandwidth, it would
+    be better to just chain the downloads to ensure better experience and a more respectful
+    use of bandwidth:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now the `bufferSound` function just needs to call `fetchNextSong` after buffering,
+    as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'One last thing we need to change from the original is, telling the buffer to
+    pull the songs in the order that they were inserted:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: For anyone on iOS, this solution is pretty nice. There is a lot more to this
+    API for those who want to dig in. With this out-of-the-box example, you get a
+    nice canvas-based audio analyzer that gives you a very nice professional look
+    as the audio levels bounce to the music. Slider controls are used to change the
+    volume, the left-right balance, and the high-pass filter. If you don't know what
+    a high-pass filter is, don't worry, I think that filter's usefulness went the
+    way of the cassette deck. Regardless, it's fun to play with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introduction to the Web Audio API](img/0069_10_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Web Audio API is a very serious piece of business. This example was adapted
+    from the example on Apple's site. It only plays one sound. However, the Web Audio
+    API was designed with the idea of making it possible to play multiple sounds,
+    alter them in multiple ways, and even dynamically generate sounds using JavaScript.
+    Getting that deep is probably worth a book of its own. It would also require a
+    deeper knowledge of audio processing than I am likely to ever have. In the meantime,
+    if you want to see this proof of concept in jQuery Mobile, you will find it in
+    the example source in `webaudioapi.html`. For an even deeper look at what is coming,
+    you can check the docs at [https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prompting the user to install your app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Remember in [Chapter 6](ch06.html "Chapter 6. HTML5 Audio"), *HTML5 Audio*,
+    we added the Apple touch icons to make the Lindsey Stirling site look like an
+    app when bookmarked to the home screen? We even went so far as to use a manifest
+    file to locally cache the assets for faster access and offline use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Prompting the user to install your app](img/0069_10_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now let's take a look at how we can prompt our users to download the Flood.FM
+    app to their home screens. It is very likely that you've seen it before; it's
+    the little bubble that pops up and instructs the user with the steps to install
+    the app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many different projects out there, but the best one that I have seen
+    is a derivative of the one started by Google. Much thanks and respect to Mr. Okamototk
+    on GitHub ([https://github.com/okamototk](https://github.com/okamototk)) for taking
+    and improving it. Okamototk evolved the bubble to include several versions of
+    Android, legacy iOS, and even BlackBerry. You can find his original work at [https://github.com/okamototk/jqm-mobile-bookmark-bubble](https://github.com/okamototk/jqm-mobile-bookmark-bubble).
+    However, unless you can read Japanese or enjoy translating it, I'd recommend you
+    just take the code from this chapter's example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't worry about annoying your customers too much. With this version, if they
+    dismiss the bookmarking bubble three times, they won't see it again. The count
+    is stored in HTML5 LocalStorage; so if they clear out the storage, they'll see
+    the bubble again. Thankfully, most people out there don't even know that can be
+    done, so it won't happen very often. Usually it's geeks like us that clear things
+    like LocalStorage and cookies, and we know what we're getting into when we do
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In my edition of the code, I''ve combined all the JavaScript into a single
+    file meant to be placed between your import of jQuery and jQuery Mobile. At the
+    top, the first non-commented line is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is what you would change to be your own first page or where you want the
+    bubble to popup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In my version, I have hardcoded the font color and text shadow properties into
+    the bubble. This was needed because in jQM, the font color and text shadow color
+    vary based on the theme you're using. Consequently, in jQuery Mobile's default
+    "A" theme (white text on a black background), the font was showing up as white
+    with a dark shadow on top of a white bubble. Now, with my modified version for
+    jQM, it will always look right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We just need to be sure we''ve set up our page with the proper links in the
+    head, and that our images are in place:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Prompting the user to install your app](img/0069_10_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note the Flood.FM logo here. The logo is pulled from our link tags marked with
+    `rel="apple-touch-icon-precomposed"` and injected into the bubble. So, really,
+    the only thing in `jqm_bookmark_bubble.js` that you would need to alter is `page_popup_bubble`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: New device-level hardware access
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: New kinds of hardware-level access are coming to our mobile browsers every year.
+    Here is a look at some of what you can start doing now and what's on the horizon.
+    Not all of these are applicable to every project but if you think creatively,
+    you can probably find innovative ways to use them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accelerometers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Accelerometers are the little do-dads inside your phone that measure the phone's
+    orientation in space. To geek out on this, read [http://en.wikipedia.org/wiki/Accelerometer](http://en.wikipedia.org/wiki/Accelerometer).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This goes beyond the simple orientation we've been using. This is true access
+    to the accelerometers, in detail. Think about the user being able to shake their
+    device or tilting it as a method of interaction with your app. Maybe Flood.FM
+    is playing something they don't like and we can give them a fun way to rage against
+    the song. Something like, "shake a song to never hear it again." Here is a simple
+    marble rolling game somebody made as a proof of concept. See [http://menscher.com/teaching/woaa/examples/html5_accelerometer.html](http://menscher.com/teaching/woaa/examples/html5_accelerometer.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Camera
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Apple's iOS 6 and Android's JellyBean can both access photos on their file systems
+    as well as the cameras. Granted, these are the latest and greatest versions of
+    these two platforms. If you intend to support the many woefully out of date Android
+    devices (2.3 2.4) that are *still* being sold off the shelves as if brand new,
+    then you're going to want to go with a native compilation like PhoneGap or Apache
+    Cordova to get that capability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot has iOS to the left and Android to the right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Camera](img/0069_10_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: APIs on the horizon
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Mozilla is doing a lot to push the mobile web API envelope. Here is what is
+    now on the horizon and will probably be ready to use in less then two years:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: battery levels
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: charging status
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ambient light sensors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: proximity sensors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: vibration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: contacts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: network information
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mobile connection (carrier, signal strength, and so on)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Web SMS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Web Bluetooth
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Web FM
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Archive API (opening and reading contents from compressed folders)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you want to read more, check out [https://wiki.mozilla.org/WebAPI](https://wiki.mozilla.org/WebAPI).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To app or not to app, that is the question
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Should you or should you not compile your project into a native app? Here are
+    some things to consider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Raining on the parade (take this seriously)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When you compile your first project into an app, there is a certain thrill
+    that you get. You did it! You made a real app! It is at this point that we need
+    to remember the words of Dr. Ian Malcolm from the movie Jurassic Park (Go watch
+    it again. I''ll wait):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Raining on the parade (take this seriously)](img/0069_10_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: '"You stood on the shoulders of geniuses to accomplish something as fast as
+    you could, and before you even knew what you had, you patented it, and packaged
+    it, and slapped it on a plastic lunchbox, and now [bangs on the table] you''re
+    selling it, you wanna sell it. Well... your scientists were so preoccupied with
+    whether or not they could that they didn''t stop to think if they should."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: These words are very close to prophetic for us. In the end, their own creation
+    ate most of the guests for lunch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: According to this report from August 2012 [http://www.webpronews.com/over-two-thirds-of-the-app-store-has-never-been-downloaded-2012-08](http://www.webpronews.com/over-two-thirds-of-the-app-store-has-never-been-downloaded-2012-08)
+    (and several others like it that I've seen before), *over two-thirds of all apps
+    on the app stores have never been downloaded*. Not even once! So, realistically,
+    app stores are where most projects go to die.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even if your app is discovered, the likelihood that anyone will use it for any
+    significant period of time is astonishingly small. According to this article in
+    Forbes ([http://tech.fortune.cnn.com/2009/02/20/the-half-life-of-an-iphone-app/](http://tech.fortune.cnn.com/2009/02/20/the-half-life-of-an-iphone-app/)),
+    most apps are abandoned in the space of minutes and never opened again. Paid apps
+    last about twice as long, before either being forgotten or removed. Games have
+    some staying power, but let us be honest, jQuery Mobile isn't exactly a compelling
+    gaming platform, is it?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Android world is in terrible shape. Devices can still be purchased running
+    ancient versions of the OS, and carriers and hardware partners are not providing
+    updates to them in anything even resembling a timely fashion. If you want to monitor
+    the depths of sorrow that could be yours by embracing a native strategy, look
+    here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://developer.android.com/about/dashboards/index.html](http://developer.android.com/about/dashboards/index.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Raining on the parade (take this seriously)](img/0069_10_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can see just how fractured the Android landscape is as well as how many
+    older versions you'll probably have to support. Until Android and its business
+    partner pull their collective heads out, Android will continue to be the Internet
+    Explorer 6 of the native mobile world. You do *not* want to support that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the flip side, if you're publishing strictly to the web, then every time
+    your users visit your site, they'll be on the latest edition using the latest
+    APIs, and you'll never have to worry about somebody using some out-of-date version.
+    Do you have a security patch you need to apply? You can do it in seconds. If you're
+    on the Apple app store, this patch could take days or even weeks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Three good reasons for compiling an app
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Yes, I know I just finished telling you about your slim chances of success and
+    the fire and brimstone you will face for supporting apps. However, here are a
+    few good reasons to make a real app. In fact, in my opinion, they're the only
+    acceptable reasons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The project itself IS the product
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is the first and only sure sign that you need to package your project as
+    an app. I'm not talking about selling things through your project. I'm talking
+    about the project itself. It should be made into an app. May the force be with
+    you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Access to native-only hardware capabilities
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: GPS and camera are reliably available for the two major platforms in their latest
+    editions. iOS even supports accelerometers. However, if you're looking for more
+    than this, you'll need to compile down to an app to get access to these APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Push notifications
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do you like them? I don't know about you, but I get way too many push notifications;
+    any app that gets too pushy either gets uninstalled or its notifications are completely
+    turned off. I'm not alone in this. However, if you simply must have push notifications
+    and can't wait for the web-based implementation, you'll have to compile an app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supporting current customers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OK, this one is a stretch, but if you work in corporate America, you're going
+    to hear it. The idea is that you're an established business and you want to give
+    mobile support to your clients. You or someone above you has read a few whitepapers
+    and/or case studies that show that almost 50 percent of people search in the app
+    stores first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even if that were true (which I'm still not sold on), you're talking to a businessperson.
+    They understand money, expenses, and escalated maintenance. Once you explain to
+    them the cost, complexity, and potential ongoing headaches of building and testing
+    for all the platforms and their OS versions in the wild, it becomes a very appealing
+    alternative to simply put out a marketing push to your current customers that
+    you're now supporting mobile, and all they have to do is go to your site on their
+    mobile device. Marketing folks are always looking for reasons to toot their horns
+    at customers anyway. Marketing might still prefer to have the company icon on
+    the customer's device to reinforce brand loyalty, but this is simply a matter
+    of educating them that it can be done without an app.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You still may not be able to convince all the right people that apps are the
+    wrong way to go when it comes to customer support. If you can't do it on your
+    own, slap them on their heads with a little Jakob Nielson. If they won't listen
+    to you, maybe they'll listen to him. I would defy anyone who says that the Nielsen
+    Norman Group doesn't know what they're saying. See [http://www.nngroup.com/articles/mobile-sites-vs-apps-strategy-shift/](http://www.nngroup.com/articles/mobile-sites-vs-apps-strategy-shift/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Summary: Mobile apps currently have better usability than mobile sites, but
+    forthcoming changes will eventually make a mobile site the superior strategy."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'So the $64,000 question becomes: are we making something for right now or for
+    the future? If we''re making it for right now, what are the criteria that should
+    mark the retirement of the native strategy? Or do we intend to stay locked on
+    it forever? Don''t go into that war without an exit strategy.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: PhoneGap versus Apache Cordova
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Well, after all that, if you're still thinking of making a native app, I salute
+    you. I admire your spirit and wish you the best of luck.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you Google "jquery mobile phonegap performance", you're going to find a *lot*
+    of negative articles. The problems seem legion. Sluggish performance, screen blinking
+    between transitions, and so on. Not that Sencha Touch or any other mobile web
+    frameworks seem to be doing any better. Just be aware that it may not perform
+    as well as it would over the web.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PhoneGap started out as a project to take regular HTML, JS, and CSS and package
+    them nicely into a distributable app for any app store. Eventually, it became
+    part of the Apache Software Foundation. At its core, PhoneGap *is* Apache Cordova.
+    In fact, if you go the documentation site for Cordova, it's actually still hosted
+    at [http://docs.phonegap.com/](http://docs.phonegap.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition to simply compiling down your app, you also get access to the following
+    device-level APIs.:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Accelerometer: Tap into the device''s motion sensor.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Camera: Capture a photo using the device''s camera.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Capture: Capture media files using the device''s media capture applications.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Compass: Obtain the direction that the device is pointing to.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Connection: Quickly check the network state and cellular network information.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Contacts: Work with the device''s contacts database.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Device: Gather device-specific information.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Events: Hook into native events through JavaScript.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'File: Hook into native file systems through JavaScript.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Geolocation: Make your application location-aware.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Globalization: Enable representation of objects specific to a locale.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'InAppBrowser: Launch URLs in another in-app browser instance.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Media: Record and play backaudio files.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Notification: Visual, audible, and tactile device notifications.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Splashscreen: Show and hide the applications splash screen.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Storage: Hook into the device''s native storage options.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So far, so good. We get a lot more stuff we can do, and we can do it all in
+    JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we need to actually build our app. You'll need to download PhoneGap or
+    Cordova onto your machine. Don't forget to download the SDKs for every platform
+    you intend to support as well. No, wait, scratch that!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![PhoneGap versus Apache Cordova](img/0069_10_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now there is PhoneGap Build. It's a cloud-based build service for PhoneGap.
+    You don't have to install any SDKs at all. PhoneGap Build just took all the work
+    out of this. If you want it to compile iOS apps, you'll still to provide them
+    with your developer certificates, but aside from that little hiccup, you're good
+    to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started, all you have to do is log in with either your Adobe ID or your
+    GitHub ID. Then either paste in the URL to the GitHub repo you want to build,
+    or upload a zip file less than 9.5 MB in size:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![PhoneGap versus Apache Cordova](img/0069_10_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, you fill out a little information about the app itself :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![PhoneGap versus Apache Cordova](img/0069_10_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Click on the **Ready to build** button. Now just sit back and watch the pretty
+    progress spinners do their thing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![PhoneGap versus Apache Cordova](img/0069_10_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Look, they even give you a lovely little QR code to scan for downloading the
+    app. The only reason it's giving a red symbol on iOS is because, at this point,
+    I have not given them my developer certificates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I don't know about you, but I'm exhausted. I really don't think there's any
+    more that can be said about jQuery Mobile or its supporting technologies at this
+    time. You've got examples on how to build things for a whole host of industries,
+    and ways to deploy it through either the Web or PhoneGap Build. At this point,
+    you should be quoting Bob the Builder. "Can we build it? Yes, we can!"
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope this book has assisted and/or inspired you to go make something great.
+    I hope you change the world and get filthy stinking rich doing it. I'd love to
+    hear your success stories as you move forward. To let me know how you're doing,
+    or to let me know of any errata, or even if you just have some questions, please
+    don't hesitate to email me directly at `<[shane@roughlybrilliant.com](mailto:shane@roughlybrilliant.com)>`.
+    Now, go be brilliant!
+  prefs: []
+  type: TYPE_NORMAL

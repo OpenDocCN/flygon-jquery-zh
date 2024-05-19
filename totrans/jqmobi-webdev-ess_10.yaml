@@ -1,0 +1,979 @@
+- en: Chapter 10. Moving further with the Notekeeper Mobile Application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we're going to begin assembling everything we've learned about
+    lists, forms, pages, and content formatting thus far into a usable "mobile application";
+    the Notekeeper application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accept user input using forms
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Store user inputted data locally using the HTML5 localStorage functionality
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Demonstrate how to add, edit, and remove items from the page dynamically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a mobile application?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before writing our first mobile application, perhaps we should define what one
+    is. Wikipedia says that a mobile application is *Software that is developed for
+    small low-power handheld devices such as personal digital assistants, enterprise
+    digital assistants or mobile phones*. While it's true that jQuery Mobile apps
+    are written in HTML, CSS, and JavaScript, that doesn't prevent them from being
+    sophisticated pieces of software. They're certainly developed with mobile devices
+    in mind.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some critics might note that it can't really be software unless it's "installed".
+    As you'll see later in the book, jQuery Mobile applications can actually be installed
+    on a wide array of devices (including iOS, Android, and Windows Mobile) when coupled
+    with the open source library PhoneGap. This means that you'll be able to have
+    your cake and eat it too. You might be asking yourself if code written using jQuery
+    Mobile can be considered software, and as you'll find out in this chapter, the
+    answer is yes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing your first mobile application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The goal of any piece of software is to meet a need. Gmail met a need by freeing
+    users from a single computer and letting them check their e-mail from any web
+    browser. Photoshop met a need by allowing users to manipulate photos in ways no
+    one had ever done. Our Notekeeper application meets a need by allowing us to record
+    simple notes for later reference. I know, sort of a letdown by comparison but
+    we've got to start somewhere right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When building software, it''s a good idea to spend time up front writing out
+    a specification for your project: what it will do, what it will look like, and
+    what it should have. Remember that if you don''t know what you''re building, how
+    will you ever know if it''s done?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listing out the requirements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We already know what we want our application to do, take notes. The problem
+    is that there are so many ways that you could build a note-taking app that it''s
+    essential to sketch out just what we want ours to do. Not too much, not too little,
+    but just enough, for now. It''s a point of fact with developers that our applications
+    are never "done", they''re only finished "for now". With Notekeeper, we''ve decided
+    that we want to be able to do the following three things with our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add a note
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Display a list of notes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: View a note/delete a note
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'After deciding what tasks our app needs to accomplish, we need to decide how
+    it will accomplish them. The easiest approach is to simply write those things
+    out in a list. By breaking each part down into smaller pieces we make it easier
+    to understand, and to see just what we need to make it work. It''s just like getting
+    directions to your favourite restaurant; a left turn here, a roundabout there,
+    and you''re sitting down at the table before you know it. Let''s look at each
+    thing we want Notekeeper to do, with the pieces and parts underneath:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a note (form)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A form container. All user input widgets are wrapped up into a form.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A title, the name of the note. This will also be used to display existing notes.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The note itself. The content or body of the note.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A save button. This triggers the actual saving.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The ability to display a list of notes (listview)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A row item containing the title of the note. This row should be a link to a
+    page containing the body of the note.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A section header row might be nice.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The ability to view a note, and delete a note (label, paragraph, button)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A label for the title of the note
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A paragraph containing the content of the note
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A button labeled **Delete**
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A back button
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building your wireframes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now that we've listed out the functionality for our app, how about we sketch
+    each piece so that we get an idea of what we want it to look like? Don't worry
+    if you failed art, or if you can't draw a stick figure. Use a ruler if you have
+    to, or consider using Microsoft Excel, or PowerPoint if you have those. You just
+    need to be able to draw some boxes and some text labels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing the add note wireframe
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now, what about the add note part? We decided that it needs a title, a box
+    for the note, and a submit button. The form is an invisible container so we don''t
+    need to draw that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Designing the add note wireframe](img/Image4946.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Display notes wireframe
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The listview is an integral part of mobile development. It''s the simplest
+    way to group similar items together, plus it offers lots of extra functionality
+    such as scrolling, and built in images for links. We''ll be using a listview to
+    display our list of notes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Display notes wireframe](img/Image4953.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: View note/delete button wireframe
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Finally, once we''ve added a note, we need to be able delete the evidence,
+    I mean clear out old notes to make way for new ones. Note that we''ve also sketched
+    out a back button. Once you start seeing things laid out, you''ll find that you''ve
+    forgotten something really important (like being able to return to the previous
+    page):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![View note/delete button wireframe](img/Image4962.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Writing the HTML
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that our wireframes are done, and we're happy with them it's time to turn
+    pencil drawings into 1's and 0's. Since our app is relatively simple, none of
+    the HTML should be difficult. You're more than halfway through the book after
+    all and you should be doing these things in your sleep.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The HTML that you come up with should look remarkably like what''s shown in
+    the following code snippet. Let''s examine it together:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our Notekeeper application will make use of a single HTML file (`notekeeper.html`)
+    and a single JavaScript file (`application.js`). Up until this point none of the
+    code you''ve written has really needed JavaScript, but once you begin writing
+    more complex applications, JavaScript will be a necessity. Preview the HTML from
+    `Listing 10-1` in your web browser and you should see something similar to the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Writing the HTML](img/Image4970.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Notice that we're displaying the **Add Note** form on the same page as the view
+    notes. With mobile application development, it's a good idea to condense things
+    where possible. Don't make this a hard and fast rule but since there's so little
+    to our app, it's an acceptable decision to place both parts together as long as
+    they're clearly labeled. You can see that this page meets all the requirements
+    we set for adding a note, and for displaying our existing notes. It has a title
+    input field, a note input field, a save button, and the entire thing is wrapped
+    inside a form container. It also has a listview that will be used to display our
+    notes once we start adding them. What isn't seen here is a delete button, but
+    that will show up once we add our first note and view the details page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding functionality with JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As this book has mentioned, you don't need to write any JavaScript to get your
+    money's worth from jQuery Mobile. But as you begin to progress in your experience
+    with jQuery Mobile you'll begin to see how much additional value JavaScript can
+    add to your projects. Before we look at the code, lets talk about how it will
+    be structured. If you've done any web design or development at all, you've probably
+    seen JavaScript. It has been around since 1995 after all. The problem is that
+    there's been many different ways to do the same thing in JavaScript and not all
+    of them good.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The JavaScript code in this application will use what''s called a design pattern.
+    It''s just a fancy term that specifies a certain structure to the code. There
+    are three main reasons for using an existing design pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It helps our code stay organized and tidy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It prevents the variables and functions we write from being accidentally overwritten
+    or altered by any other code we might add. A jQuery plugin perhaps, or code that's
+    being loaded in from a third party website.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It will help the future developers to acclimiatize themselves to your code much
+    more rapidly. You are thinking about future developers as you work on the next
+    Facebook right?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at a very simple implementation of this design pattern before
+    jumping into the full code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you''re familiar with JavaScript or jQuery, you''ll probably see some elements
+    that you''re familiar with. For those readers who aren''t familiar with jQuery,
+    or JavaScript we''ll review this example line by line. `KittyDressUp.js` starts
+    off with jQuery''s best friend. Any code contained within the curly braces waits
+    to execute until the document, or the HTML page, is completely loaded. This means
+    that you, the developer, can be assured that everything which needs to be on the
+    page is there before your code runs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In simple terms, the next line creates a variable named `kittyDressUp` and
+    assigns it a value of an empty object. However, in our code this new object will
+    contain our entire application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The following declaration is the core of the Kitty Dress Up application. It
+    creates a function that accepts a single argument, and then immediately calls
+    itself, passing in the empty object we created in the previous line. This concept
+    is known as a self-executing function and is what keeps the external code from
+    interfering with our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The next two lines set a few variables that can only be accessed from within
+    the context, or scope, of our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, the last few lines set up two functions that are available for use
+    within the application. You can see that each function is assigned a name that
+    is within the scope of the larger application. The `app` variable is where the
+    function lives, and the word after the . is the function name. Notice that within
+    the `init` function we're calling another function inside the same application,
+    `app.colors()`. We could also reference any of the variables that we defined at
+    the top as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Remember that `app` was the name of the parameter passed into the self-executing
+    function, and that its value is an empty object. Taken as a whole these few lines
+    create an object named `kittyDressUp` that contains two variables (`appName` and
+    `version)`, and two functions (`init` and `colors)`. This example, as well as
+    the code for Notekeeper, are simple examples, but they illustrate how you can
+    go about wrapping up code for various pieces of a larger app into discrete packages.
+    In fact, after `kittyDressUp.js` runs you could even pass the `kittyDressUp` into
+    yet another set of code for use there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Phew...everyone take five, you've earned it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing Notekeeper data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we''re back from our five minute break it''s time to roll up our sleeves
+    and get to work adding functionality to our app. While we''ve talked about how
+    we want Notekeeper to behave, we haven''t discussed the core issue of where to
+    store the note data. There are a few possibilities, all of which have pros and
+    cons. Let''s list them out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Database (MySQL, SQL Server, PostgreSQL):** While a database would be the
+    ideal solution, it''s a little complex for our app, it requires internet connectivity,
+    and you''d need a server-side component (ColdFusion, PHP, .NET) acting as a middle
+    man to save notes to the database.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Text file:** Text files are great because they take up very little room.
+    The problem is that as a web app, Notekeeper can''t save files to the user''s
+    device.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**localStorage:** localStorage is relatively new, but it''s quickly becoming
+    a good option. It stores information on the user''s machine in key/value pairs.
+    It''s got a size limit, but it''s pretty large for plain text, most modern browsers
+    support it, and it can be used in offline mode.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using localStorage
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For the purposes of this chapter, we''ll be selecting `localStorage` as our
+    method of choice. Let''s take a quick look at how it behaves so that you''ll be
+    familiar with it when you see it. As mentioned earlier, `localStorage` works on
+    the premise of storing data in key/value pairs. Saving a value to `localStorage`
+    works in one of two ways and is easy, no matter which one you choose:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: or
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which version you choose is personal preference, but because it's slightly less
+    typing we'll be using the second method, square brackets. One issue we'll run
+    into is that `localStorage` can't store complex data like arrays, or objects.
+    It only stores strings. That's a problem because we're going to be storing all
+    of our data inside one variable so that we always know where it lives. Never fear,
+    we can pull a fast one on `localStorage` and convert our complex object into a
+    string representation of itself using a built in function called `stringify()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code snippet shows how it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Retrieving a value is just as simple as setting it, and it also offers two options.
+    You'll usually want to define a variable to receive the contents of the `localStorage`
+    variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: or
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you''re retrieving a complex value there''s an additional step that must
+    be performed before you can use the contents of the variable. As we just mentioned,
+    to store complex values you must first use the `stringify()` function, which has
+    a counterpart function called `parse()`. The `parse()` function takes the string
+    containing that complex object and turns it back into pure JavaScript. It''s used
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, if ever you wanted to delete the key completely then you can accomplish
+    it in a single line of code, again with two flavors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: or
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It''s worth noting that if you try to retrieve a key that doesn''t exist within
+    localStorage, JavaScript won''t throw an error. It''ll just return "undefined"
+    which is JavaScript''s way of saying "sorry, but nothing''s there". The following
+    code snippet is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Effective use of boilerplates
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'One last thing before we start building our JavaScript file. In our application,
+    we''re only going to have one JavaScript file, and it''s going to contain the
+    entire codebase. This is fine for smaller apps like ours, but it''s a bad idea
+    for larger apps. It''s better to break up your project into distinct pieces, then
+    put each of those into their own files. This makes it easier for teams of developers
+    to work together (for example, Noelle works on the login process, while Mason
+    builds out the list of vendors). It also makes each file smaller and easier to
+    understand because it only addresses one part of the whole. When you want all
+    of the pieces of your app to have a similar structure and design, it''s a good
+    idea to start each section with a boilerplate. We''ll be using a boilerplate for
+    our app''s only file (which you can see in the following code snippet, `Listing
+    10-3)`. You might notice it looks very similar to the `kittyDressUp` example,
+    and you''d be right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building the Add Note feature
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At last, we can get started building! Since it's difficult to display a list
+    of notes that don't exist, much less delete one, we'll start writing the `Add
+    Note` functionality first. For a user to be able to add a note, they have to enter
+    a title, the contents of a note, then hit the submit button. So let's start there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding bindings
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We''re going to create a new, empty, function block under the `app.init()`
+    function definition. It should look something similar to the following line of
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The bindings function will contain any piece of code that needs to fire when
+    a user does something in our app, like clicking the submit button or the delete
+    button. We group that code together for the sake of organization. Within the `bindings()`
+    function we''re going to add the following lines. This will fire when a user clicks
+    the submit button on the `Add Note` form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: jQuery's `val()` function is a shorthand method used to get the current value
+    of any form input field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A few notes about this new addition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When using jQuery, there will always be more than one way to accomplish something,
+    and in most cases you simply pick the one that you like the best (they usually
+    offer identical performance). You might be more familiar with `$('#btnAddNote').click()`
+    and that's just fine as well.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Notice that the `click` function accepts a single parameter: `e` which is the
+    event object (in this case a click event). We call `e.preventDefault()` to stop
+    the standard click event from happening on this element, but still allow the remaining
+    code to continue running. You might have seen other developers use `return false`,
+    but jQuery best practices recommend using `e.preventDefault()` instead.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Within the click binding, we're calling the `addNote` function, and passing
+    into it the title typed in by the user, and the note. The whitespace is unimportant,
+    serving merely to make it easier to see what we're doing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Even though we''ve added the binding to our code, if you run the app right
+    now, nothing will happen when you click the **Add Note** button. The reason is
+    that nothing has actually called the `bindings()` function yet. Add the following
+    line inside the `init()` function and you''ll be ready to go:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Collecting and storing the data
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Next we add another new, empty, function block under `app.bindings:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, because we''re storing all of our notes into one key within `localStorage`,
+    we first need to check to see if any notes already exist. Retrieve the Notekeeper
+    key from `localStorage`, save it to a variable, then compare it. If the value
+    of the key we ask for is an empty string, or `undefined` we''ll need to create
+    an empty object. If there is a value, then we take that and use the `parse()`
+    function to turn it into JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Notice that we''re expecting two variables to be passed into the `addNote()`
+    function, `title` and `note`. Next we replace any spaces in the title with dashes,
+    this makes it easier for some browsers to understand the string of text. Then
+    we place the key/value pair into our newly minted notes object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The JavaScript `replace` method makes string manipulation quite simple. It acts
+    on a string, taking a search term and a replacement term. The search term can
+    be a simple string, or a complex regular expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is to take our `notesObj` variable, `stringify()` it and place
+    it into `localStorage`. We then clear the values from the two input fields to
+    make it easier for the user to input another note. As a rule in building software
+    it''s a nice touch to return the interface to its original state after an action
+    such as adding or removing content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: All of these variable definitions should be familiar to you with perhaps one
+    exception that we should point out. Many jQuery developers like to use conventional
+    naming for variables which contain jQuery objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, they prepend the variable name with a `$` sign just like with
+    jQuery. This lets them, or future developers know, what''s contained within the
+    variable. Let''s go ahead and add those definitions to the top of our app. Just
+    after the line which reads `// variable definitions go here`, add the following
+    lines. They refer to the title input field and the note textarea field respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: As a final step to this function we fire off a call to `app.displayNotes()`
+    to update the list of notes. Since that function doesn't exist yet, let's create
+    it next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the Display Notes feature
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You probably tested out the `Add Note` feature while writing the previous section.
+    This means that you''ll have at least one note saved in `localStorage` for use
+    in testing the `Display Notes` feature. By now you''re familiar with our first
+    steps for any new section. Go ahead and add your empty `displayNotes()` function
+    to hold our code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next we need to retrieve all of our notes from `localStorage:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You might start to see a pattern with many of our functions, almost all of
+    them begin with us retrieving notes from `localStorage`. While there are only
+    two lines of code needed to perform this task, there''s no need for us to repeat
+    those two lines each time we need to get the notes. So we''re going to write a
+    quick helper function containing those two lines. It looks similar to the following
+    code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With our new helper function in place, we can use it in the `displayNotes()`
+    function as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now that we have the `notesObj` variable containing our packet of notes, we
+    need to loop over that packet and output the contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: It might seem odd for the line inside the `for` loop to have multiple replace
+    statements, but the nature of JavaScript allows for methods to be chained. Chaining
+    refers to a method which returns the entire results of it's action. Adding an
+    additional method call simply repeats the process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There might be some new concepts in this code block so let's take a closer look.
+    The variable named `html` is nothing special, but how we're using it might be.
+    As we loop over the existing notes, we're storing new information into the `html`
+    variable along with whatever else is inside it. We accomplish this by using the
+    `+=` operator which allows us to assign and append at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second thing you might notice is the `li` on the right side of the assignment.
+    Where does that come from? That''s a template for a single list item which has
+    not yet been created. Let''s do that right before we talk about it. At the top
+    of your `app.js` file, just after the line which reads `// variable definitions
+    go here`, add the following two lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should already be familiar with the convention of adding a `$` before a
+    variable to indicate a jQuery object. That's what we're doing with the `$ul` variable.
+    The second variable, the `li` is slightly different. This contains the HTML for
+    a single list item that will display a notes title. It's best practice to avoid
+    mixing HTML or CSS in with your JavaScript wherever possible. We're declaring
+    this as a template now in case we decide to use it in multiple places later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other part which might be of interest is the way we're using the `li` variable.
+    When calling the string replace function, we're looking for all occurrences of
+    the word LINK (upper case intended) and replacing it with the title of the note.
+    Because JavaScript is a case-sensitive language it's a safe assumption that we
+    won't run into a natural occurrence of that work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dynamically adding notes to our listview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There's one final thing we need to put in place before our notes show up on
+    the page. You might have noticed that the only place which calls the `displayNotes()`
+    function appears within the `addNote()` function. This is a good place for it,
+    but it can't be the only place. We need something that runs when the page first
+    loads. The prime place for this would be in the `init()` function, and that's
+    where we'll place it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s one problem though, we can''t just load our notes and run, what happens
+    if there are no notes? We need a nice message to display to the user so that they
+    don''t think something''s wrong. Let''s create a new function called `app.checkForStorage()`
+    which handles all of this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By now, all of this should be familiar to you: checking `localStorage` for
+    notes, and calling the `displayNotes()` function if it finds them. The second
+    part has some new items though. When we set the html for the `$ul` jQuery object,
+    we''re calling two new variables. One for the listview header, and another if
+    we don''t have any notes. Let''s add those two variable definitions now. Under
+    `// variable definitions go here`, add the following two lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last part of the line normally might go unnoticed, but we won't let it.
+    It's really crucial. jQuery Mobile offers developers options. The option of having
+    static HTML code, that's already on the page when it loads; jQuery Mobile also
+    provides an option for adding HTML code on the fly. That really gives developers
+    lots of flexibility, but it presents a unique challenge as well. By design jQuery
+    Mobile converts HTML into stylish looking buttons before the page loads. This
+    means that any HTML added after that will be presented to the user without any
+    style.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, jQuery Mobile also offers a way to get around this by building in the
+    ability to refresh each and every element that it converts. Most of them have
+    a built-in function corresponding to the name of the element; in our case it's
+    the `listview()` function. Actually this method offers the ability to add a completely
+    new listview to the page. In our situation we only care about refreshing the one
+    we have, so we simply add the `refresh` keyword and jQuery Mobile converts your
+    plain text listview. Try leaving that last part off and see just how much work
+    jQuery Mobile saves you. Maybe you should add the jQuery Mobile team to your Christmas
+    card list?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we have to actually call our newest function. Within the `init()` function
+    add the following line. Then reload the page and watch your notes load up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Viewing a note
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point we should be able to create a new note, and have that note be
+    immediately displayed in our listview. In fact, the rows in the listview are already
+    links, they just don't work, let's change that right now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the Live function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Add the following lines to the `bindings()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: This new binding has a few new concepts so let's unpack them. First up, we're
+    not using the `bind` function, instead we use jQuery's `live` function. The difference
+    is that `bind` only works on existing page elements, whereas `live` is proactive.
+    It works on existing elements as well as ones which get created after the binding
+    is applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second and third lines of the binding might look a little confusing but
+    they only do one thing. They retrieve the URL from the href attribute of the link
+    that was clicked. The `li` template we defined earlier in the chapter contained
+    the following URL for each list item:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After the `displayNote()` function runs, the URL looks like this (run your
+    mouse over each list item to see the link displayed at the bottom of your browser
+    window):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally we tell our code to run a new function appropriately named `app.loadNote()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dynamically creating a new page
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you haven''t already created the new empty function block for our new `loadNote()`
+    function, go ahead and do it now. Remember that we''re passing in the title of
+    the note we want to view, so make sure to add that as an argument in the `loadNote()`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then place the following two lines at the top of the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first line retrieves our note object, while the second line pulls the specific
+    note that the user has requested. The next variable definition breaks the rule
+    we mentioned earlier in the chapter about mixing HTML and JavaScript, but every
+    rule has exceptions. We're defining it here as opposed to the header of our JS
+    file since this is the only place it is needed. This still serves the purpose
+    of keeping the document organized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `page` variable now contains all of the HTML needed to display a "note
+    details" page to the user. Do you recall that our app has only one HTML file?
+    We''re actually creating an entire page from scratch using the previous HTML code.
+    There are also some details in it worth pointing out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default jQuery Mobile does not offer a back button for pages. You can, however,
+    enable one on a page by page basis using the `data-add-back-btn="true"` attribute
+    on any `div` tag which also has a `data-role="page"` attribute.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `data-url` attribute is an identifier used by jQuery Mobile so that it can
+    keep track of multiple pages which are generated.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Now that we have a whole page contained within a variable, what can we do with
+    it? The first thing we can do is to turn it into a jQuery object. By wrapping
+    any distinct chunk of HTML with a `$()` you turn it into a Grade-A jQuery object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we can take the HTML of that newly created page and replace parts of it
+    with the values from our selected note.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since Version 1.4, jQuery has offered the option of a **callback** within certain
+    functions. These include `.html(), .text(), .css()` and a few others. This function
+    expects two arguments, of which the second contains the full HTML currently contained
+    within the matching element. This means that we can make tweaks to the HTML contained
+    inside our `newPage` variable without having to completely change it. Wonderful
+    isn't it?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next we''re appending the entire `newPage` variable to the end of the current
+    page, referenced here by the `$.mobile.pageContainer` constant. Finally, because
+    we cancelled the default click action in our binding, we have to tell the link
+    to perform an action which is to forward the user to this newly created page.
+    jQuery Mobile offers a built-in way to do this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: And now for the grand reveal. If you load up `notekeeper.html` in your browser
+    you should be able to add, display, and finally view notes, all within the confines
+    of a single browser window. Isn't jQuery Mobile great?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Dynamically creating a new page](img/Image5068.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Deleting a note
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Looking back to the requirements for our app, we''re doing pretty well. We''ve
+    written HTML code that sets up the document structure, allowed us to add a note,
+    display notes, and view a note. All that''s left is deleting a note and it begins
+    with a last binding set up in our `bindings()` function. Let''s add it right now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: There's only one item that might be new to you in this binding, the use of jQuery's
+    `.data()` function. HTML 5 allows you to store arbitrary data directly on any
+    HTML element by using an attribute prepended with `data-` and this ability is
+    at the core of jQuery Mobile's functionality. Anywhere you see `data-role="something"`,
+    you're seeing HTML 5 data in action. Further jQuery allows you to retrieve any
+    `data-` value by using the `.data()` function and passing in the key of the item
+    you want to view. In the case above we've stored the title of the note into a
+    `data-href` attribute directly on the delete button within the view page. Because
+    the binding we're adding is a click handler assigned to the delete button we can
+    retrieve the title of the note by calling `$(this).data('href')`. Neat-o!
+  prefs: []
+  type: TYPE_NORMAL
+- en: This will be the last function that we add in this chapter. Are you sad? It's
+    a poignant moment for certain, but we can look back on this with fondness after
+    you're a successful jQuery Mobile developer. Once again we start with an empty
+    function which accepts a single argument, the title of the note we're deleting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Follow the function definition up with our helper function for retrieving notes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we delete the note. You''ve already seen this in action when we reviewed
+    `localStorage` so it should be familiar to you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: Deleting the note is followed in quick succession by writing the remaining notes
+    back to `localStorage`. The final two lines in the `deleteNote()` function take
+    us back to the main page of the app, the list of notes. They also trigger the
+    original `checkForStorage()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last line may seem odd to you, but keep in mind that we don't know in advance
+    if there are still any notes left. Running through the storage check allows us
+    to display the placeholder text, in case there are no notes. It's a good habit
+    to get into, as it helps our app become less prone to errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we built a living, breathing mobile application with jQuery
+    Mobile. Stop and give yourself a pat on the back. We walked through the process
+    of listing the requirements for our app, building the wireframes, and writing
+    the HTML. We learned about HTML 5's `localStorage`, using templates for text replacement,
+    and some of the cooler features of jQuery Mobile including dynamically adding
+    and refreshing elements on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, you'll learn how to set global configuration options for
+    jQuery Mobile, how to use other APIs within jQuery Mobile to work with forms and
+    content blocks.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,940 @@
+- en: Chapter 11. Form Plug-In
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You better find out
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Before you fill in the blanks
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"Find Out"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The **Form** plug-in is a terrific example of a script that makes a difficult,
+    complex task dead simple. It assists us in AJAX submission of forms (even if the
+    forms contain file upload fields), as well as inspection and manipulation of the
+    contents of form fields.
+  prefs: []
+  type: TYPE_NORMAL
+- en: AJAX Form Submission
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods assist in submitting a form's contents to the server using AJAX
+    calls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .ajaxSubmit()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Sends a form''s contents to the server without a page refresh.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (First Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`success`: A callback to execute when the server successfully responds.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (Second Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`options`: A map of options configuring the submission. Can contain the following
+    items:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`url` (optional): The URL to which the form will be submitted. The default
+    value is the form''s `action` attribute value, or the current page''s URL if none
+    is found.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`type` (optional): The method to use when submitting the form (`GET` or `POST`).
+    The default value is the form''s `method` attribute value, or `GET` if none is
+    found.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`beforeSubmit` (optional): A callback to execute before the request is sent.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`dataType` (optional): How the response data will be interpreted. Can be `''xml'',
+    ''script''`, or `''json''`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`target` (optional): The element into which the response HTML will be placed.
+    Can be a selector string, jQuery object, or DOM element reference. Only valid
+    if `dataType` is omitted.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`success` (optional): A callback to execute when the server successfully responds.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`semantic` (optional): Whether to force strict HTML ordering of fields. The
+    default value is `false`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resetForm` (optional): A Boolean indicating whether to reset the form values
+    to their defaults after a successful submission. The default value is `false`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`clearForm` (optional): A Boolean indicating whether to clear the form values
+    after a successful submission. The default value is `false`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.ajaxSubmit` method issues an AJAX request using the provided `url` and
+    `type` information, along with the data currently present in the form. The form
+    contents are encoded using the `.formToArray` method, and intricacies such as
+    file uploading are handled behind the scenes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If a callback is provided using the `beforeSubmit` option, the callback will
+    be fired before the request is sent. This gives us an opportunity to perform last-minute
+    validation or cleanup. If a validation routine detects errors that the user must
+    correct, the routine can return `false` to prevent the form from being submitted.
+    The callback is passed the form data as returned by `.formToArray()`, the jQuery
+    object that references the form, and the options object that was provided to `.ajaxSubmit()`.
+    For an example of this callback in action, see the example in the discussion of
+    `.ajaxForm()` later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a `dataType` is provided, the response data is interpreted accordingly.
+    The processing performed is the same as with the `$.ajax` function for the supported
+    data types. Any `script` responses are interpreted as JavaScript and executed
+    in the global context, while `json` responses are parsed as a JavaScript object
+    or array. Calls that specify an `xml` data type do not cause any parsing to occur
+    when the response is received.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If no `dataType` is provided, then we can instead use the `target` option. The
+    DOM element referred to by the target will be filled with the response to the
+    AJAX request, interpreted as plain HTML. The `dataType` and `target` options are
+    mutually exclusive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After any relevant processing has been performed due to the `dataType` or `target`
+    options, the `success` callback is executed. This function is given the response
+    data to act on. For information on ways to interpret and manipulate the response
+    data, see the `$.ajax` function discussion in [Chapter 7](ch07.html "Chapter 7. AJAX
+    Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `semantic` flag forces strict semantic ordering at the expense of execution
+    speed. For more information, see the `.formToArray()` discussion later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `resetForm` or `clearForm` is set to `true`, the corresponding action will
+    be taken before the `success` callback (if provided) is executed. For more information
+    on these actions, see the `.clearForm` and `.resetForm` method discussions later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the form that is being submitted contains file upload fields, the file data
+    will be properly uploaded using the `multipart/form-data` MIME type. No further
+    action needs to be taken.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the `.ajaxSubmit` method executes immediately. Since it is common
+    to issue the AJAX request when the submit button is clicked, it is typically more
+    convenient to use the `.ajaxForm` method instead. However, the direct action of
+    `.ajaxSubmit()` may be the easiest way to achieve interaction between this plug-in
+    and others, such as the popular **Validation** plug-in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .ajaxForm()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Prepares a form for automatic AJAX submission.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`options`: A map of options configuring the submission. Can contain the following
+    items (which are passed along intact to `.ajaxSubmit())`:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`url` (optional): The URL to which the form will be submitted. The default
+    value is the form''s `action` attribute value, or the current page''s URL if none
+    is found.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`type` (optional): The method to use when submitting the form (`GET` or `POST`).
+    The default value is the form''s `method` attribute value, or `GET` if none is
+    found.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`beforeSubmit` (optional): A callback to execute before the request is sent.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`dataType` (optional): How the response data will be interpreted. Can be `''xml'',
+    ''script''`, or `''json''`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`target` (optional): The element into which the response HTML will be placed.
+    Can be a selector string, jQuery object, or DOM element reference. Only valid
+    if `dataType` is omitted.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`success` (optional): A callback to execute when the server successfully responds.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`semantic` (optional): Whether to force strict HTML ordering of fields. The
+    default value is `false`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`resetForm` (optional): A Boolean indicating whether to reset the form values
+    to their defaults after a successful submission. The default value is `false`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`clearForm` (optional): A Boolean indicating whether to clear the form values
+    after a successful submission. The default value is `false`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.ajaxForm` method prepares a form for later submission by AJAX. When the
+    form is submitted, the AJAX request will use the provided `url` and `type` information,
+    along with the data currently present in the form. The form contents are encoded
+    using the `.formToArray` method, and intricacies such as file uploading are handled
+    behind the scenes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike the `.ajaxSubmit` method, the `.ajaxForm` method does not cause immediate
+    action. Instead, it binds handlers to the `submit` event of the form and the `click`
+    events of form buttons, which in turn cause the form contents to be sent as an
+    AJAX request. This removes some of the work in setting up an AJAX form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, the `.ajaxForm` method is able to simulate other aspects of a standard
+    form submission that the `.ajaxSubmit` method cannot. The name and value of the
+    submit button that was clicked are included with the request when `.ajaxForm()`
+    does the job. Also, when a form contains an `<input>` field of type `image, .ajaxForm()`
+    can capture the mouse coordinates and send them along with the request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For best results, the **Dimensions** plug-in should also be present when using
+    image inputs. The Form plug-in will auto-detect the presence of Dimensions and
+    use it if possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.ajaxForm` method can be used with forms containing any standard field
+    type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To prepare the form for submission, we only need to call `.ajaxForm()` once,
+    when the DOM is ready:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The user can then fill in the form fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussion.ajaxForm()about](img/3810_11_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When the **Send** button is later clicked, the server receives all of the form
+    information without a browser refresh. For testing purposes, we can use PHP''s
+    `print_r` function to display the posted form contents:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If a callback is provided using the `beforeSubmit` option, the callback will
+    be fired before the request is sent. The callback is passed the form data as returned
+    by `.formToArray()`, the jQuery object that references the form, and the options
+    object that was provided to `.ajaxForm()`. This callback is primarily useful for
+    performing form validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: If a validation routine detects errors that the user must correct, the routine
+    can return `false` to prevent the form from being submitted. In our example here,
+    a value must be entered in the **City** field, or an alert will be shown and no
+    submission will occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a `dataType` is provided, the response data is interpreted accordingly.
+    The processing performed is the same as with the `$.ajax` function, for the supported
+    data types. Any `script` responses are interpreted as JavaScript and executed
+    in the global context, while `json` responses are parsed as a JavaScript object
+    or array. Calls that specify an `xml` data type do not cause any parsing to occur
+    when the response is received.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If no `dataType` is provided, then we can instead use the `target` option. The
+    DOM element referred to by the target will be filled with the response to the
+    AJAX request, interpreted as plain HTML. The `dataType` and `target` options are
+    mutually exclusive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After any relevant processing has been performed due to the `dataType` or `target`
+    options, the `success` callback is executed. This function is given the response
+    data to act on. For information on ways to interpret and manipulate the response
+    data, see the `$.ajax` function discussion in [Chapter 7](ch07.html "Chapter 7. AJAX
+    Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `semantic` flag forces strict semantic ordering at the expense of execution
+    speed. For more information, see the `.formToArray()` discussion later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `resetForm` or `clearForm` is set to `true`, the corresponding action will
+    be taken before the `success` callback (if provided) is executed. For more information
+    on these actions, see the `.clearForm` and `.resetForm` method discussions later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the form being submitted contains file upload fields, the file data will
+    be properly uploaded using the `multipart/form-data` MIME type. No further action
+    needs to be taken.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .ajaxFormUnbind()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Restores a form to its non-AJAX state.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Calling `.ajaxForm()` on a form binds handlers to the `submit` event of the
+    form and to the `click` events of any buttons and image inputs therein. If at
+    a later time the form should no longer submit using AJAX, we can call `.ajaxFormUnbind()`
+    on the same form to remove these handlers without disrupting any other handlers
+    that may have been bound to the form elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving Form Values
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods allow scripts to read and transform the values of fields in web
+    forms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .formToArray()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Collects the values in a form into an array of objects.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`semantic` (optional): Whether to force strict HTML ordering of fields. The
+    default value is `false`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An array of objects, each representing one field in the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.formToArray` method fetches the values of a form, and organizes them into
+    a data structure that is appropriate for passing to the jQuery AJAX functions
+    such as `$.ajax(), $.post()`, and `.load()`. It can handle forms with any standard
+    field type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Given the form, illustrated in the `.ajaxFor()` discussion, the `.formToArray`
+    method will return a JavaScript array of the form values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each object in the array has a `name` and a `value` property. Checkbox elements
+    that are not checked do not get represented in the array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `semantic` argument is set to `true`, then the fields listed in the array
+    will be guaranteed to be ordered as they are in the HTML source. If the form contains
+    no `<input>` elements of type `image`, then this will already be the case. Avoid
+    using this option unless it is needed, as the extra processing involved will slow
+    down the method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .formSerialize()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Collects the values in a form into a serialized string.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`semantic` (optional): Whether to force strict HTML ordering of fields. The
+    default value is `false`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string representation of the form fields, suitable for submission.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.formSerialize` method fetches the values of a form, and converts them
+    into a string that is appropriate for passing as a query string for a `GET` request.
+    It can handle forms with any standard field type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Given the form illustrated in the `.ajaxFor()` discussion, the `.formSerialize`
+    method will return a string representation of the form values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each of the fields shows up as a key-value pair in the string. Checkbox elements
+    that are not checked do not get represented in the string. The string is URL-encoded
+    as necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `semantic` argument is set to `true`, then the fields listed in the string
+    will be guaranteed to be ordered as they are in the HTML source. If the form contains
+    no `<input>` elements of type `image`, then this will already be the case. Avoid
+    using this option unless it is needed, as the extra processing involved will slow
+    down the method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .fieldSerialize()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Collects the values of a set of fields into a serialized string.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`successful` (optional): Whether to prune the included field values to successful
+    ones. The default value is `true`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A string representation of the form fields, suitable for submission.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Like the `.formSerialize` method before it, the `.fieldSerialize` method fetches
+    the values of a form, and converts them into a string that is appropriate for
+    passing as a query string for a `GET` request. However, `.fieldSerialize()` acts
+    on a jQuery object that references individual fields rather than the form as a
+    whole.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It can handle fields of any standard type, such as `<select>` menus:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The user can then select any option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussion.fieldSerialize()about](img/3810_11_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The value is pulled from the currently selected option, and the `.fieldSerialize`
+    method will return a string representation of this value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each of the given fields shows up as a key-value pair in the string. Checkbox
+    elements that are not checked do not get represented in the string. The string
+    is URL-encoded as necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, fields are not represented in the string if they are not successful,
+    as defined in the W3C specification for HTML forms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.w3.org/TR/html4/interact/forms.html#h-17.13.2](http://www.w3.org/TR/html4/interact/forms.html#h-17.13.2)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Successful fields are the ones that are submitted to the server during a normal
+    form submission operation. For example, checkboxes that are currently checked
+    are successful; unchecked ones are not. It is rare to want the values of unsuccessful
+    fields, but if this is required, the `successful` parameter of `.fieldSerialize()`
+    can be set to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Given the form illustrated in the `.ajaxFor()` discussion, `.fieldSerializer()`
+    includes only checked radio buttons and checkboxes when `successful` is set to
+    `true`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But when successful is set to `false, fieldSerializer()` includes the unselected
+    options as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: .fieldValue()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Collects the values of a set of fields into an array of strings.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters (First Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`successful` (optional): Whether to prune the included field values to successful
+    ones. The default value is `true`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parameters (Second Version)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`element`: The form input element whose value is to be retrieved.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`successful` (optional): Whether to prune the included field values to successful
+    ones. The default value is `true`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: An array of strings containing the field values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `.fieldValue()` method and the `$.fieldValue()` function both fetch the
+    values of a form, returning them as an array of strings. The `.fieldValue()` method
+    acts on a jQuery object that references individual fields, while the `$.fieldValue()`
+    function performs the same task on the field element passed as its first parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These operations can handle fields of any standard type, such as `<select>`
+    menus:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The user can then select any option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussion.fieldValue()about](img/3810_11_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The value is pulled from the currently selected option, and the `.fieldValue()`
+    method will return an array representation of this value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each of the given fields shows up as a string in the array. Checkbox elements
+    that are not checked do not get represented in the array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, fields are not represented in the array if they are not successful,
+    as defined in the W3C specification for HTML forms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.w3.org/TR/html4/interact/forms.html#h-17.13.2](http://www.w3.org/TR/html4/interact/forms.html#h-17.13.2)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Successful fields are the ones that are submitted to the server during a normal
+    form submission operation. For example, checkboxes that are currently checked
+    are successful; unchecked ones are not. It is rare to want the values of unsuccessful
+    fields, but if this is required, the `successful` parameter of `.fieldValue()`
+    can be set to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Given the form illustrated in the `.ajaxFor()` discussion, `.fieldValue()`
+    includes only checked radio buttons and checkboxes when `successful` is set to
+    to `true`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But when `successful` is set to `false`, .fieldValue() includes the unselected
+    options as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `.fieldValue` method always returns an array; if there are no values to
+    report in the set of elements being acted upon, the result array will be empty.
+    In contrast, the `$.fieldValue` function will return `null` if the field element
+    in question is not successful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Form Manipulation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: These methods allow scripts to easily change the current contents of a form
+    on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .clearForm()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Clears all data in a form.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This method finds all input fields (<input>, `<select>`, and `<textarea>` elements)
+    within the matched elements, and clears their values. This method is usually applied
+    to a `<form>` element, but can work with any container for fields (such as a `<fieldset>)`
+    as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All fields are emptied, regardless of their default values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussion.clearForm()about](img/3810_11_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The fields are cleared according to their type, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text fields and text areas have their values set to an empty string.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Select elements are set to -1, which indicates no selection.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Checkboxes and radio buttons are unchecked.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Other fields, such as submit buttons and image inputs, are not affected.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note that hidden fields are not affected by the clearing operation, even though
+    they have a value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .clearFields()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Clears all data in an input field.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This method clears the values of all matched elements that are input fields
+    (<input>, `<select>`, and `<textarea>` elements).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.clearFields` method differs from `.clearForm()` only in that `.clearForm()`
+    is sent to a jQuery object that has matched the form element, while `.clearFields()`
+    is sent to a jQuery object that matches the individual fields themselves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussion.clearFields()about](img/3810_11_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The fields are cleared according to their type, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text fields and text areas have their values set to an empty string.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Select elements are set to -1, which indicates "no selection."
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Checkboxes and radio buttons are unchecked.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Other fields, such as submit buttons and image inputs, are not affected.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note that hidden fields are not affected by the clearing operation, even though
+    they have a value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: .resetForm()
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '| Resets a form to its initial values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parameters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: None.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The jQuery object, for chaining purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This method returns all fields in a form to their initial values (the ones
+    defined in the HTML source):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Discussion.resetForm()about](img/3810_11_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This action is accomplished using the DOM API's native `.reset` method. For
+    this reason, `.resetForm()` can only be applied to a jQuery object that references
+    `<form>` elements, unlike `.clearForm()`, which can be applied to jQuery objects
+    referencing any containing element as well.
+  prefs: []
+  type: TYPE_NORMAL

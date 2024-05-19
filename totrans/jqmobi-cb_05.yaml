@@ -1,0 +1,1242 @@
+- en: Chapter 5. Forms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Native styling of form controls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Disabling text controls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Grouping radio buttons in a grid
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing a checkbox group
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating dynamic flip switch and slider controls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using options to auto-initialize a select menu
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Validating forms
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Submitting a form using POST
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fetching data using GET
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an accessible form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The standard HTML form element is enhanced by jQuery Mobile framework to make
+    it touch friendly and also to make it work across multiple devices and platforms.
+    The form can contain multiple controls and you can group these controls using
+    a `fieldset` with `data-role='controlgroup'` attribute set on it. By default,
+    the controls are listed vertically. You can use the `data-type='horizontal'` attribute
+    to line them horizontally. Forms support the **HTTP GET**, **POST**, and other
+    actions. Ajax is used wherever possible for form submissions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Native styling of form controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework enhances the form and its controls by default. This
+    recipe shows you the different ways you can set native styling for your form controls
+    and also how to auto-initialize these controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/native-style` sources folder.
+    This code can be launched using the URL `http://localhost:8080/05/native-style/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following script to the `<head>` section to natively
+    style all buttons:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add a form to the page content to set native styles on the controls:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add an event handler for the `mobileinit` event that gets triggered
+    at the start of the app. Here set the `keepNative` property of the page plugin
+    to `'button'`. Now the framework will not enhance the button controls but will
+    style them natively. Now add `button1` to the form and it will be styled natively.
+    To override this native styling, add `button2` and set the attribute `data-role='button'`.
+    Similarly, add `button3` and call the `buttonMarkup()` method on it using the
+    script as shown in the previous code. Both `button2` and `button3` now get enhanced
+    by overriding the default native styling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The framework enhances all other controls by default. Add an input button `input1`
+    and you will see that it is enhanced. To natively style controls, you can use
+    the `data-role='none'` attribute as shown in the previous code for the input control
+    `input2`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For anchor links, the native style is used by default. You can enhance an anchor
+    link by using the `data-role='button'` attribute on it. The form created is shown
+    above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As already mentioned, form controls are enhanced by the framework to make it
+    finger friendly across all platforms. But these controls may seem to be slightly
+    bigger to be used in other small containers (like toolbars). You can use the **mini
+    version** of the controls by setting the `data-mini = 'true'` attribute on the
+    control. The control is now slightly smaller in size but still finger friendly.
+    You can directly set this attribute on a `controlgroup` and all child elements
+    will automatically be minified. Visit jQuery Mobile online docs to see a comparison
+    of various controls at [http://jquerymobile.com/test/docs/forms/forms-all-compare.html](http://jquerymobile.com/test/docs/forms/forms-all-compare.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting multiple controls to use native style
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can specify multiple controls to be styled natively by the **page plugin**
+    . The following line of code natively styles all the buttons, input controls,
+    and select menus in the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The data-role='none' attribute
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Based on the control type, the framework initializes and enhances a control
+    by using its corresponding plugin. When `data-role='none'` is specified, the control
+    is not enhanced by the framework and the control gets styled natively. Any action
+    like setting the theme on the control by using the `data-theme` attribute is ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The enhanced styles provided by jQuery Mobile are tap and touch friendly and
+    ideal for mobile devices. Avoid native styling in your apps as far as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Disabling text controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you the different ways to enable and disable text controls
+    in a form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/text-controls` sources folder.
+    This code can be launched using the URL `http://localhost:8080/05/text-controls/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create the following text controls in a form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to disable all controls:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then handle the `change` event of the search text control to enable all the
+    form controls:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add a search control with input `type=''search''` and add a
+    text with input `type=''text''`.Now, add an empty `textarea` as shown in the previous
+    code. Add a link and disable it by setting the attribute `class=''ui-disabled''`.
+    In the script, add a `pageinit` event handler that gets invoked after the page
+    has been initialized. Here, disable the text input by calling the `prop(''disabled'',
+    true)` method to set its `disabled` property. Next, disable the `textarea` by
+    calling the disable method on the **textinput plugin** with the `textinput(''disable'')`
+    call. Now when the app is loaded, all the controls other than the search input
+    are disabled on the form, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_2.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You cannot use the `disabled` attribute on an anchor link which has been enhanced
+    to a button using `data-role='button'`. This attribute is ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now to enable the controls, bind the `change` event of the search control to
+    an event handler. Here, enable the `textitem` control by calling the `prop(''disabled'',
+    false)` method. Next, call the `textinput(''enable'')` method on the `textarea`
+    to invoke the enable method on its **textinput plugin**. Call the `append()` method
+    on the `textarea` to add text to it. Finally, call the jQuery `removeClass()`
+    method on the anchor link to remove the ''`ui-disabled''` class. Now as soon as
+    you type something in the search field, the form controls are all enabled, as
+    seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_3.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can also enable or disable a control by adding the `disabled` attribute
+    to the control using the `attr()` and `removeAttr()` jQuery methods, as shown
+    in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Auto-initialization of text controls
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The textarea and text input controls (input `type='text'`) are automatically
+    enhanced by the framework. You can also theme a text control by using the `data-theme`
+    attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grouping radio buttons in a grid
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework allows you to create radio buttons grouped either
+    horizontally or vertically. This recipe shows you how to group radio controls
+    in a 3 x 3 grid in a simple seat reservation form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/radiobutton-grid` sources
+    folder. This code can be launched using the URL `http://localhost:8080/05/radiobutton-grid/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, create nine radio controls using a 3 x 3 layout grid. These
+    radio buttons are part of the same control group.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to fix the styles of the edge
+    radio buttons:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add a horizontal radio control group by specifying `data-role='controlgroup'`
+    and `data-type='horizontal'`. Now add the `ui-grid-a` class to this `fieldset`
+    container to create a two column layout grid. For each row, add the legend in
+    the first column by specifying `class='ui-block-a'` to the `div` container and
+    add the radio buttons in the second column with `class='ui-block-b'`. Add nine
+    radio buttons with appropriate labels as shown in the previous code, with each
+    row containing three radio buttons. This will create a grid of 3 x 3 radio button
+    group.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the previous code, you will find that the first and last radio buttons in
+    the grid are styled properly but all other edge radio buttons (with labels l-13,
+    l-21, l-23, and l-31) are not styled properly. They have rectangular edges instead
+    of corners. To fix this, copy the style generated by the framework for the label
+    of the very first radio button (`class=''ui-corner-left''`) to the inner `span`
+    of the labels l-21 and l-31\. Likewise, copy the style generated by the framework
+    for the label of the very last radio button (`class=''ui-corner-right ui-controlgroup-last''`)
+    to the inner `span` of the labels l-13 and l-23\. The grid of radio buttons is
+    now properly styled, as shown in the following screenshot, and you will be able
+    to select only one radio button in the entire grid at a time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_4.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When the framework encounters an `input` control with `type='radio'`, it automatically
+    enhances it to a styled radio button using the **checkboxradio plugin** . You
+    can theme a radio button by using the `data-theme` attribute during initialization.
+    You can turn auto-initialization off and use native styling by using the `data-role='none'`
+    attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Customizing a checkbox group* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing a checkbox group
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The default horizontally grouped checkbox controls do not have an icon and the
+    vertically grouped checkbox controls do not use the active state theme. This recipe
+    shows you how to customize the checkbox and add these styles. It also shows you
+    how to adjust the layout to handle varying screen sizes. You will create a simple
+    **Blog Subscription** form in this recipe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/custom-checkbox` sources
+    folder. This code can be launched using the URL `http://localhost:8080/05/custom-checkbox/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The form is first created with the horizontal and vertical group of checkbox
+    controls. The horizontal checkbox controls are customized by adding icons to them
+    in the `pageshow` event handler via JavaScript. The `change` event of the checkbox
+    controls indicate whether a checkbox `checked` state was changed. The `change`
+    event handler is used to add and toggle the active state of the checkbox.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create a form with a vertical checkbox control group:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next add two horizontal toggle sets or checkbox groups:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to add icons to the horizontal
+    group:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, bind the `change` event to handle the change in the `checked` state of
+    the controls:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, toggle the active state based on the `checked` state of the vertical
+    checkbox:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add three `fieldset` elements with `data-role='controlgroup'`
+    to the **Blog Subscription** form. Add a vertical checkbox group to the first
+    `fieldset` element with checkboxes for **Posts** and **Comments**. The second
+    control group is a horizontal toggleset for selecting blog notifications (**Immediate**
+    and **As a daily digest**). The third group of checkboxes are also horizontal
+    with options to share in **Twitter** and **Facebook**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, the horizontal togglesets do not have icons. You can customize this
+    and add icons to them. Create an event handler for the `pageshow` event and add
+    the required styles to the labels of the third horizontal toggleset. Add an inner
+    span with `class='ui-icon ui-icon-shadow ui-icon-checkbox-off'` to the labels
+    with `id='twitterlbl'` and `id='facebooklbl'`, and also add the `ui-btn-icon-left`
+    class to the labels. This will add an icon on the left-hand side of the two checkboxes,
+    similar to the icons available with the vertical checkbox controls. Compare this
+    with the other horizontal toggelset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, the vertical checkboxes have icons and when selected these icons
+    show the tick mark. The vertical checkboxes do not get the `btn-active` style
+    (unlike the horizontal checkboxes). To add the active button style, create event
+    handlers for the `change` event on the two vertical checkboxes (with `id=''posts''`
+    and `id=''comments''`). For each of these checkboxes, use the `prop(''checked'')`
+    call to find out whether the control is `checked` or not and then add or remove
+    the `ui-btn-active` class to style the vertical checkbox, similar to the horizontal
+    one. The screen is displayed as seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_5.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the previous code, each checkbox group is wrapped in a container with the
+    attribute `data-role=''fieldcontain''`. This attribute will cause the framework
+    to dynamically adjust the layout of the controls and the position of their labels
+    based on the screen size. A small horizontal separator line is also added to show
+    the separation. On a wider screen or when landscape orientation is used, the display
+    is as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/7225_05_6.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Auto-initialization of checkbox controls
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When the framework encounters an `input` control with `type='checkbox'`, it
+    automatically enhances it to a styled checkbox using the **checkboxradio plugin**
+    . You can theme a checkbox by using the `data-theme` attribute during initialization.
+    You can turn auto-initialization off and use native styling by using the `data-role='none'`
+    attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Grouping radio buttons in a grid* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating dynamic flip switch and slider controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to add a **flip switch** and a **slider** control
+    dynamically to a page using JavaScript and also handle their events. Here you
+    will create a simple **Volume Control** form with a volume slider that warns the
+    user when the volume is very high.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/dynamic-slider` sources
+    folder. This code can be launched using the URL `http://localhost:8080/05/dynamic-slider/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following empty form to the page content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to dynamically add a flip
+    switch and a slider:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Handle the `change` event of the flip switch to enable the volume slider control:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Handle the `change` event on the volume slider to style the slider based on
+    its value:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Add an empty form `id=''volumeForm''` to `main.html`. Create an event handler
+    for the `pageinit` event, which gets triggered after the page has been initialized.
+    Here, generate the HTML content for the form. Add a flip toggle switch control
+    (`id=''flipswitch''`) using a select control with `data-role=''slider''`. This
+    flip switch will toggle the volume **On** and **Off**. Add an input control with
+    `type=''range''` to create a slider control (`id=''volume''`). Add the `disabled`
+    attribute to the slider so that the control is disabled at startup. Set this HTML
+    content to the empty form and trigger the `''create''` method to let the framework
+    initialize and enhance the controls. When the page loads you will see the **Volume
+    Control** form with both the dynamically added flip switch and the disabled slider
+    control, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_7.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next add code to handle the `change` event of `#flipswitch` and in the event
+    handler, check whether the flip switch is **on** or **off** using the `slider().val()`
+    call. Based on this value, enable or disable the slider volume control by calling
+    `slider(''enable'')` or `slider(''disable'')`. Now when you toggle the flip switch
+    value, you will see the slider getting enabled or disabled as seen in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_8.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Bind the `change` event of the volume slider control in a `pageshow` event
+    handler and here check for the value of the slider using the `slider().val()`
+    call. If the value is greater than a threshold volume of **10**, set the slider
+    to theme `''e''`, if not already styled so. If the value goes below the threshold
+    of **10**, set the theme back to theme `''b''`. You can use the jQuery `find()`
+    method and replace the `ui-btn-down-b` class with the `ui-btn-down-e` class and
+    vice versa. Now when you set a high volume the slider changes to yellow color,
+    as seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_9.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can theme the flip switch and the slider control using the `data-theme`
+    attribute and the slider track by using the `data-theme-track` attribute during
+    initialization. To manipulate these controls post initialization, you will have
+    to manipulate the underlying native controls and then invoke the `'refresh'` method
+    on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Auto-initialization of sliders
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When the framework encounters an `input` control with `type='range'`, it automatically
+    enhances it to a slider control using the **slider plugin** . Likewise the slider
+    plugin enhances the select control with `data-role='slider'` to a flip switch.
+    You can turn auto-initialization off and use native styling by using the `data-role='none'`
+    attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using options to auto-initialize a select menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The native HTML select menu is enhanced by the jQuery Mobile framework to make
+    it finger friendly for mobile devices. This recipe shows you how to auto-initialize
+    the **Select Menu** by setting its control options using JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/select-menu` sources folder.
+    This code can be launched using the URL `http://localhost:8080/05/select-menu/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following code to create a select menu:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to set the select menu control
+    options:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, create a form and add a select control to the form with the
+    attribute `multiple` to enable multiple selection. Set the attribute `data-native-menu='false'`
+    to indicate that the select menu should be enhanced by the framework. Also set
+    the `data-overlay-theme='e'` attribute to specify that swatch `e` (yellow) should
+    be used for the layer on which the select menu is overlaid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add the first option element with the `data-placeholder` attribute indicating
+    that this option element text must be used as the header for the select menu.
+    Now add the different option elements as shown in the previous code. The `opt1`
+    and `opt2` elements are regular option items. The element `disableopt` is disabled
+    by adding the attribute `disabled` to the option element. Then add two option
+    groups (**Group1** and **GroupA**) by using the `optgroup` element as shown in
+    the previous code. These can contain sub option elements. `The select menu is
+    displayed as shown in the following screenshot:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`![How it works...](img/7225_05_10.jpg)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Add a script to the `pageinit` event handler that gets invoked after the page
+    has initialized at startup. Here, set the initial configuration options of the
+    select menu control by passing the option values to the **selectmenu plugin**.
+    In the code, set the values of the attributes `theme`, `inline`, `corners`, `icon`,
+    `iconpos`, `shadow`, and `iconshadow` of the select menu. Now when you click on
+    select menu, the styled menu options are as shown in the following screenshot:`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`![How it works...](img/7225_05_11.jpg)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`There''s more...`'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`When the framework encounters a `select` element, it automatically enhances
+    it to a select menu by using the **selectmenu plugin** . You can turn auto-initialization
+    off and use native styling by using the `data-role=''none''` attribute.`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Opening and closing a select menu`'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`You can call the `open` and `close` methods on the `selectmenu` plugin and
+    programmatically open or close a select menu, as shown in the following screenshot:`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`# Validating forms'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validating a form before it is submitted to the server saves bandwidth and time
+    as errors can be trapped at the client side itself. A server request can thus
+    be avoided. In a jQuery Mobile application, forms can be validated using JavaScript.
+    This recipe shows you how to validate the entries made in a **Blog Comments Form**
+    .
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/validate-form` sources folder.
+    This code can be launched using the URL `http://localhost:8080/05/validate-form/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following code to create a form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to validate the comments field:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add a form (`id='commentform'`) and add the following three
+    fields to the form, **username** (`type='text'`), **email** (`type='email'`),
+    and **comments** (`textarea`). Add the `required` attribute to all the three fields
+    to specify them as mandatory. Add appropriate hints to the user by using the `placeholder`
+    attribute as shown in the previous code. Add an empty div (`id='errmsg'`) to the
+    form to display any error messages on form validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you load the form and click on the **Submit Comment** button without entering
+    the **Name** field, the following error message is shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following error is shown when you click on the submit button without a
+    valid **Email ID**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Add the `pageinit` event handler as shown in the previous script. This will
+    get invoked after the page has been initialized at start-up. Here define the `submit()`
+    method of the form to validate the length of the comments. If the comment has
+    an invalid length, display the error message for five seconds after which it fades
+    out. Now since there was an error, return `false` from the `submit` method; the
+    form will not be submitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Post successful validation, return `true` from the `submit()` method to successfully
+    submit the form to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this recipe, the form's `action` is set to `#` or the same URL as the current
+    HTML page. This form is called a **self-submitting form** . The default response
+    in such cases is the form content itself. If the form was served by a web server,
+    the response to the post can be custom generated. If you are using the nodejs
+    web server that is shipped with the source code of this book, then you will get
+    a custom success response instead of the form contents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unique IDs in a form
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In a jQuery Mobile application, since multiple pages can reside in the DOM at
+    the same time, you should ensure that the IDs for the form controls are unique.
+    The IDs should be unique across the entire app and not just in a single page.
+    Lookups and form behavior could fail or behave differently if you do not follow
+    this rule. Some browsers might still support duplicate IDs to a certain extent
+    but this is not guaranteed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Submitting a form using POST* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Fetching data using GET* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Submitting a form using POST
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to **POST** and submit a form using Ajax and also
+    how to submit the same forum when not using Ajax. The **Blog Comments** form used
+    in the previous recipe is used here for submission.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/05/submit-form` sources folder.
+    This code can be launched using the URL `http://localhost:8080/05/submit-form/main.html`.
+    To try out this recipe, you will also need to launch the simple nodejs web server
+    that is shipped along with the source code of this book. Launch the server by
+    using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create the **Blog Comments** form as shown in the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to validate the comments field:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, create the **Blog Comments** form. Set the form `action` to
+    `''/postComment''` and also specify the attribute `data-transition=''pop''`. The
+    rest of the code and form validations are the same as in the previous recipe and
+    are explained in detail there. When you launch the application, the form is displayed
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Fill the form and click on **Submit Comment** button. If no errors are found,
+    the form is submitted via Ajax. The custom nodejs web server responds to the `/postComment`
+    request by generating the following HTML content as a response with mime-type
+    `''text/html''`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The response is rendered by the framework as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The page transition is smooth and it uses the `pop` animation. You can click
+    on the **Back** button and navigate back to the original page as the `data-rel='back'`
+    attribute is also specified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can submit this form without using Ajax by specifying the `data-ajax=''false''`
+    attribute to the form element. This code is available in the `non-ajax.html` file
+    in the same folder as `main.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: When Ajax is not used, the response triggers a full page refresh. The server
+    response in this recipe returns only the page `div` container and does not return
+    the `<head>` element with any links to the jQuery Mobile stylesheet. Also, references
+    to the jQuery and jQuery Mobile libraries are missing in the response. So the
+    resultant page is as shown in the following screenshot. Here the response page
+    is not styled and if you click on the **Back** link, it does not work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/7225_05_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Ajax response
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The server response via Ajax replaces the content of the request form as seen
+    in this recipe. You can view this response by using a DOM inspector. But if you
+    view the page source, the original page is still shown. POST requests cannot be
+    bookmarked as they do not contain any query parameters in the hash. The response
+    to a POST request returns with the same URL as the request and it does not update
+    the URL hash.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other ways of non-Ajax form submission
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'This recipe shows you how to submit forms without using Ajax by setting the
+    attribute `data-ajax=''false''`. Another way to not use Ajax is to specify a `target`
+    attribute to the form as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is applicable to both POST and GET server requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Ajax can also be turned off across your application by using the global configuration
+    as shown in the following code in the `mobileinit` event handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Validating forms* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Fetching data using GET* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Configuring ajaxEnabled* recipe in [Chapter 7](ch07.html "Chapter 7. Configurations"),
+    *Configurations*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fetching data using GET
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This recipe shows you how to use an Ajax **GET** request and fetch data from
+    a server. In this recipe, the server sends back soccer scores to a GET request
+    from a **Soccer League Scores** form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Copy the full code of this recipe from the `code/05/get-request` sources folder.
+    This code can be launched using the URL `http://localhost:8080/05/get-request/main.html`.
+    To try out this recipe you will need to launch the simple nodejs web server that
+    is shipped along with the source code of this book. Launch the server by using
+    the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following code to create a form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following script to the `<head>` section to fetch and display the scores
+    using Ajax:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add a `<div>` container with `id=''scores''` and set its attribute
+    `data-role=''fieldcontain''`. This `<div>` container will display the scores.
+    Add a form (`id=''scoreform''`) to the page and set its `action` to `''/getScores''`
+    and `method` to `''get''`. Add a submit button with text **Fetch Scores** to the
+    form to fetch the scores from the server. You can add a decorated footer using
+    `class=''ui-bar ui-bar-e''` to the page. When you load the application the following
+    screen is displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Add an event handler to the `pageshow` event as shown in the previous code.
+    When you click on the `submit` button, it calls the jQuery `submit()` method.
+    The server response to the default form `submit()` would replace the entire page
+    with new content. To get a partial page update, call the jQuery `.get()` Ajax
+    method to fetch data from the `'/getScores'` server URL. Then cancel the default
+    `submit()` method by returning `false`. The `.get()` method specifies the callback
+    functions for `success` and `error` as shown in the previous code. In the success
+    callback function `showScores()` , replace the content of `#scores` div with the
+    HTML response obtained from the server. Trigger the `'create'` method to let the
+    jQuery Mobile framework initialize and enhance the newly added content. Any error
+    is handled by the `errMsg()` error handler as shown in the previous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The custom nodejs web server responds to the `/getScores` get request by generating
+    the following HTML content as a response with mime-type `''text/html''`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now only the contents of the `#scores <div>` container are replaced by this
+    server response. The header and footer remain untouched. The resulting display
+    is as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_19.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can submit forms without using Ajax by specifying the `data-ajax='false'`
+    attribute to the form element as shown in the following code. When Ajax is not
+    used, the response triggers a full page refresh. So ensure that a proper jQuery
+    Mobile page is returned in the server response or else the resultant page could
+    have styling and other issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Ajax response
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The server response via Ajax replaces the content of the request form completely.
+    You can view the response by using a DOM inspector. But if you view the page source,
+    the original page is still shown. GET requests can be bookmarked as they support
+    query parameters in the hash. The GET response allows the update of the URL hash.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Form submission defaults
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can also submit a form without any action or method attribute as specified
+    in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: The form will use the default values of the action and method attributes. The
+    method will default to `'get'` and the action will default to the current page's
+    relative path. You can access this path via the call to the `$.mobile.path.get()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Always specify the `action` and `method` attributes for a form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: See also
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The *Validating forms* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Submitting a form using POST* recipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Configuring ajaxEnabled* recipe in [Chapter 7](ch07.html "Chapter 7. Configurations"),
+    *Configurations*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an accessible form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Mobile framework has very good support for the accessibility features,
+    such as **WAI-ARIA** . This provides support for accessibility tools such as screen
+    readers. This enables your application screens to be read out to those users who
+    depend on such assistive technologies. Also speech input controls are now available
+    on a few browsers like Chrome (which uses the webkit engine). These controls accept
+    voice input. This recipe shows you how to generate accessible form controls that
+    accept voice input and also support screen readers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Copy the full code of this recipe from the `code/05/accessible-controls` sources
+    folder. You can launch this code by using the URL `http://localhost:8080/05/accessible-controls/main.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In `main.html`, add the following code to create a form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In `main.html`, add three fields as follows, **username** (input `type='text'`),
+    **age** (input `type='number'`), and **city** (input `type='text'`). Associate
+    a label to each of these fields and add a `div` container with attribute `data-role='fieldcontain'`
+    for each set of labels and input controls. This helps the framework to realign
+    and adjust the layout dynamically based on the platform and settings. The `placeholder`
+    attribute is used to give an appropriate hint to the user for input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To enable voice input, add the attributes `speech` and `x-webkit-speech` as
+    shown in the previous code for each of the input controls. The support for voice
+    input is totally dependent on browser implementation and a few browsers still
+    do not implement them. When the page loads, you will see the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/7225_05_20.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You will see a small microphone icon at the right corner of each input control.
+    The user can tap on this icon and will be prompted to speak in the value for the
+    input. Once the user speaks in, **the speech to text engine** converts the voice
+    to text and displays the input value text in the control. Though not fully accurate
+    the voice to text technologies are improving by the day.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned earlier, the jQuery Mobile framework has very good support for
+    the accessibility features such as WAI-ARIA. So add meaningful labels to all the
+    form elements. When the page is initialized, the framework exposes these labels
+    to the screen readers automatically. If you are already using placeholders to
+    provide hints to the user, labels might be redundant. But if you are seeking to
+    build an application that supports accessibility, then you should also define
+    labels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to use the placeholder feature and also support accessibility, then
+    jQuery Mobile provides an easy option to hide the labels by using the style `'ui-hidden-accessible'`
+    on the form control. You can also hide the label by adding the style `'ui-hide-label'`
+    to the form field container as shown in the code. Now the labels are not shown
+    on the display but are still available to screen readers. You can verify this
+    by running your favorite screen reader and accessing the page created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Popular voice readers for mobile devices
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are numerous voice readers in the market today and you can try any of
+    the popular ones based on your platform. Apple phones have **VoiceOver** (see
+    [http://www.apple.com/accessibility/iphone/vision.html](http://www.apple.com/accessibility/iphone/vision.html)),
+    Android has **TalkBack** , **Spiel** , **Mobile Accessibility** for Android, and
+    other applications in the **Android Play Store** .
+  prefs: []
+  type: TYPE_NORMAL
+- en: Desktop voice readers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For the Chrome desktop browser, the **ChromeVox** extension can be installed
+    from [http://code.google.com/p/google-axs-chrome](http://code.google.com/p/google-axs-chrome)
+    and once enabled it will start reading out the form controls for you. You can
+    verify that the hidden label contents are also read out by the screen reader.`
+  prefs: []
+  type: TYPE_NORMAL

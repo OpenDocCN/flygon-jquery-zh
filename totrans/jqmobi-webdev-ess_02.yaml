@@ -1,0 +1,331 @@
+- en: Chapter 2. Working with jQuery Mobile Pages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapter, you saw how easy it was to add jQuery Mobile to a simple
+    HTML page. While it would be nice if every website consisted of one, and only
+    one page, real websites consist of multiple pages connected via links. jQuery
+    Mobile makes it easy to work with multiple pages and provides many different ways
+    to create, and link, to the pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add multiple pages to one jQuery Mobile file
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discuss how links are modified by jQuery Mobile (and how to disable it)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Demonstrate how additional files can be linked to and added to a jQuery Mobile
+    site
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discuss how jQuery Mobile automatically handles URLs to allow for easy bookmarking
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Important preliminary points
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As mentioned in the previous chapter, all of the code from this chapter is available
+    via the ZIP file downloaded at Github.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding multiple pages to one file
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous chapter, we worked on a file that had a simple page of text.
+    For our first modification, we''re going to add another page to the file and create
+    a link to it. If you remember, jQuery Mobile looks for a particular`<div>` wrapper
+    to help it know where your page is:`<div data-role="page">`. What makes jQuery
+    Mobile so simple to use is that we can add another page by simply adding another
+    div using the same format. The following code snippet `Listing 2-1` shows a simple
+    example of this feature:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'OK, so as always, we begin our template with a few required bits: the HTML5
+    doctype, the meta tag, one CSS include, and two JavaScript files. This was covered
+    in the previous chapter and we will not be mentioning it again. Note that this
+    template switches over to the CDN version of the CSS and JavaScript libraries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: These versions are hosted by the jQuery team and have the benefit of always
+    being the latest version. Most likely your visitors will have loaded these libraries
+    already so they exist in their cache before arriving at your mobile site. While
+    this is the route we will take going further with our examples, remember that
+    you can always use the version you downloaded instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice now we have two`<div>` blocks. The first hasn't much changed from the
+    previous example. We've added a unique ID (`homepage`), as well as a second paragraph.
+    Notice the link in the second paragraph. It's using a standard internal link (`#aboutPage`)
+    to tell the browser that we want to simply scroll the browser down to that part
+    of the page. The target specified, `aboutPage`, is defined right below in another
+    `div` block.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a traditional web page, this would display as two main blocks of text on
+    a page. Clicking any of the two links would simply scroll the browser up and down
+    accordingly. However, jQuery Mobile is going to do something significantly different
+    here. The following figure shows how the page is rendered in the mobile browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding multiple pages to one file](img/7263_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Notice something? Even though our HTML included two blocks of text (the two`<div>`
+    blocks) it only rendered one. jQuery Mobile will always display the first page
+    it finds, and only that page. Here comes the best part. If you click on the link,
+    the second page automatically loads. Using your devices back button, or simply
+    clicking the link, will return you back to the first page. You will also notice
+    a smooth transition. This is something you can configure later on. But all of
+    the interactions here, the showing and hiding of pages, the transitions, were
+    all done automatically by jQuery Mobile. Now is a good time to talk about links
+    and what jQuery Mobile does when you click on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery Mobile, links, and you
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When jQuery Mobile encounters a simple link `(<a href= "something.html"> Foo</a>)`,
+    it will automatically capture any clicks on that link and change it to an Ajax-based
+    load. This means that if it detects that the target is something on the same page,
+    that is, the hashmark style (`href="#foo"`) links we used above, it will handle
+    transitioning the user to a new page. If it detects a page to another file on
+    the same server, it will use Ajax to load the page and replace the currently visible
+    one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you link to an external site, then jQuery Mobile will leave the link as
+    is and the normal link behavior will occur. There may be times when you want to
+    disable jQuery Mobile from doing anything with your links at all. In that case,
+    you can make use of a data attribute that lets the framework know it shouldn''t
+    do anything at all. An example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we saw in [Chapter 1](../Text/ch01.html "Chapter 1. Preparing your First
+    jQuery Mobile Project"), *Preparing Your First jQuery Mobile Project*, jQuery
+    Mobile makes heavy use of data attributes. It is also very good at letting you
+    disable behaviors you don't like. As we continue in the book you will see example
+    after example of something jQuery Mobile does to enhance your site for mobile
+    devices. In all of these cases though, the framework recognizes there may be times
+    when you want to disable that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with multiple files
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In an ideal world, we could build an entire website with one file, never have
+    to perform revisions, and be done with every project by 2 P.M. on Friday. But
+    in the real world we have to deal with lots of files, lots of revisions, and,
+    unfortunately, lots of work. In the earlier code listing you saw how we can include
+    two pages within one file. jQuery Mobile handles this easily enough. But you can
+    imagine that this would get unwieldy after a while. While we could include ten,
+    twenty, even thirty pages, this is going to make the file difficult to work with
+    and make the initial download for the user that much slower.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To work with multiple pages, and files, all we need to do is make a simple link
+    to other files in the same domain as our first file. We can even combine the first
+    technique (two pages in one file) with links to other files. In `listing 2-2`,
+    we've modified the first example to add a link to a new page. Note that we keep
+    the existing `About` page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s look at `listing 2-3`, our products page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our products page is rather simple, but notice that we included the jQuery
+    and jQuery Mobile resources on top. Why? I mentioned earlier that jQuery Mobile
+    is going to use Ajax to load in your additional pages. If you open up `test2.html`
+    in either Chrome or a Firebug-enabled Firefox you can see this for yourself. Clicking
+    on the link for products will fire an XHR (think Ajax) request, as shown in the
+    following role:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with multiple files](img/7263_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: That's neat. But what happens when someone bookmarks the application? Let's
+    now take a look at how jQuery Mobile handles URLs and navigation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**What is Firebug?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firebug is an extension for Firefox ([www.getfirebug.com](http://www.getfirebug.com))
+    that provides a suite of developer-related tools for your browser. Chrome has
+    similar tools built-in. These tools allow for a number of features, one of which
+    is the ability to monitor XHR (or Ajax) related requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery Mobile and URLs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'If you''ve opened up `test2.html` in your browser and played with it, you may
+    have noticed something interesting about the URLs as you navigate. Following is
+    the initial URL. (The address and folder will, of course, differ on your computer):
+    `http://localhost/mobile/c2/test2.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: After clicking on products, the URL changes to `http://localhost/mobile/c2/products.html`.
+    If I click back, and click **learn more**, I get `http://localhost/mobile/c2/test2.html#aboutPage`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In both sub pages (the Products page and the About page) the URL was changed
+    by the framework itself. The framework uses `history.pushState` and `history.replaceState`
+    in browsers that support it. For older browsers, or browsers that don''t support
+    JavaScript manipulation of the URL, hash based navigation is used instead. The
+    products link, when viewed in Internet Explorer, looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`http://localhost/mobile/c2/test2.html#/mobile/c2/products.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What's interesting is that in this bookmark style, `test2.html` is always loaded
+    first. You could actually build your `products.html` to only include the div and
+    be assured that if the request was made for products first, it would still render
+    correctly. It's the newer, fancier browsers that have an issue. If you didn't
+    include the proper jQuery and jQuery Mobile includes, when they go directly to
+    `products.html` you would end up with a page that has no styles. It's best to
+    simply always include your proper header files (the CSS, the JavaScript, and so
+    on). Any decent editor will provide simple ways to create templates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additional customization
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Working with multiple pages in jQuery Mobile is pretty simple. You could take
+    what's been discussed in the first two chapters and build a pretty simple, but
+    mobile compliant, website right now. The following are a few more interesting
+    tricks you may want to consider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Page titles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You may have noticed when you clicked on the **Products** page in the previous
+    example, the title of the browser correctly updated to `Products`. This is because
+    jQuery Mobile noticed, and parsed in, the title tag from the `products.html` file.
+    But if you click on the **About** link, you don''t get the same behavior. Obviously,
+    since the **About** page resides within the same HTML, it has the same title tag
+    as well. jQuery Mobile provides a simple way to solve this and once again it involves
+    data tags. The following code snippet shows a simple way to add a title to embedded
+    pages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice the new `data-title` tag added to the `div` tag. jQuery Mobile will notice
+    then and when the **About** page is loaded, it will update the browser title as
+    well. Again, this is only required when you include multiple pages within one
+    HTML file. You can find this version in `test3.html:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Page titles](img/7263_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Prefetching content
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The benefit of including all your content within one HTML file is that all of
+    your pages are available immediately. But the negatives (too difficult to update,
+    too slow for an initial download) far outweigh that. Most jQuery Mobile applications
+    will include multiple files and typically just one or two pages per file. You
+    can, however, ensure speedier loading of some pages to help improve the user experience.
+    Imagine our **Megacorp** page. It's got three pages, but the **Products** page
+    is a separate HTML file. Since it's the only real content on the site, most likely
+    all of our users will end up clicking that link. We can tell jQuery Mobile to
+    prefetch the content immediately upon the main page loading. That way when the
+    user does click the link, the page will load much quicker. Once again, this comes
+    down to one simple data attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous link, all we've done is added `data-prefetch` to the link. When
+    jQuery Mobile finds this in a link it will automatically fetch the content right
+    away. Now, when the user clicks the **Products** link, they will see the content
+    even quicker. This modification was saved in `test4.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obviously, this technique should be used with care. Given a page with four main
+    links, you may want to consider only prefetching the two most popular pages, not
+    all four.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing page transitions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Earlier, we mentioned that you could configure the transitions jQuery Mobile
+    uses between pages. Later in the book, we''ll discuss how to do that globally,
+    but if you want to switch to a different transition for a particular link, just
+    include a `data-transition` attribute in your link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Many transitions also support a reverse action. Normally jQuery Mobile figures
+    out if you need this, but if you want to force a direction, use the data-direction
+    attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This chapter further fleshed out the concept of jQuery Mobile pages and how
+    to work with multiple pages. Specifically we saw how one physical file can contain
+    many different pages. jQuery Mobile will handle hiding all but the first page.
+    We also saw how you can link to other pages and how jQuery Mobile uses Ajax to
+    dynamically load the content into the browser. Next we discussed how jQuery Mobile
+    handles updating the URL of the browser in order to enable bookmarking. Finally,
+    we discussed two utilities that will help to improve your page. The first way
+    was to provide a title for embedded pages. The second technique demonstrated how
+    to prefetch content to further improve the experience of the users visiting your
+    site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll take a look at headers, footers, and navigation bars.
+    These will greatly enhance our pages and make them easier to navigate.
+  prefs: []
+  type: TYPE_NORMAL

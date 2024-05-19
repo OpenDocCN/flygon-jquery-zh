@@ -1,0 +1,476 @@
+- en: Chapter 7. Fully Responsive Photography
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our mobile phones are quickly becoming our photo albums. Photographers represent
+    a somewhat untapped market for mobile web development. But if you think about
+    it, this market should have been the first to adapt to the mobile world. With
+    the saturation of smartphones in developed nations, e-mail open rates on smartphones
+    are rapidly approaching 40 percent and may be there by the time you read this
+    ([http://www.emailmonday.com/mobile-email-usage-statistics](http://www.emailmonday.com/mobile-email-usage-statistics)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you get that e-mail from your photographer that your photos are ready
+    for viewing, aren''t you so excited that you try to view them immediately? Yet
+    there are a LOT of photographers who are masters at their trade that do not have
+    websites that are ready to meet the new mobile demands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Fully Responsive Photography](img/0069_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'So, here''s what we''ll cover in this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a basic gallery using PhotoSwipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Supporting the full range of device sizes – responsive web design
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Text readability in responsive design
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sending back only what is needed – RESS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a basic gallery using PhotoSwipe
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you're looking for the single fastest way to create a photo gallery, you're
+    not going to come up with any faster solution than PhotoSwipe ([http://www.photoswipe.com/](http://www.photoswipe.com/)).
+    Weighing in at 82 K, it's not exactly light but it works on pretty much anything
+    that jQuery Mobile supports as either A or B grade. Their site says it works with
+    any WebKit-based browser. That pretty much means iOS, Android, and BlackBerry.
+    The big three are covered. But what about Windows Phone? Good news! It seems to
+    work great there too. Even with JavaScript turned off, PhotoSwipe degrades gracefully
+    to a reasonable page-by-page experience. We could start from scratch and make
+    a pure jQuery Mobile experience but, really… why?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again I'm going to dispense with the academically correct behavior of perfectly
+    separating JavaScript and CSS into their own files, and simply build all customized
+    JavaScript into the page itself. It's just easier for the purposes of this book.
+    I'm assuming if you're reading this, that you already know how to separate things
+    properly and why.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with the basics. For the most part, this is boilerplate from their
+    site but we''re starting with our own images from the photographer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a basic gallery using PhotoSwipe](img/0069_07_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s start with the key portions of the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take note that we are now using a custom theme built with **ThemeRoller** ([http://jquerymobile.com/themeroller/](http://jquerymobile.com/themeroller/)).
+    Therefore, we are only using `jquery.mobile.structure-1.2.0.min.css` instead of
+    the full jQM CSS. The `mullinax.min.css` file was produced by ThemeRoller and
+    contains everything else needed apart from the structure CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The files `photoswipe.css`, `jquery-mobile.css`, `klass.min.js`, and `code.photoswipe.jquery-3.0.5.min.js`
+    are all part of the of the PhotoSwipe boilerplate. The filename, `jquery-mobile.css`,
+    is a little misleading. It''s actually more like an adapter stylesheet to make
+    PhotoSwipe work and look right in jQuery Mobile. Without it, your gallery''s unordered
+    lists won''t look right. Initially, there''s not a lot in there:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This setup is OK on an iPhone or Android phones but if you're looking at it
+    on any kind of a tablet- or desktop-size browser, the thumbnails of the gallery
+    could get annoyingly large. Let's see what we can do with a touch of media queries
+    to give it a more responsive design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supporting the full range of device sizes – responsive web design
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Responsive web design** (**RWD**) is the concept of making a single page
+    work for every device size. That means, we''re not just talking about mobile phones
+    with a 3.5-inch screen. That''s only the beginning. We are going to support tablets
+    of all sizes, and even desktop resolutions. For more on the concept of RWD, check
+    out [http://en.wikipedia.org/wiki/Responsive_web_design](http://en.wikipedia.org/wiki/Responsive_web_design).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to make RWD work, let''s set a few breakpoints based on common devices
+    and resolution breakpoints. I''m going to start by redefining the default gallery
+    item size to 50 percent. Why? It just feels more comfortable to me while browsing
+    on a smartphone in portrait mode. So, here are the breakpoints. Let''s put them
+    into `chapter7.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As I was testing this setup, I carefully considered the average viewing distance
+    between myself and whatever screen I was viewing. These breakdowns resulted in
+    roughly the same percentage of the field of view for a thumbnail that seemed ideal.
+    Obviously, my focus group of one means nothing from a scientific perspective so
+    tweak to your heart's content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It could be asked, why not just make each image a fixed size? Why the different
+    resolution breakpoints? Pretty simple really, it keeps thing evenly spaced instead
+    of having a major gap on one side because some monitors' or browsers' resizing
+    had just enough room to force a line break but not take up the slack. It also
+    has the added benefit, for the book, of showing you a good way to break down a
+    universal stylesheet to turn a jQuery Mobile site into a universal site using
+    media queries. Any other resolution-based tweaks we want to make can be put right
+    into `chapter7.css` in its appropriate place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The script `code.photoswipe.galleryinit.js` is present on the PhotoSwipe gallery
+    page itself within the downloadable example. I don''t think it will ever need
+    to be edited or customized on a per page basis so I''ve extracted that chuck of
+    script into `code.photoswipe.galleryinit.js`. Here is the code. Think nothing
+    more of it since it is now off in its own little file never to be seen or heard
+    from again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let us now consider some of the "pages" themselves. We''ll be putting
+    this code, and evolving it as we go, in the `index.html` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The design concepts for the gallery screen are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Full screen photo background
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Centered logo on small screens taking up no more than 90 percent of the width
+    of the screen and not growing beyond its original size
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The navigation should still be obvious but not get in the way of the art itself
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Here''s the relevant CSS that we are also putting into `chapter7.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we just need a little JavaScript to tie this all together. When the orientation
+    changes, we want to change which direction gets the 100 percent of the width for
+    the background:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That''s good enough for our gallery entry page, now let''s put together a sample
+    gallery for baby photos. There are many entries for the gallery in the code of
+    this chapter. However, for brevity''s sake I''ve shortened the code here. Again,
+    this will be in the final version of `index.html` in the code files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you do not put a `rel="external"` on each of the links to the images, it
+    will not work properly. The PhotoSwipe documentation made that pretty clear. If
+    you're not yet familiar with `rel="external"`, it is a way to tell jQuery Mobile
+    to *not* follow the link with its usual AJAX-based navigation. As such, it will
+    force a full-page load to whatever you're linking to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, just for the fun of it, open this in a desktop browser at full width and
+    then shrink it down to mobile size and watch it adapt. Try out the gallery landing
+    page, the baby thumbnail gallery, and the slideshow that PhotoSwipe provides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the cool parts about PhotoSwipe is that even if you've disabled zooming
+    on your mobile site using the meta-viewport tag, the user is still able to pinch
+    and zoom around the full-sized photos. This is really nice on a tablet. All they
+    have to do to get back to the navigation is to double tap the image and it will
+    zoom to its original size and reveal the navigation. Not the most obvious thing
+    but the back button works as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Naturally, as the name may suggest, you can simply swipe from photo to photo
+    and it will loop back around to the beginning of the set once it reaches the end.
+    There is also a slideshow feature that will run indefinitely. In both of these
+    cases, if the user presses the back button, they'll be taken back to the thumbnails
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The only real problem that we have at this point is that we have a site that
+    scales well but the background images and full-sized photos might be larger than
+    strictly necessary. The background image isn't really a problem because we can
+    govern which size to send back based on our media queries. We just need to create
+    two or three background images sizes and override which image is used in the `jquery-`
+    `le.css` file. In the final version of the code for this chapter I have renamed
+    `jquery-mobile.css` to `chapter7.css` to avoid any confusion with actual jQuery
+    Mobile library CSS files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text readability and responsive design
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Studies have shown that there are ideal character limits per line. Ideally,
+    you should settle on 35, 55, 75, or 95 CPL (characters per line). People tend
+    to prefer either shorter or longer lines. Since we're really trying to showcase
+    photography here, let's go with the shorter CPL. If you want to read the full
+    report, you can find it at [http://psychology.wichita.edu/surl/usabilitynews/72/LineLength.asp](http://psychology.wichita.edu/surl/usabilitynews/72/LineLength.asp).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To a large extent, the width of our text columns will be dictated by the devices
+    themselves. On smaller devices, we really have no choice but to go a `100%` width.
+    Once we get to tablets in landscape mode, we'll have room to do creative things
+    with our text. We could, for larger widths, increase our CPL to 55 and it would
+    look great. We may also consider using larger images as well. Whatever we do,
+    having a strong set of media query breakpoints is the key.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take some paragraphs of text about sessions and make it more responsive
+    with this study as a guideline:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, let''s create some of the rules around its placement on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: As before, a rule set in the lower widths will carry through to the wider widths
+    unless a value is specified to override. You can see how I'm switching out the
+    images used on sessions for iPad landscape view and 1440 resolutions. Before those,
+    every resolution inherited the `background-image:none` form and the 320px rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let's take a look at our results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Smartphone-sized devices
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here we see the session content on small screens for both portrait and horizontal
+    orientation. Either way is highly readable but neither is really ideal for displaying
+    anything other than the text. If we tried to squeeze in any kind of artwork, it
+    just wouldn''t show up well. We''d be violating the good text readability we just
+    talked about. Either you or the photographer might think that perhaps having one
+    of their images faded in the background would look good but DON''T! Leave the
+    majority of the reading text as black on white in standard size fonts with standard
+    fonts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Smartphone-sized devices](img/0069_07_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tablet-sized devices
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here we see the same thing rendered on tablets. On portrait orientation, it''s
+    still great for reading if we leave the text at a `100%` width. We are well within
+    the guidelines for good readability. However, that breaks down when the user switches
+    to landscape. In landscape, tablets finally have enough room to show some photography
+    and the text as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Tablet-sized devices](img/0069_07_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Desktop-sized devices
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This is still a jQuery Mobile page but we''re looking more like a desktop site.
+    Now we can show more than just one face so we might as well switch out some different
+    photos to showcase the artist''s ability:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Desktop-sized devices](img/0069_07_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Yes, this is me and my family. Yes, I *am* very proud of them. And I'm pretty
+    happy with the way the text treatment is working out on each of these resolution
+    breakpoints and that it's all one page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cycling background images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So, how do we cycle background images when the very images we''re using depend
+    on our current resolution and orientation? That pretty much rules out cycling
+    out a single image. Instead we''re going to have to swap out entire stylesheets.
+    Here we go:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's a pretty simple stylesheet to begin with but you could make it as complex
+    as you like. We're not accounting for HD display versus SD displays for now. The
+    iPhone 4 with Retina display (326 ppi) was released in June of 2010\. Ever since,
+    the trend is moving toward HD screens anyway, so I'm simply assuming most people
+    have updated their smartphone within the last two years and that they either have
+    a high resolution screen or very soon will. Keep in mind also that we are on the
+    edge of the LTE (fourth generation mobile broadband) ubiquity. That means that
+    very soon, mobile will be faster than most home broadband speeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, is this really an excuse for laziness and not making smaller versions to
+    capitalize on performance where you can? No, and most likely, some haters and
+    academics will even take issue with the previous paragraph. I will say this, performance
+    does matter. It is a billable feature. But think about how many images you want
+    to be cycling through and then multiply that by how many resolution and dimension
+    variants you want to spend time preparing and testing. Again, it's all billable
+    unless you're doing it for free.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How much longer until such minute optimizations really makes no discernible
+    difference? If you're reading this in 2014 or later, you might already be scoffing
+    at the idea of having to worry about bandwidth in any practical sense (depending
+    on your market). Just some food for thought.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s one of the CSS files for the rotation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now that we''ve got that, we need to decide how we''ll cycle them. We could
+    use a `setInterval` JavaScript to swap the stylesheets out on a timer. Honestly,
+    even for a photography website, I think that''s being a bit optimistic. We probably
+    wouldn''t want to swap any faster than once every 5 seconds. Think about it: the
+    mobile usage pattern involves quick, short bursts of productivity or gaming. Most
+    people are not going to stay on any given mobile screen for more than 5 seconds
+    unless it is either text-heavy, like an article, or is so poorly crafted that
+    the user is having trouble navigating. So, it''s pretty safe to say that the `setInterval`
+    option is right out.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'OK, so, maybe it''s best to randomly choose a stylesheet on the `pagebeforeshow`
+    event? Consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But what happens when we try this? We get strange, ugly image blinks. With
+    fade transitions or slides, it really doesn''t matter. Using the `pageshow` event
+    makes no difference either. It looks terrible. Do not do it. I know it''s tempting
+    but it won''t look good at all. *So, after all this, it''s my recommendation to
+    keep a single, randomly assigned, per-session stylesheet*. Consider the following
+    code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that I did not simply use `document.write()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Pro Tip**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Never ever ever… ever use `document.write()` in a jQuery Mobile environment.
+    It can play HELL with your DOM and you'll be scratching your head wondering what
+    went wrong. I've seen it bite people before. My friend's already thin hair was
+    in full retreat from the head scratching this problem was causing him. Trust me,
+    `document.write()` is to be avoided.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another responsive approach – RESS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Responsive Design + Server Side Components** (**RESS**) is an idea that makes
+    a lot of sense. The concept is that you use a server-side mobile detection method
+    such as **WURFL** ([http://wurfl.sourceforge.net/](http://wurfl.sourceforge.net/)).
+    Then you send up a different version of page components, different sized images,
+    and so on. We could then change the wrappers around the page content and the navigation
+    to use jQuery Mobile just as easily as any home-brewed markup. The beauty of this
+    approach is that everybody gets the content that is right for them without the
+    bloat of typical responsive design and it''s always on the same URL.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first time I saw this idea proposed in writing was in an article at [http://www.lukew.com/ff/entry.asp?1392](http://www.lukew.com/ff/entry.asp?1392)
+    by Luke Wroblewski ([https://twitter.com/lukew](https://twitter.com/lukew)) in
+    September 2011\. In it, he outlines the very performance problem we now face with
+    images. Luke meant this as a way of doing pure responsive web design without any
+    kind of mobile framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: WURFL can tell you the screen size of the device you're serving and you could
+    resize (on the fly) your photographer's original 3 MB image, down to maybe 150
+    K, 70 K, and so on, depending on the device resolution. You'd still want to be
+    sure to make it about twice as large as the screen size you're serving or the
+    user will only see a blurry mess when then try to zoom in on their photo in the
+    PhotoSwipe view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While handy in some ways, RESS will never be a perfect solution because it depends
+    on browser sniffing to do its work. Is that so bad? No, not really. No solution
+    is perfect, but the database of devices is community driven and rapidly updated
+    so that helps. This would be a very viable solution and we'll discuss it more
+    in depth in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The full code for this experience is a little on the verbose side for putting
+    into a book and we've already explored the concepts around it. I would strongly
+    encourage you to look at the code. At this point, there should be nothing surprising
+    to you. Play with it. Adapt it. Go get yourself some free photography by trading
+    services to build your portfolio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Tackling responsive design with a mobile-first approach, as we have here, can
+    take what is a great mobile site and make a highly performant desktop site but
+    it doesn't usually work the other way around. The key to it all is the media queries
+    and starting small first. If it works that well on mobile with the limited processor,
+    bandwidth, and network latency, think how amazing it will be on a machine where
+    none of the restraints exist. In the next chapter we'll examine WURFL and other
+    mobile detection methods to try and adapt existing websites and make them mobile.
+  prefs: []
+  type: TYPE_NORMAL

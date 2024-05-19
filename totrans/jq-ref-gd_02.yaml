@@ -1,0 +1,1435 @@
+- en: Chapter 2. Selector Expressions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You got me lookin' up high
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: You got me searchin' down low
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: —Devo,
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '"Jerkin'' Back ''n'' Forth"'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Borrowing from CSS 1-3 and basic XPath, and then adding its own, jQuery offers
+    a powerful set of selector expressions for matching a set of elements in a document.
+    In this chapter, we'll examine every selector expression that jQuery makes available
+    in turn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS Selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The following selectors are based on the CSS 1-3, as outlined by the W3C. For
+    more information about the specifications, visit [http://www.w3.org/Style/CSS/#specs](http://www.w3.org/Style/CSS/#specs).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Element: T'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that have a tag name of `T`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''div'')`: selects all elements with a tag name of `div` in the document'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''em'')`: selects all elements with a tag name of `em` in the document'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: jQuery uses JavaScript's `getElementsByTagName()` function for tag-name selectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'ID: #myid'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The unique element with an ID equal to `myid`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''#myid'')`: selects the unique element with `id=''myid''`, regardless of
+    its tag name'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p#myid'')`: selects a single paragraph with an `id` of `''myid''`; in
+    other words, the unique element `<p id=''myid''>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Each `id` value must be used only once within a document. If more than one element
+    has been assigned the same `id`, queries that use that `id` will only select the
+    first matched element in the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It might not be immediately clear why someone might want to specify a tag name
+    associated with a particular `id`, since that `id` needs to be unique anyway.
+    However, some situations in which parts of the DOM are user-generated may require
+    a more specific expression to avoid false positives. Furthermore, when the same
+    script is run on more than one page, it might be necessary to identify the `id's`
+    element, since the pages could be associating the same `id` with different elements.
+    For example, Page A might have `<h1 id='title'>` while Page B has `<h2 id='title'>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a plain `id` selector such as example 2 above, jQuery uses the JavaScript
+    function `getElementById()`. If the script's execution speed is paramount, the
+    plain `id` selector should be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Class: .myclass'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that have a class of `myclass`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''.myclass'')`: selects all elements that have a class of `myclass`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p.myclass'')`: selects all paragraphs that have a class of `myclass`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''.myclass.otherclass'')`: selects all elements that have a class of `myclass`
+    and `otherclass`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In terms of speed, example 2 is generally preferable to example 1 (if we can
+    limit the query to a given tag name) because it first uses the native JavaScript
+    function `getElementsByTagName()` to filter its search, and then looks for the
+    class within the matched subset of DOM elements. Conversely, there is currently
+    no native `getElementsByClassName()` for jQuery to use, so using a bare class
+    name forces jQuery to match it against every element in the DOM. The difference
+    in speed varies, however, with the complexity of the page and the number of DOM
+    elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As always, remember that development time is typically the most valuable resource.
+    Do not focus on optimization of selector speed unless it is clear that performance
+    needs to be improved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a CSS selector, the multiple-class syntax of example 3 is supported by all
+    modern web browsers, but *not* by Internet Explorer versions 6 and below, which
+    makes the syntax especially handy for applying styles cross-browser through jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Descendant: E F'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements matched by `F` that are descendants of an element matched by `E`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''#container p'')`: selects all elements matched by `<p>` that are descendants
+    of an element that has an id of `container`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''a img'')`: selects all elements matched by `<img>` that are descendants
+    of an element matched by `<a>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A descendant of an element could be a child, grandchild, great-grandchild,
+    and so on, of that element. For example, in the following HTML, the `<img>` element
+    is a descendant of the `<span>, <p>, <div id="inner">`, and `<div id="container">`
+    elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Child: E > F'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements matched by `F` that are children of an element matched by `E`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li > ul'')`: selects all elements matched by `<ul>` that are children
+    of an element matched by `<li>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p > code'')`: selects all elements matched by `<code>` that are children
+    of an element matched by `<p>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As a CSS selector, the child combinator is supported by all modern web browsers
+    including Safari, Mozilla/Firefox, and Internet Explorer 7, but notably not by
+    Internet Explorer versions 6 and below. Example 1 is a handy way to select all
+    nested unordered lists (i.e. excepting the top level).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The child combinator can be thought of as a more specific form of the (single-space)
+    descendant combinator in that it selects only first-level descendants. Therefore,
+    in the following HTML, the `<img>` element is a child only of the `<span>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Adjacent Sibling: E + F'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements matched by `F` that *immediately* follow, and have the same parent
+    as, an element matched by `E`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''ul + p'')`: selects all elements by `<p>` (paragraph) that immediately
+    follow a sibling element matched by `<ul>` (unordered list)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''strong + em'')`: selects all elements matched by `<em>` that immediately
+    follow a sibling element matched by `<strong>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'One important point to consider with both the `+` combinator and the `~` combinator
+    (covered next) is that they only select siblings. Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$(''ul + p'')` selects `<p>` because it immediately follows `<ul>` and the
+    two elements share the same parent, `<div id="container">`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''ul + img'')` selects nothing because (among other reasons)`<ul>` is one
+    level higher in the DOM tree than `<img>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''li + img'')` selects nothing because, even though `<li>` and `<img>` are
+    on the same level in the DOM tree, they do not share the same parent.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'General Sibling: E ~ F'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements matched by `F` that follow, and have the same parent as, an element
+    matched by `E`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''p ~ ul'')`: selects all elements matched by `<ul>` that follow a sibling
+    element matched by `<p>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''code ~ code'')`: selects all elements matched by `<code>` that follow
+    a sibling element matched by `<code>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One important point to consider with both the `+` combinator and the `~` combinator
+    is that they only select *siblings*. The notable difference between the two is
+    their respective reach. While the `+` combinator reaches only to the *immediately*
+    following sibling element, the `~` combinator extends that reach to *all* following
+    sibling elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$(''li.first ~ li'')` selects `<li class="second">` and `<li class="third">`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''li.first + li'')` selects `<li class="second">`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Multiple Elements: E,F,G'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Selects all elements matched by selector expressions `E, F`, or `G`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''code, em, strong'')`: selects all elements matched by `<code>` or `<em>`
+    or `<strong>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p strong, .myclass'')`: selects all elements matched by `<strong>` that
+    are descendants of an element matched by `<p>` as well as all elements that have
+    a class of `myclass`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This comma (,) combinator is an efficient way to select disparate elements.
+    An alternative to this combinator is the `.add()` method described in [Chapter
+    3](ch03.html "Chapter 3. DOM Traversal Methods").
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nth Child (:nth-child(n))
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that are the `nth` child of their parent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:nth-child(2)'')`: selects all elements matched by `<li>` that are the
+    second child of their parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p:nth-child(5)'')`: selects all elements matched by `<p>` that are the
+    fifth child of their parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Because jQuery's implementation of `:nth-child(n)` is strictly derived from
+    the CSS specification, the value of `n` is *1-based*, meaning that the counting
+    starts at 1\. For all other selector expressions, however, jQuery follows JavaScript's
+    "0-based" counting. Therefore, given a single `<ul>` containing two `<li>s, $('li:nth-child(1)')`
+    selects the first `<li>` while `$('li:nth(1)')` selects the second.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because the two look so similar, the `:nth-child(n)` pseudo-class is easily
+    confused with `:nth(n)`, even though, as we have just seen, the two can result
+    in dramatically different matched elements. With `:nth-child(n)`, all children
+    are counted, regardless of what they are, and the specified element is selected
+    only if it matches the selector attached to the pseudo-class. With `:nth(n)` only
+    the selector attached to the pseudo-class is counted, not limited to children
+    of any other element, and the nth one is selected. To demonstrate this distinction,
+    let''s examine the results of a few selector expressions given the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$(''p:nth(1)'')` selects the second `<p>`, because numbering for `:nth(n)`
+    starts with `0`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''p:nth-child(1)'')` selects nothing, because there is no `<p>` element
+    that is the first child of its parent.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''p:nth(2)'')` selects the third `<p>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''p:nth-child(2)'')` selects the first `<p>`, because it is the second child
+    of its parent.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition to taking an integer, `:nth-child(n)` can take `even` or `odd`.
+    This makes it especially useful for table-row striping solutions when more than
+    one table appears in a document. Again, given the HTML snippet above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''p:nth-child(even)'')` selects the first and third `<p>`, because they
+    are children 2 and 4 (both even numbers) of their parent.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First Child (:first-child)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All elements that are the first child of their parent:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:first-child'')`: selects all elements matched by `<li>` that are the
+    first child of their parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(strong:first-child'')`: selects all elements matched by `<strong>` that
+    are the first child of their parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `:first-child` pseudo-class is shorthand for `:nth-child(1)`. For more information
+    on `:X-child` pseudo-classes, see the discussion for `:nth-child(n)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Last Child (:last-child)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that are the last child of their parent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:last-child'')`: selects all elements matched by `<li>` that are the
+    last child of their parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''code:last-child'')`: selects all elements matched by `<code>` that are
+    the last child of their parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on `:X-child` pseudo-classes, see the discussion for `:nth-child(n)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Only Child :only-child
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that are the only child of their parent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$('':only-child'')`: selects all elements that are the only child of their
+    parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''code:only-child'')`: selects all elements matched by `<code>` that are
+    the only child of their parent'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Not :not(s)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that do not match selector `s`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:not(.myclass)'')`: selects all elements matched by `<li>` that do not
+    have `class="myclass"`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''li:not(:last-child)'')`: selects all elements matched by `<li>` that are
+    not the last child of their parent element'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Empty :empty
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that have no children (including text nodes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$('':empty'')`: selects all elements that have no children'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p:empty'')`: selects all elements matched by `<p>` that have no children'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The W3C recommends that the `<p>` element have at least one child node, even
+    if that child is merely text (see [http://www.w3.org/TR/html401/struct/text.html#edef-P](http://www.w3.org/TR/html401/struct/text.html#edef-P)).
+    Some other elements, on the other hand, are empty (i.e. have no children) by definition:`<input>,
+    <img>, <br>`, and `<hr>`, for example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One important thing to note with `:empty` (and `:parent`) is that *child elements
+    include text nodes*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Universal: *'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''*'')`: selects all elements in the document'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p > *'')`: selects all elements that are children of a paragraph element'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `*` selector is especially useful when combined with other elements to form
+    a more specific selector expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: XPath Selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Modeled after a file system's directory-tree navigation, XPath selector expressions
+    provide an alternative way to access DOM elements. Although XPath was developed
+    as a selector language for XML documents, jQuery makes a basic subset of its selectors
+    available for use in XML and HTML documents alike.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For more information about XPath 1.0, visit the specification at the W3C: [http://www.w3.org/TR/xpath](http://www.w3.org/TR/xpath).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Descendant: E//F'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements matched by `F` that are descendants of an element matched by `E`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''div//code'')`: selects all elements matched by `<code>` that are descendants
+    of an element matched by `<div>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''//p//a'')`: selects all elements matched by `<a>` that are descendants
+    of an element matched by `<p>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This XPath descendant selector works the same as the corresponding CSS descendant
+    selector `($('E F'))` except that the XPath version can specify that it is to
+    start at the document root, which could be useful when querying an XML document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In example 2, the initial `//p` tells jQuery to start at the document root and
+    match all `<p>` elements that are descendants of it. Keep in mind that if this
+    selector expression follows a DOM traversal method such as `.find()`, this syntax
+    will not select anything because the document root cannot be a child of anything
+    else. Since jQuery allows free mixing of CSS and XPath selectors, the initial
+    `//` is redundant and, therefore, can be omitted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Child: E/F'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements matched by `F` that are children of an element matched by `E`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''div/p'')`: selects all elements matched by `<p>` that are children of
+    an element matched by `<div>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p/a'')`: selects all elements matched by `<a>` that are children of an
+    element matched by `<p>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''/docroot/el'')`: selects all elements matched by `<el>` that are children
+    of an element matched by `<docroot>`, as long as `<docroot>` is actually at the
+    document root'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The XPath child selector, `$('E/F')`, is an alternative to the CSS child selector,
+    `$('E > F')`. If the selector expression begins with a single slash, as is the
+    case in example 3, the selector immediately following the slash must be at the
+    document root. Beginning with a single slash is not recommended in HTML documents,
+    since it always must be followed with `body` for the expression to match any elements
+    on the page. For XML documents, however, it might be useful to identify a particular
+    element or attribute at the document root.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Parent: E/..'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that are parents of an element matched by `E`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''.myclass/..'')`: selects the parent element of all elements that have
+    a class of `myclass`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''.myclass/../'')`: selects all elements that are children of the parent
+    of an element that has a class of `myclass`. In other words, it selects all elements
+    that have a class of `myclass`, along with their sibling elements'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''.myclass/../p'')`: selects all elements matched by `<p>` that are children
+    of the element that has a class of `myclass`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s look at some sample HTML to help understand this one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$(''span.myclass/..'')` selects `<p id="secondp">`, because it is the parent
+    of `<span class="myclass">`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''#firstp/../'')` selects `<p id="firstp">, <div id="subdiv">`, and `<p
+    id="secondp">`, because the selector (a) starts with `<p id="firstp">`, (b) traverses
+    up one level in the DOM tree (to the first top-level `<div>` element), and (c)
+    selects all children of that `<div>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(''.myclass/../../p'')` selects `<p id="firstp">` and `<p id="secondp">`,
+    because the selector (a) starts with `<span class="myclass">`, (b) traverses up
+    two levels in the DOM tree (to the first top-level `<div>` element), and (c) selects
+    all `<p>` elements that are children of that `<div>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Contains: [F]'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that contain an element matched by `F`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''div[p]'')`: selects all elements matched by `<div>` that contain an element
+    matched by `<p>`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p[.myclass]'')`: selects all elements matched by `<p>` that contain an
+    element with a class of `myclass`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This selector is like the reverse of the descendant selector (either `E//F`
+    or `E F`), in that it selects all elements that have a descendant element matched
+    by `F` instead of all elements matched by `F` that are descendants of some other
+    element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The XPath *contains* selector is not to be confused with the CSS *attribute*
+    selector, which shares this syntax. jQuery uses the XPath-style expression for
+    attribute selectors too, as discussed in the *Attribute Selectors* section below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attribute Selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Because jQuery supports both CSS and XPath-style expressions and the two conflict
+    in their use of square brackets, jQuery adopts the XPath notation for attribute
+    selectors, beginning them with the `@` symbol.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When using any of the following attribute selectors, we should account for attributes
+    that have multiple, space-separated values. Since these selectors see attribute
+    values as a single string, this selector, for example, `$('[a@rel=nofollow]')`,
+    will select `<a rel="nofollow" href="example.html">Some text</a>` but *not* `<a
+    rel="nofollow self" href="example.html">Some text</a>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Attribute values in selector expressions can be written as bare words or surrounded
+    by quotation marks. Therefore, the following variations are equally correct:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'bare words: `$(''[a@rel=nofollow self]'')`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'double quotes inside single quotes: `$(''[a@rel="nofollow self"]'')`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'single quotes inside double quotes: `$("[a@rel=''nofollow self'']")`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'escaped single quotes inside single quotes: `$(''[a@rel=\''nofollow self\'']'')`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'escaped double quotes inside double quotes: `$("[a@rel=\"nofollow self\"]")`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The variation we choose is generally a matter of style or convenience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Has Attribute: [@foo]'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that have the `foo` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''a[@rel]'')`: selects all elements matched by `<a>` that have a `rel` attribute'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p[@class]'')`: selects all elements matched by `<p>` that have a `class`
+    attribute'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on this attribute selector, see the introduction to *Attribute
+    Selectors* above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Attribute Value Equals: [@foo=bar]'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Elements that have the `foo` attribute with a value exactly equal to `bar`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''a[@rel=nofollow]'')`: selects all elements matched by `<a>` that have
+    a `rel` value exactly equal to `nofollow`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''input[@name=myname]'')`: selects all elements matched by `<input>` that
+    have a `name` value exactly equal to `myname`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on this attribute selector, see the introduction to *Attribute
+    Selectors* above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Attribute Value Does Not Equal: [@foo!=bar]'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that do *not* have the `foo` attribute with a value exactly equal
+    to `bar`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''a[@rel!=nofollow]'')`: selects all elements matched by `<a>` that do not
+    have a `rel` attribute with a value exactly equal to `nofollow`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''input[@name!=myname]'')`: selects all elements matched by `<input>` that
+    do not have a `name` attribute with a value exactly equal to `myname`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since these selectors see attribute values as a single string, `$('[a@rel!=nofollow]')`
+    we *will* select `<a rel="nofollow self" href="example.htm">Some text</a>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we need to select only `<a>` elements that do not have `nofollow` anywhere
+    within their `rel` attribute, we can use the following selector expression instead:
+    `$(''a:not([@rel*=nofollow])'')`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Attribute Value Begins: [@foo^=bar]'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that have the `foo` attribute with a value *beginning* exactly
+    with the string `bar`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''a[@rel^=no]'')`: selects all elements matched by `<a>` that have a `rel`
+    attribute value beginning with `no`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''input[@name^=my]'')`: selects all elements matched by `<input>` that have
+    a `name` value beginning with `my`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since these selectors see attribute values as a single string, `$('[a@rel^=no]')`
+    will select `<a rel="nofollow self" href="example.htm">Some text</a>` but *not*
+    `<a rel="self nofollow" href="example.htm">Some text</a>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Attribute Value Ends: [@foo$=bar]'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that have the `foo` attribute with a value ending exactly with
+    the string `bar`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''a[@href$=index.htm]'')`: selects all elements matched by `<a>` that have
+    an `href` value ending with `index.htm`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''a[@rel$=self]'')`: selects all elements matched by `<p>` that have a `class`
+    value ending with `bar`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Since these selectors see attribute values as a single string, `$('[a@rel$=self]')`
+    will select `<a rel="nofollow self" href="example.htm">Some text</a>` but *not*
+    `<a rel="self nofollow" href="example.htm">Some text</a>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Attribute Value Contains: [@foo*=bar]'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that have the `foo` attribute with a value *containing* the substring
+    `bar`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''p[@class*=bar]'')`: selects all elements matched by `<p>` that have a
+    `class` value containing `bar`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''a[@href*=example.com]'')`: selects all elements matched by `<a>` that
+    have an `href` value containing `example.com`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is the most generous selector of the jQuery attribute selectors that match
+    against a value. It will select an element if the selector's string appears anywhere
+    within the element's attribute value. Therefore, `$('p[@class*=my]')` will select
+    `<p class="yourclass myclass">Some text</p>, <p class="myclass yourclass">Some
+    text</p>`, *and* `<p class="thisismyclass">Some text</p>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Form Selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The following selectors can be used to access form elements in a variety of
+    states. When using any of the form selectors other than `:input`, providing a
+    tag name as well is recommended (for example, `input:text`, rather than `:text`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: All form elements (`<input>` (all types), `<select>, <textarea>, <button>`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All text fields (`<input type="text">`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All password fields (`<input type="password">`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All radio fields (`<input type="radio">`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All checkbox fields (`<input type="checkbox">`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All submit inputs and button elements (`<input type="submit">, <button>`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All image inputs (`<input type="image">`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All reset buttons (`<input type="reset">`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All button elements and input elements with a type of `button` (`<button>,<input
+    type="button">`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All user interface elements that are enabled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All user interface elements that are disabled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All user interface element—checkboxes and radio buttons—that are checked
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All elements, including `<input type="hidden" />`, that are hidden
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For more information, see the discussion on `:hidden` in the *Custom Selectors*
+    section below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom Selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The following selectors were added to the jQuery library as an attempt to address
+    common DOM traversal needs not met by either CSS or basic XPath.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even Element (:even) Odd Element (:odd)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All elements with an even index:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`:even`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All elements with an odd index:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`:odd`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:even'')`: selects all elements matched by `<li>` that have an even
+    `index` value'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''tr:odd'')`: selects all elements matched by `<tr>` that have an odd `index`
+    value'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Because the custom `:even` and `:odd` pseudo-classes match elements based on
+    their `index`, they use JavaScript's native zero-based numbering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Somewhat counter-intuitively, therefore, `:even` selects the first, third, fifth
+    (and so on) elements while `:odd` selects the second, fourth, sixth (and so on)
+    elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The one exception to this rule is the `:nth-child(n)` selector, which is one-based.
+    So, `:nth-child(even)` selects the second, fourth, sixth (and so on) child element
+    of its parent. Also worth noting is the lack of a colon preceding `even` or `odd`
+    when used with `:nth-child()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nth Element (:eq(n), :nth(n))
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The element with index value equal to n.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:eq(2)'')`: selects the third `<li>` element'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p:nth(1)'')`: selects the second `<p>` element'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Because the JavaScript `index` is zero-based, `:eq(0)` and `:nth(0)` select
+    the first matched element, `:eq(1)` and `:nth(1)` select the second, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Greater Than :gt(n)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements with index greater than N.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:gt(1)'')`: selects all elements matched by `<li>` after the second
+    one'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''a:gt(2)'')`: selects all elements matched by `<a>` after the third one'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Because the JavaScript `index` is zero-based, `:gt(1)` selects all matched
+    elements beginning with the third one, `:gt(2)` selects all matched elements beginning
+    with the fourth, and so on. Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`$(''li:gt(1)'')` selects `<li id="third">` and `<li id="fourth">`, because
+    their `indexes` are greater than `1`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`$(li:gt(2)'')` selects `<li id="fourth">`, because its `index` is greater
+    than `2`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Less Than : lt(n)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements with index less than `N`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:lt(2)'')`: selects all elements matched by `<li>` element before the
+    third one; in other words, the first two `<li>` elements'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''p:lt(3)'')`: selects all elements matched by `<p>` elements before the
+    fourth one; in other words the first three `<p>` elements'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Because the JavaScript `index` is zero-based, `:lt(2)` selects the first two
+    matched elements, or all matched element before the third one; `:lt(3)` selects
+    the first three matched elements, or all matched elements before the fourth; and
+    so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First :first
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first instance of an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:first'')`: selects the first `<li>` element'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''a:first'')`: selects the first `<a>` element'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `:first` pseudo-class is shorthand for `:eq(0)`. It could also be written
+    as `:lt(1)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Last :last
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The last instance of an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:last)`: selects the last `<li>` element'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''#container .myclass:last)`: selects the last element that has a `class`
+    of `myclass` and is a descendant of the element with an `id` of `container`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While `:first` has equivalent selectors (nth(0) and `eq(0))` the `:last` pseudo-class
+    is unique in its ability to select only the last element in the set of matched
+    elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Parent :parent
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that are the parent of another element, including text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$('':parent'')`: selects all elements that are the parent of another element,
+    including text'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(td:parent'')`: selects all elements matched by `<td>` that are the parent
+    of another element, including text'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The W3C recommends that the `<p>` element have at least one child node, even
+    if that child is merely text (see [http://www.w3.org/TR/html401/struct/text.html#edef
+    P](http://www.w3.org/TR/html401/struct/text.html#edef)). For example, some elements,
+    on the other hand, are empty (i.e. have no children) by definition:`<input>, <img>,
+    <br>`, and `<hr>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One important thing to note with `:parent` (and `:empty)` is that child elements
+    include text nodes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Contains :contains(text)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that contain the specified text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''p:contains(nothing special)'')`: selects all elements matched by `<p>`
+    that contain the text `nothing special`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''li:contains(second)'')`: selects all elements matched by `<li>` that contain
+    the text `second`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The matching text can appear in the selector element or in any of that element''s
+    descendants. Therefore, example 1 would still select the following paragraph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: As with attribute value selectors, text inside the parentheses of `:contains()`
+    can be written as bare words or surrounded by quotation marks. Also, the text
+    must have matching case to be selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visible :visible
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that are visible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:visible'')`: selects all elements matched by `<li>` that are visible'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''input:visible'')`: selects all elements matched by `<input>` that are
+    visible'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Discussion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `:visible` selector includes items that have a display of `block` or `inline`
+    (or any other value other than `none)` and a visibility of `visible`. Form elements
+    that have `type="hidden"` are excluded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's important to note that elements will be selected by the `:visible` pseudo-class
+    even if their parent (or other ancestor) element has a display of `none`, as long
+    as they themselves have a display of `block` or `inline` (or any other value other
+    than `none)`. Therefore, it's possible for an element to be hidden from view but
+    still be selected by `:visible`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although `<div id="child">` is not visible on the web page because of its parent
+    `<div>'s` display property, it is still selected by `$('div:visible')`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hidden :hidden
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All elements that are hidden
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`$(''li:hidden)`: selects all elements matched by `<li>` that are hidden'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`$(''input:hidden)`: selects all elements matched by `<input>` that are hidden'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Description
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The `:hidden` selector includes elements that have a CSS declaration of `display:none`
+    or `visibility:hidden`, as well as form elements with `type="hidden"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If an element is hidden from view only because its parent (or other ancestor)
+    element has a display of `none` or visibility of `hidden`, it will not be selected
+    by `:hidden` when its own `display` property isn't `none` and its `visibility`
+    property isn't `hidden`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although the child `<div>` is not visible on the web page because of its parent
+    `<div>`'s display property, `$('div:hidden')` only selects `<div id="parent">`.
+  prefs: []
+  type: TYPE_NORMAL
