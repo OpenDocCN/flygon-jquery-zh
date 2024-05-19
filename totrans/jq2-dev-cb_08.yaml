@@ -461,6 +461,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 更新插件的 `$scope.init()` 函数如下所示：
 - en: '[PRE11]'
   id: totrans-69
   prefs:
@@ -472,6 +473,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将以下 jQuery 代码添加到 `recipe-3.js` 中以初始化滑块插件：
 - en: '[PRE12]'
   id: totrans-71
   prefs:
@@ -483,6 +485,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将以下 CSS 代码添加到 `slider.css` 中：
 - en: '[PRE13]'
   id: totrans-73
   prefs:
@@ -495,22 +498,26 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 Web 浏览器中打开 `recipe-3.html`，您将看到一个动态创建的图像和内容滑块。
 - en: How it works…
   id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 工作原理…
 - en: The HTML page sets up the required HTML for the slider plugin. There is a container
     division with children that the slider plugin will use as slides. The children
     can be either division elements or images.
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: HTML 页面设置了滑块插件所需的 HTML。有一个包含子项的容器分区，滑块插件将使用这些子项作为幻灯片。子项可以是分区元素或图像。
 - en: The jQuery code in `recipe-3.js` selects the `mySlider` division element and
     initializes the slider plugin.
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '`recipe-3.js` 中的 jQuery 代码选择 `mySlider` 分区元素并初始化滑块插件。'
 - en: 'The plugin template we created earlier takes care of the jQuery plugin setup.
     The functionality for our slider plugin goes inside the `init()` function. At
     the start of this function, the `slider-frame` class is added to the selected
@@ -520,6 +527,9 @@
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们之前创建的插件模板负责 jQuery 插件的设置。我们的滑块插件的功能放在 `init()` 函数中。在此函数的开头，将 `slider-frame`
+    类添加到选定的元素（`.mySlider`）中，以便它从 `slider.css` 样式表中继承一些基本样式。使用来自 `options` 对象的值，使用
+    jQuery `css()` 函数设置元素的宽度和高度，如下所示：
 - en: '[PRE14]'
   id: totrans-79
   prefs: []
@@ -531,6 +541,7 @@
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，使用 `$scope.$element.append('<ul class="slider-nav"></ul>');` 将空的无序列表插入到滑块中，该列表已准备好创建幻灯片导航。
 - en: 'The next section of the code sets up the slider for the animation. As explained
     in the *Creating an animated content slider* recipe in [Chapter 7](ch07.html "Chapter 7. User
     Interface Animation"), *User Interface Animation*, a slider needs the width of
@@ -540,6 +551,7 @@
   id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码的下一部分设置了动画的滑块。如在 [第 7 章](ch07.html "第 7 章。用户界面动画") *用户界面动画* 的 *创建动画内容滑块* 配方中所解释的，滑块需要其容器的宽度为其幻灯片的组合宽度，以便幻灯片可以浮动在一起，并使用动画移动到视图中，如下面的代码所示：
 - en: '[PRE15]'
   id: totrans-82
   prefs: []
@@ -553,6 +565,8 @@
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，选择滑块的子项（幻灯片），然后使用 jQuery `wrapAll()` 函数将其包装在一个分区元素中。该元素的宽度设置为幻灯片的个数乘以单个幻灯片的宽度。为了浮动每个幻灯片，使用
+    `css()` 函数设置 `float` 属性，如下面的代码所示：
 - en: '[PRE16]'
   id: totrans-84
   prefs: []
@@ -563,6 +577,7 @@
   id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 配置了每个幻灯片后，代码的下一步是为 `slider-nav` 无序列表元素添加每个幻灯片的列表项，以形成导航：
 - en: '[PRE17]'
   id: totrans-86
   prefs: []
@@ -574,6 +589,7 @@
   id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 插件的最后阶段是监听导航列表中锚元素的点击，代码如下，以允许用户使用此导航更改可见幻灯片：
 - en: '[PRE18]'
   id: totrans-88
   prefs: []
@@ -586,11 +602,14 @@
   id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 当用户点击链接时，使用 `animate()` 函数根据所选链接更改 `slider-content` 分区元素的左侧位置。在 [第 7 章](ch07.html
+    "第 7 章。用户界面动画") *用户界面动画* 的 *创建动画内容滑块* 配方中可以阅读更多相关信息。
 - en: There's more…
   id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 还有更多…
 - en: To add the popular auto-slider effect to this plugin, take a look back to the
     *Creating an animated content slider* recipe in [Chapter 7](ch07.html "Chapter 7. User
     Interface Animation"), *User Interface Animation*.
