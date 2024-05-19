@@ -382,11 +382,13 @@
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不意味着你应该在你的标记上给每个元素都标上ID。当有必要时，你应该继续在元素上使用ID，并使用`id`选择器快速找到它们或靠近它们的元素。
 - en: Caching your selectors
   id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 缓存你的选择器
 - en: Every call to jQuery to evaluate a selector is a significant investment of processing
     time. jQuery must first parse the selector, call DOM methods to execute the selector,
     and finally, convert the results into jQuery objects. Remember that the DOM is
@@ -396,17 +398,20 @@
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 对jQuery进行选择器评估的每次调用都是一个很大的处理时间投资。jQuery必须首先解析选择器，调用DOM方法执行选择器，最后将结果转换为jQuery对象。记住，DOM很慢。幸运的是，你可以缓存你的选择器。虽然你的代码第一次被调用时会有一个时间惩罚，但随后的调用速度会像他们能达到的那样快。
 - en: This method works as long as you aren't performing heavy DOM manipulation. By
     heavy, I mean adding or removing elements from the page or other things that make
     the cached selector invalid.
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 只要你不进行大量的DOM操作，这种方法就可以。通过大量，我是指在页面中添加或删除元素或使缓存选择器失效的其他操作。
 - en: Optimizing selectors
   id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 选择器优化
 - en: All selectors are not created equal. Choosing the right one can make a big difference
     in your application's performance, but choosing the right selector can be tricky.
     The following are a few tips to help you create the right selector. And remember,
@@ -414,11 +419,13 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有的选择器并不都是平等的。选择正确的选择器可以对你的应用程序性能产生很大的影响，但选择正确的选择器可能会有些棘手。以下是一些提示，可以帮助你创建正确的选择器。请记住，如果对性能感到不确定，请进行测量。
 - en: Right to left
   id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 从右到左
 - en: 'Deep in the core of jQuery is the Sizzle selector engine. Sizzle reads from
     right to left. So, your most specific selector should be on the right side. Imagine
     that we are trying to find a `<p>` tag with a class of `bubble`. How could we
@@ -426,6 +433,7 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在jQuery的核心深处是Sizzle选择器引擎。Sizzle从右往左读取。所以，你最具体的选择器应该在右边。想象一下，我们正在尝试找到一个具有`bubble`类的`<p>`标签。我们如何优化选择器呢？让我们看一个例子：
 - en: '[PRE8]'
   id: totrans-55
   prefs: []
@@ -437,6 +445,7 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的第一个尝试看起来很好。但我们知道最具体的选择器应该在最右边，所以我们在第二个例子中稍微改变了一下：
 - en: '[PRE9]'
   id: totrans-57
   prefs: []
@@ -448,11 +457,13 @@
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数浏览器中，这样做比第一个例子稍微快一些。在以前的jQuery版本中，差异更大。但不要担心；我们还有更多的优化。
 - en: Reducing overly specific selectors
   id: totrans-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 减少过于具体的选择器
 - en: As developers, we tend to overdo things sometimes. This is especially bad when
     defining selectors. If you add more selectors than required in order to find the
     element you are looking for, you make jQuery do more work than required. Try to
@@ -460,10 +471,12 @@
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为开发者，有时候我们会过度做一些事情。尤其在定义选择器时。如果你添加比所需更多的选择器来找到你要找的元素，你会让jQuery做更多的工作。尽量减少你的选择器，只留下必需的部分。
 - en: 'Let''s look at an example:'
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看一个例子：
 - en: '[PRE10]'
   id: totrans-62
   prefs: []
@@ -475,21 +488,25 @@
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个选择器比以前的例子慢了。你的选择器应该足够具体，可以找到所需的元素，但不要过于具体。
 - en: Narrowing your search
   id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 缩小你的搜索范围
 - en: By default, jQuery will search the entire document, looking for matches to your
     query. Help it out by narrowing your search.
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，jQuery将搜索整个文档，寻找与你的查询匹配的内容。通过缩小你的搜索范围，来帮助它进行搜索。
 - en: 'What if we want to be faster still without polluting our markup with excessive
     IDs? We take advantage of the nearest parent tag that has an ID to the following:'
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想要更快，而不在标记上加入过多的ID会怎么样？我们可以利用最近具有ID的父标签来执行如下操作：
 - en: '[PRE11]'
   id: totrans-67
   prefs: []
@@ -500,16 +517,19 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 其他jQuery优化
 - en: The optimizations to come can be better termed rules of thumb. They will make
     your code faster but not drastically so. And luckily, they are easy to follow.
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 将要来的优化可能最好称为经验法则。它们会让你的代码变得更快，但不会有很大的变化。而且幸运的是，它们很容易遵循。
 - en: Updating to the latest version
   id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 更新到最新版本
 - en: Updating to the latest version is probably one of the easiest things you can
     do in order to speed up your jQuery code. You should always exercise care when
     upgrading to a new version of jQuery, but the upgrades usually bring improved
