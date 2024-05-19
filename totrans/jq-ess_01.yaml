@@ -1,45 +1,65 @@
 - en: Chapter 1. jQuery Part by Part
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第1章.逐步学习jQuery
 - en: jQuery is hands down the most popular JavaScript library on the Internet. According
     to [http://builtwith.com](http://builtwith.com), it is used by over 87% of the
     websites that use a JavaScript library. That is an amazing amount of penetration.
     It is hard to believe that jQuery has only been around since 2006.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery无疑是互联网上最受欢迎的JavaScript库。根据[http://builtwith.com](http://builtwith.com)的数据，它被超过87%的使用JavaScript库的网站使用。这是惊人的渗透率。很难相信jQuery自2006年以来一直存在。
 - en: 'In this chapter, we will start to get you familiar with jQuery. We will cover
     the following topics:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们将开始让您熟悉jQuery。我们将涉及以下主题：
 - en: Why was jQuery created?
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么会创建jQuery？
 - en: The major components of jQuery
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: jQuery的主要组成部分
 - en: Why are there two maintained versions of jQuery?
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么jQuery存在两个维护版本？
 - en: What is a content delivery network?
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是内容交付网络？
 - en: Life before jQuery
+  id: totrans-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: jQuery出现之前的生活
 - en: 2006 may not seem that long ago, but it is almost a lifetime in Internet years.
     If you don't agree, think about what kind of cellphone you had then, if you had
     one. At that time, the four most popular browsers were Internet Explorer, Firefox,
     Safari, and Opera. What about Chrome? It didn't exist yet, and it wouldn't come
     along until late 2008\. Internet Explorer, used by over 80% of users, was by far
     the most popular.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2006年也许并不久远，但它在互联网年代几乎就是一个世纪。如果你不同意，那么想想当时你用的是什么样的手机，如果你有的话。那个时候，最受欢迎的四款浏览器是Internet
+    Explorer、Firefox、Safari和Opera。Chrome呢？那时还没有，直到2008年末才出现。在超过80%的用户中使用的Internet
+    Explorer是迄今最受欢迎的浏览器。
 - en: At that time, Microsoft didn't seem too concerned with being standards-compliant.
     Why should they? They had over 80% of the market. If a website had to choose,
     they usually chose to work with IE. But the winds of change were already blowing.
@@ -47,15 +67,19 @@
     The other browsers, led by Firefox, were slowly but surely chipping away at that
     lead. Lots of people, including developers, were switching to alternative browsers
     and they wanted websites that worked on them.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 当时，微软似乎并不太关心是否符合标准。为什么要这样做呢？他们占据80%以上的市场份额。如果一个网站必须选择，他们通常会选择与IE合作。但变革的风声已经如潮，80%可能看起来像是一个无法逾越的领先优势，但两年前，这个数字是超过90%。由Firefox等其他浏览器领导的其他浏览器正在慢慢地削弱这一领先优势。许多人，包括开发者，正在转向其他浏览器，他们希望能在上面运行的网站。
 - en: Unfortunately, writing web applications is tough now and it was worse then.
     JavaScript is not the friendliest programming language around. But JavaScript
     was not the problem; browsers were the problem. The same code ran on different
     browsers and behaved differently. On one, it ran perfectly; on another, it crashed,
     leaving users frustrated.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，编写Web应用程序现在很困难，过去更糟。JavaScript不是最友好的编程语言。但JavaScript并不是问题，问题是浏览器。相同的代码在不同的浏览器上运行得不同。在一个上，它完美运行；在另一个上，它崩溃，令用户感到沮丧。
 - en: 'To understand how differences in browser implementations could result in lots
     of extra work for developers, let''s take a look at implementing a JavaScript
     Ajax call. In 2006, the **W3C** (**World Wide Web Consortium**) standards didn''t
@@ -68,33 +92,43 @@
     work on all browsers, developers had to write, test, and maintain twice as much
     code as they should: a set of code for IE and another set of code for everybody
     else.'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解浏览器实现的差异如何会导致开发者额外的工作量，让我们来看一下实现JavaScript Ajax调用。在2006年，**W3C**（**万维网联盟**）的标准并没有涵盖到`XMLHttpRequest`对象，这个对象是所有Ajax请求的核心。微软在1999年就用Internet
+    Explorer 5实现了这项技术。不幸的是，他们选择将其实现为一个ActiveX控件。ActiveX是微软的专有技术，其他浏览器无法以相同的方式实现它。Mozilla、Safari和Opera选择将其实现为一个对象附加到全局窗口。因此，为了在所有浏览器上添加可以工作的Ajax网站，开发者必须编写、测试和维护两倍多的代码：一套是为IE设计的，另一套是为其他浏览器设计的。
 - en: 'Are you thinking how hard could it be to detect whether the browser was IE
     and do something different? Well, you are right it isn''t that hard to detect
     which browser your code is running, but it is hard to do it reliably because browsers
     can lie. According to the W3C standard, the way to detect the browser is simple:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This property is supposed to return the name of the browser, but if you try
     it on Chrome, Safari, or Internet Explorer, they all return the same value, "Netscape".
     What gives? As I already said, browsers can lie.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '**Downloading the example code**'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: You can download the example code files from your account at [http://www.packtpub.com](http://www.packtpub.com)
     for all the Packt Publishing books you have purchased. If you purchased this book
     elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
     and register to have the files e-mailed directly to you.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'During the 90s, websites began to detect which browsers were visiting them.
@@ -104,6 +138,7 @@
     of Illinois Urbana-Champaign. At this time, the real battle for browser supremacy
     raged between Microsoft and Netscape. The companies fought by adding new features
     to their browsers.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: One of the features that Netscape added to their browser was the frame element.
@@ -116,6 +151,7 @@
     So, IE began to lie. It returned Netscape from `window.navigator.appName` and
     included Mozilla in its user agent. Now, for historical compatibility, many other
     browsers lie too.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two ways to deal with browser compatibility issues. The first way
@@ -127,21 +163,26 @@
     code to write, it is much more beneficial to users. If the feature isn''t supported
     in one version of a browser, it may be supported in the next. Feature detection
     is the method used in jQuery.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '**Best practice**'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: Use feature detection, not browser detection. If you need to write code to detect
     a feature yourself instead of using jQuery or some other third-party solution
     such as Modernizr, always use feature detection and never use browser detection.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: Why was jQuery created?
+  id: totrans-24
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -150,9 +191,11 @@
     on the available browsers. In fact, jQuery's motto is "write less, do more". One
     of the goals of jQuery is to free developers from writing plumbing code and concentrate
     on adding functionalities to their websites instead.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: The major components of jQuery
+  id: totrans-26
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -160,9 +203,11 @@
     for the first time can be mind-numbing. It lists over 300 different methods. Don't
     freak out; there is a method to the madness. Most of the API methods can be divided
     into just a few categories.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: The DOM selection
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -173,15 +218,18 @@
     `document.getElementsByClassName`, and so on. But the interface of jQuery is much
     cleaner than any of these methods. jQuery uses CSS-style selectors to parse the
     DOM, and it consistently returns a jQuery object as an array of zero or more elements.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: The document methods return different things depending on which method you call.
     If you call `document.getElementById`, it returns either an element object or
     null if the element is not found. For `document.getElementsByClassName`, it returns
     `HTMLCollection`, an array-like object.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: DOM manipulation
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -189,9 +237,11 @@
     jQuery has an extensive set of manipulation methods. The built-in document methods
     can't compare. jQuery's methods allow you to delete or replace markups. You can
     also insert a new markup before, after, or surrounding the old markup.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: Events
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -199,18 +249,22 @@
     modern browsers all pretty much follow the standards, this wasn't the case a few
     years ago. jQuery makes it possible to support both modern and old browsers from
     the same code base.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: Form
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A good number of websites on the Internet have one or more forums to send user
     information back to a web server. These methods make it easier to send the information
     back to a server.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: CSS and animation
+  id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -218,15 +272,18 @@
     locations and dimensions of elements. Unlike the built-in JavaScript methods,
     they do far more than simply reading the class attributes' string; they allow
     you to add, remove, toggle, and check for the presence of a class.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: Animation methods are simple but add polish to your website. No longer do you
     have to settle for a markup, which appears or disappears; now, it fades in or
     out or even slides in or out. And if you are so inclined, you can use jQuery's
     effect framework to create your own custom animation effects.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: Ajax
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -234,9 +291,11 @@
     if you don't need to support legacy browsers, jQuery's Ajax methods are much cleaner
     than those of the browser. They also have built-in support for asynchronous success
     and error functions and even return a JavaScript promise object.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: Helpers
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -244,9 +303,11 @@
     to iterate over a collection. jQuery also adds methods to determine the type of
     a JavaScript object, and it functions strangely missing from the language. Plus,
     it adds other methods that don't fit neatly into a category.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
 - en: Why are there two maintained versions of jQuery?
+  id: totrans-44
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -256,6 +317,7 @@
     inconsistencies in the interface, there were lots of deprecated methods, and there
     was lots of code in need of thorough cleaning. So, the version 1.9 release consisted
     of jQuery and the jQuery Migrate plugin.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: The jQuery development team believed 1.9 was such a huge change that they created
@@ -264,6 +326,7 @@
     it console logged the use of deprecated methods. This gave developers a working
     site and a way to know what things needed to be fixed. The production version
     doesn't do any extra logging.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: The 2.0 version came out a few months later, and it brought a friend. The development
@@ -273,6 +336,7 @@
     The difference was dramatic. The minimized version of jQuery 1.10 is 93 KB, while
     the minimized version of jQuery 2.0 clocks in at 83 KB, a nearly an 11% reduction
     in size.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'So, for now and the foreseeable future, there will be two versions of jQuery:
@@ -280,9 +344,11 @@
     6, 7, and 8\. The 2.x version supports all modern browsers, including IE versions
     9 and higher. It is important to note that both versions have the same API, though
     their internals are different.'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: The difference between minified and un-minified versions
+  id: totrans-49
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -294,17 +360,24 @@
     and internal methods. Minification decreases the download time of the file. The
     development version of jQuery 2.1.1 is 247 KB, while the production version is
     only 84 KB.'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于每个 jQuery 的分支，都有两个版本：压缩和非压缩。非压缩版本仅用于开发。它允许你在调试时轻松步进 jQuery 代码，并提供更有意义的堆栈跟踪。压缩版本应该用于生产。它经过压缩，删除了所有不必要的空白和
+    JavaScript 变量和内部方法的重命名。压缩减少了文件的下载时间。jQuery 2.1.1 的开发版本为 247 KB，而生产版本仅为 84 KB。
 - en: Should the need ever arise to debug the minified version of jQuery, you can
     download the source map file. A source map allows you to have access to the original
     debug information and is supported by all modern browsers, including IE.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果有必要调试压缩版本的 jQuery，可以下载源映射文件。源映射允许您访问原始调试信息，并受到所有现代浏览器的支持，包括 IE。
 - en: What is a content delivery network?
+  id: totrans-52
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 什么是内容传送网络？
 - en: The faster your site loads, the more visitors are encouraged to return later.
     Another way to speed up your load time is to use a **content delivery network**,
     or **CDN**. The magic of a CDN is twofold. First, CDNs are usually located on
@@ -317,12 +390,18 @@
     that your site needs and has already cached it locally on the user's machine.
     So, when your site asks for it, voila, it is already there, and your site gets
     a nice performance boost for free.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 网站加载速度越快，就越能鼓励游客以后返回。加快页面加载速度的另一种方法就是使用**内容传送网络**，或**CDN**。CDN 的魔力有两个方面。首先，CDN
+    通常位于边缘服务器上，这意味着它们不是在单个物理位置托管，而是分布在互联网的多个位置。这意味着它们可以更快地被找到和下载。其次，浏览器通常会在用户的机器上缓存静态文件，加载本地文件比从互联网下载快得多。许多大大小小的公司都使用
+    CDNs。因此，有可能其中一家公司正在使用你网站所需的相同副本的 jQuery，并已经在用户的机器上本地缓存。因此，当你的网站需要它时，它已经存在，你的网站免费获得了良好的性能提升。
 - en: Summary
+  id: totrans-54
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: Modern browsers are far more capable than their nearly forgotten ancestors.
     It would be easy for a new web developer to wonder why jQuery exists. In this
     chapter, we explored the reasons for its existence by taking a look at what web
@@ -330,5 +409,9 @@
     major components. We learned why it makes sense for jQuery to have two maintained
     versions and why each version has two different forms. In the next chapter, we
     will start digging into the API and learn how to write selectors and filters.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现代浏览器比它们几乎被遗忘的祖先功能更强大。一位新的 web 开发人员会很容易想知道为什么 jQuery 存在。在本章中，我们通过看看 jQuery 出现的原因来探讨它的存在的原因，以及在
+    jQuery 出现之前 web 开发的情况。然后，我们将 jQuery 的 API 分解成易于理解的主要组件。我们了解了为什么 jQuery 有两个维护的版本，以及每个版本为什么有两个不同的形式。在下一章中，我们将开始深入研究
+    API，学习如何编写选择器和过滤器。
