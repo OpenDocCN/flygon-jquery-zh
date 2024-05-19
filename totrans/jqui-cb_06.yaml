@@ -290,6 +290,9 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在这里定义的 CSS 规则是为了使 `ui-state-highlight` 类在应用于菜单项时能够正常运行。首先，使用 `.ui-menu` `.ui-menu-item`
+    选择器，我们将 `margin` 设置为在应用 `ui-state-highlight` 类后适当对齐菜单项的内容。我们还给每个菜单项一个不可见的 `border`，以防止鼠标进入和鼠标离开事件将菜单项挤出位置。接下来的选择器，`.ui-menu`
+    `.ui-menu-item` `a.ui-state-highlight`，适用于我们将 `ui-state-highlight` 类应用于菜单项后。这些规则还控制了定位，并防止菜单失去对齐。
 - en: Moving over to the JavaScript code, you can see that we've provided the menu
     widget with a new `highlight` option. In our custom implementation of the `_create()`
     method, we call the original implementation of the same method before proceeding
@@ -303,11 +306,16 @@
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 切换到 JavaScript 代码，您可以看到我们为菜单部件提供了一个新的 `highlight` 选项。在我们自定义的 `_create()` 方法中，我们调用相同方法的原始实现，然后再添加我们的事件处理程序。由
+    jQuery UI 基础部件定义的 `_on()` 方法在这里用于将我们的事件处理程序绑定到 `click .ui-menu-item:has(a)` 事件；这个事件在
+    `menu` 部件内部也使用。在这个处理程序内部，我们从任何已经应用 `ui-state-highlight` 类的菜单项中删除它。最后，我们将 `ui-state-highlight`
+    类添加到刚刚点击的菜单项上，还添加了 `ui-corner-all` 类，该类通过主题属性定义了圆角元素。
 - en: Using effects with menu navigation
   id: totrans-43
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用菜单导航效果
 - en: There are several approaches we could take when it comes to applying effects
     to the menu widget. Where could we apply effects in the menu widget? The user
     hovers their mouse pointer over the menu items, which results in a state change.
@@ -322,26 +330,33 @@
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在应用效果到菜单部件时，我们可以采取几种方法。我们在菜单部件中哪些地方可以应用效果？用户将鼠标指针悬停在菜单项上，这会导致状态更改。用户展开子菜单。这两个动作是我们可以通过一些动画来提升视觉效果的主要交互。让我们看看如何使用尽可能少的
+    JavaScript 来解决这些效果，而不是使用 CSS 过渡。过渡是一个新兴的 CSS 标准，迄今为止，并非所有浏览器都支持它们使用标准语法。然而，按照渐进增强的思路，以这种方式应用
+    CSS 意味着即使在不支持它的浏览器中，基本的菜单功能也会正常工作。我们可以避免编写大量 JavaScript 来对菜单导航进行动画处理。
 - en: Getting ready
   id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备工作
 - en: For this example, we can use any standard menu HTML code. Ideally, it should
     have a submenu so we can observe the transitions applied to their expansion.
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这个示例，我们可以使用任何标准的菜单 HTML 代码。理想情况下，它应该有一个子菜单，这样我们就可以观察到它们展开时应用的过渡效果。
 - en: How to do it...
   id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何做...
 - en: First, let's define the CSS required for the transitions we want to be applied
     to the menu items and submenus as they change state.
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们定义所需的 CSS 过渡，以便在菜单项和子菜单在状态更改时应用。
 - en: '[PRE6]'
   id: totrans-49
   prefs: []
@@ -352,6 +367,7 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将介绍对菜单部件本身的一些修改，以控制任何给定菜单实例的动画功能。
 - en: '[PRE7]'
   id: totrans-51
   prefs: []
