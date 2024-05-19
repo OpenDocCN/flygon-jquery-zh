@@ -136,16 +136,19 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个问题——你在使用 jQuery 编写事件处理程序时有多少次使用过`.on()`，甚至`.off()`？我敢打赌答案可能是无数次。如果你之前没有使用过事件委托，那么你已经无意中使用了一半！
 - en: Event delegation relies on the use of **event propagation**, or event bubbling
     as it is sometimes known. It is the key to understanding how delegation works.
     Let's work through a quick example.
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 事件委托依赖于使用**事件传播**，有时也称为事件冒泡。这是理解委托工作原理的关键。让我们通过一个快速的示例来说明。
 - en: 'Imagine we''re using the following HTML code as the basis for a list:'
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下，我们正在使用以下 HTML 代码作为列表的基础：
 - en: '[PRE1]'
   id: totrans-22
   prefs: []
@@ -157,53 +160,63 @@
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里没有什么特别的——这是一个简单的示例。每当我们的锚点标签之一被点击时，都会触发一个点击事件。事件在三个阶段之一中分派：**捕获**，**目标**和**冒泡**。
 - en: 'It will be captured at the document root, work its way down until it hits its
     target (The `li` tag), before bubbling back up to the document root, as shown
     next:'
   id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将被捕获到文档根，在命中目标（`li`标签）之前向下工作，然后冒泡回文档根，如下所示：
 - en: document root
   id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 文档根
 - en: '`<html>`'
   id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<html>`'
 - en: '`<body>`'
   id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<body>`'
 - en: '`<div #container>`'
   id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<div #container>`'
 - en: '`<ul #list>`'
   id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<ul #list>`'
 - en: '`<li>`'
   id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<li>`'
 - en: '`<a>`'
   id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<a>`'
 - en: 'Yikes! This means that each time we''re clicking on a link, we''re effectively
     clicking on the whole document! Not great! It''s expensive on resources, and even
     if we were to add additional list items using code such as this:'
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 哎呀！这意味着每次点击链接时，实际上都在点击整个文档！不好！这会消耗资源，即使我们使用如下代码添加了额外的列表项：
 - en: '[PRE2]'
   id: totrans-33
   prefs: []
@@ -214,28 +227,33 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们会发现上述的点击处理程序不适用于这些项目。
 - en: Tip
   id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: The bubbling example used here is somewhat simplified, and doesn't show all
     the various phases. For a useful discussion, head over to the comments posted
     on Stack Overflow at [http://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing](http://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing).
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里使用的冒泡示例有些简化，并没有显示所有的各种阶段。要进行有用的讨论，请前往 Stack Overflow 上发布的评论 [http://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing](http://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing)。
 - en: Reworking our code
   id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 重新调整我们的代码
 - en: 'Instead of adding a directly bound handler, we can take advantage of event
     propagation, and rework our handler to listen for **descendant** anchors, instead
     of binding to existing anchor tags only. This can be seen in the following code:'
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以利用事件传播来重新调整我们的处理程序，监听**后代**锚点，而不是仅绑定到现有锚点标签。这可以在以下代码中看到：
 - en: '[PRE3]'
   id: totrans-39
   prefs: []
@@ -250,11 +268,13 @@
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码中唯一的区别是我们将`a`选择器移动到`.on()`方法的第二个参数位置。这将创建一个针对`#list`的单个事件处理程序，事件从`a`向上冒泡到`#list`。事件委托消除了创建多个事件处理程序的需要，这是一种浪费资源的做法——代码将同样适用于`#list`内现有的锚点标签，以及将来添加的任何锚点标签。
 - en: Tip
   id: totrans-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: If you would like to learn more about event delegation, then it is worth viewing
     the jQuery API documentation, which is at [http://learn.jquery.com/events/event-delegation/](http://learn.jquery.com/events/event-delegation/).
     The jQuery documentation also has a useful section on using `.on()` within delegated
@@ -262,11 +282,14 @@
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想了解更多关于事件委托的信息，建议查看 jQuery API 文档，网址是 [http://learn.jquery.com/events/event-delegation/](http://learn.jquery.com/events/event-delegation/)。jQuery
+    文档还有一个关于在委托事件中使用`.on()`的有用部分，网址是 [http://api.jquery.com/on/](http://api.jquery.com/on/)。
 - en: Supporting older browsers
   id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 支持旧版浏览器
 - en: 'A small point – if you need to rework older code, then you may see `.bind()`,
     `.live()`, or `.delegate()` as event handlers. All were used to delegate events
     prior to jQuery 1.7, but should now be replaced with `.on()`. In fact, the first,
