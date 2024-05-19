@@ -3,6 +3,7 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第5章。客户端模板化、JSON API和HTML5 Web 存储
 - en: We've come a long way already and we've got some pretty hefty default templates
     and boilerplates for business. In this chapter, we're going to simplify and focus
     on some other things. We are going to create an aggregating news site based off
@@ -11,55 +12,66 @@
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经走了很长一段路，为业务准备了一些相当庞大的默认模板和样板。在这一章中，我们将简化并专注于其他事项。我们将创建一个基于社交媒体的新闻聚合网站。到目前为止，我们一直非常重视渐进式增强。在本章中，我们将放弃这一点。这将需要JavaScript。
 - en: 'In this chapter you will learn the following:'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一章中，您将学到以下内容：
 - en: Client-side templating options
   id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 客户端模板化选项
 - en: JsRender
   id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: JsRender
 - en: Patching into JSON API (Twitter)
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 联接到 JSON API（Twitter）
 - en: Programmatically changing pages
   id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 以编程方式更改页面
 - en: Generated pages and DOM weight management
   id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 生成的页面和DOM权重管理
 - en: Leveraging RSS feeds (natively)
   id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 利用 RSS 订阅（本地化）
 - en: HTML5 Web Storage
   id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: HTML5 Web 存储
 - en: Leveraging the Google Feeds API
   id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 利用 Google Feeds API
 - en: Client-side templating
   id: totrans-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 客户端模板化
 - en: (In a grumpy old man's voice) Back in my day, we rendered all the pages on the
     server, and we liked it! LOL! Times are changing and we are seeing a massive ground
     swell in client-side templating frameworks. At their heart, they're pretty much
@@ -68,6 +80,7 @@
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: （以一个脾气暴躁的老人的声音）在我那个年代，我们在服务器上渲染所有页面，我们喜欢这样！哈哈！时代正在变化，我们看到客户端模板化框架的巨大潮流。它们的核心都差不多，即它们接收JSON数据并应用在一个包含在script标签中的基于HTML的模板上。
 - en: If you know what **JSON** is, skip this paragraph. I spent a little time last
     chapter discussing this, but just in case you skipped ahead and don't know, JSON
     is JavaScript written in such a way that it can be used as a data exchange format.
@@ -78,6 +91,7 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你知道**JSON**是什么，跳过这一段。上一章我花了一点时间讨论了这个问题，但是万一你跳过了并且不知道，JSON是用JavaScript编写的，以便可以用作数据交换格式。它比XML更高效，并且以面向对象的方式立即被浏览器解释。JSON甚至可以使用JSONP跨域请求数据。有关JSON的更多信息，请阅读[http://en.wikipedia.org/wiki/JSON](http://en.wikipedia.org/wiki/JSON)。有关JSONP的更多信息，请阅读[http://en.wikipedia.org/wiki/JSONP](http://en.wikipedia.org/wiki/JSONP)。
 - en: All these client-side libraries have some sort of notation in them to show where
     the data goes and gives ways to implement looping and conditionals. Some are "logic-less"
     and operate on the philosophy that there should be as little logic as possible.
@@ -85,6 +99,7 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些客户端库都有一些标记，显示数据的去向，并提供实现循环和条件语句的方法。有些是“无逻辑”的，并且根据尽可能少的逻辑的理念运行。如果你赞同这种美妙的学术方法，那太棒了。
 - en: Honestly, from a purely pragmatic perspective, I believe that the template is
     the perfect place for code. The more flexible, the better. JSON holds the data
     and the templates are used to transform it. To draw a parallel, XML is the data
@@ -96,112 +111,134 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 老实说，从纯粹实用的角度来看，我认为模板是代码的完美容器。越灵活越好。JSON保存数据，而模板用于转换数据。打个比方，XML是数据格式，XSL模板用于转换数据。没有人在XSL中抱怨逻辑；所以，我不明白为什么在JS模板中会成为问题。但是，所有这些讨论都是纯学术性的。最终，它们几乎都能做你想做的事情。如果你更多的是设计师而不是编码者，你可能会更多地关注无逻辑的模板。
 - en: Following is a fairly exhaustive list of client-side templating frameworks.
     I'll probably miss a few and there will inevitably be more by the time this book
     gets published, but it's a start.
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是一个相当详尽的客户端模板化框架列表。我可能会漏掉一些，而且到这本书出版时可能会有更多，但这是一个开始。
 - en: doT
   id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: doT
 - en: dust.js
   id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: dust.js
 - en: Eco
   id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Eco
 - en: EJS
   id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: EJS
 - en: Google Closure Templates
   id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Google Closure Templates
 - en: handlebars
   id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: handlebars
 - en: haml-js
   id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: haml-js
 - en: kite
   id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: kite
 - en: Jade
   id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Jade
 - en: jQote2
   id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: jQote2
 - en: jQuery templates (discontinued)
   id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: jQuery 模板（已停止）
 - en: jsRender / jsView
   id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: jsRender / jsView
 - en: Parrot
   id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Parrot
 - en: node-asyncEJS
   id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: node-asyncEJS
 - en: Nun
   id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Nun
 - en: Mu
   id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Mu
 - en: mustache
   id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: mustache
 - en: montage
   id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: montage
 - en: Stencil
   id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Stencil
 - en: underscore.js
   id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: underscore.js
 - en: Now, call me a fanboy, but, if it's officially jQuery, I love it. So, the first
     thing I tried was **jQuery Templates** . Sadly, shortly after learning to love
     it, the jQuery team abandoned the project and pointed people to **JsRender** as
