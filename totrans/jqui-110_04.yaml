@@ -180,6 +180,8 @@
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们在标签小部件中看到的，每个小部件都有其自己的源文件（尽管它可能依赖于其他文件来提供功能）；这些必须按正确的顺序引用，以使小部件正常工作。 jQuery库必须始终首先出现，然后是`jquery.ui.core.js`文件。之后，必须跟随包含所需依赖项的文件。这些文件应在引用小部件的
+    on-script 文件之前出现。如果文件没有按正确的顺序加载，则库组件将无法按预期的方式工作。
 - en: The underlying markup required for the accordion is flexible, and the widget
     can be constructed from a variety of different structures. In this example, the
     accordion headings are formed from links wrapped in the `<h2>` elements, and the
@@ -187,28 +189,33 @@
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于手风琴的底层标记是灵活的，小部件可以由各种不同的结构构建。在这个例子中，手风琴标题由包裹在`<h2>`元素中的链接组成，内容面板是简单的`<div>`元素。
 - en: For the accordion to function correctly, each content panel should appear directly
     after its corresponding header. All of the elements for the widget are enclosed
     within a `<div>` container that is targeted with the `accordion()` widget method.
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使手风琴正常工作，每个内容面板应该直接出现在其对应的标题之后。所有小部件的元素都被封装在一个`<div>`容器中，该容器被`accordion()`小部件方法所选中。
 - en: After the required script dependencies from the library, we use a custom `<script>`
     block to transform the underlying markup into the accordion.
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在从库中获取所需的脚本依赖项之后，我们使用自定义`<script>`块将底层标记转换为手风琴。
 - en: To initialize the widget, we use a simple ID selector `$("#myAccordion")`, to
     specify the element that contains the markup for the widget, and then chain the
     `accordion()` widget method after the selector to create the accordion.
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 要初始化小部件，我们使用一个简单的ID选择器`$("#myAccordion")`，指定包含小部件标记的元素，然后在选择器后面链式调用`accordion()`小部件方法来创建手风琴。
 - en: 'In this example, we used an empty fragment (`#`) as the value of the `href`
     attribute in our tab heading elements, such as:'
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中，我们在标签标题元素中使用空片段（`#`）作为`href`属性的值，例如：
 - en: '[PRE1]'
   id: totrans-33
   prefs: []
@@ -219,27 +226,32 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该注意，默认情况下，单击手风琴标题时不会跟随任何为手风琴标题提供的URL。
 - en: Similar to the tabs widget that we looked at in the previous chapter, the underlying
     markup that is transformed into the accordion has a series of classnames added
     to it when the widget is initialized.
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 与我们在上一章中看到的标签小部件类似，当小部件被初始化时，被转换为手风琴的底层标记具有一系列的类名添加到其中。
 - en: A number of different elements that make up the widget are given `role` and
     `aria-` attributes.
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些组成小部件的不同元素被赋予`role`和`aria-`属性。
 - en: Note
   id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: '**Accessible Rich Internet Applications** (**ARIA**) is a W3C recommendation
     for ensuring that rich-internet applications remain accessible to assisted technologies.'
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '**可访问的丰富互联网应用程序**（**ARIA**）是确保丰富互联网应用程序对辅助技术保持可访问性的W3C推荐。'
 - en: 'The accordion panels that are initially hidden from view are given the `aria-expanded
     = "false"` attribute to ensure that screen readers don''t discard or cannot access
     content that is hidden using `display: none`. This makes the accordion widget
@@ -249,11 +261,13 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '最初从视图中隐藏的手风琴面板被赋予`aria-expanded="false"`属性，以确保屏幕阅读器不会丢弃或无法访问使用`display: none`隐藏的内容。这使得手风琴小部件高度可访问；它阻止读者不必要地浏览可能被隐藏的大量内容，并告诉用户他们也可以展开或折叠面板，具体取决于`aria-expanded`属性的当前值。'
 - en: Styling the accordion
   id: totrans-40
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为手风琴添加样式
 - en: ThemeRoller is the recommended tool for choosing or creating the theme of the
     accordion widget, but there may be times when we want to considerably change the
     look and style of the widget beyond what is possible with ThemeRoller. In that
@@ -535,6 +549,7 @@
   id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，将手风琴的所有底层标记包装在一个新的容器元素中，如下所示：
 - en: '[PRE10]'
   id: totrans-85
   prefs: []
@@ -544,6 +559,7 @@
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，更改我们自定义 `<script>` 元素中的配置对象，使其如下所示：
 - en: '[PRE11]'
   id: totrans-87
   prefs: []
@@ -554,32 +570,38 @@
   id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 将更改保存为 `accordion6.html`。使用页面 `<head>` 元素中指定的 CSS 为新容器指定了固定的高度和宽度。
 - en: Note
   id: totrans-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: In most cases, you'll want to create a separate style sheet. For our purposes,
     with just a single selector and two rules, using the style tag in our HTML file
     is most convenient.
   id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数情况下，您将希望创建一个单独的样式表。对于我们的目的，只有一个选择器和两个规则，使用 HTML 文件中的样式标记最为方便。
 - en: 'The `heightStyle` option forces the accordion to take the entire height of
     its container, and restricting the width of the container naturally reduces the
     width of the widget too. This page should appear as follows:'
   id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 选项 `heightStyle` 强制手风琴占据整个容器的高度，限制容器的宽度自然也会减小小部件的宽度。这个页面应该显示如下：
 - en: '![Filling the height of its container](img/2209OS_04_04.jpg)'
   id: totrans-92
   prefs: []
   type: TYPE_IMG
+  zh: '![填充其容器的高度](img/2209OS_04_04.jpg)'
 - en: Using the accordion animation
   id: totrans-93
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用手风琴动画
 - en: 'The accordion widget comes with the built-in slide animation that is enabled
     by default, and has been present in all of our examples so far. Disabling this
     animation is as easy as supplying `false` as the value of the `animate` option.
@@ -589,6 +611,8 @@
   id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 手风琴小部件附带了默认启用的内置幻灯片动画，在我们所有的示例中都存在。禁用此动画只需将 `animate` 选项的值设为 `false` 即可。从页面的
+    `<head>` 元素中删除 `<style>` 标签，在 `accordion6.html` 中删除额外的容器 `<div>`，然后更改配置对象，使其如下所示：
 - en: '[PRE12]'
   id: totrans-95
   prefs: []
@@ -599,17 +623,21 @@
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 将其保存为 `accordion7.html`。这将导致每个内容面板立即打开，而不是在单击标头时漂亮地滑动打开。
 - en: An alternate animation has also been built into the widget—the `EaseOutBounce`
     animation. However, to use this alternate animation, we need to add a link to
     the `jquery.ui.effect.js` file.
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 小部件中还构建了另一种备用动画——`EaseOutBounce` 动画。然而，要使用这个备用动画，我们需要在 `jquery.ui.effect.js`
+    文件中添加一个链接。
 - en: 'Directly after the link to `jquery.ui.accordion.js` at the top of the `<head>`
     element, add the following line of code:'
   id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `<head>` 元素顶部的 `jquery.ui.accordion.js` 链接后，添加以下一行代码：
 - en: '[PRE13]'
   id: totrans-99
   prefs: []
@@ -620,6 +648,7 @@
   id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，更改我们自定义 `<script>` 元素中的配置对象，使其如下所示：
 - en: '[PRE14]'
   id: totrans-101
   prefs: []
@@ -632,73 +661,88 @@
   id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 将这些更改保存为 `accordion8.html`。尽管手风琴面板的关闭方式与之前的示例完全相同，但在打开时，它们会在动画结束时反弹几次。这是使动画更有趣的好方法，正如我们在这个示例中看到的那样，使用起来非常简单。
 - en: 'In addition to the two preconfigured animations, we can also use any of the
     different easing effects defined within the `jquery.ui.effect.js` file, including
     the following:'
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了两个预配置的动画之外，我们还可以使用 `jquery.ui.effect.js` 文件中定义的任何不同的缓动效果，包括以下内容：
 - en: '`easeInQuad`'
   id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInQuad`'
 - en: '`easeInCubic`'
   id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInCubic`'
 - en: '`easeInQuart`'
   id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInQuart`'
 - en: '`easeInQuint`'
   id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInQuint`'
 - en: '`easeInSine`'
   id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInSine`'
 - en: '`easeInExpo`'
   id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInExpo`'
 - en: '`easeInCirc`'
   id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInCirc`'
 - en: '`easeInElastic`'
   id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInElastic`'
 - en: '`easeInBack`'
   id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInBack`'
 - en: '`easeInBounce`'
   id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`easeInBounce`'
 - en: Each of these easing methods is complimented by `easeOut` and `easeInOut` counterparts.
     For the complete list, see the `jquery.ui.effect.js` file, or refer to the easing
     table in [Chapter 14](ch14.html "Chapter 14. UI Effects"), *UI Effects*.
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些缓动方法的每一个都有相应的 `easeOut` 和 `easeInOut` 对应方法。完整列表，请参见 `jquery.ui.effect.js`
+    文件，或参考 [第 14 章](ch14.html "第 14 章。UI Effects") 中的缓动表，*UI Effects*。
 - en: Note
   id: totrans-115
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: See the jQuery UI demo site for some great examples of the accordion effects
     at [http://jqueryui.com/accordion/](http://jqueryui.com/accordion/). The effects
     can be applied to any widget that can be animated, such as the accordion, tabs,
@@ -706,6 +750,8 @@
   id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [http://jqueryui.com/accordion/](http://jqueryui.com/accordion/) 查看 jQuery
+    UI 演示站点，以了解一些很棒的手风琴效果示例。这些效果可以应用于任何可以进行动画处理的小部件，例如手风琴、选项卡、对话框或日期选择器。
 - en: 'The easing effects don''t change the underlying animation, which will still
     be based on the slide animation. But they do change how the animation progresses.
     For example, we can make the content panels bounce both at the start and end of
