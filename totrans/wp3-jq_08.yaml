@@ -188,11 +188,16 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是使用捆绑的 WordPress 版本的缺点之一：它可能会落后于当前版本的 jQuery，直到下一个 WordPress 版本出来为止。我完全赞成保持在最新版本上，因为
+    jQuery 版本发布的主要目标不仅是提供新功能，而且不断简化和改进现有功能的性能和速度。如果 CDN 上提供的最新版本的 jQuery 大于捆绑的版本，请务必先`deregister`
+    jQuery，或者使用我们在[第三章](ch03.html "第三章。深入了解 jQuery 和 WordPress")学到的`if else`语句限制您的新版本，以便它仅在所需页面上的站点前端加载。否则，您可能会在使用捆绑的
+    WordPress 版本的插件中出现问题。
 - en: Stay current with the Google CDN
   id: totrans-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 与谷歌 CDN 保持最新
 - en: 'The best way to stay current is to simply use Google''s CDN. I covered this
     in [Chapter 2](ch02.html "Chapter 2. Working with jQuery in WordPress"), *Working
     with jQuery in WordPress*, and [Appendix A](apa.html "Appendix A. Appendix: jQuery
@@ -208,11 +213,16 @@
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 保持最新的最佳方式就是简单地使用谷歌的 CDN。我在[第二章](ch02.html "第二章。在 WordPress 中使用 jQuery")和[附录
+    A](apa.html "附录 A。附录：jQuery 和 WordPress 参考指南")中介绍了这一点。这里还有从谷歌 CDN 加载的额外优势。您的站点可以同时从谷歌
+    CDN 加载主要库以及其他本地 jQuery 脚本和附件，而不必从您的服务器一次加载 JavaScript、库和资源。好处是对于访问过其他加载自谷歌 CDN
+    的站点的用户，jQuery 将被缓存。务必查看[附录 A](apa.html "附录 A。附录：jQuery 和 WordPress 参考指南")，获取有关`wp_enque_script`的完整参考。
 - en: Stay in No Conflict mode
   id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 保持在**无冲突**模式下
 - en: 'The great thing about WordPress is that a site can have so many people contributing
     to it in lots of different ways: writing content, working on the theme, and adding
     WordPress plugins. One of the worst things about WordPress is that so many people
@@ -221,6 +231,8 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: WordPress 的一个伟大之处在于一个站点可以有很多人以许多不同的方式为其做贡献：撰写内容、工作在主题上，并添加 WordPress 插件。WordPress
+    的一个最糟糕之处在于，许多人可以轻松地根据他们的管理员状态为站点做出贡献，一些其他的合作者可以向他们添加，或者他们可以安装什么样的插件。
 - en: Staying in **No Conflict** mode is a must for WordPress. This in conjunction
     with using the `wp_enque_script` to load in WordPress will ensure that jQuery
     doesn't get "pushed out" if anyone loads up any other plugin that uses say MooTools
@@ -228,12 +240,15 @@
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 WordPress 来说，保持在**无冲突**模式下是必须的。这与使用`wp_enque_script`来在 WordPress 中加载确保 jQuery
+    不会被“挤出”是一起的，如果有人加载任何其他使用 MooTools 或 Scriptaculous 或甚至只是旧版本 jQuery 的插件。
 - en: It's easy to stay in `noConflict` mode. The easiest is what we've been doing
     throughout this whole book! Just use `jQuery` instead of the shortcut dollar sign
     (`$`) in front of your scripts.
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 保持在`noConflict`模式下很容易。最简单的方法就是我们在整本书中一直在做的！只需在脚本前使用`jQuery`，而不是快捷符号`$`。
 - en: '[PRE0]'
   id: totrans-28
   prefs: []
@@ -244,6 +259,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 确保主题或插件中的其他脚本使用 Script API
 - en: If you're using a theme or a plugin from a third party, take a look through
     the theme's `header.php` file or the plugin's PHP pages and double-check that
     all scripts have been loaded in using the `register` and `wp_enqueu_script` methods.
