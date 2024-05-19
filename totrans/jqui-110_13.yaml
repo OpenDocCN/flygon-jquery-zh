@@ -1901,11 +1901,13 @@
   id: totrans-293
   prefs: []
   type: TYPE_NORMAL
+  zh: 允许单独的可排序列表交换和共享可排序项也非常容易。这要归功于 `connectWith` 选项，它允许我们定义一个可排序容器数组，这些容器可以共享它们的可排序内容。
 - en: 'Let''s look at this in action. Change the underlying markup on the page, so
     that it appears as follows:'
   id: totrans-294
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看它是如何起作用的。更改页面上的底层标记，使其如下所示：
 - en: '[PRE40]'
   id: totrans-295
   prefs: []
@@ -1917,6 +1919,7 @@
   id: totrans-296
   prefs: []
   type: TYPE_NORMAL
+  zh: 页面上的一切与我们之前使用的内容非常相似。对于此示例，我们还需要一个新的样式表。在一个新文件中，添加以下样式：
 - en: '[PRE41]'
   id: totrans-297
   prefs: []
@@ -1928,6 +1931,8 @@
   id: totrans-298
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此保存为 `sortableConnected.css` 在 `css` 文件夹中。不要忘记在新页面的 `<head>` 中指向新样式表。最后，更改最后一个
+    `<script>` 元素，使其如下所示：
 - en: '[PRE42]'
   id: totrans-299
   prefs: []
@@ -1941,6 +1946,7 @@
   id: totrans-300
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此保存为 `sortable8.html`。我们仍然定义一个单一的配置对象，可以在两组可排序元素之间共享。`connectWith` 选项能够接受多个选择器，如果它们作为数组传递，正是这个选项允许我们在两个可排序容器之间共享个别可排序项。
 - en: This configuration option only provides a one-way transmission of sortables,
     so if we were to only use the configuration object with `sortablesA` and specify
     just the selector `#sortablesB`, we would only be able to move items from `sortablesA`
@@ -1948,27 +1954,33 @@
   id: totrans-301
   prefs: []
   type: TYPE_NORMAL
+  zh: 此配置选项仅提供可排序的单向传输，因此如果我们只使用配置对象与 `sortablesA` 并仅指定选择器 `#sortablesB`，我们只能从 `sortablesA`
+    移动项目到 `sortablesB`，而不能反之。
 - en: Specifying both sortables' `id` attributes in the option and selecting both
     of the containers when calling the `sortable()` method allows us to move items
     between both elements, and allows us to cut down on coding.
   id: totrans-302
   prefs: []
   type: TYPE_NORMAL
+  zh: 在选项中同时指定可排序的 `id` 属性，并在调用 `sortable()` 方法时选择两个容器，允许我们在两个元素之间移动项目，并且可以减少编码量。
 - en: 'When we run the page in a browser, we find that not only can the individual
     items be sorted in their respective elements, but that items can also be moved
     between elements, as shown in the following screenshot:'
   id: totrans-303
   prefs: []
   type: TYPE_NORMAL
+  zh: 在浏览器中运行页面时，我们发现不仅可以对各个项目在各自的元素中进行排序，还可以在元素之间移动项目，如下面的屏幕截图所示：
 - en: '![Connecting lists](img/2209OS_13_13.jpg)'
   id: totrans-304
   prefs: []
   type: TYPE_IMG
+  zh: '![连接列表](img/2209OS_13_13.jpg)'
 - en: Reacting to sortable events
   id: totrans-305
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 对可排序事件作出反应
 - en: 'In addition to the already large list of configurable options defined in the
     sortables class, there are also a whole lot more in the form of event callbacks,
     which can be passed as functions to execute at different points during a sortable
@@ -1976,69 +1988,85 @@
   id: totrans-306
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了在可排序类中已定义的可配置选项的大列表外，还有更多的事件回调形式的选项，它们可以作为函数传递，在可排序交互的不同点执行。这些列在下表中列出：
 - en: '| Event | Fired when… |'
   id: totrans-307
   prefs: []
   type: TYPE_TB
+  zh: '| 事件 | 当……时触发 |'
 - en: '| --- | --- |'
   id: totrans-308
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| `activate` | Sorting starts on a connected list. |'
   id: totrans-309
   prefs: []
   type: TYPE_TB
+  zh: '| `activate` | 在连接的列表上开始排序。 |'
 - en: '| `beforeStop` | The sort has stopped, but the original slot is still available.
     |'
   id: totrans-310
   prefs: []
   type: TYPE_TB
+  zh: '| `beforeStop` | 排序已停止，但原始插槽仍然可用。'
 - en: '| `change` | The DOM position of a sortable has changed and the sort is still
     in progress. |'
   id: totrans-311
   prefs: []
   type: TYPE_TB
+  zh: '| `change` | 可排序的 DOM 位置已更改，排序仍在进行中。 |'
 - en: '| `create` | The widget is initialized. |'
   id: totrans-312
   prefs: []
   type: TYPE_TB
+  zh: '| `create` | 小部件已初始化。 |'
 - en: '| `deactivate` | Sorting stops on a connected list. |'
   id: totrans-313
   prefs: []
   type: TYPE_TB
+  zh: '| `deactivate` | 在连接的列表上停止排序。 |'
 - en: '| `out` | A sortable is moved out of a connected list. |'
   id: totrans-314
   prefs: []
   type: TYPE_TB
+  zh: '| `out` | 可排序已从连接的列表中移出。 |'
 - en: '| `over` | A sortable is over a connected list. This is great for providing
     visual feedback while a sort is taking place. |'
   id: totrans-315
   prefs: []
   type: TYPE_TB
+  zh: '| `over` | 可排序是指与连接列表一起使用。这在排序进行时提供视觉反馈非常有用。'
 - en: '| `receive` | A sortable is received from a connected list. |'
   id: totrans-316
   prefs: []
   type: TYPE_TB
+  zh: '| `receive` | 从连接的列表中接收到可排序。 |'
 - en: '| `remove` | A sortable is moved from a connected list. |'
   id: totrans-317
   prefs: []
   type: TYPE_TB
+  zh: '| `remove` | 可排序从连接的列表中移动。 |'
 - en: '| `sort` | A sort is taking place. |'
   id: totrans-318
   prefs: []
   type: TYPE_TB
+  zh: '| `sort` | 排序正在进行。 |'
 - en: '| `start` | A sort starts. |'
   id: totrans-319
   prefs: []
   type: TYPE_TB
+  zh: '| `start` | 开始排序。 |'
 - en: '| `stop` | A sort ends. |'
   id: totrans-320
   prefs: []
   type: TYPE_TB
+  zh: '| `stop` | 结束排序。 |'
 - en: '| `update` | The sort has ended and the DOM position has changed. |'
   id: totrans-321
   prefs: []
   type: TYPE_TB
+  zh: '| `update` | 排序已结束，DOM 位置已更改。 |'
 - en: Each of the components that we've looked at in the preceding chapters has defined
     its own suite of custom events, and the sortables component is no exception.
   id: totrans-322
