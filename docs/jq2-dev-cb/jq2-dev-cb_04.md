@@ -775,7 +775,7 @@ $('.box').fadeOut().fadeIn().slideUp().slideDown().fadeTo(1000, 0.1).fadeTo(1000
       right: 21px;
       top: 13px;
     }
-    ````
+    ```
 
 1.  创建一个名为`recipe-7.js`的 JavaScript 文件，并添加以下 JavaScript 代码来启动我们的画廊：
 
@@ -840,7 +840,7 @@ $('.box').fadeOut().fadeIn().slideUp().slideDown().fadeTo(1000, 0.1).fadeTo(1000
         $('.right-arrow').removeClass('disabled');
       }
     }
-    ````
+    ```
 
 1.  在 Web 浏览器中打开`recipe-7.html`，您将看到一个类似以下截图的 jQuery 图像画廊：![How to do it…](img/0896OS_04_06.jpg)`
 

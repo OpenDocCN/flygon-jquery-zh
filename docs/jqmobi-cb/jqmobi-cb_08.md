@@ -921,4 +921,4 @@ jQuery Mobile 框架在你在页面中添加或操作组件或切换它们的可
 
 ```js
 (yourselector).trigger("updatelayout");
-````
+```

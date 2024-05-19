@@ -313,7 +313,8 @@ jQuery Mobile 框架使用明亮的蓝色来指示按钮和其他控件的活动
 
 ## 如何实现...
 
-1.  创建`active-state.css`样式表以设置活动状态的样式，如下所示：```js`
+1.  创建`active-state.css`样式表以设置活动状态的样式，如下所示：
+    ```js
     .ui-btn-active {
       border: 1px solid #137000;
       background: #93ff86;
@@ -335,9 +336,9 @@ jQuery Mobile 框架使用明亮的蓝色来指示按钮和其他控件的活动
       background-image: linear-gradient( #a1ff93, #14b800);
       font-family: Helvetica, Arial, sans-serif;
     }
-    ````
+    ```
 
-1.  `指定焦点事件的样式：
+1.  指定焦点事件的样式：
 
     ```js
     .ui-focus, .ui-btn:focus {
@@ -345,7 +346,7 @@ jQuery Mobile 框架使用明亮的蓝色来指示按钮和其他控件的活动
       -webkit-box-shadow: 0px 0px 12px #37bf37;
       box-shadow: 0px 0px 12px #37bf37;
     }
-    ````
+    ```
 
 1.  `指定复选框和单选按钮控件的开启状态样式：
 
@@ -353,17 +354,17 @@ jQuery Mobile 框架使用明亮的蓝色来指示按钮和其他控件的活动
     .ui-checkbox-on .ui-icon, .ui-radio-on .ui-icon {
       background-color: #50cf44;
     }
-    ````
+    ```
 
-1.  `在`main.html`中包含上述样式表：
+1.  在`main.html`中包含上述样式表：
 
     ```js
     <link rel='stylesheet' href='http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css' />
     <link rel='stylesheet' href='./active-state.css' />
 
-    ````
+    ```
 
-1.  `现在，在`#main`页面中创建带有`navbar`控件的标题：
+1.  现在，在`#main`页面中创建带有`navbar`控件的标题：
 
     ```js
     <div id='main' data-role='page' data-theme='a'>
@@ -378,9 +379,9 @@ jQuery Mobile 框架使用明亮的蓝色来指示按钮和其他控件的活动
           </ul>
         </div>
       </div>
-    ````
+    ```
 
-1.  `最后，根据以下方式添加页面内容：水平复选框、垂直复选框和滑块：
+1.  最后，根据以下方式添加页面内容：水平复选框、垂直复选框和滑块：
 
     ```js
       <div data-role='content'>
@@ -409,21 +410,21 @@ jQuery Mobile 框架使用明亮的蓝色来指示按钮和其他控件的活动
         </div>
       </div>
     </div>
-    ````
+    ```
 
-## `工作原理...`
+## 工作原理...
 
-`创建`active-state.css`样式表以将样式信息与 HTML 文件分离。默认情况下，复选框和单选按钮控件的活动状态、焦点事件和开启状态样式都使用明亮的蓝色主题。你可以在 CSS 文件中覆盖它们，如代码所示。首先，覆盖`.ui-btn-active`类，并为`border`、`background`、`color`和`background-image` CSS 属性指定你的设置。然后，覆盖`.ui-focus`和`.ui-btn:focus`类，并为`box-shadow`指定颜色`.ui-checkbox-on`和`.ui-radio-on`样式，如代码所示。`
+创建`active-state.css`样式表以将样式信息与 HTML 文件分离。默认情况下，复选框和单选按钮控件的活动状态、焦点事件和开启状态样式都使用明亮的蓝色主题。你可以在 CSS 文件中覆盖它们，如代码所示。首先，覆盖`.ui-btn-active`类，并为`border`、`background`、`color`和`background-image` CSS 属性指定你的设置。然后，覆盖`.ui-focus`和`.ui-btn:focus`类，并为`box-shadow`指定颜色`.ui-checkbox-on`和`.ui-radio-on`样式，如代码所示。`
 
-`创建 `main.html`，并在标题中添加一个 `navbar` 控件。在 `navbar` 中的第二个链接上添加 `ui-btn-active` 类。当页面加载时，你将看到第二个链接上设置了活动状态。接下来，添加水平和垂直组合的复选框控件。最后，向页面添加一个输入滑块。现在，页面加载如下截图所示，将默认的鲜蓝色活动状态主题替换为荧光绿色主题：`
+创建 `main.html`，并在标题中添加一个 `navbar` 控件。在 `navbar` 中的第二个链接上添加 `ui-btn-active` 类。当页面加载时，你将看到第二个链接上设置了活动状态。接下来，添加水平和垂直组合的复选框控件。最后，向页面添加一个输入滑块。现在，页面加载如下截图所示，将默认的鲜蓝色活动状态主题替换为荧光绿色主题：
 
-`![工作原理...](img/7225_10_9.jpg)`
+![工作原理...](img/7225_10_9.jpg)
 
-## `还有更多...`
+## 还有更多...
 
-`你也可以使用位于 [`www.jquerymobile.com/themeroller`](http://www.jquerymobile.com/themeroller) 的 jQuery Mobile ThemeRoller 工具全局设置活动状态主题。`
+你也可以使用位于 [`www.jquerymobile.com/themeroller`](http://www.jquerymobile.com/themeroller) 的 jQuery Mobile ThemeRoller 工具全局设置活动状态主题。
 
-`![还有更多...](img/7225_10_10.jpg)`
+![还有更多...](img/7225_10_10.jpg)
 
 ## 另请参阅
 
