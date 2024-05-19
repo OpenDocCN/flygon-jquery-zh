@@ -813,6 +813,8 @@
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您还没有准备好将图像转换为WebP格式的方法，那么您可以使用谷歌提供的工具来进行转换，这些工具可在[https://developers.google.com/speed/webp/download](https://developers.google.com/speed/webp/download)下载。这里提供了Windows、Linux和Mac
+    OS的下载版本——在本练习中，我将假设您正在使用Windows：
 - en: On the download page, click on [http://downloads.webmproject.org/releases/webp/index.html](http://downloads.webmproject.org/releases/webp/index.html)
     and then look for `libwebp-0.4.2-windows-x64.zip` (if you are still using a 32-bit
     platform for Windows, then please select the `x86` version).
@@ -820,29 +822,34 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在下载页面上，单击[http://downloads.webmproject.org/releases/webp/index.html](http://downloads.webmproject.org/releases/webp/index.html)，然后查找`libwebp-0.4.2-windows-x64.zip`（如果您仍在使用32位Windows平台，请选择`x86`版本）。
 - en: Once downloaded, extract the `libwebp-0.4.2-windows-x64` folder to a safe folder
     within your project folder and then navigate to the `bin` folder within it.
   id: totrans-120
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 下载后，将`libwebp-0.4.2-windows-x64`文件夹解压缩到项目文件夹中的一个安全文件夹中，然后导航到其中的`bin`文件夹。
 - en: Open up a second Explorer view, then navigate to where your image is stored,
     and copy it into the `bin` folder.
   id: totrans-121
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 打开第二个资源管理器视图，然后导航到您存储图像的位置，并将其复制到`bin`文件夹中。
 - en: Open up command prompt and then navigate to `C:\libwebp-0.4.2-windows-x64\bin`.
   id: totrans-122
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 打开命令提示符，然后导航到`C:\libwebp-0.4.2-windows-x64\bin`。
 - en: 'At the prompt, enter this command, replacing both the names with the names
     of your JPEG and WebP images, respectively:'
   id: totrans-123
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在提示符下，输入此命令，将两个名称分别替换为您的JPEG和WebP图像的名称：
 - en: '[PRE10]'
   id: totrans-124
   prefs:
@@ -855,27 +862,32 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果一切顺利，我们将会得到一个类似于以下屏幕截图的屏幕，并且我们的WebP格式图像将会出现在`bin`文件夹中：![开始](img/image00339.jpeg)
 - en: The last step is to copy the images into our project folder, so they are ready
     to be used for the next stage of our demo.
   id: totrans-126
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后一步是将图像复制到我们的项目文件夹中，以便在我们的演示的下一阶段中使用。
 - en: Creating our patch
   id: totrans-127
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建我们的补丁
 - en: 'Now that we have our images prepared, we can go ahead and set up the markup
     for our demo:'
   id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们准备好了图片，可以开始设置我们演示的标记了：
 - en: 'Go ahead and copy the following code into a new file, saving it as `replacewebp.html`:'
   id: totrans-129
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在，将以下代码复制到一个新文件中，并将其保存为`replacewebp.html`：
 - en: '[PRE11]'
   id: totrans-130
   prefs:
@@ -889,6 +901,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 接下来，我们需要添加我们的猴子补丁——在一个新文件中，添加以下代码并将其保存为`jquery.replacewebp.js`。这涉及到一些更复杂的内容，所以我们将分块介绍，从标准声明开始：
 - en: '[PRE12]'
   id: totrans-132
   prefs:
@@ -902,6 +915,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 接下来是执行测试以查看我们的浏览器是否支持使用WebP图像格式的函数；将以下代码立即添加到变量分配的下方：
 - en: '[PRE13]'
   id: totrans-134
   prefs:
@@ -915,6 +929,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 接下来，我们使用`testWebP`函数来确定我们的浏览器是否支持WebP图像格式——如果支持，我们将更改所使用的文件扩展名为`.webp`，如下所示：
 - en: '[PRE14]'
   id: totrans-136
   prefs:
@@ -927,6 +942,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们通过执行函数的原始版本来完成我们的函数，然后用与IIFE通常关联的关闭括号终止它：
 - en: '[PRE15]'
   id: totrans-138
   prefs:
@@ -940,6 +956,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 然后，我们需要再添加一个函数——这用于启动对`.hasClass()`的调用；继续添加以下代码行到猴子补丁函数的下方：
 - en: '[PRE16]'
   id: totrans-140
   prefs:
@@ -952,16 +969,19 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果一切顺利，当我们运行我们的演示时，我们将看到一幅蝴蝶兰或蛾蝶兰的图像，如下面的屏幕截图所示：![创建我们的补丁](img/image00340.jpeg)
 - en: There is nothing out of the ordinary at this point; in fact, you're probably
     wondering what we've produced, right?
   id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一点并没有什么特别之处；实际上，你可能在想我们到底产生了什么，对吧？
 - en: 'Aha! You''ll see the answer to this question if you inspect the source using
     a DOM inspector, such as Firebug, as shown here:'
   id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 啊哈！如果你使用DOM检查器（如Firebug）检查源代码，就会看到这个问题的答案，如下所示：
 - en: '![Creating our patch](img/image00341.jpeg)'
   id: totrans-144
   prefs: []

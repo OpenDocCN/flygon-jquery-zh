@@ -1,4 +1,5 @@
 - en: Chapter 4. Working with Forms
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -6,11 +7,13 @@
     I bet the answer is a fair few times over the years—after all, you can't go into
     a bookstore late at night, peruse the books, and make a choice, without worrying
     about the store's closing time or knowing whether you will find a particular book.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: Building forms for online sites is arguably one of the key areas where you are
     likely to use jQuery; the key to its success is ensuring that it validates correctly,
     as a part of offering a successful user experience.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: Throughout this chapter, we're going to go back to the basics a little and delve
@@ -19,37 +22,46 @@
     does not require a lot of complex code, but that the process is equally about
     ensuring that we have considered the form's functionality requirements at the
     same time.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Over the next few pages, we''ll cover a number of topics, as follows:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: Exploring the need for validation
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Adding form validation using regular expressions
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Developing a plugin architecture for validation
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Creating an advanced contact form using jQuery/AJAX
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Developing an advanced file upload form using jQuery
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Are you ready to get started? Let's get going…before we start though, I recommend
     that you create a project folder. For the purpose of this chapter, I will assume
     that you have done so and that it is called `forms`.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Exploring the need for form validation
+  id: totrans-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -57,22 +69,26 @@
     is arguably one of the most important facets that we should consider. How many
     times have you visited a site and filled in your details only to be told that
     there is a problem? Sounds familiar, right?
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'Validating a form is key to maintaining the consistency of information; the
     form will process the information that has been entered in order to ensure that
     it is correct. Take an example of the following scenarios:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: If an e-mail address is entered, let's make sure it has a valid format. The
     e-mail address should include a full stop and contain an `@` symbol somewhere
     in the address.
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Calling someone? What country are they in? Let's make sure that the phone number
     follows the right format, if we've already set the form to show a specific format
     of the fields for a chosen country.
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -80,25 +96,30 @@
     here (and no, I''ve not lost my marbles!), but all too often, form validation
     is left until the last stage of a project. The most common errors are usually
     due to the following reasons:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: '**Formatting**: This is where an end user has entered illegal characters in
     a field, such as a space in an e-mail address.'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Missing required field**: How many times have you filled out a form, only
     to find that you''ve not entered information in a field that is obligatory?'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Matching error**: This crops up when two fields need to match but don''t;
     a classic example is a password or an email field.'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: At this stage, you're probably thinking that we're going to get stuck with lots
     of jQuery, to produce an all-singing, all-dancing solution, right?
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: Wrong! Sorry to disappoint you, but one mantra I always stick to is the **KISS**
@@ -106,20 +127,25 @@
     anyone, but it is just a way to make our designing lives a little easier. As I've
     mentioned in an earlier chapter, I believe mastering a technology such as jQuery
     is not always about the code we produce!
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'These are the key elements in form validation:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: Tell the user that they have a problem on the form
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Show the user where the problem is
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Show them an example of what you're expecting to see (such as an e-mail address)
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -128,114 +154,145 @@
     work on the use of colors and proximity to help reinforce our messages. However,
     before we can validate, we need something to validate, so let's knock up a quick
     form as a basis for our exercises.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: Creating a basic form
+  id: totrans-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: As with all projects, we need to start somewhere; in this instance, we need
     a form that we can use as a basis for adding validation from the various examples
     given in this chapter.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the code download that accompanies this book, look for and extract the `basicform.html`
     and `basicform.css` files to your project folder; when you run `basicform.html`,
     it will look something similar to this screenshot:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: '![Creating a basic form](img/image00357.jpeg)'
+  id: totrans-30
   prefs: []
   type: TYPE_IMG
 - en: 'If we take a look at the markup used, we can see that it isn''t anything new;
     it contains standard HTML5 fields that we will use when creating contact forms,
     such as text fields or text areas:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The key thing here though is that our example doesn''t contain any form of
     validation—it leaves us wide open to abuse of the rubbish in, rubbish out, where
     users can enter anything and we receive submitted forms that are—well—rubbish!
     In this instance, when you click on **Submit**, all that you''ll see is this screenshot:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: '![Creating a basic form](img/image00358.jpeg)'
+  id: totrans-34
   prefs: []
   type: TYPE_IMG
 - en: Not great, is it? Most desktop browsers will accept any content if the required
     tag is used without some of the validation—as long as it has something, the form
     will be submitted. The exception to this rule is Safari, which won't display the
     pop-up notice shown in our screenshot.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: I'm sure we can do better, but probably not the way you're expecting to see…intrigued?
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: Starting with simple HTML5 validation
+  id: totrans-37
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: The great thing about form validation is that it can be easy or complex to fix—it
     all depends on the route we take to solve the issues.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'The key point here is that we *can* use jQuery to provide form validation;
     this is a perfectly adequate solution that will work. However, for the simple
     validation of fields, such as names or e-mail addresses, there is an alternative:
     HTML5 validation, which uses the HTML5 constraint validation API.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The constraint validation API makes use of HTML5 attributes such as `min`, `step`,
     `pattern`, and `required`; these will work in most browsers, except Safari.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before I explain the logic within this madness, let''s take a quick look at
     how to modify our demo in order to use this form of validation:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'Open up a copy of the `basicform.html` file in your usual text editor and then
     look for this line:'
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-44
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We need to add the pattern that will be used as a check for our validation,
     so go ahead and modify the code as indicated:'
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-46
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'We can make a similar change to our `email` field in order to introduce HTML5
     validation; first, look for these lines:'
+  id: totrans-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-48
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Go ahead and modify the code as indicated, to add the HTML validation for `email`:'
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-50
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Save the file as `basicvalidation.html`; if you preview the results in a browser,
     you can immediately see a change:![Starting with simple HTML5 validation](img/image00359.jpeg)
+  id: totrans-51
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -243,9 +300,11 @@
     can at least see that the form expects to see a **firstname lastname** format
     and not just a forename, as indicated. A similar change will also appear in **Email**,
     when you press **Submit** to validate your form.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -253,27 +312,33 @@
     the `required="required"` tags, in place of just `required`. Either format will
     work perfectly well—you may find that using the former tag is needed, if any inconsistencies
     appear when you are just using `required` within your browser.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: Using HTML5 over jQuery
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now that we have a form that validates the `name` and `email` fields using HTML,
     it's time to make good on my promise and explain the logic in my madness.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: In some instances, it is often tempting to simply revert to using jQuery in
     order to handle everything. After all, if we're already using jQuery, why reference
     another JavaScript library?
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'This seems like a logical approach to take, if it weren''t for these two little
     issues:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: Using jQuery adds an overhead to any site; for simple validation, this can be
     seen as an overkill with little return.
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -281,6 +346,7 @@
     to operate or errors being displayed on the screen or in the console logs. This
     will affect user experience, as the visitor will struggle to submit a validated
     form, or worse, simply leave the site, which might result in lost sales.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -289,13 +355,16 @@
     later in this chapter. The benefit of this approach is that we will be able to
     complete some limited validation, reduce the reliance on jQuery for standard fields,
     and use it in a more progressive enhancement capacity.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: With this in mind, let's move on and start taking a look at the use of jQuery
     to enhance our forms further and provide more complex validation checks.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: Using jQuery to validate our forms
+  id: totrans-63
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -303,81 +372,106 @@
     supported in that browser; this is the time when we need to revert to using JavaScript,
     or in this case jQuery. For example, date as an input type is not supported in
     IE11, as shown here:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'This is how the preceding code will be rendered:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The trouble is that with the type falling back to text, browsers will not correctly
     validate the field. To get around this, we can implement a check using jQuery—we
     can then start adding some basic validation using jQuery, which will override
     the existing native HTML checks made in the browser.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s take a look at how we can achieve some of this in practice, with a simple
     demo, as follows:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: Open up a copy of `basicform.html` from the code download that accompanies this
     book.
+  id: totrans-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'In the `<head>` section, add a link to jQuery along with a link to your validation
     script:'
+  id: totrans-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-72
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Save the file as `basicvalidation.html`. In a new file, add the following code—this
     performs a check to ensure that you are only validating the `email` field:'
+  id: totrans-73
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-74
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Immediately before the closing `}`), let''s add in the first of two functions;
     the first function will add a CSS hook to allow you to style in the event of a
     success or failure:'
+  id: totrans-75
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-76
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The keen-eyed amongst you will spot the addition of two CSS style classes;
     we need to allow this in our style sheet, so go ahead and add these lines of code:'
+  id: totrans-77
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-78
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'We can now add the section function, which alters the default message shown
     by the browser to show custom text:'
+  id: totrans-79
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-80
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Save the file as `basicvalidation.js`. If you now run the demo in a browser,
     you can see that the text changes to green when you add a valid e-mail address,
     as shown in this screenshot:![Using jQuery to validate our forms](img/image00360.jpeg)
+  id: totrans-81
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -385,62 +479,76 @@
     you will get a custom e-mail address error instead of the standard one offered
     by the browser, as shown in the following screenshot:![Using jQuery to validate
     our forms](img/image00361.jpeg)
+  id: totrans-82
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Using a little jQuery in this instance has allowed us to customize the message
     shown—it's a good opportunity to use something a little more user friendly. Note
     that the default messages given with standard HTML5 validation can be easily…improved!
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: Now that you've seen how we can change the message that is displayed, let's
     focus on improving the checks that the form makes. The standard HTML5 validation
     checks won't be enough for all instances; we can improve them by incorporating
     checks using regex checks in our code.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: Validating forms using regex statements
+  id: totrans-85
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: So far, you've seen some of the commands that you can use to validate forms
     using jQuery, and how you can limit your checks to specific field types (such
     as e-mail addresses) or override the error message displayed on the screen.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'The code will fail though, without some form of validation template that we
     can use to check—the keen-eyed amongst you may have noticed this, in our `basicvalidation.html`
     demo:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'The `pattern` variable is used to define a regular expression or a **regex**
     statement. Put simply, these are single-line statements that dictate how we should
     validate any entries in our form. These are not unique to query though; they can
     be equally used with any scripting language, such as PHP or plain JavaScript.
     Let''s take a moment to look at a few examples in order to see how this one works:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: '`[^ @]*`: This statement matches any number of characters that are not an `@`
     sign or a space'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`@`: This is a literal'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`\.`: This is a literal'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`[a-zA-Z]`: This statement indicates any letter, either uppercase or lowercase'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`[a-zA-Z]{2,}`: This statement indicates any combination of two or more letters'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -448,50 +556,63 @@
     set of characters, save for an `@` sign, followed by an `@` sign that is then
     followed by any set of characters except an `@` sign, a period, and finally at
     least two letters.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: Okay, enough of theory; let's get coding! We're going to work through a couple
     of examples, starting with a modification to the e-mail validation and then develop
     the code to cover validation for website addresses.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: Creating a regex validation function for e-mails
+  id: totrans-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We've already used a regex to validate our `email` address field; while this
     works well, the code can be improved. I'm not a keen fan of including the validation
     check within the event handler; I prefer to hive it off into a separate function.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: 'Thankfully, this is easy to correct; let''s sort that out now by performing
     the following steps:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
 - en: 'We''ll start by opening up the `basicvalidation.js` file and adding a helper
     function immediately before the `emailField.on()` event handler:'
+  id: totrans-100
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-101
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'This function handles the validation of e-mail addresses; in order to use it,
     we need to modify the `emailField.on()` handler, as follows:'
+  id: totrans-102
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-103
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: If we save our work and then preview it in a browser, we should see no difference
     in the validation process; we can be rest assured that the validation check process
     has now been separated into an independent function.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: Taking it further for URL validation
+  id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -499,42 +620,53 @@
     a similar validation check for the `urlField` field. It''s a simple matter of
     duplicating the two `emailField.on()` event handlers and the `checkEmail` function
     to produce something similar to what is shown in the following screenshot:'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: '![Taking it further for URL validation](img/image00362.jpeg)'
+  id: totrans-107
   prefs: []
   type: TYPE_IMG
 - en: 'Using the code we''ve already produced, see whether you can create something
     that validates the website URL entry using this regex:'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'If your code works, it should produce an error message similar to the one shown
     in this screenshot:'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
 - en: '![Taking it further for URL validation](img/image00363.jpeg)'
+  id: totrans-111
   prefs: []
   type: TYPE_IMG
 - en: Hopefully, you've managed to use the code we've produced so far—if you're stuck,
     there is a working example in the code download that accompanies this book.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: 'So, assuming that we have something that works, has anyone spotted problems
     with our code? There are definitely some issues that we need to fix; let''s go
     through them now:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
 - en: Notice that the feedback isn't 100 percent dynamic? In order to make our code
     recognize a change from an error to a successful entry, we need to refresh our
     browser window—this is not ideal at all!
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: We're duplicating a lot of code within our jQuery file—architecturally, this
     is bad practice and we can definitely improve on what has been written.
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -543,122 +675,155 @@
     and make it easier for us to extend the functionality with minimal changes. It
     won't be perfect—this is something we will correct later in the chapter—but it
     will produce a more efficient result than our present code.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: Building a simple validation plugin
+  id: totrans-117
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Until now, our examples have been based around individual fields, such as an
     e-mail address or a website URL. The code is heavily duplicated, which makes for
     a bloated and inefficient solution.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: Instead, let's completely flip our approach and turn our code into a generic
     plugin. We'll use the same core process to validate our code, depending on the
     regex that has been set within the plugin.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: 'For this next exercise, we''ll use a plugin produced by Cedric Ruiz. Although
     it is a few years old, it illustrates how we can create a single core validation
     process that uses a number of filters to verify the content entered in our form.
     Let''s make a start by performing the following steps:'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
 - en: From the code download that accompanies this book, extract copies of the `quickvalidate.html`,
     `info.png`, and `quickvalidate.css` files and save them in your project folder.
+  id: totrans-121
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Next, we need to create a plugin. In a new file, add the following code, saving
     it as `jquery.quickvalidate.js`, within the `js` subfolder of your project area:'
+  id: totrans-122
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-123
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'You need to start adding functionality to your plugin, beginning with caching
     the form and the input fields; add this immediately before the `return this` statement
     in your plugin:'
+  id: totrans-124
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-125
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Next up comes the filters that dictate how each field should be validated and
     the error message that should be displayed when validation fails, as shown here:'
+  id: totrans-126
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-127
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'We now come to the validation process, which is where the magic happens. Go
     ahead and add the following code, immediately below the filters:'
+  id: totrans-128
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-129
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'If your code correctly identifies an error, you need to inform the user; otherwise,
     they will be left in the dark as to why the form does not appear to be submitted
     correctly. Let''s fix this now by adding in a function to determine what happens
     if the validation test fails, as follows:'
+  id: totrans-130
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-131
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'We''ve determined what will happen when the validation process fails but haven''t
     put anything in place to call the function. Let''s fix this now by adding in the
     appropriate call, based on whether the field is marked as being required, as shown
     here:'
+  id: totrans-132
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-133
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'If the content changes in our field, we need to determine whether it is valid
     or invalid; this needs to take place when entering text, so let''s do that now,
     using the `keyup` event handler:'
+  id: totrans-134
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-135
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Finally, we need to prevent submission if errors are found in our form:'
+  id: totrans-136
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-137
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Save your work; if all is well, you should see the form validate when previewing
     the results of your work in a browser:![Building a simple validation plugin](img/image00364.jpeg)
+  id: totrans-138
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: At this stage, we have a working plugin, where we've refactored the core validation
     code into a single set of processes that can be applied to each field type (using
     the appropriate filter).
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, we can do better than this; the following are some issues that we
     can address to take our code even further:'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
 - en: Although we've refactored the code into a single set of core validation processes,
@@ -666,23 +831,27 @@
     the different types of filters, we are still limited to either text or password
     field types. Adding any of the standard HTML5 field types, such as `url` or `email`,
     will result in an error, as the pseudo-type is not supported within jQuery.
+  id: totrans-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: From an architectural perspective, it is preferable to keep the validator filters
     outside the core plugin; this helps to keep the validator lean and free from code
     that isn't required for our purpose.
+  id: totrans-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Our code doesn't allow for any features such as localization, setting a maximum
     length, or the validation of form objects, such as checkboxes.
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'We can spend lots of time developing our plugin so that it takes a more modular
     approach, but is it worth the effort? There are literally dozens of form validation
     plugins available for use; a smarter move will be to use one of these plugins:'
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
 - en: The core validation process is tried and tested, which eliminates the need to
@@ -690,6 +859,7 @@
     validator plugin that works on more than just a few fields is notoriously tricky
     to get right; after all, what do we look or don't look to validate? Different
     languages? Different formats for postal or zip codes, for example?
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -698,6 +868,7 @@
     of languages, specific number formats, or odd/even numbers. We will make full
     use of this later in this chapter in order to add some custom validators to our
     demo.
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -705,6 +876,7 @@
     that is specific to your environment and where you can add the most value—after
     all, there is no point in trying to add valid where others have already done the
     work for us, right?
+  id: totrans-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -712,15 +884,18 @@
     Most plugins nowadays have some form of modular architecture that allows you to
     easily customize it and add additional custom validators; after all, why spend
     time reinventing the wheel, right?
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
 - en: Developing a plugin architecture for validation
+  id: totrans-149
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Throughout this chapter, we've worked with a variety of HTML5 and jQuery techniques
     to validate our forms. In the main, they have worked well, but their simplistic
     nature means that we will easily outgrow their usefulness very quickly.
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
 - en: To really take advantage of all that is possible with form validation, it makes
@@ -728,209 +903,279 @@
     plugin that takes care of the basic validation process and allows you to concentrate
     on customizing it and on ensuring that you provide the right functionality for
     your form.
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
 - en: Enter jQuery Form Validator. This plugin, created by Victor Jonsson, has been
     around for a number of years, so it is tried and tested; it also contains the
     modular architecture that we need to customize the checks we will provide within
     our form. Let's take a look at the validator in action.
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-153
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The original plugin and associated documentation are available at [http://formvalidator.net/](http://formvalidator.net/).
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
 - en: Creating our basic form
+  id: totrans-155
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Before we start to add custom validator plugins to our code, we need a basic
     form to validate. For this, we'll base the markup on a modified version of the
     form created in `basicvalidation.html`, from an earlier section in this chapter.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s get our basic form working, with standard validation in place. To do
     this, perform the following steps:'
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
 - en: We'll start by extracting copies of the `formvalidator.html` and `formvalidator.css`
     files from the code download that accompanies this book. Save the HTML file in
     the root of your project folder and the CSS file in a `css` subfolder.
+  id: totrans-158
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'In a new file, add the following lines of code, saving it as `formvalidator.js`
     in a `js` subfolder of your project area:'
+  id: totrans-159
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-160
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: This is all that is needed to get started with the Form Validator plugin; if
     you preview the form in a browser, you should see the following screenshot—if
     you enter a valid name and e-mail address but omit the website URL:![Creating
     our basic form](img/image00365.jpeg)
+  id: totrans-161
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Now that our form is ready, let's really start developing some of the validators
     used within the form, beginning with a new validator for the `name` field.
+  id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们的表单已经准备好了，让我们真正开始开发表单内部使用的一些验证器，首先是`name`字段的新验证器。
 - en: Creating custom validators
+  id: totrans-163
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建自定义验证器
 - en: So far, our form has relied on using standard HTML5 techniques to validate it;
     this will work for most requirements, but there is a limit to what it can do.
     Enter jQuery; we can use the power of FormValidator to create our own custom validators
     so that we can tailor them to match our own requirements.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们的表单依赖于使用标准的 HTML5 技术进行验证；这对大多数要求都适用，但它的能力是有限的。接下来是 jQuery；我们可以利用 FormValidator
+    的功能创建我们自己的自定义验证器，以满足我们自己的要求。
 - en: The key part of creating custom validators is the `$.formutils.addValidator`
     configuration object; FormValidator handles the basic plugin architecture, which
     leaves you to add values by designing the right checks for your form.
+  id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建自定义验证器的关键部分是 `$.formutils.addValidator` 配置对象；FormValidator 处理了基本的插件架构，这样你就可以通过设计表单的正确检查来添加值。
 - en: 'Over the next few pages, we''re going to work through two basic examples:'
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的几页中，我们将通过两个基本示例进行工作：
 - en: 'We''ll start by creating our custom validator; in the usual text editor of
     your choice, add the following code:'
+  id: totrans-167
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们将从创建自定义验证器开始；在你选择的文本编辑器中，添加以下代码：
 - en: '[PRE25]'
+  id: totrans-168
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'Save the file as `user_name.js`, within the `js` subfolder of your project
     area. Open up the `formvalidator.js` file that you created in the previous section
     and alter it as shown here:'
+  id: totrans-169
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将文件保存为`user_name.js`，放在项目区域的`js`子文件夹内。打开之前创建的`formvalidator.js`文件，并根据下面的示例进行修改：
 - en: '[PRE26]'
+  id: totrans-170
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'Although you''ve added the validation rule to the validator, you need to activate
     it from within your HTML markup, as follows:'
+  id: totrans-171
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 虽然你已经将验证规则添加到验证器中，但你需要在 HTML 标记内部激活它，如下所示：
 - en: '[PRE27]'
+  id: totrans-172
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'If all works well, you will see the effects of using your custom validator
     when you preview the form in a browser and press the **Submit** button, as shown
     in the following screenshot:'
+  id: totrans-173
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果一切正常，当你在浏览器中预览表单并点击 **提交** 按钮时，就会看到使用自定义验证器的效果，如下面的截图所示：
 - en: '![Creating custom validators](img/image00366.jpeg)'
+  id: totrans-174
   prefs: []
   type: TYPE_IMG
+  zh: '![创建自定义验证器](img/image00366.jpeg)'
 - en: At this stage, you can simply leave it with this custom validator in place,
     but I think there is scope for more—what about e-mail addresses?
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个阶段，你可以简单地将它留在这个自定义验证器的位置，但我认为有更多的空间——比如电子邮件地址？
 - en: Standard HTML5 validation will work out if the e-mail address given is in a
     suitable format, such as ensuring that it has an `@` sign, a decimal point after
     the domain name, and that the domain suffix is valid. It won't, however, prevent
     users from submitting forms with certain types of addresses, such as [www.hotmail.com](http://www.hotmail.com)
     (or now [www.outlook.com](http://www.outlook.com)).
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准的 HTML5 验证将会检查电子邮件地址是否符合合适的格式，例如确保它包含`@`符号，域名后有一个小数点，以及域名后缀是有效的。然而，它不能阻止用户提交具有某些类型地址的表单，比如[www.hotmail.com](http://www.hotmail.com)（或现在的[www.outlook.com](http://www.outlook.com)）。
 - en: At this point, it is worth noting that e-mail validation using regexes can open
     up a minefield of problems, so step carefully and test thoroughly—how do you validate
     against `mail+tag@hotmail.com`, for example? This is a perfectly valid address
     but most regexes will fail…
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时值得注意的是使用正则表达式进行电子邮件验证可能会引发一系列问题，所以要谨慎行事并进行彻底的测试——比如如何对`mail+tag@hotmail.com`进行验证？这是一个完全有效的地址，但大多数正则表达式都会失败……
 - en: Note
+  id: totrans-178
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: A useful discussion on why using regexes can actually do more harm than good
     is available at [http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/](http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/).
+  id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于为什么使用正则表达式实际上可能带来更多问题的讨论可以在[http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/](http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/)上找到。
 - en: 'In our example, we''ll add a simple check to prevent Hotmail, Gmail, or Yahoo!
     e-mail addresses from being used; let''s take a look at how we can do that:'
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的示例中，我们将添加一个简单的检查来防止使用 Hotmail、Gmail 或 Yahoo! 的电子邮件地址；让我们看看我们如何做到这一点：
 - en: 'In a text editor, add the following code to a new file, saving it as `free_email.js`
     within your `js` subfolder:'
+  id: totrans-181
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在文本编辑器中，将以下代码添加到一个新文件中，并将其保存为 `free_email.js`，放在 `js` 子文件夹内：
 - en: '[PRE28]'
+  id: totrans-182
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'Now that your `free_email` validator is in place, you need to call it when
     validating your form; to do this, revert to the `formvalidator.js` file you had
     opened in the previous exercise and amend the code, as shown here:'
+  id: totrans-183
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-184
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: 'The final step in the exercise is to activate the custom validator from the
     HTML markup—remember how we changed it in the previous exercise? The same principle
     applies here too:'
+  id: totrans-185
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE30]'
+  id: totrans-186
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: Save both the `formvalidator.js` and `formvalidator.html` files; if you preview
     the results of your work, you can clearly see your custom message appear if you've
     entered an invalid e-mail address, as shown in the following screenshot:![Creating
     custom validators](img/image00367.jpeg)
+  id: totrans-187
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Now, the observant amongst you will spot that we're loading one validator at
     a time; I am sure that you are wondering how we can load multiple validators at
     the same time, right?
+  id: totrans-188
   prefs: []
   type: TYPE_NORMAL
 - en: 'No problem, we already have the validator files in place, so all we need to
     do is modify our validator object so that it loads both the modules. Let''s take
     a quick look at how we can modify our validator object:'
+  id: totrans-189
   prefs: []
   type: TYPE_NORMAL
 - en: 'Open up a copy of the `formvalidator.js` file and alter the code as shown here:'
+  id: totrans-190
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE31]'
+  id: totrans-191
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: That's all that you need to do. If you save the file and preview the results
     in a browser, you will find that it validates both the `name` and `email` fields,
     as illustrated in the previous two exercises.
+  id: totrans-192
   prefs: []
   type: TYPE_NORMAL
 - en: This opens up a world of opportunities; in our two examples, we've created reasonably
     simple validators but the principles are the same, no matter how complex or simple
     our validators are.
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-194
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -939,6 +1184,7 @@
     We can then combine the basic principles of creating modules with regex examples
     such as those shown at [http://www.sitepoint.com/jquery-basic-regex-selector-examples/](http://www.sitepoint.com/jquery-basic-regex-selector-examples/),
     to create some useful validator checks.
+  id: totrans-195
   prefs: []
   type: TYPE_NORMAL
 - en: Let's move on and take another look at a useful part of the FormValidator plugin—we
@@ -946,9 +1192,11 @@
     you should consider localizing your validation messages so that international
     visitors to your site can understand where there is a validation issue and know
     how to fix it.
+  id: totrans-196
   prefs: []
   type: TYPE_NORMAL
 - en: Localizing our content
+  id: totrans-197
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -956,58 +1204,73 @@
     useful to display messages in a different language—for example, if most of your
     visitors speak Dutch, then there will be value in overriding the standard messages,
     with equivalents in the Dutch language.
+  id: totrans-198
   prefs: []
   type: TYPE_NORMAL
 - en: 'While it requires some careful thought and planning, it is nevertheless very
     easy to add language support; let''s run through how to do so:'
+  id: totrans-199
   prefs: []
   type: TYPE_NORMAL
 - en: 'For this exercise, you need to modify the validator object. In the `formvalidator.js`
     file, add this code immediately after the `document.ready()` statement:'
+  id: totrans-200
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE32]'
+  id: totrans-201
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: 'We need to reference the change in language, so go ahead and add this configuration
     line to the validator object:'
+  id: totrans-202
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE33]'
+  id: totrans-203
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: Save the file. If you preview the results in a browser, you can see that the
     error message is now displayed in Dutch, as shown here:![Localizing our content](img/image00368.jpeg)
+  id: totrans-204
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'We''re not limited to Dutch; here''s the same code, but with an error message
     in French:'
+  id: totrans-205
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE34]'
+  id: totrans-206
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: This is a quick and easy way to ensure that visitors to your site understand
     why your form hasn't validated and how they can fix it. It is worth noting though
     that the message set is displayed irrespective of the regional settings on your
     PC or mobile device; it is recommended that you check any analytics logs to confirm
     the region or country your visitors come from before changing the language in
     use on your form's messages.
+  id: totrans-207
   prefs: []
   type: TYPE_NORMAL
 - en: Centralizing our error messages
+  id: totrans-208
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Before we wrap up development on our form, there is one more piece of functionality
     that we can look at in order to add it to our form.
+  id: totrans-209
   prefs: []
   type: TYPE_NORMAL
 - en: So far, any validation error message that is displayed has been against each
@@ -1015,37 +1278,46 @@
     of telling which fields may have failed validation. Sure, we can scroll through
     the form, but I'm lazy; why scroll down a long form if we can alter our code to
     display the errors at the top, right?
+  id: totrans-210
   prefs: []
   type: TYPE_NORMAL
 - en: 'Absolutely, doing this is a piece of cake with FormValidator; let''s go through
     what is required now:'
+  id: totrans-211
   prefs: []
   type: TYPE_NORMAL
 - en: 'Open a copy of the `formvalidator.js` file and alter the validator object as
     shown here; we set the `errMessagePosition` property to `top` and the `validatorOnBlur`
     property to `false` in order to display messages at the top of the form:'
+  id: totrans-212
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE35]'
+  id: totrans-213
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: 'If you were to run the form now, any error messages that have been set will
     display at the top, but they won''t look pretty. Let''s fix this now, with some
     minor changes to our style sheet:'
+  id: totrans-214
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE36]'
+  id: totrans-215
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: Now, let's run the form in a browser; if all went well, you will see the errors
     at the top of the form, correctly formatted. The following screenshot shows what
     might appear if you were to not fill out the website URL; note that our code still
     shows the message in Dutch from the previous example:![Centralizing our error
     messages](img/image00369.jpeg)
+  id: totrans-216
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -1053,46 +1325,57 @@
     jQuery. We're going to move on and take a look at a couple of example forms in
     action. Before we do so, we need to cover some final tweaks as part of wrapping
     up development.
+  id: totrans-217
   prefs: []
   type: TYPE_NORMAL
 - en: Wrapping up development
+  id: totrans-218
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: When previewing the last exercise, the more observant will have spotted that
     some of the styles appear to be missing. There is a good reason for this; let
     me explain.
+  id: totrans-219
   prefs: []
   type: TYPE_NORMAL
 - en: 'As a minimum, we can provide messages to indicate success or failure. This
     will work but it isn''t great; a better option is to provide some additional styling
     to really set off our validation:'
+  id: totrans-220
   prefs: []
   type: TYPE_NORMAL
 - en: '![Wrapping up development](img/image00370.jpeg)'
+  id: totrans-221
   prefs: []
   type: TYPE_IMG
 - en: 'This is easy to do, so let''s make a start by performing the following steps:'
+  id: totrans-222
   prefs: []
   type: TYPE_NORMAL
 - en: 'Open up the `formvalidator.css` file and add the following lines of code:'
+  id: totrans-223
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE37]'
+  id: totrans-224
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: We need to add two icons to the `img` subfolder in our project area—for this,
     I've used the red cross and green tick icons available at [https://www.iconfinder.com/icons/32520/accept_check_good_green_ok_success_tick_valid_validation_vote_yes_icon](https://www.iconfinder.com/icons/32520/accept_check_good_green_ok_success_tick_valid_validation_vote_yes_icon).
     If you want to use different icons, then you may have to adjust the style rules
     accordingly.
+  id: totrans-225
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Save `formvalidator.css`. If you preview the results in a browser and enter
     details in the form, you should see results similar to the screenshot shown at
     the start of this exercise when you click on **Submit Form**.
+  id: totrans-226
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -1100,9 +1383,11 @@
     in the code download that accompanies this book; it contains a few more styles
     within the form that give it the really polished look that we've seen in this
     exercise.
+  id: totrans-227
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-228
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -1110,9 +1395,11 @@
     extract the `formvalidatior-fullexample` JavaScript, CSS, and HTML files from
     the code download and rename them to `formvalidator.js`, `formvalidator.css`,
     and `formvalidator.html`, respectively.
+  id: totrans-229
   prefs: []
   type: TYPE_NORMAL
 - en: Noting the use of best practices
+  id: totrans-230
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -1120,38 +1407,47 @@
     key point to consider the user's goals and expectations. What are they trying
     to achieve? Do we really need to display dozens of fields at once? Or, can we
     make the form simpler?
+  id: totrans-231
   prefs: []
   type: TYPE_NORMAL
 - en: Although the focus of this book is naturally on mastering jQuery, it would be
     foolish to simply concentrate on writing code; we must also give some consideration
     to the look and feel of the form and allow any visual or functional considerations
     when building the form and its associated validation.
+  id: totrans-232
   prefs: []
   type: TYPE_NORMAL
 - en: 'As a small example, it might be worth considering whether we can use CSS to
     blur or focus fields, as and when fields become available. We can achieve this
     using a small amount of CSS to blur or focus those fields, using something similar
     to the following code:'
+  id: totrans-233
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE38]'
+  id: totrans-234
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: 'The idea here is to fade out those fields where we have entered something and
     focus on those fields that we have yet to complete or are about to complete, as
     shown in the following screenshot:'
+  id: totrans-235
   prefs: []
   type: TYPE_NORMAL
 - en: '![Noting the use of best practices](img/image00371.jpeg)'
+  id: totrans-236
   prefs: []
   type: TYPE_IMG
 - en: 'A small warning: if we are not careful when using this styling, we may appear
     to effectively disable fields, which will kill the whole point of the exercise!
     Let''s change focus now and switch to a key part of form design: what happens
     if some browsers don''t support the CSS styles we''ve used throughout this chapter?'
+  id: totrans-237
   prefs: []
   type: TYPE_NORMAL
 - en: Providing fallback support
+  id: totrans-238
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -1159,6 +1455,7 @@
     work in most modern browsers. There may be instances though when this won't work;
     if we still have to cater to nonsupporting browsers (such as iOS7), then we need
     to provide some form of fallback.
+  id: totrans-239
   prefs: []
   type: TYPE_NORMAL
 - en: Thankfully, this isn't too much of an issue if we use something such as a Modernizr
@@ -1166,39 +1463,47 @@
     `html` element. We can then use this to provide a graceful fallback if a browser
     doesn't support the use (and styling) of pseudo-selectors, such as `:valid` or
     `:invalid`.
+  id: totrans-240
   prefs: []
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-241
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If you want to use a custom version of Modernizr, which will test for form validation
     support, then go to [http://modernizr.com/download/#-shiv-cssclasses-teststyles-testprop-testallprops-prefixes-domprefixes-forms_validation-load](http://modernizr.com/download/#-shiv-cssclasses-teststyles-testprop-testallprops-prefixes-domprefixes-forms_validation-load).
+  id: totrans-242
   prefs: []
   type: TYPE_NORMAL
 - en: Enough of the theory, let's have some fun! Over the course of the next couple
     of pages, we're going to have a look at a more complex example, over two exercises.
     It will be based on a simple contact form to which we will add form upload capabilities—although
     beware, as there will be a sting in this tail…!
+  id: totrans-243
   prefs: []
   type: TYPE_NORMAL
 - en: Creating an advanced contact form using AJAX
+  id: totrans-244
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In the first part of our complex example, we're going to develop a form that
     allows us to submit some basic details and that allows the confirmation of this
     submission to first appear on a form message panel and later by e-mail.
+  id: totrans-245
   prefs: []
   type: TYPE_NORMAL
 - en: 'For this exercise, we will need to avail ourselves of a couple of tools, as
     follows:'
+  id: totrans-246
   prefs: []
   type: TYPE_NORMAL
 - en: A local web server installed using default settings—options include WAMP (for
     PC; [http://www.wampserver.de/en](http://www.wampserver.de/en)) or MAMP (for Mac;
     [http://www.mamp.info/en/](http://www.mamp.info/en/)). Linux users will most likely
     already have something available as a part of their distribution.
+  id: totrans-247
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -1207,15 +1512,18 @@
     tool monitors port 25 and provides local e-mailing capabilities. For Mac, you
     can try the instructions provided at [https://discussions.apple.com/docs/DOC-4161](https://discussions.apple.com/docs/DOC-4161);
     Linux users can try following the steps outlined at [http://cnedelcu.blogspot.co.uk/2014/01/how-to-set-up-simple-mail-server-debian-linux.html](http://cnedelcu.blogspot.co.uk/2014/01/how-to-set-up-simple-mail-server-debian-linux.html).
+  id: totrans-248
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Access to an e-mail package from the PC or laptop that is being used—this is
     required to receive e-mails sent from our demo.
+  id: totrans-249
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Tip
+  id: totrans-250
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -1223,86 +1531,110 @@
     XAMPP ([https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html));
     this includes the Mercury Mail Transport option, so the Test Mail Server tool
     isn't required if you are working on Windows.
+  id: totrans-251
   prefs: []
   type: TYPE_NORMAL
 - en: 'Okay, with the tools in place, let''s make a start by performing the following
     steps:'
+  id: totrans-252
   prefs: []
   type: TYPE_NORMAL
 - en: We're going to start by opening up a copy of the code download that accompanies
     this book and extracting the `ajaxform` folder; this contains the markup, styling,
     and assorted files for our demo. We need to save the folder into the web server's
     `WWW` folder, which (for PC) will usually be `C:\wamp\www`.
+  id: totrans-253
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The markup is relatively straightforward and very similar to what we've already
     seen throughout this chapter.
+  id: totrans-254
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'We need to make one small change to the `mailer.php` file; open it in a text
     editor of your choice and then look for this line:'
+  id: totrans-255
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE39]'
+  id: totrans-256
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: Change `<ENTER EMAIL HERE>` to a valid e-mail address that you can use in order
     to check whether an e-mail has appeared afterwards.
+  id: totrans-257
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'The magic for this demo happens within the `ajax.js` file, so let''s take a
     look at the file now and begin by setting some variables:'
+  id: totrans-258
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE40]'
+  id: totrans-259
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: 'We start the real magic here, when the submit button is pressed; we first prevent
     the form from submitting (as it''s the default action) and then serialize the
     form data into a string for submission:'
+  id: totrans-260
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE41]'
+  id: totrans-261
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: 'The core of the AJAX action on this form comes next; this function sets the
     type of request to make, where the content will be sent to and the data to send:'
+  id: totrans-262
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE42]'
+  id: totrans-263
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: 'We then add the two functions to determine what should happen; the first function
     deals with the successful submission of our form:'
+  id: totrans-264
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE43]'
+  id: totrans-265
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE43]'
 - en: 'Next up comes the function that handles the outcome if form submission fails:'
+  id: totrans-266
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE44]'
+  id: totrans-267
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE44]'
 - en: Start the Email Tool. If you preview the form in a browser and fill out some
     valid details, you should see this screenshot when you submit it:![Creating an
     advanced contact form using AJAX](img/image00372.jpeg)
+  id: totrans-268
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -1310,100 +1642,125 @@
     by e-mail within a few moments. We will revisit the use of AJAX within jQuery
     in greater depth in the next chapter; for now, let's move on and continue to develop
     our form.
+  id: totrans-269
   prefs: []
   type: TYPE_NORMAL
 - en: Developing an advanced file upload form using jQuery
+  id: totrans-270
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: As one good man said some time ago, *"onwards and upwards!"*, it's time to add
     the second part of our form's functionality, in the form of a file upload option.
+  id: totrans-271
   prefs: []
   type: TYPE_NORMAL
 - en: Leaving aside the risks that this can present (such as the uploading of viruses),
     adding a file upload function is relatively straightforward; it requires both
     client- and server-side components to function correctly.
+  id: totrans-272
   prefs: []
   type: TYPE_NORMAL
 - en: 'In our example, we''re going to focus more on the client-side functionality;
     for the purpose of the demo, we will upload files to a fake folder stored within
     the project area. To give you an idea of what we will build, here''s a screenshot
     of the completed example:'
+  id: totrans-273
   prefs: []
   type: TYPE_NORMAL
 - en: '![Developing an advanced file upload form using jQuery](img/image00373.jpeg)'
+  id: totrans-274
   prefs: []
   type: TYPE_IMG
 - en: 'With this in mind, let''s make a start by performing the following steps:'
+  id: totrans-275
   prefs: []
   type: TYPE_NORMAL
 - en: 'In a copy of the `ajaxform.html` file, we need to add some additional links
     to various JavaScript and CSS files; all the additions are available in the code
     download that accompanies this book, as shown here:'
+  id: totrans-276
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE45]'
+  id: totrans-277
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE45]'
 - en: 'Next, we need to add some markup to `index.html`; so, in `ajaxform.html`, go
     ahead and first alter the title as shown here:'
+  id: totrans-278
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE46]'
+  id: totrans-279
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE46]'
 - en: 'We now need to add the file upload code; so, immediately after the closing
     `</div>` tag of the message field, add the following code:'
+  id: totrans-280
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE47]'
+  id: totrans-281
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE47]'
 - en: 'We need to make one small change to one of our jQuery files; in `uploadfiles.js`,
     look for the line that begins as follows:'
+  id: totrans-282
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE48]'
+  id: totrans-283
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE48]'
 - en: 'To complete our demo, we need two additional files: one is `files.php` and
     the other is `UploadHandler.php`; these will handle the backend upload of files
     and the sending of e-mails. Copies of these files are in the code download that
     accompanies this book.'
+  id: totrans-284
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Save all your files. If you preview the results using your local web server,
     then you should see a working form, similar to the first part of this exercise;
     it will now also show your upload form.
+  id: totrans-285
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-286
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: There is a working version of the demo in the `combined` folder that comes in
     the code download that accompanies this book.
+  id: totrans-287
   prefs: []
   type: TYPE_NORMAL
 - en: At this point, we should have a working form. But hold on…has anyone noticed
     something? Hopefully, at this point, you should have noticed that there is little
     or no validation within our form…! "Huh?," I hear you ask. You are absolutely
     right, but as with all good things, there is a reason for this.
+  id: totrans-288
   prefs: []
   type: TYPE_NORMAL
 - en: I deliberately didn't add any validation here, as I wanted to first concentrate
     on the form's functionality and finally have a small break from validation, given
     how much we've covered over the last few pages.
+  id: totrans-289
   prefs: []
   type: TYPE_NORMAL
 - en: It does, however, give you a perfect opportunity (and yes, here comes the sting)—how
@@ -1413,26 +1770,31 @@
     should be enough within this chapter to get you going. I strongly recommend that
     you view the documentation on the main [formvalidator.net](http://formvalidator.net)
     website, as it will help provide more answers!
+  id: totrans-290
   prefs: []
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-291
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Phew! We've finally reached the end of our chapter, so let's take a moment to
     review what we've covered so far.
+  id: totrans-292
   prefs: []
   type: TYPE_NORMAL
 - en: We kicked off with a look at why form validation is critical and how the key
     point is to keep any solution simple in order to ensure the success of the form.
     We started with a look at simple HTML5 validation before discussing the virtues
     of when to use jQuery in place of standard HTML5 validation.
+  id: totrans-293
   prefs: []
   type: TYPE_NORMAL
 - en: We then moved on to take a look at simple validation using jQuery before expanding
     this to cover the use of regex statements. Next up came a look at developing a
     quick and dirty validation plugin, before examining the need to maintain a more
     modular architecture to help with extensibility through the use of custom validators.
+  id: totrans-294
   prefs: []
   type: TYPE_NORMAL
 - en: We switched to using an existing plugin to add validation functionality, as
@@ -1440,16 +1802,19 @@
     the simple virtue of being able to validate any content. We also looked at how
     to localize our content and centralize the error messages that are displayed before
     wrapping up development with some additional styling tweaks.
+  id: totrans-295
   prefs: []
   type: TYPE_NORMAL
 - en: We then rounded out the chapter with a note on best practices and providing
     fallback support, before developing the basis of a complex form with the file
     upload functionality as a basis for using some of the techniques provided in this
     chapter for future personal development.
+  id: totrans-296
   prefs: []
   type: TYPE_NORMAL
 - en: In the next chapter, we're going to expand on a topic that we briefly covered
     during form development; it's time to take a look at that tried and trusted technology
     called AJAX…
+  id: totrans-297
   prefs: []
   type: TYPE_NORMAL
