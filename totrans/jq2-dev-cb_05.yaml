@@ -180,6 +180,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 除了jQuery库外，先前的HTML页面还使用了另一个JavaScript文件。在保存`index.html`文件的目录中创建一个空白的JavaScript文件。将该文件保存为`validation.js`，并添加以下JavaScript代码：
 - en: '[PRE2]'
   id: totrans-27
   prefs:
@@ -192,26 +193,31 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在网络浏览器中打开`index.html`，您应该会看到一个类似下面截图的表单：![如何操作…](img/0896OS_05_01.jpg)
 - en: If you click on the **Submit** button to submit an empty form, you will be presented
     with error messages under the required fields.
   id: totrans-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果您单击**提交**按钮提交一个空表单，将会在必填字段下方显示错误消息。
 - en: How it works…
   id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 工作原理…
 - en: Now, let us understand the steps performed previously in detail.
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们详细了解之前执行的步骤。
 - en: HTML
   id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: HTML
 - en: The HTML creates a web form with various fields that will take a range of data
     inputs, including text, date of birth, and credit card number. This page forms
     the basis for most of this chapter. Each of the input elements has been given
@@ -223,28 +229,33 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: HTML创建了一个包含各种字段的网络表单，这些字段将接受一系列数据输入，包括文本、出生日期和信用卡号码。该页面构成了本章大部分内容的基础。每个输入元素都被赋予了不同的类，具体取决于它们需要什么类型的验证。对于本示例，我们的JavaScript只会查看`required`类，该类表示必填字段，因此不能为空。其他类已添加到输入字段中，例如`date`和`number`，这些类将在本章后续示例中使用。
 - en: CSS
   id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: CSS
 - en: Basic CSS has been added to create an attractive web form. The CSS code styles
     the input fields so they blend in with the form itself and adds a hover effect.
     The Google Web Font Ubuntu has also been used to improve the look of the form.
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 已添加基本CSS以创建吸引人的网络表单。CSS代码为输入字段添加样式，使其与表单本身融为一体，并添加了悬停效果。还使用了谷歌Web字体Ubuntu来改善表单的外观。
 - en: jQuery
   id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: jQuery
 - en: 'The first part of the jQuery code is wrapped within `$(function(){});`, which
     will ensure the code is executed on page load. Inside this wrapper, we attach
     a click event handler to the form submit button, shown as follows:'
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery代码的第一部分被包裹在`$(function(){});`中，这将确保代码在页面加载时执行。在这个包装器内部，我们将点击事件处理程序附加到表单提交按钮，如下所示：
 - en: '[PRE3]'
   id: totrans-38
   prefs: []
@@ -256,6 +267,7 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们希望根据是否提供了有效数据来处理表单提交，所以我们使用`event.preventDefault();`来最初阻止表单提交，从而允许我们首先执行验证，如下所示：
 - en: '[PRE4]'
   id: totrans-40
   prefs: []
@@ -272,6 +284,7 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`preventDefault`代码之后，声明了一个`inputs`变量，用于保存页面内所有输入元素，使用`$('input')`来选择它们。此外，我们创建了一个`isError`变量，并将其设置为`false`。这将是一个标志，用于确定我们的验证代码是否在表单中发现了错误。这些变量声明如上所示。通过`inputs`变量的长度，我们能够循环遍历页面上的所有输入。我们为每个迭代的输入创建一个输入变量，该变量可用于使用jQuery对当前输入元素执行操作。使用以下代码完成此操作：
 - en: '[PRE5]'
   id: totrans-42
   prefs: []
@@ -283,6 +296,7 @@
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在输入变量被声明并分配了当前输入后，使用以下代码从元素中移除任何先前的错误类或数据：
 - en: '[PRE6]'
   id: totrans-44
   prefs: []
@@ -295,6 +309,7 @@
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一行代码从输入框的父元素（`.input-frame`）中移除了`error`类，该类将为输入元素添加红色边框。第二行代码会移除在输入数据验证检查确定该输入数据无效时在输入框下方显示的错误信息。
 - en: 'Next, jQuery''s `hasClass()` function is used to determine if the current input
     element has the `required` class. If the current element does have this class,
     we need to perform the required validation to make sure this field contains data.
@@ -721,6 +736,7 @@
   id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果提供的值以斜杠、连字符或句点分隔，并且前两部分由两个数字组成，最后一部分由四个数字组成，则此测试将通过。这将确保提供的值是`DD/MM/YYYY`，符合要求。
 - en: 'If this test passes, the next step is to remove all of the leading zeros so
     that the provided date string can be converted into a date object with JavaScript
     (for example, `08-08-1989` will become `8-8-1989`). The code for the same is as
@@ -728,6 +744,7 @@
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果此测试通过，则下一步是删除所有前导零，以便将提供的日期字符串转换为 JavaScript 的日期对象（例如，`08-08-1989` 将变为 `8-8-1989`）。相同的代码如下所示：
 - en: '[PRE19]'
   id: totrans-109
   prefs: []
@@ -738,6 +755,7 @@
   id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，创建一个数组，将日期字符串分割为`-`、`/` 或：
 - en: '[PRE20]'
   id: totrans-111
   prefs: []
@@ -752,6 +770,8 @@
   id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，可以使用这些日期值来创建 JavaScript 日期对象并测试其有效性。在此之前，我们必须转换月份值。JavaScript 月份从`0`开始，而我们的用户将从`1`开始。例如，用户将使用`1`表示一月，`2`表示二月，依此类推，而
+    JavaScript 使用`0`表示一月，`1`表示二月，依此类推。为此，我们只需从提供的日期值中减去`1`，如下所示：
 - en: '[PRE21]'
   id: totrans-113
   prefs: []
@@ -762,6 +782,7 @@
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做后，就可以创建 JavaScript 日期对象并检查结果是否与输入日期匹配，从而证明其有效性：
 - en: '[PRE22]'
   id: totrans-115
   prefs: []
@@ -772,17 +793,20 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 另请参阅
 - en: The *Adding date picker interfaces to input boxes quickly* recipe in [Chapter
     9](ch09.html "Chapter 9. jQuery UI"), *jQuery UI*
   id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 [第9章](ch09.html "第9章. jQuery UI") 的 *快速向输入框添加日期选择器界面* 配方中，*jQuery UI*
 - en: Adding e-mail address validation
   id: totrans-118
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 添加电子邮件地址验证
 - en: E-mail address validation is one of the most common types of validation on the
     Web. Most people would believe that a valid e-mail address only contains alphanumeric
     characters with the exception of the `@` symbol and a full stop. While most e-mail
@@ -792,22 +816,26 @@
   id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 电子邮件地址验证是网络上最常见的验证类型之一。大多数人会认为有效的电子邮件地址只包含字母数字字符，除了`@`符号和句点。虽然大多数电子邮件地址通常是这种格式，但实际上有效的电子邮件地址可能包含各种其他字符。本文将向您展示如何将电子邮件验证添加到我们在过去四个配方中使用的Web表单中。
 - en: How to do it…
   id: totrans-120
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何执行…
 - en: 'Create e-mail validation that can be reused again and again by performing the
     following instructions:'
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过执行以下说明，创建可以反复使用的电子邮件验证：
 - en: 'Add the additional `hasClass` check and `if` statement to the main `for` loop
     in `validation.js` as follows:'
   id: totrans-122
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 `validation.js` 主 `for` 循环中添加额外的 `hasClass` 检查和 `if` 语句，如下所示：
 - en: '[PRE23]'
   id: totrans-123
   prefs:
@@ -819,6 +847,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 `validation.js` 末尾添加以下 `validateEmail()` 函数：
 - en: '[PRE24]'
   id: totrans-125
   prefs:
@@ -832,23 +861,28 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在网络浏览器中打开 `index.html`，输入一个无效的电子邮件地址，并提交表单。您将以与其他类型验证错误相同的方式收到适当的错误提示。
 - en: How it works…
   id: totrans-127
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 工作原理…
 - en: The e-mail validation function, however simple, contains a complex regular expression
     to validate an e-mail address to a practical version of RFC 5322 standards, which
     was provided by [http://www.regular-expressions.info/email.html](http://www.regular-expressions.info/email.html).
   id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而简单的电子邮件验证函数包含一个复杂的正则表达式，用于将电子邮件地址验证为 RFC 5322 标准的实用版本，该版本由 [http://www.regular-expressions.info/email.html](http://www.regular-expressions.info/email.html)
+    提供。
 - en: The first part of the `validateEmail()` function checks to see if there is a
     value to validate. If so, it uses the complex regular expression to test the string
     values' validity, returning `true` or `false` accordingly.
   id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: '`validateEmail()` 函数的第一部分检查是否有值可验证。如果有，它将使用复杂的正则表达式测试字符串值的有效性，并相应地返回`true`或`false`。'
 - en: Finally, as with the other validation functions, there is the class check inside
     the main `for` loop, which determines which inputs need to be validated for e-mail
     addresses. If these input fields fail validation, it will provide the appropriate
