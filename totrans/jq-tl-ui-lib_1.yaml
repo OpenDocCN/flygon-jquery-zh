@@ -820,21 +820,25 @@
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 API 中，每个工具都可以在特定时间点响应事件，这是需要完成某项操作的时刻。一个很好的例子是**Scrollable**—每次你滚动图片时，你都可以触发`onSeek`事件。每次发生这种情况时，你都可以添加自定义响应（或监听器）—如果你想要扩展工具的默认行为，这尤其有用。
 - en: Note
   id: totrans-122
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: Event listeners are often referred to as **callbacks**—both terms are equally
     valid.
   id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 事件监听器通常被称为**回调**—这两个术语都是同样有效的。
 - en: Before and after events
   id: totrans-124
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 在事件之前和之后
 - en: 'You can add your own custom functionality to any of the Tools, as they provide
     the before and after event methods for this purpose. These actions can equally
     be cancelled using the `onBefore` event, such as in this example, which uses the
@@ -842,6 +846,8 @@
   id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以为任何工具添加自定义功能，因为它们提供了用于此目的的 before 和 after 事件方法。这些操作也可以使用`onBefore`事件取消，例如在这个例子中，它使用了
+    tabs 的`onBeforeClick`回调：
 - en: '[PRE18]'
   id: totrans-126
   prefs: []
@@ -852,20 +858,24 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提供事件
 - en: 'There are three different ways of supplying event listeners in the tools:'
   id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 有三种不同的方法可以提供工具的事件监听器：
 - en: Within the configuration
   id: totrans-129
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 在配置中
 - en: 'The first, and easiest, option is to include event listeners as part of your
     code directly:'
   id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一种，也是最简单的选项是将事件监听器直接包含在你的代码中：
 - en: '[PRE19]'
   id: totrans-131
   prefs: []
@@ -877,25 +887,30 @@
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这个选项的一个缺点是你无法在代码中指定同一个回调的多个实例。例如，在同一个配置中包含两个不同的`onClick`方法将导致错误。
 - en: Note
   id: totrans-133
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: In the previous example, the `this` variable is a reference to the Tabs API.
   id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前面的例子中，`this`变量是对 Tabs API 的引用。
 - en: Using jQuery's bind method
   id: totrans-135
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 使用 jQuery 的绑定方法
 - en: 'The second method follows that used within jQuery, where you can assign multiple
     listeners consecutively, in a chain:'
   id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二种方法遵循了 jQuery 中使用的方法，您可以连续分配多个监听器：
 - en: '[PRE20]'
   id: totrans-137
   prefs: []
@@ -910,6 +925,8 @@
   id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这种方法提供更大的灵活性，因为它允许你在代码中删除特定的事件监听器，或者在同一调用中绑定多个相同事件监听器的实例。在前面的例子中，CSS .tabs
+    选择器被设置为在任何使用该选择器的标签触发`onClick`事件时执行两个动作。工具还允许你在单个调用中将相同的事件监听器绑定到多个事件触发类型上：
 - en: '[PRE21]'
   id: totrans-139
   prefs: []
@@ -921,15 +938,18 @@
   id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 强烈建议你尽可能深入地熟悉这个功能，如果你还不熟悉事件绑定—在这个领域有大量的优秀参考资料可供使用。
 - en: Supplying listeners from the API
   id: totrans-141
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 从 API 中提供监听器
 - en: 'The tools also allow you to supply one or more callbacks from within the API:'
   id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 工具还允许你从 API 内部提供一个或多个回调：
 - en: '[PRE22]'
   id: totrans-143
   prefs: []
@@ -941,6 +961,7 @@
   id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用内部的`this`变量作为对任何工具 API 的引用，这样可以让你将多个事件监听器链接在一起；这对于尚未熟悉 jQuery 的开发人员来说更加合适：
 - en: '[PRE23]'
   id: totrans-145
   prefs: []
@@ -951,12 +972,14 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 事件对象
 - en: 'If you are using callbacks, it is worth noting that the Tools adhere to the
     current W3C standards, when passing the `event` object as the first argument for
     each callback function:'
   id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你使用回调，值得注意的是工具遵循当前的 W3C 标准，将`event`对象作为每个回调函数的第一个参数传递：
 - en: '[PRE24]'
   id: totrans-148
   prefs: []
@@ -968,11 +991,13 @@
   id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 jQuery 工具的范围内，`preventDefault()`与从回调函数返回 false 是相同的；这被认为是取消默认事件的接受实践。
 - en: Creating jQuery Tools plugins
   id: totrans-150
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建 jQuery 工具插件
 - en: 'The Tools were designed to work in tandem with jQuery, which allows you to
     create jQuery Tools-based plugins. Using jQuery, you can easily alter or extend
     the default behavior of the tools, with the added benefit of being able to reference
@@ -1090,6 +1115,8 @@
   id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用额外效果意味着你可以将代码分离到单独的文件中，这样基础的覆盖代码会更小更有组织。然后你可以进一步创建更多效果，这些效果可以从单独的文件中引用，并根据需要插入到你的代码中。你还可以通过全局配置设置特定效果作为默认效果；这样可以减少在代码中每个实例中指定的需要。你也可以通过配置值实现相同的效果——如果你有一些在效果内部设置的值，你可以将它们设置为全局级别的默认应用，以便在使用此效果的每个实例中应用。例如，你可能在你的效果中设置了
+    `explosionSpeed` 值——以下代码将其转换为全局配置变量：
 - en: '[PRE30]'
   id: totrans-167
   prefs: []
@@ -1101,11 +1128,14 @@
   id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得一看的是 [http://gsgd.co.uk/sandbox/jquery/easing/](http://gsgd.co.uk/sandbox/jquery/easing/)，jQuery
+    缓动插件的主页；那里有许多效果，可以适用于 jQuery 工具。
 - en: Performance of jQuery Tools
   id: totrans-169
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: jQuery 工具的性能
 - en: 'A key design facet of jQuery Tools, as outlined by Yahoo''s five rules of best
     practice, is that designers should try to reduce the number of images, stylesheets,
     and scripts that have to be downloaded. Yahoo argues that this is the key to improving
@@ -1115,36 +1145,44 @@
   id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery 工具的一个关键设计特性，正如雅虎的五条最佳实践所述，是设计师应尽量减少必须下载的图像、样式表和脚本的数量。雅虎认为这是提高站点速度的关键，因为大多数时间花在站点上的是在前端。雅虎创建的五条规则，以及
+    jQuery 工具所遵循的规则，包括：
 - en: Reduce the number of HTTP requests.
   id: totrans-171
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 减少 HTTP 请求的数量。
 - en: Use a CDN link, for incorporating scripts into your code where possible.
   id: totrans-172
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 尽可能使用 CDN 链接，将脚本合并到你的代码中。
 - en: Add an `expires` header.
   id: totrans-173
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加一个 `expires` 头。
 - en: GZIP components where possible.
   id: totrans-174
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 尽可能使用 GZIP 组件。
 - en: Minimize the JavaScript by compressing the code.
   id: totrans-175
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过压缩代码来最小化 JavaScript。
 - en: 'If you include the following script link in your code, you will be able to
     respect these five rules:'
   id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在你的代码中包含以下脚本链接，你将能够遵守这五条规则：
 - en: '[PRE31]'
   id: totrans-177
   prefs: []
@@ -1159,11 +1197,13 @@
   id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 它们可以帮助显著提高你站点的性能，大约提高你网站性能的 70 到 80%！鼓励你使用提供的 CDN 链接，尤其是用于生产；如果你担心文件大小，你应该下载一个仅包含你真正需要的工具的组合脚本，并遵循本章中提到的原则。
 - en: Reduce the number of HTTP requests
   id: totrans-179
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 减少 HTTP 请求的数量
 - en: A good practice is to minimize the number of separate JavaScript or CSS files
     used in a site—this helps to reduce the amount of time taken to fetch content
     from different sources. This is allowed for within jQuery Tools, which uses one
@@ -1172,22 +1212,27 @@
   id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个好的做法是尽量减少站点中使用的单独 JavaScript 或 CSS 文件的数量——这有助于减少从不同来源获取内容所需的时间。这在 jQuery 工具中是允许的，当下载库的自定义版本或使用
+    CDN 链接时，它会使用一个组合的 JavaScript 文件。
 - en: jQuery Tools are available through CDN
   id: totrans-181
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: jQuery 工具可通过 CDN 获得。
 - en: There are a number of CDN links that are available for use—using these can result
     in a 15 to 20 percent increase in efficiency, in comparison to using manual, static
     links.
   id: totrans-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多可用于使用的 CDN 链接——使用这些链接可以使效率提高 15 到 20%，与使用手动静态链接相比。
 - en: Adding an expires header
   id: totrans-183
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 添加一个过期头部
 - en: JQuery Tools are built with `expires` headers set on all of the tools, which
     makes them cacheable; this will reduce subsequent response times from each visit
     to a site by as much as 50 percent.
