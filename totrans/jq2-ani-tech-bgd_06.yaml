@@ -642,16 +642,20 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将其保存为 `bounce.css`，放置在 `css` 文件夹中。当我们运行页面并点击球时，我们应该发现它会沿着页面弹跳，逐渐停止：![行动时间 -
+    使用弹跳效果](img/9642_06_02.jpg)
 - en: The previous composition shows the ball traveling across the page, bouncing
     up and down as it goes from left to right.
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 前一组成将显示球横穿页面，从左到右弹跳上下。
 - en: '*What just happened?*'
   id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '*刚刚发生了什么？*'
 - en: When the ball is clicked, we first use jQuery's `animate()` method to animate
     the `left` style property of the container, `#travel`, by 300 pixels, over a duration
     of 1.5 seconds. We slow this animation down to improve the appearance of the overall
@@ -660,6 +664,9 @@
   id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 当点击球时，我们首先使用 jQuery 的 `animate()` 方法，通过 300 像素动画化容器 `#travel` 的 `left` 样式属性，在
+    1.5 秒的持续时间内。我们减慢此动画以改善整体动画的外观，但这并不是严格要求的。然后，我们向下导航到内部 `<div>` 元素，并使用 `effect()`
+    方法，指定 `bounce` 效果。
 - en: We need to use both elements, `#travel` and `#ball`, because if we use the `animate()`
     and `effect()` methods on the same element, the bounce effect will go into the
     element's animation queue and the two animations will execute one after the other
@@ -667,244 +674,293 @@
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要同时使用 `#travel` 和 `#ball` 元素，因为如果我们在同一元素上使用 `animate()` 和 `effect()` 方法，弹跳效果将进入元素的动画队列，两个动画将按顺序执行，而不是同时运行。
 - en: The highlight effect
   id: totrans-107
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 高亮效果
 - en: The `highlight` effect is a simple but effective way to draw the visitor's attention
     to new items that have been added to the page, and is used for this purpose in
     many of today's leading web-based interfaces.
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '`highlight` 效果是吸引访问者注意力的简单而有效的方法，用于突出显示页面中已添加的新项目，在今天许多领先的基于网络的界面中用于此目的。'
 - en: Syntax
   id: totrans-109
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 语法
 - en: '```js'
   id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '```js'
 - en: $(selector).effect( "highlight" [,configuration] [,duration] );
   id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: $(selector).effect( "highlight" [,configuration] [,duration] );
 - en: '```'
   id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '```'
 - en: Configuration options
   id: totrans-113
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 配置选项
 - en: 'There are only two configuration options for the `highlight` effect; these
     are listed as follows:'
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 `highlight` 效果，只有两个配置选项；它们如下所列：
 - en: '| Options | Default | Usage |'
   id: totrans-115
   prefs: []
   type: TYPE_TB
+  zh: '| 选项 | 默认值 | 用法 |'
 - en: '| --- | --- | --- |'
   id: totrans-116
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| `color` | `"#ffff99"` | Sets the `background-color` property of the element
     being highlighted |'
   id: totrans-117
   prefs: []
   type: TYPE_TB
+  zh: '| `color` | `"#ffff99"` | 设置正在高亮显示的元素的 `background-color` 属性 |'
 - en: '| `mode` | `"show"` | Sets whether the effect will be hidden or shown when
     used with the `effect()` method, other possible values include `hide`, `toggle`,
     or `effect` |'
   id: totrans-118
   prefs: []
   type: TYPE_TB
+  zh: '| `mode` | `"show"` | 设置使用 `effect()` 方法时效果是隐藏还是显示的，其他可能的值包括 `hide`、`toggle`
+    或 `effect` |'
 - en: Time for action – highlighting elements
   id: totrans-119
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 行动时间 - 高亮元素
 - en: In this example we'll create a simple to-do list, with a series of default items
     that can be checked off. We can also allow new items to be added to the list and
     will apply the `highlight` effect to new items as they are added.
   id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个示例中，我们将创建一个简单的待办事项列表，其中包含一系列可以勾选的默认项目。我们还可以允许将新项目添加到列表中，并在添加时将 `highlight`
+    效果应用于新项目。
 - en: 'Add the following HTML code to the `<body>` element of the template file:'
   id: totrans-121
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将以下 HTML 代码添加到模板文件的 `<body>` 元素中：
 - en: '```js'
   id: totrans-122
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '```js'
 - en: <div id="todo">
   id: totrans-123
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <div id="todo">
 - en: <h2>Todo List</h2>
   id: totrans-124
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <h2>待办事项列表</h2>
 - en: <ul>
   id: totrans-125
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <ul>
 - en: <li><label><input type="checkbox">Item 1</label></li>
   id: totrans-126
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <li><label><input type="checkbox">项目 1</label></li>
 - en: <li><label><input type="checkbox">Item 2</label></li>
   id: totrans-127
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <li><label><input type="checkbox">项目 2</label></li>
 - en: <li><label><input type="checkbox">Item 3</label></li>
   id: totrans-128
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <li><label><input type="checkbox">项目 3</label></li>
 - en: </ul>
   id: totrans-129
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: </ul>
 - en: <input type="text" id="new">
   id: totrans-130
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <input type="text" id="new">
 - en: <button id="add">Add</button>
   id: totrans-131
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <button id="add">添加</button>
 - en: </div>
   id: totrans-132
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: </div>
 - en: '```'
   id: totrans-133
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '```'
 - en: 'Add the behavior for our to-do list using the following code:'
   id: totrans-134
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用以下代码为我们的待办事项列表添加行为：
 - en: '```js'
   id: totrans-135
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '```js'
 - en: $("#add").click(function() {
   id: totrans-136
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: $("#add").click(function() {
 - en: var newItem = $("#new"),
   id: totrans-137
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var newItem = $("#new"),
 - en: text = newItem.val();
   id: totrans-138
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: text = newItem.val();
 - en: if (text) {
   id: totrans-139
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: if (text) {
 - en: var li = $("<li>"),
   id: totrans-140
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var li = $("<li>"),
 - en: label = $("<label>").html("<input type=\"checkbox\">" +text).appendTo(li);
   id: totrans-141
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: label = $("<label>").html("<input type=\"checkbox\">" +text).appendTo(li);
 - en: li.appendTo("#todo ul").effect("highlight", 2000);
   id: totrans-142
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: li.appendTo("#todo ul").effect("highlight", 2000);
 - en: newItem.val("");
   id: totrans-143
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: newItem.val("");
 - en: '}'
   id: totrans-144
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: // prevent the form from submitting
   id: totrans-145
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: // 阻止表单提交
 - en: return false;
   id: totrans-146
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return false;
 - en: '});'
   id: totrans-147
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '});'
 - en: '```'
   id: totrans-148
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '```'
 - en: 'Save this page as `highlight.html`. We also need some CSS for this example.
     In a new file in your text editor, add the following code:'
   id: totrans-149
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将此页面保存为 `highlight.html`。我们还需要一些 CSS 来完成此示例。在文本编辑器中新建一个文件，添加以下代码：
 - en: '```js'
   id: totrans-150
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '```js'
 - en: '#todo {'
   id: totrans-151
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '#todo {'
 - en: width:208px;
   id: totrans-152
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: width:208px;
 - en: font:normal 13px sans-serif;
   id: totrans-153
   prefs:
