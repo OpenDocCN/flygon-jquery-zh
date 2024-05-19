@@ -3,40 +3,47 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第八章 写出稍后可读的代码
 - en: jQuery truly does help us do more with less code, but one thing it doesn't address
     is how to organize our code. This may not be a problem at first, but as your app
     grows in age and features, it's organization (or lack thereof), becomes a problem.
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery 真的帮助我们用更少的代码做更多的事情，但有一件事它没有解决，那就是如何组织我们的代码。起初这可能不是一个问题，但随着您的应用程序在年龄和功能上的增长，它的组织（或者说缺乏组织）会成为一个问题。
 - en: 'In this chapter, we will look at some proven methods to organize JavaScript.
     In this chapter we will:'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们将介绍一些组织 JavaScript 的成熟方法。在本章中我们将：
 - en: Learn some object-oriented techniques to make our code easy to understand and
     maintain
   id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 学习一些面向对象的技术，使我们的代码易于理解和维护
 - en: Use events to decouple our code and ensure that unrelated sections don't need
     to directly talk to each other
   id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用事件解耦我们的代码，并确保不相关的部分不需要直接相互通信
 - en: Take a quick look at writing JavaScript unit testing, specifically with Jasmine,
     which is a behavior-driven development framework used to test JavaScript code
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 快速了解编写 JavaScript 单元测试，特别是使用 Jasmine，这是一个用于测试 JavaScript 代码的行为驱动开发框架
 - en: Separation of concerns
   id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 关注点分离
 - en: Software architectural patterns, such as **Model-View-Controller** (**MVC**),
     have become popular mainly because they address the issue of code organization
     head-on. Model-View-Controller divides an application into three main parts. The
@@ -51,6 +58,8 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 软件架构模式，比如**模型-视图-控制器**（**MVC**），主要因为它们直接解决了代码组织的问题而变得流行起来。模型-视图-控制器将应用程序分成三个主要部分。模型部分处理应用程序的数据。控制器从模型获取数据并将其提供给视图，同时它从视图获取用户输入并将其反馈给模型。关于此模式最重要的一点是您永远不应该混合责任。模型永远不包含控制器代码，控制器永远不包含视图，依此类推。这被称为**关注点分离**，或
+    SoC。如果应用程序的任何部分违反了此规则，您的应用程序将陷入紧密耦合、相互依赖的代码的烂摊子。
 - en: 'We don''t need to go all in with MVC in order to gain some benefits from it.
     We can use it as a way to guide us in our development. For one, it helps us answer
     this question: where should this code go? Let''s look at an example. We are given
@@ -60,6 +69,8 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不需要完全采用 MVC 来获得一些好处。我们可以将其用作指导我们开发的方法。首先，它帮助我们回答这个问题：这段代码应该放在哪里？让我们看一个例子。我们收到的要求是编写代码从我们的
+    Web 服务中检索会员数据并将其呈现给用户以供选择。我们应该如何进行？您的第一反应可能是编写类似以下的代码：
 - en: '[PRE0]'
   id: totrans-9
   prefs: []
@@ -75,6 +86,8 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码实现了我们的需求，但存在几个问题。首先，没有关注点分离。虽然我们并不是在努力创建一个 MVC 应用程序，但我们至少应该努力让函数按照模型、视图和控制器的方式分解。在本例中，我们的模型由`$.getJSON()`方法调用表示。它直接绑定到我们的控制器代码，该控制器代码在此示例中获取模型数据并将其创建为
+    HTML 模板。最后，我们的视图代码使用`$.html()`方法呈现 HTML 模板。
 - en: This code is also an example of tight coupling. Each section of the code depends
     directly on the next, and there is no way to pull them apart. Tightly coupled
     code is more difficult to test. There is no easy way to test this code's functionality.
@@ -85,11 +98,13 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码也是紧耦合的一个例子。代码的每个部分直接依赖于下一个部分，并且没有办法将它们分开。紧密耦合的代码更难测试。没有简单的方法来测试这段代码的功能。只要看看它。代码位于文档准备好事件内；你必须模拟该事件才能开始测试代码的功能。一旦你模拟了文档准备好事件，你还需要以某种方式模拟`getJSON()`方法，因为代码的其余部分都被深埋在其中。
 - en: Breaking code into logical units
   id: totrans-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 将代码分解成逻辑单元
 - en: One of the things that makes the previous code sample hard to understand is
     that it hasn't been broken down into logical units. In JavaScript, we don't have
     classes like other object-oriented languages, but we have objects and even files
@@ -97,6 +112,7 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 使前面的代码示例难以理解的原因之一是它没有被分解成逻辑单元。在 JavaScript 中，我们没有像其他面向对象语言那样的类，但我们有对象，甚至有文件来将逻辑相关的代码单元组合在一起。
 - en: We break code down, starting with the functions. Rather than having one function
     that does everything, strive to have many functions, with each function only doing
     one thing. When functions do too many things, they become hard to understand.
@@ -105,6 +121,7 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从函数开始分解代码。与其拥有一个做所有事情的函数，不如努力拥有许多函数，每个函数只做一件事。当函数做了太多事情时，它们变得难以理解。注释可能有助于解释代码正在做什么，但编写良好的代码应该能够自我注释。函数有助于清晰地分离不同功能的各个部分。
 - en: 'You may be wondering why any of this matters, especially since we have working
     code that achieves our requirements. It matters since the typical program spends
     far more time being maintained than written. So, it is important that we write
@@ -112,6 +129,7 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 也许你会想知道为什么这些都很重要，尤其是因为我们有实现我们需求的可工作代码。这很重要，因为典型的程序花费的时间在维护而不是编写上更多。所以，编写易于维护的代码是很重要的。让我们再试一次：
 - en: '[PRE1]'
   id: totrans-16
   prefs: []
@@ -123,6 +141,7 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码的第二个版本比原始版本更长，即使它缺乏注释，它也更易读。将代码分成单独的函数使得理解它在做什么变得容易。
 - en: 'In a complete MVC application, we might create separate classes for each concern
     and then move each function into the class to which it belongs. But we don''t
     need to be so formal. First, we don''t have classes in JavaScript, but we have
@@ -131,6 +150,8 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在完整的 MVC 应用程序中，我们可能会为每个关注点创建单独的类，然后将每个函数移动到它所属的类中。但我们不需要如此正式。首先，我们在 JavaScript
+    中没有类，但我们有非常强大的对象可以包含函数。所以这一次让我们再试一次，这次使用 JavaScript 对象来捆绑我们的代码：
 - en: '[PRE2]'
   id: totrans-19
   prefs: []
@@ -148,11 +169,14 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个版本中，我们将所有代码捆绑到了成员对象中。这样做可以轻松移动我们的代码，并帮助我们将其视为一个单一的、连贯的单位。将代码放入对象中也使得使用`this`构造成为可能。这是否是一种改进还有争议。我见过许多
+    JavaScript 开发人员将所有对象名称都写出来，只是为了避免考虑`this`。注意，我们还缩短了大多数方法的名称。在许多方法名称中使用`member`这个词是多余的，因为对象的名称是`member`。此外，请注意，我们现在将我们的函数称为“方法”。当一个函数是类或对象的一部分时，它就是一个方法。
 - en: Using events to decouple code
   id: totrans-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用事件解耦代码
 - en: Through this book, we have used events, but they have always been triggered
     by jQuery or the browser but never by us. Now, that is about to change. Events
     are really great for the decoupling of code. Imagine a scenario where you and
@@ -165,6 +189,8 @@
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过本书，我们一直在使用事件，但它们总是被 jQuery 或浏览器触发，而不是由我们触发。现在，这将发生变化。事件对于代码的解耦非常有用。想象一下这样一个场景：你和另一个开发者一起在一个应用程序上工作。另一个开发者将向你的代码提供数据。这些数据——让我们称之为数据源——将会间歇性地可用，不像之前通过单个
+    Ajax 调用提供数据的示例那样。当数据可用时，你的代码，即数据读取器，将把数据呈现到页面上。有几种方法可以做到这一点。
 - en: The data source could provide a polling method for us to call. We would repeatedly
     call this method until the source has some new data for us. However, we know that
     polling is inefficient. The majority of the time we call the polling service,
@@ -173,6 +199,8 @@
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据源可以提供一个轮询方法供我们调用。我们会重复调用此方法，直到数据源为我们提供一些新数据为止。然而，我们知道轮询是低效的。大多数时候，我们调用轮询服务时，都不会有任何新数据，我们将浪费
+    CPU 周期而没有返回任何新数据。
 - en: We could supply the data source with a method it could call whenever it has
     new data. This solves the issue of inefficiency since our code will only be called
     when there is new data. Think about what a maintenance nightmare we would introduce
@@ -184,6 +212,7 @@
   id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以为数据源提供一个方法，每当它有新数据时就调用。这解决了效率问题，因为我们的代码只会在有新数据时被调用。想象一下，如果我们这样做会引入多么糟糕的维护噩梦。当只有一个依赖模块需要数据源提供数据时，似乎很容易。但如果第二个或第三个模块也需要数据源，我们就必须不断更新数据源模块。如果任何数据读取器模块发生变化，数据源也可能需要更新。我们该怎么办呢？
 - en: We can use custom events. Using custom events loosens the coupling. Neither
     side directly calls the other. Instead, when the data source has new data, it
     triggers the custom event. Any data reader that wants the new data simply registers
@@ -191,6 +220,7 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用自定义事件。使用自定义事件可以减少耦合度。双方都不直接调用对方。相反，当数据源有新数据时，它会触发自定义事件。任何想要新数据的数据读取器只需注册一个自定义事件的处理程序。
 - en: Here are some of the nice things about using custom events. First, the coupling
     is loose. Second, there is no limit to the number of data readers that can register
     for the event. Third, if the event is triggered with no listeners, nothing breaks.
@@ -199,6 +229,7 @@
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用自定义事件有一些好处。首先，耦合度较低。其次，可以注册监听器的数据读取器数量没有限制。第三，如果事件被触发而没有监听器，不会发生任何错误。最后，如果有一堆读取器注册但新数据从未到来，也不会发生错误。
 - en: One thing we must be careful about with custom events is to remember to release
     the event handlers when we are through with them. Two things can happen if we
     forget. First, we may cause a memory leak. A memory leak is when JavaScript is
@@ -207,6 +238,8 @@
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用自定义事件时，我们必须注意记得在使用完毕后释放事件处理程序。如果我们忘记了会发生两件事。首先，我们可能会导致内存泄漏。内存泄漏是指 JavaScript
+    无法释放一块内存，因为某些东西——在我们的情况下是一个事件处理程序——仍然持有对它的引用。
 - en: Over time, the browser will begin to act increasingly sluggish as it begins
     to run out of memory before it finally crashes. Second, our event handler can
     be called too many times. This happens when the code that hooks the event is called
@@ -216,6 +249,7 @@
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着时间的推移，浏览器会在最终崩溃之前开始变得越来越迟缓，因为它开始耗尽内存。其次，我们的事件处理程序可能会被调用太多次。当钩子事件的代码被调用超过一次而事件从未被释放时，就会发生这种情况。在你意识到之前，事件处理程序会被调用两次、三次，甚至更多次，而不是只被调用一次。
 - en: 'One last nice thing about custom events is that we already know most of what
     we need to in order to implement them. The code is only slightly different from
     what we learned in order to perform regular browser events. Let''s take a look
@@ -406,6 +440,8 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Jasmine 的单元测试框架围绕三种方法工作：`describe`、`it` 和 `expect`。`describe` 是一个全局函数，用于保存一个测试套件。它的第一个参数是一个字符串，表示测试套件的名称。第二个参数是一个作为测试套件的函数。接下来是
+    `it`。
 - en: Like `describe`, `it` is a global function in Jasmine, and `it` holds a specification,
     or spec. The parameters passed to `it` are also a string and a function. By tradition,
     the string is written so that when read with `it`, it completes a sentence describing
@@ -413,6 +449,8 @@
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 `describe` 类似，`it` 是 Jasmine 中的全局函数，`it` 包含一个规范或 spec。传递给 `it` 的参数也是一个字符串和一个函数。按照传统，字符串的编写应该使得当与
+    `it` 一起阅读时，它完整描述了规范。函数使用一个或多个期望进行测试。
 - en: Expectations are created using the `expect` Jasmine function. The `expect` is
     the equivalent of `assert` in other unit test frameworks. It is passed a single
     parameter, which is the value to be tested that calls the actual in Jasmine. Chained
@@ -421,6 +459,8 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 期望是使用 `expect` Jasmine 函数创建的。`expect` 相当于其他单元测试框架中的 `assert`。它被传递一个参数，即要测试的值，该值调用
+    Jasmine 中的实际值。在期望之后链接的是 `matcher` 函数。`matcher` 函数被传递了期望的值。
 - en: The combination of the `expect` and `matcher` functions in Jasmine is one of
     its most beautiful things. When written correctly, they read like an English sentence.
     This makes it easy to both write tests and read them later. Jasmine also comes
@@ -430,6 +470,8 @@
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Jasmine 中 `expect` 和 `matcher` 函数的组合是其最美丽的之一。当编写正确时，它们的阅读就像一句英文句子。这使得编写测试和以后阅读测试都很容易。Jasmine
+    还提供了大量的匹配器，这有助于您编写出您想要的期望。还有一个 `not` 运算符，它将反转任何 `matcher` 函数的逻辑。
 - en: In order to run the sample test, simply launch the `SpecRunner.html` page. It
     will load Jasmine, the parts of code we would like to test, and the specifications.
     In unit test tradition, the page will either be green, which means all of our
@@ -438,6 +480,7 @@
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 要运行示例测试，只需启动 `SpecRunner.html` 页面。它将加载 Jasmine，我们要测试的代码部分以及规范。按照单元测试的传统，页面要么是绿色的，这意味着我们的所有规范都已通过，要么是红色的，这意味着至少有一个规范失败了。
 - en: 'Jasmine''s goal is to help us find and fix broken tests. If, for instance,
     our add specification failed, we would see the name of the test suite and the
     failing specification displayed together in red: "Calculator can add numbers."
@@ -446,6 +489,7 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: Jasmine 的目标是帮助我们找到并修复破碎的测试。例如，如果我们的添加规范失败了，我们将在红色中看到测试套件的名称和失败的规范一起显示："计算器可以添加数字。"下面是失败的期望。它将向我们展示它的值以及我们期望的值。
 - en: In the sample code, we create our test suite with a call to the `describe` method.
     We have specifications, each testing one aspect of our calculator. Note how have
     worded our specifications so that they read like sentences. Our first specification
@@ -455,6 +499,7 @@
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在示例代码中，我们使用 `describe` 方法创建我们的测试套件。我们有规范，每个规范测试我们的计算器的一个方面。请注意我们如何使我们的规范的措辞读起来像句子。我们的第一个规范是“它可以添加数字”。当我们的测试通过时，我们将看到测试套件显示单词“计算器”以及下面列出的每个规范，开始测试什么。
 - en: Jasmine also has `setup` and `teardown` functions. A `setup` function executes
     before each specification in a test suite runs. A `teardown` function runs after
     each specification runs. We haven't used either in the sample code, but they can
@@ -463,6 +508,7 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Jasmine 还具有 `setup` 和 `teardown` 函数。`setup` 函数在测试套件中的每个规范运行之前执行。`teardown` 函数在每个规范运行后执行。在示例代码中我们没有使用它们，但在更复杂的测试中它们可能非常有用，特别是当需要准备和清理对象之后。
 - en: Jasmine is a complete unit test framework. We've barely scratched the surface
     of what it can do. Also, keep in mind that while running Jasmine from the browser
     is convenient, more power comes from running it from the command line. Then, it
