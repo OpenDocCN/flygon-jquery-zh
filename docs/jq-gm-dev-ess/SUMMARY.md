@@ -1,3 +1,4 @@
++   [jQuery 游戏开发基础](README.md)
 +   [前言](jq-gm-dev-ess_00.md)
 +   [第一章 jQuery 游戏编程](jq-gm-dev-ess_01.md)
 +   [第二章：创建我们的第一个游戏](jq-gm-dev-ess_02.md)

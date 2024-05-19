@@ -1,3 +1,4 @@
++   [创建 jQueryMobile 移动应用](README.md)
 +   [前言](crt-mobi-app-jqmobi_00.md)
 +   [第一章：jQuery Mobile 的原型设计](crt-mobi-app-jqmobi_01.md)
 +   [第二章：一家小型移动网站](crt-mobi-app-jqmobi_02.md)
@@ -6,6 +7,6 @@
 +   [第五章：客户端模板化、JSON API 和 HTML5 Web 存储](crt-mobi-app-jqmobi_05.md)
 +   [第六章：HTML5 音频](crt-mobi-app-jqmobi_06.md)
 +   [第七章：完全响应式摄影](crt-mobi-app-jqmobi_07.md)
-+   [第八章：第 8 章 - 把 jQuery Mobile 整合到现有网站中](crt-mobi-app-jqmobi_08.md)
++   [第八章：把 jQuery Mobile 整合到现有网站中](crt-mobi-app-jqmobi_08.md)
 +   [第九章：内容管理系统和 jQM](crt-mobi-app-jqmobi_09.md)
-+   [第十章.将一切汇聚在一起 - Flood.FM](crt-mobi-app-jqmobi_10.md)
++   [第十章：将一切汇聚在一起 - Flood.FM](crt-mobi-app-jqmobi_10.md)

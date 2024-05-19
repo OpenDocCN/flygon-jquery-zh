@@ -1,3 +1,4 @@
++   [jQuery UI 秘籍](README.md)
 +   [前言](jqui-cb_00.md)
 +   [第一章：创建手风琴](jqui-cb_01.md)
 +   [第二章：包括自动完成](jqui-cb_02.md)
@@ -6,7 +7,7 @@
 +   [第五章：添加对话框](jqui-cb_05.md)
 +   [第六章：制作菜单](jqui-cb_06.md)
 +   [第七章：进度条](jqui-cb_07.md)
-+   [第八章：第 8 章：使用滑块](jqui-cb_08.md)
++   [第八章：使用滑块](jqui-cb_08.md)
 +   [第九章：使用旋转器](jqui-cb_09.md)
 +   [第十章：使用标签](jqui-cb_10.md)
 +   [第十一章：使用工具提示](jqui-cb_11.md)

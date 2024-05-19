@@ -1,3 +1,4 @@
++   [jQuery3 学习手册](README.md)
 +   [前言](lrn-jq3_00.md)
 +   [第一章：入门](lrn-jq3_01.md)
 +   [第二章：选择元素](lrn-jq3_02.md)
@@ -12,5 +13,5 @@
 +   [第十一章：高级效果](lrn-jq3_11.md)
 +   [第十二章：高级 DOM 操作](lrn-jq3_12.md)
 +   [第十三章：高级 Ajax](lrn-jq3_13.md)
-+   [附录 A – 使用 QUnit 测试 JavaScript](lrn-jq3_14.md)
-+   [附录 B - 快速参考](lrn-jq3_15.md)
++   [附录 A：使用 QUnit 测试 JavaScript](lrn-jq3_14.md)
++   [附录 B：快速参考](lrn-jq3_15.md)

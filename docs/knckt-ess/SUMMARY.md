@@ -1,3 +1,4 @@
++   [KnockoutJS 基础知识](README.md)
 +   [序言](knckt-ess_0.md)
 +   [第一章：自动刷新 UI，使用 KnockoutJS](knckt-ess_1.md)
 +   [第二章：KnockoutJS 模板](knckt-ess_2.md)
@@ -5,5 +6,5 @@
 +   [第四章：管理 KnockoutJS 事件](knckt-ess_4.md)
 +   [第五章：从服务器获取数据](knckt-ess_5.md)
 +   [第六章：模块模式 - RequireJS](knckt-ess_6.md)
-+   [第七章：第 7 章：Durandal – KnockoutJS 框架](knckt-ess_7.md)
++   [第七章：Durandal – KnockoutJS 框架](knckt-ess_7.md)
 +   [第八章：使用 Durandal 开发 Web 应用程序 - 购物车项目](knckt-ess_8.md)

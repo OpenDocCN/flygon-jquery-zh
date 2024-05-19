@@ -1,3 +1,4 @@
++   [jQuery 设计模式](README.md)
 +   [前言](jq-dsn-ptn_00.md)
 +   [第一章：jQuery 和复合模式复习。](jq-dsn-ptn_01.md)
 +   [第二章：观察者模式](jq-dsn-ptn_02.md)

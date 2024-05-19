@@ -1,3 +1,4 @@
++   [面向设计师的 jQuery 入门指南](README.md)
 +   [前言](jq-dsnr-bgd_00.md)
 +   [第一章：设计师，遇见 jQuery](jq-dsnr-bgd_01.md)
 +   [第二章 增强链接](jq-dsnr-bgd_02.md)
@@ -8,6 +9,6 @@
 +   [第七章：异步导航](jq-dsnr-bgd_07.md)
 +   [第八章：在灯箱中显示内容](jq-dsnr-bgd_08.md)
 +   [第九章：创建幻灯片](jq-dsnr-bgd_09.md)
-+   [第十章：第 10. 章 在走廊和幻灯片中显示内容](jq-dsnr-bgd_10.md)
++   [第十章：在走廊和幻灯片中显示内容](jq-dsnr-bgd_10.md)
 +   [第十一章：创建交互式数据网格](jq-dsnr-bgd_11.md)
 +   [第十二章：改善表单](jq-dsnr-bgd_12.md)
