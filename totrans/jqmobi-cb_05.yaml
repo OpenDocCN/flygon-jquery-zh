@@ -1523,11 +1523,15 @@
   id: totrans-222
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前面代码所示，添加`pageshow`事件处理程序。当您单击`submit`按钮时，它调用jQuery `submit()`方法。默认表单`submit()`的服务器响应将用新的内容替换整个页面。要获取部分页面更新，请调用jQuery的`.get()`
+    Ajax方法来从`'/getScores'`服务器URL获取数据。然后通过返回`false`取消默认的`submit()`方法。`.get()`方法指定了`success`和`error`的回调函数，如前面的代码所示。在成功的回调函数`showScores()`中，用从服务器获得的HTML响应替换`#scores`
+    div的内容。触发`'create'`方法以让jQuery Mobile框架初始化和增强新添加的内容。任何错误都由`errMsg()`错误处理程序处理，如前面的代码所示。
 - en: 'The custom nodejs web server responds to the `/getScores` get request by generating
     the following HTML content as a response with mime-type `''text/html''`:'
   id: totrans-223
   prefs: []
   type: TYPE_NORMAL
+  zh: 自定义的Nodejs Web服务器通过生成以下HTML内容作为响应来响应`/getScores` get请求，MIME类型为`'text/html'`：
 - en: '[PRE33]'
   id: totrans-224
   prefs: []
@@ -1539,15 +1543,18 @@
   id: totrans-225
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，仅通过此服务器响应替换了`#scores <div>`容器的内容。标题和页脚保持不变。结果显示如下截图所示：
 - en: '![How it works...](img/7225_05_19.jpg)'
   id: totrans-226
   prefs: []
   type: TYPE_IMG
+  zh: '![工作原理...](img/7225_05_19.jpg)'
 - en: There's more...
   id: totrans-227
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 还有更多...
 - en: You can submit forms without using Ajax by specifying the `data-ajax='false'`
     attribute to the form element as shown in the following code. When Ajax is not
     used, the response triggers a full page refresh. So ensure that a proper jQuery
@@ -1556,6 +1563,8 @@
   id: totrans-228
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以通过向表单元素指定`data-ajax='false'`属性来提交不使用Ajax的表单，如下代码所示。当不使用Ajax时，响应会触发完整页面刷新。因此确保服务器响应中返回一个正确的jQuery
+    Mobile页面，否则结果页面可能存在样式和其他问题。
 - en: '[PRE34]'
   id: totrans-229
   prefs: []
@@ -1566,6 +1575,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Ajax响应
 - en: The server response via Ajax replaces the content of the request form completely.
     You can view the response by using a DOM inspector. But if you view the page source,
     the original page is still shown. GET requests can be bookmarked as they support
@@ -1573,16 +1583,19 @@
   id: totrans-231
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务器通过Ajax响应完全替换了请求表单的内容。您可以使用DOM检查器查看响应。但如果您查看页面源代码，原始页面仍然会显示。GET请求可以被收藏夹添加为它们支持哈希中的查询参数。GET响应允许更新URL哈希。
 - en: Form submission defaults
   id: totrans-232
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 表单提交默认值
 - en: 'You can also submit a form without any action or method attribute as specified
     in the following code:'
   id: totrans-233
   prefs: []
   type: TYPE_NORMAL
+  zh: 您也可以提交一个没有指定任何动作或方法属性的表单，如下代码中所示：
 - en: '[PRE35]'
   id: totrans-234
   prefs: []
@@ -1595,41 +1608,49 @@
   id: totrans-235
   prefs: []
   type: TYPE_NORMAL
+  zh: 表单将使用动作和方法属性的默认值。方法将默认为`'get'`，动作将默认为当前页面的相对路径。您可以通过调用`$.mobile.path.get()`方法访问此路径。
 - en: Note
   id: totrans-236
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: Always specify the `action` and `method` attributes for a form.
   id: totrans-237
   prefs: []
   type: TYPE_NORMAL
+  zh: 始终为表单指定`action`和`method`属性。
 - en: See also
   id: totrans-238
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 另请参阅
 - en: The *Validating forms* recipe
   id: totrans-239
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*验证表单* 配方'
 - en: The *Submitting a form using POST* recipe
   id: totrans-240
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用POST提交表单的 *配方*
 - en: The *Configuring ajaxEnabled* recipe in [Chapter 7](ch07.html "Chapter 7. Configurations"),
     *Configurations*
   id: totrans-241
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[第7章](ch07.html "第7章。配置")中*配置ajaxEnabled* 配方，*配置*'
 - en: Creating an accessible form
   id: totrans-242
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 创建一个可访问的表单
 - en: The jQuery Mobile framework has very good support for the accessibility features,
     such as **WAI-ARIA** . This provides support for accessibility tools such as screen
     readers. This enables your application screens to be read out to those users who
