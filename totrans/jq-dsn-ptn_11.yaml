@@ -741,17 +741,21 @@
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 在可能的情况下，通过利用`$.fn.addClass()`和`$.fn.removeClass()`方法使用 CSS 类进行样式操作，而不是通过`$.fn.css()`方法手动操纵元素的样式。当你需要为大量元素设置样式时，这特别有用，因为这是
+    CSS 类的主要用途，并且浏览器已经花费了数年的时间对其进行优化。
 - en: Tip
   id: totrans-107
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: 'As an extra optimization step to minimize the number of manipulated elements,
     you can apply CSS classes on a single common ancestor element and use a descendant
     CSS selector to apply your styling, as demonstrated here: [https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors)'
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为最小化操作元素数量的额外优化步骤，你可以在单个公共祖先元素上应用 CSS 类，并使用后代 CSS 选择器来应用你的样式，如此处所示：[https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors)
 - en: 'When you still need to use the `$.fn.css()` method, for example, when your
     implementation needs to be imperative, use the invocation overload that accepts
     object parameters: [http://api.jquery.com/css/#css-properties](http://api.jquery.com/css/#css-properties).
@@ -760,16 +764,19 @@
   id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你仍然需要使用`$.fn.css()`方法时，例如，当你的实现需要是命令式的时候，使用接受对象参数的调用重载：[http://api.jquery.com/css/#css-properties](http://api.jquery.com/css/#css-properties)。这样，在为元素应用多个样式时，所需的方法调用将被最小化，而且你的代码组织得更好。
 - en: Moreover, avoid mixing methods that manipulate the DOM with methods that read
     from the DOM since this will force a reflow of the page so that the browser can
     calculate the new positions of the page elements.
   id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，避免混合使用操纵 DOM 的方法和从 DOM 中读取数据的方法，因为这会强制页面重新排版，以便浏览器计算页面元素的新位置。
 - en: 'Instead of doing something like this:'
   id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 而不是像这样做：
 - en: '[PRE16]'
   id: totrans-112
   prefs: []
@@ -779,6 +786,7 @@
   id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 更好地将非冲突的操作分组在一起，像这样：
 - en: '[PRE17]'
   id: totrans-114
   prefs: []
@@ -789,15 +797,18 @@
   id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 浏览器因此可以跳过对页面的一些重新渲染，从而减少代码执行时的暂停。
 - en: Note
   id: totrans-116
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: 'For more information about reflows, visit the following page: [https://developers.google.com/speed/articles/reflow](https://developers.google.com/speed/articles/reflow)'
   id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关重排的更多信息，请访问以下页面：[https://developers.google.com/speed/articles/reflow](https://developers.google.com/speed/articles/reflow)
 - en: Lastly, note that all jQuery-generated animations in v1.x and v2.x are implemented
     using the `setTimeout()` function. This is going to change in v3.x of jQuery which
     plans to use the `requestAnimationFrame()` function, which is a better match for
@@ -808,11 +819,16 @@
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，请注意，v1.x 和 v2.x 中所有由 jQuery 生成的动画都是使用`setTimeout()`函数实现的。这将在 jQuery 的 v3.x
+    中发生变化，该版本计划使用`requestAnimationFrame()`函数，这更适合创建命令式动画。在那之前，你可以使用**jQuery-requestAnimationFrame**插件
+    ([https://github.com/gnarf/jquery-requestAnimationFrame](https://github.com/gnarf/jquery-requestAnimationFrame))，它对
+    jQuery 进行了猴子补丁，以便在可用时使用`requestAnimationFrame()`函数进行动画。
 - en: Manipulating detached elements
   id: totrans-119
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 操纵分离的元素
 - en: Another way to avoid unnecessary repaints of the page while manipulating DOM
     elements is to detach the element from the page and re-attach it after completing
     your manipulations. Working with a detached in-memory element is much faster and
@@ -820,12 +836,15 @@
   id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 操纵 DOM 元素时避免页面不必要的重绘的另一种方法是将元素从页面中分离，并在完成操作后重新附加它。使用分离的内存中元素要快得多，并且不会导致页面重排。
 - en: In order to achieve that, we use the `$.fn.detach()` method which, in contrast
     to `$.fn.remove()`, preserves all event handlers and jQuery data on the detached
     element.
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现这一点，我们使用`$.fn.detach()`方法，与`$.fn.remove()`相比，它保留了分离元素上的所有事件处理程序和 jQuery
+    数据。
 - en: '[PRE18]'
   id: totrans-122
   prefs: []
