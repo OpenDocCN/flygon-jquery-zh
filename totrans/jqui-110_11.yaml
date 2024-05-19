@@ -1,0 +1,1509 @@
+- en: Chapter 11. Drag and Drop
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far in this book, we've covered the complete range of fully released interface
+    widgets, and over the next four chapters, we're going to shift our focus to the
+    core interaction helpers. These are widgets that provide mouse-based interactions
+    for widgets, where we can perform actions, such as selecting, dragging, or resizing
+    widgets on a website. A perfect example is the resizable widget, which we will
+    cover in [Chapter 12](ch12.html "Chapter 12. The Resizable Component"), *The Resizable
+    Component*. These interaction components of the library differ from those we've
+    already looked at, in that they are not physical objects or widgets that exist
+    on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are low-level interaction components, as opposed to the high-level widgets
+    that we looked at in the first part of this book. They help the elements used
+    on your pages to be more engaging and interactive for your visitors, which adds
+    value to your site and can help make your web applications appear more professional.
+    They also help to blur the distinctions between the browser and the desktop, and
+    provide greater usability to make web applications more efficient, effective,
+    and natural.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we'll be covering two very closely related components—**draggables**
+    and **droppables**. The draggables API transforms any specified element into something
+    that your visitors can pick up with the mouse pointer and drag around the page.
+    Methods that are exposed allow you to restrict the draggables movement, make it
+    return to its starting point after being dropped, and much more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to make elements draggable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The options available for configuring draggable objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make an element return to its starting point once the drag ends
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use event callbacks at different points in an interaction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The role of a drag helper
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Containing draggables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to control draggability with the component's methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Turning an element into a drop target
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Defining accepted draggables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with droppable class names
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Defining drop tolerance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reacting to interactions between draggables and droppables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The droppables API allows you to define a region of the page or a container
+    of some kind for people to drop the draggables on to in order to make something
+    else happen, for example, while adding a product to a shopping basket. A rich
+    set of events is fired by the droppable widget that lets us react to the most
+    interesting moments of any drag interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The deal with draggables and droppables
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Dragging and dropping as behaviors go hand-in-hand with each other. Where one
+    is found, the other is invariably close by. Dragging an element around a web page
+    is all very well and good, but if there's nowhere for that element to be dragged
+    to, the whole exercise is usually pointless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can use the `draggable` class independently from the `droppable` class,
+    as pure dragging for the sake of dragging can have its uses, such as with the
+    dialog component. However, you can't use the `droppable` class without the `draggable`
+    class. You don't need to make use of any of draggable's methods of course, but
+    using droppables without having anything to drop on to them is of no value whatsoever.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like with the widgets, it is possible, however, to combine some of the interaction
+    helpers; draggables and droppables go together obviously. But draggables can also
+    be used with sortables, as we'll see in [Chapter 13](ch13.html "Chapter 13. Selecting
+    and Sorting with jQuery UI"), *Selecting and Sorting with jQuery UI*, as well
+    as resizables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started with the draggable widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The draggables component is used to make any specified element or collection
+    of elements draggable, so that they can be picked up and moved around the page
+    by a visitor. Draggability is a great effect, and is a feature that can be used
+    in numerous ways to improve the interface of our web pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery UI means that we don't have to worry about all of the tricky differences
+    between browsers that originally made draggable elements on web pages a nightmare
+    to implement and maintain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing a basic drag
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's look at the default implementation by first making a simple `<div>` element
+    draggable. We won't do any additional configuration. Therefore, all that this
+    code will allow you to do is pick up the element with the mouse pointer and drag
+    it around the viewport.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new file in your text editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `draggable1.html` in your `jqueryui` folder. As with the widget-based
+    components of jQuery UI, the draggable component can be enabled using a single
+    line of code. This invokes the draggable''s constructor method: `draggable` and
+    turns the specified element into a drag object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need the following files from the library to enable draggability on an element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.mouse.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.draggable.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We''re using a plain `<div>` element with a background image specified in the
+    CSS file that we''re linking to in the `<head>` tag of the page. Use the following
+    stylesheet for the drag element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `draggable.css` in the `css` folder. When you view the page in
+    a browser, you''ll see that the image can be moved around the draggable area as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing a basic drag](img/2209OS_11_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Configuring the draggable options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The draggable component has a wide range of configurable options, giving us
+    a very fine degree of control over the behavior that it adds. The following table
+    lists the options that we can manipulate to configure and control our drag elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Used to… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `addClasses` | `true` | Add the `ui-draggable` class to the drag object.
+    Set it to `false` to prevent this class being added. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `appendTo` | `"parent"` | Specify a container element for drag objects with
+    a helper attached. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `axis` | `false` | Constrain drag objects to one axis of motion. Accepts
+    the strings `x` and `y` as values, or the Boolean `false`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `cancel` | `":input, option"` | Prevent certain elements from being dragged,
+    if they match the specified element selector. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `connectToSortable` | `false` | Allow the drag object to be dropped on to
+    a sortable list and become one of the sort elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `containment` | `false` | Prevent drag objects from being dragged out of
+    the bounds of its parent element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `cursor` | `"auto"` | Specify a CSS cursor to be used while the pointer is
+    over the drag object. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `cursorAt` | `false` | Specify a default position at which the cursor appears
+    relative to the drag object, while it is being dragged. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `delay` | `0` | Specify a time in milliseconds that the start of the drag
+    interaction should be delayed by. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disable dragging on the draggable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `distance` | `1` | Specify the distance in pixels that the pointer should
+    move with the mouse button held down on the drag object, before the drag begins.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `grid` | `false` | Make the drag object snap to an imaginary grid on the
+    page. Accepts an array containing `x` and `y` pixel values of the grid. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `handle` | `false` | Define a specific area of the drag object that is used
+    to hold the pointer on, in order to drag. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `helper` | `"original"` | Define a pseudo-drag element that is dragged instead
+    of the drag object. Can accept the string values original or clone, or can accept
+    a function that returns the helper element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `iframeFix` | `false` | Stop all the `<iframe>` elements on the page from
+    capturing mouse events, while a drag is in progress. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `opacity` | `false` | Set the opacity of the helper element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `refreshPositions` | `false` | Calculate the positions of all the drop objects
+    while the drag is in progress. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `revert` | `false` | Make the drag object return to its start position once
+    the drag ends, when set to `true`. Can also accept the strings valid and invalid,
+    where revert is only applied if the drag object is dropped on a valid drop object
+    or vice versa, respectively. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `revertDuration` | `500` | Set the number of milliseconds it takes for the
+    drag object to return to its starting position. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scope` | `"default"` | Set the scope of the drag object with respect to
+    the drop objects that are valid for it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scroll` | `true` | Make the viewport automatically scroll when the drag
+    object is moved within the threshold of the viewport''s edge. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scrollSensitivity` | `20` | Define how close in pixels the drag object should
+    get to the edge of the viewport, before scrolling begins. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scrollSpeed` | `20` | Set the speed at which the viewport scrolls. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `snap` | `false` | Cause drag objects to snap to the edges of specified elements.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `snapMode` | `"both"` | Specify which edges of the element the drag object
+    will snap to. Can be set to either `inside`, `outside`, or `both`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `snapTolerance` | `20` | Set the distance from snapping elements that drag
+    objects should reach, before snapping occurs. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `stack` | `false` | Ensure that the current drag object is always on top
+    of other drag objects in the same group. Accepts an object containing `group`
+    and/or `min` properties. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `zIndex` | `false` | Set the `zIndex` of the helper element. |'
+  prefs: []
+  type: TYPE_TB
+- en: Using the configuration options
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's put some of these options to use. They can be configured in exactly the
+    same way as the options exposed by the widgets that we looked at in previous chapters,
+    and also usually have both getter and setter modes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first example a moment ago, we used CSS to specify that the move cursor
+    should be used when the pointer hovers over our draggable `<div>`. Let's change
+    this and use the `cursor` option of the draggables component instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remove `cursor: move` from draggable.css, and resave it as `draggableNoCursor
+    .css`. Also change the `<link>` tag in `draggable1.html`, to reference the new
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final `<script>` element to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `draggable2.html`, and try it out in your browser. An important
+    point to note about this option is that the move cursor that we have specified
+    is not applied until we actually start the drag. While using this option in place
+    of simple CSS, we should perhaps provide some other visual cue that the element
+    is draggable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at a few more of draggable''s many configuration options. Change
+    the configuration object in `draggable2.html` to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This can be saved as `draggable3.html`. The first new option that we've configured
+    is the `axis` option, which has restricted the draggable to moving only upwards
+    or downwards in the page, but not side to side across it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we've specified `30` as the value of the `distance` option. This means
+    that the cursor will have to travel `30` pixels across the drag object, with the
+    mouse button held down, before the drag begins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final option `cursorAt` is configured using an object literal, whose properties
+    can be `top`, `right`, `bottom`, or `left`. The values supplied to the properties
+    that we choose to use are the values relative to the drag object that the cursor
+    will assume, when a drag occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, you'll notice in this example that the value for the `left` option
+    seems to be ignored. The reason for this is that we have configured the `axis`
+    option. When we begin the drag, the drag object will automatically move so that
+    the cursor is at `0` pixels from the top of the element, but it will not move
+    so that the cursor is `0` pixels from the left edge as we have specified because
+    the drag object cannot move left.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at some more of the draggable''s options in action. Change `draggable3.html`
+    so that the configuration object appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the file as `draggable4.html`. The `delay` option, which takes a value
+    in milliseconds, specifies the length of time that the mouse button must be held
+    down with the cursor over the drag object, before the drag begins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `grid` option is similar in usage to the `steps` option of the slider widget.
+    It is configured using an array of two values representing the number of pixels
+    along each `axis` that the drag element should jump when it is dragged. This option
+    can be used safely in conjunction with the `axis` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resetting the dragged elements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It is very easy to configure drag objects to return to their original starting
+    position on the page once they''ve been dropped, and there are several options
+    that can be used to control this behavior. Change the configuration object that
+    we used with `draggable4.html`, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `draggable5.html`. By supplying `true` as the value of the `revert`
+    option, we've caused the drag object to return to its starting position at the
+    end of any drag interaction. However, you'll notice that the drag element doesn't
+    just pop back to its starting position instantly. Rather, it's smoothly animated
+    back, with no additional configurations required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another revert-related option is the `revertDuration` option, which we can
+    use to control the speed of the revert animation. Change the configuration object
+    in `draggable5.html`, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `draggable6.html`. The default value for the `revertDuration` option
+    is `500` milliseconds, so by lowering it to `100`, the relative speed of the animation
+    is considerably increased.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The actual speed of the animation will always be determined on the fly, based
+    on the distance from the drop point to the starting point. The `revertDuration`
+    option simply defines a target for the animation length in time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the drag handle support
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `handle` option allows us to define a region of the drag object that can
+    be used to drag the object. No other areas can be used to drag the object. A simple
+    analogy is the `dialog` widget. You can drag the dialog around only if you click
+    and hold on the title bar. The title bar is the drag handle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following example, we''ll add a simple drag handle to our drag object.
+    Put a new empty `<div>` element inside the drag element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, change the configuration object to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `draggable7.html`. We've given the new `<div>` an `id` attribute
+    and then specified this `id` as the value of the `handle` option in our configuration
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The handle is styled with a few simple style rules. Add the following new styles
+    to `draggableNoCursor.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `dragHandle.css` in the `css` folder. Don''t forget to link to
+    the new stylesheet from `<head>` of `draggable7.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we preview the page in a browser, we see that the original drag object
+    is still draggable, but only when the handle is selected with the pointer as seen
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding the drag handle support](img/2209OS_11_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding the helper elements
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Several configuration options are directly related to drag helpers. A helper
+    is a substitute element that is used to show where the object is on screen, while
+    the drag is in progress, instead of moving the actual draggable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A helper can be a very simple object in place of the actual drag object. It
+    can help cut down on the intensity of the drag operation, lessening the load on
+    the visitor's processor. Once the drag is completed, the actual element can be
+    moved to the new location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at how helpers can be used in the following example. Remove the
+    `<div>` element we used for `handle` and revert back to the `draggable.css` stylesheet
+    in `draggable7.html`, and then change the configuration object to the following
+    one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `draggable8.html`. We also need to tweak the CSS so that
+    the cursor changes to indicate that we''re moving the image at the appropriate
+    time. Alter the CSS in `draggable.css` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The value `clone` for the `helper` option causes an exact copy of the original
+    drag object to be created and used as draggable. Therefore, the original object
+    stays in its starting position at all times. This also causes the `clone` object
+    to revert back to its starting position, an effect that cannot be changed, even
+    by supplying `false` as the value of the `revert` option. The following screenshot
+    shows the `clone` option in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding the helper elements](img/2209OS_11_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In addition to the string `clone` and the default `original`, we can also use
+    a function as the value for this option. This allows us to specify our own custom
+    element to use as the helper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the final `<script>` element in `draggable8.html` to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `draggable9.html`. Our `helperMaker()` function creates a
+    new `<div>` element using standard jQuery functionality, and then sets some CSS
+    properties on it to define its physical appearance. It then, importantly, returns
+    the new element. While supplying a function as the value of the `helper` option,
+    the function must return an element (either a jQuery object, as in this example,
+    or an actual DOMNode).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now when the drag begins, it is our custom helper that becomes the drag object.
+    Because the custom element is much simpler than the original drag object, it can
+    help improve the responsiveness and performance of the application in which it
+    is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Make sure that when you use the helper (clone) elements that you use the element
+    with class and not IDs, because IDs must be unique in the DOM, and the clone will
+    duplicate it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows our custom helper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding the helper elements](img/2209OS_11_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Helper opacity**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We used the `css` jQuery method in this example during the creation of the custom
+    helper. However, we can also use the `opacity` option of the drag object to set
+    the opacity of helper elements as a cross-platform solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Constraining the drag
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another aspect of drag scenarios is that of containment. In our examples so
+    far, the `<body>` element of the page has been the container of the drag object.
+    There are also options that we can configure to specify how the drag object behaves
+    with regards to another container element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll look at these in the following examples, starting with the `containment`
+    option, which allows us to specify a container element for the drag object. In
+    the `<head>` tag of `draggable9.html`, add the following link to the stylesheet
+    that we''ll be using in this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then wrap the drag element within a container `<div>` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the configuration object to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this variant as `draggable10.html`. On the page, we've added a new `<div>`
+    element as the parent of the existing drag element. In the code, we've used the
+    value `parent` for the `containment` option, so the element that is the direct
+    parent of the drag object (the `<div>` element with the `id` of `container` in
+    this example) will be used as the container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The parent `<div>` needs some basic styling to give dimensions to it and so
+    it can be seen on the page. Add the following code to `draggable.css` and resave
+    the file as `draggableContainer.css`. Remember, this string is not the `id` of
+    an element or a jQuery selector (although selectors are also supported).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you run the page in your browser, you'll see that the drag object cannot
+    exceed the boundary of its container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Along with the string `parent` that we used in this example, we could also
+    specify a selector, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are three additional options related to drag objects within containers
+    and these are all related to scrolling. However, you should note that these are
+    only applicable when the document is the container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default value of the `scroll` option is `true`, but when we drag the `<div>`
+    element to the edge of the container, it does not scroll. You may have noticed
+    in the previous examples, where the drag object was not within a specified container,
+    the viewport automatically scrolled. We can fix this by setting the CSS `overflow`
+    style to `auto` in a stylesheet if necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Snapping
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Drag elements can be given an almost magnetic quality by configuring snapping.
+    This feature causes dragged elements to align themselves to specified elements,
+    while they are being dragged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the next example, we''ll look at the effects that snapping has on the behavior
+    of the drag object. Get rid of the container we added in the previous example,
+    and add a new empty `<div>` element directly after the drag element, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, change the configuration object so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `draggable11.html`. We also need some additional styles; add the
+    following code to the bottom of `draggable.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `draggableSnap.css` in the `css` directory. Don''t forget
+    to add a link to the new stylesheet in the `<head>` element of the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: We've supplied the selector `#snapper` as the value of the `snap` option in
+    our configuration object, and have added a `<div>` element with a matching `id`
+    to the page. Therefore, our drag object will snap to this element on the page,
+    while the object is being dragged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also set the `snapMode` option to `inner` (the other possible values are
+    `outer` and `both`) so snapping will occur on the inside edges of our `snapper`
+    element. If we drag the element towards the outer edge of the `snapper` element
+    and get within the tolerance range, the element will snap to the inner edge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we've set `snapTolerance` to `50`, which is the maximum distance (in
+    pixels) the drag object will need to get to the `snapper` element, before snapping
+    occurs. As soon as a drag object is within this range, it will snap to the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we drag the image within `50` pixels of the edge of the snapper element,
+    the drag object will automatically align itself to that edge, as shown in the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Snapping](img/2209OS_11_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Draggable event callbacks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In addition to the options that we have already looked at, there are three more
+    that can be used as callback functions to execute code after specific custom events
+    occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These events are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Fired when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `drag` | The mouse is moved while dragging |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `start` | Dragging starts |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `stop` | Dragging stops |'
+  prefs: []
+  type: TYPE_TB
+- en: 'While defining callback functions to make use of these events, the functions
+    will always receive two arguments automatically: the original event object as
+    the first argument, and a second object containing the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `helper` | A jQuery object representing the helper element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `position` | A nested object with properties: `top` and `left`, which is
+    the position of the helper element relative to the original drag element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `offset` | A nested object with properties: `top` and `left`, which is the
+    position of the helper element relative to the page. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Using the callbacks and the two objects that are passed as arguments is extremely
+    easy. We can look at a brief example to highlight their usage. Remove the snapper
+    `<div>` in `draggable11.html`, and change the configuration object as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `draggable12.html`. We also need a new stylesheet for this example;
+    add the following code to `draggable.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this version of the stylesheet as `draggableEvents.css` in the `css` directory,
+    and don't forget to update the link in the `<head>` element of the page to point
+    to the new stylesheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, our configuration object contains just two options—the `start`
+    and `stop` callbacks. We set literal functions as the values of these options.
+    What all the functions do in this example is add or remove a class name respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The class name adds a slightly different background image to the draggable
+    element, which when applied appears as shown in the following before and during
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Draggable event callbacks](img/2209OS_11_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s move on to a slightly more complex example where we can make use of
+    the second object passed to our callbacks. We need a couple of new elements on
+    the page; change the `<body>` element of the page so that it contains the following
+    elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final `<script>` element, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `draggable13.html`. We've defined a callback function as the value
+    of the `stop` option, so it will be executed each time a drag interaction stops.
+    Our callback function receives the event object (which we don't need but must
+    specify in order to access the second object) and a `ui` object containing useful
+    information about the draggable helper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All our function needs to do is create two new `<p>` elements, concatenating
+    the values found in the `ui` object: `ui.position.top`, `ui.position.left`, `ui.offset.top`,
+    and `ui.offset.left`. It then inserts the new elements into the results `<div>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s how the page should look after the draggable has been dragged:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Draggable event callbacks](img/2209OS_11_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Draggable's methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The draggable interaction helper does not expose any unique methods of its own,
+    only the common API methods, which are `destroy`, `disable`, `enable`, `option`,
+    and `widget`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started with the droppable widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In a nutshell, the droppables component of jQuery UI gives us a place for the
+    drag objects to be dropped. A region of the page is defined as a droppable, and
+    when a drag object is dropped onto that region, something else is triggered. You
+    can react to drops on a valid target very easily using the extensive event model
+    exposed by this component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start with the default droppable implementation. In a new file in your
+    text editor, add the following page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `droppable1.html`. The extremely basic stylesheet that is linked
+    to, in this example, is simply an updated version of `draggable.css`, and appears
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `droppable.css` in the `css` folder. When the page runs in a browser,
+    it should look like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting started with the droppable widget](img/2209OS_11_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In this example, the droppable is created; we can see this with the class name
+    `ui-droppable`, which is added to the specified element when the page loads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though we haven't added any additional logic to our script, events are
+    firing throughout the interaction on both the drag object and the drop target.
+    A little later in the chapter, we'll look at these events in more detail to see
+    how we can hook into them, to react to successful drops.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The files we used for this basic droppable implementation are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.mouse.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.draggable.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.droppable.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As you can see, the droppables component is an extension of draggables, rather
+    than a completely independent component. Therefore, it requires the `jquery.ui.draggable.js`
+    file in addition to its own source file. The reason our droppable does nothing
+    is because we haven't configured it, so let's do that next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring droppables
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The `droppable` class is considerably smaller than the `draggable` class, and
+    there are fewer configurable options for us to play with. The following table
+    lists those options available to us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default | Used to… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `accept` | `"*"` | Set the draggable element(s) that the droppable will accept.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `activeClass` | `false` | Set the class that is applied to the droppable,
+    while an accepted drag object is being dragged. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `addClasses` | `true` | Add the `ui-droppable` class to the droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disable the droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `greedy` | `false` | Stop drop events from bubbling when a drag object is
+    dropped onto nested droppables. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `hoverClass` | `false` | Set the class that is applied to the droppable,
+    while an accepted drag object is within the boundary of the droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `scope` | `"default"` | Define sets of drag objects and drop targets. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tolerance` | `"intersect"` | Set the mode that triggers an accepted drag
+    object being considered over a droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: Configuring accepted draggables
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to get a visible result from the droppable, we''re going to use a
+    couple of the configurable options together in the following example, which will
+    highlight the drop target when an accepted drag object is interacted with. Change
+    the elements on the page in `droppable1.html` so that they appear as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the final `<script>` element to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `droppable2.html`. The `accept` option takes a selector. In this
+    example, we've specified that only the drag object that has `id` of `drag1` should
+    be accepted by the droppable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've also specified the class name activated as the value of the `activeClass`
+    option. This class name will be applied to the droppable when the accepted drag
+    object starts to be dragged. The `hoverClass` option can be used in exactly the
+    same way to add styles, when an accepted drag object is over a droppable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need a new stylesheet for this example; modify `droppable.css` so that it
+    appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `droppableActive.css` in the `css` folder, and link to it
+    in the `<head>` element of the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we view this page in a browser, we should find that when we move the first
+    drag object, which is defined as accepted, the droppable picks up the `activated`
+    class and turns red. However, when the second drag object is moved, the drop target
+    does not respond. The following screenshot shows how the page should look, while
+    the first drag object is being dragged over the square:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Configuring accepted draggables](img/2209OS_11_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In addition to a string value, the `accept` option can also take a function
+    as its value. This function will be executed once for every drag object that is
+    on the page. The function must return either `true`, to indicate that the drag
+    object is accepted, or `false` to indicate that it's not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see the function value of the `accept` option in action change the final
+    `<script>` element in `droppable2.html` to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this variation as `droppable3.html`. On the surface, the page works exactly
+    the same as it did in the previous example. But this time, acceptability is being
+    determined by the JavaScript ternary statement within the `dragEnrol` function,
+    instead of a simple selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that the function we use with the `accept` option has automatically passed
+    a jQuery object representing the drag object as an argument, so we can call the
+    jQuery methods on this object. This makes it easy to obtain information about
+    it, such as its `id` as in this example. This callback can be extremely useful
+    when advanced filtering beyond a selector is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring drop tolerance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Drop tolerance refers to the way a droppable detects whether a drag object
+    is over it or not. The default value is `intersect`. The following table lists
+    the modes that this option may be configured with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Mode | Implementation |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `fit` | The drag object must be completely within the boundary of the droppable
+    for it to be considered over it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `intersect` | At least 25 percent of the drag object must be within the boundary
+    of the droppable before it is considered over it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `pointer` | The mouse pointer must touch the droppable boundary before the
+    drag object is considered over the droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `touch` | The drag object is over the droppable as soon as an edge of the
+    drag object touches an edge of the droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'So far, all of our droppable examples have used intersect, which is the default
+    value of the `tolerance` option. Let''s see what difference the other values for
+    this option make to an implementation of the component. Revert to the `#drag`
+    and `#target` IDs from their respective elements in `droppable2.html`, and then
+    use the following configuration object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `droppable4.html`. This time we use the `hoverClass` option to
+    specify the class name that is added to the droppable. We then use the `tolerance`
+    option to specify which tolerance mode is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The part of the drag object that is over the droppable is irrelevant in this
+    example; it is the mouse pointer that must cross the boundary of the droppable
+    while a drag is in progress for our `activated` class to be triggered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Configuring drop tolerance](img/2209OS_11_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Understanding the droppable callback options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The options that we''ve looked at so far configure various operational features
+    of the droppable. In addition to these, there are almost as many callback options
+    so that we can define functions that react to different things occurring to the
+    droppable and its accepted drag objects. These options are listed in the following
+    table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Callback option | Invoked when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `activate` | An accepted drag object begins dragging. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `deactivate` | An accepted drag object stops being dragged. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `drop` | An accepted drag object is dropped onto a droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `out` | An accepted drag object is moved out of the bounds (including the
+    tolerance) of the droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `over` | An accepted drag object is moved within the bounds (including the
+    tolerance) of the droppable. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Let''s put together a basic example that makes use of these callback options.
+    We''ll add a status bar to our droppable that reports the status of different
+    interactions between the drag object and the droppable. In `droppable4.html`,
+    add the following new element directly after the `target` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, change the final `<script>` element to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `droppable5.html`. We also need some new styles for this
+    example. Create a new stylesheet in your text editor, and add to it the following
+    selectors and rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `droppableEvents.css` in the `css` directory. Don''t forget
+    to update `<link>` in the `<head>` element of the page to point to the new stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `<body>` element of the page contains, along with the droppable, a new status
+    bar, which in this case is a simple `<div>` element. In the script, we define
+    our configurable options, specifying that the function `eventCallback` should
+    be executed when each of the events are detected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we define an object literal, in which the key for each property is set
+    to one of the event types that may be triggered. The value of each property is
+    the message that we want to display for any given event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We then define our callback function. Like other components, the callback functions
+    used in the droppables component automatically pass two objects: the `event` object
+    and an object representing the drag element.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `type` property of the `event` object to retrieve the appropriate
+    message from the `eventMessages` object. We then use standard jQuery element creation
+    and manipulation methods to add the message to the status bar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s how the status bar will look following an interaction:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Understanding the droppable callback options](img/2209OS_11_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: After playing around with the page, it may appear that one of our messages is
+    not being displayed. When the drag object is dropped onto the droppable, our drop
+    message is not shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, the message is shown, but because the `deactivate` event is fired
+    immediately after the `drop` event; the `drop` message is overwritten right away.
+    There are a number of ways we could work around this; the simplest, of course,
+    would be not to use the `drop` and `deactivate` options together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although we only make use of the event object (`e`) in this example, a second
+    object is also passed automatically to any callback functions we use with the
+    event options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This object contains information relevant to the droppable such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property | Value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.draggable` | The current drag object. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.helper` | The current drag helper. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.position` | The current relative position of the helper. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.offset` | The current absolute position of the helper. |'
+  prefs: []
+  type: TYPE_TB
+- en: Setting the scope options for droppable
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Both the draggables and droppables feature the scope configuration option that
+    allows us to easily define groups of drag objects and drop targets. In this next
+    example, we can look at how these options can be configured and the effect it
+    has by configuring them. We''ll link to another new stylesheet in this example
+    so in the `<head>` element of `droppable5.html`, change the `<link>` element so
+    that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need a number of new elements for this example. Change the `<body>` element
+    of the page in `droppable5.html` so that it contains the following elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To make these elements behave correctly, change the final `<script>` element
+    to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `droppable6.html`. Next, we need to create a new CSS file;
+    in a new page in your text editor add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `droppableScope.css` in the `css` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The page has two drop targets and two groups of three drag objects, all of which
+    are labeled to show the group they belong to. In the script, we define two configuration
+    objects for the two groups of draggables, and two configuration objects for the
+    drop targets. Within each configuration object we set the `scope` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The values we set for the `scope` option of each drop target matches `scope`
+    of each drag object. Therefore, if we want to use the `scope` option, it must
+    be defined for both the drag object and drop target. If we try to set `scope`
+    of a droppable, but don't give at least one drag object to the same `scope`, an
+    error is thrown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the `scope` option gives us another technique for defining which drag
+    objects are accepted by which drop targets, but it is provided as an alternative
+    to the `accept` option; the two options should not be used together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows how the page will appear:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Setting the scope options for droppable](img/2209OS_11_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Configuring the greedy option
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The final option that we are going to look at in connection with the droppable
+    component is the `greedy` option. This option can be useful in situations where
+    there is a droppable nested within another droppable. If we don't use this option,
+    both droppables will fire events during certain interactions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `greedy` option is an easy way to avoid event-bubbling problems in an efficient
+    and cross-browser manner. Let's take a closer look at this option with an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the `<link>` element in `droppable6.html` so that it links to a new
+    stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change `<body>` so that it contains the following elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, change the last `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this example as `droppable7.html`. The CSS for this example is simple and
+    builds on the CSS of previous examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `droppableNesting.css` in the `css` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we have a smaller droppable nested in the center of a larger
+    droppable. Their opacity is set using the standard jQuery library's `css()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, this is necessary because if we alter the `zIndex` option of
+    the elements, so that the drag object appears above the nested droppables, the
+    target element is not reported correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we use the `zIndex` option of the draggables component to show
+    the drag object above the droppables, while a drag is in progress. The `dropCallback`
+    function is used to add a simple message to the status bar, notifying us which
+    droppable was the target of the drop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our droppables configuration object uses the `drop` option to wire up our callback
+    function. However, the key option is the `greedy` option that makes whichever
+    target the draggable is dropped on to stop the event from escaping into other
+    targets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you run the page and drop the drag object onto one of the droppables, you
+    should see something like what''s shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Configuring the greedy option](img/2209OS_11_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The net effect of setting the `greedy` option to `true` is that the inner droppable
+    prevents the event from propagating into the outer droppable and firing again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you comment out the `greedy` option and drop the draggable onto the inner
+    droppable, the status message will be inserted twice, once by the inner droppable
+    and once by the outer droppable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Droppable methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Like the draggable component, droppable has only the common API methods shared
+    by all the library components. This is another component that is primarily option
+    driven. The methods available to us are the same ones exposed by draggable, namely
+    the standard methods shared by all the library components, which are `destroy`,
+    `disable`, `enable`, `option`, and `widget`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a maze game using the widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've now reached the point where we can have a little fun by putting what we've
+    learned about these two components into a fully working example. In our final
+    drag-and-drop example, we're going to combine both of these components to create
+    a simple maze game.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The game will consist of a draggable marker that will need to be navigated through
+    a simple maze to a specified droppable at the other end of the maze. We can make
+    things a little more challenging so that if any of the maze walls are touched
+    by the marker, it will return to the starting position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows what we''re going to build:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a maze game using the widgets](img/2209OS_11_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s start with the markup. In a new page in your text editor, add the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `dragMaze.html`. On the page, we have our outer container
+    that we've given `id` of maze. We have `<div>` elements for the starting and ending
+    positions, as well as for the drag marker. Our map will need walls. Rather than
+    hand coding the 46 required walls for the map pattern that we're going to use,
+    I thought we could use jQuery to do this for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We left an empty `<script>` element at the bottom of our page. Let''s fill
+    that up with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to style up the walls of the maze, but we can''t use any simple
+    JavaScript pattern for this. Unfortunately, we have to hardcode them. In another
+    new file in your text editor, add the following selectors and rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `dragMaze.css` in the `css` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's review what the new code does. First, we define a simple configuration
+    object for the drag object. The only option we need to configure is the `containment`
+    option that constrains the draggable marker element within the maze.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we define the configuration object for the walls. Each wall is treated
+    as a droppable. We specify `touch` as the value of the `tolerance` option, and
+    add a callback function to the `over` option. Therefore, whenever the drag object
+    touches a wall, the function will be executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we do in this function is destroy the current drag object and remove it
+    from the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create a new drag object back at the starting position and make it draggable
+    once more. There is no `cancelDrag` method that causes the drag object to act
+    as if it had been dropped and revert to its starting position, but we can easily
+    replicate this behavior ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we add another droppable configuration object that configures the ending
+    point of the maze. All we configure for this droppable is a function to execute
+    when the draggable is over this droppable. In this function, we remove the drag
+    object again and present the user with an alert congratulating them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use a simple `for` loop to add the walls to our maze. We use the plain
+    vanilla `for` loop in conjunction with jQuery to create 46 `<div>` elements, and
+    add `id` and `class` attributes to each one, before appending them to the `maze`
+    container. Finally, we make the drag object draggable and the walls and the end
+    target droppables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can now attempt to navigate the marker from the starting point to the finish
+    by dragging it through the maze. If any wall is touched, the marker will return
+    to the starting point. We could make it harder (by adding additional obstacles
+    to navigate), but for the purpose of having fun with jQuery UI draggables and
+    droppables, our work here is complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We looked at two very useful library components in this chapter—the draggable
+    and droppable components. Draggables and droppables, as we saw, are very closely
+    related and have been designed to be used with each other, allowing us to create
+    advanced and highly interactive interfaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've covered a lot of material in this chapter, so let's recap what we have
+    learned. We saw that the draggable behavior can be added to any element on the
+    page with zero configurations. There may be implementations where this is acceptable,
+    but usually we'll want to use one or more of the component's extensive range of
+    configurable options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second part of this chapter, we saw that the `droppables` class allows
+    us to easily define areas on the page that draggables can be dropped onto, and
+    can react to things being dropped on them. We can also make use of a smaller range
+    of configurable droppable options to implement more advanced droppable behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both components feature an effective event model for hooking into the interesting
+    moments of any drag-and-drop interaction. Our final example showed how both the
+    draggables and droppables components can be used together to create a fun and
+    interactive game. Although the game was very basic by modern gaming standards,
+    it nevertheless provides a sound base that we can easily build upon to add features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll take a look at the resizable component, which allows
+    users to resize selected elements using a familiar drag-based interface.
+  prefs: []
+  type: TYPE_NORMAL

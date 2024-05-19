@@ -1,0 +1,1035 @@
+- en: Chapter 5. The Dialog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Traditionally, the way to display a brief message or ask a visitor a question
+    would've been to use one of JavaScript's native dialog boxes (such as `alert`
+    or `confirm`), or to open a new web page with a predefined size, styled to look
+    like a dialog box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, as I'm sure you're aware, neither of these methods is particularly
+    flexible to us as developers or particularly engaging for our visitors. For every
+    problem they solve, several new problems are usually introduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The dialog widget lets us display a message, supplemental content (such as images
+    or text) or even interactive content (such as forms). It's also easy to add buttons,
+    such as a simple **Ok** and **Cancel** to the dialog, and define the callback
+    functions for them in order to react to their being clicked; the dialog can also
+    be modal or nonmodal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a basic dialog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with the dialog options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modality
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enabling the built-in animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding buttons to the dialog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with the dialog callbacks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling a dialog programmatically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows a dialog widget and the different elements it
+    is made of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Dialog](img/2209OS_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a basic dialog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A dialog has a lot of built-in default behavior, but few methods are needed
+    to control it programmatically, making this an easy-to-use widget, which is also
+    highly configurable and powerful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Generating the widget is simple and requires a minimal underlying markup structure.
+    The following page contains the minimum markup that''s required to implement the
+    dialog widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `dialog1.html` in the `jqueryui` project folder. To use the
+    dialog, the following dependencies are required:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery.ui.all.css`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.position.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.dialog.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.button.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Optionally, we can also include the following files to make the dialog draggable
+    and resizable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery.ui.mouse.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.draggable.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.resizable.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The dialog widget is initialized in the same way as the other widgets, which
+    we have already looked at by calling the widget's plugin method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you run this page in your browser, you should see the default dialog widget,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a basic dialog](img/2209OS_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As with the previous widgets that we've covered, a variety of classnames from
+    the CSS framework are added to different elements within the widget to give them
+    the appropriate styling for their respective elements, and any additional elements
+    that are required are created on the fly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The dialog in the first example is fixed both in size and position and will
+    be positioned in the center of the viewport. We can easily make the widget draggable,
+    resizable, or both. All we need to do is include the draggable and resizable component's
+    source files, as well as the mouse utility, with the other `<script>` resources
+    at the end of `<head>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not important that the draggable and resizable files are included in the
+    page before the dialog's source file. They can come before or after, and the widget
+    will still inherit these behaviors. Any styling that is required, such as the
+    resize indicator that appears in the bottom-left of the dialog, will be picked
+    up automatically from the master CSS file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following three `<script>` elements directly before the closing `</head>`
+    tag in `dialog1.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `dialog2.html` and view it in a browser. The dialog should now
+    be draggable and can be moved to any part of the viewport, but will not cause
+    it to scroll if the widget is moved to an edge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The dialog should also be resizable—by clicking and holding any corner and dragging,
+    the widget can be made bigger or smaller. If the dialog is made bigger than the
+    viewport, it will cause the window to scroll.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listing the dialog options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'An option object can be used in a dialog''s widget method to configure various
+    dialog options. Let''s look at the available options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `appendTo` | `"body"` | Determines which element the dialog (and overlay,
+    if modal) should be appended to. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `autoOpen` | `true` | Shows the dialog as soon as the `dialog()` method is
+    called, when set to `true`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `buttons` | `{}` | Supplies an object containing buttons to be used with
+    the dialog. Each key becomes the text on the `<button>` element, and each value
+    is a callback function, which is executed when the button is clicked. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `closeOnEscape` | `true` | If set to `true`, the dialog will close when the
+    *Esc* key is pressed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dialogClass` | `""` | Sets additional classnames on the dialog for theming
+    purposes. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `draggable` | `true` | Makes the dialog draggable (requires use of `jquery.ui.draggable.js`).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `height` | `auto` | Sets the starting height of the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `hide` | `null` | Sets an effect to be used when the dialog is closed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `maxHeight` | `false` | Sets a maximum height for the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `maxWidth` | `false` | Sets a maximum width for the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `minHeight` | `150` | Sets a minimum height for the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `minWidth` | `150` | Sets a minimum width for the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `modal` | `false` | Enables modality while the dialog is open. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `position` | `center` | Sets the starting position of the dialog in the viewport.
+    It can accept a string, an array of strings, or an array containing the exact
+    coordinates of the dialog offset from the top and left of the viewport use (requires
+    use of `jquery.ui.position.js`). |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `resizable` | `true` | Makes the dialog resizable (also requires `jquery.ui.resizable.js`).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `show` | `null` | Sets an effect to be used when the dialog is opened. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `title` | `""` | Alternative to specifying the title attribute on the widget''s
+    underlying container element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `width` | `300` | Sets the starting width of the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: As you can see, we have a wide range of configurable options to work with while
+    implementing the dialog. Many of these options are Boolean, numerical, or string-based,
+    making them easy to get and set within your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Showing the dialog
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In our examples so far, the dialog has been displayed as soon as the page is
+    loaded. The `autoOpen` option is set to `true` by default, so the dialog will
+    be displayed as soon as it is initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can change this so that the dialog is opened when something else occurs,
+    like a button being clicked by setting the `autoOpen` option to `false`. Change
+    the final `<script>` element at the bottom of `dialog2.html` to the following
+    one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `dialog3.html`. The widget is still created; the underlying markup
+    is removed from the page, transformed into the widget, and then reappended to
+    the end of `<body>`. It will remain hidden until the `open` method is called on
+    it. We'll come back to this option when we look at the `open` method a little
+    later in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting a dialog title
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The options table shows a `title` option, which we can use to control how the
+    title is displayed on the widget; this can be made selectable if the `draggable`
+    attribute is set to `false`. Although it is possible to set it directly in code,
+    it is far easier to set it within the configuration options, as this gives us
+    a greater control over how the title is displayed in the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, the title text of the dialog widget will be shown in plain text;
+    we can override this by adding a custom style to the `.ui-dialog-title` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In your browser, alter the `<script>` block for dialog in `dialog3.html` as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the file as `dialog4.html`. We can now add some styling to our dialog''s
+    title bar – in a separate file add the following code, saving it as `dialogOverrides.css`
+    after the link to the jQuery UI stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we preview the results in our browser, you can clearly see the title now
+    shows in a different color:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Setting a dialog title](img/2209OS_05_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To see the effect on the code, we can see how the script has overridden the
+    base code, using a DOM inspector such as Firebug:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: We could manually style the dialog elements within our stylesheet, but it would
+    be through trial and error; it is much easier to simply add a new class using
+    jQuery, which we can then style to our heart's content!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If a value is not provided to the `title` attribute, the attribute on the dialog
+    source element will be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the modality option
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the dialog's greatest assets is modality. This feature creates an overlay
+    that covers the underlying page beneath the dialog while it is open. The overlay
+    is removed as soon as the dialog is closed. None of the underlying page content
+    can be manipulated within anyway while the dialog is open.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The benefit of this feature is that it ensures the dialog is closed before the
+    underlying page becomes interactive again, and gives a clear visual indicator
+    to the visitor that the dialog must be interacted with before they can proceed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the configuration object in `dialog4.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This file can be saved as `dialog5.html`. The following screenshot shows the
+    modal effect (you may like to add some fake content to the page to fully appreciate
+    the effect of the modal):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Configuring the modality option](img/2209OS_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Only a single property is required while adding modality and that is the `modal`
+    option. When you view the page in a browser, you'll see the modal effect immediately.
+    The repeated background image that is used to create the overlay is styled completely
+    by the CSS framework and is therefore fully themeable through the **ThemeRoller**
+    tool. We can also use our own image if we need to. The class name `ui-widget-overlay`
+    is added to the overlay, so this is the selector to override if customization
+    is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding buttons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The `button` option accepts an object literal that is used to specify the different
+    `<button>` elements that should be present on the dialog. Each `property: value`
+    pair represents a single button. Let''s add a couple of `<button>` elements to
+    our dialog.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Modify the final `<script>` element in `dialog5.html` so that it appears as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the file as `dialog6.html`. The key for each property in the `buttons`
+    object is the text that will form the `<button>` label, and the value is the name
+    of the callback function to execute when the button is clicked. The `buttons`
+    option can take either an object, as in this example, or an array of objects.
+    In this example the `execute()` and `cancel()` functions don't do anything; we'll
+    come back to this example shortly and populate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows how our new `<button>` elements would appear:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding buttons](img/2209OS_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The widget will add our new buttons to their own container at the foot of the
+    dialog, and if the dialog is resized, this container will retain its original
+    dimensions. The `<button>` elements are fully themable and will be styled according
+    to the theme in use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding icons to the dialog buttons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Until now, closing a dialog usually meant having to click on the cross icon
+    in the title bar – it works well for this purpose, but doesn't offer us any opportunity
+    to get a response from the person browsing our website or online application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The addition of buttons in the previous example helps remove this constraint,
+    and allows us to accept a varied response from the end user – we can take this
+    a step further by adding icons to provide visual support to the buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In your text editor, alter the `<script>` block in `dialog6.html` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `dialog7.html`. Here, we've used the buttons option to specify
+    the text, icons, and the action that should be taken when the button is clicked.
+    You will notice that we've also used a different way to specify each option, compared
+    to the previous example. Both work equally well; we need to use this method while
+    adding icons, otherwise you may find you have buttons with no text appearing!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we preview the results in a browser, we can now see the buttons with added
+    icons appearing, at the foot of our dialog:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding icons to the dialog buttons](img/2209OS_05_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The icons will be styled according to the theme in use. In our example we've
+    specified both primary and secondary icons; the former sits to the left of the
+    button text, whilst the latter sits to the right. It is likely though you would
+    only need to specify one or the other in your application or website, according
+    to your requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling dialog animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The dialog provides us with a built-in effect that can be applied to the opening
+    or closing (or both) phases of the widget. There is only a single effect that
+    we can use, which is an implementation of the scale effect (we''ll look at this
+    in more detail in [Chapter 13](ch13.html "Chapter 13. Selecting and Sorting with
+    jQuery UI"), *Selecting and Sorting with jQuery UI*). Change the final `<script>`
+    element in `dialog7.html` to the following one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `dialog8.html`. We set both the `hide` and `show` options to the
+    Boolean value `true`. This enables the built-in effect, which gradually reduces
+    the dialog''s size and opacity until it gracefully disappears. The following screenshot
+    shows an effect in motion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Enabling dialog animations](img/2209OS_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can enable or disable either the show or hide animations individually using
+    Booleans, as we have in this example. We could also specify the type of animation
+    to be used by supplying a string specifying the name of the effect to use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can even take this a step further, using some of the effects such as bounce
+    or explode, although these should only be added if appropriate! We will cover
+    the use of effects in jQuery UI later, in [Chapter 14](ch14.html "Chapter 14. UI
+    Effects"), *UI Effects*. You can also see more details at [http://api.jqueryui.com/category/effects/](http://api.jqueryui.com/category/effects/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the dialog's dimensions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'There are several options related to the dialog''s size, and the minimum and
+    maximum size that it can be resized to. We can add all of these options to the
+    next example as they''re all related, to save looking at them individually. Change
+    the configuration object in `dialog8.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `dialog9.html`. The effect these options have on the widget
+    is simple; the `width` and `height` options define how big the dialog is when
+    it is first opened, while the `min-` and `max-` options define how small or large
+    the dialog can be resized to respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As an additional note, assistive technologies and keyboard users may find the
+    content difficult to navigate if the dialog is made too small. There is a usability
+    tenet that insists dialog boxes should always be non-resizable, whereas the windows
+    should always be resizable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While I don't think this is a black and white, set in granite rule, it may be
+    wise to keep small, informational, text-based dialogs at a fixed size, while allowing
+    dialogs richer in content, composed of both images and text to be resizable. We
+    will cover how you can add resize handles to any suitable element (such as dialogs),
+    later in [Chapter 12](ch12.html "Chapter 12. The Resizable Component"), *The Resizable
+    Component*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the z-index order of dialogs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The dialog is made so that it appears above any of the existing page content.
+    We can alter its z-index setting using CSS, or by ensuring it is correctly appended
+    to its parent element using the `appendTo` option, in case we need to raise it
+    slightly to cover our existing content. But what if we have two dialogs on the
+    page? Do we need to separately define `zIndex` for each dialog? How is focus taken
+    into consideration?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see if we can answer these questions by looking at another example;
+    change the `<body>` tag of `dialog7.html` so that it has two dialog boxes on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `dialog10.html`. We've added another dialog to the page, which
+    is basically just a clone of the original with different `id` and `title` attributes.
+    In the `<script>`, we simply call the `widget` method on both of our underlying
+    dialog containers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the `widget` method is called last on the second dialog and therefore it
+    receives the focus, the second dialog will automatically have a higher z-index
+    value. This means we don't need to worry about configuring it separately. The
+    order in which the dialogs appear in the underlying markup doesn't matter; it's
+    the order of the widget methods that dictates each dialog's z-index value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Overriding the z-index value**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you need to override the z-index value, you can (and should) do this using
+    CSS – you will need to use the `!important` attribute to override the existing
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because neither dialog has its position explicitly set, only the second dialog
+    will be visible when our example page loads. However, both are draggable and we
+    can align them so that they overlap slightly by dragging the second dialog away.
+    If we click on the first dialog box, it will receive focus and so it will be shown
+    above the second box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the focus
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'While opening a dialog, the element that receives focus is determined by whichever
+    item matches the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first element within the dialog with the autofocus attribute
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first `:tabbable` element within the dialog's content
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The first `:tabbable` element within the dialog's buttonpane
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The dialog's close button
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The dialog itself
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This can best be illustrated by the following code excerpt, where we''ve added
+    the `autofocus` attribute to the `yes` radio button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `yes` radio button will receive the focus first; we can then tab away from
+    that element to others within the widget. As soon as the dialog is closed, the
+    focus will automatically return to the element that had it prior to the dialog
+    being opened.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling the dialog's event callbacks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The dialog widget gives us a wide range of callback options that we can use
+    to execute arbitrary code at different points, in any dialog interaction. The
+    following table lists the options available to us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `beforeClose` | This is fired when the dialog is about to be closed |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `close` | This is fired when the dialog is closed |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `create` | This is fired when the dialog is initialized |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `drag` | This is fired when the dialog is being dragged |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dragStart` | This is fired when the dialog starts being dragged |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dragStop` | This is fired when the dialog stops being dragged |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `focus` | This is fired when the dialog receives focus |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `open` | This is fired when the dialog is opened |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `resize` | This is fired when the dialog is being resized |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `resizeStart` | This is fired when the dialog starts to be resized |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `resizeStop` | This is fired when the dialog stops being resized |'
+  prefs: []
+  type: TYPE_TB
+- en: Some of these callbacks are only available in certain situations, such as the
+    `drag` and `resize` callbacks, which will only be available when the draggable
+    and resizable jQuery UI components are included. We won't be looking at these
+    callback options in this chapter, as they'll be covered in detail in [Chapters
+    11](ch11.html "Chapter 11. Drag and Drop"), *Drag and Drop* and [Chapter 12](ch12.html
+    "Chapter 12. The Resizable Component"), *The Resizable Component*, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other callbacks, such as the `beforeClose`, `create`, `open`, `close`, and `focus`
+    will be available in any implementation. Let's look at an example in which we
+    make use of some of these callback options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remove the second dialog from the page in `dialog10.html` and add the following
+    new markup directly after the first dialog:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `dialog11.html`. The page contains a new status box, which will
+    be used to report whether the dialog is open or closed. We've given the elements
+    that make up the status box of several CSS framework classes, to make them fit
+    with the theme in use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our configuration object uses the `open`, `close`, and `beforeClose` options
+    to specify simple callback functions. The `open` and `close` callbacks simply
+    set the text of the status box accordingly. The `beforeClose` callback that is
+    fired after the **Close** button on the dialog has been clicked (but before it
+    is actually closed) is used to determine whether or not to close the dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use a simple `if` statement to check the width of the dialog; if the dialog
+    is greater than 300 pixels wide, we return `false` from the callback and the dialog
+    remains open. This kind of behavior is of course usually a big no in terms of
+    usability, but it does serve to highlight how we can use the `beforeClose` callback
+    to prevent the dialog being closed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the page loads and the dialog is shown, the `open` callback will be executed
+    and the status box should display a message. When the dialog is closed, as shown
+    in the following screenshot, a different message is displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Handling the dialog''s event callbacks](img/2209OS_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: One thing I should make clear is that the dialog widget only passes a single
+    object (the original event object) to the callback functions. It does pass a second
+    `ui` object into the handler function, although in this release of the library,
+    this object contains no properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling a dialog programmatically
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The dialog is intuitive and easy-to-use, and like the other components in the
+    library, it comes with a range of methods that are used to programmatically control
+    the widget after it has been initialized. The full list of the methods we can
+    call on a dialog is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `close` | This is used to close or hide the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `destroy` | This is used to permanently disable the dialog. The `destroy`
+    method for a dialog works in a slightly different way than it does for the other
+    widgets we''ve seen so far. Instead of just returning the underlying HTML to its
+    original state, the dialog''s `destroy` method also hides it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `isOpen` | This is used to determine whether a dialog is open or not. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `moveToTop` | This is used to move the specified dialog to the top of the
+    stack. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `open` | This is used to open the dialog. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `option` | This is used to get or set any configurable option after the dialog
+    has been initialized. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `widget` | This is used to return the outer element that the `dialog()` widget
+    method is called on. |'
+  prefs: []
+  type: TYPE_TB
+- en: Toggling the dialog
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We first take a look at opening the widget, which can be achieved with the
+    simple use of the `open` method. Let''s revisit `dialog3.html` in which the `autoOpen`
+    option was set to `false`, so that the dialog didn''t open when the page was loaded.
+    Add the following `<button>` to the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then add the following click handler to the `<script>` block at the top of
+    the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `dialog12.html`. To the page, we've added a simple `<button>`
+    that can be used to either open or close the dialog depending on its current state.
+    In the `<script>` element, we've added a click handler for the `<button>` element
+    that checks the return value of the `isOpen` method; the use of the exclamation
+    mark means we are looking to see if the dialog box isn't open. If the statement
+    returns `true`, the dialog is not open so we call its `open` method, otherwise
+    we call the `close` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `open` and `close` methods both trigger any applicable events; for example,
+    the `#toggle` click handler method first fires the `beforeClose` and then the
+    `close` events. Calling the `close` method is analogous to clicking the close
+    button on the dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting data from the dialog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Because the widget is a part of the underlying page, passing data to and from
+    it is simple. The dialog can be treated as any other standard element on the page.
+    Let's look at a basic example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We looked at an example earlier in the chapter, which added some `<button>`
+    elements to the dialog. The callback functions in that example didn''t do anything,
+    but the following example gives us the opportunity to use them. Replace the existing
+    dialog markup in `dialog8.html` with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now change the final `<script>` element as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `dialog13.html`. Our dialog widget now contains a set of radio
+    buttons, some `<label>` elements, and some text. In this example, we’re going
+    to get the result of the selected radio button, and then do something with it,
+    when the dialog closes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We start the `<script>` element by filling out the `execute` function that will
+    be attached as the value of the `Ok` property in the buttons object, later in
+    the script. It will therefore be executed each time the **Ok** button is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this function, we use the `:checked` filter to determine which of the radio
+    buttons is selected. We set the value of the `answer` variable to the radio button's
+    value, and then create a short message along with appending it to the `<body>`
+    element of the page. The callback mapped to the **Cancel** button is simple; all
+    we do is close the dialog using the `close` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The point of this example was to see that getting data from the dialog is as
+    simple as getting data from any other element on the page. If you preview it in
+    your browser, you will first see the dialog on the left; clicking on a button
+    gives the appropriate response, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting data from the dialog](img/2209OS_05_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Exploring dialog interoperability
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous chapters, we''ve combined multiple widgets so that we can see
+    how well they work together, and this chapter will be no exception. We can easily
+    place other UI widgets into the dialog such as the accordion widget that we looked
+    at in the previous chapter. In a new file in your text editor, create the following
+    page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `dialog14.html`. The underlying markup for the accordion widget
+    is placed into the dialog's container element, and we just call each component's
+    widget method in the `<script>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In this example, we use quite a few separate `<script>` resources. It is worth
+    remembering that for production, we should use the combined and minified script
+    file, which contains all of the components we selected in the download builder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The combined widget should appear like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exploring dialog interoperability](img/2209OS_05_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a dynamic image-based dialog
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The class behind the dialog widget is compact and caters to a small range of
+    specialized behavior, much of which we have already looked at. We can still have
+    some fun with a dynamic dialog box, which loads different content depending on
+    which element triggers it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new page in your text editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `dialog15.html`. The following screenshot shows the result
+    when previewed in a browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a dynamic image-based dialog](img/2209OS_05_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The page is relatively straightforward—we've got an outer container, which encloses
+    everything and an element, which we've given the class name `ui-widget-header`.
+    We've used the latter in order to pick up some of the default styling from the
+    theme in use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following this, we have some explanatory text followed by a series of containers.
+    Several classnames are given to these containers, some of which are so that we
+    can style them, and others (such as `ui-helper-clearfix`), in order to pick up
+    the framework or theme styles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within each of these containers is an image, wrapped in an anchor, a subheading,
+    and some descriptive text. After the outer container, comes the empty `<div>`
+    element, which is used to create the dialog. In this example, we don't use the
+    resizable feature. Each of the thumbnail images is wrapped in an anchor, in order
+    for the page to function even with JavaScript disabled. The dialog widget won't
+    display in this situation, but the visitor will still be able to see a full-sized
+    version of each image. This form of progressive enhancement is essential in this
+    kind of application, where we can always view the content. Adding in the call
+    to the dialog widget is enhancing the overall view to the visitor, whilst ensuring
+    content will always display something, even with JavaScript disabled!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now add the following `<script>` block directly before the closing `</head>`
+    tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first thing we do is define three variables; the first variable is used
+    to add the path to the full-sized image of whichever thumbnail was clicked, the
+    second is to store the image title to use as the text for the widget's title,
+    and the third is the configuration object for the dialog. We've seen the entire
+    configuration options in action already, so I won't go over most of them in much
+    detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `open` callback, called directly before the dialog is opened, is where we
+    add the full-sized image to the dialog. We first empty the dialog, then create
+    a new `<img>` element, and set its `src` to the value of the `filename` variable.
+    The new `<img>` is then appended to the inner content area of the dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use the `option` method to set the title option to the value of the
+    `titleText` variable. Once the `open` callback has been defined, we call the dialog's
+    widget method as normal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use the wrapper `<a>` elements as the triggers to open the dialog. Within
+    our click handler, we first call `e.preventDefault()` to stop the default action
+    of the click, before setting the contents of our `filename` and `titleText` variables
+    using the `href` and `title` attributes of the link that was clicked. We then
+    call the dialog's `open` method to display the dialog, which in turn triggers
+    the callback function specified in the `open` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we omit `e.preventDefault()`, this will override the dialog and the browser
+    will render each image as if it were a link that had been clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll also need a new stylesheet for this example. In a new page in your text
+    editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Many of these styles have been used in the previous examples, but adding some
+    new rules for the other page elements lets us see the dialog in a real-world context.
+    Save this as `dialogTheme.css` in the `css` folder. We also use some images in
+    this example, which can be found in the `img` folder of the accompanying code
+    download for this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This should now give us the page that we saw in the previous screenshot and
+    when a thumbnail is clicked, the full size version of the same image will be displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a dynamic image-based dialog](img/2209OS_05_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The dialog widget is specialized and caters to the display of a message or question
+    in a floating panel that sits above the page content. Advanced functionality such
+    as dragging and resizing is directly built-in and require just the inclusion of
+    an additional script file for each feature. Other features such as the excellent
+    modality and overlay are easy to configure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started out by looking at the default implementation, which is as equally
+    simple to configure as the other widgets we have looked at so far. We then examined
+    the range of configurable options exposed by the dialog's API. We can make use
+    of them to enable or disable built-in behavior such as modality, or set the dimensions
+    of the widget. It also gives us a wide range of callbacks that allow us to hook
+    into custom events fired by the widget during an interaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then took a brief look at the built-in opening and closing effects that can
+    be used with the dialog, before moving on to see the basic methods we can invoke,
+    in order to make the dialog do things, such as open or close.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll move on to look at the slider and progress bar widgets,
+    which allow us to create interactive form widgets used to select from a predefined
+    range of values and display the results on screen.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1144 @@
+- en: Chapter 2. The CSS Framework and Other Utilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Added in Version 1.7, the jQuery UI library contains a refreshed CSS framework
+    that can be used to effectively and consistently theme each widget available in
+    the library. The framework is made up of many helper classes that we can use in
+    our own code, even if we aren't using any of the library components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we''ll be covering the following subjects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The files that make up the framework
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the classes exposed by the framework
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to switch themes quickly and easily
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Overriding the theme
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the position utility
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with the files that make up the framework
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are two locations within the library's structure where the CSS files that
+    make the framework reside, depending on which version of the library you choose
+    to download.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'They are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`css`: This folder holds the complete CSS framework, including the theme that
+    was selected when the download package was built. All the necessary CSS has been
+    placed in a single, lean and mean stylesheet to minimize the HTTP requests in
+    production environments. The CSS file is stored in a folder, named after the theme
+    selected on the download builder. This version of the framework will contain styles
+    for all the components that were selected in the download builder, so its size
+    will vary depending on how much of the library is being used.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`themes`: Another version of the framework exists within the `development-bundle`
+    folder, within which you will find the `themes` folder. Two themes are provided
+    in this folder—the base theme, and whichever theme that was selected when the
+    library was downloaded. The base theme is a gray, neutral theme that is visually
+    identical to the smoothness theme.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Within each of these theme folders, are the individual files that make up the
+    framework. Each of the different components of the framework is split into its
+    own respective files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Component | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| All the required files for a theme can be linked by using this file in development.
+    It consists of the `@import` directives that pull in the `ui.base.css` and the
+    `ui.theme.css` files. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| This file is used by `ui.all.css`. It also contains `@import` directives
+    that pull in the `ui.core.css file`, as well as each of the widget CSS files.
+    However, it contains none of the theme styles that control each widget''s appearance.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| This file provides core framework styles, such as the clear-fix helper and
+    a generic overlay. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| These files are the individual source files that control the layout and basic
+    appearance of each widget. |'
+  prefs: []
+  type: TYPE_TB
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '| This file contains the complete visual theme and targets of all the visual
+    elements that make up each widget in the library. |'
+  prefs: []
+  type: TYPE_TB
+- en: Let's take a look at each of these files in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jquery.ui.all.css
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `jquery.ui.all.css` file makes use of CSS imports, using the `@import` rule
+    to read in two files—the `jquery.ui.base.css` and the `jquery.ui.theme.css` file.
+    This is all that is present in the file and all that is needed to implement the
+    complete framework and the selected theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the two directives found in this file, we can see the separations between
+    the part of the framework that makes the widgets function and the theme that gives
+    them their visual appearance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jquery.ui.base.css
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `jquery.ui.base.css` file also consists of only `@import` rules, and imports
+    the `jquery.ui.core.css` file along with each of the individual widget CSS files.
+    At this point, I should mention that the resizable component has its own framework
+    file, along with each of the widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jquery.ui.core.css
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `jquery.ui.core.css` file provides generic styles for the framework that
+    are used by all components. It contains the following classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Class | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-helper-hidden` | This class hides elements with `display: none`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-helper-hidden-accessible` | This class hides elements by clipping them,
+    so that the element remains fully accessible. The element is not hidden or positioned
+    off-screen at all. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-helper-reset` | This is the reset mechanism for jQuery UI (it doesn''t
+    use a separate reset stylesheet), which neutralizes the margins, padding, and
+    other common default styles applied to common elements by browsers. For an introduction
+    to the importance of resetting default browser styling, visit: [http://sixrevisions.com/css/css-tips/css-tip-1-resetting-your-styles-with-css-reset/](http://sixrevisions.com/css/css-tips/css-tip-1-resetting-your-styles-with-css-reset/).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-helper-clearfix` | The `.ui-helper-clearfix` styles are applied to the
+    container itself. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-helper-zfix` | The `.ui-helper-zfix` class provides rules that are applied
+    to `<iframe>` elements, in order to fix z-index issues when overlays are used.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-state-disabled` | This class sets the cursor to default for disabled
+    elements and uses the important directive to ensure that it is not overridden.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-icon` | This rule is the library''s method of replacing the text content
+    of an element with a background image. The responsibility of setting the background
+    images for the different icons found in the library is delegated to the `jquery.ui.theme.css`
+    file. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `.ui-widget-overlay` | This class sets the basic style properties of the
+    overlay that is applied to the page when dialogs and other modal pop ups are shown.
+    As images are used by the overlay, some styles for this class are also found in
+    the theme file. |'
+  prefs: []
+  type: TYPE_TB
+- en: The core file lays the foundation for the rest of the framework. We can also
+    give these class names to our own elements, to clear floats or hide elements whenever
+    we use the library, and especially when building new jQuery UI plugins for consistent
+    theming with ThemeRoller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Explaining the individual component framework files
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Each widget in the library, as well as the resizable interaction helper, has
+    a framework file that controls the CSS and makes the widget function correctly.
+    For example, the tab headings in the tabs widget must be floated left in order
+    to display them as tabs. The framework files set this rule. These styles will
+    need to be presented when we are overriding the framework in a custom theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These files are brief, with each component using the smallest number of rules
+    possible for it to function correctly. Generally the files are quite compact (usually
+    not more than 15 style rules long). The Datepicker source file is the exception,
+    as it requires a large number of rules to function correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jquery.ui.theme.css
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This file will be customized to the theme that was selected or created with
+    ThemeRoller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It sets all of the visual properties (colors, images, and so on) for the different
+    elements that make up each widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the `jquery.ui.theme.css` file, there are many comments that contain
+    descriptive labels, enclosed within curly braces. These are called **placeholders**,
+    and the CSS styles that precede them are updated by ThemeRoller automatically
+    when the theme is generated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the file that will be generated for the complete theme and it contains
+    styles for all the visible parts of each widget when creating or selecting a theme
+    using ThemeRoller. When overriding the framework to create a custom theme, it
+    is mostly rules in this file that will be overridden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each widget is constructed from a set of common elements. For example, the outer
+    container of each widget has the class named `ui-widget`, while any content within
+    the widget will be held in a container with the class named `ui-widget-content`.
+    It is this consistent layout and classing convention that makes the framework
+    so effective.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/supportand](http://www.packtpub.com/supportand)
+    register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is the biggest stylesheet used by the framework and contains too many
+    classes to list here in its entirety (but feel free to open it up at this point
+    and take a look through it). The following table lists the different categories
+    of classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Category | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Containers | This category sets style properties for widget, heading, and
+    content containers. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Interaction states | These classes set the default, hover, and active states
+    for any clickable elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Interaction cues | This category applies visual cues to elements including
+    highlight, error, disabled, primary, and secondary styles. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| States and images | These classes set the images used for icons displayed
+    in the content and heading containers, as well as any clickable elements including
+    default, hover, active, highlight, focus, and error states. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Image positioning | All of the icon images used by the theme are stored in
+    a single sprite file, and are displayed individually by manipulating the background-position
+    properties of the sprite file. This category sets the background positions for
+    all individual icons. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Corner radius | CSS3 is used to give rounded corners to supporting browsers
+    (such as Firefox 3+, Safari 3+, Chrome 1+, Opera 10+, and IE9+). |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Overlays | The image used for the generic overlay defined in the core CSS
+    file is set here, as it is a class that implements a semi-transparent overlay
+    over specified elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The jQuery UI documentation features an extensive overview of the Theme API
+    at: [http://api.jqueryui.com/category/theming/](http://api.jqueryui.com/category/theming/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linking to the required framework files
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'For rapid theming of all jQuery UI widgets in a development environment, we
+    can link to all of the individual files using `jquery.ui.all.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To use each file individually when testing a component such as the tabs widget,
+    for example, we would use the following `<link>` elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CSS resources, when linked to separately, should be added to the HTML page
+    in the following order: `core.css`, the widget''s CSS file, and the `theme.css`
+    file.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a production environment, of course, we''d use the super-efficient combined
+    file to minimize the number of HTTP requests for CSS files. We need to link to
+    the combined `jquery-ui-x.x.x.min.css` stylesheet found in the `css/themename/`
+    directory, where x.x.x is the version number of jQuery UI you have downloaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: For easier coding and convenience, we'll be linking to the `development-bundle/themes/base/jquery.ui.all.css`
+    file in all our examples. If you have unpacked the library as shown in the previous
+    chapter, along with the `css`, `development-bundle`, and `js` folders, then the
+    previous path to the CSS file will be correct. If you are using a different structure,
+    please alter the path to the CSS file accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Creating the examples from this book**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this book, you will note that we make reference to saving files in
+    the `jqueryui` folder; you may wish to put a subfolder in for each chapter, so
+    that the code is stored separately from other chapters. This is reflected in the
+    code download that accompanies this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the framework classes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Along with using the framework while we're implementing official jQuery UI widgets,
+    we can also use it when we're deploying our own custom plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with containers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Containers are recommended because it means that widgets or plugins that we
+    write will be ThemeRoller-ready and easier for end-developers to theme and customize.
+    Let's look at how easy it is to use the framework with our own elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In your text editor, create a new file and add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this page as `containers.html` within the `jqueryui` project folder that
+    we created in [Chapter 1](ch01.html "Chapter 1. Introducing jQuery UI"), *Introducing
+    jQuery UI*, when we unpacked the library. We're linking to the `jquery.ui.all.css`
+    file from the base development theme in the library. If we were building a more
+    complex widget, we'd probably want to link to the `jquery.ui.core.css` file as
+    well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with this file when creating widgets or plugins is essential, because
+    it lets us verify that the class names we give our containers will pick up the
+    appropriate styling, and reassures us that they will be ThemeRoller-ready. Any
+    style that we need to apply ourselves would go into a separate stylesheet, just
+    as each widget from the library has its own custom stylesheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use only a couple of elements in this example. Our outer container is given
+    the class name `ui-widget`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within the outer container, we have two other containers. One is the `ui-widget-heading`
+    container and the other is the `ui-widget-content` container. We also give these
+    elements variants of the corner-rounding classes: `ui-corner-top` and `ui-corner-bottom`,
+    respectively.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the header and content containers, we just have a couple of appropriate
+    elements that we might want to put in, such as `<h2>` in the header and `<p>`
+    in the content element. These elements will inherit some rules from their respective
+    containers, but are not styled directly by the theme file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we view this basic page in a browser, we should see that our two container
+    elements pick up the styles from the theme file as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with containers](img/2209OS_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using interactions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s look at some more of the framework classes in action. In `containers.html`,
+    remove the markup with the `<body>` tags, and add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s also alter the title too so it reflects what we are creating in the
+    code—remove the existing `<title>`, and replace it with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `interactions.html` in the `jqueryui` project folder. We've
+    defined two clickable elements in these examples, which are comprised of a container
+    `<div>` and an `<a>` element. Both containers are given the class names `ui-state-default`
+    and `ui-corner-all`, but the first is also given the selected state `ui-state-active`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This will give our clickable elements the following appearance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using interactions](img/2209OS_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The CSS framework doesn''t provide styles on the `:hover` CSS pseudo-class.
+    Instead it applies a set of styles using a class name, which is added using JavaScript.
+    To see this in action before the closing `</body>` tag, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this variation of the previous example file as `interactionsHovers.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The version number of jQuery will change as the library continues to evolve;
+    we've used Version 2.03 throughout this book. You should replace it with whichever
+    version you've downloaded, if it is different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our simple script adds the `ui-state-hover` class name to a clickable element
+    when the mouse pointer moves on to it, and then removes it when the mouse pointer
+    moves off. When we run the page in a browser and hover over the second clickable
+    element, we should see the `ui-state-hover` styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using interactions](img/2209OS_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding icons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The framework also provides a series of images that we can use as icons. Change
+    the contents of the ui-widget container in `interactionsHovers.html` so that it
+    appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `icons.html` in the `jqueryui` directory. In this example, our
+    nested `<div>` elements, which have the classes `ui-icon` and `ui-icon-circle-plus`,
+    are given the correct icon from a sprite file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding icons](img/2209OS_02_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are not already familiar with how sprites work, then it is worth reading
+    about this technique—have a look at [http://nerdwith.me/news/css-sprites-for-beginners/](http://nerdwith.me/news/css-sprites-for-beginners/)
+    for an example of how to create sprite images. If you need to create sprite images,
+    then the CSS Sprites Generator at [http://csssprites.com/](http://csssprites.com/)
+    is a good site to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see, the `ui-state-active` icon differs slightly from the `ui-state-default`
+    icon (as well as the `ui-state-hover` icon). We haven't positioned the icons at
+    all in this example, because this would necessitate the creation of a new stylesheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The point of this example is to see how the icons can be automatically added
+    using the class names from the framework, without having to add any extra CSS
+    styling by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If we wanted to adjust the positioning, we could have overridden the `.existing
+    .ui-icon` class by adding an extra style, such as `span.ui-icon { float: left;
+    }`, which would reposition the icons to the left of the text in each `<span>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examining the icons in detail
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now that we have seen some of the icons in use, let's take a look at how you
+    can use them in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The icons come in the form of a sprite image, which we download as part of the
+    theme. In the main `css` folder in the library, you will find more than one theme
+    folders. Depending on how many you need to download; each theme library contains
+    a number of sprite images that are used by jQuery UI to produce the icons, such
+    as the ones we've seen in the previous example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When viewing the image sprites containing our icons, they will look something
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Examining the icons in detail](img/2209OS_02_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If we examine the code within a DOM inspector such as Firebug, you will find
+    at least two styles are added, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The format of the icon CSS will usually follow `.ui-icon-{icon type}-{icon sub
+    description}-{direction}`; it should be noted that a third class will be added
+    if you are using the `icon` option within widgets, such as the accordion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each icon element is given a base class of `.ui-icon`, which will set dimensions
+    of the icon to a 16 px square block, hides inner text, and sets the background
+    image with the chosen sprite image. The background sprite image used will depend
+    on its parent container; for example a `ui-icon` element within a `ui-state-default`
+    container will get colored according to the `ui-state-default`'s icon color.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding custom icons
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Adding icons to widgets does not need to be limited to those within the library.
+    It is possible to use your own custom icons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do this, we have two options—you can reference individual files, or use similar
+    image sprites; the latter is preferable, particularly if you use multiple custom
+    icons, as the sprite that contains them will be cached once loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can see a full list of icons available within the core jQuery UI library,
+    along with their icon class names, at [http://api.jqueryui.com/theming/icons/](http://api.jqueryui.com/theming/icons/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To reference the icons, you will need to add your own custom style, which overrides
+    the `.ui-icon` class—this is to ensure that jQuery UI doesn''t try to apply its
+    own styles that cancel out your own. An example of such a custom class would look
+    something as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can then apply our new style to our chosen widget, as illustrated using
+    this example of a jQuery UI Button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: As long as the icon is of the right format, and is correctly referenced in our
+    code, then we are free to add whichever icons we desire; it is worth researching
+    options online, as there will be plenty of icons available for use, such as the
+    Font Awesome library at [http://fortawesome.github.io/Font-Awesome/icons/](http://fortawesome.github.io/Font-Awesome/icons/),
+    or IcoMoon, which you can download from [http://icomoon.io/](http://icomoon.io/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Why does my icon appear on a new line?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In some instances, you may find that your icon appears on a new line above
+    or below the text in your widget, as illustrated in our icons example earlier
+    in this chapter. The reason for this is the `display: block` attribute in the
+    `.ui-icon` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.ui-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat:
+    no-repeat; }`To get around it, you can use a float attribute, and set it to show
+    the icon on the left, right, or center as appropriate.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using custom icons – a note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you decide to use custom icons, then there is nothing that will prevent you
+    from doing so, this could open up a wealth of possibilities! You do need to note
+    that using custom icons requires the use of two classes—the `base .ui-icon`, followed
+    by your own custom class. This is to ensure the icons display correctly, and prevent
+    jQuery UI from trying to override your own icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a risk that using your own icons may conflict with styles within the
+    framework, if care is not taken in ensuring that the icons are of the right dimensions;
+    it is strongly recommended that you look carefully through the existing icon library
+    that is provided, as the jQuery UI team may have already converted something that
+    could be of use. Alternatively a look online could help too; custom themes have
+    been written for jQuery UI, and you may find one that contains the icon(s) you
+    need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interaction cues
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Another set of classes we can use is the interaction cues. We will look at
+    another example using these. In a new page in your text editor, add the following
+    code. This will create a form example, where we can see the cues in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `cues.html` in the `jqueryui` folder. This time we link to
+    a custom file, `jquery.ui.form.css` that we'll create in a moment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the page, we have the outer widget container, with the class names `ui-form`
+    and `ui-widget`. The `ui-form` class will be used to pick up our custom styles
+    from the `jquery.ui.form.css` stylesheet. Within the widget, we have `ui-widget-header`
+    and `ui-widget-content` containers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the content section, we've got a `<form>` with a single row of elements,
+    a `<label>` element followed by a `<div>` element that has the `ui-state-error`
+    and `ui-corner-all` class names hardcoded to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this `<div>` element, we have a standard `<input>`, a `<div>` with the
+    `ui-icon`, and `ui-icon-alert` classes added, along with a `<p>` element with
+    the `ui-state-error-text` class name added to it. Because the `<form>` will have
+    child elements that are floated due to styles we will add in `jquery.ui.form.css`,
+    we can make use of the `ui-helper-clearfix` class to clear the floats, which we
+    add as a class name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should now create the custom `jquery.ui.form.css` stylesheet. In a new file
+    in your text editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Within our `jqueryui` project folder, there is a folder called `css` that is
+    used to store the single-file production version of the framework. All of the
+    CSS files we create throughout the book will also be saved in here for convenience.
+    Save this file as `jquery.ui.form.css` in the `css` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine we have more forms of elements and a submit button. By adding the `ui-state-error`
+    class to the `<div>` element, we can use the error classes for form validation,
+    which upon an unsuccessful submission would show the icon and text. The following
+    screenshot shows how the page should look:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Interaction cues](img/2209OS_02_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Switching themes quickly and easily
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Once we have developed content using the base theme, we may decide to change
+    the theme to something that fits in better with our overall site theme; thankfully,
+    the CSS framework makes switching themes a painless task. Looking at the previous
+    example, all we need to do to change the skin of the widget is choose a new theme
+    using ThemeRoller (available at [http://www.jqueryui.com/themeroller](http://www.jqueryui.com/themeroller)),
+    and then download the new theme. We can download the new theme by selecting all
+    of the components in the download builder and clicking on **Download** to obtain
+    the theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within the downloaded archive, there will be a directory with the name of the
+    chosen theme, such as **redmond**. We drag the `theme` folder out of the archive
+    into the `development-bundle\themes` folder and link the new theme file from our
+    page, giving our form a completely new look as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Switching themes quickly and easily](img/2209OS_02_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The theme I used to obtain this screenshot is redmond. This uses various shades
+    of blue, either for the background or normal text; selected options, such as tab
+    headings or selected items in a widget will appear either in orange text or with
+    an orange background. We'll be using this theme, or themes of our own creation
+    for the remainder of the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overriding the theme
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using the ThemeRoller gallery and customization tools, we can generate an extraordinary
+    number of unique themes. But there may be times when we need a deeper level of
+    customization than we are able to reach using ThemeRoller; in this situation we
+    have two options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can either create a complete theme file from scratch by ourselves, or we
+    can create an additional stylesheet that overrides only those rules in the `jquery.ui.theme.css`
+    file that we need. The latter is probably the easiest method and results in having
+    to write less code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll now take a look at this aspect of theming. Switch back to the base theme
+    in `<head>` of `cues.html`, if you changed it for the previous example. Save the
+    page as `cuesOverridden.html` and then create the following new stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `overrides.css` in the `css` folder. In this stylesheet we''re
+    mostly overriding rules from the `jquery.ui.theme.css` file. These are simple
+    styles and we''re just changing colors, backgrounds, and borders. Link to this
+    stylesheet by adding the following line of code below the other stylesheet in
+    `cuesOverridden.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our humble form should now appear as in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Overriding the theme](img/2209OS_02_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As long as our stylesheet appears after the `theme` file, and that we match
+    or exceed the specificity of the selectors used in the `jquery.ui.theme.css` file,
+    our rules will take precedence. A long discussion on CSS selector weight is beyond
+    the scope of this book. However, a brief explanation of specificity may be beneficial
+    as it is the key to overriding the selected theme. CSS specificity refers to how
+    specific a CSS selector is—the more specific it is, the more weight it will have,
+    and will subsequently override other rules that are applied to the element being
+    targeted by other selectors. For example, consider the following selectors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first selector is more specific than the second selector, because it not
+    only uses the class name of the element being targeted, but also the ID of its
+    parent container. It will therefore override the second selector, regardless of
+    whether the second selector appears after it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more about CSS specificity, then there are lots of
+    good articles on the Internet. As a start, you might like to look at [http://designshack.net/articles/css/what-the-heck-is-css-specificity/](http://designshack.net/articles/css/what-the-heck-is-css-specificity/),
+    or [http://reference.sitepoint.com/ css/specificity](http://reference.sitepoint.com/
+    css/specificity). Alternatively, you may like to work through Chris Coyier's example,
+    at [http://css-tricks.com/specifics-on-css-specificity/](http://css-tricks.com/specifics-on-css-specificity/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we have full control over the elements that we're skinning.
+    But when working with any widgets from the library or with plugins authored by
+    third parties, a lot of markup could be generated automatically, which we have
+    no control over (without hacking the actual library files themselves).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Therefore, we may need to rely on overriding styles in this way. All we need
+    to do to find which styles to override is open up the `jquery.ui.theme.css` file
+    in a text editor and take a look at the selectors used there. Failing to do that,
+    we can use Firebug''s CSS viewer to see the rules that we need to override as
+    in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Overriding the theme](img/2209OS_02_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**DOM Explorers**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All modern browsers have DOM explorers and CSS inspectors like Firebug that
+    can be used to see the order in which CSS rules are being applied. Using the browser's
+    CSS inspector is usually the most convenient way of checking CSS order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The position utility
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The position utility is a powerful stand-alone utility that is used to position
+    any element relative to the window, the document, a specific element, or the mouse
+    pointer. It is unique among library components, in that it doesn't require `jquery.ui.core.js`
+    or `jquery.effects.core.js` as dependencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It exposes no unique or custom methods (other than the `position()` method),
+    and fires no events, but it does come with a series of configuration options that
+    allow us to use it. These options are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Format | Used to |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| at | string | Specify the edges of the element that is being positioned against.
+    Formatted as, for example, left bottom. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| collision | string | Move the positioned element to an alternative position
+    when the positioned element overflows its container. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| my | string | Specify the edges of the element being positioned that are
+    expected to be aligned to the element being positioned against, for example right
+    top. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| of | selector, jQuery, object, eventobject | Specify the element to position
+    against the positioned element. When a selector or jQuery object is provided,
+    the first matched element is used. When an event object is provided, the pageX
+    and pageY properties are used |'
+  prefs: []
+  type: TYPE_TB
+- en: '| using | function | Accepts a function, which actually positions the positioned
+    element. This function receives an object containing the top and left values of
+    the new position. |'
+  prefs: []
+  type: TYPE_TB
+- en: Using the position utility
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Using the position utility is easy. Let''s look at a few examples; create the
+    following page in your text editor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `position.html`. We also use a very basic stylesheet in this example,
+    consisting of the following styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file in the `css` folder as `position.css`. The element that we are
+    positioning against, as well as the element that we are positioning itself, can
+    be set to either relative, absolute, or static positioning, without affecting
+    how the positioned element behaves. If the element we are positioning against
+    is moved using its top, left, bottom, or right style properties, the element we
+    are positioning will take account of this and still work correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the page we just have two `<div>` elements: one is what we will be positioning
+    against, and the other is the actual element we will be positioning. jQuery itself
+    is a requirement so we link to that within the `<head>` element, and we also link
+    to the position utility''s source file. As I mentioned earlier, we don''t need
+    to link to the `jquery.ui.core.js` file when using position by itself.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The minimum configuration we can use, as we have in this example, is to set
+    the `of` option, against which we use to specify the element we are positioning.
+    When we set just this one option, the element we are positioning is placed exactly
+    in the center of the element we are positioning against, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the position utility](img/2209OS_02_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This alone is incredibly useful as the element is not only centered horizontally,
+    but vertically too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By using the `my` and `at` properties as well, we can place any edge of the
+    positioned element against any edge of the element we are positioning against.
+    Change the code within the outer function so that it appears as follows (new/altered
+    code is shown in bold):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the output of this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the position utility](img/2209OS_02_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `my` option refers to the element that is being positioned. The first part
+    of the string, which is supplied as the value of this option, is the horizontal
+    axis, and can be set to left, center, or right. The second part is the vertical
+    axis, and can be set to top, center, or bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `at` option refers to the horizontal and vertical edges of the element being
+    positioned against. It also accepts a string in the same format as the `my` configuration
+    option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Explaining collision avoidance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The position utility has a built-in collision detection system to prevent the
+    element that is being positioned from overflowing the viewport. There are two
+    different options that we can use to set what happens when a collision is detected.
+    The default is `flip`, which causes the element to flip and align the opposite
+    edges of those configured.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, if we position a `<div>` element's right edge to align to the left
+    edge of another element, it will be flipped to have its right edge aligned to
+    the positioning element's right edge instead, if it overflows the viewport.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the configuration in `position.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This would result in the following positioning:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Explaining collision avoidance](img/2209OS_02_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The other mode of collision avoidance is `fit`, which will honor the configured
+    positioning as much as possible, but adjust the element''s positioning, so that
+    it stays within the viewport. Configure the collision option as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `positionFit.html`. This time, the element is positioned
+    as close as possible to its intended position:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Explaining collision avoidance](img/2209OS_02_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can also set the value of the `collision` option to `none` to disable collision
+    detection entirely, and allow the positioned element to overflow the viewport.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Positioning with a function
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We can set the `using` option to a function, and position the positioned element
+    manually. Change the configuration so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this change as `positionFunction.html`. We supply an anonymous function
+    as the value of the `using` option. This function is passed as a single argument
+    that is an object containing the properties top and left, which correspond to
+    the values that the element we are positioning should be given.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see from this code, we still need to position the element manually,
+    but the function allows us to do any preprocessing of the element that may be
+    required. Within the function, the `this` object is set to the element being positioned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the position widget in a real-world example
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we've considered the theory behind using the position widget; before
+    moving on to look at the widget factory, let us take a moment to consider how
+    we can use the position widget in a real-world scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A perfect example comes in the shape of jQuery UI's Dialog widget, configured
+    to work as a modal dialog. Here we can use the position widget to place the dialog
+    box on the page in relation to the button's current location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see how, add the following code to a new file in your text editor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need some markup, so add the following code in between the `<body>` tags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, in order to tie it together and make it work, add the following script
+    as the last entry before the closing `</head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we preview this in a browser, you''ll see that we can''t do anything with
+    the text in the background when clicking on the button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the position widget in a real-world example](img/2209OS_02_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here, we've instigated a UI dialog, and configured it to work as a modal; autopen
+    has been set to `false`, so that the dialog doesn't show when displaying the page.
+    We've then created a simple click handler to show the dialog on the click of a
+    button; this is followed by a call to the position widget, where we set the `my`
+    and `at` attributes, to correctly display the dialog in relation to the current
+    position of the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The widget factory
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Another tool within the jQuery UI library is the widget factory, which was introduced
+    in Version 1.8 of jQuery UI, and has since undergone some important changes. This
+    splits the functionality that allows widgets to be easily created into a separate
+    and standalone utility file. This is the `jquery.ui.widget.js` file, and we can
+    use it to create our very own jQuery UI plugins with ease. Like jQuery itself,
+    which provides the `fn.extend()` method for easily creating plugins, jQuery UI
+    also provides mechanisms to make plugin creation easier, and to ensure that the
+    common API functionality is retained in new plugins. We will cover the Widget
+    Factory in more detail in a separate chapter that can be downloaded with the book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we've seen how the CSS framework consistently styles each of
+    the library components. We've looked at the files that make it and how they work
+    together to provide the complete look-and-feel of the widgets. We also saw how
+    tightly integrated the ThemeRoller application is with the framework, and that
+    it is easy to install or change a theme using ThemeRoller. We also looked at how
+    we can override the theme file if we require a radical customization of a widget
+    that we cannot obtain with ThemeRoller alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The chapter also covered building our own widgets or plugins in a way that is
+    compatible with and can make use of the framework, as well as to ensure that our
+    creations are ThemeRoller ready. We can also make use of the helper classes provided
+    by the framework, such as the `ui-helper-clearfix` class, to quickly implement
+    common CSS solutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also looked at the position utility, which allows us to align any edge of
+    one element with any edge of another element, giving us a powerful and flexible
+    way of positioning elements that we create or manipulate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll move on to start looking at the widgets provided
+    by the library, starting with the tabs widget.
+  prefs: []
+  type: TYPE_NORMAL

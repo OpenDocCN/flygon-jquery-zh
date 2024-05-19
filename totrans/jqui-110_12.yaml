@@ -1,0 +1,853 @@
+- en: Chapter 12. The Resizable Component
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have already seen resizables in action briefly when we looked at the dialog
+    widget, earlier in the book. In this chapter, we're going to focus on it directly.
+    However, the dialog is a perfect example of how useful the resizable component
+    can be in a real-world implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The resizable widget adds the same functionality that is automatically added
+    to `<textarea>` elements in WebKit browsers such as Safari or Chrome, or newer
+    versions of Firefox. In these browsers, a resize handle is added to the bottom-right
+    corner, which allows the element to be resized. With the jQuery UI resizable component,
+    we can add this behavior to almost any element on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll be looking at the following aspects of the component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing basic resizability
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The configurable options available for use
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Specifying which resize handles to add
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing the resizable's minimum and maximum sizes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The role of resize helpers and ghosts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A look at the built-in resize animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to react to resize events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Determining the new size of a resizable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a resizable with other library widgets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The resizable widget is a flexible component that can be used with a wide range
+    of different elements. Throughout the examples in this chapter, we'll mostly be
+    using simple `<div>` elements so that the focus remains on the component and not
+    on the underlying HTML. We will also look at some brief examples using `<img>`
+    and `<textarea>` elements, towards the end of the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The resizable component works well with other components and is very often used
+    in conjunction with draggables. However, while you can easily make draggable components
+    resizable (think dialog), the two classes are in no way related.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing a basic resizable widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s implement the basic resizable so we can see how easy making elements
+    resizable is, when you use jQuery UI as the driving force behind your pages. In
+    a new file in your text editor add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizable1.html`. The basic widget method used with no arguments
+    for the default implementation uses the same simplified syntax as the rest of
+    the library. This requires just one line of code for the example to work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Along with the CSS framework files that we need for any resizable implementations,
+    we also use a custom stylesheet to add basic dimensions and borders to our resizable
+    `<div>`. Use the following CSS in a new file in your text editor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `resize.css` in the `css` folder. We''ve specified the dimensions
+    of our resize `<div>` in the CSS, as without them the `<div>` element will stretch
+    the width of the screen. We''ve also specified a border to clearly define it,
+    as the default implementation only adds a single resize handle to the bottom-right
+    corner of the targeted element. The following screenshot shows how our basic page
+    should look after the `<div>` element has been resized:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing a basic resizable widget](img/2209OS_12_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The files required for the resizable component are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.mouse.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.resizable.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The component automatically adds the three required elements for the drag handles.
+    Although the only visible resize handle is the one in the bottom-right corner,
+    both the bottom and right edges can be used to resize the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listing the resizable options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following table lists the configurable options that we have at our disposal
+    while working with the resizable component:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Used to… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `alsoResize` | `false` | Automatically resize specified elements in sync
+    with the resizable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `animate` | `false` | Animate the resizable element to its new size. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `animateDuration` | `slow` | Set the speed of the animation. Values can be
+    integers, specifying the number of milliseconds, or one of the string values `slow`,
+    `normal`, or `fast`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `animateEasing` | `swing` | Add easing effects to the resize animation. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `aspectRatio` | `false` | Maintain the aspect ratio of the resize element.
+    Accepts numerical custom aspect ratios in addition to Boolean values. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `autoHide` | `false` | Hide the resize handles until the resizable is hovered
+    over with the mouse pointer. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `cancel` | `'':input, option''` | Stop specified elements from being resizable.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `containment` | `false` | Constrain the resizable within the boundary of
+    the specified container element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `delay` | `0` | Set a delay in milliseconds from when the pointer is clicked
+    on a resizable handle to when the resizing begins. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disable the component at page load. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `distance` | `1` | Set the number of pixels the mouse pointer must move with
+    the mouse button held down before the resizing begins. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ghost` | `false` | Show a semi-transparent helper element while the resizing
+    is taking place. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `grid` | `false` | Snap the resize to imaginary grid lines while resizing
+    is taking place. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `handles` | `''e, se, s''` | Define which handles to use for resizing. Accepts
+    a string containing any of the following values: `n`, `ne`, `e`, `se`, `s`, `sw`,
+    `w`, `nw`, or all. The string could also be an object where the properties are
+    any of the preceding values and the values are jQuery selectors matching the elements
+    to use as handles. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `helper` | `false` | Add a class name to the helper element that is applied
+    during resizing. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `maxHeight` | `null` | Set the maximum height the resizable may be changed
+    to. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `maxWidth` | `null` | Set the maximum width the resizable may be set to.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `minHeight` | `null` | Set the minimum height the resizable may be changed
+    to. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `minWidth` | `null` | Set the minimum width the resizable may be set to.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Configuring the resize handles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Thanks to the `handles` configuration option, specifying which handles we would
+    like to add to our target element is exceptionally easy. In `resizable1.html`,
+    change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizable2.html`. When you run the example in a browser, you'll
+    see that although the component looks exactly as it did before, we can now use
+    any edge or corner to resize the `<div>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding additional handle images
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One thing you'll notice straight away is that although the element is resizable
+    along any axis, there's no visual cue to make this obvious; the component will
+    automatically add the resize stripes to the bottom-right corner, but it's up to
+    us to add the rest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are several different ways to do this. Although the method doesn't add
+    images to the other three corners, it does insert DOM elements with class names,
+    so we can easily target these with CSS and provide our own images. This is what
+    we'll do next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new page in your text editor, add the following style rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file in the `css` folder as `resizeHandles.css`. We provide our own
+    image for this example, which is a single image containing copies of the standard
+    bottom-right image flipped and reversed (this can be found in the code download).
+    We can then reference them by setting the background-position attribute in our
+    CSS style rules. Use of a single image or sprite reduces the need to cache multiple
+    images; all of the individual images we've used are actually segments from a single,
+    larger file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Chris Coyier has written a useful article, explaining how to implement sprites,
+    that can be found at [http://css-tricks.com/css-sprites/](http://css-tricks.com/css-sprites/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our selectors target the class names that are automatically added to the handle
+    elements by the control. Link to the new stylesheet in the `<head>` element of
+    `resizable2.html` and resave it as `resizable3.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new stylesheet should give our element the following appearance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding additional handle images](img/2209OS_12_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Another configuration option related to resize handles and how they are displayed
+    is `autoHide`. Let''s take a quick look at this option next. Change the configuration
+    object in `resizable3.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this version as `resizable4.html`. We've added the `autoHide` option and
+    set its value to `true` in this example. Configuring this option hides all of
+    the resize handles until the mouse pointer moves onto the resizable element. This
+    is great for a minimal intrusion of the additional DOM elements when there is
+    pictorial content inside the resizable element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining size limits
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Restricting the minimum or maximum sizes that the target element can be resized
+    to is made exceptionally easy with four configurable options. They are `maxWidth`,
+    `maxHeight`, `minWidth`, and `minHeight`. We will see in action in the next example.
+    It''s better to have some content in the container for this example, so add some
+    layout text in a `<p>` element within our resizable `<div>` in `resizable4.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Change the configuration object that we used in `resizable4.html` to as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizable5.html`. This time, the configuration object uses the
+    dimension-boundary options to specify the minimum and maximum height and width
+    that the resizable may be adjusted to. These options take simple integers as their
+    values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we can see when we run this example, the resizable now adheres to the sizes
+    we have specified, whereas in previous examples, the resizable element's minimum
+    size was the combined size of its resize handles, and it had no maximum size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So far, our resizable has been an empty `<div>` element and you may be wondering
+    how the resizable handles minimum and maximum sizes when there is content within
+    the target element. The restrictions are maintained, but we''ll need to add `overflow:
+    hidden` to the CSS. Otherwise, the content may overflow the resizable if there
+    is too much for the minimum size to handle.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, we can also use `overflow: auto` as well to add a scroll bar when
+    there is too much content, which can sometimes be the desired behavior.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resizing ghosts
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ghost elements, which are semi-transparent helper elements, are very similar
+    to the proxy element that we used when we looked at the draggables component in
+    the previous chapter. A ghost element can be enabled with the configuration of
+    just one option. Let's see how this is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the configuration object we used in `resizable5.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `resizable6.html`. All that is needed to enable a resize ghost
+    is to set the `ghost` option to `true`. The effect of the resizable ghost is very
+    subtle. It is basically a clone of the existing resizable element, but is only
+    a quarter of the opacity. This is why we've left the layout text from the previous
+    example within the resizable element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re also linking to a new stylesheet in this example, which is exactly the
+    same as `resize.css` with a background color specified:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `resizeGhosts.css` in the `css` folder. The next screenshot shows
+    how the resizable ghost will appear while it is visible when being dragged:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Resizing ghosts](img/2209OS_12_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In some versions of Internet Explorer, ghost elements may cause issues when
+    transparent PNGs are within the resizable. If you find this is the case, there
+    is a useful article available at [http://www.pixelthemestudio.ca/news-and-updates/156-fixing-that-png-image-optimization-for-ie](http://www.pixelthemestudio.ca/news-and-updates/156-fixing-that-png-image-optimization-for-ie)
+    that details how to fix these issues using TweakPNG.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The ghost element is just a helper element that has been made semitransparent.
+    If this is not suitable and further control over the appearance of the helper
+    element is required; we can use the `helper` option to specify a class name to
+    be added to the helper element, which we can then use to style it. Change the
+    configuration object in `resizable6.html`, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this revision as `resizable7.html`. We''ve simply specified the class
+    name that we''d like to be added as the value of the `helper` option. We can target
+    the new class name from a CSS file. Open `resize.css` and add the following code
+    to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the new stylesheet as `resizeHelper.css` and don''t forget to link it
+    at the top of `resizable7.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The only thing we do in this example is give the helper a simple background
+    color, which in this case is yellow. This is how it looks when the new page is
+    run and a resize is in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Resizing ghosts](img/2209OS_12_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `ghost` and `helper` options don't have to be used together; we can use
+    either one separately, but if we use the `helper` option without the `ghost` option,
+    we do not get the semi-transparent content within the resize helper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Containing the resize
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The resizable component makes it easy to ensure that a resized element is contained
+    within its parent element. This is great if we have other content on the page
+    that we don''t want moving around all over the place during a resize interaction.
+    In `resizable7.html`, change the elements on the page so that they appear as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, change the `configuration` object to use the `containment` option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizable8.html`. On the page, we've added a container element
+    for the resizable and have switched from using a `<div>` element to an image as
+    the resizable element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once again, we need some slightly different CSS for this example. In a new
+    file in your text editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `resizeContainer.css` in the `css` folder and change the `<link>`
+    in the `<head>` element of the page from `resizeHelper.css` to the new stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `containment` option allows us to specify a container for the resizable,
+    which will limit how large the resizable can be made, forcing it to stay within
+    its boundaries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We specify a jQuery selector as the value of this option. When we view the page,
+    we should see that the image cannot be resized to larger than its container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling aspect ratio
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In addition to maintaining the aspect ratio of the resizable element, we can
+    also define it manually. Let''s see what control this interaction gives us over
+    the resize. Change the configuration object used in `resizable8.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `resizable9.html`. Setting the `aspectRatio` option to `true`
+    ensures that our image will maintain its original aspect ratio. So in this example,
+    the image will always be a perfect square.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For a greater degree of control, we can instead specify the actual aspect ratio
+    that the resizable should maintain:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: By specifying the floating-point value of `0.5`, we're saying that when the
+    image is resized, the x-axis of the image should be exactly half of the y-axis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Care should be taken when deviating from the aspect ratio of any images; it
+    is wise to try to keep the element and container sizes in proportion, otherwise
+    you may find an object doesn't resize to the full extent of its container, as
+    happened in our example. If you change `aspectRatio` to `1`, you will find that
+    it resizes to the full size of our container correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resizable animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The resizable API exposes three configuration options related to animations:
+    `animate`, `animateDuration`, and `animateEasing`. By default, animations are
+    switched off in resizable implementations. However, we can easily enable them
+    to see how they enhance this component.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this example, change the markup from the previous couple of examples so
+    that the resizable element goes back to a plain `<div>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We should also switch back to the `resizeGhosts.css` stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, change the configuration object to use the following options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizable10.html`. The configuration object we use in this example
+    starts with the `ghost` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: While using animations, the resizable element is not resized until after the
+    interaction has ended, so it's useful to show the ghost as a visual cue that the
+    element will be resized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we need to do to enable animation is set the `animate` option to `true`.
+    That's it; no further configuration is required. Another option we can change
+    is the speed of the animation, which we have done in this example by setting the
+    `animateDuration` option. This accepts any of the standard values that can be
+    used with jQuery's `animate()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run this page in a browser, we should find that the `resize` div will
+    smoothly animate to its new size, once we let go of the mouse button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simultaneous resizing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can easily make several elements on the same page individually resizable
+    by passing references to them to the resizable widget method. But, in addition
+    to doing this, we can make use of the `alsoResize` property to specify additional
+    elements that are to be resized together as a group, whenever the actual resizable
+    element is resized. Let's see how.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we''ll need to reference to a new stylesheet once again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we''ll need to change the elements in `<body>` of the page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the configuration object to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `resizable11.html`. We provide a selector as the value of
+    the `alsoResize` option, in order to target the second `<div>` element. The secondary
+    element will automatically pick up the resizable attributes of the actual resizable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, if we limit the resizable to having just an `e` handle, the secondary element
+    will also only resize in this direction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The new stylesheet referenced in this example should contain the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `resizeSimultaneous.css` in the `css` folder. When we run
+    the file, we should see that the second `<div>` element is resized at the same
+    time as the first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Simultaneous resizing](img/2209OS_12_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Preventing unwanted resizes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There may be times when we'd like to make an element resizable, but it also
+    has other functionality, perhaps it listens for click events too. In this situation,
+    it may be desirable to prevent the resize unless it is definitely required, enabling
+    us to easily differentiate between clicks and true drags. We can use two options
+    to achieve this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, in `resizable10.html`, revert to the original stylesheet `resize.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also return to the simple empty resizable `<div>`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the configuration object to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this version as `resizable12.html`. The `delay` option accepts an integer
+    that represents the number of milliseconds that need to pass with the mouse button
+    held down after clicking on a resize handle before the resize will begin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've used `1000` as the value in this example that is equal to one second.
+    Try it out and you'll see that if you click on a resize handle and release the
+    mouse button too soon, the resize won't take place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Along with delaying the resize, we could also use the `distance` option instead
+    to specify that the mouse pointer must move a certain number of pixels, with the
+    button held down after clicking on a resize handle, before the resize occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the configuration object in `resizable12.html`, so that it appears as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizable13.html`. Now when the page runs, instead of having to
+    wait with the mouse button held down, the mouse pointer will need to travel `30`
+    pixels with the mouse button held down, before the resize occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both of these options present certain usability issues, especially when set
+    to `high` as in these examples. They both make it harder to resize an element
+    along more than one axis at a time. They should be used sparingly, with as low
+    values as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining resizable events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Like other components of the library, resizable defines a selection of custom
+    events, and allows us to easily execute functions when these events occur. This
+    makes the most of interactions between your visitors and the elements on your
+    pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Resizable defines the following callback options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Triggered when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `create` | The resizable is initialized |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `resize` | The resizable is in the process of being resized |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `start` | A resize interaction begins |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `stop` | A resize interaction ends |'
+  prefs: []
+  type: TYPE_TB
+- en: Hooking into these custom methods is just as easy for resizables as it has been
+    for the other components of the library we have looked at.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s explore a basic example to highlight this fact the following screenshot
+    shows how our page will look before `<div>` fades away:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Defining resizable events](img/2209OS_12_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In `resizable13.html`, change the second `<link>` to point to a new stylesheet
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `resizable14.html`. In `resize.css`, add the following selector
+    and rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizeStop.css` in the `css` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We define a function called `reportNewSize`; this function (along with all of
+    the other event handlers) is automatically passed two objects. The first is the
+    event object and the second is an object containing useful information about the
+    resizable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use the `size` property of the second object to find out what the `width`
+    and `height` the resizable has been changed to. These values are stored as variables
+    within the function. We use the JavaScript `Math.round()` function to make sure
+    that we end up with an integer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create a new `<div>` element and give it a class name for styling. We
+    also set the text of the new element to display the `width` and `height` variables
+    along with a brief message. We also set the width of the new element to match
+    the resizable. Once created, we append the message to the page and then fade it
+    in with jQuery's `fadeIn()` method. We then use the `delay()` method to pause
+    for `2` seconds before fading the message out again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking at the resizable methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This component comes with the four basic methods found with all of the interaction
+    components of the library, namely the `destroy`, `disable`, `enable`, and `option`
+    methods. Unlike most of the other components, the resizable component has no custom
+    methods unique to it. For clarification on these basic API methods, see the API
+    introduction section in [Chapter 1](ch01.html "Chapter 1. Introducing jQuery UI"),
+    *Introducing jQuery UI*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating resizable tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In our final resizable example, let''s look at combining this component with
+    one of the widgets that we looked at earlier. This will help us see how compatible
+    it is with the rest of the library. We''ll be working with the tabs component
+    in the following example. The following screenshot shows the page we will end
+    up with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating resizable tabs](img/2209OS_12_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In your text editor, add the following `CSS` style to a new file, and save
+    it as `resizeTabs.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, add the following code to a new file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `resizable15.html`. Making the tabs widget resizable is extremely
+    easy and only requires calling the resizable method on the tab's underlying `<ul>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're using a single configuration object in this example. The tabs component
+    can be initialized without the need for any configuration. Apart from setting
+    the `autoHide` option for the resizable in our configuration object to `true`,
+    we also define `minWidth` and `minHeight` values for usability purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we covered the resizable. This is a component that allows us
+    to easily resize any on-screen element. It dynamically adds resize handles to
+    the specified sides of the target element and handles all of the tricky DHTML
+    resizing for us, neatly encapsulating the behavior into a compact, easy-to-use
+    class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then looked at some of the configurable options that we can use with the
+    widget, such as how to specify which handles to add to the resizable, and how
+    the minimum and maximum sizes of the element can be limited.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We briefly looked at how to maintain an image's aspect ratio, or how to work
+    with custom ratios, while it is being resized. We also explored how to use ghosts,
+    helpers, and animations to improve the usability and appearance of the resizable
+    component.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also looked at the event model exposed by the component's API and how we
+    can react to elements being resized in an easy and effective way. Our final example
+    explored resizable's compatibility with other components of the library. In the
+    next chapter, we'll look at how you can select, filter, and sort objects with
+    the Selectable and Sortable widgets.
+  prefs: []
+  type: TYPE_NORMAL

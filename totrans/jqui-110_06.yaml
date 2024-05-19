@@ -1,0 +1,1459 @@
+- en: Chapter 6. The Slider and Progressbar Widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The slider component allows us to implement an engaging and easy-to-use widget
+    that our visitors should find attractive and intuitive to use. Its basic function
+    is simple. The slider track represents a series of values that are selected by
+    dragging the handle along the track.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The progressbar widget is used to show the percentage complete for any arbitrary
+    process. It's a simple and easy-to-use component with an extremely compact API
+    that provides excellent visual feedback to visitors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default slider implementation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom styling for sliders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Changing the configuration options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a vertical slider
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting minimum, maximum, and default values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enabling multiple handles and ranges
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The slider's built-in event callbacks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Slider methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The default implementation for a progressbar
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The configurable options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The event API exposed by the widget
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The single unique method exposed by the progressbar
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some real-world examples of a progressbar
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Before we roll up our sleeves and begin creating a slider, let''s look at the
+    different elements that it is made from. The following diagram shows a typical
+    slider widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Slider and Progressbar Widgets](img/2209OS_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It's a simple widget, as you can see, comprised of just two main elements—the
+    **slider** **handle** (sometimes called the thumb), and the **slider track**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing the slider widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Creating the default, basic slider takes no more code than any of the other
+    widgets that we have looked at so far. The underlying HTML markup required is
+    also minimal. Let''s create a basic one now. In a new page in your text editor,
+    add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider1.html` and view it in your browser. On the page is
+    a simple container element; this will be transformed by the widget into the slider
+    track. In `<script>` within the `<head>` section of the code, we select this element
+    and call the `slider` method on it. The `<a>` element that is used for the slider
+    handle will be automatically created by the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we run the `slider1.html` file in a browser, we should see something similar
+    to the previous diagram. We''ve used several library resources for the default
+    implementation, including the following files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery.ui.all.css`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.mouse.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.slider.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The default behavior of a basic slider is simple but effective. The thumb can
+    be moved horizontally along any pixel of the track on the x axis by dragging the
+    thumb with the mouse pointer, or using the left/down or right/up arrow keys on
+    the keyboard. Clicking anywhere on the track with the left button will instantly
+    move the handle to that position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom styling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Because of its simplicity, it is easy to create a custom theme for the slider
+    widget. Using ThemeRoller is one method of theming: we can simply download a new
+    theme, then put it into the theme folder and change the reference within our code
+    to the name of the new theme. Like all other widgets, the slider will be restyled
+    to use the new theme.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To completely change the look and feel of the widget though, we can easily
+    create our own theme file. In your text editor create the following stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `sliderTheme.css` in the `css` directory. In `slider1.html`,
+    add a link to the stylesheet in the `<head>` of the page (after the jQuery UI
+    stylesheet), and wrap the underlying slider element in a new container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `slider2.html`. With a minimum of CSS and a few images (these
+    can be found in the code download), we can easily but considerably modify the
+    widget''s appearance, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Custom styling](img/2209OS_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Let us turn our attention to how we can configure the slider widget, using some
+    of its options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring a basic slider
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Additional functionality, such as vertical sliders, multiple handles, and stepping
+    can also be configured using an object literal, passed into the widget method
+    when the slider is initialized. The options that can be used in conjunction with
+    the slider widget are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `animate` | `false` | Enables a smooth animation of the slider handle when
+    the track is clicked. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disables the widget when it is initialized. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `max` | `100` | Sets the maximum value of the slider. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `min` | `0` | Sets the minimum value of the slider. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `orientation` | `auto` | Sets the axis along which the slider thumb is moved.
+    This can accept the strings vertical or horizontal. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `range` | `false` | Creates a styleable range of elements between them. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `step` | `1` | Sets the distance of the step that the handle will take along
+    the track. The max value must be equally divisible by the supplied number. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value` | `0` | Sets the value of the slider thumb when the widget is initialized.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `values` | `null` | Accepts an array of values. Each supplied integer will
+    become the value of a slider handle. |'
+  prefs: []
+  type: TYPE_TB
+- en: Creating a vertical slider
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To make a vertical slider, all we need to do is set the `orientation` option
+    to `vertical`; the widget will do the rest for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `slider1.html`, change the final `<script>` element so that it appears as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `slider3.html`. We just need to set this single option to
+    put the slider into `vertical` mode. When we launch the page, we see that the
+    slider operates exactly as it did before, except that it now moves along the y
+    axis, as in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a vertical slider](img/2209OS_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The widget defaults to `100px` in height, unless we provide our own CSS rule
+    for `.ui-slider-vertical` in the stylesheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the maximum and minimum values
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default, the minimum value of the slider is `0` and the maximum value is
+    `100`, but we can change these values easily using the `min` and `max` options.
+    Change the configuration object in `slider3.html` to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider4.html`. We simply specify the integers that we'd like
+    to set as the start and end values. The `value` and `values` methods are exclusive
+    to the slider, and are used to get or set the value of single or multiple handles.
+    As the `value` option is set to `0` by default, when we run the `slider4.html`
+    file, the slider thumb will start in the middle of the track, half way between
+    `-50` and `50`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the slider handle, in this example, is at the minimum value, the `value`
+    method will return to `-50`, as we would expect. To prove this, we could adapt
+    `slider4.html` to show this value in an alert. Add the following code immediately
+    below the slider configuration object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the markup within `<body>`, change it as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we now try previewing changes in a browser, you will get an alert that will
+    appear when clicking on the button, once you've moved the handle to the far left
+    of the slider. We will explore the `value` option later in the *Using the slider
+    methods* section of this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stepping with the slider widget
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `step` option refers to the number and position of steps along the track
+    that the slider''s handle jumps, when moving from the minimum to the maximum positions
+    on the track. The best way to understand how this option works is to see it in
+    action, so change the configuration object in `slider4.html` to the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider5.html`. We set the `step` option to `25` in this example.
+    We haven't set the `min` or `max` options, so they will take the default values
+    of `0` and `100` respectively. Hence, by setting `step` to `25`, we're saying
+    that each step along the track should be a quarter of the track's length, because
+    `100` (the maximum) divided by `25` (the step value) is `4`. The handle will therefore
+    take four steps along the track, from beginning to end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `max` value of the slider should be equally divisible by whatever value
+    we set as the `step` option; other than that, we're free to use whatever value
+    we wish. The `step` option is useful to confine the value selected by the visitors
+    to one of a set of predefined values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we were to set the value of the `step` option, in this example, to `27` instead
+    of `25`, the slider would still work, but the points along the track that the
+    handle stepped to would not be equal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating the slider widget
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The slider widget comes with a built-in animation that moves the slider handle
+    smoothly to a new position, whenever the slider track is clicked. This animation
+    is disabled by default, but we can easily enable it by setting the `animate` option
+    to `true`. Change the configuration object in `slider5.html`, so that it is as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider6.html`. This simple change can give a slider a more
+    polished feel; instead of the slider handle just moving instantly to a new position
+    when the track is clicked, it smoothly slides there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `step` option is configured to a value other than `1`, and the `animate`
+    option is enabled, the thumb will slide to the nearest step mark on the track.
+    This may mean that the slider thumb moves past the point that was clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the slider's value
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `value` option, when set to `true` in a configuration object, determines
+    the starting value for the slider thumb. Depending on what we want the slider
+    to represent, the starting value of the handle may not be `0`. If we wanted to
+    start at half-way across the track instead of at the beginning, we can use the
+    following configuration object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider7.html`. When the file is loaded in a browser, we see
+    that the handle starts halfway along the track instead of at the beginning, exactly
+    as it did when we set the `min` and `max` options earlier. We can also set this
+    option after initialization, to programmatically set a new value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using multiple handles
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'I mentioned earlier that a slider may have multiple handles; additional handles
+    can be added using the `values` option. It accepts an array where each item in
+    the array is a starting point for a handle. We can specify as many items as we
+    wish, up to the `max` value (taking step into account):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider8.html`. This is all we need to do; we don't need to
+    supply any additional underlying markup. The widget has created both new handles
+    for us, and as you'll see, they both function exactly as a standard single handle
+    does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows our dual-handled slider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using multiple handles](img/2209OS_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We could make use of a double-handled slider to create a time window for a schedule.
+    A good example would be on a travel booking form. Normally you would enter dates
+    manually, which could be a bit clunky.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, you could use a double-handled slider to select dates; the user would
+    simply slide each handle to the left or right to change the date window. We can
+    then use the method described in *Setting the minimum and maximum values* section
+    earlier in this chapter to obtain the position values of each slider's handle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When a slider has two or more handles, each handle may move past the other handle(s)
+    without issue; you may want to consider setting a `range`, if you need to prevent
+    this from happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with the range option
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When working with multiple handles, we can set the `range` option to `true`.
+    This adds a styled range element between two handles. In `slider8.html`, change
+    the configuration object so that it is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `slider9.html`. When the page loads, we should see that a
+    styled `<div>` element now connects our two handles, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the range option](img/2209OS_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: When using two handles and a range, the two handles will not be able to cross
+    each other on the track.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A maximum of two handles can be used in conjunction with the `range` option,
+    but we can also enable it with a single handle change the configuration object
+    in the previous example to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider10.html`. Along with the Boolean value `true`, we can
+    also supply one of the string values `min` or `max`, but only when a single handle
+    is in use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we set it to `min`, so when we move the slider handle along
+    the track, the range element will stretch from the start of the track to the slider
+    handle. If we set the option to `max`, the range will stretch from the handle
+    to the end of the track.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you want to capture the value of where the handle is on the scale, we can
+    do this by using the `slide` event handler. In this instance, we only need to
+    get one value (as we only have one handle), but the same principle applies if
+    a second handle had been configured.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `slider4.html`, add the following function in just above our slider''s configuration
+    object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to then modify the configuration object, to call our `slideValues`
+    event handler at the appropriate time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So we can display the results on screen, add this in below the existing markup
+    in the `<body>` section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can then do as we wish with the value; if you preview the results, you will
+    see the value on the right change; the left value will always remain at `0`, as
+    this is the default value for the `min` option in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the slider's event API
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In addition to the options we saw earlier, there are another five options used
+    to define functions that are executed at different times during a slider interaction.
+    Any callback functions that we use are automatically passed the standard event
+    object, and an object representing the slider. The following table lists the event
+    options we can use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Fired when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `change` | The slider''s handle stops moving and its value has changed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `create` | The slider is created |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `slide` | The slider''s handle moves. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `start` | The slider''s handle starts moving. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `stop` | The slider''s handle stops moving. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Hooking into these built-in callback functions is easy. Let''s put a basic
+    example together to see. Change the configuration object in `slider10.html` so
+    that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider11.html`. We use two of the callback options in this
+    example—`start` and `change`. In the `start` function, we select the tooltip element
+    if it exists, and fade it out with jQuery's `fadeOut()` method. Once hidden from
+    view, it is removed from the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `change` function will be executed each time the value of the slider handle
+    changes; when the function is called, we create the tool tip and append it to
+    the slider. We position it so that it appears above the center of the slider handle
+    and give it some of the framework class names in order to style it with the theme
+    in use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In several places we use the second object passed to the callback function,
+    the prepared `ui` object that contains useful information from the slider. In
+    this example, we use the `value` option of the object to obtain the new value
+    of the slider handle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also need a very small custom stylesheet for this example. In your text
+    editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `sliderTheme2.css` in the `css` folder and add a link to
+    it from the `<head>` of `slider11.html`. When displayed, our tool tip should appear
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the slider''s event API](img/2209OS_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When all of the event options are used together, the events will be fired in
+    the following order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`create`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`start`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`slide`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`stop`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`change`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `slide` callback can be quite an intensive event as it is fired on every
+    mouse movewhile the handle is selected, but it can also be used to prevent a slide
+    in certain situations by returning `false` from the callback function. When using
+    the `stop` and `change` callbacks together, the `change` callback may override
+    the `stop` callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with all library components each of these events can also be used with the
+    jQuery's `on()` method by prefixing the word `slider` to the event name, for example,
+    `sliderstart`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using slider methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The slider is intuitive, and like the other components in the library it comes
+    with a range of methods that are used to programmatically control the widget after
+    it has been initialized. The methods specific to the slider are shown in the following
+    table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `value` | Sets a single slider handle to a new value. This will move the
+    handle to the new position on the track automatically. This method accepts a single
+    argument which is an integer representing the new value. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `values` | Sets the specified handle to move to a new value when multiple
+    handles are in use. This method is the same as the value method, except that it
+    takes two arguments—the index number of the handle followed by the new value.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: The `destroy`, `disable`, `enable`, `option`, and `widget` methods are common
+    to all components, and work in the same way with a slider that we would expect
+    them to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we saw earlier in this chapter, the `value` and `values` methods are exclusive
+    to the slider, and can be used to get or set the value of single or multiple handles.
+    Of course, we can also do this using the `option` method, so these two methods
+    are merely shortcuts to cater for common implementation requirements. Let's take
+    a look at them in action. First of all let's see how the `value` method can be
+    used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `slider11.html`, remove the `<link>` to `sliderTheme2.css` and add a new
+    `<button>` element to the page, directly after the slider container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, change the final `<script>` element so that it is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider12.html`. We add a click handler for our new `<button>`;
+    whenever it is clicked, this method will first determine what the maximum value
+    for the slider is, by setting a variable to the result of the `option` method,
+    specifying `max` as the option we'd like to get. Once we have the maximum value,
+    we then call the `value` method, passing in the variable that holds the maximum
+    value as the second argument; our variable will be used as the new value. Whenever
+    the button is clicked, the slider handle will instantly move to the end of the
+    track.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Using value as an option or method**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a number of examples throughout this chapter, we've made reference to `value`
+    (or `values`) as an option or method. This can be a little confusing; think of
+    `value's` method as being a shortcut for using the value option as a getter in
+    your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with multiple handles is just as easy but involves a slightly different
+    approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remove the `setMax` button in `slider12.html` and add the following two buttons
+    directly after the slider element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now change the final `<script>` element at the end of the `<head>` to the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider13.html`. To trigger multiple handles, we specify the
+    values of two handles in our configuration object. When either of the two `<button>`
+    elements on the page are clicked, we work out whether **Preset 1** or **Preset
+    2** was clicked and then set the handles to either low values or high values,
+    depending on which button was clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can also use the array notation method for setting the values in a slider;
+    this will set the same value for all the handles, irrespective of how many are
+    present.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `values` method takes two arguments. The first argument is the index number
+    of the handle we''d like to change, and the second argument is the value that
+    we''d like the handle to be set to. The following screenshot shows how the page
+    should appear after the second button is clicked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using slider methods](img/2209OS_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Practical uses
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: An HTML5 element that may lend itself particularly well to implementations of
+    the slider widget is the `<audio>` element. This element will automatically add
+    controls that enable the visitor to play, pause, and adjust the volume of the
+    media being played.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default controls, however, cannot be styled; if we wish to change their
+    appearance, we need to create our own controls. A slider widget, of course, makes
+    an excellent substitution for the default volume control. Let's take a look at
+    how you can add one, as a basis that you can take further in your own projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create the following new code in your text editor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `slider14.html`. We also need to add a couple of styles to
+    tweak the display. In a new page in your text editor, add the following, and save
+    it as `sliderTheme3.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Don''t forget to add a link to `sliderTheme3.css` from your main page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: On the `slider14.html` page, we have the `<audio>` tag that has its `src` attribute
+    set to an audio clip available from the Internet Archive. We also have the empty
+    container element for our volume control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This example uses one of the music soundtrack files created by Jan Morgenstern
+    for the Big Bunny Movie; you can download it, and others in the collection at
+    [https://archive.org/details/JanMorgenstern-BigBuckBunny](https://archive.org/details/JanMorgenstern-BigBuckBunny).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the script, we first select the `<audio>` element using the standard jQuery
+    syntax and retrieve the actual DOM element from the jQuery object, so that we
+    can call methods from the `<audio>` API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we define the configuration object for our slider and set the initial
+    minimum and maximum values. We then add a handler for the `change` event that
+    is used to change the volume of the currently playing audio track, using the `volume`
+    property method. Whenever the slider is changed, we get a new slider value and
+    convert it to the required format for the `volume` property, by dividing the slider
+    value by `10`. Once our variables are defined, we set the volume of the audio
+    clip and begin playing the clip immediately with the `play()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we run this example in a supporting browser, we can pause or play the
+    audio clip; if the slider handle is moved, the volume of the clip should increase
+    or decrease as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Practical uses](img/2209OS_06_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a color slider
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A fun implementation of the slider widget, which can be very useful in certain
+    applications, is the color slider. Let''s put what we''ve learned about this widget
+    into practice to produce a basic color-choosing tool. The following screenshot
+    shows the page that we''ll be making:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a color slider](img/2209OS_06_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In your text editor, alter the `<body>` markup in `slider1.html` to the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s now add in the `script` functionality for our demo, so go ahead and
+    remove the contents of the last `<script>` element, and add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `slider15.html`. The page itself is simple enough. We've got
+    some elements used primarily for displaying the different components of the color
+    slider, as well as the individual container elements that will be transformed
+    into slider widgets. We use three sliders for our color chooser, one for each
+    RGB channel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll need some CSS as well to complete the overall appearance of our widget.
+    In a new page in your text editor, create the following stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `colorSliderTheme.css` in the `css` folder; don''t forget
+    to add a link to this in your main file immediately after the call to the jQuery
+    UI stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: In our code, we give the container and color box elements class names from the
+    CSS framework, so that we can take advantage of effects such as the rounded corners,
+    so that we can cut down on the amount of CSS we need to write ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Turning our attention to the JavaScript code, we first set the configuration
+    object. As RGB color values range from `0` to `255`, we set the `max` option to
+    `255` and the `value` option to `255` as well, so that the widget handles start
+    in the correct location (the color box will have a white background on page load).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `slide` callback is where the action happens. Every time a handle is moved,
+    we update each of the `r`, `g`, and `b` variables, by using the `value` method,
+    and then construct a new RGB string from the values of our variables. This is
+    necessary as we can't pass the variables directly into jQuery's `css()` method.
+    We also update the value in the `<input>` field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run the example, we should find that everything works as expected. As
+    soon as we start moving any of the slider handles, the color box begins to change
+    color and the `<input>` updates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The slide event is fired on every mouse move as soon as the handle is selected;
+    this is a potentially intensive event that may cause issues in older browsers
+    or on slow computers. Care should therefore be taken when used in a production
+    environment to keep any unnecessary actions in the event handler to a minimum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing the progressbar widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The widget is made up of just two nested `<div>` elements—an outer `<div>`
+    container and an inner `<div>` container, which is used to highlight the current
+    progress. The following diagram shows a progressbar that is 50 percent complete:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing the progressbar widget](img/2209OS_06_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s take a look at the most basic progressbar implementation. In a new file
+    in your text editor, create the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `progressbar1.html` in the `jqueryui` project folder. With
+    no configuration, the progressbar is, of course, empty. Our example should appear
+    like the first screenshot but without any progress displayed (the container is
+    empty).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The progress bar depends on the following components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery.ui.all.css`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery-ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery-ui.progressbar.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All we need on the page is a simple container element. In this case we've used
+    a `<div>` element, but other block-level elements, such as a `<p>` for example,
+    can also be used. The widget will add a nested `<div>` element to the specified
+    container element at initialization that represents the value of the progressbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This widget, like some of the other widgets, such as the accordion, will naturally
+    fill the width of its container. Other widgets that also work in a similar way
+    are tabs, accordion, slider, and menu—each of these equally need some form of
+    container to restrict their size on screen. Both the container and the inner `<div>`
+    element are given a series of attributes and class names by the component. The
+    class names pick up styling from the `theme` file in use, and the component is
+    fully ThemeRoller-ready. Being ThemeRoller-ready means that your chosen theme
+    can easily be changed with another jQuery ThemeRoller theme, and that widgets
+    will still function without any changes required to styling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The additional attributes added to the widget are ARIA compliant, making the
+    widget fully accessible to visitors using assisted technologies. **ARIA** (**Accessible
+    Rich Internet Applications**) defines ways of making web content more accessible
+    to those with assistive technologies such as screen the readers. All jQuery widgets
+    have varying levels of support for ARIA, including a progressbar; this is provided
+    through the use of additional tags that appear in your code, such as these (highlighted
+    in the following code):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: These help translate code into content that assistive technologies will understand;
+    without them, the code is effectively hidden, which will affect what the end user
+    will see or hear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listing the progressbar's options
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The progressbar has three configuration options at the time of writing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default Value | Usage |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disable the widget |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `Max` | `100` | The maximum value of the progressbar |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `Value` | `0` | Set the value (in percent) of the widget |'
+  prefs: []
+  type: TYPE_TB
+- en: Setting the progressbar's value
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Change the final `<script>` element in `progressbar1.html`, so that it appears
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `progressbar2.html`. The `value` option takes an integer and
+    sets the width of the inner `<div>` of the widget to the corresponding percentage.
+    This change will make the widget appear as it did in the first screenshot of this
+    chapter, with the progressbar half-filled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The progressbar's event API
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The progressbar exposes three custom events as shown in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Fired when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `create` | The widget is initialized |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `change` | The widget''s value changes |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `complete` | The value of the widget reaches 100 percent |'
+  prefs: []
+  type: TYPE_TB
+- en: As with the other widgets, we can supply an anonymous callback function as the
+    value of these events in a configuration object, and the component will automatically
+    call the function for us, each time the event fires.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see this event in action add the following `<button>` to the page in `progressbar2.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the final `<script>` block to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `progressbar3.html`. We also need to add some styling for
+    our progressbar, so add the following to a new file, saving it as `progressIncrease.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Don''t forget to add a link to the new stylesheet from the `<head>` of our
+    page (after the link to the standard jQuery UI stylesheet):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: In our example, we first cache the selector for the progressbar, then define
+    an event handler for the `change` event. Within this callback function, we first
+    obtain the current value of the progressbar, which will correspond to the value
+    after its last update. We can select the progressbar using `$(this)`when inside
+    the event handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Provided the value is less than or equal to 100 (percent), we check whether
+    there is already an element with an `id` of `value` on the page. If the element
+    doesn't exist (that is, its value has no length), we create a new `<span>` element
+    and set its text to the current value. We also give it an `id` attribute and position
+    it, so that it appears inside the progressbar. If the element already exists,
+    we just update its text to the new value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Use of self-closing shortcut tag selectors**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may have seen the use of `$("<span />")` in the code; this is a shortcut
+    that jQuery uses to produce the full version of the tags; in this instance, it
+    would encapsulate any content it is passed within `<span>`…`</span>` tags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also add a click-handler for the button that we added to the page. Whenever
+    the button is clicked, we first get the current value of the progressbar by using
+    the `option` method in `getter` mode. We then add `10` to the value before using
+    the `option` method in `setter` mode to increase the value of the inner `<div>`
+    by `10` percent. The value is added to a `<span>` element to indicate the progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the result of clicking on the button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The progressbar''s event API](img/2209OS_06_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In this example, we set the value of the progressbar manually whenever the **Increase
+    by 10%** button is clicked; we use the standard `option` method, common to all
+    UI library components, to retrieve information about the current state of the
+    progressbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't forget that like the other library components, this event can be used
+    with jQuery's `on()` method by prefixing the name of the widget onto the event
+    name, for example, `progressbarchange`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using progressbar methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to the common API methods that are exposed by all library components,
+    such as `destroy`, `disable`, `enable`, `widget`, and `option`, the slider API
+    also exposes the `value` method, which is a shortcut for using the `option` method
+    to set the value of the progressbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can do exactly the same as we did in the last example, but with less code,
+    using the `value` method. Change the final `<script>` element in `progressbar3.html`,
+    so that it is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `progressbar4.html`. We lose the configuration object in this
+    example, as it isn't required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The logic for increasing the value using the `value` method has been moved into
+    the click handler for the `<button>` element. Within the event handler, we get
+    the value of `currentVal`, then add `10` to it, and assign that to `newVal`. The
+    `value` attribute of the progressbar widget is updated with the new value; a check
+    is performed to see if the percentage count text exists. If it doesn't (that is,
+    the length of `#value` is zero), then we add a new instance, with the updated
+    figure and display this on screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will notice though, with the move of the update code into the event handler,
+    that this has allowed us to perform the same action as in the previous example,
+    but in a more concise format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding indeterminate support
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So far, we've looked at how you can control the percentage value that a progressbar
+    should use, when updating its results. However, there may be instances where this
+    isn't always possible—to allow for this, an indeterminate option can be used.
+    Added in jQuery UI 1.10, this allows for those instances where the value can't
+    be updated, as the final value is not known.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at a couple of examples to compare the difference between
+    setting a known value and an indeterminate one. In `progressbar4.html`, change
+    the `<script>` element to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the `<body>` element of the code, alter the HTML to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `progressbar5.html`. The following screenshot shows the results
+    of clicking on the **Indeterminate** button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding indeterminate support](img/2209OS_06_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Although it's hard to see it in action in print, the previous example shows
+    a continually moving progressbar at 100 percent; clicking on the **Indeterminate**
+    button sets the value attribute to `false`, which tells the progressbar to assume
+    100 percent as the value. The automatic setting to 100 percent in this instance
+    is an indicator that we are making progress. As we are unable to get an accurate
+    figure for how much progress has been made at each point, the progressbar widget
+    automatically assumes that the value is 100 percent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In comparison, if we know the value that the progressbar should use, we can
+    set that value instead. Clicking on the **Random Value - Determinate** button
+    shows the effect of setting such a value as shown in the following screenshot,
+    in a similar fashion to previous examples throughout this chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding indeterminate support](img/2209OS_06_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Responding to user interaction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'At its most basic level, we can manually update the progressbar in response
+    to user interaction. For example, we could specify a wizard-style form, which
+    has several steps to complete. In this example, we''ll create a form as shown
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Responding to user interaction](img/2209OS_06_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'During each step, we can increment the progressbar manually to let the user
+    know how far through the process they are. In `progressbar5.html`, replace the
+    progressbar container and buttons with the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `progressbar6.html`. In the `<head>` section, we add a link
+    to the framework theme files, as we have done with the other examples in this
+    chapter, and will need to add a link to a custom stylesheet that we''ll add in
+    a moment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `<body>` element of the page contains a few layout elements and some text
+    nodes, but the main elements are the container for the progressbar and the `<form>`.
+    The `<form>` section is separated into several different sections using the `<div>`
+    and `<fieldset>` elements. The reason for this is that we can hide the parts of
+    the form to make it appear as if it spans several pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've added a paragraph and a `<label>` parameter next to the progressbar. We'll
+    position these so that they appear inside the widget. The paragraph contains a
+    simple text string. The label will be used to show the current progress value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The outer container is given several class names; the first is that we can apply
+    some custom styling to the element, but the next two are to target different features
+    of the jQuery UI CSS framework. The `ui-helper-clearfix` class is used to automatically
+    clear floated elements and is a great way of reducing the clutter of additional
+    and unnecessary clearing of the `<div>` elements. Don't forget to make explicit
+    use of this and other framework classes when creating your own widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We covered some of the core CSS classes back in [Chapter 2](ch02.html "Chapter 2. The
+    CSS Framework and Other Utilities"), *The CSS Framework and Other Utilities*;
+    more details of the CSS framework API are available at [http://learn.jquery.com/jquery-ui/theming/api/](http://learn.jquery.com/jquery-ui/theming/api/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `ui-corner-all` class is used to give the container element (as well as
+    the progressbar itself, which has them automatically, and our `<fieldset>` elements)
+    rounded corners, using several proprietary style rules. These are now supported
+    by most modern browsers. We also have a **Next** button to move forward through
+    each panel, and a **Back** button that is disabled by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We use another class from the CSS framework within the form. Several panels
+    need to be hidden when the page first loads; we can therefore make use of the
+    `ui-helper-hidden` class to ensure that they are set to `display: none`. When
+    we want to show them, all we have to do is remove this class name.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let''s add the JavaScript. Change the final `<script>` element at the bottom
+    of the page, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: We first cache a selector for the progressbar and define our configuration object,
+    making use of the `change` event to specify an anonymous callback function. Each
+    time the event is fired we'll grab the current value of the progressbar using
+    the `value` method, and set it as the text of the `<label>` parameter directly
+    after the progressbar element. The event is fired after the change takes place,
+    so the value we obtain will always be the new value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the progressbar is initialized, we add a click handler for the buttons
+    after the form. Within this handler function, we first disable both of the buttons
+    to prevent the form from breaking if a `<button>` is repeatedly clicked. We then
+    use an `if` statement to run the slightly different code branches, depending on
+    the button that was clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the **Next** button was clicked, we increase the value of the progressbar
+    by `50` percent by setting the `value` option to the current value plus `50` percent.
+    We then fade out the currently visible panel and fade in the next panel. We use
+    a callback function as an argument to the `fadeIn()` method, which will be executed
+    once the animation ends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this function, we re-enable the **Back** button (as it was **Next** that
+    was clicked, it is not possible for the first panel to be visible, and so this
+    button should be enabled) and determine whether to enable the **Next** button,
+    which can be done, provided the last panel is not visible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second branch of the outer `if` statement deals with the **Back** button
+    being clicked. In this case, we reduce the progressbar by `50` percent, enable
+    the **Next** button, and check whether the **Back** button should be enabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is now all of the JavaScript that we''ll need. All we have to do now is
+    add some basic CSS to lay the example out; in a new file in your text editor add
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `progressTheme.css` in the `css` directory. We should now have
+    a working page with a wired-up progressbar. When we run the page, we should find
+    that we can navigate through each panel of the form, and the progressbar will
+    update itself accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're still relying on user interaction to set the value of the progressbar
+    in this example, which is driven by the visitor navigating through each of the
+    panels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing rich uploads with a progressbar
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Instead of relying on user interaction to increase the value of the progressbar
+    and therefore the completion of the specified task, we can instead rely on the
+    system to update it, as long as something is available that can be used to update
+    it accurately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our final progressbar example, we can incorporate the HTML5 file API, in
+    order to upload a file asynchronously, and can use the `onprogress` event to update
+    the progressbar, while the file is uploading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At this point, you may like to obtain a copy of the code download that accompanies
+    this book, so that you can work through the code at the same time as you study
+    the example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This example will only work correctly using a full web server with PHP installed
+    and configured. We won't be looking at the server-side part of the upload process
+    in this example; we're not interested in what happens to the file once it's been
+    uploaded, only in updating the progressbar based on feedback received from the
+    system, while it is uploading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the `<body>` in `progressbar6.html`, so that it contains the following
+    elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'On the page, we have an `<input>` element of the `file` type, followed by the
+    container for the progressbar as usual. Next, let''s add the script; change the
+    final `<script>` element at the end of `<head>` to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `progressbar7.html`. Add the following code to a new document,
+    and save it as `uploads.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, add the following immediately below the links to jQuery UI in the
+    `<head>` element of your document:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: First of all, in `progressbar7.html` we perform a check to confirm if the browser
+    supports the File API; if it can, then we instigate an event handler that fires
+    as soon as the `fileselect` button is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the change handler, we get details of the files selected and save them
+    to an array; we then call out to the `ParseFile()` function (in `uploads.js`)
+    to first initiate the output messages, then to load and read a copy of the image
+    using `FileReader()`, and output a copy of the image to screen. At the same time,
+    we display details of the image name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving on to `uploads.js`, we then shell out to the `UploadFile` function, which
+    is where the real magic happens. We begin by initiating an instance of the progressbar,
+    give it the `progress` ID, and using a `<div>` element as its container. The code
+    then sets up an instance of `XMLHttpRequest()` and opens a `POST` connection in
+    order to upload the file. In this instance, the file is actually only uploaded
+    to a test folder on the server (or in this case, your PC), called uploads; it's
+    at this point where you would create an upload script that would redirect the
+    file to the appropriate location on the remote server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each time the `XMLHttpRequest` parameter is updated, it fires the `onprogress`
+    event handler to update the progressbar; we calculate the difference between the
+    total file size and the uploaded content, then convert it to a percentage and
+    use this to update the progressbar. Once the upload is completed, we fire the
+    `onload()` event handler to ensure it shows 100 percent completion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also need a bit of CSS for this example; in a new text file add the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: This file can be saved in the `css` folder as `uploads.css`. Mostly the styles
+    just position the various elements and set the width of the progressbar. We also
+    don't need the link to `progressTheme.css`, so this can be removed as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run this file, we should see that once a file has been selected, it
+    will automatically begin to upload, and the progressbar will begin to fill up.
+    If testing locally, it will be pretty quick, so it's best tested with reasonably
+    large files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the page once the upload has completed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing rich uploads with a progressbar](img/2209OS_06_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we've looked at two interface widgets that can both provide
+    some form of visual feedback, either as result of an operation, or to set a particular
+    value. We saw how quickly and easily it can put a slider widget on the page, and
+    that it requires minimal underlying markup and just a single line of code to initialize.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We explored the different options that we can set, to control how the slider
+    behaves and how it is configured once it's initialized, while providing callbacks
+    that can be used to execute code at important times during an interaction. We
+    also covered the range of methods that can be used to programmatically interact
+    with the slider, including methods for setting the value of the handle(s), or
+    getting and setting configuration options after initialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also looked at the progressbar widget with a compact API that provides essential
+    visitor feedback when processes are in progress. We then looked into the various
+    options that can be used to configure the widget, prior to initialization, or
+    once the widget is in use. We also examined the methods available for working
+    with the progressbar widget, to see how we can easily react to changes in progress,
+    or once the widget has completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We also looked at how the progressbar includes support for an indeterminate
+    progress indicator, for use when the current status of the process cannot be accurately
+    determined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will look at the datepicker widget, which has the biggest,
+    most feature-packed API of any widget in the library and includes full internationalization.
+  prefs: []
+  type: TYPE_NORMAL

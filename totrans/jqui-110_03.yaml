@@ -1,0 +1,1207 @@
+- en: Chapter 3. Using the Tabs Widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we've been formally introduced to the jQuery UI library, the CSS framework,
+    and some of the utilities, we can move on to begin looking at the individual components
+    included in the library. Over the next seven chapters, we'll be looking at the
+    widgets. These are a set of visually engaging, highly configurable user interface
+    widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The UI tabs widget is used to toggle visibility across a set of different elements,
+    with each element containing content that can be accessed by clicking on its tab
+    heading. Each panel of content has its own tab. The tab headings are usually displayed
+    across the top of the widget, although it is possible to reposition them so that
+    they appear along the bottom of the widget instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The tabs are structured so that they line up next to each other horizontally,
+    whereas the content sections are all set to `display: none` except for the active
+    panel. Clicking a tab will highlight the tab and show its associated content panel,
+    while ensuring all of the other content panels are hidden. Only one content panel
+    can be open at a time. The tabs can be configured so that no content panels are
+    open.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will look at the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default implementation of the widget
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the CSS framework targets tab widgets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply custom styles to a set of tabs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Configuring tabs using their options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Built-in transition effects for content panel changes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling tabs using their methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom events defined by tabs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: AJAX tabs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot is labeled with the different elements that a set
+    of jQuery UI tabs consists of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the Tabs Widget](img/2209OS_03_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Implementing a tab widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The structure of the underlying HTML elements on which tabs are based is fairly
+    rigid, and widgets require a certain number of elements for them to work. The
+    tabs must be created from a list element (ordered or unordered) and each list
+    item must contain an `<a>` element. Each link will need to have a corresponding
+    element with a specified `id` that is associated with the `href` attribute of
+    the link. We'll clarify the exact structure of these elements after the first
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new file in your text editor, create the following page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the code as `tabs1.html` in your `jqueryui` working folder. Let''s review
+    what was used. The following script and CSS resources are needed for the default
+    tab widget configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery.ui.all.css`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.tabs.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A tab widget is usually constructed from several standard HTML elements arranged
+    in a specific manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An outer container element, on which the tabs method is called
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A list element (`<ul>` or `<ol>`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An `<a>` element within an `<li>` element for each tab
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An element for the content panel of each tab
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: These elements can be either hardcoded into the page, added dynamically, or
+    can be a mixture of both, depending upon the requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The list and anchor elements within the outer container make the clickable tab
+    headings, which are used to show the content section that is associated with the
+    tab. The `href` attribute of the link should be set to a fragment identifier,
+    prefixed with `#`. It should match the `id` attribute of the element that forms
+    the content section with which it is associated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The content sections of each tab are created using `<div>` elements. The `id`
+    attribute is required and will be targeted by its corresponding `<a>` element.
+    We've used `<div>` elements in this example as the content panels for each tab,
+    but other elements can also be used as long as the relevant configuration is provided
+    and the resulting HTML is valid. The `panelTemplate` and `tabTemplate` configuration
+    options can be used to change the elements used to build the widget (see the *Configuration*
+    section, later in this chapter, for more information).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We link to several `<script>` resources from the library in the `<head>` section
+    before its closing tag. Scripts can be loaded in the `<head>` section using the
+    `document.ready()` command, or at the end after stylesheets and page elements.
+    Loading them last is a proven technique for improving the apparent loading time
+    of a page, although it is debatable as to how much benefit this really brings
+    in performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After linking first to jQuery, we link to the `jquery.ui.core.js` file that
+    is required by all components (except the effects, which have their own core file),
+    and the `jquery.ui.widget.js` file. We then link to the component's source file,
+    which in this case is `jquery.ui.tabs.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the three required script files from the library, we can turn to our custom
+    `<script>` element in which we add the code that creates the tabs. We encapsulate
+    the code used to create the tabs, within jQuery's `DOMReady` statement; this ensures
+    the code is only executed when the page elements are loaded and ready to be manipulated.
+    We also pass through the jQuery object (`$`) to help avoid conflicts with other
+    JavaScript-based libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the `DOMReady` function we simply call the `tabs()` widget method on
+    the jQuery object, representing our tabs container element (the `<ul>` with an
+    `id` of `myTabs`). When we run this file in a browser, we should see the tabs
+    as they appeared in the first screenshot of this chapter (without the annotations
+    of course).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling the Tabs widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Using Firebug for Firefox (or another generic DOM explorer), we can see that
+    a variety of class names are added to the different underlying HTML elements.
+    Let''s review these class names briefly and see how they contribute to the overall
+    appearance of the widget. To the outer container `<div>`, the following class
+    names are added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Class name | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-tabs` | Allows tab-specific structural CSS to be applied. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-widget` | Sets generic font styles that are inherited by nested elements.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-widget-content` | Provides theme-specific styles. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-corner-all` | Applies rounded corners to the container. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The first element within the container is the `<ul>` element. This element
+    receives the following class names:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Class name | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-tabs-nav` | Allows tab-specific structural CSS to be applied. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-helper-reset` | Neutralizes browser-specific styles applied to `<ul>`
+    elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-helper-clearfi` | Applies the clear-fix, as this element has children
+    that are floated. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-widget-header` | Provides theme-specific styles. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-corner-all` | Applies rounded corners. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The individual `<li>` elements that form a part of the `tab` headings are given
+    the following class names:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Class name | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-state-default` | Applies the standard, non-active, non-selected, non-hovered
+    state to the tab headings. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-corner-top` | Applies rounded corners to the top edges of the elements.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-tabs-selected` | This is only applied to the active tab. On page-load
+    of the default implementation, this will be the first tab. Selecting another tab
+    will remove this class from the currently selected tab and apply it to the newly
+    selected tab. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-state-active` | Applies theme-specific styles to the currently selected
+    tab. This class name will be added to the tab that is currently selected, just
+    like the previous class name. The reason there are two class names is that `ui-tabs-selected`
+    provides the functional CSS, while `ui-state-active` provides the visual, decorative
+    styles. |'
+  prefs: []
+  type: TYPE_TB
+- en: The `<a>` elements within each `<li>` are not given any class names, but they
+    still have both structural and theme-specific styles applied to them by the framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, the panel elements that hold each tab''s content are given the following
+    class names:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Class name | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-tabs-panel` | Applies structural CSS to the content panels. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-widget-content` | Applies theme-specific styles. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-corner-bottom` | Applies rounded corners to the bottom edges of the content
+    panels. |'
+  prefs: []
+  type: TYPE_TB
+- en: All of these classes are added to the underlying HTML elements automatically
+    by the library. We don't need to manually add them when coding the page or adding
+    the base markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying a custom theme to the tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the next example, we can see how to change the tabs' basic appearance. We
+    can override any rules used purely for display purposes with our own style rules
+    for quick and easy customization, without changing the rules related to the tab
+    functionality or structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new file in your text editor, create the following very small stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is all we need. Save the file as `tabsTheme.css` in your `css` folder.
+    If you compare the class names with the tables on the previous pages, you'll see
+    that we're overriding the theme-specific styles. Because we're overriding the
+    theme file, we need to meet or exceed the specificity of the selectors in `theme.css`.
+    This is why we target multiple selectors sometimes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we override some of the rules in `jquery.ui.tabs.css`. We need
+    to use the selector from `jquery.ui.theme.css` (`.ui-widget-content`), along with
+    the ID selector of our container element in order to beat the double class selector
+    `.ui-tabs .ui-tabs-panel`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following reference to this new stylesheet in the `<head>` of `tabs1.html`
+    and resave the file as `tabs2.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Make sure the custom stylesheet we just created appears after the `jquery.ui.tabs.css`
+    file, because the rules that we are trying to override will not be overridden
+    by our custom theme file if the stylesheets are not linked in the correct order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we view the new page in a browser, it should appear as in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Applying a custom theme to the tabs](img/2209OS_03_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Our new theme isn't dramatically different from the default smoothness (as shown
+    in the first screenshot), but we can see how easy it is, and how little code it
+    requires to change the appearance of the widget to suit its environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring the Tabs widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Each of the different components in the library has a series of options that
+    control which features of the widget are enabled by default. An object literal,
+    or an object reference, can be passed in to the `tabs()` widget method to configure
+    these options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The available options to configure non-default behaviors are shown in the following
+    table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Used to… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `active` | `0` | Indicate which panel is open. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `collapsible` | `false` | Allow an active tab to be unselected if it is clicked,
+    so that all of the content panels are hidden and only the tab headings are visible.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disable the widget on page load. We can also pass
+    an array of tab indices (zero-based) in order to disable specific tabs. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event` | `"click"` | Specify the event that triggers the display of content
+    panels. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `heightStyle` | `content` | Control the height of the tabs widget and each
+    panel. Possible values are `auto`, `fill,` and `content`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `hide` | `null` | Control if or how to animate the hiding of the panel. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `show` | `null` | Control if or how to animate the showing of the panel.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Working with tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Tabs widget provides a number of options we can use to perform actions,
+    such as selecting or disabling tabs, or adding transition effects. Over the next
+    few examples, we will take a look at some of these options, beginning with selecting
+    tabs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting a tab
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s look at how these configurable properties can be used. For example,
+    let''s configure the widget so that the second tab is displayed when the page
+    loads. Remove the link for `tabsTheme.css` in the `<head>` of `tabs2.html` and
+    change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `tabs3.html`. The different tabs and their associated content panels
+    are represented by a numerical index starting at zero. Specifying a different
+    tab to open by default is as easy as supplying its index number as the value for
+    the `active` property. When the page loads now, the second tab should be selected
+    by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Along with changing which tab is selected, we can also specify that no tabs
+    should be initially selected by supplying a value for `collapsible` in addition
+    to the `active` property. Change the `<script>` element from `tabs4.html` so that
+    it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will cause the widget to appear as follows on page load:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Selecting a tab](img/2209OS_03_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Disabling a tab
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You may want a particular tab to be disabled until a certain condition is met.
+    This is easily achieved by manipulating the `disabled` property of the tabs. Change
+    the `tabOpts` configuration object in `tabs4.html` to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `tabs5.html` in your `jqueryui` folder. In this example, we remove
+    the `active` property and add the index of the second tab to the disabled array.
+    We could add the indices of other tabs to this array as well, separated by a comma,
+    to disable multiple tabs by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the page is loaded in a browser, the second tab has the class name `ui-widget-disabled`
+    applied to it, and will pick up the disabled styles from `ui.theme.css`. It will
+    not respond to mouse interactions in any way, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Disabling a tab](img/2209OS_03_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding transition effects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can easily add attractive transition effects using the show property. These
+    are displayed when tabs are opened or closed. This option is configured using
+    another object literal (or an array) inside our configuration object, which enables
+    one or more effects. We can enable fading effects, for example, using the following
+    configuration object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `tabs6.html` in your `jqueryui` folder. The show object that
+    we created has two properties. The first property is the animation to use when
+    changing tabs. To use fading animations we specify `effect`, as this is what is
+    adjusted. Toggling the effect simply reverses its current setting. If it is currently
+    visible, it is made invisible and vice versa. You can use any one of the effects
+    options, such as `toggle`, `fadeIn,` or `slideDown`; we will look at effects in
+    more detail in [Chapter 14](ch14.html "Chapter 14. UI Effects"), *UI Effects*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second property, `duration`, specifies the speed at which the animation
+    occurs. The values for this property are `slow` or `fast`, which correspond to
+    `200` and `600` milliseconds, respectively. Any other string will result in the
+    default duration of `400` milliseconds. We can also supply an integer representing
+    the number of milliseconds the animation should run for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we run the file we can see that the tab content slowly fades-out as a
+    tab closes and fades-in when a new tab opens. Both animations occur during a single
+    tab interaction. To only show the animation once, when a tab closes, for example,
+    we would need to nest the `show` object within an array. Change the configuration
+    object in `tabs6.html` so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The closing effect of the currently open content panel is contained within an
+    object in the first item of the array, and the opening animation of the new tab
+    is the second. By specifying null as the second item in the array, we disable
+    the opening animations when a new tab is selected. Save this as `tabs7.html` and
+    view the results in a browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also specify different animations and speeds for opening and closing
+    animations, by adding another object as the second array item instead of `null`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Collapsing a tab
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default when the currently active tab is clicked, nothing happens. But we
+    can change this so that the currently open content panel closes when its tab heading
+    is selected. Change the configuration object in `tabs7.html` so that it appears
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this version as `tabs8.html`. This option allows all of the content panels
+    to be closed, much like when we supplied null to the `selected` property earlier
+    on. Clicking a deactivated tab will select the tab and show its associated content
+    panel. Clicking the same tab again will close it, shrinking the widget down so
+    that only tab headings are visible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with the Tab events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The Tabs widget defines a series of useful options that allow you to add callback
+    functions to perform different actions, when certain events exposed by the widget
+    are detected. The following table lists the configuration options that are able
+    to accept executable functions on an event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Fired when... |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `add` | A new tab is added. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disable` | A tab is disabled. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `enable` | A tab is enabled. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `load` | A tab''s remote data has loaded. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `remove` | A tab is removed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `select` | A tab is selected. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `show` | A tab is shown. |'
+  prefs: []
+  type: TYPE_TB
+- en: Each component of the library has callback options (such as those in the previous
+    table), which are tuned to look for key moments in any visitor interactions. Any
+    functions we use within these callbacks are usually executed before the change
+    happens. Therefore, you can return false from your callback and prevent the action
+    from occurring.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our next example, we will look at how easy it is to react to a particular
+    tab being selected, using the standard non-bind technique. Change the final `<script>`
+    element in `tabs8.html` so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `tabs9.html`. We also need a little CSS to complete this
+    example. In the `<head>` of the page we just created, add the following `<link>`
+    element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then in a new page in your text editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `tabSelect.css` in the `css` folder. In this example, we've
+    linked to multiple CSS files in a production environment; you may want to consider
+    combining CSS into one file, to minimize CSS HTTP requests. Although this will
+    help with performance on larger sites, it does come at the expense of not being
+    able to drop in replacement jQuery UI CSS files, as you will lose any customizations
+    you have added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We made use of the `beforeActivate` callback in this example to create a new
+    element in jQuery using the `<p>` tag, although the principle is the same for
+    any of the other custom events fired by tabs. The name of our callback function
+    is provided as the value of the `beforeActivate` property in our configuration
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two arguments will be passed automatically by the widget to the callback function
+    we define, when it is executed. These are the original event object and custom
+    object containing useful properties from the tab that was selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To find out which of the tabs was clicked, we can look at the `index()` property
+    of the second object (remember these are zero-based indices). This is added, along
+    with a little explanatory text, to a paragraph element that we create on the fly
+    and append to the widget header:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the Tab events](img/2209OS_03_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Whenever a tab is selected, the paragraph before it fades away. Note that the
+    event is fired before the change occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Binding to events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using the event callbacks exposed by each component is the standard way of handling
+    interactions. However, in addition to the callbacks listed in the previous table,
+    we can also hook into another set of events fired by each component at different
+    times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use the standard jQuery `on()` method to bind an event handler to a custom
+    event, fired by the Tabs widget in the same way that we could bind to a standard
+    DOM event, such as a click.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table lists the tab widget''s custom binding events and their
+    triggers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Fired when... |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tabsselect` | A tab is selected. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tabsload` | A remote tab has loaded. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tabsshow` | A tab is shown. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tabsadd` | A tab has been added to the interface. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tabsremove` | A tab has been removed from the interface. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tabsdisable` | A tab has been disabled. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `tabsenable` | A tab has been enabled. |'
+  prefs: []
+  type: TYPE_TB
+- en: The first three events are fired in succession, in the order of events in which
+    they appear in the table. If no tabs are remote, then `tabsbeforeactivate` and
+    `tabsactivate` are fired in that order. These events can be fired before or after
+    the action has occurred, depending on which event is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see this type of event usage in action; change the final `<script>`
+    element in `tabs8.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this change as `tabs10.html`. Binding to the `tabsbeforeactivate` in this
+    way produces the same result as the previous example, using the `select` callback
+    function. Like last time, the alert should appear before the new tab is activated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All the events exposed by all the widgets can be used with the `on()` method,
+    by simply prefixing the name of the widget to the name of the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Although each callback name is spelled using camelCase format, each event name
+    must be written in lowercase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using tab methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The Tabs widget contains many different methods, which means it has a rich
+    set of behaviors. It also supports the implementation of advanced functionality
+    that allows us to work with it programmatically. Let''s take a look at the methods,
+    which are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Used to... |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `destroy` | Completely remove the tabs widget. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disable` | Disable all tabs. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `enable` | Enable all tabs. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `load` | Reload an AJAX tab''s content, specifying the index number of the
+    tab. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `option` | Get or set any property after the widget has been initialized.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `widget` | Return the element that the `tabs()` widget method is called on.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Enabling and disabling tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can make use of the `enable` or `disable` methods to programmatically enable
+    or disable specific tabs. This will effectively switch on any tabs that were initially
+    disabled or disable those that are currently active.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s use the `enable` method to switch on a tab, which we disabled by default
+    in an earlier example. Add the following new `<button>` elements directly after
+    the existing markup for the tabs widget in `tabs5.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the changed file as `tabs11.html`. On the page, we've added two new `<button>`
+    elements—one will be used to enable the disabled tab and the other is used to
+    disable it again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the JavaScript, we use the `click` event of the **Enable** button to call
+    the `tabs()` widget method. To do this, we pass the string `enable` to the `tabs()`
+    method as the first argument. Additionally, we pass the index number of the tab
+    we want to enable as a second argument. All methods in jQuery UI are called in
+    this way. We specify the name of the method we wish to call as the first argument
+    to the widget method. The `disable` method is used in the same way. Don't forget
+    that we can use both of these methods without additional arguments, in order to
+    enable or disable the entire widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding and removing tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Along with enabling and disabling tabs programmatically, we can also remove
+    them or add completely new tabs on the fly. In `tabs11.html`, remove the existing
+    `<button>` elements and add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final <script> element as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: We also need to provide some content that will be loaded into the tab remotely—in
+    a new file, add `Remote tab content!`, and save it as `remoteTab.txt`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Save this as `tabs12.html`—to preview this example, you will need to view it
+    using a local webserver such as **WAMP** (for Windows), or **MAMP** (Apple Macs).
+    The demo will not work if accessed using the filesystem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the page we've added a new instructional `<label>`, an `<input>`, and a `<button>`
+    that are used to specify a tab to remove. We've also added a second `<button>`,
+    which is used to add a new tab.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In `<script>`, the first of our new functions handle removing a tab, using the
+    `remove` method. This method uses jQuery's `:eq()` function to find the index
+    of the tab to be removed. We get the value entered into the textbox and use the
+    index to identify which tab to remove, before using the `refresh` method to update
+    the instance of Tabs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The data returned by jQuery's `val()` method is in string format, so we wrap
+    the call in the JavaScript `parseInt` function to convert it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `add` method, which adds a new tab to the widget, works using a similar
+    process. Here, we create an instance of a list item, before using jQuery's `appendTo()`
+    method to add it to the existing Tabs and updating them. In this example, we've
+    specified that the content found in the `remoteTab.txt` file should be added as
+    the content of the new tab. Optionally, we can also specify the index number of
+    where the new tab should be inserted as a fourth argument. If the index is not
+    supplied, the new tab will be added as the last tab.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After adding and perhaps removing some tabs, the page should appear something
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding and removing tabs](img/2209OS_03_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Simulating clicks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There may be times when you want to programmatically select a particular tab
+    and show its content. This could happen as the result of some other interaction
+    by the visitor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can use the `option` method to do this, which is completely analogous with
+    the action of clicking a tab. Alter the final `<script>` block in `tabs12.html`,
+    so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `tabs13.html` in your `jqueryui` folder. Now when the new tab
+    is added, it is automatically selected. The `option` method requires two additional
+    arguments: the first is the name of the option to use, and the second is the ID
+    of the tab to set as active.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As any tab that we add will, by default (although this can be changed), be the
+    last tab in the interface, and as the tab indices are zero based, all we have
+    to do is use the `length` method to return the number of tabs, and then subtract
+    1 from this figure to get the index. The result is passed to the `option` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interestingly, selecting the newly added tab straight away fixes, or at least
+    hides, the extra space issue from the last example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Destroying tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As shown earlier, we can easily add tabs but there may be occasions when you
+    need to completely destroy a set of tabs. This is possible using the `destroy`
+    method, which is common to all the widgets found in jQuery UI. Let''s see how
+    it works. In `tabs13.html`, remove the existing markup immediately after the existing
+    `<br>`, and add a new `<button>` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the final `<script>` element to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `tabs14.html`. The `destroy` method, which that we invoke
+    with a click on the button, completely removes the Tabs widget, returning the
+    underlying HTML to its original state. After the button has been clicked, you
+    should see a standard HTML list element and the text from each tab, similar to
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Destroying tabs](img/2209OS_03_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Only the original tabs hard coded in the page will remain if the tabs are destroyed,
+    not those added with the `add` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting and setting options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Like the `destroy` method, the `option` method is exposed by all the different
+    components found in the library. This method is used to work with the configurable
+    options and functions in both getter and setter modes. Let''s look at a basic
+    example; add the following `<button>` after the Tabs widget in `tabs9.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final `<script>` element so that it is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to tweak the positioning of the text shown, so remove the link
+    to `tabSelect.css` in the existing code, and add the following in the `<head>`
+    section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `tabs15.html`. The `<button>` on the page has been changed,
+    so that it shows the currently active tab. All we do is add the index of the selected
+    tab to a status bar message, as we did in the earlier example. We get the `active`
+    option by passing the string `active` as the second argument. Any value of any
+    option can be accessed in this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Chaining UI methods**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining widget methods (either with other UI methods, or core jQuery ones)
+    is possible because like the methods found in the underlying jQuery library, they
+    almost always return the jQuery `($)` object. Note that this is not possible when
+    using getter methods that return data, such as the `length` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To trigger setter mode instead, we can supply a third argument containing the
+    new value of the option that we''d like to set. Therefore, to change the value
+    of the `active` option, in order to change the tab being displayed, we could use
+    the following HTML instead,for this, alter the HTML as shown, at the bottom of
+    `tabs15.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, append the click-handler as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `tabs16.html`. The new page contains a `<label>`, an `<input>`,
+    as well as a `<button>` that is used to harvest the index number that the `active`
+    option should be set to. When the button is clicked, our code will retrieve the
+    value of the `<input>` and use it to change the selected index. By supplying the
+    new value we put the method in setter mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run this page in our browser, we should see that we can switch to the
+    second tab by entering its index number as `1` and clicking on the **Change Selected**
+    button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with AJAX tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We saw how we can use the `add` method to add an AJAX tab to the widget dynamically,
+    but we can also add remote content to tabs using the underlying HTML. In this
+    example, we want the tab that will display the remote content to be available
+    all the time, not just after clicking on the button. This example will also only
+    work correctly using a full web server with PHP installed and configured, such
+    as WAMP (PC) or MAMP (Macs).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following new <a> element to the underlying HTML for the widget in
+    `tabs16.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: We should also remove the `<button>` from the last example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final `<script>` element can be used to call the `tabs` method; no additional
+    configuration is required:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `tabs17.html`. All we're doing is specifying the path to the remote
+    file (the same one we used in the earlier example) using the `href` attribute
+    of an `<a>` element in the underlying markup, from which the tabs are created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike static tabs, we don't need a corresponding `<div>` element with an `id`
+    that matches the `href` of the link. The additional elements required for the
+    tab content will be generated automatically by the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you use a DOM explorer, you can see that the file path that we added to link
+    to the remote tab has been removed. Instead, a new fragment identifier has been
+    generated and set as `href`. The new fragment is also added as the `id` of the
+    new tab (minus the `#` symbol of course), so that the tab heading still shows
+    the tab.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Along with loading data from external files, it can also be loaded from URLs.
+    This is great when retrieving content from a database using query strings or a
+    web service. Methods related to AJAX tabs include the `load` and `url` methods.
+    The `load` method is used to load and reload the contents of an AJAX tab, which
+    could come in handy for refreshing content that changes very frequently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is no inherent cross-domain support built into the AJAX functionality
+    of tabs widget. Therefore, unless additional PHP or some other server-scripting
+    language is employed as a proxy, you may wish to make use of **JavaScript Object**
+    **Notation** (**JSON**) structured data and jQuery's JSONP functionality. Files
+    and URLs should be under the same domain as the page running the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the URL of a remote tab's content
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `url` method is used to change the URL that the AJAX tab retrieves its content
+    from. Let's look at a brief example of these two methods in action. There are
+    also a number of properties related to AJAX functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following new `<select>` element after the Tabs widget in `tabs17.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final `<script>` element to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the new file as `tabs18.html`. We've added a simple `<select>` element
+    to the page that lets you choose the content to display in the AJAX tab. In the
+    JavaScript, we set a change handler for `<select>` and specified an anonymous
+    function to be executed each time the event is detected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This function first sets the active tab; in this instance, AJAX Tab, which has
+    an ID of 2 – then uses jQuery's `find()` method to set the `href` attribute for
+    the tab's panel, before using the `load()` method to insert the contents into
+    the tab.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll also need a second local content file. Change the text in the `remoteTab1.txt`
+    file and resave it as `remoteTab2.txt`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Run the new file in a browser and use the `<select>` dropdown to choose the
+    second remote file then switch to the remote tab. The contents of the second text
+    file should be displayed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying data obtained via JSONP
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'For our final example, let''s pull in some external content for our final tabs
+    example. If we use the Tabs widget, in conjunction with the standard jQuery library
+    `getJSON` method, we can bypass the cross-domain exclusion policy and pull-in
+    a feed from another domain, to display in a tab. In `tabs19.html`, change the
+    Tabs widget so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the final `<script>` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the file as `tabs19.html` in your `jqueryui` folder. We first create a
+    new `<img>` element and store it in a variable. We also create a configuration
+    object and add the `select` event option to it. Every time a tab is selected,
+    the function we set as the value of this option will check to see if it was the
+    tab with an `id` of `flickr` that was selected. If it was, the jQuery `getJSON`
+    method is used to retrieve an image feed from [http://www.flickr.com](http://www.flickr.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once the data is returned, first empty the contents of the **Flickr** tab to
+    prevent a build-up of images, then use jQuery's `each()` utility method to iterate
+    over each object within the returned JSON, and create a clone of our stored image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each new copy of the image has its `src` attribute set using the information
+    from the current feed object, and is then added to the empty **Flickr** tab. Once
+    iteration over six of the objects in the feed has occurred, we exit jQuery's `each`
+    method. It's that simple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we view the page and select the **Images** tab, after a short delay we
+    should see six new images, as seen in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Displaying data obtained via JSONP](img/2209OS_03_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Tabs widget is an excellent way of saving space on your page by organizing
+    related (or even completely unrelated) sections of content that can be shown or
+    hidden, with simple click-input from your visitors. It also lends an air of interactivity
+    to your site that can help improve the overall functionality and appeal of the
+    page on which it is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's review what was covered in this chapter. We first looked at how, with
+    just a little underlying HTML and a single line of jQuery-flavored JavaScript,
+    we can implement the default Tabs widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then saw how easy it is to add our own basic styling for the Tabs widget
+    so that its appearance, but not its behavior, is altered. We already know that
+    in addition to this, we can use a predesigned theme or create a completely new
+    theme using ThemeRoller.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then moved on, to look at the set of configurable options exposed by the
+    tabs' API. With these, we can enable or disable different options that the widget
+    supports, such as whether tabs are selected by clicks or another event and whether
+    certain tabs are disabled when the widget is rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We took some time to look at how we can use a range of predefined callback options
+    that allow us to execute arbitrary code, when different events are detected. We
+    also saw that the jQuery `on()` method can listen for the same events if necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following the configurable options, we covered the range of methods that we
+    can use to programmatically make the tabs perform different actions, such as simulating
+    a click on a tab, enabling or disabling a tab, and adding or removing tabs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We briefly looked at some of the more advanced functionalities supported by
+    the Tabs widget such as AJAX tabs, and obtaining information using JSONP. Both
+    these techniques are easy to use and can add value to any implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll move on to look at the **accordion** widget, which
+    like the Tabs widget, is used to group content into related sections that are
+    shown one at a time.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1418 @@
+- en: Chapter 14. UI Effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've so far looked at a range of incredibly useful widgets and interaction
+    helpers. All are easy to use, but at the same time are powerful and highly configurable.
+    Some have had their subtle nuances, which have required consideration and thought
+    during their implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The effects provided by the library, on the other hand, are for the most part
+    extremely compact, with very few options to learn and no methods at all. We can
+    use these effects quickly and easily, with minimum configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The effects that we''ll be looking at in this chapter are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Highlight
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bounce
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Shake
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Transfer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scale
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Explode
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Puff
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pulsate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Slide
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Blind
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Clip
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fold
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the core effects file
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Like the individual components themselves, the effects require the services
+    of a separate core file. It provides essential functionality to the effects, such
+    as creating wrapper elements and controlling the animations. Most, but not all,
+    of the effects have their own source files, which build on the core foundation
+    to add functionality specific to the effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we need to do to use an effect is include the core file (`jquery.ui.effect.js`)
+    in the page, before the effect's source file. However, unlike the `jquery.ui.core.js`
+    file, the `jquery.ui.effect.js` file has been designed to be used, in part, completely
+    standalone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using color animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we use the core effect file on its own, we can take advantage of the color
+    animations. This includes changing the background color of an element to another
+    color (and not just a snap change, but a smooth morphing of one color into another),
+    class transitions, and advanced easing animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: jQuery UI 1.10 uses Version 2.0.0 of the jQuery Color library as the basis for
+    much of the color support in the library. If you would like to learn more about
+    jQuery Color, then visit the project page at [https://github.com/jquery/jquery-color](https://github.com/jquery/jquery-color).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The core effects plugin within jQuery UI adds the ability to animate color properties
+    using `rgb()`, `rgba()`, hex values, or even color names such as aqua to jQuery
+    Core. All we need to do is include the jQuery UI effects core file and jQuery's
+    `.animate()` will gain support for colors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at how to create color animations. First, create the following
+    new page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the page as `effectColor.html`. In the last `<script>` block, add the
+    following code, which will provide the visual feedback for each field:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, all we need is jQuery and the `jquery.ui.effect.js` file to
+    create attractive color transitions. On the page, we have a simple `<form>` element
+    enclosing three container elements and three sets of the `<label>` and `<input>`
+    elements. The `animate` method is a part of jQuery rather than jQuery UI specifically,
+    but the `jquery.ui.effect.js` file extends jQuery's `animate` method by allowing
+    it to specifically work with colors and classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the **Submit** button is clicked, we simply use the `animate` method to
+    apply a series of new CSS properties to the target elements based on whether the
+    text inputs have been filled out or not. If they have been completed, we color
+    them green, and if not, we color them red. We also use a basic stylesheet in this
+    example. In another new page in your text editor, add the following basic selectors
+    and rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectColor.css` in the `css` folder. When we view this page in
+    our browser, we should see that any fields that are left blank smoothly turn red
+    when the **Submit** button is clicked, while fields that are not empty smoothly
+    turn green. However, it's most attractive when a field changes from red to green.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the page once the **Submit** button has been
+    clicked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using color animations](img/2209OS_14_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A key point to note is that we've used `backgroundColor` as the attribute in
+    our code; the reason for this is that jQuery is not able to animate the `background-color`
+    CSS style by default, unless we use the jQuery Color plugin. Let's take a look
+    at these attributes in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The style attributes that color animations can be used on are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`backgroundColor`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`borderTopColor`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`borderRightColor`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`borderBottomColor`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`borderLeftColor`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`color`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`outlineColor`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Colors may be specified using either RGB, hexadecimal (in the format `#xxx[xxx]`),
+    or even standard color names. It is recommended that RGB or hexadecimal colors
+    be used where possible, as browsers do not always recognize color names consistently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The default build of the Color plugin only includes support for basic color
+    names. If you need to use other color names, you can download a version that includes
+    support for this from [https://github.com/jquery/jquery-color#readme](https://github.com/jquery/jquery-color#readme).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using class transitions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to animating individual color attributes, `jquery.ui.effect.js`
+    also gives us the powerful ability to animate between entire classes. This allows
+    us to switch styles smoothly and seamlessly without sudden jarring changes. Let's
+    look at this aspect of the file's use in the following example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the `<link>` tag in the `<head>` element of `effectColor.html` to point
+    to a new stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectClass.html`. The `jquery.ui.effect.js` file extends the
+    jQuery class API by allowing us to specify a duration over which the new classname
+    should be applied, instead of just switching it instantly. We can also specify
+    an easing effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `switchClass` method of the `jquery.ui.effect.js` file is used when the
+    fields already have one of the classnames and need to change to a different classname.
+    The `switchClass` method requires several arguments; we specify the classname
+    to be removed, followed by the classname to be added. We also specify duration
+    as the third argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Essentially, the page functions as it did before; although, using this type
+    of class transition allows us to use non-color-based style rules as well, so we
+    can adjust widths, heights, or many other style properties if we want to. Note
+    that background images cannot be transitioned in this way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As in the previous example, we have a stylesheet attached. This is essentially
+    the same as in the previous example, except with some styles for our two new classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following selectors and rules to the bottom of `effectColor.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the updated file as `effectClass.css` in the `css` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advanced easing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `animate` method found in standard jQuery has some basic easing capabilities
+    built in, but for more advanced easing, you have to include an additional easing
+    plugin (ported to jQuery by GSGD).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: See the easing plugin's project page for further information at [http://gsgd.co.uk/sandbox/jquery/easing/](http://gsgd.co.uk/sandbox/jquery/easing/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `jquery.ui.effect.js` file has all of these advanced easing options built
+    in, so there is no need to include additional plugins. We won't be looking at
+    them in any real detail in this section; however, we will be using them in some
+    of the examples later on in the chapter, in the section, *Scaling elements on
+    a page*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Highlighting specified elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The highlight effect temporarily applies a light-yellow coloring to any element
+    that it''s called on (the effect is also known as **Yellow Fade Technique** (**YFT**)).
+    Let''s put a simple example together, so we can see the effect in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `<script>` element refers to the effect''s source file so that it uses
+    the `jquery.effects.highlight.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then remove the `<form>` element from the `<body>` element of the page and
+    replace it with the following markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, change the final `<script>` element so that ends up as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this page as `effectHighlight.html`. The code that invokes the highlight
+    effect takes the same familiar form as other library components. The `effect`
+    method is called and the actual effect is specified as a string argument to the
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We simply sniff the `userAgent` string and see if a search for Windows, Mac,
+    or Linux returns a positive integer. If a positive integer is found, the `userAgent`
+    string contains the search word; if `-1` is returned, the search term was not
+    found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also need to create the new stylesheet, not for the effect to work, but
+    just tidy things up a little. In a new page in your text editor, add the following
+    selectors and rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `effectHighlight.css` in the `css` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'View the example and click the **Hint** button. The icon for whichever operating
+    system you are using should be highlighted briefly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Highlighting specified elements](img/2209OS_14_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: While our example may seem a little contrived, it is easy to see the potential
+    for this effect as an assistance tool on the frontend. Whenever there is a sequence
+    of actions that needs to be completed in a specific order, the highlight effect
+    can instantly give the visitor a visual cue as to the step that needs to be completed
+    next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding additional effect arguments
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Each of the `effect` methods, as well as the argument that dictates which effect
+    is actually applied, can take up three additional arguments that control how the
+    effect works. All of these arguments are optional, and consist of the following
+    (in the listed order):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An object containing additional configuration options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An integer representing in milliseconds, the duration of the effect, or a string
+    specifying one of `slow`, `normal`, or `fast`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A callback function that is executed when the effect ends
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `highlight` effect has only one configurable option that can be used in
+    the object passed as the second argument, and that is the highlight color.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s add some of these additional arguments into our highlight example to
+    clarify their usage. Change the call to the `effect` method in the final `<script>`
+    element in `effectHighlight.html` so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectHighlightCallback.html`. Perhaps the most striking feature
+    of our new code is the empty object passed as the second argument. In this example,
+    we don't use any additional configurable options, but we still need to pass in
+    the empty object in order to access the third and fourth arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The callback function, passed as the third argument, is perhaps the least useful
+    callback in the history of JavaScript, but it does serve to illustrate how easy
+    it is to arrange additional post-animation code execution following an effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bouncing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Another simple effect we can use with little configuration is the bounce effect.
+    To see this effect in action change the contents of the `<body>` element in `effectHighlight.html`
+    to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need to use the source file for the bounce effect; change the reference
+    to the `jquery.ui.effect-highlight.js` file, so that it points to the `bounce.js`
+    source file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `effectBounce.html`. We need to add a tiny bit of styling to really
+    see the effect in full, but it''s probably not worth creating a whole new stylesheet
+    so simply replace the `<link>` element in the `<head>` element of the page with
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using the bounce effect in this example shows how easy it is to add this simple
+    but attractive effect. We configure the `distance` option to set how far the element
+    travels. Other options that can be configured are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `direction` | `"up"` | Sets the direction of the bounce |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `distance` | `20` | Sets the distance in pixels of the first bounce |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `times` | `5` | Sets the number of times the element should bounce |'
+  prefs: []
+  type: TYPE_TB
+- en: When you run the example you will notice that the bounce effect has an ease-out
+    easing feature built into it so the distance of the bounce will automatically
+    decrease as the animation proceeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The default easing effect used here is `swing`; this is one of many easings
+    features that are available for use within the library. Easing functions control
+    the speed at which an animation proceeds at different points within the animation;
+    you can see the full list of easings features available at [http://api.jqueryui.com/easings/](http://api.jqueryui.com/easings/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: One thing to note is that with most of the different effects, including the
+    bounce effect (but not the highlight effect we looked at earlier), the effect
+    is not actually applied to the specified element. Instead a wrapper element is
+    created and the element targeted by the effect is appended to the inside of the
+    wrapper. The actual effect is then applied to the wrapper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is an important detail to be aware of, because if you need to manipulate
+    the element that has the effect applied to it in mid-animation, then the wrapper
+    will need to be targeted instead of the original element. Once the effect's animation
+    has completed, the wrapper is removed from the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shaking an element
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The shake effect is very similar to the bounce effect, but with the crucial
+    difference of not having any built-in easing. So, the targeted element will shake
+    the same distance for the specified number of times, instead of lessening each
+    time (although it will come to a smooth stop at the end of the animation).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s change the previous example so that it uses the shake effect instead
+    of the bounce effect. Change `effectBounce.html` so that it uses the `shake.js`
+    source file instead of the bounce source file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the click-handler in the final `<script>` element at the bottom
+    of the `<body>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectShake.html`. This time we've made use of the `direction`
+    configuration option and the duration argument. The configuration option controls
+    the direction of the shake. We set this to override the default setting for this
+    option, which is `left`. The duration we use speeds up the animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This effect shares the same options as the bounce effect, although the defaults
+    are set slightly differently. The options are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Uses |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `direction` | `"left"` | Sets the direction of the shake |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `distance` | `20` | Sets the distance of the shake in pixels |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `times` | `3` | Sets the number of times the element should shake |'
+  prefs: []
+  type: TYPE_TB
+- en: Transferring an element's outline
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The transfer effect is different from others, in that it doesn''t directly
+    affect the targeted element. Instead, it transfers the outline of a specified
+    element to another specified element. To see this effect in action, change the
+    `<body>` element of `effectShake.html` so that it contains the following elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `effectTransfer.html`. We''ve created a basic product listing;
+    when the **Buy** button is clicked, the transfer effect will give the impression
+    of the product being moved into the basket. To make this happen, change the final
+    `<script>` element so that it contains the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Of course, a proper shopping cart application would be exponentially more complex
+    than this, but we do get to see the transfer effect in all its glory. Don''t forget
+    to update the effect''s source file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We also need some CSS for this example, so create the following new stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectTransfer.css` in the `css` folder. The key rule in our new
+    stylesheet is the one that targets the element which has the class as `ui-effects-transfer`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This element is created by the effect and together with our styling produces
+    the green outline that is transferred from the product to the basket.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run the file in your browser. I think you''ll agree that it''s a nice effect
+    which would add value to any page that it was used on. Here''s how it should look
+    while the transfer is occurring:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Transferring an element''s outline](img/2209OS_14_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The transfer effect has just two configurable options, one of which is required
+    and that we have already seen. For reference, both are listed in the following
+    table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `className` | `"ui-effects-transfer"` | Applies a custom classname to the
+    effect helper element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `to` | `"none"` | Sets the element the effect will be transferred to. This
+    property is mandatory. |'
+  prefs: []
+  type: TYPE_TB
+- en: The four effects that we've looked at so far all have one thing in common–they
+    can only be used with the `effect` method. The remaining effects can be used not
+    only with the `effect` method, but also with jQuery's toggle and the `show`/`hide`
+    methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaling elements on a page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The scale effect is highly configurable and is used to shrink an element. It
+    is very effective when used to hide elements. In this example we'll use the `hide()`
+    method to trigger the effect, instead of using the `effect` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use a few of the CSS framework classes in this example, as well as a
+    few custom styles; so add two new `<link>` elements to the `<head>` element of
+    `effectTransfer.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, replace the underlying markup in the `<body>` element with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Don''t forget to change the `<script>` element for the effect, to the scale
+    effect''s source file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, replace the last `<script>` element, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the new page as `effectScale.html`. The custom stylesheet we use is as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `effectScale.css` in the `css` folder. These styles are used
+    to give the example a vaguely dialog-like appearance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the script, we simply add a click handler for the close icon and call the
+    `effect()` method on the outer container of the dialog box. An empty object is
+    passed as the second argument to the method, and a relatively long duration is
+    passed as the third argument, as this effect proceeds quite rapidly. The following
+    screenshot shows the effect in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Scaling elements on a page](img/2209OS_14_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using the `hide()` method instead of the `effect()` method is advantageous to
+    us in this example, because we want the dialog box to remain hidden after the
+    effect has completed. When the `effect()` method is used instead, bits of the
+    widget remain visible at the end of the animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**When should the percent option be configured?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `percent` configuration option must be configured when using the `effect()`
+    method in conjunction with the scale effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are several configuration options which can be used with scale; these
+    are as listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `direction` | `"both"` | Sets the direction to scale the element in. May
+    be a string specifying horizontal, vertical, or both. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `from` | `{}` | Sets the starting height and width of the element to be scaled.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `origin` | `["middle","center"]` | Sets the vanishing point, used with show
+    / hide animations. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `percent` | `0` | Sets the end size of the scaled element. |'
+  prefs: []
+  type: TYPE_TB
+- en: Exploding elements on a page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The explosion effect is truly awesome. The targeted element is literally exploded
+    into a specified number of pieces, before disappearing completely. It's an easy
+    effect to use and has few configuration properties, but the visual impact of this
+    effect is huge, giving you a lot of effect in return for very little code. Let's
+    see a basic example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create the following new page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectExplode.html`. As you can see, the code is extremely simple
+    and can be used completely out of the box with no additional configuration. This
+    effect has only one configurable property, which is the `pieces` property, and
+    it determines how many pieces the element is exploded into. The default is nine.
+    The effect works equally as well with the `effect()` method as it does with the
+    `hide()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once the specified element has been exploded, it will be hidden from view by
+    having its `style` attribute set to `display: none`. This is the default behavior.
+    However, it will still remain in the DOM of the page. The following screenshot
+    shows the explosion in progress:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exploding elements on a page](img/2209OS_14_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Physicists sometimes speculate as to why the arrow of time seems to only point
+    forward. They invariably ask themselves philosophical questions like "Why do we
+    not see grenades spontaneously forming from a large cloud of debris?" (Actually
+    the object is usually an egg, but I don't think an egg-based example would have
+    had quite the same impact!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery UI cannot help our understanding of entropy, but it can show us what
+    spontaneously reassembling of a grenade might look like. We''ll need to hide the
+    `<img>` tag in order to show it. The easiest way to do this is with an inline
+    `style` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this variant as `effectExplodeShow.html`. This time we use the `show()`
+    method instead of the `hide()` method to trigger the animation, which occurs once
+    the page has loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The animation is the same, except that it is shown in reverse and this time
+    the grenade is not hidden from view once the animation ends. Like other effects,
+    explode can also make use of specific durations and callback functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a puff effect
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Similar to the explode effect, but slightly more subtle is the puff effect,
+    which causes an element to grow slightly before fading away. Like explode, there
+    are few configuration options to concern ourselves with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consider a page that has AJAX operations occurring on it. It's useful to provide
+    a loading image that shows the visitor that something is happening. Instead of
+    just hiding an image like this when the operation has completed, we can puff it
+    out of existence instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remove the `<p>` element and change the `<img>` element from the previous example,
+    so that it points to a new image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the effect''s source file to the scale effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, change the last `<script>` element, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectPuff.html`. We're actually not detecting whether a given
+    process has finished loading in this example. It would require too much work just
+    to see the effect we're looking at. Instead, we tie the execution of the effect
+    into a simple click-handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll notice that we used the `jquery.ui.effect-scale.js` source file for this
+    effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The puff effect is the only effect that does not have its own source file, and
+    instead it's a part of the very closely related scale effect's source file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like the explode effect that we looked at in the last section, this effect has
+    just one configuration option that can be passed in an object as the second argument
+    of the `effect` method. This is the `percent` option and controls the size the
+    image is scaled up to. The default value is 150 percent. Like the explode effect,
+    the target element is hidden from view once the animation ends. This happens whether
+    `effect()` or `hide()` is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The effect stretches the targeted element (and its children, if it has any),
+    while at the same time reducing its opacity. It works well on proper images, background
+    colors, and borders, but you should note that it does not work so well with background
+    images specified by CSS. Nevertheless, it's a great effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows it in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a puff effect](img/2209OS_14_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Working with the pulsate effect
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The pulsate effect is another effect that works with the opacity of a specified
+    element. This effect reduces the opacity temporarily, a specified number of times,
+    making the element appear to pulsate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following basic example, we''ll create a simple countdown time that
+    counts down from `15`. When the display reaches 10 seconds, it will begin to flash
+    red. In `effectPuff.html`, change the link in the `<head>` element of the page
+    to point to a new stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then remove the loading `<img>` element from the page and add the following
+    element in its place:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the source file of the effect so that the `jquery.ui.effect-pulsate.js`
+    file is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, remove the existing last `<script>` element, and replace it with the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectPulsate.html`. The page itself contains just a simple `<div>`
+    element with the text `15` inside it. The code first sets a counter variable and
+    then caches a selector for the `<div>` element. We then define the `adjustAge()`
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This function first decreases the text content of the countdown element and
+    at the same time reduces the value of the counter variable by one. It then checks
+    whether the counter variable has reached zero yet; if yes, it clears the interval
+    we are about to set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the counter variable is greater than 0 but less than 11, the function applies
+    a background color of red to the element and white to the element's text content,
+    and then runs the pulsate effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `times` configuration option to specify how many times the element
+    should pulsate. As we'll be executing the method once every second, we can set
+    this to just pulsate once each time. This is the only configurable option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After our `adjustAge` function, we start the interval using JavaScript's `setInterval`
+    function. This function will repetitively execute the specified function after
+    the specified interval, which in this example is 1000 milliseconds, or 1 second.
+    We avoid using the `window` object by using an anonymous function to call our
+    named function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The new stylesheet is very simple and consists of the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this in the `css` folder as `effectPulsate.css`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the drop effect to elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The drop effect is simple. Elements appear to drop off (or onto) the page, which
+    is simulated by adjusting the element's `position` and `opacity` values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This effect exposes the following configurable options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `direction` | `"left"` | Sets the direction of the drop |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `distance` | The outer width or height of the element (depending on the direction)
+    divided by 2 | Sets the distance the element drops |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `easing n` | `one` | Sets the easing function used during the animation |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `mode` | `"hide"` | Sets whether the element is hidden or shown |'
+  prefs: []
+  type: TYPE_TB
+- en: There are many situations in which the drop effect would be useful, but the
+    one that instantly springs to mind is when creating custom tooltips. We can easily
+    create a tooltip that appears when a button is clicked, but instead of just showing
+    the tooltip, we can drop it onto the page. We'll use the button widget and the
+    `position` utility in this example, as well as the effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add a link to the CSS framework file and change the stylesheet link in the
+    `<head>` element of `effectPulsate.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Remove the countdown `<div>` element from the page and add the following element
+    instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we need to change the effect''s source file and add the source files for
+    the position and button widgets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lastly, change the final `<script>` element, so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `effectDrop.html`. When the button is clicked, we first store
+    a reference to the DOM node of the button. We then add a configuration object
+    for the `position` utility, in order to position our tooltip to the right of the
+    button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then create a new `<span>` element to use as the tooltip, which has its text
+    content set to the title text of the button. We also create another element used
+    to create a triangular CSS shape to give the tooltip a pointer. This element is
+    appended to the tooltip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once created, the tooltip is appended to the `<body>` element of the page and
+    is then shown using the drop effect. The `direction` configuration option is used
+    to make the tooltip appear to drop down; we have to specify the opposite direction
+    here, because our tooltip is absolutely positioned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is also some minimal CSS required for this example, in addition to the
+    styles provided by the CSS framework, to style the tooltip. Create the following
+    stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this in the `css` folder as `effectDrop.css`. The styling here is purely
+    for aesthetics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you run the file in your browser, you should see your tooltip, as in the
+    following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding the drop effect to elements](img/2209OS_14_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Implementing the sliding effect
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The remaining effects of the jQuery UI library all work by showing and hiding
+    elements in different ways, rather than using opacity like most of the effects
+    we have already looked at.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The slide effect is no exception and shows (or hides) an element by sliding
+    it into (or out of) view. It is similar to the drop effect that we just looked
+    at. The main difference is that it does not use opacity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The slide effect contains the following configuration options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `direction` | `"left"` | Sets the direction of the slide |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `distance` | The outer width or height of the element (depending on the direction)
+    | Sets the distance the element slides |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `easing` | `none` | Sets the easing function used during the animation |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `mode` | `"show"` | Sets whether the element is hidden or shown |'
+  prefs: []
+  type: TYPE_TB
+- en: These are the same configuration options used by the drop effect that we looked
+    at in the previous example, except that some of the default values are different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For our next example, we can create exactly this kind of functionality. In
+    `effectDrop.html`, change the `<link>` element in the `<head>` element of the
+    page from `effectDrop.css` to `effectSlide.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then remove the `<a>` element from the `<body>` element of the page and add
+    the following HTML in its place:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: The outer element in this collection is `<aside>`, which is the perfect element
+    for a mini-basket widget that sits in the right column of a site. Within this
+    element, we have a `<h1>` element that serves as the heading for the basket. The
+    heading contains a link, which will be used to show or hide the contents of the
+    basket. The contents of the basket will consist of an unordered list of products
+    within a container `<div>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Don''t forget to change the `<script>` element for the effect''s source file
+    to use `jquery.ui.effect-slide.js`, and remove the `<script>` files for `jquery.ui.core.js`,
+    `jquery.ui.widget.js`, `jquery.ui.position.js`, and `jquery.ui.button.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final `<script>` element will need to be changed to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectSlide.html`. All of the functionality resides within a clickhandler,
+    which we attach to the icon in the basket header. When this element is clicked,
+    we first initialize the `slider` and `header` variables, as these are the elements
+    that we will be manipulating.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then check whether the `slider` (which is the basket contents container)
+    is hidden; if it is hidden, we know that it is about to be opened and so remove
+    the rounded corners from the bottom of the `header`. This is so that the slider
+    element sits flush up to the bottom of the `header`, even while it is sliding
+    open.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use jQuery's `toggle()` method to call the effect, which we specify
+    using the first argument of the method. We then set the configuration option,
+    `direction`, in an object passed as the second argument. The duration of the animation
+    is lengthened using the string `slow` as the third argument, and an anonymous
+    callback function is used as the fourth argument. This function will be executed
+    at the end of the slide animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this function, we check the state of the `slider` to see if it is hidden
+    or open. If it is open at the end of the animation, we remove the border from
+    the bottom of the `header` and then change the icon in the `header`, so that it
+    points up to indicate that the basket can be closed by clicking on the icon again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `slider` is now closed, we add the bottom border and rounded corners
+    to the `header` once again, and change the icon back to an arrow pointing down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also use a little CSS in this example. Create the following stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectSlide.css` in the `css` folder. We don't need much CSS in
+    this example, because we are using the CSS framework classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The effect in progress should appear as in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing the sliding effect](img/2209OS_14_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In this example, we could easily just use jQuery's native `slideToggle()` method;
+    the main benefit of using jQuery UI's slide effect is that we can also slide left
+    or right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using easing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As mentioned earlier that the `jquery.ui.effect.js` file had the built-in ability
+    to seamlessly use easing with the effects. Let''s see how easy this is to achieve.
+    Change the last `<script>` element in `effectSlide.html`, so that it appears as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectsSlideEasing.html`. See how easy that was? All we need to
+    do is add the `easing` option within the effect's configuration object and define
+    one or more of the easing methods as the option value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we specify a different easing method for each toggle state
+    by setting a variable which uses the JavaScript ternary condition to set an easing
+    function, depending on whether the slider is visible or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the basket slides down, it bounces slightly at the end of the animation
+    with `easeOutBounce`. When it slides back up, it will gradually slow down over
+    the course of the animation using `easeOutQuart`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The full range of easing methods, which we can use with any of the effects are
+    shown on an excellent page on the jQueryUI site and can be seen at [http://jqueryui.com/demos/effect/easing.html](http://jqueryui.com/demos/effect/easing.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the blind effect
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The blind effect is practically the same as the slide effect. Visually, the
+    element appears to do the same thing, and the two effects' code files are also
+    extremely similar. The main difference between the two effects that we need to
+    worry about is that with this effect we can only specify the axis of the effect,
+    not the actual direction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The blind effect has the following configuration options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `direction` | `"vertical"` | Sets the axis of motion |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `easing` | `none` | Sets the easing function used during the animation |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `mode` | `"hide"` | Sets whether the element is hidden or shown |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The `direction` option that this effect uses for configuration only accepts
+    the values `horizontal` or `vertical`. We''ll build on the last example to see
+    the blind effect in action. Change the `<script>` resource for the blind effect
+    in `effectSlide.html`, so that it refers to the `jquery.ui.effect-blind.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now change the `toggle()` method, so that it uses the blind effect, and change
+    the value of the `direction` configuration option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectBlind.html`. Literally, all we've changed is the string
+    specifying the effect, in this case to `blind`, and the value of the `direction`
+    property from `up` to `vertical`. Notice the subtle difference when we view the
+    file between sliding the element and blinding it up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the login form slides up, the bottom of the element remains visible at
+    all times, as if the whole basket is moving up into or out of the header. However,
+    with the blind effect, the element is shown or hidden, starting with the bottom
+    first, just like a window blind opening or closing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clipping elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The clip effect is very similar to the slide effect. The main difference is
+    that instead of moving one edge of the targeted element towards the other, to
+    give the effect of the element sliding out of view, the clip effect moves both
+    edges of the targeted element in towards the center.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The clip effect has the same configuration options as the blind effect and these
+    options have the same default values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the end of [Chapter 5](ch05.html "Chapter 5. The Dialog"), *The Dialog*,
+    we created an example that showed a full-size image in a dialog when a thumbnail
+    image was clicked. When the close button on the dialog was pressed, the dialog
+    was simply removed from the page instantly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could easily use the clip effect to close our dialog instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `dialog14.html`, add the source files for the clip effect after the existing
+    library files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, change the dialog configuration object so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `effectClip.html`. In this simple addition to the existing file,
+    we use the clip effect in conjunction with the `close` event callback to hide
+    the dialog from view. The default configuration value of `vertical` for the `direction`
+    option and the default speed of normal are both fine, so we just call the `hide`
+    method, specifying clip with no additional arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the dialog being clipped:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Clipping elements](img/2209OS_14_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Folding elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Folding is a neat effect that gives the appearance that the element it's applied
+    to is being folded up like a piece of paper. It achieves this by moving the bottom
+    edge of the specified element up to 15 pixels from the top, then moving the right
+    edge completely over towards the left edge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The distance from the top that the element is shrunk to in the first part of
+    this effect is exposed as a configurable property by the effect's API. So, this
+    is something that we can adjust to suit the needs of our implementation. This
+    property is an integer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can see this effect in action by modifying the dialog example once again.
+    In `effectClip.html`, change the effect source file for clip to fold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the `hide` event callback to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `effectFold.html`. This time we make use of the size configuration
+    option to make the effect stop in the first fold, 200 pixels before the top of
+    the dialog. We also slow the animation down a little, by setting the duration
+    to 1000 milliseconds. It''s a really nice effect; the following screenshot shows
+    the second part of the animation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Folding elements](img/2209OS_14_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we've covered the complete range of UI effects available in
+    the jQuery UI library. We've seen how easy it is to use the `jquery.ui.effect.js`
+    base component to construct attractive color animations and smooth class transitions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also saw that the following effects can be used in conjunction with the
+    simple effect API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bounce
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Highlight
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Shake
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Transfer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'An important point is that most of the individual effects can be used not only
+    with the effect API but can also make use of `show`/`hide` and `toggle` logic,
+    making them incredibly flexible and robust. The following effects can be used
+    with this advanced API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Blind
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Clip
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Drop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Explode
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fold
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Puff
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pulsate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scale
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Slide
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We also saw that the jQuery UI effects' core files also include all of the easing
+    functions used in the `jquery.easing.js` plugin that must be used with jQuery
+    when we are not using jQuery UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This now brings us to the end of this chapter. There is a saying that I'm sure
+    almost all of you will have heard before. It's the "Give a man a fish..." saying.
+    I hope that during the course of this book, I've taught you how to fish, instead
+    of just giving you a fish.
+  prefs: []
+  type: TYPE_NORMAL

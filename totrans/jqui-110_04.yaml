@@ -1,0 +1,1016 @@
+- en: Chapter 4. The Accordion Widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The accordion widget is another UI widget that allows you to group the content
+    into separate panels that can be opened or closed by visitor interaction. Therefore,
+    most of its content is initially hidden from view, much like the tabs widget that
+    we looked at in the previous chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each container has a heading element associated with it that is used to open
+    the container and display the content. When you click on a heading, its content
+    will slide into view (with an animation) below it. The currently visible content
+    is hidden, while the new content is shown whenever we click on an accordion heading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we are going to cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of an accordion widget
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The default implementation of an accordion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding custom styling
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the configurable options to set different behaviors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with methods for controlling the accordion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The built-in types of animation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom accordion events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The accordion widget is a robust and highly configurable widget that allows
+    you to save the space on your web pages by displaying only a single panel of content
+    at any time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows an example of an accordion widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Accordion Widget](img/2209OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It's easy for our visitors to use and easy for us to implement. It has a range
+    of configurable options that can be used to customize its appearance and behavior,
+    and exposes a series of methods that allow you to control it programmatically.
+    It also comes with a rich set of interaction events that we can use to hook into
+    key interactions between our visitors and the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The height of the accordion's container element will be set automatically so
+    that there is room to show the tallest content panel in addition to the headers.
+    Also, by default, the size of the widget will remain fixed so that it won't push
+    other elements on the page around it out of the way when content panels open or
+    close.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Structuring the accordion widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's take a moment to familiarize ourselves with the underlying markup that
+    an accordion is made of. Within the outer container is a series of links. These
+    links are the headings within the accordion and each heading will have a corresponding
+    content panel that opens when the header is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It''s worth remembering that only one content panel can be open at a time when
+    using the accordion widget. In a blank page in your text editor, create the following
+    page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the file as `accordion1.html` in the `jqueryui` folder, and try it out
+    in a browser. The widget should appear as it did in the screenshot at the start
+    of the chapter, fully skinned and ready for action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following list shows the required dependencies of the widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery.ui.all.css`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.accordion.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As we saw with the tabs widget, each widget has its own source file (although
+    it may be dependent on others to provide functionality); these must be referenced
+    in the correct order for the widget to work properly. The jQuery library must
+    always appear first, followed by the `jquery.ui.core.js` file. After that, the
+    file that contains the required dependencies must follow. These files should be
+    present before referencing the widget's on-script file. The library components
+    will not function as expected if the files are not loaded in the correct order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The underlying markup required for the accordion is flexible, and the widget
+    can be constructed from a variety of different structures. In this example, the
+    accordion headings are formed from links wrapped in the `<h2>` elements, and the
+    content panels are the simple `<div>` elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the accordion to function correctly, each content panel should appear directly
+    after its corresponding header. All of the elements for the widget are enclosed
+    within a `<div>` container that is targeted with the `accordion()` widget method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the required script dependencies from the library, we use a custom `<script>`
+    block to transform the underlying markup into the accordion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To initialize the widget, we use a simple ID selector `$("#myAccordion")`, to
+    specify the element that contains the markup for the widget, and then chain the
+    `accordion()` widget method after the selector to create the accordion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this example, we used an empty fragment (`#`) as the value of the `href`
+    attribute in our tab heading elements, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should note that any URL supplied for the accordion headers will not be
+    followed when the header is clicked in the default implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to the tabs widget that we looked at in the previous chapter, the underlying
+    markup that is transformed into the accordion has a series of classnames added
+    to it when the widget is initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A number of different elements that make up the widget are given `role` and
+    `aria-` attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Accessible Rich Internet Applications** (**ARIA**) is a W3C recommendation
+    for ensuring that rich-internet applications remain accessible to assisted technologies.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The accordion panels that are initially hidden from view are given the `aria-expanded
+    = "false"` attribute to ensure that screen readers don''t discard or cannot access
+    content that is hidden using `display: none`. This makes the accordion widget
+    highly accessible; it stops the reader from having to wade through lots of content
+    unnecessarily, that might be hidden, and tells the user that they can also expand
+    or collapse the panel, depending on the current value of the `aria-expanded` attribute.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling the accordion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: ThemeRoller is the recommended tool for choosing or creating the theme of the
+    accordion widget, but there may be times when we want to considerably change the
+    look and style of the widget beyond what is possible with ThemeRoller. In that
+    case, we can just style our own accordion—in our example, we're going to flatten
+    the styling effect, add a border, and remove the corners from some of the elements
+    within the accordion widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new file in your text editor add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `accordionTheme.css` in the css folder, and link to it after
+    the jQuery UI style sheet in the `<head>` element of `accordion1.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the new file as `accordion2.html` in the `jqueryui` folder and view it
+    in a browser. It should appear something like as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Styling the accordion](img/2209OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see from the preceding screenshot, we've disabled the built-in rounded
+    corners that are added by the theme file and have set alternative fonts, background
+    colors, and border colors. We haven't changed the widget much, but we haven't
+    used many style rules. It would be easy to continue overriding rules in this way
+    to build a much more complex custom theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring an accordion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The accordion has a range of configurable options that allow us to change the
+    default behavior of the widget. The following table lists the available options,
+    their default values, and gives a brief description of their usage:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `active` | `first child` (the first panel is open) | Sets the active heading
+    on page load. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `animate` | `{}` | Controls the animation of panels. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `collapsible` | `false` | Allows all of the content panels to be closed at
+    the same time. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disables the widget. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event` | `"click"` | Specifies the event on headers that trigger drawers
+    to open. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `header` | `"> li >:first-child,> :not(li):even"` | Sets the selector for
+    header elements. Although it looks complex, this is a standard jQuery selector
+    that simply targets the first child within every odd `<li>` element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `heightStyle` | `"auto"` | Controls the height of the accordion and each
+    panel |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `icons` | `''header'': ''ui-icontriangle-1-e'', ''headerSelected'': ''uiicon-
+    triangle-1-s''` | Specifies the icons for the header elements and the selected
+    state. |'
+  prefs: []
+  type: TYPE_TB
+- en: Changing the trigger event
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Most of the options are self-explanatory, and the values they accept are usually
+    Boolean, string, or element selectors. Let''s put some of them to use, so that
+    we can explore their functionality. Change the final `<script>` element in `accordion2.html`
+    so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We no longer need the custom stylesheet added in `accordion2.html`, so go ahead
+    and remove the following line from the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save these changes as `accordion3.html`. First, we create a new object literal
+    called `accOpts` that contains the `event` key and the `mouseover` value, which
+    is the event we wish to use to trigger the opening of an accordion panel. We pass
+    this object to the `accordion()` method as an argument and it overrides the default
+    option of the widget, which is `click`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `mouseover` event is commonly used as an alternative trigger event. Other
+    events can also be used, for example, we can set `keydown` as the event, but in
+    order for this to work, the accordion panel that we wish to open must already
+    be focused. You should note that you can also set options using an inline object
+    within the widget method, without creating a separate object. Using the following
+    code would be equally as effective, and would often be the preferred way of coding,
+    which we will use for the remainder of the book:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Changing the default active header
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'By default, the first header of the accordion will be selected when the widget
+    is rendered with its content panel open. We can change which header is selected
+    on page load using the `active` option. Change the configuration `<script>` block
+    in `accordion3.html` so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this version as `accordion4.html`. We set the `active` option to the integer
+    `2` to open the third content panel by default, and similar to the tab headers
+    that we saw in the previous chapter, accordion's headers use a zero-based index.
+    Along with an integer, this option also accepts a jQuery selector or raw DOM element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also use the Boolean value of `false` to configure the accordion so
+    that none of the content panels are open by default. Change the configuration
+    object once again to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you use the `active: false` option, as shown here, you must also include
+    the `collapsible` option too, which must be set to true for `active` to work correctly.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Save this as `accordion5.html`. Now when the page loads, all of the content
+    panels are hidden from view:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Changing the default active header](img/2209OS_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The accordion will remain closed until one of the headers is selected, which
+    will remain open unless the active header is clicked; at this point, its associated
+    content panel will close. For usability, it is best to avoid configuring both
+    this and the `mouseover` event option together in the same implementation, as
+    the open panels would close even when the user inadvertently moused off-and-back
+    over them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Filling the height of its container
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If the `heightStyle` option is set, it will force the accordion to take the
+    full height of its container. In our examples so far, the container of the accordion
+    has been the body of the page, and the height of the body will only be the height
+    of its largest element. We'll need to use a new container element with a fixed
+    height to see this option in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `<head>` element of `accordion5.html`, add the following `<style>` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then wrap all of the underlying markup for the accordion in a new container
+    element as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, change the configuration `<script>` to use the `heightStyle` option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the changes as `accordion6.html`. The new container is given a fixed height
+    and width using the CSS specified in the `<head>` element of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In most cases, you'll want to create a separate style sheet. For our purposes,
+    with just a single selector and two rules, using the style tag in our HTML file
+    is most convenient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `heightStyle` option forces the accordion to take the entire height of
+    its container, and restricting the width of the container naturally reduces the
+    width of the widget too. This page should appear as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Filling the height of its container](img/2209OS_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using the accordion animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The accordion widget comes with the built-in slide animation that is enabled
+    by default, and has been present in all of our examples so far. Disabling this
+    animation is as easy as supplying `false` as the value of the `animate` option.
+    Remove the `<style>` tag from the `<head>` element of the page in `accordion6.html`,
+    and remove the additional container `<div>`, then change the configuration object
+    so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `accordion7.html`. This will cause each content panel to open immediately
+    instead of sliding-open nicely whenever a header is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An alternate animation has also been built into the widget—the `EaseOutBounce`
+    animation. However, to use this alternate animation, we need to add a link to
+    the `jquery.ui.effect.js` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Directly after the link to `jquery.ui.accordion.js` at the top of the `<head>`
+    element, add the following line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, change the configuration object in our custom `<script>` element so that
+    it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save these changes as `accordion8.html`. Although the accordion panels close
+    in exactly the same way as they did in previous examples, when they open they
+    bounce a few times at the end of the animation. It's a great way to make the animation
+    more interesting, and as we saw in this example, it's easy to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition to the two preconfigured animations, we can also use any of the
+    different easing effects defined within the `jquery.ui.effect.js` file, including
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`easeInQuad`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInCubic`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInQuart`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInQuint`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInSine`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInExpo`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInCirc`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInElastic`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInBack`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`easeInBounce`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each of these easing methods is complimented by `easeOut` and `easeInOut` counterparts.
+    For the complete list, see the `jquery.ui.effect.js` file, or refer to the easing
+    table in [Chapter 14](ch14.html "Chapter 14. UI Effects"), *UI Effects*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: See the jQuery UI demo site for some great examples of the accordion effects
+    at [http://jqueryui.com/accordion/](http://jqueryui.com/accordion/). The effects
+    can be applied to any widget that can be animated, such as the accordion, tabs,
+    dialog or datepicker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The easing effects don''t change the underlying animation, which will still
+    be based on the slide animation. But they do change how the animation progresses.
+    For example, we can make the content panels bounce both at the start and end of
+    our animation by using the `easeInOutBounce` easing effect in our configuration
+    object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `accordion9.html` and view it in a browser. Most of the easing
+    effects have opposites, for example, instead of making the content panels bounce
+    at the end of the animation, we can make them bounce at the start of the animation
+    using the `easeInBounce` easing effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another option that has an effect on animations is the `heightStyle` property,
+    which resets `height` and `overflow` styles after each animation. Remember that
+    animations are enabled by default, but this option isn''t. Change the configuration
+    object in `accordion9.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `accordion10.html`. Now when the page is run, the accordion will
+    not keep to a fixed size; it will grow or shrink depending on how much content
+    is in each panel. It doesn't make much of a difference in this example, but the
+    property really comes into its own when using dynamic content, when we may not
+    always know how much content will be within each panel when the panel content
+    changes frequently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Listing the accordion events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The accordion exposes three custom events, which are listed in the following
+    table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Triggered when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `activate` | The active header has changed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `beforeActivate` | The active header is about to change |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `create` | The widget has been created |'
+  prefs: []
+  type: TYPE_TB
+- en: The `activate` event is triggered every time the active header (and its associated
+    content panel) is changed. It fires at the end of the content panel's opening
+    animation, or if animations are disabled, immediately (but still after the active
+    panel has been changed).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `beforeActivate` event is fired as soon as the new header is selected, that
+    is, before the opening animation (or before the active panel has changed, if animations
+    are disabled). The `create` event is fired as soon as the widget has been initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the change event
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s see how we can use these events in our accordion implementations. In
+    `accordion10.html`, change the configuration object so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `accordion11.html`. In this example, we use the `activate` configuration
+    option to specify an anonymous callback function that is executed every time the
+    active panel is changed. This function will automatically receive two objects
+    as arguments. The first object is the `event` object, which contains the original
+    browser `event` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second argument is an object, which contains useful information about the
+    widget, such as the header element that was activated (`ui.newHeader`) and the
+    header that was deactivated (`ui.oldHeader`). The second object is a jQuery object,
+    so we can call jQuery methods directly on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this example, we navigate down to the `<a>` element within the header and
+    display its text content in an information box, which is appended to the page
+    and then removed after a short interval with a fading animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For reference, the `ui` object also provides information on the content panels
+    in the form of `ui.newPanel` and `ui.oldPanel` properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once a header has been activated, and its content panel is shown, the notification
+    will be generated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the change event](img/2209OS_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Configuring the beforeActivate event
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `beforeActivate` event can be used in exactly the same way, and any callback
+    function we specify using this event also receives the `e` and `ui` objects to
+    use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the configuration object from the last example to as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this as `accordion12.html`. All that's changed is the property that we're
+    targeting with our configuration object. When we run the page, we should find
+    that everything is exactly as it was before, except that our notification is produced
+    before the content panel animation instead of after it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are also events such as `accordionactivate` and `accordionbeforeactivate`
+    for use with the standard jQuery `on()` method, so that we can specify a callback
+    function to execute outside of the accordion configuration. Using an event handler
+    in this manner allows us to fire it precisely in response to specific events,
+    rather than when the page is rendered on screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, let''s rework the script block for the demo we''ve just created,
+    to use the `accordionbeforeactivate` event handler. If you wanted to use this
+    format instead, simply replace the `<script>` block from `accordion12.html` with
+    the below script – you can see the main changes highlighted in the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we've moved the `beforeActivate` event handler out of the main
+    configuration call to Accordion, into its own event handler. Here, we've tied
+    the event handler to the document object; we could equally have bound it to an
+    object such as a button or hyperlink on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Explaining the accordion methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The accordion includes a selection of methods that allow you to control and
+    manipulate the behavior of the widget programmatically. Some of the methods are
+    common to each component of the library, such as the `destroy` method that is
+    used by every widget. The following table lists the sole method for the accordion
+    widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Method | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `refresh` | Recalculates the height of the accordion panels; the outcome
+    is dependent on the content and the `heightStyle` options |'
+  prefs: []
+  type: TYPE_TB
+- en: Header activation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `option` method can be used to programmatically show or hide different
+    drawers. We can easily test this method using a textbox and a new button. In `accordion12.html`,
+    add the following new markup directly after the accordion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now change the `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the new file as `accordion13.html`. The `option` method takes two additional
+    arguments. It expects to receive the name of the option to use, as well as the
+    index (zero-based) number of the header element to activate. In this example,
+    we obtain the header to activate, by returning the value of the text input. We
+    convert it to an integer using the `parseInt()` function of JavaScript because
+    the `val()` jQuery method returns a string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If an index number that doesn't exist is specified, nothing will happen. The
+    first header will be activated if no index is specified. If a value other than
+    an integer is specified, nothing will happen; the script will fail silently, without
+    any errors, and the accordion will continue to function as normal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding or removing panels
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Prior to Version 1.10, the only way you could change the number of panels in
+    an accordion was to destroy it and reinitialize a new instance. While this worked,
+    it was not a satisfactory way to implement any changes, with this in mind the
+    jQuery team have worked hard to introduce a new method, which brings it in line
+    with other widgets, which don't require recreating in order to change any configured
+    options. Let's test this method using an input button, to create our new panels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `accordion13.html`, change the markup immediately below the accordion to
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alter the `<script>` block, so it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the new file as `accordion14.html`. In this example, we've created the
+    additional markup content for a new accordion panel, which we assign to the `newDiv`
+    variable. This we append to the myAccordion `<div>`, which is then refreshed using
+    accordion's `refresh` method. This does not require any arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We've specified the default text to be used within the markup for each accordion
+    panel. This could easily be altered to include whatever text you need, as long
+    as the same markup is maintained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the page loads, we can click on **Add Accordion** to add any number of
+    new accordion panels, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding or removing panels](img/2209OS_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'However, if we need to remove an accordion panel, this involves a little more
+    work—the markup comes in two parts (header and panel), so we have to remove both
+    separately. Alter the markup immediately below the accordion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now change the `<script>` block as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the new file as `accordion15.html`; when the page loads, enter `1` and
+    click on **Remove** to remove the middle header and its panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding or removing panels](img/2209OS_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In this example, we obtain the accordion to remove by returning the value of
+    the text input. If an index number that doesn't exist is specified, nothing will
+    happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use `eq()` to find both the header and panel to remove, based on the
+    given value, once found, they are then removed. The final stage is to `refresh`
+    the accordion so a new header and panel can then be selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resizing an accordion panel
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Change the underlying markup for the accordion widget in `accordion10.html`
+    so that the third header points to a remote text file and the third panel is empty.
+    The heading element should also be given an `id` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will see in the code that we've made reference to a text file, which will
+    host our remote content. In a new file within your editor, add some dummy text,
+    and save it with the name `remoteAccordion.txt`. (A copy of this file is available
+    with the code download that accompanies this book).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `accordion16.html`. To view this example correctly, you will
+    need to have installed a local web server, such as WAMP (for PC), or MAMP (Mac),
+    otherwise the contents of the `remoteAccordion.txt` file will not be rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our configuration object, we use the `beforeActivate` event to check whether
+    the `id` of the element matches the `id` we gave to our remote accordion heading.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If it does, we get the contents of the text file specified in the `href` attribute
+    of the `<a>` element, using jQuery's `get()` method. If the request returns successfully,
+    we add the contents of the text file to the empty panel after the header. This
+    all happens before the panel opens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then use the `activate` event to call the `refresh` method on the accordion,
+    after the panel has opened.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we run the page in a browser, the contents of the remote text file should
+    be sufficient to cause a scroll bar to appear within the content panel. Calling
+    the `refresh` method allows the widget to readjust itself, so that it can contain
+    all of the newly added content without displaying the scroll bar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will have seen from the code that we've used the `newHeader` property in
+    two places; one as a part of loading the content, and the second to refresh the
+    panel once content has been added. Let us explore this for a moment, as it is
+    a key part of how we can access content in any accordion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `ui` object contains four properties that allow us to access the content
+    within the header or panel of any accordion that has been added to a page. The
+    full list is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Header | Access content in… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.newHeader` | The header that was just activated |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.oldHeader` | The header that was just deactivated |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.newPanel` | The panel that was just activated |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui.oldPanel` | The panel that was just deactivated |'
+  prefs: []
+  type: TYPE_TB
+- en: Once we've referenced the relevant panel or header, we are then free to manipulate
+    the contents at our discretion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accordion interoperability
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Does the accordion widget play nicely with other widgets in the library? Let's
+    take a look and see whether the accordion can be combined with the widget from
+    the previous chapter, the tabs widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Change the underlying markup for the accordion so that the third content panel
+    now contains the markup for a set of tabs, and the third heading no longer points
+    to the remote text file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We should also link to the source file for the tabs widget after the accordion''s
+    source file; add this line immediately below the call to `jquery.ui.widget.js`
+    in your code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the final `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this file as `accordion17.html`. All we've done with this file is to add
+    a simple tab structure to one of the accordion's content panels. In the `<script>`
+    element at the end of the page, we just call the accordion and tab's widget methods.
+    No additional or special configuration is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the third accordion heading is activated, the page should appear as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Accordion interoperability](img/2209OS_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The widgets are compatible the other way round; that is, we can have an accordion
+    within one of the tab's content panels without any adverse effects as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using multiple accordions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've seen how you can easily use the accordion with other widgets on the page.
+    What about using multiple accordions on the same page? This is equally not a problem;
+    we can have multiple accordions on the same page, as long as we configure the
+    call(s) to the accordion properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In your text editor, add the following markup immediately below the existing
+    block in `accordion1.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to allow for the second accordion widget in our code, so adjust the
+    `<script>` block as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the file as `accordion18.html`. If we preview the results in our browser,
+    you should see something as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using multiple accordions](img/2209OS_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: All we've done is to duplicate the existing markup for the first accordion;
+    the trick is in how we initiate the second accordion functionality within our
+    script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this book, we've used selector IDs to initiate our accordions; this
+    is perfect, particularly when there is only one accordion on the page. If we have
+    multiple accordions on the same page (or even in the same website), this can become
+    clumsy, as we are duplicating code unnecessarily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can get around this by switching to using classes, in place of selector IDs,
+    accordion can easily use either method. In our example, we've assigned a classname
+    of `.myAccordion` to both the accordions. We've then used this to initiate the
+    call to `.accordion()` in our script. This allows us to share common functionality
+    throughout multiple accordions, without duplicating code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we need to override the configuration for one or more of these accordions
+    though, we can do this by adding a second separate class to our markup, in this
+    instance, we want to change the second accordion to use **+** and **–** icons,
+    in place of arrowheads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To implement this, the second accordion has been assigned the `.myAccordion
+    .two` classes. The second class is then used as the basis for the call to a second
+    `accordion()` instance; this overrides the original configuration, but only for
+    those accordions that have the additional `.two` class assigned to them. We can
+    then extend this principle to apply to any other accordion that should have different
+    functionality to the first by adding a second class to the accordion's markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We first looked at what the accordion does and how it is targeted by the CSS
+    framework. We then moved on to look at the configurable options that can be used
+    to change the behavior of the accordion, such as specifying an alternative heading
+    to be open by default, or setting the event that triggers the opening of a content
+    drawer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Along with configurable options, we saw that the accordion exposes several custom
+    events. Using them, we can specify callback functions during configuration, or
+    bind to them after configuration to execute additional functionality, in reaction
+    to different things happening to the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we looked at the accordion's default animation and how we can animate
+    the opening of content panels, using easing effects. We saw that to make use of
+    non-standard animations or easing effects, the `jquery.ui.effect.js` file needs
+    to be included along with the requisite custom effect file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to looking at these options, we also saw that there are a range
+    of methods which can be called on the accordion to make it do things programmatically.
+    In the next chapter, we get to play with the dialog widget, which allows us to
+    create a flexible, highly configurable overlay that floats above the page and
+    displays any content we specify.
+  prefs: []
+  type: TYPE_NORMAL

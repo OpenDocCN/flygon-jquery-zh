@@ -1,0 +1,1041 @@
+- en: Chapter 9. Creating Menus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The menu widget, previously a part of the autocomplete widget, became a standalone
+    plugin in its own right from Version 1.9 of the library, which allows for its
+    re-use in other components. It can be used on its own to transform a list of hyperlinks
+    into a themeable menu that can be controlled using the keyboard or mouse, although
+    it really comes into its own when used with other components such as buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each menu has a number of menu items associated with it, which when selected
+    will direct the visitor to any part of your site. When you click on the top level,
+    a number of submenu items will slide into view; these may have extra decoration
+    in the form of icons, or be disabled if access is to be prevented at the time
+    of accessing the menu option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to turn a list into a menu, with or without submenus
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The options available for configuring a menu
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding style to menus
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Manipulating menu items with icons and dividers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enabling and disabling menu options programmatically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Responding to events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating horizontal and context menus
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Extending a `<select>` box using jQuery UI's menu
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing a basic menu widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Navigation is a crucial element of the web design; a poorly designed menu will
+    always detract from good content. Good navigation must be both aesthetically pleasing
+    and usable. Using the jQuery UI menu widget, we can create the perfect navigation
+    for your website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although it is possible to use a variety of different elements to create our
+    menu, the `<ul>` element is by far the most common one to use. Menus can be created
+    from any valid markup, as long as the elements have a strict parent-child relationship,
+    with each menu having its own anchor. Following the first example, where we will
+    take a series of European towns and convert them into a basic menu we will further
+    explore the structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new file in your text editor, create the following page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the code as `menu1.html` in your `jqueryui` working folder. Let's take
+    a moment to familiarize ourselves with the code that goes into making the markup
+    required for a menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need the following files from the library to create a menu from our chosen
+    elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`jquery-2.0.3.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.core.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.widget.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.position.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.ui.menu.js`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'When you view the page in a browser, you''ll see that we''ve turned our unordered
+    list into a simple menu. We''ve added an additional style in our example, unlike
+    other library components, the menu widget needs some additional styling, otherwise
+    it will consume 100 percent of the width of its container by default, which will
+    be the screen. You can see the results in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing a basic menu widget](img/2209OS_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'A menu widget is normally constructed from several standard HTML elements arranged
+    in a specific manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An outer container element, on which the `menu()` method is called (this can
+    be either a `<ul>` or `<ol>` element)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An `<a>` element within an `<li>` element for each menu item
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An element for the title of each menu item
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: These elements can be either hardcoded into the page, added dynamically, or
+    can be a mixture of both, depending upon the requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we need on the page is a list, using either the `<ul>` or `<ol>` tags. In
+    our example we've created a more complex example, which jQuery UI uses to turn
+    into a menu with two levels of submenus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After linking first to the jQuery core library, we link to the `jquery.ui.core.js`
+    and `jquery.ui.widget.js` files that are required by all UI-based components,
+    the file, and finally `jquery.ui.position.js`. We then link to the component's
+    source file, which in this case is `jquery.ui.menu.js`. We can then turn to our
+    custom `<script>` element in which we add the code that creates the menu. This
+    is then executed as soon as the Document Object Model (DOM) is loaded and ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within this function we simply call the `menu()` widget method on the jQuery
+    object, representing our menu container element (the `<ul>` element with an id
+    of `myTabs`). When we run this file in a browser, we should see the tabs as they
+    appeared in the first screenshot of this chapter (without the annotations of course).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the menu CSS framework classes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using Firebug for Firefox (or another generic DOM explorer), we can see that
+    a variety of classnames are added to the different underlying HTML elements that
+    go to make up a menu widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s review these classnames briefly and see how they contribute to the overall
+    appearance of the widget. To the outer container `<ul>`, the following classnames
+    are added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Classname | Applies/Applied to |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-menu` | The outer container of the menu. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-widget` | The outer container of all widgets. It sets font family and
+    font size to widgets. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-widget-content` | Applies content container styles to an element and
+    its child text, links, and icons (applicable to a parent or sibling of the header).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-corner-all` | Applies corner radius to all four corners of the element
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-menu-icons` | The submenu icons set via the `icons` option when initiating
+    the menu. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The first element within the container is the `<li>` element. This element
+    receives the following classnames:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Classname | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-state-disabled` | Applies a dimmed opacity to the disabled UI elements.
+    This should be added in addition to an already-styled element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-menu-item` | The container for individual menu items. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-menu-divider` | Applies a divider between the menu items, if added to
+    a `<li>` element. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Finally, the `<a>` elements within each of the `<li>` element are given the
+    following classnames:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Classname | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-state-focus` | Applies a clickable focus container style to an element
+    and its child text, links, and icons. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-state-active` | Applies a clickable active container style to an element
+    and its child text, links, and icons. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-icon` | Applies a base class to an icon element. Sets dimensions to a
+    16 px square block, hides inner text, and sets the background image to the content
+    state sprite image. The background image for this class will be influenced by
+    the parent container; if for example, the `ui-icon` element within a `ui-state-default`
+    container will get colored according to the icon color of `ui-state-default.`
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `ui-icon-xxx-xxx` | Applied as a second class to describe the type of the
+    icon. The syntax for the icon classes generally follows the format of `.ui-icon-{icon
+    type}-{icon sub description}-{direction}`. For a single triangle icon pointing
+    to the right, the format would be `.ui-icon-triangle-1-e`.For more examples of
+    icon names, hover over the icons in the ThemeRoller at [http://jqueryui.com/themeroller/](http://jqueryui.com/themeroller/).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Most of these classnames are added to the underlying HTML elements automatically
+    by the library, with the exception of the classes used for displaying icons or
+    menu dividers; the latter should be added as part of designing your menu structure.
+    For more examples of CSS classnames, it is worth taking a look at [http://api.jqueryui.com/theming/css-framework/](http://api.jqueryui.com/theming/css-framework/),
+    this details all of the CSS classes available within the framework, which can
+    be applied to most (if not all) widgets within the jQuery UI library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You may like to take a look at the link, which details some good practices
+    for building menus: [https://developer.apple.com/library/mac/documentation/UserExperience/Conceptual/AppleHIGuidelines/Menus/Menus.html#//apple_ref/doc/uid/TP30000356-TP6](https://developer.apple.com/library/mac/documentation/UserExperience/Conceptual/AppleHIGuidelines/Menus/Menus.html#//apple_ref/doc/uid/TP30000356-TP6)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring menu options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Each of the different components in the library has a series of options that
+    control which features of the widget are enabled by default. An object literal,
+    or an object reference, can be passed in to the `menu()` widget method to configure
+    these options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The available options to configure non-default behaviors are shown in the following
+    table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Default value | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `disabled` | `false` | Disables the menu if set to `true`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `icons` | `{submenu: "ui-icon-carat-1-e"}` | Sets the icons to use for submenus,
+    matching an icon provided by the jQuery UI CSS framework. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `menus` | `"ul"` | Assigns the selector for the elements that serve as the
+    menu container, including submenus. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `position` | `{ my: "left top", at: "right top" }` | Identifies the position
+    of submenus in relation to the associated parent menu item. The `of` option defaults
+    to the parent menu item, but you can specify another element to position against.
+    There are more details on how to use the positioning widget, in [Chapter 2](ch02.html
+    "Chapter 2. The CSS Framework and Other Utilities"), *The CSS Framework and Other
+    Utilities*. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `role` | `"menu"` | Customizes the **Accessible Rich Internet Application**
+    (**ARIA**) roles used for the menu and menu items. Roles cannot be changed once
+    they have been initialized: any existing menus, submenus, or menu items will not
+    be updated once they have been created. |'
+  prefs: []
+  type: TYPE_TB
+- en: Styling menus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'All of the UI-based widgets in the jQuery UI library—and the menu widget is
+    no different—can be customized using either one of the prebuilt themes available
+    from [http://jqueryui.com/download/](http://jqueryui.com/download/) or by customizing
+    one using the ThemeRoller tool available at [http://jqueryui.com/themeroller/](http://jqueryui.com/themeroller/).
+    All you need to do is to download your theme, and then alter the following line
+    in the code, to reflect the name of the new theme in use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can even change to using a theme hosted on a CDN connection, if preferred.
+    The key to this is to choose whichever best suits your development workflow and
+    environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying the state of the selected menu options using icons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In our next example, we'll see how we can enhance the appearance of selected
+    menu items by adding icons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In your text editor, remove the existing markup between the `<body>` tags,
+    and replace it with this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to tweak the styling slightly, so in a separate file, add the following,
+    and save it as `menuIcons.css`—don''t forget to add a link to it from your page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add the following reference to this new stylesheet in the `<head>` tag of `menu1.html`
+    and re-save the file as `menu2.html`. We can remove the existing styling too,
+    as this is no longer required. When the page is loaded in a browser, we can now
+    see the icons that have been applied to selected menu items, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Displaying the state of the selected menu options using icons](img/2209OS_09_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can take this a step further, let''s say we didn''t like the icon used to
+    indicate the presence of submenus, and wanted to change it. This is easy enough
+    to do. Alter the `<script>` block from our last example, as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `menu3.html`. If you load this into a browser now, you will find
+    the icon has changed to an arrow inside a circle. While this works perfectly,
+    it could benefit from a slight adjustment to its position. Add the following to
+    the `menuIcons.css` stylesheet, and save it as `menuIconsOverrides.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Don''t forget to update the CSS link in your code too:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s preview this in a browser. You should find the icon is now better placed,
+    as shown in this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Displaying the state of the selected menu options using icons](img/2209OS_09_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding dividers to menus
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So far we've seen how to set up a basic menu and add icons, one feature that
+    you may often see, but which is so far lacking, is the use of dividers. Menu dividers
+    help group related items together, or can act to separate fixed menu items from
+    those that may change, such as a recent items list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two ways you can achieve this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Addition of `class="ui-menu-divider"` to a `<li>` item.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Insertion of `<li>-</li>` between menu items. These should not be wrapped in
+    any other tags, such as the `<a>` link tags.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Either option will work perfectly and produce the same results, but they work
+    on different principles and have different merits. The CSS option is perhaps the
+    most descriptive, but requires more markup with the body of your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a copy of `menu2.html`, alter the markup as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this as `menu4.html`. When loading this into your browser, you will see
+    a menu separator appear, immediately after the **File** menu option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding dividers to menus](img/2209OS_09_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You can also achieve this using the `<li>-</li>` route; this requires less
+    markup and is more akin to the method used by those used to programming in code,
+    such as C#. Alter the code immediately after the `Address Book` option, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The styling will be applied by jQuery UI automatically to turn this into a separator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using menu methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The menu widget contains a host of different methods, in addition to the core
+    methods such as `destroy`, `disable`, `enable`, `option`, and `widget`, which
+    means that it has a rich set of different behaviors. It also supports the implementation
+    of advanced functionality that allows us to work with it programmatically. Let''s
+    take a look at the methods, which are listed in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Use |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `blur` | Removes focus from a menu, resets any active element styles, and
+    triggers the menu''s `blur` event. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `collapse` | Closes the currently active submenu. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `collapseAll` | Closes all open submenus. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `expand` | Opens the submenu below the currently active item, if one exists.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `focus` | Activates a particular menu item, begins opening any submenu, if
+    present, and triggers the menu''s `focus` event. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `isFirstItem` | Returns a Boolean value stating whether or not the currently
+    active item is the first item in the menu. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `isLastItem` | Returns a Boolean value stating whether or not the currently
+    active item is the last item in the menu. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `next` | Moves active state to the next menu item. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `nextPage` | Moves active state to the first menu item below the bottom of
+    a scrollable menu or the last item if not scrollable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `option` | Gets or sets any property after the widget has been initialized.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `previous` | Moves the active state to the previous menu item. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `previousPage` | Moves the active state to the first menu item above the
+    top of a scrollable menu or the first item if not scrollable. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `refresh` | Initializes submenus and menu items that have not already been
+    initialized, once new items or content have been added. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `select` | Selects the currently active menu item, collapses all submenus,
+    and triggers the menu''s `select` event. |'
+  prefs: []
+  type: TYPE_TB
+- en: Let's take a look at some of these options over the next few sections, beginning
+    with enabling and disabling menu options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling and disabling menu options programmatically
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A common requirement when working with menus is to either enable or disable
+    an option based on whether it matches a particular set of conditions, for example,
+    you might disable the printing option if printing is not available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One would hope that there would be an option available to do this within the
+    menu widget. Alas! there isn't. The only method available is to either disable
+    or enable the whole menu, not a specific menu item. It's not a problem though,
+    as we can achieve the same effect using the `ui-state-disabled` class and a little
+    jQuery magic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add the following new `<button>` elements directly after the existing markup
+    for the menu widget in `menu2.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the `<script>` element so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the changed file as `menu5.html`. In jQuery, we've used a pseudo-selector
+    to find the fourth element (not the third—the count starts from 0, not 1), and
+    then add or remove the `ui-state-disabled` class using `removeClass` or `addClass`
+    whichever is appropriate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will notice that we remove all of the classes when disabling the menu item,
+    this is purely so that when we add the CSS styles to mark the item as disabled,
+    it adds the CSS styles in the correct order. You could easily just use the `.removeClass()`
+    option in both cases, but then the CSS markup order will not match that of the
+    already disabled **Print…** option!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Enabling and disabling menu options programmatically](img/2209OS_09_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding and removing menu items
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Along with enabling or disabling menu items programmatically, we can also add
+    or remove menu items on the fly. In `menu2.html`, add the following code immediately
+    after the existing markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then change the final `<script>` element to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the changes as `menu6.html`. On this page, we've added a new `<input>`
+    element, which we will use to add a new menu item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `<script>` element, our function handles the addition of a menu item
+    by first building the required markup. We then append this to the `myMenu` menu,
+    before calling menu''s `refresh()` method to update the display. After adding
+    a few menu items, the page should appear something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding and removing menu items](img/2209OS_09_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Not to be outdone, we can use the same `refresh()` method to remove a menu
+    item, although the process we need to use to find the item to remove will change.
+    Let''s take a look at how to achieve this, alter the `<form>` tag contents, as
+    shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, change the `<script>` element in `menu6.html` as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the changes as `menu7.html`. If we load the page in the browser, and hit
+    the **Remove menu item** button, you will find the **Move to folder…** menu option
+    has been removed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding and removing menu items](img/2209OS_09_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Working with menu events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The menu widget defines a series of useful options that allow you to add callback
+    functions to perform different actions when certain events exposed by the widget
+    are detected. The following table lists the configuration options that are able
+    to accept executable functions on an event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Triggered when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `blur` | The menu loses focus |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `create` | The menu is created |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `focus` | The menu gains focus or when any menu item is activated |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `select` | A menu item is selected |'
+  prefs: []
+  type: TYPE_TB
+- en: Each component of the library has callback options (such as those in the previous
+    table), which are tuned to look for key moments in any visitor interactions. Any
+    functions we use within these callbacks are usually executed before the change
+    happens. Therefore, you can return `false` from your callback and prevent the
+    action from occurring.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our next example, we will look at how easy it is to react to a particular
+    menu item being selected, using the standard non-bind technique. Remove the final
+    `<script>` element in `menu1.html` and replace it with this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Below the final `</ul>` tag, add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `menu8.html`. We also need a little CSS to complete this
+    example; in a new page in your text editor, add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `menuEvents.css` in the `css` folder. In the `<head>` element
+    of the page we just created, add the following `<link>` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we preview our results, we will see something like the following screenshot
+    when navigating around the menu. Notice the selected menu item being displayed
+    below the menu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with menu events](img/2209OS_09_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We made use of three callbacks in our example— `select`, `focus`, and `blur`;
+    the principle is largely the same for any other callback fired by other widgets
+    in the library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two arguments will be passed automatically by the widget to the callback function
+    we define when it is executed. These are the original event object and the custom
+    object containing useful properties from the menu it which was selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our example, we've used the `select` callback to determine the title of the
+    selected menu item, before assigning a `.selected` class to it to indicate when
+    it has been selected; the `blur` and `focus` callbacks are used to provide a hover
+    functionality while navigating around our menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Binding to events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using the event callbacks exposed by each component is the standard way of handling
+    interactions. However, in addition to the callbacks listed in the previous table,
+    we can also hook into another set of events fired by each component at different
+    times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use the standard jQuery `on()` method to bind an event handler to a custom
+    event, fired by the menu widget in the same way that we could bind to a standard
+    DOM event, such as a click.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following table lists the menu''s custom binding events and their triggers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Event | Fired when… |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `Menucreate` | The menu is created |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `Menuselect` | A menu item is selected |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `Menufocus` | A menu gains focus or when any menu item is activated |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `Menublur` | The menu loses focus |'
+  prefs: []
+  type: TYPE_TB
+- en: The first event `menucreate` is fired, as soon as the menu object is initialized;
+    the next three will be fired depending on whether a menu item has been selected
+    by the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see this type of event usage in action; change the final `<script>`
+    element in `menu8.html` to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save this change as `menu9.html`. Binding to the `menuselect` event in this
+    way produces the same result as the previous example, using the `select` callback
+    function. Like last time, the confirmation text should appear when selecting a
+    menu item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All the events exposed by all of the widgets can be used with the `on()` method,
+    by simply prefixing the name of the widget to the name of the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating horizontal menus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Have you noticed one thing? Throughout this chapter all of the menu examples
+    are vertical. This is not through pure chance, but simply because the menu widget,
+    at the time of writing, doesn't yet have an option to create a horizontal menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not a problem though, as it is easy enough to create one using the power
+    of the position widget and a little extra styling. In this example, we'll take
+    a look at how to achieve this effect, while updating it for jQuery Version 2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Lots of people have attempted doing it, with varying degrees of success—my personal
+    favorite is the version produced by *Aurélien Hayet*, and which we will use in
+    this example. If you want to see the original article by *Aurélien Hayet* (in
+    French language), then it is available at [http://aurelienhayet.com/2012/11/03/
+    comment-realiser-un-menu-horizontal-a-laide-de-jquery-ui/](http://aurelienhayet.com/2012/11/03/
+    comment-realiser-un-menu-horizontal-a-laide-de-jquery-ui/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remove the existing menu markup in `menu2.html`, and replace it with the following,
+    saving it as `menu10.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alter the final `<script>` element as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to tweak the styling a little to turn it into a horizontal menu, so
+    add the following to a new document, and save it as `menuHorizontal.css` in the
+    `css` folder. Don''t forget to add a link to it from the main document:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When loading it into a browser, the page should appear something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating horizontal menus](img/2209OS_09_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It should be noted that a MenuBar widget is in the works at the time of writing;
+    you can see a version at [http://view.jqueryui.com/menubar/demos/menubar/default.html](http://view.jqueryui.com/menubar/demos/menubar/default.html).
+    There are still some bugs to iron out and features to complete on this development
+    version, but it is nonetheless still a usable widget that you can download and
+    try at your own risk.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Combining with other widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's switch tracks now and take a look at some more in-depth examples of how
+    you can use the menu widget, beginning with using it with a button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An odd combination I hear you say, but not in reality; we can use both to build
+    a nice little split button with a drop-down menu!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Fortunately for us, a plugin has already been created by *Mike Cantrell*; we'll
+    use this in our example. You can download a copy of this plugin from Github ([https://gist.github.com/mcantrell/1255491](https://gist.github.com/mcantrell/1255491));
+    I've updated the version in the code download for use with jQuery 2.0 and UI 1.10.3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Immediately after the link to `jquery.ui.menu.js` in `menu2.html`, add the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alter the final `<script>` element as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Replace the existing markup between the `<body>` tags with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the document as `menu11.html`. We need to add in our jQuery some magic
+    that will combine our menu and document together, so in a new document add the
+    following, and save it as `jquery.ui.splitbutton.js` within the `js` folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To complete the effect, we need to adjust the CSS styling a little, so add
+    the following into a new document and save it as `menuSplit.css` within the `css`
+    folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Don''t forget to add a link into your code, pointing to `menuSplit.css`. If
+    we load the page into a browser, you should see something similar to the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Combining with other widgets](img/2209OS_09_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: While the **Edit** text won't change in this example, you could easily adapt
+    it to your own needs, adding valid links to each of the options in the drop-down
+    menu list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing context menus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One menu format that isn't, at present, available with jQuery UI is that of
+    a context menu; more and more applications rely on the use of context menus for
+    quick access to options, such as formatting content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is however a relatively easy configuration to replicate in jQuery. In our
+    next example, we've reused some of the standard HTML markup from the main UI website
+    and turned it into a context menu. It goes to show that, with a little jQuery
+    magic, the markup doesn't actually need to change—a bargain!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For this exercise and the next, you will need a copy of the code download that
+    accompanies this book. We will be using some of the files in the code download.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we have created our page, we can view the results in a browser by right-clicking
+    on the image. It should resemble the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Designing context menus](img/2209OS_09_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The image can be found at [http://upload.wikimedia.org/wikipedia/commons/2/25/Coffee_Roasting.jpg](http://upload.wikimedia.org/wikipedia/commons/2/25/Coffee_Roasting.jpg).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s begin by extracting a copy of `menu2.html` from the code download and
+    saving it to the `jqueryui` folder. Next, change the final `<script>` element
+    so that it appears as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the changed file as `menu12.html` in the `jqueryui` folder. We need to
+    tweak the styling a little, so add the following to a new document, and save it
+    in the `css` folder as `menuContext.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save this file as `menuContext.css` in the `css` folder, and link to it after
+    the jQuery UI stylesheet in the `<head>` section of `menu12.html`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: With use of menu's position attribute and a little extra jQuery magic, I am
+    sure you will agree that this produces a very nice result!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enhancing a select menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In our final menu example, let's look at how you can use the power of a menu
+    widget to enhance a `<select>` menu. The original author of this book, *Dan Wellman*,
+    produced an excellent example of how to achieve this using some additional jQuery
+    and techniques we've already covered earlier in this book. I've updated it to
+    work with jQuery 2.03 and UI 1.10.3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Replace the existing markup in `menu2.html` with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: From the code download that accompanies this book, extract a copy of the `menuSelect.js`
+    file, then save it in the the `js` folder, and link it to immediately below the
+    last jQuery UI library reference to `jquery.ui.menu.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `menu2.html`, change the second `<link>` to point to a new stylesheet as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In `menuSelect.css`, add the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the page as `menu13.html`. If we load the page into a browser and preview
+    it, you will see something akin to this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Enhancing a select menu](img/2209OS_09_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We've used a fair bit of jQuery in this example; this would lend itself to being
+    turned into a plugin that could be included on a page and used to enhance the
+    existing `<select>` menus. If written correctly, it would work using a progressive
+    enhancement technique, while still maintaining the original base code, in the
+    event of jQuery not being available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The menu widget is an excellent way of saving space on your page by organizing
+    related (or even completely unrelated) sections of content that can be shown or
+    hidden with simple click input from your visitors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's review what was covered in this chapter. We first looked at how, with
+    just a little underlying HTML and a single line of jQuery-flavored JavaScript,
+    we can implement the default menu widget. We then took a look at the CSS classes
+    and menu options that are available for you to use to customize the menu to your
+    needs, and how you can use some of these attributes to great effect when styling
+    the menu. We also covered the range of methods and events that we can use to perform
+    actions or react to events triggered by the menu widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We finished with a look at some examples of how you can completely alter the
+    look of the menu, while still maintaining the original markup. We used three examples
+    of customizing a `<select>` menu, enhancing a button, as well as turning a menu
+    into a context menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll move on to look at the Tooltips widget, which we
+    can use to point out points of note on elements such as fields or images, or set
+    up to work as a mini-menu of options for visitors to your site.
+  prefs: []
+  type: TYPE_NORMAL
