@@ -132,11 +132,13 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`$(() => {})`几乎总是优于使用`onload`处理程序，但我们需要记住，因为支持文件可能尚未加载，因此此时可能不一定可用图像高度和宽度等属性。如果需要这些属性，有时我们也可以选择实现`onload`处理程序；这两种机制可以和平共处。
 - en: Handling multiple scripts on one page
   id: totrans-18
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 处理一个页面上的多个脚本
 - en: 'The traditional mechanism for registering event handlers through JavaScript
     (rather than adding handler attributes right in the HTML content) is to assign
     a function to the DOM element''s corresponding property. For example, suppose
@@ -144,6 +146,7 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过JavaScript注册事件处理程序的传统机制（而不是直接在HTML内容中添加处理程序属性）是将函数分配给DOM元素的相应属性。例如，假设我们已定义了以下函数：
 - en: '[PRE0]'
   id: totrans-20
   prefs: []
@@ -153,6 +156,7 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以在HTML标记中分配它：
 - en: '[PRE1]'
   id: totrans-22
   prefs: []
@@ -162,6 +166,7 @@
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，我们可以从JavaScript代码中分配它：
 - en: '[PRE2]'
   id: totrans-24
   prefs: []
@@ -173,10 +178,12 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两种方法都会在页面加载时执行函数。第二种的优点是行为与标记清晰地分开。
 - en: Referencing versus calling functions
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 引用与调用函数
 - en: When we assign a function as a handler, we use the function name but omit the
     trailing parentheses. With the parentheses, the function is called immediately;
     without the parantheses, the name simply identifies, or *references*, the function,
@@ -184,11 +191,13 @@
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们将函数分配为处理程序时，我们使用函数名但省略尾括号。带括号时，函数会立即调用；不带括号时，名称仅标识或*引用*函数，并且可以在以后调用它。
 - en: 'With one function, this strategy works quite well. However, suppose we have
     a second function as follows:'
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过一个函数，这种策略运行得相当不错。然而，假设我们有一个第二个函数如下：
 - en: '[PRE3]'
   id: totrans-29
   prefs: []
@@ -198,6 +207,7 @@
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以尝试将此函数分配为在页面加载时运行：
 - en: '[PRE4]'
   id: totrans-31
   prefs: []
@@ -208,6 +218,7 @@
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，这个赋值会覆盖第一个。`.onload`属性一次只能存储一个函数引用，所以我们不能添加到现有的行为。
 - en: The `$(() => {})` mechanism handles this situation gracefully. Each call adds
     the new function to an internal queue of behaviors; when the page is loaded, all
     of the functions will execute. The functions will run in the order in which they
@@ -215,6 +226,7 @@
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '`$(() => {})`机制优雅地处理了这种情况。每次调用都会将新函数添加到内部行为队列中；当页面加载时，所有函数都将执行。函数将按照注册的顺序运行。'
 - en: To be fair, jQuery doesn't have a monopoly on workarounds to this issue. We
     can write a JavaScript function that calls the existing `onload` handler, then
     calls a passed-in handler. This approach avoids conflicts between rival handlers
@@ -225,23 +237,29 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 公平地说，jQuery并不是唯一解决此问题的方法。我们可以编写一个JavaScript函数，调用现有的`onload`处理程序，然后调用传入的处理程序。这种方法避免了像`$(()
+    => {})`这样的竞争处理程序之间的冲突，但缺少了我们讨论过的其他一些优点。在现代浏览器中，可以使用W3C标准的`document.addEventListener()`方法触发`DOMContentLoaded`事件。但是，`$(()
+    => {})`更简洁而优雅。
 - en: Passing an argument to the document ready callback
   id: totrans-35
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 将参数传递给文档准备好的回调
 - en: In some cases, it may prove useful to use more than one JavaScript library on
     the same page. Since many libraries make use of the `$` identifier (since it is
     short and convenient), we need a way to prevent collisions between libraries.
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某些情况下，同时在同一页面上使用多个JavaScript库可能会被证明是有用的。由于许多库使用`$`标识符（因为它简短而方便），我们需要一种方法来防止库之间的冲突。
 - en: 'Fortunately, jQuery provides a method called `jQuery.noConflict()` to return
     control of the `$` identifier back to other libraries. Typical usage of `jQuery.noConflict()`
     follows the following pattern:'
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，jQuery提供了一个名为`jQuery.noConflict()`的方法，将`$`标识符的控制权返回给其他库。`jQuery.noConflict()`的典型用法如下所示：
 - en: '[PRE5]'
   id: totrans-38
   prefs: []
@@ -680,22 +698,27 @@
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bodyClass`变量的值将是`default`、`narrow`或`large`，具体取决于点击了哪个按钮。在这里，我们有些偏离了以前的代码；当用户单击`<button
+    id="switcher-default">`时，我们为`<body>`添加了一个`default`类。虽然我们不需要应用这个类，但它也没有造成任何损害，代码复杂性的减少完全弥补了一个未使用的类名。'
 - en: Shorthand events
   id: totrans-107
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 快捷事件
 - en: Binding a handler for an event (such as a simple `click` event) is such a common
     task that jQuery provides an even terser way to accomplish it; shorthand event
     methods work in the same way as their `.on()` counterparts with fewer keystrokes.
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 绑定事件处理程序（如简单的`click`事件）是一项非常常见的任务，jQuery提供了一个更简洁的方法来完成它；快捷事件方法与它们的`.on()`对应方法以更少的击键方式工作。
 - en: 'For example, our style switcher could be written using `.click()` instead of
     `.on()` as follows:'
   id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们的样式切换器可以使用`.click()`而不是`.on()`来编写，如下所示：
 - en: '[PRE21]'
   id: totrans-110
   prefs: []
@@ -705,17 +728,20 @@
   id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 列表3.8
 - en: Shorthand event methods such as the previous one exist for the other standard
     DOM events such as `blur`, `keydown`, and `scroll` as well. Each shortcut method
     binds a handler to the event with the corresponding name.
   id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他标准DOM事件（如`blur`、`keydown`和`scroll`）也存在类似的快捷事件方法。每个快捷方法都会使用相应的名称将处理程序绑定到事件上。
 - en: Showing and hiding page elements
   id: totrans-113
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 显示和隐藏页面元素
 - en: 'Suppose that we wanted to be able to hide our style switcher when it is not
     needed. One convenient way to hide page elements is to make them collapsible.
     We will allow one click on the label to hide the buttons, leaving the label alone.
@@ -724,6 +750,7 @@
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们希望在不需要时能够隐藏我们的样式切换器。隐藏页面元素的一种方便方法是使它们可折叠。我们将允许单击标签一次来隐藏按钮，只留下标签。再次单击标签将恢复按钮。我们需要另一个类来隐藏按钮：
 - en: '[PRE22]'
   id: totrans-115
   prefs: []
@@ -737,6 +764,7 @@
   id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过将按钮的当前状态存储在变量中，并在每次单击标签时检查其值，以了解是否应在按钮上添加或删除隐藏类来实现此功能。然而，jQuery为我们提供了一种简单的方法，根据该类是否已经存在来添加或删除一个类——`.toggleClass()`方法：
 - en: '[PRE23]'
   id: totrans-117
   prefs: []
@@ -746,32 +774,39 @@
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 列表3.9
 - en: 'After the first click, the buttons are all hidden:'
   id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一次点击后，所有按钮都被隐藏了：
 - en: '![](img/5297_03_04.png)'
   id: totrans-120
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/5297_03_04.png)'
 - en: 'A second click then returns them to visibility:'
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二次点击然后将它们恢复到可见状态：
 - en: '![](img/5297_03_05.png)'
   id: totrans-122
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/5297_03_05.png)'
 - en: Once again, we rely on implicit iteration, this time to hide all the buttons
     - siblings of the `<h3>` - in one fell swoop.
   id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，我们依赖隐式迭代，这次是为了一举隐藏所有按钮——`<h3>`的兄弟节点。
 - en: Event propagation
   id: totrans-124
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 事件传播
 - en: 'In illustrating the ability of the `click` event to operate on normally non-clickable
     page elements, we have crafted an interface that doesn''t indicate that the style
     switcher label--just an `<h3>` element-is actually a *live* part of the page awaiting
@@ -780,6 +815,7 @@
   id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明`click`事件能够作用于通常不可点击的页面元素的能力，我们制作了一个界面，没有显示出样式切换器标签——只是一个`<h3>`元素——实际上是页面中等待用户交互的*活动*部分。为了纠正这一点，我们可以给它一个鼠标悬停状态，清楚地表明它以某种方式与鼠标交互：
 - en: '[PRE24]'
   id: totrans-126
   prefs: []
@@ -794,6 +830,7 @@
   id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: CSS规范包括一个名为`:hover`的伪类，允许样式表在用户鼠标悬停在元素上时影响其外观。这在这种情况下肯定可以解决我们的问题，但是我们将利用这个机会介绍jQuery的`.hover()`方法，它允许我们使用JavaScript来改变元素的样式——事实上，执行任意操作——当鼠标光标进入元素时和离开元素时。
 - en: 'The `.hover()` method takes two function arguments, unlike the simple event
     methods we have so far encountered. The first function will be executed when the
     mouse cursor enters the selected element, and the second is fired when the cursor
@@ -1699,6 +1736,7 @@
   id: totrans-254
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为使用`.trigger()`模拟此点击的替代方案，让我们探讨如何将代码因子化为一个函数，以便多个处理程序可以调用它——在这种情况下，`click`和`keyup`处理程序都可以调用它。虽然在本例中并不必要，但这种技术可以有助于消除代码的冗余：
 - en: '[PRE44]'
   id: totrans-255
   prefs: []
@@ -1708,17 +1746,20 @@
   id: totrans-256
   prefs: []
   type: TYPE_NORMAL
+  zh: 列表 3.26
 - en: This final revision consolidates all the previous code examples of this chapter.
     We have moved the entire block of code into a single `$(() => {})` handler and
     made our code less redundant.
   id: totrans-257
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终修订版将本章所有先前的代码示例整合在一起。我们将整个代码块移入一个单独的`$(() => {})`处理程序，并使我们的代码不那么冗余。
 - en: Summary
   id: totrans-258
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 摘要
 - en: The abilities we've discussed in this chapter allow us to react to various user-driven
     and browser-initiated events. We have learned how to safely perform actions when
     the page loads, how to handle mouse events such as clicking on links or hovering
@@ -1726,6 +1767,7 @@
   id: totrans-259
   prefs: []
   type: TYPE_NORMAL
+  zh: 本章讨论的功能使我们能够对各种用户驱动和浏览器启动的事件作出反应。我们已经学会了如何在页面加载时安全执行操作，如何处理鼠标事件（如单击链接或悬停在按钮上），以及如何解释按键。
 - en: In addition, we have delved into some of the inner workings of the event system,
     and can use this knowledge to perform event delegation and to change the default
     behavior of an event. We can even simulate the effects of an event as if the user
@@ -1733,49 +1775,59 @@
   id: totrans-260
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，我们已经深入研究了事件系统的一些内部工作原理，并可以利用这些知识进行事件委托和更改事件的默认行为。我们甚至可以模拟用户发起事件的效果。
 - en: We can use these capabilities to build interactive pages. In the next chapter,
     we'll learn how to provide visual feedback to the user during these interactions.
   id: totrans-261
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以利用这些功能来构建交互式页面。在下一章中，我们将学习如何在这些交互过程中为用户提供视觉反馈。
 - en: Further reading
   id: totrans-262
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: The topic of event handling will be explored in more detail in [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
     *Advanced Events*. A complete list of jQuery's event methods is available in *Appendix
     C* of this book, or in the official jQuery documentation at [http://api.jquery.com/](http://api.jquery.com/).
   id: totrans-263
   prefs: []
   type: TYPE_NORMAL
+  zh: 事件处理的主题将在[第 10 章](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml)“高级事件”中更详细地探讨。jQuery
+    的事件方法的完整列表可在本书的附录 C 中找到，或者在官方 jQuery 文档中找到：[http://api.jquery.com/](http://api.jquery.com/)。
 - en: Exercises
   id: totrans-264
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 练习
 - en: Challenge exercises may require the use of the official jQuery documentation
     at [http://api.jquery.com/](http://api.jquery.com/).
   id: totrans-265
   prefs: []
   type: TYPE_NORMAL
+  zh: 挑战练习可能需要使用官方 jQuery 文档：[http://api.jquery.com/](http://api.jquery.com/)。
 - en: When Charles Dickens is clicked, apply the `selected` style to it.
   id: totrans-266
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当点击查尔斯·狄更斯时，应用`selected`样式。
 - en: When a chapter title (`<h3 class="chapter-title">`) is double-clicked, toggle
     the visibility of the chapter text.
   id: totrans-267
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 双击章标题（`<h3 class="chapter-title">`）时，切换章节文本的可见性。
 - en: When the user presses the right arrow key, cycle to the next `body` class. The
     key code for the right arrow key is `39`.
   id: totrans-268
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当用户按下右箭头键时，循环到下一个`body`类。右箭头键的键码为`39`。
 - en: 'Challenge: Use the `console.log()` function to log the coordinates of the mouse
     as it moves across any paragraph. (Note: `console.log()` displays its results
     via the Firebug extension for Firefox, Safari''s Web Inspector, or the Developer
@@ -1784,6 +1836,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 挑战：使用`console.log()`函数记录鼠标在任何段落上移动时的坐标。（注意：`console.log()`通过 Firefox 的 Firebug
+    扩展、Safari 的 Web Inspector 或 Chrome 或 Internet Explorer 的开发者工具显示其结果）。
 - en: 'Challenge: Use `.mousedown()` and `.mouseup()` to track mouse events anywhere
     on the page. If the mouse button is released *above* where it was pressed, add
     the `hidden` class to all paragraphs. If it is released *below* where it was pressed,
@@ -1792,3 +1846,4 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 挑战：使用`.mousedown()`和`.mouseup()`来跟踪页面上任何位置的鼠标事件。如果鼠标按钮在按下的地方*上方*释放，将`hidden`类添加到所有段落。如果在按下的地方*下方*释放，将从所有段落中移除`hidden`类。
