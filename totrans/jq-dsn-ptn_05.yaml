@@ -3,6 +3,7 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第五章 门面模式
 - en: In this chapter, we will showcase the **Facade Pattern**, a structural design
     pattern that tries to define a uniform way regarding how developers should create
     abstractions in their code. Initially, we will use this pattern to wrap complex
@@ -14,36 +15,44 @@
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一章中，我们将展示**门面模式**，一种结构设计模式，试图定义开发人员应如何在其代码中创建抽象的统一方式。最初，我们将使用此模式来包装复杂的 API，并公开专注于我们应用程序需求的简化
+    API。我们将看到 jQuery 如何在其实现中采用此模式的概念，它如何将是 Web 开发者工具箱中的重要组成部分的复杂实现封装成易于使用的 API，以及这对其广泛采用的关键作用。
 - en: 'In this chapter, we will:'
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一章中，我们将：
 - en: Introduce the Facade Pattern
   id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 介绍门面模式
 - en: Document its key concepts and benefits
   id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 记录其关键概念和优势
 - en: See how jQuery uses it in its implementation
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 看看 jQuery 在其实现中如何使用它
 - en: Write an example implementation where Facades are used to completely abstract
     and decouple a third-party library
   id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编写一个示例实现，其中门面被用于完全抽象和解耦第三方库
 - en: Introducing the Facade Pattern
   id: totrans-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 介绍门面模式
 - en: The Facade is a structural software design pattern that deals with how abstractions
     of the various parts of an implementation should be created. The key concept of
     the Facade Pattern is to abstract an existing implementation and provide a simplified
@@ -57,6 +66,7 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 门面模式是一种处理如何创建实现各部分的抽象的结构性软件设计模式。门面模式的关键概念是抽象出现有实现，并提供一个简化的 API，更好地匹配开发应用程序的用例。根据大多数描述此模式的计算机科学参考书目，门面最常见的实现方式是作为一个专门的类，用于将应用程序的实现分割成更小的代码片段，同时提供一个完全隐藏封装的复杂性的接口。在Web开发世界中，还常常使用普通对象或函数来实现门面，利用JavaScript将函数视为对象的方式。
 - en: In applications that have a modular structure, like the examples of the previous
     chapter, it is also common to implement Facades as separate modules with their
     own namespace. Moreover, for a larger implementation with very complex parts,
@@ -67,11 +77,14 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在具有模块化结构的应用程序中，例如上一章的示例，通常还会将门面实现为具有自己命名空间的单独模块。此外，对于具有非常复杂部分的较大实现，也可以采用多级门面的方法。再次，门面将作为模块和子模块实现，顶层门面将编排其子模块的方法，并提供一个完全隐藏整个子系统复杂性的
+    API。
 - en: The benefits of this pattern
   id: totrans-10
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 此模式的优势
 - en: Most of the time, the Facade Pattern is adopted for implementation parts that
     have a relatively high degree of complexity and are used in several places of
     an application, wherein large pieces of code can be replaced with a simple call
@@ -84,10 +97,13 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数情况下，门面模式被采用于具有相对高复杂度并在应用程序的多个地方使用的实现部分，其中大量的代码可以被简单调用已创建的门面替换，这不仅减少了代码重复，还有助于增加实现的可读性。由于门面方法通常以它们封装的高级应用概念命名，所以产生的代码也更易于理解。门面通过其方便的方法提供的简化
+    API，导致实现更易于使用、理解，也更易于编写单元测试。
 - en: '![The benefits of this pattern](img/00020.jpeg)'
   id: totrans-12
   prefs: []
   type: TYPE_IMG
+  zh: '![这种模式的好处](img/00020.jpeg)'
 - en: Moreover, having Facades to abstract complex implementations proves its usefulness
     in cases where there is a need to introduce a change to the business logic of
     the implementation. In case a Facade has a well-designed API with a prediction
@@ -97,6 +113,8 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，将复杂实现抽象化为 Facades 在需要改变实现的业务逻辑时证明了其有用性。如果 Facade 具有良好设计的 API，并对未来需求进行了预测，这些更改通常只需要修改
+    Facade 的代码，而不会影响应用程序的其余实现，并遵循**关注点分离**原则。
 - en: In the same manner, using Facades to abstract the API of a third-party library
     to better match the needs of each application, provides a degree of decoupling
     between our code and the used library. In case the third-party library changes
@@ -108,15 +126,20 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 以同样的方式，使用 Facades 将第三方库的 API 抽象化以更好地匹配每个应用程序的需求，提供了我们的代码与所用库之间的一定程度解耦。如果第三方库更改其
+    API 或需要用另一个替换，应用程序的不同模块不需要重新编写，因为实现更改将被限制在包装 Facade 上。在这种情况下，只需要使用新库 API 提供等效实现，同时保持
+    Facade 的 API 不变即可。
 - en: '![The benefits of this pattern](img/00021.jpeg)'
   id: totrans-15
   prefs: []
   type: TYPE_IMG
+  zh: '![这种模式的好处](img/00021.jpeg)'
 - en: 'As an example of orchestrating method calls and using sensible defaults for
     specific use cases, take a look at the following sample implementation:'
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为编排方法调用并为特定用例使用明智默认值的示例，请看以下示例实现：
 - en: '[PRE0]'
   id: totrans-17
   prefs: []
@@ -127,6 +150,7 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 它是如何被 jQuery 接受的
 - en: A very large part of the jQuery implementation is dedicated to providing simpler,
     shorter, and more convenient-to-use methods for things that the different JavaScript
     APIs already allow us to achieve, but with more lines of code and effort. By taking
@@ -136,6 +160,8 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery 实现的非常大的部分专门用于为不同的 JavaScript API 已经允许我们实现的事物提供更简单、更短、更方便的方法，但需要更多的代码行数和工作量。通过查看
+    jQuery 提供的 API，我们可以区分出一些相关方法的组。这种分组也可以在源代码结构中看到，将相关 API 的方法放置在彼此附近。
 - en: Even if the word **Facade** does not appear in jQuery's source code, the use
     of this pattern can be witnessed by the way in which the related methods are defined
     on the exposed jQuery object. Most of the time, the related methods that form
@@ -150,16 +176,22 @@
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使单词**Facade**在 jQuery 的源代码中没有出现，但通过观察相关方法在公开的 jQuery 对象上的定义方式，可以看出这种模式的使用。大多数情况下，形成一组的相关方法被实现并定义为**对象字面量**的属性，然后通过一次调用`$.extend()`或`$.fn.extend()`方法附加到
+    jQuery 对象上。你可能还记得，从本章开始时，这几乎与计算机科学常用来描述如何实现 Facade 的方式完全匹配，唯一的区别在于，在 JavaScript
+    中，我们可以创建一个普通对象，而不需要首先定义一个类。因此，jQuery 本身可以被视为一组 Facades，其中每个 Facade 都通过提供便利方法的
+    API 独立地为库增添了巨大价值。
 - en: Note
   id: totrans-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: For more information on `$.extend()` and `$.fn.extend()`, you can visit [http://api.jquery.com/jQuery.extend/](http://api.jquery.com/jQuery.extend/)
     and [http://api.jquery.com/jQuery.fn.extend/](http://api.jquery.com/jQuery.fn.extend/).
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 欲了解更多关于`$.extend()`和`$.fn.extend()`的信息，您可以访问[http://api.jquery.com/jQuery.extend/](http://api.jquery.com/jQuery.extend/)和[http://api.jquery.com/jQuery.fn.extend/](http://api.jquery.com/jQuery.fn.extend/)。
 - en: 'Some of the abstracted API groups that are big parts of the jQuery implementation
     and play a critical role to its adoption are as follows:'
   id: totrans-23
