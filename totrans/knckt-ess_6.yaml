@@ -226,32 +226,39 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您导航到**控制台**选项卡，您将看到控制台本身。在那里，您可以使用`console.log`函数显示信息，或者查看控制台对象文档以查看您可以在每个时刻使用的最佳方法（[https://developer.mozilla.org/en-US/docs/Web/API/Console](https://developer.mozilla.org/en-US/docs/Web/API/Console)）。
 - en: If you write the word `window` in the console, you will see all the objects
     that are in the global scope.
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在控制台中写入单词`window`，您将看到在全局范围内的所有对象。
 - en: '![The console](img/7074OS_06_08.jpg)'
   id: totrans-36
   prefs: []
   type: TYPE_IMG
+  zh: '![控制台](img/7074OS_06_08.jpg)'
 - en: With the console, you can access variables in the current and global context
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用控制台，您可以访问当前和全局上下文中的变量
 - en: You can write the word `vm` (the view-model) to see the `vm` object we have
     created.
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以写入单词`vm`（视图模型）以查看我们创建的`vm`对象。
 - en: '![The console](img/7074OS_06_09.jpg)'
   id: totrans-39
   prefs: []
   type: TYPE_IMG
+  zh: '![控制台](img/7074OS_06_09.jpg)'
 - en: All components are set in the global scope
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有组件都设置在全局范围内
 - en: But you can also write `Product` or `ProductService` or anything we have created
     and you will see it. When you have a lot of information, to have all your objects
     at the top level can be chaotic. Defining namespaces and keeping a hierarchy is
@@ -260,27 +267,32 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是您也可以写`Product`或`ProductService`或我们创建的任何内容，您都会看到它。当您有大量信息时，在顶层拥有所有对象可能会很混乱。定义命名空间并保持层次结构是保持组件隔离的良好实践。您应该只保留应用程序的一个入口点。
 - en: The module pattern
   id: totrans-42
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 模块模式
 - en: This pattern allows us to focus on which part of the code is exposed out of
     the class (public elements) and which parts of the code are hidden to the final
     user (private elements).
   id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 此模式允许我们专注于哪些代码部分暴露给类外部（公共元素），以及代码的哪些部分对最终用户隐藏（私有元素）。
 - en: This pattern is commonly used in JavaScript software development. It is applied
     in popular libraries like jQuery, Dojo, and ExtJS.
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 此模式通常用于JavaScript软件开发。它应用于像jQuery、Dojo和ExtJS等流行库中。
 - en: 'This pattern has a very clear structure and is very easy to apply once you
     know how to use it. Let''s apply the module pattern in our application:'
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦您知道如何使用它，此模式具有非常清晰的结构，并且非常容易应用。让我们在我们的应用程序中应用模块模式：
 - en: 'First, define the name of your module. If you define the module in different
     files, it is important to define and initialize it applying a pattern that allows
     it to be extensible. Using the `||` operator in the initialization indicates that
@@ -291,6 +303,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先，定义模块的名称。如果您在不同的文件中定义模块，重要的是要应用允许其可扩展性的模式来定义和初始化它。在初始化中使用`||`运算符表示如果`ModuleName`值已经有值，则将其赋值给自身。如果它没有值，则意味着这是它第一次被创建，因此给它一个默认值—在这种情况下是一个空对象：
 - en: '[PRE0]'
   id: totrans-47
   prefs:
@@ -303,6 +316,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 然后，定义模块的每个组件。它可以是函数、变量或另一个模块：
 - en: '[PRE1]'
   id: totrans-49
   prefs:
@@ -316,6 +330,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，使用依赖注入模式插入模块的依赖项。该模式将所有模块依赖项作为参数传递，并立即调用该函数：
 - en: '[PRE2]'
   id: totrans-51
   prefs:
@@ -327,6 +342,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这就是一个完整模块的样子：
 - en: '[PRE3]'
   id: totrans-53
   prefs:
@@ -341,6 +357,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 要定义组件，请返回`component`对象。定义组件的第一个模式是使用揭示模块模式。它包含在函数末尾返回一个仅包含公共接口的对象。这些是单例对象：
 - en: '[PRE4]'
   id: totrans-55
   prefs:
@@ -352,6 +369,7 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 创建Shop模块
 - en: To modularize our application, we are going to create a module called `Shop`
     that will contain our entire application. This module will contain other submodules
     and components. This hierarchical structure will help you to keep coherence in
@@ -359,6 +377,7 @@
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使我们的应用程序模块化，我们将创建一个名为`Shop`的模块，该模块将包含我们的整个应用程序。此模块将包含其他子模块和组件。此分层结构将帮助您保持代码的一致性。
 - en: As the first approach, group your components by file and by type. This means
     that each component of the modules will be in a file and the files will be grouped
     by type in a folder. For example, there is a folder named `services`. This means
@@ -1096,6 +1115,7 @@
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 要将我们的模块转换为 RequireJS 兼容的模块，我们将使用 AMD 规范对它们进行定义。该规范指出，要定义一个模块，需要调用`define`函数。该函数接收一个包含字符串的数组。这些字符串表示每个依赖项（模块中所需的文件）的配置文件中的路径或别名。
 - en: 'The second parameter that the `define` function needs is a function that will
     return the module. This function will have dependencies from the array as arguments.
     The good thing with this pattern is that code inside the `define` function will
@@ -1104,6 +1124,7 @@
   id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: '`define`函数需要的第二个参数是一个将返回模块的函数。此函数将从数组中的依赖项作为参数。使用这种模式的好处是，在加载所有依赖项之前，`define`函数内部的代码不会被执行。以下是`define`函数的样子：'
 - en: '[PRE38]'
   id: totrans-169
   prefs: []
@@ -1115,21 +1136,25 @@
   id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数应该始终返回模块变量，或者模块需要返回的任何内容。如果我们没有设置`return`语句，模块将返回一个未定义的值。
 - en: Defining the app.js file
   id: totrans-171
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 定义 app.js 文件
 - en: 'When we defined the RequireJS configuration, we said that the entry point will
     be the `app.js` file. The following are the steps to create the `app.js` file:'
   id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们定义了 RequireJS 配置时，我们说入口点将是`app.js`文件。以下是创建`app.js`文件的步骤：
 - en: Create the `app.js` file.
   id: totrans-173
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建`app.js`文件。
 - en: Set the array of dependencies. Map these dependencies as arguments in the function.
     There are some files that just execute code and they return an undefined value.
     You don't need to map these files if they are at the end of the list of dependencies.
@@ -1137,6 +1162,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 设置依赖项数组。将这些依赖项映射为函数中的参数。有些文件只是执行代码，它们返回一个未定义的值。如果它们位于依赖项列表的末尾，你不需要映射这些文件。
 - en: '[PRE39]'
   id: totrans-175
   prefs:
@@ -1149,6 +1175,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在定义模块的主体。它将初始化全局配置和全局行为。最后，它将返回视图模型：
 - en: '[PRE40]'
   id: totrans-177
   prefs:
@@ -1162,6 +1189,7 @@
   id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个文件有很多依赖项，我们应该保持有序。首先我们定义了库，然后是视图模型，模拟，组件，最后是事件。这些文件中的每一个也应该被定义为模块；当它们被调用时，依赖项将被加载。
 - en: 'Notice how we have updated the template engine definition: the `defaultPath`
     value to define where the templates are, the `deffaultSuffix` value to define
     the extension of the templates, and the library used to load the templates (in
@@ -1169,27 +1197,33 @@
   id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意我们如何更新了模板引擎的定义：`defaultPath` 值用于定义模板所在的位置，`defaultSuffix` 值用于定义模板的扩展名，以及用于加载模板的库（在我们的情况下是
+    text）。现在，我们应该将这个模式应用到其余的文件中。
 - en: Converting a normal module into an AMD module
   id: totrans-180
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 将普通模块转换为 AMD 模块
 - en: To convert a normal module, we will perform the following steps. Always apply
     the same steps for all our modules. We need to wrap them into the `define` function,
     list dependencies, and return the module we returned in our old one.
   id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 要转换普通模块，我们将执行以下步骤。始终对我们所有的模块应用相同的步骤。我们需要将它们包装到`define`函数中，列出依赖项，并返回我们在旧模块中返回的模块。
 - en: Open the `viewmodel.js` file.
   id: totrans-182
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 打开`viewmodel.js`文件。
 - en: 'Create the `define` function:'
   id: totrans-183
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建`define`函数：
 - en: '[PRE41]'
   id: totrans-184
   prefs:
@@ -1201,6 +1235,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 添加所有依赖项：
 - en: '[PRE42]'
   id: totrans-186
   prefs:
@@ -1212,6 +1247,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 导出模块到`define`函数中：
 - en: '[PRE43]'
   id: totrans-188
   prefs:
@@ -1224,17 +1260,20 @@
   id: totrans-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们将`knockout`作为依赖项时，RequireJS 将检查配置以找到别名。如果别名不存在，则它将查找我们在`baseUrl`属性中设置的路径。
 - en: Now we should update all our files using this schema. Notice that elements that
     should be set as dependencies are the same elements we have set using the module
     pattern.
   id: totrans-190
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们应该更新所有使用这种模式的文件。注意，应该设置为依赖项的元素与我们使用模块模式设置的元素相同。
 - en: Applying RequireJS to components
   id: totrans-191
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 将 RequireJS 应用到组件
 - en: We didn't modularize our bindings and components in the second part of the chapter.
     But this doesn't mean that we couldn't.
   id: totrans-192
