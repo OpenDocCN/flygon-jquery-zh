@@ -1,4 +1,4 @@
-# 第八章。jQuery Mobile 配置、实用工具和 JavaScript 方法
+# 第八章：jQuery Mobile 配置、实用工具和 JavaScript 方法
 
 在本章中，我们将看看如何使用 JavaScript 进一步配置和增强 jQuery Mobile 网站。到目前为止，我们已经使用 HTML 和 CSS 来生成所有内容。现在我们将看看额外的脚本，为您的网站添加额外的功能。
 

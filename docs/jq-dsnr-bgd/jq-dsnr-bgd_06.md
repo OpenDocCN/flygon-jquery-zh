@@ -1,4 +1,4 @@
-# 第六章。构建交互式导航菜单
+# 第六章：构建交互式导航菜单
 
 > 在 2003 年，A List Apart（[`alistapart.com`](http://alistapart.com)）上发布的一篇文章叫做 *Suckerfish Dropdowns* 展示了如何仅使用 HTML 和 CSS（仅在 IE6 中稍微需要一点 JavaScript 帮助）就可以构建复杂的多级下拉菜单。Suckerfish 名字源自该技术的精美设计演示，其中包含了鲸鲨和寄生鱼的插图。虽然有用，但原始版本要求网站访客在导航时不要将鼠标移出菜单区域，否则菜单会消失。多年来，Suckerfish Dropdowns 激发了许多衍生产品 — Son of Suckerfish，Improved Suckerfish 等，试图解决原始版本的缺点。由于 jQuery 能够让一切变得更好，我们将使用 Superfish jQuery 插件来构建这个想法，使菜单更易于使用。
 

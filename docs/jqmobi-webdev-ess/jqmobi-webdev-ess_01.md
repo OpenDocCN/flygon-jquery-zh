@@ -1,4 +1,4 @@
-# 第一章 准备你的第一个 jQuery Mobile 项目
+# 第一章：准备你的第一个 jQuery Mobile 项目
 
 你知道 jQuery Mobile 是什么，它的历史以及它的特点和目标。现在我们实际上要构建我们的第一个 jQuery Mobile 网站（好吧，网页），看看它的使用是多么简单。
 

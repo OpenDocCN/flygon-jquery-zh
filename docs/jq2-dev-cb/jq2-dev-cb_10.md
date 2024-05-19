@@ -1,4 +1,4 @@
-# 第十章。使用 jQuery Mobile
+# 第十章：使用 jQuery Mobile
 
 在本章中，我们将涵盖以下主题：
 

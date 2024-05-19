@@ -1,4 +1,4 @@
-# 第十一章. 有用的响应式插件
+# 第十一章：有用的响应式插件
 
 随着技术和趋势的不断发展，每天都会出现新的插件，这些插件对于开发响应式网站变得越来越有帮助。通过诸如[`www.smashingmagazine.com/`](http://www.smashingmagazine.com/)、[`bradfrostweb.com/blog/`](http://bradfrostweb.com/blog/) 和 [`www.lukew.com/ff/`](http://www.lukew.com/ff/)等博客及时了解它们非常重要。
 

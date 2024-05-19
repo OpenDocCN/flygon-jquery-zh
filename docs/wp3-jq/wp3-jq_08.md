@@ -1,4 +1,4 @@
-# 第八章 jQuery 与 WordPress 工作的技巧和诀窍
+# 第八章：jQuery 与 WordPress 工作的技巧和诀窍
 
 您现在已准备好将您的 jQuery 知识应用到 WordPress 的世界中。但首先，让我们看看本章将涵盖的内容：
 

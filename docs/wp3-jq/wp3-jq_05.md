@@ -1,4 +1,4 @@
-# 第五章。在 WordPress 中的 jQuery 动画
+# 第五章：在 WordPress 中的 jQuery 动画
 
 我们将继续在 jQuery 和 WordPress 的知识基础上深入探讨使用 jQuery 进行动画处理。动画是 jQuery 的强项之一，虽然您可能认为动画是轻浮的或者是廉价的技巧，只是为了“眼睛糖果”，但如果正确实现，它确实非常有用。
 

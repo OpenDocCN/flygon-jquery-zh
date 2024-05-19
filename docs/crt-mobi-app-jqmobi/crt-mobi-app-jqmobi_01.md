@@ -1,4 +1,4 @@
-# 第一章。jQuery Mobile 的原型设计
+# 第一章：jQuery Mobile 的原型设计
 
 2011 年 11 月 22 日，我在[RoughlyBrilliant.com](http://RoughlyBrilliant.com)上开始了我的博客，以分享我对 jQuery Mobile 和移动用户体验（UX）的一切了解。我完全不知道它会变成什么样子，会引起怎样的共鸣。由于这是一个面向开发者的博客，我对我提到的首先远离键盘，先草绘设计的评论能够引起最积极的回应感到有些惊讶。我坚信，开始你的 jQuery Mobile 项目的最佳方式是在一叠便利贴上。
 

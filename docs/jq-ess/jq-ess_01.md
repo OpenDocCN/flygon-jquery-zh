@@ -1,4 +1,4 @@
-# 第一章.逐步学习 jQuery
+# 第一章：逐步学习 jQuery
 
 jQuery 无疑是互联网上最受欢迎的 JavaScript 库。根据[`builtwith.com`](http://builtwith.com)的数据，它被超过 87%的使用 JavaScript 库的网站使用。这是惊人的渗透率。很难相信 jQuery 自 2006 年以来一直存在。
 

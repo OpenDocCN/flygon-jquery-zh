@@ -1,4 +1,4 @@
-# 第一章 自动刷新 UI，使用 KnockoutJS
+# 第一章：自动刷新 UI，使用 KnockoutJS
 
 如果你正在阅读这本书，那是因为你已经发现管理 web 用户界面是相当复杂的。 **DOM**（Document Object Model 的缩写）仅使用本地 JavaScript 进行操作是非常困难的。这是因为每个浏览器都有自己的 JavaScript 实现。为了解决这个问题，过去几年中诞生了不同的 DOM 操作库。最常用于操作 DOM 的库是 jQuery。
 

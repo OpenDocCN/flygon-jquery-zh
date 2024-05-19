@@ -1,4 +1,4 @@
-# 第四章。jQuery Mobile 单页面应用程序
+# 第四章：jQuery Mobile 单页面应用程序
 
 jQuery mobile 是一个令人兴奋的项目，它将 jQuery 的强大功能带入了手持设备和移动体验的世界。与 jQuery UI 类似，它在 jQuery 核心基础上构建和扩展了一系列 UI 小部件和辅助工具。在这种情况下，这些小部件被优化用于移动显示和触摸界面。
 

@@ -1,4 +1,4 @@
-# 第七章. 完全响应式摄影
+# 第七章：完全响应式摄影
 
 我们的手机迅速成为我们的照片相册。摄影师代表着移动网页开发中一种尚未充分开发的市场。但如果你仔细想想，这个市场应该是第一个适应移动世界的。随着发达国家智能手机的普及，智能手机上的电子邮件打开率正在迅速接近 40%，当你阅读这篇文章时，可能已经达到了这个水平 ([`www.emailmonday.com/mobile-email-usage-statistics`](http://www.emailmonday.com/mobile-email-usage-statistics))。
 

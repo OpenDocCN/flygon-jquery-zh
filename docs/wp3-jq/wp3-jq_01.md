@@ -1,4 +1,4 @@
-# 第一章。入门：WordPress 和 jQuery
+# 第一章：入门：WordPress 和 jQuery
 
 欢迎来到 WordPress 和 jQuery。WordPress 网络发布平台和 jQuery 的 JavaScript 库是当今网络上使用最广泛的两个强大工具之一。将这些工具结合在一起，可以使您的网站的功能和灵活性加倍。这两种技术都易于学习和有趣，可以创造出网络魔法的秘诀。我希望您准备好通过学习 jQuery 如何改善您的 WordPress 开发经验，获得一些有趣和有趣的见解。
 

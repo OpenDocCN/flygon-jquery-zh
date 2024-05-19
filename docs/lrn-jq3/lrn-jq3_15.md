@@ -1,4 +1,4 @@
-# 附录 B - 快速参考
+# 附录 B：快速参考
 
 本附录旨在快速参考 jQuery API，包括其选择器表达式和方法。每个方法和选择器的更详细讨论可在 jQuery 文档站点[`api.jquery.com`](http://api.jquery.com)上找到。
 

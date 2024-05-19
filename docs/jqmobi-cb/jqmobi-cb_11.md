@@ -1,4 +1,4 @@
-# 第十一章。HTML5 和 jQuery Mobile
+# 第十一章：HTML5 和 jQuery Mobile
 
 在本章中，我们将涵盖以下内容：
 

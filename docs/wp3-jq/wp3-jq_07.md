@@ -1,4 +1,4 @@
-# 第七章. 使用 jQuery 和 WordPress 进行 AJAX
+# 第七章：使用 jQuery 和 WordPress 进行 AJAX
 
 AJAX 是 *杰西·詹姆斯·加勒特* 在 2005 年创立的用户体验专家，他是[www.AdaptivePath.com](http://www.AdaptivePath.com)的创始人，AJAX 是一个缩写词。 它很快就变成了一个流行词，其描述性（以及动词性）远远超出了其实际缩写定义。 我们将快速了解 AJAX 究竟是什么，以及它有多容易实现，更不用说为我们的“假想”客户想出更多酷炫的解决方案。
 

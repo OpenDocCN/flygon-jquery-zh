@@ -1,4 +1,4 @@
-# 第三章。深入了解 jQuery 和 WordPress
+# 第三章：深入了解 jQuery 和 WordPress
 
 现在我们已经了解了 WordPress 中 jQuery 的基础知识，我们准备通过理解以下内容深入了解：
 

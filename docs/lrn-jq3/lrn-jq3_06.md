@@ -1,4 +1,4 @@
-# 使用 Ajax 发送数据
+# 第六章：使用 Ajax 发送数据
 
 术语 **Asynchronous JavaScript and XML**（**Ajax**）是由 *Jesse James Garrett* 在 2005 年创造的。此后，它已经代表了许多不同的事物，因为该术语包含了一组相关的能力和技术。在其最基本的层次上，Ajax 解决方案包括以下技术：
 

@@ -1,4 +1,4 @@
-# 第 7 章。Durandal – KnockoutJS 框架
+# 第七章：Durandal – KnockoutJS 框架
 
 通过六章，我们已经使用基本库构建了一个完整的前端应用程序。
 

@@ -1,4 +1,4 @@
-# 第二章. 在 WordPress 中使用 jQuery
+# 第二章：在 WordPress 中使用 jQuery
 
 现在我们了解了 jQuery 和 WordPress 的基础知识，并对它们如何相互作用有了一点背景了，我们现在准备好看看如何使用 jQuery 动态增强 WordPress 安装了。我们将从在 WordPress 中包含 jQuery 开始，并以我们的第一个酷项目结束：展开和折叠内容。这只是你的 WordPress 站点中 jQuery 可能性的开始！再次强调，我们在这个标题中将使用 WordPress 3.0 和新的默认 Twenty Ten 主题与 jQuery 1.4.2，但请放心，如果你的站点或项目仍在使用 WordPress 2.9，这些 jQuery 技术也会很好地工作。
 

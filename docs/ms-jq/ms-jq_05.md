@@ -1,4 +1,4 @@
-# 第五章。集成 AJAX
+# 第五章：集成 AJAX
 
 一个问题 - **Deferreds**、**Promises**和/**ˈeɪdʒæks**/有什么共同点？
 
