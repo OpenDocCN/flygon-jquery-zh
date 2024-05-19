@@ -944,11 +944,14 @@
   id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经学会了如何使用Knockout管理模板，但也许你已经注意到，在`index.html`文件中拥有所有模板并不是最佳的方法。我们将讨论两种机制。第一种更像是自制的，而第二种是许多Knockout开发者使用的外部库，由Jim
+    Cowart创建，名为*Knockout.js-External-Template-Engine*（[https://github.com/ifandelse/Knockout.js-External-Template-Engine](https://github.com/ifandelse/Knockout.js-External-Template-Engine)）。
 - en: Managing templates with jQuery
   id: totrans-155
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用jQuery管理模板
 - en: 'Since we want to load templates from different files, let''s move all our templates
     to a folder called `views` and make one file per template. Each file will have
     the same name the template has as an ID. So if the template has the ID, `cart-item`,
@@ -957,6 +960,7 @@
   id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们希望从不同的文件加载模板，让我们将所有的模板移到一个名为`views`的文件夹中，并且每个模板都用一个文件表示。每个文件的名称将与模板的ID相同。因此，如果模板的ID是`cart-item`，那么文件应该被称为`cart-item.html`，并且将包含完整的`cart-item`模板：
 - en: '[PRE43]'
   id: totrans-157
   prefs: []
@@ -966,15 +970,18 @@
   id: totrans-158
   prefs: []
   type: TYPE_IMG
+  zh: '![使用jQuery管理模板](img/7074OS_02_06.jpg)'
 - en: The views folder with all templates
   id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 包含所有模板的views文件夹
 - en: 'Now in the `viewmodel.js` file, remove the last line (`ko.applyBindings(vm)`)
     and add this code:'
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在在`viewmodel.js`文件中，删除最后一行（`ko.applyBindings(vm)`）并添加此代码：
 - en: '[PRE44]'
   id: totrans-161
   prefs: []
@@ -987,6 +994,7 @@
   id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 此代码获取我们需要的所有模板并将它们附加到body。一旦所有模板都加载完成，我们就调用`applyBindings`方法。我们应该这样做，因为我们是异步加载模板，我们需要确保当所有模板加载完成时绑定我们的视图模型。
 - en: This is good enough to make our code more maintainable and readable, but is
     still problematic if we need to handle lots of templates. Further more, if we
     have nested folders, it becomes a headache listing all our templates in one array.
@@ -994,11 +1002,13 @@
   id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做已足以使我们的代码更易维护和易读，但如果我们需要处理大量的模板，仍然存在问题。而且，如果我们有嵌套文件夹，列出所有模板就会变成一个头疼的事情。应该有更好的方法。
 - en: Managing templates with koExternalTemplateEngine
   id: totrans-164
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用`koExternalTemplateEngine`管理模板
 - en: We have seen two ways of loading templates, both of them are good enough to
     manage a low number of templates, but when lines of code begin to grow, we need
     something that allows us to forget about template management. We just want to
@@ -1006,6 +1016,7 @@
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到了两种加载模板的方式，它们都足以管理少量的模板，但当代码行数开始增长时，我们需要一些允许我们忘记模板管理的东西。我们只想调用一个模板并获取内容。
 - en: For this purpose, Jim Cowart's library, `koExternalTemplateEngine`, is perfect.
     This project was abandoned by the author in 2014, but it is still a good library
     that we can use when we develop simple projects. In the next chapters, you will
@@ -1014,11 +1025,13 @@
   id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此目的，Jim Cowart的库`koExternalTemplateEngine`非常完美。这个项目在2014年被作者放弃，但它仍然是一个我们在开发简单项目时可以使用的好库。在接下来的章节中，您将学习更多关于异步加载和模块模式的知识，我们将看到其他目前正在维护的库。
 - en: We just need to download the library in the `js/vendors` folder and then link
     it in our `index.html` file just below the Knockout library.
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只需要在`js/vendors`文件夹中下载库，然后在我们的`index.html`文件中链接它，放在Knockout库的下面即可。
 - en: '[PRE45]'
   id: totrans-168
   prefs: []
@@ -1029,6 +1042,7 @@
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你应该在`viewmodel.js`文件中进行配置。删除模板数组和`foreach`语句，并添加以下三行代码：
 - en: '[PRE46]'
   id: totrans-170
   prefs: []
@@ -1040,11 +1054,13 @@
   id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，`infuser`是一个我们用来配置模板引擎的全局变量。我们应该指示我们的模板将具有哪个后缀名，以及它们将在哪个文件夹中。
 - en: We don't need the `<script type="text/html" id="template-id"></script>` tags
     any more, so we should remove them from each file.
   id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不再需要`<script type="text/html" id="template-id"></script>`标签，所以我们应该从每个文件中删除它们。
 - en: So now everything should be working, and the code we needed to succeed was not
     much.
   id: totrans-173
