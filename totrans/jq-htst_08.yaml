@@ -1,4 +1,5 @@
 - en: Chapter 8. Infinite Scrolling with jQuery
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -6,9 +7,11 @@
     the amount of data loaded on a page initially, and then incrementally loads more
     data when the user has scrolled to the bottom of the page. You can see this effect
     on the Facebook or Twitter timelines among others.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: Mission Briefing
+  id: totrans-2
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -17,16 +20,20 @@
     for some data and display it on the page. Once the user has scrolled to the bottom
     of the page, we'll make another request for the next page of data, and so on and
     so forth as the user continues scrolling.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once we''ve built our infinite scrolling system, we should end up with something
     similar to the following screenshot:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: '![Mission Briefing](img/9106OS_08_01.jpg)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
 - en: Why Is It Awesome?
+  id: totrans-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -34,61 +41,76 @@
     order, using the infinite scrolling technique is an easy way to maximize the user
     experience of the page with progressive disclosure – showing incrementally more
     to the user.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: A small subset of the data, which will make the page load quicker, as well as
     prevent your visitor being overwhelmed with data, can be displayed at first, which
     gradually increases following user interaction.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: The data that we'll consume in this project will be a list of videos uploaded
     to the TEDTalks channel on YouTube, in JSON format.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Remember, JSON is a lightweight, text-based data format perfect for transportation
     across networks. For more information on JSON, see [http://www.json.org/](http://www.json.org/).
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: There are thousands of videos that can be found on this channel, so it makes
     a good test bed for our project. Data that can be sorted into a time-based order
     makes a great basis for an infinite scroller.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The TEDTalks channel can be viewed directly on the YouTube website at [http://www.youtube.com/user/tedtalksdirector](http://www.youtube.com/user/tedtalksdirector).
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: Your Hotshot Objectives
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This project will be broken down into the following tasks:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
 - en: Preparing the underlying page
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Getting the initial feeds
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Displaying the initial set of results
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Handling scrolling to the bottom of the page
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Mission Checklist
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -96,22 +118,27 @@
     examples, but in this project we're going to make use of a handy little jQuery
     plugin called imagesLoaded, which allows us to fire a callback function when all
     the images with a selected container have finished loading.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: The imagesLoaded plugin can be downloaded from [https://github.com/desandro/imagesloaded](https://github.com/desandro/imagesloaded)
     and should be saved in our project's `js` directory.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: Preparing the underlying page
+  id: totrans-24
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: In this task we'll set up the files that we're going to use throughout this
     project and prepare the underlying page that our infinite scroller will reside
     on.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: Prepare for Lift Off
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -120,73 +147,98 @@
     and save it in the `js` directory. Then create a new style sheet called `infinite-scoller.css`
     and save it in the `css` directory. Lastly, save a copy of the `template.html`
     file in the root project folder and call it `infinite-scroller.html`.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Engage Thrusters
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The underlying markup used by the example page will be minimal – a lot of the
     elements that we'll be working with will be generated dynamically by our template,
     which we can also add in this task.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'First of all we should add references to our new files to the HTML page. Start
     by adding a `<link>` element for the style sheet to the `<head>` of `infinite-scroller.html`,
     directly after the link to `common.css`:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Next we can link to the two new JavaScript files. Add the following `<script>`
     elements directly after jQuery:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We also need to add a simple container to render our data into. Add the following
     code to the `<body>` of the page:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Now we can add the templates we'll use. In this project we'll use two templates
     – one to render the outer container and user data, which will be rendered once,
     and one to render the list of videos, which we can use repeatedly as required.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'As before, they will sit inside the `<script>` elements in the `<body>` of
     the page. Before the existing `<script>` elements, add following new templates:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Now for the video template:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'We can also add the styling for these elements now as well. In `infinite-scroller.css`,
     add the following selectors and rules:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Note
+  id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `ajax-loader.gif` image used in this project can be found in the accompanying
     code download for this book.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: Objective Complete - Mini Debriefing
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -194,51 +246,61 @@
     of the page, except for an empty `<div>` that will give us a container to render
     the data into. The template contains the markup used not just for the list of
     videos, but also information about the user whose videos we're displaying.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
 - en: In the first template, the outer container for the data is a `<section>` element.
     Within this is a `<header>` which displays information about the user, including
     his/her profile picture, name, and bio.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: The actual bio returned by YouTube for a specified user can be quite long, so
     we'll use the JavaScript `substring()` function to return a shortened version
     of this summary. This function is passed two arguments; the first is the character
     to start copying from and the second is the character to end on.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
 - en: In the second template the actual list of videos will be displayed in the`<ul>`
     element added in the first template, with each video occupying an `<li>`. Within
     each `<li>`, we have an `<article>` element, which is an appropriate container
     for an independent unit of content.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: Within the `<article>`, we have a `<header>` containing some of the key information
     about the video such as its title and a thumbnail. Following the `<header>`we
     display a short summary of the video in a `<p>`, element. We also use our shortening
     helper function `Truncate()`, starting at character 12.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly we display some meta-information about the video such as the number of
     plays, the number of likes, and the video's duration, using a `<dl>`.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: We use another helper function to display the duration in the video, `FormatTime()`.
     YouTube returns the length of the video in seconds, so we can convert this into
     a nicely formatted time string instead.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: We used the `>` character to HTML-encode any data we insert into the page. It's
     always best to do this as a security measure.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
 - en: The CSS that was added was purely presentational; merely used to lay out the
     page in a list format, and make it look slightly interesting and presentable.
     Feel free to change any aspect of how the layout is styled, or the elements are
     themed.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: Classified Intel
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -247,6 +309,7 @@
     this would almost certainly have been true, but now we can use the awesome `pushState()`
     method of the HTML History API to deliver a dynamic website that is completely
     indexable by search engines.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: A complete description of `pushState()`is beyond the scope of this book, but
@@ -254,9 +317,11 @@
     to be the definitive guide to the History API is the documentation on Mozilla's
     Developer Network, which includes a section on `pushState()`. You can see the
     documentation at [https://developer.mozilla.org/en-US/docs/DOM/Manipulating_the_browser_history](https://developer.mozilla.org/en-US/docs/DOM/Manipulating_the_browser_history).
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: Getting the initial feeds
+  id: totrans-58
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -264,40 +329,53 @@
     the page when it first loads. We need to write our code so that the function for
     getting the first page of data is reusable for any page of data so that we can
     make use of it later on in the project.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: Prepare for Lift Off
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'We can use the standard `document ready` shortcut provided by jQuery, just
     like we have in a number of previous projects. We can get ready by adding the
     following code to the `infinite-scroller.js` file that we create earlier:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Engage Thrusters
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'First of all we can add the code that retrieves the data from YouTube. Replace
     the comment in the preceding snippet of code with the following:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Next we need to process the response a little. We can use the following code
     to execute a callback function once both of the AJAX requests have completed,
     which should be added directly after the code we added a moment ago:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Objective Complete - Mini Debriefing
+  id: totrans-68
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -306,6 +384,7 @@
     that represents the index number of the first video we wish to get. YouTube videos
     are not zero-based like regular JavaScript arrays, so we initially define the
     variable with a value of `1`.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
 - en: Next we added our two functions that we'll use to get our data. The first is
@@ -313,12 +392,14 @@
     We're only going to be using this function once, when the page initially loads,
     but you'll see why it's important that we define the function as a variable in
     this way in just a moment.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: The second function will be reused, so storing it in a variable is a great way
     to store it ready to be invoked whenever we wish to get a new page of video data.
     It's important that these functions both return the `jqXHR` objects returned by
     the `getJSON()` method.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: Both of the requests use jQuery's `getJSON()` method to make the requests. In
@@ -326,10 +407,12 @@
     are set in the object passed to `getJSON()` as the second argument. The user whose
     profile data we want actually forms part of the URL we are making the request
     to.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: The callback function for this request simply adds the contents of the `user.entry`
     object received from the request to the `userdata` property of our `data` object.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
 - en: The second request requires slightly more configuration. We still set the API
@@ -337,25 +420,30 @@
     of the response to be `jsonc` instead of `json`. In the callback function for
     this request we store the array of videos in the `videodata` property of our `data`
     object.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
 - en: '**JSON-C** stands for json-in-script and is a format that Google can respond
     with for some requests. Data returned in JSON-C format is generally more lightweight
     and more efficient to process than the same response in JSON due to how Google''s
     API has been engineered.'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: The properties that we need to use are only returned when this format is used.
     The only reason we don't use it when requesting the user data is because there
     is not a JSON-C response for that particular query.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-77
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: For more information on JSON-C responses from Google's APIs, see the documentation
     at [https://developers.google.com/youtube/2.0/developers_guide_jsonc](https://developers.google.com/youtube/2.0/developers_guide_jsonc).
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: Next we make use of jQuery's `when()`method to initiate both of our requests,
@@ -363,34 +451,41 @@
     `jqXHR` objects have been resolved. This is why it was important that the single-use
     `getUser()` function is structured in the same way as the reusable `getData()`
     function.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
 - en: Inside the callback function for `done()`, we first increment the `startIndex`
     variable by 25 so that when we make another request we get the next "page" of
     25 videos. As we have the first page of data now, when we use the `getData()`
     function later on, we'll automatically get the "next" page of results.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: Note
+  id: totrans-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `when()` and `done()` methods are the preferred way of handling asynchronous
     operations since jQuery 1.5.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
 - en: At this point we just need to do a little processing of our `userdata` object.
     There's a whole bunch of data we don't need to use, and some of the data we do
     need to use is buried within nested objects, so we simply create a new object
     called `clean` and set just the data we need on this object directly.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: Once this has been done we can save our clean object back to our `data` object,
     overwriting the original `userdata` object. This should make the object easier
     to process in our template.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: Displaying the initial set of results
+  id: totrans-85
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -398,42 +493,57 @@
     However, in order to render our template, we need to add helper functions used
     to format some of the data. In this task we can add those helper functions and
     then render the template.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: Engage Thrusters
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The template helpers don''t need to reside within the `$.done()`callback function.
     We can add them directly before this code in `infinite-scroller.js`:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Next we just need to register the helper functions. Directly after the previous
     code add the following:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Lastly we can render our template. We want a function that we can call from
     anywhere in our code, ready for when we make further requests later on. Add the
     following code after registering the helper functions:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Now we just need to call this function at the end of our `$.done()` callback
     function:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Objective Complete - Mini Debriefing
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -442,28 +552,33 @@
     `substring()` function takes two arguments; the first is the position in the string
     to begin copying at, and the second argument is the number of characters to copy,
     which we fix at `200`.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: To show that the string has been shortened, we also append an ellipsis to the
     end of the returned string, which is why we use a helper function here, instead
     of using a substring in the template directly as we did earlier.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: The `formatTime()` helper function is a little more complex, but still relatively
     straightforward. This function will receive a time in seconds, which we want to
     format into a slightly nicer string that shows the hours, if there are any, the
     minutes, and seconds.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
 - en: We first create an empty array to store the different components of the string.
     We then create a number of variables to hold the hours, minutes, and seconds portions
     of the time string we're going to create.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
 - en: The hours are calculated by dividing the total number of seconds by 3600 (the
     number of seconds in an hour). We use `Math.floor()`on it so that we only get
     a whole number result. We need to calculate the minutes slightly differently because
     we need to take into account the hours if there are any.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: We use the modulus operator (`%`) here to remove any hours first and then divide
@@ -471,17 +586,20 @@
     the remaining minutes after the hours have been accounted for. To work out the
     number of seconds, we just need to use the modulus operator again and the value
     `60`.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: We then use a series of conditionals to determine which of the variables to
     add to the array. If there are any hours (which is unlikely given the nature of
     the videos) we push them into the array.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
 - en: If there are less than `10` minutes, we add `0` to the minutes figure and then
     push it into the array. If there are more than `10` minutes we just push the `mins`
     variable into the array. The same logic is applied to the `secs` variable before
     it is pushed into the array.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
 - en: This function returns a nicely formatted time by joining the items in our array
@@ -491,6 +609,7 @@
     nested within the `views` object, which is added to jQuery by the templating library.
     The helper functions we wish to add are set as the values in an object literal,
     where the keys match the function calls in our template.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
 - en: Next we added a function that we can call in order to render our template. The
@@ -498,62 +617,81 @@
     to render both the container template and video template, or just the video template.
     Inside the function we first cache a reference to the outer container of the video
     list.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: If the `renderOuter` argument has a truthy value (that is if it specifically
     holds the value `true`), we render the `containerTemplate` and append it to the
     empty `<div>` we added to the `<body>` of the page. We then render the `videoTemplate`,
     appending the rendered HTML to the `<ul>` that is added by the `containerTemplate`.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly we called our `renderer()` function for the first time, passing `true`
     as the argument to render both the containers and the initial list of videos.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: Handling scrolling to the bottom of the page
+  id: totrans-109
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Now that we've got the first page of videos, we want to add a handler that monitors
     the window for scroll events and detects when the page has been scrolled right
     to the bottom.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
 - en: Engage Thrusters
+  id: totrans-111
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'First of all we need to add a couple of new variables. Change the very first
     set of variables near the top of the file so that they appear as follows:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Now we need to update our `renderer()` function so that when the templates
     have been rendered we update the new `listHeight` variable. Add the following
     code after where we render the `videoTemplate`:'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-115
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Next we can add a handler for the scroll event. Directly after the `when()`
     method in `infinite-scroller.js`, add the following code:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'We''re using a spinner to show the user that more data is being retrieved.
     We need a few extra styles to handle the position of the spinner, so we can also
     add the following code to the bottom of our `infinite-scroller.css` style sheet:'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-119
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Objective Complete - Mini Debriefing
+  id: totrans-120
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -562,6 +700,7 @@
     we first check whether the current `scrollTop` property of the `window`, plus
     the `height` of the viewport is greater than or equal to the `height` of our `videolist`
     container. We need to do this to know when the page has been scrolled to the bottom.
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
 - en: If the heights are equal, we create a temporary loader to provide visual feedback
@@ -569,6 +708,7 @@
     `<ul>` containing the videos and give it a class name of `loading` so that we
     can easily target it with some CSS. We set a `<span>` element as the content of
     the new list item.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
 - en: We can get the current value of the `scrollTop` property using jQuery's `scrollTop()`
@@ -576,6 +716,7 @@
     will be fairly intensive as it will be invoked every time the user scrolls, so
     using a cached value for the window `height` makes this process slightly more
     efficient.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
 - en: It does mean however that if the window is resized, this value will no longer
@@ -583,11 +724,13 @@
     this value every time the window is resized. This is done by chaining another
     call to the `on()`method after the scroll handler, which looks for the resize
     event of the `window` object and updates the `winHeight` variable accordingly.
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
 - en: We then use jQuery's `when()` method once again, which invokes our `getData()`
     function to retrieve the next 25 videos. We also use the `done()` method again
     to execute a callback function once the request has completed.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
 - en: Within this callback function we increment our `startIndex` variable by `25`
@@ -595,17 +738,21 @@
     populate our `data` object with the new video data so all we need to do is call
     our `renderer()` function to display the new videos, and then remove the temporary
     loader.
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
 - en: 'At this point we should have a fully functional infinite loader that loads
     more videos when the user scrolls to the bottom of the page. We should be able
     to run the page and see something like the following when we scroll to the bottom:'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
 - en: '![Objective Complete - Mini Debriefing](img/9106OS_08_02.jpg)'
+  id: totrans-128
   prefs: []
   type: TYPE_IMG
 - en: Mission Accomplished
+  id: totrans-129
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -614,43 +761,60 @@
     requires only a minimal amount of code – a single handler that watches for the
     scroll event and triggers a new request for more data when the document is scrolled
     to the bottom.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个项目中，我们编写的大部分代码都是关于获取我们想要显示的数据。实际上，添加无限滚动功能本身只需要一小部分代码 - 一个监视滚动事件并在文档滚动到底部时触发新数据请求的单个处理程序。
 - en: As you can see this is a feature that would be easy to retrofit to existing
     functionality as an additional layer. This technique is best suited to data that
     can easily be arranged in reverse-chronological order, with new items appearing
     at the top and older items appearing at the bottom.
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，这是一个非常容易作为附加层来修改现有功能的功能。这种技术最适合能够轻松按时间顺序排列的数据，新项目出现在顶部，旧项目出现在底部。
 - en: It's not necessarily a complete replacement for paged data, but certainly makes
     sense when dealing with things such as news stories, blog posts, tweets, or status
     updates. It works very well with social data.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不一定是分页数据的完全替代，但在处理诸如新闻故事、博客文章、推文或状态更新等内容时，肯定是有意义的。它与社交数据配合得非常好。
 - en: You Ready To Go Gung HO? A Hotshot Challenge
+  id: totrans-133
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 你准备好大干一场了吗？一个高手挑战。
 - en: In this project we're simply providing links back to a full-screen video player
     for each video on the YouTube site. So when the visitor clicks on a video thumbnail
     or title, they'll be sent off to YouTube to actually watch the video.
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个项目中，我们只是为每个 YouTube 视频提供了回到全屏视频播放器的链接。所以，当访问者点击视频缩略图或标题时，他们将被送到 YouTube 实际观看视频。
 - en: While there's nothing inherently wrong in doing this, a much cooler thing to
     do would be to open up a lightbox containing a video player embedded in an `<iframe>`.
     This would let the visitor view the video without ever leaving your site. The
     response from YouTube for the videos contains a link that can be used as the `src`
     attribute of an `<iframe>`, so why not see if you can hook this up yourself?
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然这样做并没有什么本质上的错，但更酷的做法是打开一个包含在`<iframe>`中嵌入的视频播放器的灯箱。这样访问者就可以在不离开您的网站的情况下观看视频。来自
+    YouTube 视频的响应包含一个可以用作`<iframe>`的`src`属性的链接，那为什么不试试自己连接一下呢？
 - en: You'll notice that if you scroll to the bottom of the page, but then carry on
     scrolling down immediately, the same set of videos are requested multiple times.
     As an alternative task, see if you can prevent this from happening by only requesting
     more data if there is not currently a request in progress.
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会注意到，如果你滚动到页面底部，然后立即继续向下滚动，同一组视频将被多次请求。作为另一个任务，看看你是否可以通过仅在当前没有请求正在进行时才请求更多数据来防止这种情况发生。
 - en: This should be very easy to set up and simply involves setting a flag when the
     request begins, and removing the flag when it ends. We can then only make requests
     if the flag is not set.
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该非常容易设置，只需在请求开始时设置一个标志，结束时删除标志。然后，只有在标志未被设置时才能发出请求。
