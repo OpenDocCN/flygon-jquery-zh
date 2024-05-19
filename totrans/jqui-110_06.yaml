@@ -1950,11 +1950,13 @@
   id: totrans-300
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个示例只有在安装了并配置了 PHP 的完整 Web 服务器时才能正常工作。在这个示例中，我们不会查看上传过程的服务器端部分；我们只对一旦上传完成，根据从系统收到的反馈来更新进度条感兴趣。
 - en: 'Change the `<body>` in `progressbar6.html`, so that it contains the following
     elements:'
   id: totrans-301
   prefs: []
   type: TYPE_NORMAL
+  zh: 修改`progressbar6.html`中的`<body>`，使其包含以下元素：
 - en: '[PRE43]'
   id: totrans-302
   prefs: []
@@ -1966,6 +1968,7 @@
   id: totrans-303
   prefs: []
   type: TYPE_NORMAL
+  zh: 在页面上，我们有一个`file`类型的`<input>`元素，后面跟着进度条的容器，就像往常一样。接下来，让我们添加脚本；将`<head>`末尾的最后一个`<script>`元素更改为以下代码：
 - en: '[PRE44]'
   id: totrans-304
   prefs: []
@@ -1976,6 +1979,7 @@
   id: totrans-305
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此文件保存为`progressbar7.html`。将以下代码添加到一个新文档中，并保存为`uploads.js`：
 - en: '[PRE45]'
   id: totrans-306
   prefs: []
@@ -1986,6 +1990,7 @@
   id: totrans-307
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，在文档的`<head>`元素下方立即添加以下内容：
 - en: '[PRE46]'
   id: totrans-308
   prefs: []
@@ -1997,6 +2002,7 @@
   id: totrans-309
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，在`progressbar7.html`中，我们进行检查以确认浏览器是否支持 File API；如果可以，我们就会启动一个事件处理程序，该处理程序会在点击`fileselect`按钮时立即触发。
 - en: Within the change handler, we get details of the files selected and save them
     to an array; we then call out to the `ParseFile()` function (in `uploads.js`)
     to first initiate the output messages, then to load and read a copy of the image
@@ -2005,6 +2011,7 @@
   id: totrans-310
   prefs: []
   type: TYPE_NORMAL
+  zh: 在更改处理程序中，我们获取所选文件的详细信息并将其保存到数组中；然后，我们调用`ParseFile()`函数（在`uploads.js`中）来首先启动输出消息，然后使用`FileReader()`加载和读取图像的副本，并将图像的副本输出到屏幕。同时，我们显示图像名称的详细信息。
 - en: Moving on to `uploads.js`, we then shell out to the `UploadFile` function, which
     is where the real magic happens. We begin by initiating an instance of the progressbar,
     give it the `progress` ID, and using a `<div>` element as its container. The code
@@ -2016,6 +2023,9 @@
   id: totrans-311
   prefs: []
   type: TYPE_NORMAL
+  zh: 继续到`uploads.js`，然后我们调用`UploadFile`函数，这就是真正的魔法发生的地方。我们首先初始化一个进度条的实例，给它一个`progress`
+    ID，并使用一个`<div>`元素作为其容器。然后，代码设置了一个`XMLHttpRequest()`的实例，并打开了一个`POST`连接以上传文件。在这种情况下，文件实际上只上传到服务器上的一个测试文件夹（或在这种情况下，您的个人电脑上），称为
+    uploads；在这一点上，您将创建一个上传脚本，该脚本将把文件重定向到远程服务器上的适当位置。
 - en: Each time the `XMLHttpRequest` parameter is updated, it fires the `onprogress`
     event handler to update the progressbar; we calculate the difference between the
     total file size and the uploaded content, then convert it to a percentage and
@@ -2024,11 +2034,14 @@
   id: totrans-312
   prefs: []
   type: TYPE_NORMAL
+  zh: 每当`XMLHttpRequest`参数更新时，它都会触发`onprogress`事件处理程序来更新进度条；我们计算总文件大小与已上传内容之间的差异，然后将其转换为百分比，并用此百分比来更新进度条。一旦上传完成，我们就会触发`onload()`事件处理程序，以确保它显示
+    100% 完成。
 - en: 'We also need a bit of CSS for this example; in a new text file add the following
     code:'
   id: totrans-313
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这个示例，我们还需要一些 CSS；在一个新的文本文件中添加以下代码：
 - en: '[PRE47]'
   id: totrans-314
   prefs: []
@@ -2040,6 +2053,7 @@
   id: totrans-315
   prefs: []
   type: TYPE_NORMAL
+  zh: 此文件可以保存在`css`文件夹中，命名为`uploads.css`。大部分样式只是定位各个元素并设置进度条的宽度。我们也不需要链接到`progressTheme.css`，因此也可以将其删除。
 - en: When we run this file, we should see that once a file has been selected, it
     will automatically begin to upload, and the progressbar will begin to fill up.
     If testing locally, it will be pretty quick, so it's best tested with reasonably
