@@ -1020,40 +1020,48 @@
   id: totrans-150
   prefs: []
   type: TYPE_IMG
+  zh: '![卷积节点](img/5060_10_07.jpg)'
 - en: Analyser node
   id: totrans-151
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 分析节点
 - en: This node doesn't change the sound at all; instead, it can be used to do frequency
     and time-domain analyses.
   id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 此节点根本不改变声音；相反，它可以用于进行频率和时域分析。
 - en: '![Analyser node](img/5060_10_08.jpg)'
   id: totrans-153
   prefs: []
   type: TYPE_IMG
+  zh: '![分析节点](img/5060_10_08.jpg)'
 - en: DynamicCompressor node
   id: totrans-154
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 动态压缩器节点
 - en: 'This node implements a compressor effect. You can configure the effect with
     the following parameters: **threshold**, **knee**, **ratio** , **reduction** ,
     **attack** , and **release**.'
   id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 此节点实现了一个压缩器效果。您可以使用以下参数配置效果：**threshold**，**knee**，**ratio**，**reduction**，**attack**和**release**。
 - en: '![DynamicCompressor node](img/5060_10_09.jpg)'
   id: totrans-156
   prefs: []
   type: TYPE_IMG
+  zh: '![动态压缩器节点](img/5060_10_09.jpg)'
 - en: BiquadFilter node
   id: totrans-157
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 双二次滤波器节点
 - en: 'This node can be used to apply a series of low-order filters. To specify which
     one you can use the node''s `type` property to assign it one of the following
     values: `lowpass`, `highpass`, `bandpass`, `lowshelf`, `highshelf`, `peaking`,
@@ -1062,22 +1070,27 @@
   id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 此节点可用于应用一系列低阶滤波器。要指定使用哪一个，您可以使用节点的 `type` 属性将其分配给以下值之一：`lowpass`，`highpass`，`bandpass`，`lowshelf`，`highshelf`，`peaking`，`notch`
+    和 `allpass`。您可以通过设置节点的一些属性来配置所选择的效果。有关详细信息，您可以查看规格。
 - en: WaveShaper node
   id: totrans-159
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: WaveShaper 节点
 - en: This node implements a waveshaper effect ([http://en.wikipedia.org/wiki/Waveshaper](http://en.wikipedia.org/wiki/Waveshaper))
     defined by its shaping function provided as an array in the curve properties of
     the node.
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 此节点实现了一个波形整形器效果（[http://en.wikipedia.org/wiki/Waveshaper](http://en.wikipedia.org/wiki/Waveshaper)），由节点的曲线属性中提供的整形函数数组定义。
 - en: Flash fallbacks
   id: totrans-161
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Flash 回退
 - en: This may seem strange, but there are a few situations where you may want to
     use Flash for sound. For example, you may have designed a simple game with HTML
     because you wanted to target iOS devices and desktops at the same time. But you
@@ -1087,17 +1100,22 @@
   id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能听起来很奇怪，但有几种情况下您可能希望使用 Flash 进行声音处理。例如，您可能已经使用 HTML 设计了一个简单的游戏，因为您想同时面向 iOS
+    设备和台式机。但是您还希望旧版浏览器（如 IE 6）也具有声音。或者您希望仅使用 MP3 并为不支持 Flash 的设备提供 Flash。这些是一些情况，在这些情况下，如果不支持
+    HTML5 Audio 元素，则可能希望使用 Flash。
 - en: There are some libraries that allow you to abstract this; we will take a detailed
     look at one of them—SoundManager 2—and then a quick overview of some available
     alternatives.
   id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一些库可以使您抽象化此过程；我们将详细查看其中之一——SoundManager 2——然后快速概述一些可用的替代方案。
 - en: SoundManager 2
   id: totrans-164
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: SoundManager 2
 - en: To use SoundManager 2 ([http://www.schillmania.com/projects/soundmanager2/](http://www.schillmania.com/projects/soundmanager2/)),
     you only need to include a smallish JavaScript code on your page and provide a
     link to the Flash files (hosted on the same server to comply with the same-origin
@@ -1106,6 +1124,8 @@
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用 SoundManager 2（[http://www.schillmania.com/projects/soundmanager2/](http://www.schillmania.com/projects/soundmanager2/)），您只需要在页面上包含一小段
+    JavaScript 代码，并提供指向 Flash 文件的链接（在同一服务器上托管以遵守同一来源策略）。让我们快速看一下预加载的实现将会是什么样子。
 - en: '[PRE24]'
   id: totrans-166
   prefs: []
@@ -1124,6 +1144,10 @@
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用 SoundManager 2，我们首先必须配置它；这是前面代码中突出显示的部分所做的。 `url` 参数是播放声音所使用的 Flash 文件的路径。我们选择了
+    Flash 版本 8，因为如果要模仿 HTML5 Audio 元素，则不需要更高版本。然后，我们设置一个标志，以在 Flash 不可用时使库使用 HTML5
+    播放声音。由于此方法可能需要一些时间才能加载和准备就绪，我们设置了一个事件处理程序来检测 `SoundManager` 对象是否已准备就绪。此事件处理程序仅设置一个标志。还有更多可用参数，我建议您在写得很好的
+    `SoundManager` 文档中查看它们。
 - en: To implement the `preload` function, we have to take into account that SoundManager
     may not be ready. If that is the case, we wait for the next call to `isPreloaded`
     to start the preloading (if `SoundManager` is ready at this point).
