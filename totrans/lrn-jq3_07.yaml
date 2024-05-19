@@ -903,6 +903,7 @@
   id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 *清单 7.16* 中，我们为滑块指定了一个最小值 `0`，并为幻灯片展示中的最后一本书的索引设置了最大值。我们可以将这个作为幻灯片的手动控制，通过在它们各自的状态改变时在幻灯片和滑块之间发送消息。
 - en: 'To react to the slider''s value changing, we can bind a handler to a custom
     event that is triggered by sliders. This event, `slide`, is not a native JavaScript
     event, but acts like one in our jQuery code. However, observing these events is
@@ -911,6 +912,9 @@
   id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了对滑块值的变化做出反应，我们可以将处理程序绑定到由滑块触发的自定义事件上。这个事件，`slide`，不是一个原生的 JavaScript 事件，但在我们的
+    jQuery 代码中表现得像一个。然而，观察这些事件是如此常见，以至于我们可以不需要显式地调用 `.on()`，而是可以直接将我们的事件处理程序添加到 `.slider()`
+    调用本身，如下面的代码所示：
 - en: '[PRE20]'
   id: totrans-140
   prefs: []
@@ -920,18 +924,21 @@
   id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 清单 7.17
 - en: Whenever the `slide` callback is invoked, its `ui` parameter is populated with
     information about the widget, including its current value. By passing this value
     along to the Cycle plugin, we can manipulate the current slide being shown.
   id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 每当调用 `slide` 回调时，它的 `ui` 参数就会填充有关小部件的信息，包括其当前值。通过将这个值传递给 Cycle 插件，我们可以操作当前显示的幻灯片。
 - en: 'We also need to update the slider widget whenever the slideshow advances to
     another slide. To communicate in this direction we can use Cycle''s `before` callback,
     which is triggered before each slide transition:'
   id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要在幻灯片向前切换到另一个幻灯片时更新滑块小部件。为了在这个方向上进行通信，我们可以使用 Cycle 的 `before` 回调，在每次幻灯片转换之前触发：
 - en: '[PRE21]'
   id: totrans-144
   prefs: []
@@ -941,6 +948,7 @@
   id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 清单 7.18
 - en: Inside the `before` callback, we call the `.slider()` method again. This time,
     we call it with `value` as its first parameter to set the new slider value. In
     jQuery UI parlance, we call `value` a *method* of slider, even though it is invoked
@@ -948,24 +956,30 @@
   id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `before` 回调中，我们再次调用 `.slider()` 方法。这一次，我们将 `value` 作为它的第一个参数调用，以设置新的滑块值。在
+    jQuery UI 的术语中，我们将 `value` 称为滑块的 *方法*，尽管它是通过调用 `.slider()` 方法而不是通过自己的专用方法名称来调用的。
 - en: Other widgets
   id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他小部件
 - en: Other jQuery UI widgets include Datepicker, Dialog, Tabs, and Accordion. Each
     widget has several associated options, events, and methods. For a full list, visit
   id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他 jQuery UI 小部件包括 Datepicker、Dialog、Tabs 和 Accordion。每个小部件都有几个相关的选项、事件和方法。完整列表，请访问
 - en: '[http://jqueryui.com/](http://jqueryui.com/).'
   id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: '[jQuery UI](http://jqueryui.com/).'
 - en: jQuery UI ThemeRoller
   id: totrans-150
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: jQuery UI ThemeRoller
 - en: 'One of the most exciting features of the jQuery UI library is ThemeRoller,
     a web-based interactive theme engine for the UI widgets. ThemeRoller makes creating
     highly customized, professional-looking elements quick and easy. The buttons and
@@ -974,14 +988,18 @@
   id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery UI 库最令人兴奋的功能之一是 ThemeRoller，这是一个基于 Web 的交互式主题引擎，用于 UI 小部件。ThemeRoller
+    使得创建高度定制、专业外观的元素变得快速简单。我们刚刚创建的按钮和滑块都应用了默认主题；如果没有提供自定义设置，这个主题将从 *ThemeRoller* 输出：
 - en: '![](img/5297_07_10.png)'
   id: totrans-152
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/5297_07_10.png)'
 - en: Generating a completely different set of styles is a simple matter of visiting
   id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成完全不同风格的样式只需简单访问
 - en: '[http://jqueryui.com/themeroller/](http://jqueryui.com/themeroller/), modifying
     the various options as desired, and pressing the Download Theme button. A `.zip`
     file of stylesheets and images can then be unpacked into your site directory.
@@ -991,15 +1009,19 @@
   id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: '[http://jqueryui.com/themeroller/](http://jqueryui.com/themeroller/)，根据需要修改各种选项，然后按下下载主题按钮。然后，可以将样式表和图像的
+    `.zip` 文件解压缩到您的站点目录中。例如，通过选择几种不同的颜色和纹理，我们可以在几分钟内为我们的按钮、图标和滑块创建一个新的协调外观，如下面的屏幕截图所示：'
 - en: '![](img/5297_07_11.png)'
   id: totrans-155
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/5297_07_11.png)'
 - en: The jQuery Mobile plugin library
   id: totrans-156
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: jQuery Mobile 插件库
 - en: We have seen how jQuery UI can assist us in assembling the user interface features
     needed for even a complex web application. The challenges it overcomes are varied
     and complex. A different set of hurdles exists, however, when preparing our pages
@@ -1512,3 +1534,4 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 修改`mobile.html`中的HTML，使得列表视图按照书名的首字母分隔。详细信息请参阅jQuery Mobile文档中关于`data-role="list-divider"`的部分。
