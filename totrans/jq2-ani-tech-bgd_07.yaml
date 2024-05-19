@@ -2526,11 +2526,13 @@
   id: totrans-413
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，上述代码不代表完整的完全功能代码片段。`each()`方法传递给的外部函数尚未关闭，因为我们需要在这些变量之后添加一些额外的代码。
 - en: Time for action – creating the overlay wrappers
   id: totrans-414
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 行动时间-创建覆盖包装器
 - en: 'We now need to create the wrappers for each of the overlay images (note that
     this code is still within the `each()` method, and so will be executed for each
     of the images that have the `expanded` class name). Add the following code directly
@@ -2538,29 +2540,35 @@
   id: totrans-415
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们需要为每个覆盖图像创建包装器（请注意，此代码仍在`each()`方法内，因此将为具有`expanded`类名的每个图像执行此代码）。直接在我们刚刚添加的`each`函数的最后一行下面添加以下代码：
 - en: '```js'
   id: totrans-416
   prefs: []
   type: TYPE_NORMAL
+  zh: '```'
 - en: $("<div></div>", {
   id: totrans-417
   prefs: []
   type: TYPE_NORMAL
+  zh: $("<div></div>", {
 - en: '"class": "expander-wrapper",'
   id: totrans-418
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '"class": "expander-wrapper",'
 - en: 'css: {'
   id: totrans-419
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'css: {'
 - en: 'top: coords.top,'
   id: totrans-420
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'top: coords.top,'
 - en: 'left: (webkit === true && expander.css("float") === "right") ? (coords.left
     + expander.width()) : coords.left,direction: (expander.css("float") === "right")
     ? "rtl" : "ltr"'
@@ -2568,124 +2576,148 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'left: (webkit === true && expander.css("float") === "right") ? (coords.left
+    + expander.width()) : coords.left,direction: (expander.css("float") === "right")
+    ? "rtl" : "ltr"'
 - en: '},'
   id: totrans-422
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '},'
 - en: 'html: copy,'
   id: totrans-423
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'html: copy,'
 - en: 'width: expander.width(),'
   id: totrans-424
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'width: expander.width(),'
 - en: 'height: expander.height(),'
   id: totrans-425
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'height: expander.height(),'
 - en: 'click: function() {'
   id: totrans-426
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'click: function() {'
 - en: var img = $(this).find("img"),
   id: totrans-427
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: var img = $(this).find("img"),
 - en: id = img.attr("id");
   id: totrans-428
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: id = img.attr("id");
 - en: if (!img.hasClass("expanded")) {
   id: totrans-429
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: if (!img.hasClass("expanded")) {
 - en: img.addClass("expanded").animate({
   id: totrans-430
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: img.addClass("expanded").animate({
 - en: 'width: dims[id].big.width,'
   id: totrans-431
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'width: dims[id].big.width,'
 - en: 'height: dims[id].big.height'
   id: totrans-432
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'height: dims[id].big.height'
 - en: '}, {'
   id: totrans-433
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}, {'
 - en: 'queue: false'
   id: totrans-434
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'queue: false'
 - en: '});'
   id: totrans-435
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '});'
 - en: '} else {'
   id: totrans-436
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '} else {'
 - en: img.animate({
   id: totrans-437
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: img.animate({
 - en: 'width: dims[id].small.width,'
   id: totrans-438
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'width: dims[id].small.width,'
 - en: 'height: dims[id].small.height'
   id: totrans-439
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'height: dims[id].small.height'
 - en: '}, {'
   id: totrans-440
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}, {'
 - en: 'queue: false,'
   id: totrans-441
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'queue: false,'
 - en: 'complete: function() {'
   id: totrans-442
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'complete: function() {'
 - en: $(this).removeClass("expanded");
   id: totrans-443
   prefs:
@@ -2693,65 +2725,78 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: $(this).removeClass("expanded");
 - en: '}'
   id: totrans-444
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: '});'
   id: totrans-445
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '});'
 - en: '}'
   id: totrans-446
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: '}'
   id: totrans-447
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '}'
 - en: '}).appendTo("body");'
   id: totrans-448
   prefs: []
   type: TYPE_NORMAL
+  zh: '}).appendTo("body");'
 - en: '```'
   id: totrans-449
   prefs: []
   type: TYPE_NORMAL
+  zh: '```'
 - en: '*What just happened?*'
   id: totrans-450
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '*刚刚发生了什么?*'
 - en: In this section of code, we create the wrapper element for the new image. We
     give it a new class name so that it can be positioned correctly.
   id: totrans-451
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此代码部分中，我们为新图像创建包装器元素。我们给它一个新的类名，以便可以正确定位。
 - en: Tip
   id: totrans-452
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: '**Quoting the class property**'
   id: totrans-453
   prefs: []
   type: TYPE_NORMAL
+  zh: '**引用类属性**'
 - en: We need to use quotes around the property name `class` because it's a reserved
     word in JavaScript and could throw script errors if this isn't done.
   id: totrans-454
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要在`class`属性名称周围使用引号，因为它是JavaScript中的保留字，如果不这样做可能会引发脚本错误。
 - en: We set the position of the wrapper element using the `css` property, in conjunction
     with the coordinates we obtained from the `offset()` method earlier.
   id: totrans-455
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用`css`属性和从`offset()`方法中获取的坐标来设置包装器元素的位置。
 - en: When setting the `left` position of the wrapper element, we need to check our
     `webkit` variable to see if Safari or Chrome is in use. If this variable is set
     to `true`, and if the image is floated to the right, we position the overlay according
@@ -2762,6 +2807,7 @@
   id: totrans-456
   prefs: []
   type: TYPE_NORMAL
+  zh: 设置包装器元素的`left`位置时，我们需要检查我们的`webkit`变量，以查看是否正在使用Safari或Chrome。如果此变量设置为`true`，并且图像被浮动到右侧，我们将根据原始图像的`width`参数以及`cords.left`值定位覆盖层。如果`webkit`变量为`false`，或者原始图像浮动到`left`，我们只需将包装器的`left`位置设置为存储在`coords.left`中的值。
 - en: We also need to set the `direction` property of any images that are floated
     right. We check the `float` style property and set the `direction` to `rtl` if
     the image is floated right, or `ltr` if not. This is done using JavaScript, a
@@ -2769,6 +2815,7 @@
   id: totrans-457
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要设置任何浮动到右侧的图像的`direction`属性。我们检查`float`样式属性，并设置`direction`为`rtl`如果图像浮动到右侧，或者如果没有，则设置为`ltr`。这是使用JavaScript，三元条件完成的。
 - en: This check is done so that the wrapper expands from right to left when the image
     is floated `right`. If we didn't set this, the wrapper would open up from left
     to right, which could make the full-sized image overflow the viewport, or the
@@ -2776,6 +2823,7 @@
   id: totrans-458
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个检查是为了在图像浮动`right`时，使包装器从右向左扩展。如果我们没有设置这个，包装器将从左向右打开，这可能导致全尺寸图像溢出视口，或者内容容器出现滚动条。
 - en: We add the new image to the wrapper by passing a reference to it into the jQuery
     `html()` method, and set the `width` parameter of the wrapper to the `width` parameter
     of the original (and new) image. This is necessary for the overlay to be positioned
