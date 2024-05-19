@@ -1,32 +1,39 @@
 - en: Chapter 8. Writing Code that You can Read Later
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: jQuery truly does help us do more with less code, but one thing it doesn't address
     is how to organize our code. This may not be a problem at first, but as your app
     grows in age and features, it's organization (or lack thereof), becomes a problem.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this chapter, we will look at some proven methods to organize JavaScript.
     In this chapter we will:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: Learn some object-oriented techniques to make our code easy to understand and
     maintain
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Use events to decouple our code and ensure that unrelated sections don't need
     to directly talk to each other
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Take a quick look at writing JavaScript unit testing, specifically with Jasmine,
     which is a behavior-driven development framework used to test JavaScript code
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Separation of concerns
+  id: totrans-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -41,6 +48,7 @@
     **Separation of Concerns**, or SoC. If any part of the application violates this
     rule, your application will descend into a hot mess of tightly coupled, interdependent
     code.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'We don''t need to go all in with MVC in order to gain some benefits from it.
@@ -49,11 +57,14 @@
     the requirement to write the code to retrieve membership data from our web service
     and render it for the user to select from. How should we proceed? Your first impulse
     might be to write some code like the following:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This code achieves our requirements but has several problems. First, there is
     no separation of concerns. While we are not striving to create an MVC application,
     we should at least strive to have functions that are broken down along model,
@@ -61,6 +72,7 @@
     method call. It is bound directly to our controller code, which takes the model
     data and creates an HTML template out of it in this example. And finally, our
     view code takes the HTML template and renders it using a `$.html()` method.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: This code is also an example of tight coupling. Each section of the code depends
@@ -70,9 +82,11 @@
     mock that event in order to even begin testing the code's functionality. Once
     you've mocked the document-ready event, you will also need to somehow mock the
     `getJSON()` method since the rest of the code is buried inside it.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: Breaking code into logical units
+  id: totrans-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -80,6 +94,7 @@
     that it hasn't been broken down into logical units. In JavaScript, we don't have
     classes like other object-oriented languages, but we have objects and even files
     to keep logically related units of code together.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: We break code down, starting with the functions. Rather than having one function
@@ -87,20 +102,25 @@
     one thing. When functions do too many things, they become hard to understand.
     Comments may help explain what the code is doing, but well-written code should
     comment itself. Functions help clearly separate the different bits of functionalities.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'You may be wondering why any of this matters, especially since we have working
     code that achieves our requirements. It matters since the typical program spends
     far more time being maintained than written. So, it is important that we write
     our code to be maintainable. Let''s try this again:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The second version of the code is longer than the original, and even though
     it lacks comments, it is more legible. Separating the code into separate functions
     makes it easy to understand what it is doing.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'In a complete MVC application, we might create separate classes for each concern
@@ -108,11 +128,14 @@
     need to be so formal. First, we don''t have classes in JavaScript, but we have
     very powerful objects that can contain functions. So let''s try again, using a
     JavaScript object to bundle up our code this time:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In this version, we have all our code bundled into the member object. This makes
     it easy to move our code about and helps us think of it as a single, cohesive
     unit. Putting the code into an object also makes it possible to use the `this`
@@ -122,9 +145,11 @@
     Having the word `member` in many of the method names is redundant since the name
     of object is `member`. Also, note that we are now calling our functions "methods".
     When a function is part of a class or object, it is a method.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: Using events to decouple code
+  id: totrans-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -137,6 +162,7 @@
     via a single Ajax call. Your code, the data reader, will render the data to the
     page when it becomes available. There are several ways that we could go about
     this.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: The data source could provide a polling method for us to call. We would repeatedly
@@ -144,6 +170,7 @@
     polling is inefficient. The majority of the time we call the polling service,
     there won't be any new data, and we will have burned CPU cycles without returning
     any new data.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: We could supply the data source with a method it could call whenever it has
@@ -154,12 +181,14 @@
     also needs the data source? We will have to keep updating the data source module.
     And if any of the data reader modules change, the data source may need to be updated
     as well. What should we do?
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: We can use custom events. Using custom events loosens the coupling. Neither
     side directly calls the other. Instead, when the data source has new data, it
     triggers the custom event. Any data reader that wants the new data simply registers
     a handler for the custom events.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: Here are some of the nice things about using custom events. First, the coupling
@@ -167,6 +196,7 @@
     for the event. Third, if the event is triggered with no listeners, nothing breaks.
     And finally, if there is a bunch of readers registered but new data never comes,
     nothing breaks.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: One thing we must be careful about with custom events is to remember to release
@@ -174,6 +204,7 @@
     forget. First, we may cause a memory leak. A memory leak is when JavaScript is
     unable to release a chunk of memory because something—in our case, an event handler—is
     still holding a reference to it.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Over time, the browser will begin to act increasingly sluggish as it begins
@@ -182,75 +213,102 @@
     more than once without the event ever being released. Before you know it, the
     event handler is called two times, three times, or more instead of being called
     only once.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'One last nice thing about custom events is that we already know most of what
     we need to in order to implement them. The code is only slightly different from
     what we learned in order to perform regular browser events. Let''s take a look
     at a simple example first:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 自定义事件的最后一个好处是我们已经知道我们需要的大部分内容以实现它们。代码与我们学习的用于执行常规浏览器事件的代码仅略有不同。让我们首先看一个简单的例子：
 - en: '[PRE3]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: In this example, we place two buttons on the page. The first button triggers
     an event, and the second one releases the event handlers. Below the buttons is
     a wide `<div>` that is used to display messages.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中，我们在页面上放置了两个按钮。第一个按钮触发一个事件，第二个按钮释放事件处理程序。在按钮下方是一个宽的`<div>`，用于显示消息。
 - en: The code inside the script tags first creates a variable named `customEvent`,
     which holds the name of the custom event. The name of the event is up to you,
     but I would suggest something that includes your company's reverse domain name
     since you wouldn't want a future browser release to break your code because it
     uses the same event name. Then, we have the two event handlers that don't do anything
     particularly interesting.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在脚本标记内的代码首先创建一个名为`customEvent`的变量，它保存自定义事件的名称。事件的名称由您决定，但我建议使用包含公司反向域名的名称，因为您不希望将来的浏览器发布破坏您的代码，因为它使用了相同的事件名。然后，我们有两个不做任何特别有趣的事件处理程序。
 - en: Finally, in the document-ready event handler, we hook the custom event twice.
     We use the click event of the first button to trigger the custom event and the
     click event of the second button to release the handlers.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，在文档准备就绪事件处理程序中，我们两次挂接了自定义事件。我们使用第一个按钮的点击事件来触发自定义事件，第二个按钮的点击事件来释放处理程序。
 - en: 'One thing we didn''t show in this example was how to pass data to the custom
     event handler code. Luckily, this isn''t difficult, so let''s show how with another
     example:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中我们没有展示的一件事是如何将数据传递给自定义事件处理程序代码。幸运的是，这并不难，所以让我们用另一个例子来展示如何：
 - en: '[PRE4]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Let's walk through the code to make sure we understand what it is doing.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们逐步走过代码，以确保我们理解它在做什么。
 - en: The user interface consists of a single button labeled **stop** and a horizontal
     rule. Members will appear below the horizontal rule, and messages will appear
     next to the button.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户界面由一个标有**停止**的单个按钮和一条水平规则组成。会员将出现在水平规则下方，并且消息将出现在按钮旁边。
 - en: 'Inside the script tags, the code kicks off by creating an empty array for the
     users and a string to hold the name of our custom events. The code consists of
     three main functions: `showMessage`, `init`, and `startTimer`. When the document-ready
     event fires, it calls the `init` method and then the `startTimer` method.'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在脚本标记内，代码通过创建一个空数组来为用户准备和一个字符串来保存我们自定义事件的名称开始。代码包括三个主要函数：`showMessage`，`init`和`startTimer`。当文档准备就绪事件触发时，它调用`init`方法，然后调用`startTimer`方法。
 - en: 'The `startTimer` method makes repeated calls every 5 seconds to a random user
     web service. It gives us a random new user every time it is called. In the `init`
     method, we establish two handlers for our custom event: `addNewNameToList` and
     `welcomeNewUser`. Each method takes the user data that the event provides and
     does something different with it. To stop the example program, click on the **stop**
     button and it will clear the interval timer.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '`startTimer`方法每5秒重复调用一次随机用户Web服务。每次调用它都会给我们一个新的随机用户。在`init`方法中，我们为我们的自定义事件建立了两个处理程序：`addNewNameToList`和`welcomeNewUser`。每个方法都获取事件提供的用户数据，并对其执行不同的操作。要停止示例程序，请单击**停止**按钮，它将清除间隔计时器。'
 - en: Using unit tests
+  id: totrans-40
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用单元测试
 - en: Unit tests are a funny subject. It seems that everyone agrees that it is good
     to write tests, but few people actually do it. A complete examination of unit
     testing would take an entire book but, hopefully, we can cover just enough about
     unit tests to show you how to add them to your code and explain why you should.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 单元测试是一个有趣的主题。似乎每个人都认同编写测试是好的，但很少有人真的这样做。对单元测试的完整检查需要一本完整的书来完成，但希望我们可以涵盖关于单元测试的足够内容，以向您展示如何将其添加到您的代码中，并解释为什么您应该这样做。
 - en: My preferred unit test framework is Jasmine, [http://jasmine.github.io/](http://jasmine.github.io/).
     This is not to slight any of the other fine frameworks available, but Jasmine
     works on the frontend and backend, works in the browser and the command line,
@@ -258,23 +316,31 @@
     in mind that while the code is written for Jasmine, the principles can be applied
     to any JavaScript unit test framework. Before we look into how to write unit tests,
     we should begin with why we should write unit tests at all.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我偏爱的单元测试框架是Jasmine，[http://jasmine.github.io/](http://jasmine.github.io/)。这并不是贬低其他优秀的可用框架，但Jasmine可以在前端和后端工作，在浏览器和命令行中工作，正在积极维护，并且提供了一个测试框架所需的所有功能。请记住，虽然这段代码是为Jasmine编写的，但这些原则可以应用到任何JavaScript单元测试框架上。在我们学习如何编写单元测试之前，我们应该先讨论为什么要编写单元测试。
 - en: Why write unit tests at all?
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 到底为什么要编写单元测试呢？
 - en: In the beginning, JavaScript was rarely used in websites. When it was used,
     it was only to do minor things that could live without if JavaScript was disabled.
     So, the list of things was small, mainly client-side form validation and simple
     animations.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 起初，网站中极少使用JavaScript。当使用时，只是做一些如果禁用JavaScript也能生存下去的小事情。所以，需要JavaScript的事物清单很少，主要是客户端表单验证和简单动画。
 - en: Nowadays, things have changed. Many sites won't run at all with JavaScript disabled.
     Others will run with limited functionality and usually display a missing JavaScript
     warning. So since we rely so heavily on it, it makes sense to test it.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如今，事情已经改变了。许多网站在禁用JavaScript时根本无法运行。其他一些网站在有限功能下可以运行，并通常会显示缺少JavaScript的警告。因此，我们如此严重地依赖于它，测试它是有意义的。
 - en: 'We write unit tests for three main reasons: to verify that our application
     is functioning correctly, to verify that it continues to work correctly after
     the modification, and finally, to guide our development when using either **Test
@@ -283,50 +349,68 @@
     correctly. We will use the Jasmine Behavior-Driven JavaScript testing framework
     to do that. Jasmine runs from either the command line or from the browser. We
     will only use it from the browser.'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们编写单元测试有三个主要原因：验证我们的应用程序是否正常运行，验证修改后它是否继续正常运行，最后，当使用**测试驱动开发**（**TDD**）或**行为驱动开发**（**BDD**）时，指导我们的开发。我们将专注于第一个原因，验证我们的应用程序是否正常运行。为此，我们将使用Jasmine行为驱动的JavaScript测试框架。Jasmine可以从命令行或浏览器运行。我们将只从浏览器中使用它。
 - en: 'In order to keep our example short, we will run the quintessential unit test
     example: an arithmetic calculator. It will be able to add, subtract, multiply,
     and divide two numbers. To test the calculator, we will need three files: `SpecRunner.html`,
     `calculator.js`, and `calculator-spec.js`. `SpecRunner.html` loads the other two
     files and the Jasmine framework. Here is the `SpecRunner.html` file:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了保持我们的示例简短，我们将运行典型的单元测试示例：一个算术计算器。它将能够对两个数字进行加、减、乘和除运算。为了测试计算器，我们将需要三个文件：`SpecRunner.html`、`calculator.js`和`calculator-spec.js`。`SpecRunner.html`加载其他两个文件和Jasmine框架。这是`SpecRunner.html`文件：
 - en: '[PRE5]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: There is nothing particularly challenging in `SpecRunner.html`. Besides the
     files that Jasmine needs in order to run, you place your application—not all of
     it, only the parts required for the unit tests to be able to run and the unit
     test files. By tradition, the unit test files have the same name as the file that
     they are testing, with `-spec` added to the end.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '`SpecRunner.html`中没有特别具有挑战性的地方。除了Jasmine运行所需的文件之外，你还需要放置你的应用程序——不是全部，只需要单元测试能够运行的必要部分和单元测试文件。按照传统，单元测试文件的名称与它们测试的文件相同，只是在末尾加上了`-spec`。'
 - en: 'Here is the `calculator.js` file:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是`calculator.js`文件：
 - en: '[PRE6]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Our calculator is simple and easy to understand. It is a JavaScript that has
     four functions: add, subtract, multiply, and divide. Testing its functionality
     should be equally simple, and it actually is. Here is the `spec` file that tests
     the calculator:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的计算器简单易懂。它是一个JavaScript，有四个功能：加法、减法、乘法和除法。测试其功能应该同样简单，实际上也是如此。这是测试计算器的`spec`文件：
 - en: '[PRE7]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Jasmine''s unit test framework works around three methods: `describe`, `it`,
     and `expect`. The `describe` is a global function that holds a test suite. Its
     first parameter is a string holding the name of the test suite. The second parameter
     is a function that is the test suit. Next up is `it`.'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: Like `describe`, `it` is a global function in Jasmine, and `it` holds a specification,
     or spec. The parameters passed to `it` are also a string and a function. By tradition,
     the string is written so that when read with `it`, it completes a sentence describing
     the specification. The function performs the test using one or more expectations.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: Expectations are created using the `expect` Jasmine function. The `expect` is
@@ -334,6 +418,7 @@
     parameter, which is the value to be tested that calls the actual in Jasmine. Chained
     to the expectation is the `matcher` function. The `matcher` function is passed
     the expected value.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
 - en: The combination of the `expect` and `matcher` functions in Jasmine is one of
@@ -342,6 +427,7 @@
     with a large number of matchers, which helps you to write exactly the expectation
     you want. There is also a `not` operator that will reverse the logic of any `matcher
     function`.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
 - en: In order to run the sample test, simply launch the `SpecRunner.html` page. It
@@ -349,6 +435,7 @@
     In unit test tradition, the page will either be green, which means all of our
     specifications have passed, or red, which means that at least one specification
     has failed.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
 - en: 'Jasmine''s goal is to help us find and fix broken tests. If, for instance,
@@ -356,6 +443,7 @@
     failing specification displayed together in red: "Calculator can add numbers."
     Below it would be the failing expectations. It would show us what value it had
     and what value we expected.'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
 - en: In the sample code, we create our test suite with a call to the `describe` method.
@@ -364,6 +452,7 @@
     reads "it can add numbers". When our test passes, we'll see the test suite display
     the word "Calculator" and each of the specifications listed below it, stating
     with what was tested.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: Jasmine also has `setup` and `teardown` functions. A `setup` function executes
@@ -371,6 +460,7 @@
     each specification runs. We haven't used either in the sample code, but they can
     be quite useful in more complicated tests, especially when objects need to be
     prepared and cleaned up afterward.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: Jasmine is a complete unit test framework. We've barely scratched the surface
@@ -379,12 +469,17 @@
     is able to integrate into you website's build process. But this is only an introduction;
     to fully appreciate how Jasmine can help you write cleaner and also help you test
     jQuery, you will need to try it in your code.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: Jasmine 是一个完整的单元测试框架。我们只是揭开了它的冰山一角。还要记住，虽然从浏览器运行 Jasmine 很方便，但是从命令行运行它会更加强大。那样，它就能够集成到你的网站构建流程中。但这只是一个介绍；要完全体会
+    Jasmine 如何帮助你编写更干净的代码，并帮助你测试 jQuery，你需要在你的代码中尝试它。
 - en: Summary
+  id: totrans-63
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 摘要
 - en: We covered a lot of ideas in this chapter. Developers often forget that JavaScript
     is an object-oriented language, but it is not a class-based language. One of the
     most important things to keep in mind is the technique of Separation of Concerns.
@@ -392,8 +487,11 @@
     about SoC led us to the topics of breaking our code into logical units and using
     events to decouple our code. We ended the chapter by learning how to unit test
     our code with the popular open source tool, Jasmine.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们涵盖了很多思想。开发者经常忘记 JavaScript 是一种面向对象的语言，但它不是一种基于类的语言。要牢记的最重要的事情之一是关注点分离的技术。这是保持你的代码易于理解和可维护的基石。学习关于
+    SoC 的知识引导我们进入了将代码分解为逻辑单元和使用事件来解耦我们的代码的主题。我们在本章结束时学习了如何使用流行的开源工具 Jasmine 对我们的代码进行单元测试。
 - en: 'Now that we''ve learned how to organize our code, it is time for us to turn
     our attention to other things people complain about in relation to jQuery: performance.
     In the next chapter, we will learn how to measure the performance of our code
@@ -402,5 +500,9 @@
     understand JavaScript or jQuery well, it is easy to reach this conclusion. Luckily,
     it is not difficult to learn a few rules of thumb that can dramatically improve
     the speed of your jQuery code.'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经学会了如何组织我们的代码，是时候把注意力转向与 jQuery 相关的其他人抱怨的事情了：性能。在下一章中，我们将学习如何衡量我们代码的性能以及可以做些什么简单的事情来加快它的速度。相当多的博客文章似乎认为
+    jQuery 是许多网站速度缓慢的原因。如果你不了解 JavaScript 或 jQuery，很容易得出这个结论。幸运的是，学习一些经验法则并不难，这些法则可以极大地提高你的
+    jQuery 代码的速度。
