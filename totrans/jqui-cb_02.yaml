@@ -1,0 +1,561 @@
+- en: Chapter 2. Including Autocompletes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling the default input with themes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building data sources using select options
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using multiple data sources
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Remote autocomplete filtering
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom data and categories
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying effects to the drop-down menu
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The main purpose of the **autocomplete** widget is to augment the capabilities
+    of the standard HTML form `input` element. Instead of the user having to type
+    out the full value of the input field each time, the autocomplete widget offers
+    suggestions as to what the value might be. For example, let's say you're adding
+    a new product. The product field could be a text input, a select input, and so
+    on. In this scenario, one would use the existing product in the system as the
+    source for an autocomplete widget. Chances are, the user who is entering the product,
+    or another user for that matter, has entered that product before. With autocompletes,
+    users have some assurance that they're providing valid inputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling the default input with themes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The default autocomplete implementation doesn't change anything visual about
+    the input element. Functionally speaking, we don't want the input element changed.
+    All we need is the drop-down component once the user starts typing. But let's
+    see if we can go ahead and change the virtual appearance of the autocomplete input
+    element using components from the widget framework and the theme framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use the following markup for our example, a simple `label` element and
+    a simple `input` element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll use the following code to extend the autocomplete widget with the CSS
+    classes from the theme framework we'd like applied. We're introducing a minor
+    behavioral tweak with regards to focus events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last thing we need to complete the stylization of our autocomplete's `input`
+    element is a new CSS stylesheet with a couple of rules. The stylesheet should
+    be included in the main HTML where the input markup is defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is what our newly-styled autocomplete widget looks like without focus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here is what the autocomplete looks like when it has the focus, and with the
+    drop-down menu expanded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When the document loads, we're creating a simple autocomplete using the `#autocomplete`
+    input element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing you''ll notice is the `inputClasses` attribute. This string
+    represents the three classes from the theme framework we want to apply to the
+    widget: `ui-widget`, `ui-widget-content`, and `ui-corner-all`. The `ui-widget`
+    class doesn''t do much aside from handling fonts, it''s good practice to apply
+    this class to themed elements. The `ui-widget-content` class fixes the input''s
+    border for us while the `ui-corner-all` class applies nice rounded corners for
+    us. The reason we''ve defined this string as an attribute of the widget is because
+    there are two places these classes are used, and this makes for easy maintenance.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_create()` method we're overriding here just calls the original implementation
+    of the autocomplete's `_create()` method. Once this completes, we're making the
+    `input` element focusable by calling `_focusable()`. This is a handy utility method
+    defined by the widget factory and inherited by all widgets. It takes care of making
+    the element focusable by applying the `ui-state-focus` CSS class from the theme
+    framework when the element is focused. It also removes the class when the element
+    loses focus. Perhaps, the best part about `_focusable()` is that the widget factory
+    machinery will clean up any focus event handlers for us when the widget is destroyed.
+    The last job of our customized implementation of `_create()` is to add the CSS
+    classes from `inputClasses` to the input element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As always, we need to make sure we clean up after ourselves when we're finished
+    borrowing from the autocomplete widget. This means extending `_delete()` to ensure
+    that the `inputClasses` attributes are removed from the input element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our miniscule CSS rules that we've used to extend the theme framework do two
+    things. The first change is to add a little padding to the `input` element—this
+    is purely aesthetic since the other changes we've made make the text look a little
+    tight inside the input. The second change removes the outline that surrounds the
+    `input` element when focused. This only applies to certain browsers, like Chrome,
+    where an automatic outline is applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Normally, removing the outline isn't advised since accessibility is at stake.
+    But, our changes have taken the focused input into account, so this is fine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building data sources using select options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes, using an array as the source of data for autocomplete widgets isn't
+    the best option. For example, if we already have a `select` element in our user
+    interface, it would make sense to reuse the options in that element to make an
+    autocomplete. Otherwise, we would have to not only design some new code to build
+    the array data source, but we would also have to remove the existing `select`
+    element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's put together some basic markup for this example. Typically, the autocomplete
+    widget expects an `input` as its element. Instead, we're going to give it a `select`
+    element with some simple options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll go ahead and extend the capabilities of the autocomplete widget so that
+    it knows how to handle the `select` elements. After which, we're able to target
+    our `select` element with the autocomplete widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now you should see something that looks like a plain old autocomplete—no `select`
+    element in sight. Further, if you try using the autocomplete, you'll see that
+    the options presented are the same as those in the `select` element's options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here, we need to add support to the autocomplete widget for `select` elements;
+    we do this at the beginning of our custom `_create()` implementation. If we're
+    dealing with a `select` element, the first thing we do is hide it and store a
+    reference to it in the `original` attribute. Remember, we're only interested in
+    the data source the `select` element has to offer by means of its `options`—we
+    don't want to actually display the `select`. Instead, we're replacing the `select`
+    with an `input` element since this is how the user types and the widget completes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `source` option of the autocomplete widget is how we're able to specify
+    a custom function that returns the source data to be used. In our case, we're
+    providing a function that grabs the values from each select `option`. Recall that
+    the `select` element was stored in the `original` attribute earlier. We're using
+    the jQuery `map()` utility function here to turn the `select` options into an
+    array that autocomplete can use. The `filter()` function gets applied, and the
+    `response()` function is sent to the drop-down menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the widget is destroyed, we'd like to restore the original `select` element,
+    since this is what we replaced. The original element gets displayed once again
+    in our customized implementation of `_delete()`—this happens after calling the
+    original `_delete()` method to perform routine cleanup tasks. The `input` element
+    we created is also destroyed here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using multiple data sources
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes, an autocomplete widget doesn't map directly to one data source. Take
+    video for instance. Imagine the user needs to pick a video, but the two data sources
+    are DVD and Blu-ray. If we were to use autocomplete to select a video, we would
+    need a way to assign multiple data sources. Furthermore, the mechanism would need
+    to be extensible enough to support adding more data sources, especially since
+    there is a new video format born every other year.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The default implementation of the autocomplete widget is expecting a single
+    data source – an array or an API endpoint string. We'll give the widget a new
+    `sources` option to allow for this behavior. This is how we'll extend autocomplete
+    and create an instance of the widget that has two video data sources – one for
+    DVDs, and one for Blu-ray discs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![How to do it...](img/2186_02_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, if you were to start searching for the video `1`, you'd get
+    versions from each data source in the drop-down menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Rather than merging our two data sources into one before it gets passed to the
+    autocomplete, we're extending the capabilities of the widget to handle that task
+    for us. In particular, we've added a new `sources` option that can accept several
+    arrays. In the example, we're passing both the DVD and the Blu-ray sources to
+    our widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our customized version of `_create()` checks to see if multiple sources have
+    been supplied by checking the length of the `sources` option. If there are multiple
+    data sources, we use the `merge()` jQuery utility function to create a new array
+    and apply the `filter()` function to it. A good feature of this approach is that
+    it doesn't care how many data sources there are—we could pass a few more to our
+    implementation down the road should the application require it. The merging of
+    these data sources is encapsulated behind the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remote autocomplete filtering
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The autocomplete filtering capabilities aren't just limited to the default implementation,
+    which searches for objects in array sources. We can specify a custom `source()`
+    function that will retrieve only data the user is looking for. This is the ideal
+    approach if you're looking to use autocomplete on a data source with thousands
+    of items. Otherwise, filtering gets too demanding on the browser—the large data
+    set to download, followed by a large array search with each keystroke.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll use the GitHub API as the data source for our autocomplete widget. This
+    is a good example since it is much too large to use in the browser memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now if you look at the resulting widget in the browser and start typing, you'll
+    see Github repository data in the drop-down menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_02_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since we're using a large data source, we're telling this particular autocomplete
+    widget that the search for items should only be performed if there are at least
+    three characters. This is done using the `minLength` option. Otherwise, we would
+    be asking the server to query based on one or two characters which isn't what
+    we're after.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `source` option in our example specifies the data source that we're going
+    to use – the Github API. The function we've passed to the source performs an `$.ajax()`
+    call against the Github API. We're using `jsonp` as the format, which simply means
+    that a callback function from the API will be sent back. We're also passing some
+    query data to the API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our success callback function is executed once the API responds with data. We
+    then pass this data through the `$.map()` utility function in order to produce
+    an array the autocomplete widget understands. Our success function does a simple
+    `$.map()` on the data to transform it into an array of objects that the autocomplete
+    can use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can further cut back on the cost of network communication overheads by introducing
+    a term cache to the widget. A **term** **cache**, as the name suggests, would
+    store locally the results of performing a remote filter operation. This way, when
+    the user inevitably does the exact same thing with their keystrokes, we're not
+    performing the exact same task with the remote API call since we've already cached
+    the result in the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see where we've made changes in the preceding code to support caching
+    the items returned from the HTTP request. Now we're extending the widget to add
+    the new `_cache` attribute. We're also extending the `_search()` function, which
+    is in charge of checking for a cached value. If it finds one, the rendering response
+    is called using the cached version of the data. The `source()` function is responsible
+    for storing cached results, but this is a simple one-liner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom data and categories
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One approach to separating two categories of autocomplete data might be to have
+    two distinct fields, each with their own autocomplete widgets. Another would be
+    to introduce the notion of a category into the widget itself. When the drop-down
+    menu appears to suggest items for the user, they will also see the category the
+    item belongs to. To do this in the autocomplete widget, we need to change both
+    how the widget understands the source data, and how the menu items are rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're going to extend the autocomplete widget in order to change how the menu
+    items are rendered. We also need to consider the data passed into the widget as
+    the source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''re almost done. The changes we''ve made to the menu will not just magically
+    work out, we need to apply some styles. The following CSS code should be included
+    on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if you start typing in the autocomplete, you'll notice a drop-down menu
+    drastically different from what we're used to as it contains both category and
+    description information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_02_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The goal of this widget extension is to accept custom source data and to use
+    that data in the display of the drop-down menu. Specifically, the new data we're
+    working with is the category and the description. The category is a one-to-many
+    relationship with the items insofar, as several items we pass to the widget may
+    have the same category string. Our job is to figure out which items fall under
+    any given category and to represent this structure in the drop-down menu. Additionally,
+    the description of the item is a one-to-one relationship, so less work is required
+    here but we nonetheless would like to include the description in the drop-down
+    menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first method from the original implementation that we're overriding is `_renderMenu()`.
+    The job of `_renderMenu()` is to alter the underlying HTML structure each time
+    a suggestion is made to the user. We keep track of the current category with `currentCategory`.
+    We then render each item with `_renderItem()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_renderCategory()` function renders the category text as an `<li>`. It
+    also adds the `ui-autocomplete-category` class. Likewise, our `_renderItem()`
+    function renders the item text, and it is here that we also make use of the `desc`
+    attribute. The item also has the `ui-autocomplete-item` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The new CSS styles we've included in our UI are a necessary component of the
+    new version of autocomplete that we've created. Without them, the description
+    would be of the same font size and would display on the same line as the item
+    label. Likewise, the category needs the newly-added styles to stand out as a category
+    that groups other items instead of just another item.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Whenever we extend the data used by the autocomplete widget, we have to tell
+    the widget how to work with it. Here, we've told autocomplete how to display the
+    new data in the drop-down menu. Alternatively, we could tell the widget to perform
+    filtering on some data fields that the user never actually sees in the drop down-menu.
+    Or we could combine the two.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is how we would go about using both the category and the description, both
+    non-standard fields, in the filtering when the user starts typing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we're replacing the `filter()` function that autocomplete uses with our
+    own implementation. The two are similar, we're just adapting the `RegExp.test()`
+    calls to the `desc` and `cat` field. We would place this code just beneath the
+    custom widget declaration of autocomplete. The reason this is done externally
+    to the customization specification is because `autocomplete.filter()` is kind
+    of like a static method. Where with other methods, we're overriding on a per-instance
+    basis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying effects to the drop-down menu
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By default, we get a fairly simplistic presentation of the drop-down menu containing
+    suggestions for completion based on what we type. The menu is simply displayed,
+    without much fuss. Which is fine, it gets the job done reliably. But, on the other
+    hand, there is always something we can do to make the UI look more polished. It
+    could be as simple as changing the autocomplete widget in your application to
+    use some subtle effects while transitioning to a visible state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since what we're after here is really more of a visual presentation aspect of
+    the widget, we're probably safe using any existing instance of the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's build on the default implementation of the autocomplete widget to include
+    some subtle animations for the drop-down menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you start using this autocomplete widget by typing in the input element,
+    you'll notice that the drop-down menu glides smoothly into view instead of just
+    popping out abruptly. Also, when the menu is no longer needed, it fades out of
+    existence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The autocomplete is being extended here so we can inject our customized animation
+    functionality. But this time around, the changes are a little more involved, we're
+    not merely extending `_create()` with a few lines of code. There are a few methods
+    buried deep in the autocomplete code that we need to extend. We've also introduced
+    a few new methods of our own in the autocomplete widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first method we're overriding is `_suggest()`. The `_suggest()` method is
+    called by the autocomplete widget when the user has typed the minimum length of
+    characters to perform a search. The original method takes care of everything that
+    needs to happen in terms of rendering and displaying the drop-down menu. In our
+    version of the method, we're just calling other methods of the widget. The job
+    of `_suggest()` is to orchestrate everything that takes place when a search happens.
+    There are two logical steps taken here. First, the menu is rendered with the new
+    content. Next, the menu is displayed, resized, and positioned. The latter is where
+    the animation takes place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We won't drill into the details of the `_resetMenu()` and `_positionMenu()`
+    methods as those code snippets are taken from the original implementation for
+    the most part. They just empty and position the menu, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_resizeMenu()` method is where the actual animation takes place when the
+    menu is displayed. This is a longer method because we have to perform a few calculations
+    to pass into `animate()`. The original implementation of `_resizeMenu()` uses
+    the `outerWidth()` jQuery function to set the width of the menu. This is to get
+    proper alignment with the `input` element. However, we want to animate the `width`
+    change. So we must manually compute the inner width. The outer width values go
+    in the exclude variable. The inner width is `target - exclude`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We check if the menu is already displayed before actually showing it, and before
+    animating it. If the element isn't visible, we change the `display` CSS property,
+    but set the `opacity` property to `0`. The reason we do this is that we need the
+    element's box model dimensions in order to position it. But, we still haven't
+    applied the animation effects to the menu. Here, we check if the `opacity` property
+    for the menu is at `0`. If not, that means the menu is already displayed and it
+    would not make sense to re-animate it now. Otherwise, we execute the width and
+    opacity animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, the `_close()` method replaces the original autocomplete `_close()`
+    implementation. The code is nearly the same as the original, except we do a basic
+    `fadeOut()` when the menu is closed, as opposed to merely hiding it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This extension of the autocomplete does not implement an option that will turn
+    off this behavior. This is alright because the extension only does one thing—apply
+    effects to the drop-down menu. So, to disable these effects, we can just disable
+    extension. The extension of a widget is defined inside a function that calls itself.
+    When the script first loads, the function is called, and the widget gets extended
+    with the new behavior. We can disable the behavior part of the function that invokes
+    itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE

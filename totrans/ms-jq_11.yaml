@@ -1,0 +1,1088 @@
+- en: Chapter 11. Authoring Advanced Plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this book, a common theme has been to use plugins – it's now time
+    to create one!
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are literally thousands of plugins available for use, from ones that might
+    only be a few lines long, to those running into several hundred lines. I'm a great
+    believer in the phrase "where there's a will, there's a way" – it could be argued
+    that plugins satisfy that will, and provide a way of resolving a need or a problem
+    for a user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Over the next few pages, we''ll take a look at developing an advanced plugin
+    from start to finish. Rather than concentrating only on the construction (as such),
+    we''ll take a look at some of the tips and tricks we can use to help push our
+    development skills further when working with plugins. We''ll cover best practices,
+    and look at some areas where you can improve your current coding skills. Throughout
+    the next few pages, we will cover a number of topics, which will include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Best practices and principles
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Detecting signs of a poorly developed plugin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating design patterns for jQuery plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Designing an advanced plugin and making it available for use
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ready to start?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting signs of a poorly developed plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Imagine the scenario, if you will – you spend weeks developing a complex plugin,
+    which does everything but the kitchen sink, and leaves anyone watching in awe.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sounds like the perfect nirvana, right? You publish it on GitHub, create an
+    awesome website, and wait for users to roll in and download your latest creation.
+    You wait…and wait…but get a grand total of zero customers. Okay…so what gives?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Anyone can write code, as I always say. The key to becoming a better jQuery
+    plugin developer is understanding what makes a good plugin, and knowing how to
+    put that into practice. To help with this, let''s take a moment to look at some
+    pointers we can use to spot when a plugin is likely to fail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You're not making a plugin! The accepted practice is to use one of a handful
+    of plugin patterns. If you're not using one of these patterns (such as the one
+    shown next), then there is a good chance that take-up of your plugin is likely
+    to be low.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Although we've defined the `undefined` in the parameters, we are only using
+    `$` and `window` in the self-invoking function. It shields the plugin from being
+    passed malicious values to `undefined`, as it will remain as `undefined` within
+    the plugin.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You spend time writing code, but miss one of the key elements – preparing documentation!
+    Time and again, I see plugins that have minimal or non-existent documentation.
+    It makes it hard to understand the plugin's makeup, and work out how to use it
+    to its full potential. There are no hard-and-fast rules with documenting, but
+    it is generally accepted that the more the better, and that this should be both
+    inline and external (in the form of a readme or wiki).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Continuing with the theme of a lack of suitable documentation, developers will
+    be turned off by plugins that have hardcoded styling, or which are too inflexible.
+    It's up to us to consider all possible needs, but to determine if we're going
+    to provide a solution for a particular need. Any styling that is applied to the
+    plugin should either be made available via plugin options, or as a specific class
+    or selector ID within the style sheet – putting it in line is considered bad practice.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If your plugin requires too much configuration, then this is likely to turn
+    people off. While a larger, more complex plugin should clearly have more options
+    available to end users, there is a limit to what should be provided. Conversely,
+    every plugin should at least have a no-argument default behavior set; users will
+    not appreciate having to set multiple values just to get a plugin working!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A big turn-off for end users is plugins that don't provide some form of example.
+    At an absolute minimum, a basic "hello world" type example, should always be provided,
+    with a minimal configuration defined. Those plugins that provide more involved
+    examples, or even examples that work with other plugins, are likely to attract
+    more people.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Some plugins fail for basic reasons. These include: not providing a changelog
+    or using version control, not working across multiple browsers, using an outdated
+    version of jQuery or including it when it isn''t really needed (dependencies are
+    too low), or not providing a minified version of the plugin. With Grunt, there
+    is no excuse! We can automate a large part of the basic admin tasks that are expected
+    of developers, such as testing, minifying the plugin, or maintaining version control.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Finally, plugins can fail for one of two simple reasons: either they are too
+    clever and try to achieve too much (making them difficult to debug), or too simple,
+    where the dependencies on jQuery as a library are not enough to warrant including
+    it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Clearly a lot to think about! While we can't predict if a plugin will be successful
+    or if take up will be low, we can at least try to minimize the risk of failure
+    by incorporating some (or all) of these tips into our code and development workflow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At a more practical level though, we can opt to follow any one of a number of
+    design patterns, to help give structure and consistency to our plugin. We touched
+    on this back in [Chapter 3](part0031.xhtml#aid-TI1E1 "Chapter 3. Organizing Your
+    Code"), *Organizing Your Code*. The beauty is that we are free to use similar
+    principles with jQuery plugins too! Let's take a moment to consider some possible
+    examples, before using one to develop a simple plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing design patterns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you've spent any time developing code in jQuery, then it is very likely that
+    you've created one or more plugins; these can technically range from just a handful
+    of lines to something more substantial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over time, there is a risk that amending code in plugins can lead to content
+    becoming unwieldy and difficult to debug. One way of dealing with this is to use
+    design patterns. We covered this back in [Chapter 3](part0031.xhtml#aid-TI1E1
+    "Chapter 3. Organizing Your Code"), *Organizing Your Code*. Many of the same principles
+    can equally apply to plugins, although the patterns themselves will of course
+    be different. Let's consider a few examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most basic pattern is **A** **Lightweight Start**, which will suit those
+    who have developed plugins before, but are new to the concept of following a specific
+    pattern. This particular pattern is based around common best practices, such as
+    using a semicolon before invoking the function; it will pass in standard arguments
+    such as `window`, `document`, and `undefined`. It contains a basic default object
+    which we can extend, and adds a wrapper around the constructor to prevent issues
+    with multiple installations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the opposite end, we can always try working with the **Complete Widget Factory.**
+    Although it is used as the basis for jQuery UI, it can also be used to create
+    standard jQuery plugins. This pattern is perfect for creating complex, state-based
+    plugins. It contains comments for all the methods used, to help ensure that logic
+    fits into your plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've also covered the concept of namespacing, or adding a specific name to
+    avoid collisions with other objects or variables within the global namespace.
+    Although we might use namespacing within our code, we can equally apply it to
+    plugins too. The great thing about this particular pattern is how we can check
+    for its existing instances; if the name doesn't exist then we are free to add
+    it, otherwise we can extend an existing plugin with the same namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are three of the plugin patterns that are available for use; a question
+    I am sure will arise, though, is which one to use? As with many things, there
+    is no right or wrong answer; it will depend on circumstances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A list of the most common plugin design patterns is available at [https://github.com/jquery-boilerplate/jquery-patterns](https://github.com/jquery-boilerplate/jquery-patterns).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating or using patterns
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you''re new to using plugin design patterns, then A Lightweight Start is
+    the best place to begin. There are three key aspects to using any plugin pattern,
+    or designing your own:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Architecture**: This defines the rules of how your components should interact.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Maintainability**: Any written code should be easily extendable and improvable.
+    It should not be locked down from the start.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reusability**: How often can you reuse your existing code? The more it can
+    be reused, the more time it will save, and it will also be easier to maintain.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The important thing about using patterns is that there isn't a single right
+    answer. It all boils down to which pattern most closely fits your needs. The best
+    way to gauge which pattern fits best is to try them. Over time, experience will
+    give you a clear indication as to which pattern works best for a given scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a good discussion on the pros and cons of using a particular plugin pattern,
+    head over to the article by Smashing Magazine at [http://www.smashingmagazine.com/2011/10/11/essential-jquery-plugin-patterns/](http://www.smashingmagazine.com/2011/10/11/essential-jquery-plugin-patterns/).
+    It may be a few years old, but many of the points still hold value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Anyway, let's get back to the present! There is no time better than now to start
+    gaining experience, so let's take a look at the jQuery Lightweight Boilerplate
+    pattern. This implements the Singleton/Module design pattern. It helps developers
+    to write encapsulate code that can be kept away from polluting the global namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over the next few pages, we'll be developing a tooltip plugin. We'll start with
+    a typical build that doesn't use any pattern, before modifying it to use the Lightweight
+    Boilerplate style. We'll then delve into a few tips and tricks that will help
+    us consider the bigger picture, and hopefully make us better developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing an advanced plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Right – enough chitchat! Let's get down and dirty with some code! Over the next
+    few pages, we're going to spend some time developing a plugin that displays some
+    simple tooltips on a page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Okay, before you all groan and say "not another tooltip plugin…!", there is
+    a good reason for choosing this functionality. All will become clear once we''ve
+    developed the first version of our plugin. Let''s make a start - we''ll begin
+    with a brief look at creating our plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this demo, we'll need the entire code folder for this chapter from the code
+    download that accompanies this book. Go ahead and extract it, saving it to our
+    project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the folder, run the `tooltipv1.html` file, which contains a grid of six images,
+    along with some dummy text. Hover over the images in turn. If all is well, it
+    will show a tooltip:![Designing an advanced plugin](img/image00446.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this point you're probably wondering how all the code hangs together. It's
+    a valid question…but we're going to break with tradition, and not examine it.
+    Instead, I want to concentrate on redesigning the code to use boilerplate formatting,
+    which will help make it easier to read, debug, and extend in the future. Let's
+    consider what this means for our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rebuilding our plugin using boilerplate
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Hands up if you've not heard of boilerplating? Chances are that you may or may
+    not have come across such examples as Bootstrap ([http://www.getbootstrap.com](http://www.getbootstrap.com)),
+    or even HTML5 Boilerplate ([https://html5boilerplate.com/](https://html5boilerplate.com/)).
+    To help you get familiar with the term, it is based on a simple idea of using
+    a template to help structure code. It doesn't mean that it will write it for us
+    (shame – we could earn millions for doing nothing, chuckle!), but it helps to
+    save time by reusing a framework to rapidly develop code, such as full websites
+    or even jQuery plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our next demo, we're going to rework our plugin using the jQuery Boilerplate
+    templates available from [https://github.com/jquery-boilerplate/jquery-patterns](https://github.com/jquery-boilerplate/jquery-patterns).
+    As is often the case with the Internet, some kind soul has already created a good
+    example of a tooltip using this technique, so we'll adapt it for our needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are interested in learning more about the jQuery Boilerplate plugin pattern,
+    you may like to look at *Instant jQuery Boilerplate for Plugins*, by Jonathan
+    Fielding, available from Packt Publishing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin example we'll use is by Julien G, a French web developer. The original
+    is available via JSFiddle at [http://jsfiddle.net/molokoloco/DzYdE/](http://jsfiddle.net/molokoloco/DzYdE/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start (as always), by extracting a copy of the code folder for this chapter
+    from the code download for this book. If you already have it from the previous
+    exercise, then we can use that instead.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Navigate to the `version 2` folder, then preview `tooltipv2.html` in a browser.
+    If all is well, we should see the same set of images as in the previous example,
+    with the same styling applied for the tooltips.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'At face value, it would seem that nothing has changed – this in itself is actually
+    a good indicator of success! The real changes though are in `tooltipv2.js`, within
+    the `js` subfolder under the `version 2` folder. Let''s go through this step by
+    step, beginning with declaring variables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We start with declaring properties for the jQuery, `document`, `window`, and
+    `undefined`. You might ask why we are passing in `undefined` – it''s an excellent
+    question: this property is mutable (meaning it can be changed). Although it was
+    made non-writable in ECMAScript 5, not using it in our code means it can remain
+    undefined and prevent malicious code attempts. Passing the remaining three properties
+    makes it quicker to reference within our code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next up, the internal methods. We''re creating them as methods within the `internal`
+    object; the first takes care of positioning the tooltip on screen, while `show`
+    and `hide` controls the visibility of the tooltip:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We move on to the external methods. Up first from within the `external` object,
+    comes the `init` function, to initialize our plugin and render it on screen. We
+    then call the `internal.show` and `internal.hide` internal methods when moving
+    over an element with an instance of the `.tooltip` class:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The second external method handles the updating of the tooltip text, using
+    the `.data()` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We round up the methods available in our plugin with a `destroy()` handler.
+    This stops a selected tooltip from displaying, and removes the element from code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Last, but by no means least is our plugin initiator. This function simply maps
+    method names to valid functions in our plugin, or degrades gracefully if they
+    don''t exist:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The key takeaway though from this demo is not the specific functions that we
+    can use, but the format used to produce our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Anyone can write code, but use of a boilerplate pattern such as the one we've
+    used here will help improve readability, make it easier to debug, and increase
+    opportunities when extending or upgrading functionality at a later date. Remember,
+    if you write a plugin and don't revisit it for a period of time (say 6 months);
+    then the acid test is how much you can work out from the well-structured code,
+    without needing lots of documentation. If you can't do that, then you need to
+    revisit your coding!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's move on. Remember when I mentioned there was a good reason for choosing
+    to use a tooltip plugin as the basis for our examples? It's time to reveal why…
+  prefs: []
+  type: TYPE_NORMAL
+- en: Converting animations to use CSS3 automatically
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've built a tooltip plugin which uses a touch of animation to fade in and
+    out when hovering over elements marked with the `.tooltip` class. Nothing wrong
+    in that – the code works perfectly well, and is an acceptable way of displaying
+    content…right? Wrong! As you should know by now, we can definitely do better.
+    Here's why I chose the tooltip as our example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remember how I mentioned back in [Chapter 6](part0056.xhtml#aid-1LCVG1 "Chapter 6. Animating
+    in jQuery"), *Animating in jQuery*, that we should consider using CSS3 styling
+    to control our animation? Well, here''s a perfect example: we can easily change
+    our code to force jQuery to use CSS3 where possible, or fall back to using the
+    library for older browsers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The trick behind it is in one line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To see how easy it is, follow the next steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a copy of `tooltipv2.html`, add this line as indicated:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Preview the results in a browser. If all is well, we should see some slight
+    changes in how the tooltip reacts. However, the real change is evident when viewing
+    the code for the tooltip itself, from within a DOM Inspector such as Firebug:![Converting
+    animations to use CSS3 automatically](img/image00447.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If we look in the computed styles half of Firebug, we can see the styles being
+    assigned to the tooltip element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Converting animations to use CSS3 automatically](img/image00448.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A simple change to make, but hopefully one we can see making a significant improvement
+    in performance. In this instance, we're using a plugin to force jQuery to use
+    CSS3 styling in place of standard jQuery based animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key message here, though is that we should not, as developers, feel we are
+    constricted to using jQuery to provide our animations. While it might be a necessary
+    evil for managing complex motions, we should still consider using it for those
+    less ornate instances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with CSS-based animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Hmm – it''s at this point that a question comes to mind: surely, if we''re
+    using modern browsers, why do we need to rely on using jQuery-based animations
+    at all?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The answer is simple – in short, it depends on the circumstances. The long answer
+    though is that for modern browsers, we don't need to rely on using jQuery to provide
+    our animations. Only if we're forced to provide support for old browser versions
+    (such as IE6), do we need to use jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The likelihood though should be low. If we need to, then we should really be
+    asking ourselves if we're making the right move, or whether support should be
+    degraded gradually using something like Modernizr.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That all said – let''s go through the following steps to understand what we
+    need to do to use CSS3 in place of jQuery-based animations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a copy of `tooltipv2.css`, add the following CSS style at the bottom of
+    the file – this will be our transition effect for the tooltip:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Open a copy of `jquery.quicktipv2.js`, then first comment out the line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following line in its place:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Repeat the same process, but this time for the line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add this next line as its replacement:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the files. If we preview the results of the change in a browser, we should
+    see the tooltip appear to slide in and hover over the selected image.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The effect looks very smooth. While it doesn't fade in or out, it still provides
+    an interesting twist to how tooltips would normally appear in a page. It does
+    raise an interesting question – what effect should we use? Let's take a timeout
+    to consider the implications of making this change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Considering the impact of the change
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using CSS3 styling in our example raises an important question – which effect
+    works best? We could always go for a classic linear or swing effect, but these
+    have been used to death. We can easily replace it with something a little more
+    original. In our example, we've used `cubic-bezier(0.23, 1, 0.32, 1)`, which is
+    the CSS3 equivalent of the `easeOutQuint` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working out these effects can be time-consuming. Instead, we can use a great
+    tool created by Lea Verou, which is available at [http://www.cubic-bezier.com](http://www.cubic-bezier.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Considering the impact of the change](img/image00449.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: To see what our chosen effect looks like in action, head over to [http://cubic-bezier.com/#.23,1,.32,1](http://cubic-bezier.com/#.23,1,.32,1).
+    The site has an example we can run to see how the effect will work. The great
+    thing about the site is that we can use the graph to fine tune our effect, which
+    is automatically converted into the relevant values that we can transfer into
+    our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This opens up further possibilities – we touched on the use of the Bez plugin
+    from [http://github.com/rdallasgray/bez](http://github.com/rdallasgray/bez); this
+    could easily be used here in place of the standard `.css()` method, to provide
+    our animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The CSS equivalents for well-known easing functions (such as `easeInQuint`)
+    are all listed at [https://gist.github.com/tzachyrm/cf83adf77246ec938d1b](https://gist.github.com/tzachyrm/cf83adf77246ec938d1b);
+    we can see them in action at [http://www.easings.net](http://www.easings.net).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The important thing though, is the change we can see when viewing the CSS within
+    a DOM Inspector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Considering the impact of the change](img/image00450.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Instead of applying it inline (as shown in the *Converting animations to use
+    CSS3 automatically* section), we can maintain the separation of concerns principle,
+    by keeping CSS styles in the style sheet, and leaving HTML for organizing our
+    web page content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Falling back on jQuery animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Till now, we've used CSS styling to create our animation effect. It raises the
+    question of whether we should use this technique for all our animation requirements,
+    or if jQuery effects should be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It all boils down to two key points – how complicated is the animation, and
+    do you need to support older browsers? If the answer to either (or both) is yes,
+    then jQuery is likely to win. If, however, you only have a simple animation, or
+    you don't need to support legacy browsers, then using CSS should be given serious
+    consideration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The great thing about the animations we''ve used so far is that we can provide
+    the same effect using both methods – that is, CSS and jQuery. A good source for
+    the easing functions in jQuery is [https://github.com/gdsmith/jquery.easing](https://github.com/gdsmith/jquery.easing)
+    - this lists all the standard well-known ones available in libraries such as jQuery
+    UI. To prove we can achieve the same effect, let''s go ahead and make a quick
+    change to our code, to use the jQuery equivalent of the animations already used.
+    Go through the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We start by editing a copy of our `quickTip` plugin file. Go ahead and dig
+    out a copy of `jquery.quicktipv2.js`, then add the following block of code, immediately
+    after the variable declarations:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We now need to adjust our animations to make use of the easing functions, so
+    go ahead and modify the `fadeIn` method, as indicated in the following lines of
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can''t have `fadeIn` without its sister `fadeOut()`, so we need to change
+    this call as well, as shown next:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the file as `jquery.quicktipv2.easing.js.` Don't forget to alter the original
+    plugin reference in `tooltipv2.html`! We also need to remove the transition styling
+    for `div.arrow_box` in the `tooltipv2.css` file, so go ahead and comment this
+    code out.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this point, we have in place a working solution using jQuery. If we preview
+    the results in a browser, the tooltip displays as it should. The downside though,
+    is that we lose visibility of the styling we've used, and that if (heaven forbid)
+    JavaScript is disabled in the browser, then the animation won't play.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is also the important point that jQuery animations are already more resource
+    hungry, which we touched on back in [Chapter 6](part0056.xhtml#aid-1LCVG1 "Chapter 6. Animating
+    in jQuery"), *Animating in jQuery*. So why would we resort to using jQuery in
+    these instances, when CSS will work? Again, it's all part of being that better
+    developer – it's too easy to resort to using jQuery; it's right to consider all
+    the alternatives first!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you design a custom easing, and want to use a CSS equivalent – add the link
+    to the jQuery Animate Enhanced plugin we used earlier. This gives the CSS equivalent
+    using Bezier curve values. We can then use the Bez plugin from earlier, or even
+    bezier-easing from [https://github.com/gre/bezier-easing](https://github.com/gre/bezier-easing)
+    to add it to back in as a Bezier curve-based animation instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's change focus now, and move on. We've provided a limited set of options
+    in our plugin so far; what if we wanted to extend it? We could try delving into
+    the code and adjusting it; though in some cases, this may be overkill for our
+    needs. A better option may be to simply encapsulate it as an instance of a new
+    plugin. Let's take a peek and see what is involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending our plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A common problem when using plugins is finding one that meets our requirements
+    completely; the likelihood of that happening is probably less than winning the
+    lottery!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get around this, we can always extend our plugin, to incorporate extra functionality
+    without affecting existing methods. The benefit of doing this means that we can
+    either override existing methods, or merge in additional functionality that helps
+    mold the plugin towards being a closer fit for our requirements. To see how this
+    would work in action, we''re going to add a method and extra variable to our existing
+    plugin. There are lots of ways to achieve this, but the method I''ve used works
+    well too. Let''s go through the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by editing a copy of `tooltipv2.js.` Immediately below the `#getValue`
+    click handler, go ahead and add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the file. If we preview `tooltipsv2.html` in a browser, then dig into the
+    rendered code via a DOM Inspector, we should see something akin to the following
+    screenshot:![Extending our plugin](img/image00451.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In this instance, we''ve added a method that doesn''t really perform much;
+    the key here is not so much what it does, but *how we add it in*. Here, we''ve
+    made it available as an additional method to the existing object. Add the following
+    to the foot of `tooltipsv2.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we now refresh our browser session, we can see it in action within the **Console**
+    area of our browser, as can be seen in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Extending our plugin](img/image00452.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There is a lot more that we can do and it's worth spending time researching
+    online. The key to extending is to make sure you understand the differences between
+    `$.fn.extend` and `$.extend`. They might look identical, but trust me – they act
+    differently!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Packaging our plugin using Bower
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Okay – on that note, we now have a working plugin and it's ready for use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, we could just release it as it is, but the smart alternative
+    is to package it for use with managers such as Bower or NPM. This has the advantage
+    of downloading and installing all the required packages, without the need to browse
+    to individual sites and manually download each version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can even go to the extent of automating our development workflow with build
+    tools such as Gulp and Grunt – for an example of how, head over to [https://www.codementor.io/bower/tutorial/beginner-tutorial-getting-started-bower-package-manager](https://www.codementor.io/bower/tutorial/beginner-tutorial-getting-started-bower-package-manager).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For now, let''s take a quick look at the steps to automate the creation of
+    our Bower package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this demo, we will need to install NodeJS. So head over to [http://nodejs.org/](http://nodejs.org/),
+    download the appropriate binary or package and install, accepting all defaults.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we need to install Bower. Fire up the NodeJS command prompt that will
+    have been installed, and enter the following at the command line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Bower will prompt us for information about the plugin through a series of questions,
+    before displaying the `bower.json` file that it will create for us. In this instance,
+    I've used the tooltip plugin as a basis for our example. The same questions will
+    apply for any plugin you create and want to distribute using Bower, as shown in
+    this screenshot:![Packaging our plugin using Bower](img/image00453.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The final step, after confirming that we are OK with the `bower.json` file
+    that is created, is to register the plugin in Bower. At the command prompt, run
+    the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Bower will run through a number of stages before finally confirming that the
+    plugin is available for use via Bower.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this point, we will have a plugin available for anyone to download. As it
+    has to be linked in with a valid GitHub account, we can now upload the plugin
+    to such an account, and make it available for anyone to download via Bower. As
+    a bonus, we can now take advantage of NodeJS and Grunt to help automate the whole
+    process. How about taking a look at grunt-bump ([https://github.com/vojtajina/grunt-bump](https://github.com/vojtajina/grunt-bump)),
+    as a starting point?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is so much more to Bower than we've been able to cover here. For inspiration,
+    it's worth reading the documentation at [http://bower.io/](http://bower.io/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Automating the provision of documentation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The final stage in developing our plugin skills is the provision of documentation.
+    Any coder can produce documentation, but the mark of a better developer is to
+    produce quality documentation, without the need to have to spend lots of time
+    on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Enter JSDoc! It is available from [https://github.com/jsdoc3/jsdoc](https://github.com/jsdoc3/jsdoc).
+    If you''re not already familiar with it, this is a great way to create your documentation
+    that not only looks good, but can easily be automated using Node. Let''s take
+    a moment to install it, and see it work in action. Following steps need to be
+    performed for this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start this time by installing JSDoc via NodeJS. For this we need to bring
+    up a NodeJS command prompt; there will be an icon for this in your **Programs**
+    menu, or from the **Start** page if using Windows 8.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'At the command prompt, change the location to your project folder, then enter
+    the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Node will run through the installation before confirming that it has completed
+    the process.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To produce documentation, all that needs to happen is for comments to be entered
+    into our code, thus:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Automating the provision of documentation](img/image00454.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Once added, the documentation can be compiled by running the following command
+    from within the plugin folder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will see a folder called out appear; this contains the documentation that
+    we can build up gradually. If we make changes to the comments inline, we need
+    to rerun the compilation process again. This can be automated using the `grunt-contrib-watch`
+    plugin for Node. If we take a look in the out folder, we can see the documentation
+    appear. It will look similar to the following screenshot extract:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Automating the provision of documentation](img/image00455.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There is a lot more we can cover to get a feel for some of the parameters that
+    can be used to dictate how the documentation will appear, it's worth reading through
+    the extensive documentation at [http://usejsdoc.org/about-getting-started.html](http://usejsdoc.org/about-getting-started.html).
+    There are a lot of possibilities available!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Returning values from our plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A key part of creating a plugin is – what information can we get back from the
+    plugin? Sometimes we can't get information out, but that may just be a limitation
+    of what we're trying to achieve with the plugin. In our case, we should be able
+    to get the content out. Let's take a look at how we can achieve this with our
+    quicktip plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before delving into the code, we''ll take a look at what we''re creating:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Returning values from our plugin](img/image00456.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We need to start somewhere, and so there is no better place than the markup.
+    In a copy of `tooltipv2.html`, go ahead and add the following highlighted code
+    before closing the `<div>` tag:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In a copy of `tooltipv2.js`, we need to expose the `data-` tags that we''re
+    implementing in the markup. Go ahead and add the configuration option for `tiptag`,
+    as indicated next:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The last step for this part is to modify our markup. In place of using the standard
+    `title=""` tags, we're going to replace them with the `data-` tags, which allow
+    more flexibility. In a copy of `tooltipv2.html`, do a search for all instances
+    of `title`, and then replace them with `data-title`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we need to add in a link to the jQuery UI CSS style sheet. This is purely
+    for creating a dialog box to display the results of us fetching the text from
+    one of the tooltips:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To make the jQuery UI CSS work, we need to add a reference to the jQuery UI
+    library. So go ahead and add one in. For convenience, we will use the CDN link,
+    but would look to produce a customized minified version for production use:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In a copy of `tooltip.js`, remove all the code within, and replace it with
+    the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save all the files. If we switch to a DOM Inspector such as Firebug, we can
+    see the text returned by entering the highlighted line of code in step 6:![Returning
+    values from our plugin](img/image00457.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the same browser session, click on the **Get text from first tooltip** button.
+    If all is well, we should see a gentle overlay effect appear, followed by a dialog
+    box with the text displayed, as shown at the start of this exercise.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Granted, our example is a little contrived, and that we should look to not hardcode
+    in the reliance on fetching the text from the first tooltip, but by selecting
+    text from whichever tooltip we desired. The key though is that we can equally
+    customize both the tags used for the text, and also retrieve that content using
+    the `.data()` method, with ease.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring best practices and principles
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Over the last few pages, we''ve covered a number of concepts and tips that
+    we can use to help develop our plugin skills further. There are a few additional
+    factors worth considering, which we''ve not covered yet. It''s worth taking a
+    few moments to explore these factors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Quality and Code Style**: Have you considered linting your plugin code through
+    JSHint ([http://www.jshint.com](http://www.jshint.com)), or JSLint ([http://www.jslint.com](http://www.jslint.com))?
+    Adhering to best practices when writing jQuery is one way to help ensure success,
+    such as following a consistent code style or the guidelines issued at [http://contribute.jquery.org/style-guide/js/](http://contribute.jquery.org/style-guide/js/)?
+    If not, how clean and readable is your code?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Compatibility**: Which version of jQuery is your plugin compatible with?
+    Significant changes have been made to the library over the years. Are you intending
+    to provide support to older browsers (requiring the 1.x branch of jQuery), or
+    staying with more modern browsers (using version 2.x of the library)?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reliability**: You should consider providing a set of unit tests. These help
+    prove that the plugin works, and are easy to produce. For a guide on how to do
+    this with QUnit, you may like to take a look at *Instant Testing with QUnit*,
+    by Dmitry Sheiko, available from Packt Publishing.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Performance**: A plugin that is slow to run will turn potential users away.
+    Consider using [JSPerf.com](http://JSPerf.com) ([http://www.jsperf.com](http://www.jsperf.com))
+    to test segments as a benchmark for assessing how well the plugin works, and whether
+    any section needs further optimization.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Documentation**: Documenting your plugin is a must. The level of documentation
+    will often determine the plugin''s success or failure. Does the plugin contain
+    any quirks that developers need to be aware of? What methods and options does
+    it support? It will also help if the code has inline comments, although it helps
+    to provide a minified version for production use. If a developer can navigate
+    your code base well enough to use it or improve it, then you''ve done a good job.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Maintenance**: If we release something into the wild, then thought must be
+    given to a support mechanism. How much time do we need to offer maintenance and
+    support? It is critical to be clear upfront about what expectations are around
+    answering questions, addressing issues, and continuing to improve the code.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Phew – there's a lot to consider! Creating a plugin can be a rewarding experience.
+    Hopefully, some of these tips will help improve your skills and make you a more
+    rounded developer as a whole. Remember, anyone can write code, as I always say.
+    The key to becoming a better developer is understanding what makes a good plugin,
+    and knowing how to put that into practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Learn jQuery site has a few extra tips that are worth exploring at [http://learn.jquery.com/plugins/advanced-plugin-concepts/](http://learn.jquery.com/plugins/advanced-plugin-concepts/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If someone asked you the name of one topic that is key to learning jQuery –
+    it's very likely that plugins would feature highly in that answer! To help with
+    writing them, we've covered a number of tips and tricks in this chapter. Let's
+    take five to recap what we've learnt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our starting point was a discussion on detecting the signs of poorly developed
+    plugins, as a precursor to learning about how we can improve our development through
+    the use of plugin patterns. We then moved on to working through the design and
+    construction of an advanced plugin, starting with creating the basic version before
+    reordering it to use a boilerplate template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next came a detailed look at switching to using CSS3 animations, to develop
+    some of the arguments we covered earlier in the book, in considering the use of
+    CSS3 to better manage animations than resorting to jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then moved on to looking at how we can extend functionality in our plugin,
+    before learning about packaging it with Bower ready for use through GitHub. We
+    then covered the automatic provision of documentation, and how we can return values
+    from our plugin, before rounding up with a look at some of the best practices
+    and principles we can take away for use in our development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Right – onwards we go! In the next chapter, we''re going to mix jQuery (including
+    some plugins), HTML5 markup, and CSS, and produce a site. Okay, nothing outrageous
+    with that – that''s perfectly normal. Here comes the twist though: what about
+    running the site in its entirety, *offline*? Yes, you heard me right…offline…and
+    no, there''s not a USB key or DVD in sight either…'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1455 @@
+- en: Chapter 4. Working with Forms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: How many times have you bought products online, from outlets such as Amazon?
+    I bet the answer is a fair few times over the years—after all, you can't go into
+    a bookstore late at night, peruse the books, and make a choice, without worrying
+    about the store's closing time or knowing whether you will find a particular book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building forms for online sites is arguably one of the key areas where you are
+    likely to use jQuery; the key to its success is ensuring that it validates correctly,
+    as a part of offering a successful user experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout this chapter, we're going to go back to the basics a little and delve
+    into some of the techniques that we can use to validate forms, using a mix of
+    HTML and jQuery validation tricks. You'll also see that creating successful forms
+    does not require a lot of complex code, but that the process is equally about
+    ensuring that we have considered the form's functionality requirements at the
+    same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Over the next few pages, we''ll cover a number of topics, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the need for validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding form validation using regular expressions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Developing a plugin architecture for validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an advanced contact form using jQuery/AJAX
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Developing an advanced file upload form using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are you ready to get started? Let's get going…before we start though, I recommend
+    that you create a project folder. For the purpose of this chapter, I will assume
+    that you have done so and that it is called `forms`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the need for form validation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are different ways to improve the usability of a form, but validation
+    is arguably one of the most important facets that we should consider. How many
+    times have you visited a site and filled in your details only to be told that
+    there is a problem? Sounds familiar, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Validating a form is key to maintaining the consistency of information; the
+    form will process the information that has been entered in order to ensure that
+    it is correct. Take an example of the following scenarios:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If an e-mail address is entered, let's make sure it has a valid format. The
+    e-mail address should include a full stop and contain an `@` symbol somewhere
+    in the address.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Calling someone? What country are they in? Let's make sure that the phone number
+    follows the right format, if we've already set the form to show a specific format
+    of the fields for a chosen country.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'I think you get the idea. Now, this might sound as if we''re stating the obvious
+    here (and no, I''ve not lost my marbles!), but all too often, form validation
+    is left until the last stage of a project. The most common errors are usually
+    due to the following reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Formatting**: This is where an end user has entered illegal characters in
+    a field, such as a space in an e-mail address.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Missing required field**: How many times have you filled out a form, only
+    to find that you''ve not entered information in a field that is obligatory?'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Matching error**: This crops up when two fields need to match but don''t;
+    a classic example is a password or an email field.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At this stage, you're probably thinking that we're going to get stuck with lots
+    of jQuery, to produce an all-singing, all-dancing solution, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wrong! Sorry to disappoint you, but one mantra I always stick to is the **KISS**
+    principle, or **Keep It Simple, Stupid**! This is not meant as a reflection on
+    anyone, but it is just a way to make our designing lives a little easier. As I've
+    mentioned in an earlier chapter, I believe mastering a technology such as jQuery
+    is not always about the code we produce!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These are the key elements in form validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tell the user that they have a problem on the form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Show the user where the problem is
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Show them an example of what you're expecting to see (such as an e-mail address)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Over the next few pages, we're going to take a look at how to add validation
+    to a form and how we can reduce (or eliminate) the most common errors. We'll also
+    work on the use of colors and proximity to help reinforce our messages. However,
+    before we can validate, we need something to validate, so let's knock up a quick
+    form as a basis for our exercises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a basic form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As with all projects, we need to start somewhere; in this instance, we need
+    a form that we can use as a basis for adding validation from the various examples
+    given in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the code download that accompanies this book, look for and extract the `basicform.html`
+    and `basicform.css` files to your project folder; when you run `basicform.html`,
+    it will look something similar to this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a basic form](img/image00357.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If we take a look at the markup used, we can see that it isn''t anything new;
+    it contains standard HTML5 fields that we will use when creating contact forms,
+    such as text fields or text areas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The key thing here though is that our example doesn''t contain any form of
+    validation—it leaves us wide open to abuse of the rubbish in, rubbish out, where
+    users can enter anything and we receive submitted forms that are—well—rubbish!
+    In this instance, when you click on **Submit**, all that you''ll see is this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a basic form](img/image00358.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Not great, is it? Most desktop browsers will accept any content if the required
+    tag is used without some of the validation—as long as it has something, the form
+    will be submitted. The exception to this rule is Safari, which won't display the
+    pop-up notice shown in our screenshot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'm sure we can do better, but probably not the way you're expecting to see…intrigued?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Starting with simple HTML5 validation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The great thing about form validation is that it can be easy or complex to fix—it
+    all depends on the route we take to solve the issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The key point here is that we *can* use jQuery to provide form validation;
+    this is a perfectly adequate solution that will work. However, for the simple
+    validation of fields, such as names or e-mail addresses, there is an alternative:
+    HTML5 validation, which uses the HTML5 constraint validation API.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The constraint validation API makes use of HTML5 attributes such as `min`, `step`,
+    `pattern`, and `required`; these will work in most browsers, except Safari.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before I explain the logic within this madness, let''s take a quick look at
+    how to modify our demo in order to use this form of validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open up a copy of the `basicform.html` file in your usual text editor and then
+    look for this line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We need to add the pattern that will be used as a check for our validation,
+    so go ahead and modify the code as indicated:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can make a similar change to our `email` field in order to introduce HTML5
+    validation; first, look for these lines:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Go ahead and modify the code as indicated, to add the HTML validation for `email`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the file as `basicvalidation.html`; if you preview the results in a browser,
+    you can immediately see a change:![Starting with simple HTML5 validation](img/image00359.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This is already an improvement; while the text is not very user-friendly, you
+    can at least see that the form expects to see a **firstname lastname** format
+    and not just a forename, as indicated. A similar change will also appear in **Email**,
+    when you press **Submit** to validate your form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you look at the code carefully, you may notice that I've switched to using
+    the `required="required"` tags, in place of just `required`. Either format will
+    work perfectly well—you may find that using the former tag is needed, if any inconsistencies
+    appear when you are just using `required` within your browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using HTML5 over jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have a form that validates the `name` and `email` fields using HTML,
+    it's time to make good on my promise and explain the logic in my madness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In some instances, it is often tempting to simply revert to using jQuery in
+    order to handle everything. After all, if we're already using jQuery, why reference
+    another JavaScript library?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This seems like a logical approach to take, if it weren''t for these two little
+    issues:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery adds an overhead to any site; for simple validation, this can be
+    seen as an overkill with little return.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If JavaScript is turned off, then it may result in either the validation failing
+    to operate or errors being displayed on the screen or in the console logs. This
+    will affect user experience, as the visitor will struggle to submit a validated
+    form, or worse, simply leave the site, which might result in lost sales.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A better approach is to consider the use of HTML5 validation for standard text
+    fields and reserve the use of jQuery for more complex validation, as we will see
+    later in this chapter. The benefit of this approach is that we will be able to
+    complete some limited validation, reduce the reliance on jQuery for standard fields,
+    and use it in a more progressive enhancement capacity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this in mind, let's move on and start taking a look at the use of jQuery
+    to enhance our forms further and provide more complex validation checks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery to validate our forms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In some cases, using HTML5 validation will fail if an input type used is not
+    supported in that browser; this is the time when we need to revert to using JavaScript,
+    or in this case jQuery. For example, date as an input type is not supported in
+    IE11, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is how the preceding code will be rendered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The trouble is that with the type falling back to text, browsers will not correctly
+    validate the field. To get around this, we can implement a check using jQuery—we
+    can then start adding some basic validation using jQuery, which will override
+    the existing native HTML checks made in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at how we can achieve some of this in practice, with a simple
+    demo, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open up a copy of `basicform.html` from the code download that accompanies this
+    book.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In the `<head>` section, add a link to jQuery along with a link to your validation
+    script:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Save the file as `basicvalidation.html`. In a new file, add the following code—this
+    performs a check to ensure that you are only validating the `email` field:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Immediately before the closing `}`), let''s add in the first of two functions;
+    the first function will add a CSS hook to allow you to style in the event of a
+    success or failure:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The keen-eyed amongst you will spot the addition of two CSS style classes;
+    we need to allow this in our style sheet, so go ahead and add these lines of code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We can now add the section function, which alters the default message shown
+    by the browser to show custom text:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the file as `basicvalidation.js`. If you now run the demo in a browser,
+    you can see that the text changes to green when you add a valid e-mail address,
+    as shown in this screenshot:![Using jQuery to validate our forms](img/image00360.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you refresh your browser session and don't add an e-mail address this time,
+    you will get a custom e-mail address error instead of the standard one offered
+    by the browser, as shown in the following screenshot:![Using jQuery to validate
+    our forms](img/image00361.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Using a little jQuery in this instance has allowed us to customize the message
+    shown—it's a good opportunity to use something a little more user friendly. Note
+    that the default messages given with standard HTML5 validation can be easily…improved!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you've seen how we can change the message that is displayed, let's
+    focus on improving the checks that the form makes. The standard HTML5 validation
+    checks won't be enough for all instances; we can improve them by incorporating
+    checks using regex checks in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Validating forms using regex statements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, you've seen some of the commands that you can use to validate forms
+    using jQuery, and how you can limit your checks to specific field types (such
+    as e-mail addresses) or override the error message displayed on the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code will fail though, without some form of validation template that we
+    can use to check—the keen-eyed amongst you may have noticed this, in our `basicvalidation.html`
+    demo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `pattern` variable is used to define a regular expression or a **regex**
+    statement. Put simply, these are single-line statements that dictate how we should
+    validate any entries in our form. These are not unique to query though; they can
+    be equally used with any scripting language, such as PHP or plain JavaScript.
+    Let''s take a moment to look at a few examples in order to see how this one works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`[^ @]*`: This statement matches any number of characters that are not an `@`
+    sign or a space'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`@`: This is a literal'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`\.`: This is a literal'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`[a-zA-Z]`: This statement indicates any letter, either uppercase or lowercase'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`[a-zA-Z]{2,}`: This statement indicates any combination of two or more letters'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we put this together, the pattern regex translates to an e-mail with any
+    set of characters, save for an `@` sign, followed by an `@` sign that is then
+    followed by any set of characters except an `@` sign, a period, and finally at
+    least two letters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, enough of theory; let's get coding! We're going to work through a couple
+    of examples, starting with a modification to the e-mail validation and then develop
+    the code to cover validation for website addresses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a regex validation function for e-mails
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've already used a regex to validate our `email` address field; while this
+    works well, the code can be improved. I'm not a keen fan of including the validation
+    check within the event handler; I prefer to hive it off into a separate function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Thankfully, this is easy to correct; let''s sort that out now by performing
+    the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by opening up the `basicvalidation.js` file and adding a helper
+    function immediately before the `emailField.on()` event handler:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This function handles the validation of e-mail addresses; in order to use it,
+    we need to modify the `emailField.on()` handler, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we save our work and then preview it in a browser, we should see no difference
+    in the validation process; we can be rest assured that the validation check process
+    has now been separated into an independent function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking it further for URL validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Using the same principles as those used in the previous example, we can develop
+    a similar validation check for the `urlField` field. It''s a simple matter of
+    duplicating the two `emailField.on()` event handlers and the `checkEmail` function
+    to produce something similar to what is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Taking it further for URL validation](img/image00362.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Using the code we''ve already produced, see whether you can create something
+    that validates the website URL entry using this regex:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If your code works, it should produce an error message similar to the one shown
+    in this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Taking it further for URL validation](img/image00363.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Hopefully, you've managed to use the code we've produced so far—if you're stuck,
+    there is a working example in the code download that accompanies this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, assuming that we have something that works, has anyone spotted problems
+    with our code? There are definitely some issues that we need to fix; let''s go
+    through them now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that the feedback isn't 100 percent dynamic? In order to make our code
+    recognize a change from an error to a successful entry, we need to refresh our
+    browser window—this is not ideal at all!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We're duplicating a lot of code within our jQuery file—architecturally, this
+    is bad practice and we can definitely improve on what has been written.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Instead of duplicating the code, let's completely rework our jQuery into a quick
+    plugin; architecturally, this will get rid of some of the unnecessary duplication
+    and make it easier for us to extend the functionality with minimal changes. It
+    won't be perfect—this is something we will correct later in the chapter—but it
+    will produce a more efficient result than our present code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a simple validation plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Until now, our examples have been based around individual fields, such as an
+    e-mail address or a website URL. The code is heavily duplicated, which makes for
+    a bloated and inefficient solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, let's completely flip our approach and turn our code into a generic
+    plugin. We'll use the same core process to validate our code, depending on the
+    regex that has been set within the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this next exercise, we''ll use a plugin produced by Cedric Ruiz. Although
+    it is a few years old, it illustrates how we can create a single core validation
+    process that uses a number of filters to verify the content entered in our form.
+    Let''s make a start by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the code download that accompanies this book, extract copies of the `quickvalidate.html`,
+    `info.png`, and `quickvalidate.css` files and save them in your project folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we need to create a plugin. In a new file, add the following code, saving
+    it as `jquery.quickvalidate.js`, within the `js` subfolder of your project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You need to start adding functionality to your plugin, beginning with caching
+    the form and the input fields; add this immediately before the `return this` statement
+    in your plugin:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next up comes the filters that dictate how each field should be validated and
+    the error message that should be displayed when validation fails, as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We now come to the validation process, which is where the magic happens. Go
+    ahead and add the following code, immediately below the filters:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If your code correctly identifies an error, you need to inform the user; otherwise,
+    they will be left in the dark as to why the form does not appear to be submitted
+    correctly. Let''s fix this now by adding in a function to determine what happens
+    if the validation test fails, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We''ve determined what will happen when the validation process fails but haven''t
+    put anything in place to call the function. Let''s fix this now by adding in the
+    appropriate call, based on whether the field is marked as being required, as shown
+    here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If the content changes in our field, we need to determine whether it is valid
+    or invalid; this needs to take place when entering text, so let''s do that now,
+    using the `keyup` event handler:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, we need to prevent submission if errors are found in our form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save your work; if all is well, you should see the form validate when previewing
+    the results of your work in a browser:![Building a simple validation plugin](img/image00364.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this stage, we have a working plugin, where we've refactored the core validation
+    code into a single set of processes that can be applied to each field type (using
+    the appropriate filter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we can do better than this; the following are some issues that we
+    can address to take our code even further:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although we've refactored the code into a single set of core validation processes,
+    the filters still form a part of the core code. While it is easy to expand on
+    the different types of filters, we are still limited to either text or password
+    field types. Adding any of the standard HTML5 field types, such as `url` or `email`,
+    will result in an error, as the pseudo-type is not supported within jQuery.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From an architectural perspective, it is preferable to keep the validator filters
+    outside the core plugin; this helps to keep the validator lean and free from code
+    that isn't required for our purpose.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Our code doesn't allow for any features such as localization, setting a maximum
+    length, or the validation of form objects, such as checkboxes.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We can spend lots of time developing our plugin so that it takes a more modular
+    approach, but is it worth the effort? There are literally dozens of form validation
+    plugins available for use; a smarter move will be to use one of these plugins:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The core validation process is tried and tested, which eliminates the need to
+    worry about whether our fields will validate correctly. Developing any form of
+    validator plugin that works on more than just a few fields is notoriously tricky
+    to get right; after all, what do we look or don't look to validate? Different
+    languages? Different formats for postal or zip codes, for example?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Most plugins will have some form of architecture to allow the addition of custom
+    validators, which supplement those included as standard—examples include the use
+    of languages, specific number formats, or odd/even numbers. We will make full
+    use of this later in this chapter in order to add some custom validators to our
+    demo.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using an existing plugin allows you to concentrate on providing the functionality
+    that is specific to your environment and where you can add the most value—after
+    all, there is no point in trying to add valid where others have already done the
+    work for us, right?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With this in mind, let's move on and take a look at how to use an existing plugin.
+    Most plugins nowadays have some form of modular architecture that allows you to
+    easily customize it and add additional custom validators; after all, why spend
+    time reinventing the wheel, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing a plugin architecture for validation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this chapter, we've worked with a variety of HTML5 and jQuery techniques
+    to validate our forms. In the main, they have worked well, but their simplistic
+    nature means that we will easily outgrow their usefulness very quickly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To really take advantage of all that is possible with form validation, it makes
+    sense to move away from simply trying to validate fields to using an existing
+    plugin that takes care of the basic validation process and allows you to concentrate
+    on customizing it and on ensuring that you provide the right functionality for
+    your form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enter jQuery Form Validator. This plugin, created by Victor Jonsson, has been
+    around for a number of years, so it is tried and tested; it also contains the
+    modular architecture that we need to customize the checks we will provide within
+    our form. Let's take a look at the validator in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The original plugin and associated documentation are available at [http://formvalidator.net/](http://formvalidator.net/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating our basic form
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we start to add custom validator plugins to our code, we need a basic
+    form to validate. For this, we'll base the markup on a modified version of the
+    form created in `basicvalidation.html`, from an earlier section in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s get our basic form working, with standard validation in place. To do
+    this, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by extracting copies of the `formvalidator.html` and `formvalidator.css`
+    files from the code download that accompanies this book. Save the HTML file in
+    the root of your project folder and the CSS file in a `css` subfolder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, add the following lines of code, saving it as `formvalidator.js`
+    in a `js` subfolder of your project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is all that is needed to get started with the Form Validator plugin; if
+    you preview the form in a browser, you should see the following screenshot—if
+    you enter a valid name and e-mail address but omit the website URL:![Creating
+    our basic form](img/image00365.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now that our form is ready, let's really start developing some of the validators
+    used within the form, beginning with a new validator for the `name` field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating custom validators
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So far, our form has relied on using standard HTML5 techniques to validate it;
+    this will work for most requirements, but there is a limit to what it can do.
+    Enter jQuery; we can use the power of FormValidator to create our own custom validators
+    so that we can tailor them to match our own requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key part of creating custom validators is the `$.formutils.addValidator`
+    configuration object; FormValidator handles the basic plugin architecture, which
+    leaves you to add values by designing the right checks for your form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Over the next few pages, we''re going to work through two basic examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by creating our custom validator; in the usual text editor of
+    your choice, add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Save the file as `user_name.js`, within the `js` subfolder of your project
+    area. Open up the `formvalidator.js` file that you created in the previous section
+    and alter it as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Although you''ve added the validation rule to the validator, you need to activate
+    it from within your HTML markup, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If all works well, you will see the effects of using your custom validator
+    when you preview the form in a browser and press the **Submit** button, as shown
+    in the following screenshot:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '![Creating custom validators](img/image00366.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: At this stage, you can simply leave it with this custom validator in place,
+    but I think there is scope for more—what about e-mail addresses?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Standard HTML5 validation will work out if the e-mail address given is in a
+    suitable format, such as ensuring that it has an `@` sign, a decimal point after
+    the domain name, and that the domain suffix is valid. It won't, however, prevent
+    users from submitting forms with certain types of addresses, such as [www.hotmail.com](http://www.hotmail.com)
+    (or now [www.outlook.com](http://www.outlook.com)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, it is worth noting that e-mail validation using regexes can open
+    up a minefield of problems, so step carefully and test thoroughly—how do you validate
+    against `mail+tag@hotmail.com`, for example? This is a perfectly valid address
+    but most regexes will fail…
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A useful discussion on why using regexes can actually do more harm than good
+    is available at [http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/](http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our example, we''ll add a simple check to prevent Hotmail, Gmail, or Yahoo!
+    e-mail addresses from being used; let''s take a look at how we can do that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a text editor, add the following code to a new file, saving it as `free_email.js`
+    within your `js` subfolder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now that your `free_email` validator is in place, you need to call it when
+    validating your form; to do this, revert to the `formvalidator.js` file you had
+    opened in the previous exercise and amend the code, as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The final step in the exercise is to activate the custom validator from the
+    HTML markup—remember how we changed it in the previous exercise? The same principle
+    applies here too:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save both the `formvalidator.js` and `formvalidator.html` files; if you preview
+    the results of your work, you can clearly see your custom message appear if you've
+    entered an invalid e-mail address, as shown in the following screenshot:![Creating
+    custom validators](img/image00367.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, the observant amongst you will spot that we're loading one validator at
+    a time; I am sure that you are wondering how we can load multiple validators at
+    the same time, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'No problem, we already have the validator files in place, so all we need to
+    do is modify our validator object so that it loads both the modules. Let''s take
+    a quick look at how we can modify our validator object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open up a copy of the `formvalidator.js` file and alter the code as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: That's all that you need to do. If you save the file and preview the results
+    in a browser, you will find that it validates both the `name` and `email` fields,
+    as illustrated in the previous two exercises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This opens up a world of opportunities; in our two examples, we've created reasonably
+    simple validators but the principles are the same, no matter how complex or simple
+    our validators are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to learn more about how to create custom validators, then it is
+    worth reading the documentation at [http://formvalidator.net/index.html#custom-validators](http://formvalidator.net/index.html#custom-validators).
+    We can then combine the basic principles of creating modules with regex examples
+    such as those shown at [http://www.sitepoint.com/jquery-basic-regex-selector-examples/](http://www.sitepoint.com/jquery-basic-regex-selector-examples/),
+    to create some useful validator checks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's move on and take another look at a useful part of the FormValidator plugin—we
+    all don't speak the same language, do we? If we did, life would be boring; instead,
+    you should consider localizing your validation messages so that international
+    visitors to your site can understand where there is a validation issue and know
+    how to fix it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Localizing our content
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this modern age of working online, there may be instances where it will be
+    useful to display messages in a different language—for example, if most of your
+    visitors speak Dutch, then there will be value in overriding the standard messages,
+    with equivalents in the Dutch language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While it requires some careful thought and planning, it is nevertheless very
+    easy to add language support; let''s run through how to do so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this exercise, you need to modify the validator object. In the `formvalidator.js`
+    file, add this code immediately after the `document.ready()` statement:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We need to reference the change in language, so go ahead and add this configuration
+    line to the validator object:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the file. If you preview the results in a browser, you can see that the
+    error message is now displayed in Dutch, as shown here:![Localizing our content](img/image00368.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We''re not limited to Dutch; here''s the same code, but with an error message
+    in French:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is a quick and easy way to ensure that visitors to your site understand
+    why your form hasn't validated and how they can fix it. It is worth noting though
+    that the message set is displayed irrespective of the regional settings on your
+    PC or mobile device; it is recommended that you check any analytics logs to confirm
+    the region or country your visitors come from before changing the language in
+    use on your form's messages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Centralizing our error messages
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we wrap up development on our form, there is one more piece of functionality
+    that we can look at in order to add it to our form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, any validation error message that is displayed has been against each
+    individual field. This works, but it means that we don't have an immediate way
+    of telling which fields may have failed validation. Sure, we can scroll through
+    the form, but I'm lazy; why scroll down a long form if we can alter our code to
+    display the errors at the top, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Absolutely, doing this is a piece of cake with FormValidator; let''s go through
+    what is required now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open a copy of the `formvalidator.js` file and alter the validator object as
+    shown here; we set the `errMessagePosition` property to `top` and the `validatorOnBlur`
+    property to `false` in order to display messages at the top of the form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If you were to run the form now, any error messages that have been set will
+    display at the top, but they won''t look pretty. Let''s fix this now, with some
+    minor changes to our style sheet:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, let's run the form in a browser; if all went well, you will see the errors
+    at the top of the form, correctly formatted. The following screenshot shows what
+    might appear if you were to not fill out the website URL; note that our code still
+    shows the message in Dutch from the previous example:![Centralizing our error
+    messages](img/image00369.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this point, we've covered a number of topics related to validation using
+    jQuery. We're going to move on and take a look at a couple of example forms in
+    action. Before we do so, we need to cover some final tweaks as part of wrapping
+    up development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Wrapping up development
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When previewing the last exercise, the more observant will have spotted that
+    some of the styles appear to be missing. There is a good reason for this; let
+    me explain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a minimum, we can provide messages to indicate success or failure. This
+    will work but it isn''t great; a better option is to provide some additional styling
+    to really set off our validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Wrapping up development](img/image00370.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This is easy to do, so let''s make a start by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open up the `formvalidator.css` file and add the following lines of code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We need to add two icons to the `img` subfolder in our project area—for this,
+    I've used the red cross and green tick icons available at [https://www.iconfinder.com/icons/32520/accept_check_good_green_ok_success_tick_valid_validation_vote_yes_icon](https://www.iconfinder.com/icons/32520/accept_check_good_green_ok_success_tick_valid_validation_vote_yes_icon).
+    If you want to use different icons, then you may have to adjust the style rules
+    accordingly.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save `formvalidator.css`. If you preview the results in a browser and enter
+    details in the form, you should see results similar to the screenshot shown at
+    the start of this exercise when you click on **Submit Form**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Hopefully, you will agree that this looks much better! There is a copy of `formvalidator.css`
+    in the code download that accompanies this book; it contains a few more styles
+    within the form that give it the really polished look that we've seen in this
+    exercise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to see a working example, which contains the customizations, then
+    extract the `formvalidatior-fullexample` JavaScript, CSS, and HTML files from
+    the code download and rename them to `formvalidator.js`, `formvalidator.css`,
+    and `formvalidator.html`, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Noting the use of best practices
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In each of our examples, we've set the form to display all the fields at once—a
+    key point to consider the user's goals and expectations. What are they trying
+    to achieve? Do we really need to display dozens of fields at once? Or, can we
+    make the form simpler?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although the focus of this book is naturally on mastering jQuery, it would be
+    foolish to simply concentrate on writing code; we must also give some consideration
+    to the look and feel of the form and allow any visual or functional considerations
+    when building the form and its associated validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a small example, it might be worth considering whether we can use CSS to
+    blur or focus fields, as and when fields become available. We can achieve this
+    using a small amount of CSS to blur or focus those fields, using something similar
+    to the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The idea here is to fade out those fields where we have entered something and
+    focus on those fields that we have yet to complete or are about to complete, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Noting the use of best practices](img/image00371.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'A small warning: if we are not careful when using this styling, we may appear
+    to effectively disable fields, which will kill the whole point of the exercise!
+    Let''s change focus now and switch to a key part of form design: what happens
+    if some browsers don''t support the CSS styles we''ve used throughout this chapter?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Providing fallback support
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Throughout this chapter, we've pushed the boat out in designing forms that will
+    work in most modern browsers. There may be instances though when this won't work;
+    if we still have to cater to nonsupporting browsers (such as iOS7), then we need
+    to provide some form of fallback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, this isn't too much of an issue if we use something such as a Modernizr
+    to provide a graceful degradation by applying the `formvalidation` class on the
+    `html` element. We can then use this to provide a graceful fallback if a browser
+    doesn't support the use (and styling) of pseudo-selectors, such as `:valid` or
+    `:invalid`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to use a custom version of Modernizr, which will test for form validation
+    support, then go to [http://modernizr.com/download/#-shiv-cssclasses-teststyles-testprop-testallprops-prefixes-domprefixes-forms_validation-load](http://modernizr.com/download/#-shiv-cssclasses-teststyles-testprop-testallprops-prefixes-domprefixes-forms_validation-load).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enough of the theory, let's have some fun! Over the course of the next couple
+    of pages, we're going to have a look at a more complex example, over two exercises.
+    It will be based on a simple contact form to which we will add form upload capabilities—although
+    beware, as there will be a sting in this tail…!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating an advanced contact form using AJAX
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the first part of our complex example, we're going to develop a form that
+    allows us to submit some basic details and that allows the confirmation of this
+    submission to first appear on a form message panel and later by e-mail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this exercise, we will need to avail ourselves of a couple of tools, as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A local web server installed using default settings—options include WAMP (for
+    PC; [http://www.wampserver.de/en](http://www.wampserver.de/en)) or MAMP (for Mac;
+    [http://www.mamp.info/en/](http://www.mamp.info/en/)). Linux users will most likely
+    already have something available as a part of their distribution.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The free Test Mail Server tool (for Windows only), available at [http://www.toolheap.com/test-mail-server-tool/](http://www.toolheap.com/test-mail-server-tool/),
+    as e-mailing from a local web server can be difficult to set up, so this brilliant
+    tool monitors port 25 and provides local e-mailing capabilities. For Mac, you
+    can try the instructions provided at [https://discussions.apple.com/docs/DOC-4161](https://discussions.apple.com/docs/DOC-4161);
+    Linux users can try following the steps outlined at [http://cnedelcu.blogspot.co.uk/2014/01/how-to-set-up-simple-mail-server-debian-linux.html](http://cnedelcu.blogspot.co.uk/2014/01/how-to-set-up-simple-mail-server-debian-linux.html).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Access to an e-mail package from the PC or laptop that is being used—this is
+    required to receive e-mails sent from our demo.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another possible option, if you prefer to go down the cross-browser route, is
+    XAMPP ([https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html));
+    this includes the Mercury Mail Transport option, so the Test Mail Server tool
+    isn't required if you are working on Windows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Okay, with the tools in place, let''s make a start by performing the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're going to start by opening up a copy of the code download that accompanies
+    this book and extracting the `ajaxform` folder; this contains the markup, styling,
+    and assorted files for our demo. We need to save the folder into the web server's
+    `WWW` folder, which (for PC) will usually be `C:\wamp\www`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The markup is relatively straightforward and very similar to what we've already
+    seen throughout this chapter.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We need to make one small change to the `mailer.php` file; open it in a text
+    editor of your choice and then look for this line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Change `<ENTER EMAIL HERE>` to a valid e-mail address that you can use in order
+    to check whether an e-mail has appeared afterwards.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The magic for this demo happens within the `ajax.js` file, so let''s take a
+    look at the file now and begin by setting some variables:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We start the real magic here, when the submit button is pressed; we first prevent
+    the form from submitting (as it''s the default action) and then serialize the
+    form data into a string for submission:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The core of the AJAX action on this form comes next; this function sets the
+    type of request to make, where the content will be sent to and the data to send:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We then add the two functions to determine what should happen; the first function
+    deals with the successful submission of our form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next up comes the function that handles the outcome if form submission fails:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Start the Email Tool. If you preview the form in a browser and fill out some
+    valid details, you should see this screenshot when you submit it:![Creating an
+    advanced contact form using AJAX](img/image00372.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Our form is now in place and able to submit, with the confirmation appearing
+    by e-mail within a few moments. We will revisit the use of AJAX within jQuery
+    in greater depth in the next chapter; for now, let's move on and continue to develop
+    our form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing an advanced file upload form using jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As one good man said some time ago, *"onwards and upwards!"*, it's time to add
+    the second part of our form's functionality, in the form of a file upload option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leaving aside the risks that this can present (such as the uploading of viruses),
+    adding a file upload function is relatively straightforward; it requires both
+    client- and server-side components to function correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our example, we''re going to focus more on the client-side functionality;
+    for the purpose of the demo, we will upload files to a fake folder stored within
+    the project area. To give you an idea of what we will build, here''s a screenshot
+    of the completed example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Developing an advanced file upload form using jQuery](img/image00373.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'With this in mind, let''s make a start by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a copy of the `ajaxform.html` file, we need to add some additional links
+    to various JavaScript and CSS files; all the additions are available in the code
+    download that accompanies this book, as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we need to add some markup to `index.html`; so, in `ajaxform.html`, go
+    ahead and first alter the title as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We now need to add the file upload code; so, immediately after the closing
+    `</div>` tag of the message field, add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We need to make one small change to one of our jQuery files; in `uploadfiles.js`,
+    look for the line that begins as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To complete our demo, we need two additional files: one is `files.php` and
+    the other is `UploadHandler.php`; these will handle the backend upload of files
+    and the sending of e-mails. Copies of these files are in the code download that
+    accompanies this book.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save all your files. If you preview the results using your local web server,
+    then you should see a working form, similar to the first part of this exercise;
+    it will now also show your upload form.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a working version of the demo in the `combined` folder that comes in
+    the code download that accompanies this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, we should have a working form. But hold on…has anyone noticed
+    something? Hopefully, at this point, you should have noticed that there is little
+    or no validation within our form…! "Huh?," I hear you ask. You are absolutely
+    right, but as with all good things, there is a reason for this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I deliberately didn't add any validation here, as I wanted to first concentrate
+    on the form's functionality and finally have a small break from validation, given
+    how much we've covered over the last few pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It does, however, give you a perfect opportunity (and yes, here comes the sting)—how
+    about checking whether you can add validation to the example? I've not provided
+    an answer in the code download for this—after all, there is no right or wrong
+    answer per se; validation depends on your form's requirements. However, there
+    should be enough within this chapter to get you going. I strongly recommend that
+    you view the documentation on the main [formvalidator.net](http://formvalidator.net)
+    website, as it will help provide more answers!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Phew! We've finally reached the end of our chapter, so let's take a moment to
+    review what we've covered so far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a look at why form validation is critical and how the key
+    point is to keep any solution simple in order to ensure the success of the form.
+    We started with a look at simple HTML5 validation before discussing the virtues
+    of when to use jQuery in place of standard HTML5 validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then moved on to take a look at simple validation using jQuery before expanding
+    this to cover the use of regex statements. Next up came a look at developing a
+    quick and dirty validation plugin, before examining the need to maintain a more
+    modular architecture to help with extensibility through the use of custom validators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We switched to using an existing plugin to add validation functionality, as
+    this allows us to spend more time on ensuring that we cover our needs rather than
+    the simple virtue of being able to validate any content. We also looked at how
+    to localize our content and centralize the error messages that are displayed before
+    wrapping up development with some additional styling tweaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then rounded out the chapter with a note on best practices and providing
+    fallback support, before developing the basis of a complex form with the file
+    upload functionality as a basis for using some of the techniques provided in this
+    chapter for future personal development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we're going to expand on a topic that we briefly covered
+    during form development; it's time to take a look at that tried and trusted technology
+    called AJAX…
+  prefs: []
+  type: TYPE_NORMAL

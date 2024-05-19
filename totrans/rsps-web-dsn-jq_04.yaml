@@ -1,0 +1,803 @@
+- en: Chapter 4. Designing Responsive Text
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When talking about responsive titles, we talk about flexibility. So, the use
+    of fixed measures in font sizes should also be dynamic. The difference between
+    how it have been implemented in the past years and the present is that earlier
+    we only thought of two ways to show our content: print and screen. Although times
+    change, worries about text adaptation remain.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We think typography is the base of our design and the backbone of our CSS because
+    the main objective of our site is to inform the users by answering their questions.
+    It is good practice to avoid creating ten different subtitle styles, and in order
+    to do this, we must plan a few distinct headings according to our website theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding and converting the text to relative units
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Box-sizing and paragraph spacing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing the font family for beautiful responsive titles
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing the font size automatically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding and converting the text to relative units
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the main advantages of using relative units is the cascade effect generated
+    when the user modifies the font size of the base element (from the browser) and
+    all font sizes increase/decrease proportionally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These days, almost every browser has the default settings of this base element
+    `<html>` at 16 px. However, this value can be modified on the user side if the
+    user wants to increase the browser font size making it easier to read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before talking about the most commonly used measuring units, there are two
+    units we would emphasize because their popularity has grown impressively, and
+    they are: **vw** (**viewport width**) and **vh** (**viewport height**).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: These viewport units still do not have much acceptance for most used browsers,
+    but I suggest you check either [http://www.w3.org/TR/css3-values/](http://www.w3.org/TR/css3-values/)
+    or [http://caniuse.com/viewport-units](http://caniuse.com/viewport-units) to stay
+    tuned because these units make the scale of the font size proportionally easier
+    depending on the size of the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, the most used relative units recently are given in the following section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Relative unit – percentage
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Percentage is relative to the container element and it is more used to create
+    structures as we learned in [Chapter 2](ch02.html "Chapter 2. Designing Responsive
+    Layouts/Grids"), *Designing Responsive Layouts/Grids*. However, there is no problem
+    to use it for setting up our font size. The sample code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Some developers prefer to define the font size of the body fixed to 62.5 percent
+    (10 px) to facilitate the calculation. In this case, we may define the child elements
+    to 150 percent representing 15 px, 190 percent representing 19 px, and so on.
+    Although this method makes the identification of the correspondent value easier,
+    it may only help in the first level of the cascade from the font sizing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Relative unit – em
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The em unit is relative to the computed font size of its parent. In the following
+    example, we want to convert the font size of a child element to `20px`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: There is a really good site helping us with this calculation, [http://pxtoem.com](http://pxtoem.com).
+    Let's see how to use this tool on the components in the following screenshot;
+    in the left column, we define the base font and the result is in the column at
+    the center. Also, for different sizes from 6 px to 24 px, we may convert it using
+    the right column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Relative unit – em](img/3602OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'So remember, always include the px value (when we are converting) in front
+    of the final value (as we recommended in [Chapter 2](ch02.html "Chapter 2. Designing
+    Responsive Layouts/Grids"), *Designing Responsive Layouts/Grids*). We are reinforcing
+    this tip because when handling font sizes, there are a lot of cascading styles.
+    For example, consider the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Relative unit – em](img/3602OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Relative unit – rem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**rem** came from CSS3 which stands for **root em** and is relative to the
+    root (or the HTML) element. In other words, redefining a font size on the `<html>`
+    element and all rem units may scale a proportion of this base element, and not
+    its parent. This is the only difference when compared with em.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see how these sizes from the previous figure were converted to rem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The following practice may save a good amount of time and help analyze if the
+    page requires more blank space depending on the density of the content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try to begin projects by coding the text typography right before all the main
+    structure has been developed. We do this by producing a template document that
+    contains all the major HTML elements with the correct stylesheet that is based
+    on the website design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving your element dimensioning using the box-sizing property
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The model known as **box-model**, illustrated in the following screenshot,
+    which requires a calculation to find out the total width of the element including
+    borders and padding, is getting outdated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Improving your element dimensioning using the box-sizing property](img/3602OS_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following example shows the concept of box-model that divides the useful
+    area between two divs with padding of five percent on each side of these containers
+    and a 2 px border which will make the width calculation more difficult:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: With CSS3, we have the `box-sizing` property which receives the value `border-box`,
+    meaning this width value already considers the padding and border dimensions.
+    Although it works well in Versions 8 and higher of Internet Explorer browser,
+    this property does not work purely on IE6 and IE7\. If you need to grant support
+    for these browsers, there is a polyfill which does this complementary task and
+    may be found at [https://github.com/Schepp/box-sizing-polyfill](https://github.com/Schepp/box-sizing-polyfill).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see how it may facilitate the entire calculation to work on this sample:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can see in the following code that we may have less difficulty in performing
+    the calculation and analyzing clean or blank spaces from the screen. In addition,
+    many people relate this `padding` spacing to the size of the font based on em
+    because it may avoid the calculation of proportion in some cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Currently, some browsers require the prefixes above, but by using them this
+    way, we are covering them. Also, the same padding may be done for the vertical
+    spacing; for example, consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Customizing the font family for beautiful responsive titles
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Fonts allow you to create a more engaging site for your users, and consistently
+    maintain the theme style without having to produce a lot of heading images, one
+    for each title.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is important to choose the font carefully because it may influence the content
+    assimilation by the user or may not contribute to show more than a page or two
+    of our work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`@font-face` is a CSS rule that allows designers to use non-standard web fonts
+    that are not installed in their users'' machines and helps a lot to change all
+    headings faster. The great benefit of the `@font-face` method is that it does
+    not replace your regular fonts with images and also gives the required flexibility
+    to the responsive web design.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`@font-face` only supports IE8 or earlier if we are using EOT fonts. Also,
+    Safari iOS 4.1 and lower only support SVG font. We will see in the next topic
+    how to provide this support easily.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We really recommend the site [http://www.google.com/fonts](http://www.google.com/fonts)
+    to check a variety of fonts and especially the font's authorship. Please read
+    the license on each font before using it to be sure it can be used commercially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The basic usage of the property `@font-face` is to define this rule style,
+    `font-family` is the label used to call the font later, `src` is where it can
+    be found, and `font-weight` (not needed for normal ones, but required by everything
+    else, such as bold and thin). For example, consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then just use it as any other font in any other style rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, there are other better ways to do it. We are going to see clearly how
+    to use Font Squirrel, Fit Text, Slabtext, Lettering, and Responsive Measure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Font Squirrel tool generating
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Font Squirrel has an awesome tool which allows us to take a desktop font file
+    and generate its web counterparts. Also, the service of generating the correct
+    code and files for our specific font is 100 percent free*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Only the service is free. Remember that each font family has its own license.
+    It is highly recommended that the user reads the font license before using them.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the website [http://www.fontsquirrel.com/tools/webfont-generator](http://www.fontsquirrel.com/tools/webfont-generator),
+    we may find further information about its main features, which are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Font Squirrel does not require a lot of CSS skills
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It offers an extra area to improve the loading performance (the **Expert** mode)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generated code/files support users with old browsers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resource kits are absolutely free
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It starts by accessing the Font Squirrel site and clicking on **Add fonts**
+    to choose your personal font or the one for which you already have the right license.
+    Then, select the **Basic** option (for now) and download your kit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After unzipping the downloaded file, we should add the following code at the
+    beginning of the CSS file. The following code will allow the CSS file to access
+    the font files and provide the correct one depending on the situation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And whenever we want to use the new font, we just need to call it the same
+    as we do with the `@font-face` rule as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we go back to the download page, Font Squirrel will also allow you to take
+    a subset of the font, significantly reducing the file size by choosing the **Optimal**
+    and **Export** modes. To show just how significant it is, we added the same Kite
+    One font and tried all the three settings. Summarizing the result, the byte size
+    is directly correlated to the hash of glyphs (characters) in the font file and
+    how many resources we want to append.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **Basic** setting leaves the characters untouched. The **Optimal** setting
+    reduces the characters to around 256\. In specific cases where the Kite One font
+    has less characters than this number, no optimization is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are able to see the greatest savings by selecting the **Expert** mode and
+    only including the **Basic Latin** setting, then manually adding the characters
+    we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s try to do it together following the steps for the **Expert** Font Squirrel
+    settings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click on **Add Fonts** and select the font file you want to work with.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Under **Rendering**, uncheck **Fix Vertical Metrics**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Under **Font Formats**, check **SVG** as shown in the following screenshot:![How
+    to do it](img/3602OS_04_09.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Under **Subsetting**, check **Custom Subsetting...**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Under **Unicode Tables**, check only **Basic Latin**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This assumes that the fonts will only use English characters; for other languages,
+    add only the characters that you need.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In some sites the symbols such as **’**, **‘**, **“**, and **”** are important
+    too, so copy and paste them into the **Single Characters** field, as shown in
+    the following screenshot:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_04_10.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Verify the generated image from **Subset Preview** and adjust if needed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After you confirm that you are uploading legally eligible font for web embedding,
+    just click on **DOWNLOAD YOUR KIT**.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The FitText plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: FitText is a jQuery plugin that makes font sizes flexible and it is a utility
+    that has grown in popularity, making flexible display type much more accessible.
+    It works by scaling the headline text to fill the width of a parent element. If
+    you want to see a quick demonstration of this plugin to analyze how impressive
+    its flexibility is, you can see it in use on plugin's website at [http://fittextjs.com/](http://fittextjs.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the files of this solution on the plugin''s Github website
+    [https://github.com/davatron5000/FitText.js](https://github.com/davatron5000/FitText.js),
+    let''s insert this code in our HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of the HTML (before the `</body>` closing tag), we will need
+    to add jQuery and Fittext libraries. Then you have to execute the plugin applying
+    it to your headline:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By plugin''s default, it will set the font size as 1/10th of the element''s
+    width. There are two ways to modify this standard font size control: configure
+    the compressor, and define minimum and maximum sizes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By using the compressor, you will need to specify the compress value, for example,
+    `1.2` to resize the text more gradually or `0.8` to resize it less gradually,
+    as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can also modify this standard font size control by defining the minimum
+    and maximum font size, in order to provide more control over the situations in
+    which you wish to preserve the hierarchy, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The SlabText plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: SlabText is a plugin that lets you build big, beautiful, and completely responsive
+    headlines making it easier for anyone to produce big, bold, and responsive headlines.
+    The script splits headlines into rows before resizing each row to fill the available
+    horizontal space. The ideal number of characters to set on each row is automatically
+    calculated by dividing the available width by the pixel font size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following are its features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SlabText plugin is fully responsive and built for mobiles with a completely
+    responsive nature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Color Control** chooses the section''s background color, text, and text shadow
+    color'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Extra Options** sets some padding, and determines the length of the text
+    shadow and **Image Overlay** uploads an image and has it superimposed onto the
+    text using CSS3 background clip'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Font Control** chooses your own font and has ultimate control over fonts'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Clonable** clones the section as many times as you want and creates a whole
+    bunch of clones'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The SlabText plugin allows you to break the line manually
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Its minified version weighs just 4 KB
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It has headlines with a lot of horizontal space to fill the display better across
+    browsers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Be sure to call the script after all the `@font-face` fonts are downloaded
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So, let's download this plugin from [https://github.com/freqDec/slabText/](https://github.com/freqDec/slabText/)
+    and experiment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'First, we need to add an ID to a `header` tag that we can select in the JavaScript
+    and then insert the `<script>` tag before the closing `</body>` tag in our HTML
+    code. Consider the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is the script to come up with the solution:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, instead of keeping it automatic, let''s break the line into different
+    parts, modifying the communication between the user perception and our website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The script is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows two states, before (on the left) and after (on
+    the right) running the code that forces the manual line to break:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For more options, please check the creator's page at [http://freqdec.github.io/slabText/](http://freqdec.github.io/slabText/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lettering
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Lettering offers a complete down-to-the-letter control by wrapping each character,
+    word, or line, and adding a class (creating a manageable code) for a quick access
+    to the character inside the CSS file. It is a jQuery-based plugin that makes the
+    adjustment of the spacing between characters easier, creating an editorial design,
+    and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two quite impressive websites that show good design and a lot of
+    creativity by using customized letters. Take a look at the following examples,
+    courtesy of [http://lostworldsfairs.com/moon/](http://lostworldsfairs.com/moon/)
+    and [http://lostworldsfairs.com/eldorado/](http://lostworldsfairs.com/eldorado/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Lettering](img/3602OS_04_05.jpg)![Lettering](img/3602OS_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the zip file from [https://github.com/davatron5000/Lettering.js](https://github.com/davatron5000/Lettering.js),
+    let''s practice this usage by inserting the following simple HTML code with class
+    which will be used later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, remember to include the jQuery library in the `<head>` tag as shown in
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of the HTML (before the `</body>` closing tag), we will need
+    to call this script for action specifying which class this plugin will affect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The previous code will give the following output. Look at the spans and imagine
+    you are building it without this plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, the structure is ready to receive a style like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Furthermore, if the title has a distinct style for each word (not character),
+    this plugin may handle it by defining the parameter `"words"`, as shown in the
+    following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Consider the case of a different style for each line being split by using `<br
+    />` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For the previous scenario, the only difference in the script will be the parameter
+    `"lines"`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: So, now we think you are wondering about the big effort to create a style, to
+    measure distances, and to know how much is necessary to increase the font for
+    each element. We strongly suggest using the online tool Kern.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Kern.js tool
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Kern.js is an online tool that matches perfectly with Lettering.js because it
+    offers a great interface between clicking-and-dragging, adjusting the letter kerning,
+    line height, and letter placement. And when you finish this task, just copy the
+    generated CSS and use it in our stylesheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After entering the tool''s website, [http://www.kernjs.com/](http://www.kernjs.com/),
+    there is a link at the bottom of the page: **drag to bookmarks bar to install**.
+    Dragging it to the bookmark will make the activation of the Kern.js tool on our
+    website easier.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The requirements of its usage are including jQuery in specific 1.7.2 Version
+    and the Kern.js libraries in the `<head>` tag of our website. The Kern.js script
+    may be found at [https://github.com/bstro/kern.js](https://github.com/bstro/kern.js)
+    to download.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here are five options that may show at the top of the page whenever a website
+    is opened by clicking on the **Kernjs.com** link from the bookmarks bar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adjustment of the kerning (horizontal spacing)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Increase or decrease in font size
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adjustment of the line height (vertical spacing)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Full letter placement adjustment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adjustment of the angle rotation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows these options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to use it](img/3602OS_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As soon as you finish the adjustments, just click on the check button to convert
+    this visual change into code ready to be copied and performed on the site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Be careful when there is more than one customized element because this code
+    may overwrite the previous one. However, there is an easy way to avoid further
+    issues: defining a class to the element specification. The following code is an
+    example of this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Responsive Measure
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Responsive Measure is a simple script that allows you to pass in a selector
+    (ideally the container where your primary content will go) that generates the
+    ideal font size required to produce the ideal measure for your text. Does it sound
+    like magic? We will see in the following section how to customize this solution
+    and its usage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the files of this solution from [https://github.com/jbrewer/Responsive-Measure](https://github.com/jbrewer/Responsive-Measure),
+    let''s insert this code in the `<head>` tag in the beginning of DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of the HTML (before the `</body>` closing tag), we need to call
+    the Responsive Measure script to action. However, before executing the script,
+    we will clarify the following two ways to control the text size:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**idealLineLength**: Its default value is `66`, but we may define our specific
+    value to represent how many characters and spaces will fit in the line. Also,
+    the minimum font size was set to `16px` and the maximum set to `300px`. The parameter
+    `sampleText` may help calculate the number of characters that have average character
+    width.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Keep in mind that a range of 45-75 characters per line is generally accepted
+    as safe for comfortable reading.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Here comes the preceding mentioned code:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**minimumFontSize and maximumFontSize**: This is where the handling of the
+    font size is improved by defining 13 to minimum and 30 to maximum, for example.
+    Also, the default value of `idealLineLength` may influence sometimes a little
+    on the result. If it happens, define your own value and fix it, as we have just
+    seen in the previous code.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'So, the following is the code:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Exercise 4 – customizing the homepage title
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s do this exercise in three steps. The second and third steps are just
+    complementary of the first step:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use Font Squirrel generator to create your font face kit. Then, implement it
+    on the `<h1>` tag of your site. If you do not have any idea of which font to use,
+    I would recommend to download Kite One font from GoogleFont site.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Use the Lettering plugin to have more control over each letter, word, or line
+    of your title. After that, increase the color of the first letter, changing the
+    `color` property of the `.char1` class from your CSS file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Use the Kern.js tool by clicking on the link from your bookmarks bar. After
+    that, click on the second button from toolbar and select the first letter to increase
+    its font size. Then, click on the last button to generate a code and include it
+    in your CSS file
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have seen the responsive font size of the text. Also, we
+    have learned different ways of customizing the font family by using solutions
+    such as the Font Squirrel, FitText, SlabText, Lettering, and Responsive Measure.
+    These solutions create a support and independence to image that is required when
+    building our responsive website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will talk about images and videos and learn how to convert
+    them into responsive and adaptive media for different devices. Also, we will see
+    how to work well with videos considering different player technologies and devices.
+  prefs: []
+  type: TYPE_NORMAL

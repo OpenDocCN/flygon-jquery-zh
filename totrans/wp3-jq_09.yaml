@@ -1,0 +1,1028 @@
+- en: 'Appendix A. Appendix: jQuery and WordPress Reference Guide'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: OK! Welcome to the final part of this book! This appendix isn't like the others,
+    in that it's really intended to be a quick reference guide to help you out now
+    that you've read and understood the underlying principles, applications, and best
+    practices of using jQuery within WordPress sites. Think of this chapter as your
+    "Cheat Sheet".
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where applicable, I'll point you back to the location in the book where the
+    function or technique was described in detail, as well as point you out to any
+    other useful links if you're interested in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this appendix, the topics that we''ll cover include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Top, essential jQuery selectors and functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with the template hierarchy, and key template tags and WordPress functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: WordPress shortcodes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery reference for WordPress
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the next few sections, we'll take a look at the top references you'll need
+    for jQuery development within WordPress. Let's get started with staying in `noConflict`
+    mode and looking at the most useful `selector` filters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: noConflict mode syntax
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The simplest is to just use the jQuery variable in all your selection statements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also set up your own variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can even safely use the `$` variable if you set it up correctly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Useful selector filters for working within WordPress
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Remember: Sometimes it''s easier to *exclude* what you don''t want in a selection
+    set, rather than select for everything you do want.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selection filter syntax
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here''s the basic syntax for working with selector filters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Selector filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here are the top selector filters that you''ll find most useful with WordPress
+    (`:not` is my personal favorite):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :not(selector) | `jQuery(".post img:not(.pIcon)").jqFn();` | Filters out
+    all elements matching the given selector. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :header | `jQuery(".post :header").jqFn();` | Filters down to all elements
+    that are headers, such as h1, h2, h3, and so on. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :first | `jQuery(".post:first").jqFn();` | Filters down to the first selected
+    element only. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :last | `jQuery(".post:last").jqFn();` | Filters down to the last selected
+    element only. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :even | `jQuery(".post:even").jqFn();` | Filters down to even elements only.
+    Note: Arrays are zero-indexed! Zero is considered an even number, so your first
+    item will be selected! |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :odd | `jQuery(".post:odd").jqFn();` | Filters down to odd elements only.
+    Note: Arrays are zero-indexed! Zero is considered an even number, so your second
+    item will be selected! |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :eq(number) | `jQuery(".post:eq(0)").jqFn();` | Filters down to a single
+    element by its index, which again is zero-indexed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :gt(number) | `jQuery(".post:gt(0)").jqFn();` | Filters down to all elements
+    with an index **above** the given one, again this is zero-indexed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :lt(number) | `jQuery(".post:lt(2)").jqFn();` | Filters all elements with
+    an index below the given one. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :animated | `jQuery(".post:animated").jqFn();` | Filters down to all elements
+    that are currently being animated (we''ll get to animation later in this chapter).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Content filter syntax
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After the regular selector filters, you'll find these content filters very useful
+    (especially `:has()`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Content filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Pretty much all the content filters come in handy with WordPress. They help
+    you work with what the Page and Post WYSIWYG editor's output very well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :has(selector) | `jQuery(".post:has(.entry)").css("background", "#f60");`
+    | Filters down to elements that have at least one of the matching elements inside
+    it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :contains(text) | `jQuery(".post:contains(''Hello world'')").css("background",
+    "#f60");` | Filters down to elements that contain the specific text. Note: This
+    is **case sensitive!** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :empty | `jQuery(":empty'')").css("background", "#f60");` | Filters down
+    to elements that have no children. This includes text nodes. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :parent | `jQuery(":parent'')").css("background", "#f60");` | Filters down
+    to elements that are the parent of another element. This includes text nodes.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Child filter syntax
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here''s the basic syntax for using child filer syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Child filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You'll find child filters will come in most handy when working with the various
+    list tags that WordPress puts out. Categories, pages, gallery pages, you'll be
+    able to control them and select specifics using these filters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :nth-child(number/even/odd) | `jQuery(".linkcat li:nth-child(1)").css("background",
+    "#f60");` | Filters down to the elements that are the "nth" child of it''s selector.
+    Note, this is not zero-indexed! 1 and odd selects the first element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :first-child | `jQuery(".linkcat li:first-child").css("background", "#f60");`
+    | Filters down to the elements that are the first child of their parent. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :last-child | `jQuery(".linkcat li:last-child").css("background", "#f60");`
+    | Filters down to the elements that are the last child of their parent. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :only-child | `jQuery(".pagenav li:only-child").css("background", "#f60");`
+    | Filters down to the elements that are only-children of their parent. If a parent
+    has more than one child, no elements are selected. |'
+  prefs: []
+  type: TYPE_TB
+- en: Form filter syntax
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Here''s the form filter syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Form filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'WordPress natively has a simple content form and a single input field. However,
+    the WordPress Cforms II plugin is quite invaluable for most projects, and if you''re
+    using that plugin, you''ll find most of these filters helpful:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :input | `jQuery("form:input").css("background", "#f60");` | Filters to all
+    input, textarea, select and button elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :text | `jQuery("form:text").css("background", "#f60");` | Filters to all
+    input elements that are type text. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :password | `jQuery("form:password").css("background", "#f60");` | Filters
+    to all input elements that are type password. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :radio | `jQuery("form:radio").css("background", "#f60");` | Filters to all
+    input elements that are type radio. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :checkbox | `jQuery("form:checkbox").css("background", "#f60");` | Filters
+    to all input elements that are type checkbox. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :submit | `jQuery("form:submit").css("background", "#f60");` | Filters to
+    all input elements that are type submit. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :image | `jQuery("form:image").css("background", "#f60");` | Filters to all
+    image elements (classified as a form filter, but useful for regular images). |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :reset | `jQuery("form:reset").css("background", "#f60");` | Filters to all
+    input elements that are type reset. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :button | `jQuery("form:button").css("background", "#f60");` | Filters to
+    all input elements that are type button. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :file | `jQuery("form:file").css("background", "#f60");` | Filters to all
+    input elements that are type file. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'jQuery: Useful functions for working within WordPress'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While I've recapped most of the selector filters as they're just that useful,
+    in this next section I'll go over the syntax and usage for the top functions that
+    you'll find you use the most in your WordPress projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Never fear, you can skim through [Chapter 2](ch02.html "Chapter 2. Working with
+    jQuery in WordPress"), *Working with jQuery in WordPress* for a complete listing
+    as well as usage of functions not covered here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with classes and attributes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One of the most simple yet powerful things you can do quickly with jQuery is
+    transform objects by changing their CSS properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .css(''property'', ''value'') | `jQuery(".post") .css("background", "#f60");`
+    | Adds or changes the CSS properties of the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .addClass(''className'') | `jQuery(".post") .addClass("sticky");` | Adds
+    listed class(es) to each of the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .removeClass(''className'') | `jQuery(".post") .removeClass("sticky");` |
+    Removes listed class(es) from each of the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .toggleClass(''className'', switch-optional) | `jQuery(".post") .toggleClass("sticky");`
+    | Toggles listed class(es) from each of the selected elements based on their current
+    state. If the class is there, it''s removed; if it''s not, it''s added. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .hasClass(''className'') | `jQuery(".post") .hasClass("sticky");` | Returns
+    true or false if listed class(es) from each of the selected elements exist. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .attr | `jQuery(".post").attr();` | Retrieves the attribute''s value for
+    the first element of the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: Traversing the DOM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '`.append` and `.prepend` are going to be your most used DOM functions. However,
+    you''ll find `.wrapAll` invaluable for helping contain any new elements you create.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .append(html & text) | `jQuery(".post") .append("<b>post ends here</b>");`
+    | Inserts content in the parameter, to the end of each selected element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .appendTo(selector) | `jQuery("<b>post ends here</b>").appendTo(" .post");`
+    | Does the same thing as append, just reverses the element selection and content
+    parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .prepend(html & text) | `jQuery(".post") .prepend("<b>post starts here</b>");`
+    | Inserts content in the parameter, to the beginning of each selected element.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .prependTo(selector) | `jQuery("<b>post starts here</b>").prependTo(" .post");`
+    | Does the same thing as prepend, just reverses the element selection and content
+    parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .after(string) | `jQuery(".post") .after("<b>This goes after</b>");` | Inserts
+    content in the parameter, after and outside of each selected element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .insertAfter(selector) | `jQuery("<b>This goes after</b>").insertAfter("
+    .post");` | Does the same thing as after, just reverses the element selection
+    and content parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .before(html & text) | `jQuery(".post") .before("<b>This goes before</b>");`
+    | Inserts content in the parameter, before and outside of each selected element.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .insertBefore(selector) | `jQuery("<b>This goes before</b>") .insertBefore("class");`
+    | Does the same thing as before, just reverses the element selection and content
+    parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .wrap(html or functionName) | `jQuery(".post").wrap("<div class=".fun" />");`
+    | Wraps an HTML structure around each selected element. You can also construct
+    a function that will wrap each element in HTML. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .wrapAll(html) | `jQuery(".post") .wrapAll("<div class=" .fun" />");` | Similar
+    to wrap, but places the HTML structure around all of the elements together, not
+    each individual element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .wrapInner(selector) | `jQuery(".post") .wrapInner("<div class=" .fun" />");`
+    | Similar to wrap, but it places the HTML structure inside each of the selected
+    elements around any text or child elements of each selected element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .html(html & text) | `jQuery(".post") .html("<h2>Replacement Text</h2>");`
+    | Replaces any content and child elements of selected items with the content in
+    the parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .text(text only html chars will be escaped) | `jQuery(".post") .text("Replacement
+    Text");` | Similar to HTML, but text only. Any HTML characters will be escaped
+    as ascii codes. |'
+  prefs: []
+  type: TYPE_TB
+- en: Important jQuery events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most of the time in WordPress, it's all about `.click` and `.hover` but `.toggle`
+    and `.dbclick` will come in handy as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .click(functionName) | `jQuery(".post") .click(function(){//code});` | Binds
+    a function to the click event type, executed on a single click. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .dbclick(functionName) | `jQuery(".post") .dbclick(function(){//code});`
+    | Binds a function to the click event type, executed on a double click. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .hover(functionName1, functionName2) | `jQuery(".post") .hover(function(){//code});`
+    | Works with the mouseenter/mouseleave event types and binds just two functions
+    to the selected elements, to be executed on mouseenter and mouseleave. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .toggle(functionName1, functionName2, functionName3, ...) | `jQuery(".post")
+    .toggle(function(){//code});` | Works with the click event type and binds two
+    or more functions to the selected elements, to be executed on alternate clicks.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Animation at its finest
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Anything that animates is going to look cool. Make sure that you know how to
+    handle these functions for some top-notch jQuery enhancements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .slideUp(speed, functionName) | `jQuery(".post") .slideUp(''slow'', function()
+    { // code });` | Slides the selected element up from bottom to top until it is
+    hidden. Speed can be "fast" or "slow" or in milliseconds. A function can be called
+    when the animation is finished. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .slideDown(speed, functionName) | `jQuery(".post") .slideDown(''slow'', function()
+    { // code });` | Slides a hidden selected element down from top to bottom until
+    it is defined size. Speed can be "fast" or "slow" or in milliseconds. A function
+    can be called when the animation is finished. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .slideToggle() | `jQuery(".post") .slideToggle(''slow'', function() { //
+    code });` | Toggles the visibility of the selected element using the slide animation.
+    Speed can be "fast" or "slow" or in milliseconds. A function can be called when
+    the animation is finished. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .fadeOut(speed, functionName) | `jQuery(".post") .fadeOut("slow", function(){//code});`
+    | Fades a selected element that''s visible or alpha is 1 to 0. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .fadeIn(speed, functionName) | `jQuery(".post") .fadeIn("slow", function(){//code});`
+    | Fades a selected element who''s visibility is hidden or alpha is set as 0 to
+    1. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .fadeTo(speed, alpha, functionName) | `jQuery(".post") .fadeTo("slow", .3,
+    function(){//code});` | Fades a selected element to a specific alpha from 0 to
+    1. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .animate(css properties, duration, easing, functionName) | `jQuery(".post")
+    .animate({width: 200, opacity: .25}, 1000, function(){//code});` | Creates a custom
+    transition of CSS properties on the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .stop() | `jQuery(".post") .stop();` | Stops an animation on a selected element.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Getting the most out of WordPress
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Those are the top elements that you'll need to know for jQuery, now lets take
+    a look at what can be done to keep things running smooth on the WordPress side.
+    First up, the more you know how to leverage your theme's hierarchy the more easily
+    you can create views and pages to leverage with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The WordPress template hierarchy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Need to work with the theme a bit? Understanding the Template Hierarchy can
+    really help you create the view you need with minimal programming headaches. The
+    following list contains the general template hierarchy's rules. The absolute simplest
+    theme you can have must contain an `index.php` page. If no other specific template
+    pages exist, then `index.php` is the default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can then begin expanding your theme by adding the following pages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`archive.php` trumps `index.php` when a category, tag, date, or author page
+    is viewed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`home.php` trumps `index.php` when the home page is viewed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`single.php` trumps `index.php` when an individual post is viewed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`search.php` trumps `index.php` when the results from a search are viewed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`404.php` trumps `index.php`, when the URI address finds no existing content.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`page.php` trumps `index.php` when looking at a static page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A custom **template** page, such as: `page_about.php`, when selected through
+    the page''s **Administration** panel, trumps `page.php`, which trumps `index.php`
+    when that particular page is viewed.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`category.php` trumps `archive.php`. This then trumps `index.php` when a category
+    is viewed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A custom **category-ID** page, such as: `category-12.php` trumps `category.php`.
+    This then trumps `archive.php`, which trumps `index.php`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`tag.php` trumps `archive.php`. This in turn trumps `index.php` when a tag
+    page is viewed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A custom **tag-tagname** page, such as: `tag-reviews.php` trumps `tag.php`.
+    This trumps `archive.php`, which trumps `index.php`.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`author.php` trumps `archive.php`. This in turn trumps `index.php`, when an
+    author page is viewed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`date.php` trumps `archive.php`, This trumps `index.php` when a date page is
+    viewed.![The WordPress template hierarchy](img/1742_AppA_01.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can learn more about the WordPress theme template hierarchy here: [http://codex.wordpress.org/Template_Hierarchy](http://codex.wordpress.org/Template_Hierarchy).'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Top WordPress template tags
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following are the top WordPress template tags that I find most useful for
+    helping out with jQuery and theme development:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Template Tag | Description | Parameters |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `bloginfo()`Sample:`bloginfo(''name'');` | Displays your blog''s information
+    supplied by your user profile and general options in the Administration Panel.**More
+    Info:**[http://codex.wordpress.org/Template_Tags/bloginfo](http://codex.wordpress.org/Template_Tags/bloginfo).
+    | Any text characters you want to appear before and after the tags, as well as
+    to separate them —`name,` `description, url, rdf_url, rss_url, rss2_url, atom_url,
+    comments_rss2_url, pingback_url`,`admin_email, charset, version`.Default: No parameters
+    will display anything. You must use a parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `wp_title()`Sample:`wp_title(''——'',true,'''');` | Displays the title of
+    a page or single post.**Note:** Use this tag anywhere outside The Loop.**More
+    Info:**[http://codex.wordpress.org/Template_Tags/wp_title](http://codex.wordpress.org/Template_Tags/wp_title).
+    | Any text characters you want to use to separate the title—("`--`").You can set
+    up a Boolean to display the title—`("--", "false")`.As of version 2.5+: You can
+    decide if the separator goes before or after the title —`("--", true, "right")`.Default:
+    No parameters will display the page title with a separator if a separator is assigned
+    its default to the left. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `the_title()`Sample:`the_title(''<h2>'', ''</h2>'');` | Displays the title
+    of the current post.**Note:** Use this tag in The Loop. (See [Chapter 3](ch03.html
+    "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"), *Digging
+    Deeper: Understanding jQuery and WordPress Together* for how to set up The Loop.)**More
+    Info:**[http://codex.wordpress.org/Template_Tags/the_title](http://codex.wordpress.org/Template_Tags/the_title).
+    | Any text characters you want to appear before and after the title —`("<h2>",``"</h2>")`.You
+    can also set a Boolean to turn the display to false —`("<h2>",``"</h2>", "false")`.Default:
+    No parameters will display the title without a markup. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `the_content()`Sample:`the_content(''more_link_text'', strip_teaser, ''more_file'');`
+    | Displays the content and markup you''ve edited into the current post.**Note:**
+    Use this tag in The Loop. (See [Chapter 3](ch03.html "Chapter 3. Digging Deeper:
+    Understanding jQuery and WordPress Together"), *Digging Deeper: Understanding
+    jQuery and WordPress Together* for how to set up The Loop.)**More Info:**[http://codex.wordpress.org/Template_Tags/the_content](http://codex.wordpress.org/Template_Tags/the_content).
+    | As you can add text to display the "more link", a Boolean to show or hide the
+    "teaser text", there is a third parameter for more_file that currently doesn''t
+    work—`("Continue reading" . the_title())`.You can also set a Boolean to turn the
+    display to false —`("<h2>",``"</h2>", "false")`.Default: No parameters will display
+    the content for the post with a generic "read more" link. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `the_category()`Sample:`the_category('', '');` | Displays a link to the category
+    or categories a post is assigned to.**Note:** Use this tag in The Loop. (See [Chapter
+    3](ch03.html "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"),
+    *Digging Deeper: Understanding jQuery and WordPress Together* for how to set up
+    The Loop)**More Info:**[http://codex.wordpress.org/Template_Tags/the_category](http://codex.wordpress.org/Template_Tags/the_category).
+    | You can include text separators in case there''s more than one category —`(''&gt;'')`.Default:
+    No parameters will display a comma separation if there is more than one category
+    assigned. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `the_author_meta()`Sample:`the_author_meta();` | Displays the author of a
+    post or a page.**Note:** Use this tag in The Loop. (See [Chapter 3](ch03.html
+    "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"), *Digging
+    Deeper: Understanding jQuery and WordPress Together* for how to set up The Loop.)**More
+    Info:**[http://codex.wordpress.org/Template_Tags/the_author_meta](http://codex.wordpress.org/Template_Tags/the_author_meta).
+    | This tag accepts a large amount of parameters. They are covered in the previous
+    sections you can also check out the codex. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `wp_list_pages()`Sample:`wp_list_pages(''title_li='');` | Displays a list
+    of WordPress pages as links.**More Info:**[http://codex.wordpress.org/Template_Tags/wp_list_pages](http://codex.wordpress.org/Template_Tags/wp_list_pages).
+    | `title_li` is the most useful as it wraps the page name and link in list tags
+    `<li>`.The other parameters can be set by separating with an "`&`": `depth, show_date,
+    date_format`,`child_of, exclude, echo, authors`,`sort_column`.Default: No parameters
+    will display each title link in an `<li>` list and include an `<ul>` tag around
+    the list (not recommended if you want to add your own custom items to the page
+    navigation). |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `wp_nav_menu()`;Sample:`wp_nav_menu( array(''menu'' => ''Main Nav'' ));`
+    | Displays a list of menu items assigned to a WordPress 3.0+ menu, as links.**More
+    Info:**[http://codex.wordpress.org/Function_Reference/wp_nav_menu](http://codex.wordpress.org/Function_Reference/wp_nav_menu).
+    | This tag accepts a large amount of parameters, the most common parameter is
+    the name of the menu set up in the menu tool in the Administration Panel.If no
+    menu is available, the function will default to the `wp_list_pages()`; tag.Please
+    see the codex for more parameters. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `next_post_link()`Sample:`next_post_link(''<strong> %title </strong>'');`
+    | Displays a link to the next post which exists in chronological order from the
+    current post.**Note:** Use this tag in The Loop. (See [Chapter 3](ch03.html "Chapter 3. Digging
+    Deeper: Understanding jQuery and WordPress Together"), *Digging Deeper: Understanding
+    jQuery and WordPress Together* for how to set up The Loop.)**More Info:**[http://codex.wordpress.org/Template_Tags/next_post_link](http://codex.wordpress.org/Template_Tags/next_post_link).
+    | Any markup and text characters you want to appear—(`<strong>%title</strong>`).`%link`
+    will display the permalink, `%title` the title of the next post.Default: No parameters
+    will display the next post title as a link followed by angular quotes (`>>`).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `previous_post_link()`Sample:`previous_post_link(''<strong> %title </strong>'');`
+    | Displays a link to the previous post which exists in chronological order from
+    the current post.**Note:** Use this tag in The Loop. (See [Chapter 3](ch03.html
+    "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"), *Digging
+    Deeper: Understanding jQuery and WordPress Together* for how to set up The Loop.)**More
+    Info:**[http://codex.wordpress.org/Template_Tags/previous_post_link](http://codex.wordpress.org/Template_Tags/previous_post_link).
+    | Any markup and text characters you want to appear —`(<strong>%title</strong>)`.`%link`
+    will display the permalink, `%title` the title of the next post.Default: No parameters
+    will display the previous post title as a link preceded by angular quotes (`<<`).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `comments_number()`Sample:`comments_number(''no responses'', ''one response'',
+    ''% responses'');` | Displays the total number of comments, Trackbacks, and Pingbacks
+    for a post.**Note:** Use this tag in The Loop. (See [Chapter 3](ch03.html "Chapter 3. Digging
+    Deeper: Understanding jQuery and WordPress Together"), *Digging Deeper: Understanding
+    jQuery and WordPress Together* for how to set up The Loop.)**More Info:**[http://codex.wordpress.org/Template_Tags/comments_number](http://codex.wordpress.org/Template_Tags/comments_number).
+    | Lets you specify how to display if there are 0 comments, only 1 comment, or
+    many comments—`(''no responses'',''one response'',''% responses'')`.You can also
+    wrap items in additional markup—`("No Comments","<span class="bigNum">1</span>
+    response","<span class="bigNum">%</span> Comments")`.Default: No parameters will
+    display:No comments, or 1 comment, or ? comments. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `comments_popup_link()`Sample:`comments_popup_link(''Add Your Thoughts'');`
+    | If the comments_popup_script is not used, this displays a normal link to comments.**Note:**
+    Use this tag in The Loop. (See [Chapter 3](ch03.html "Chapter 3. Digging Deeper:
+    Understanding jQuery and WordPress Together"), *Digging Deeper: Understanding
+    jQuery and WordPress Together* for how to set up The Loop.)**More Info:**[http://codex.wordpress.org/Template_Tags/comments_popup_link](http://codex.wordpress.org/Template_Tags/comments_popup_link).
+    | Lets you specify how to display if there are 0 comments, only 1 comment, or
+    many comments—`("No comments yet", "1 comment so far", "% comments so far (is
+    that a lot?)", "comments-link", "Comments are off for this post")`.Default: No
+    parameters will display the same default information as the `comments_number()`
+    tag. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `edit_post_link()`Sample:`edit_post_link(''edit'', ''<p>'', ''</p>'');` |
+    If the user is logged in and has permission to edit the post, this displays a
+    link to edit the current post.**Note:** Use this tag in The Loop. (See [Chapter
+    3](ch03.html "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"),
+    *Digging Deeper: Understanding jQuery and WordPress Together* for how to set up
+    The Loop.)**More Info:**[http://codex.wordpress.org/Template_Tags/edit_post_link](http://codex.wordpress.org/Template_Tags/edit_post_link).
+    | Any text that you want to be in the name of the link, plus markup that you''d
+    like to come before and after it—`("edit me!", "<strong>", "</strong>")`.Default:
+    No parameters will display a link that says "edit" with no additional markup.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `the_permalink()`Sample:`the_permalink();` | Displays the URL for the permalink
+    to the current post.**Note:** Use this tag in The Loop. (See [Chapter 3](ch03.html
+    "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"), *Digging
+    Deeper: Understanding jQuery and WordPress Together* for how to set up The Loop.)**More
+    Info:**[http://codex.wordpress.org/Template_Tags/the_permalink](http://codex.wordpress.org/Template_Tags/the_permalink).
+    | This tag has no parameters. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `the_ID()`Sample:`the_ID();` | Displays the numeric ID of the current post.**Note:**
+    Use this tag in The Loop. (See [Chapter 3](ch03.html "Chapter 3. Digging Deeper:
+    Understanding jQuery and WordPress Together"), *Digging Deeper: Understanding
+    jQuery and WordPress Together* for how to set up The Loop.)**More Info:**[http://codex.wordpress.org/Template_Tags/the_ID](http://codex.wordpress.org/Template_Tags/the_ID).
+    | This tag has no parameters. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `wp_get_archives()`Sample:`wp_get_archives(''type=monthly'');` | Displays
+    a date-based archives list.**More Info:**[http://codex.wordpress.org/Template_Tags/wp_get_archives](http://codex.wordpress.org/Template_Tags/wp_get_archives).
+    | You can set parameters by separating them with an "`&`"—`(''type=monthly&limit=12'')`.The
+    other parameters are `type, limit, format, before, after, show_post_count`.Default:
+    No parameters will display a list of all your monthly archives in HTML format
+    without before or after markup and `show_post_count` set to false. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `get_calendar()`Sample:`get_calendar(false);` | Displays the current month/year
+    calendar.**More Info:**[http://codex.wordpress.org/Template_Tags/get_calendar](http://codex.wordpress.org/Template_Tags/get_calendar).
+    | A Boolean value can be set which will display a single-letter initial `(S =
+    Sunday)` if set to true. Otherwise, it will display the abbreviation based on
+    your localization `(Sun = Sunday)—(true)`Default: No parameters will display the
+    single-letter abbreviation. |'
+  prefs: []
+  type: TYPE_TB
+- en: Conditional tags
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The conditional tags can be used in your template files to change what content
+    is displayed and how that content is displayed on a particular page depending
+    on what conditions that page matches. For example, you might want to display a
+    snippet of text above the series of posts, but only on the main page of your blog.
+    With the `is_home()` conditional tag, that task is made easy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are conditional tags for just about everything, out of all of them, these
+    are the seven I find I need most in my theme development:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`is_admin()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`is_page()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`is_single()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`is_sticky()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`is_home()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`is_category()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`in_category()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'All of those functions can take the following parameters: either the `post
+    ID` or `page ID` number, the post or page `title`, or the post or page slug.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first conditional tag, `is_admin()`, you'll notice we used throughout this
+    title, along with `is_home()` to load up our `wp_enqueue_scripts` so that we can
+    avoid having the script load if we're looking at some aspect of the theme from
+    the admin panel (reviewing theme's for instance). The scripts could conflict with
+    scripts in the admin panel so it's best to make sure they only load when not loading
+    the theme from the admin panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, if you have any jQuery scripts that only affects the home page, say, a
+    "sticky post rotator" script or something similar, you might want to consider
+    placing that `wp_enqueue_script` call inside an `if(is_home()){wp_enqueue_script(//)}`
+    call. This way, the script will only load up on the page you need it, and not
+    on every page of the site, even when it's not being used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As for the rest of the conditional tags, as great as theme's are, I'm sure you've
+    run into the conundrum that you or your client doesn't want the exact same sidebar
+    on every single page or post.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I use these conditional tags so that specific pages can have particular styles
+    or divs of content turned on and off, and display or not display specific content.
+    These seven tags really help give my client''s custom themed sites a true, custom
+    website feel and not that standard: "nice design, but every page has the exact
+    same sidebar, this is probably another WordPress site" feel.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The conditional tag fun doesn''t end there. There are many more that you may
+    find invaluable in aiding your theme''s customization, listed here: [http://codex.wordpress.org/Conditional_Tags](http://codex.wordpress.org/Conditional_Tags).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Quick overview of loop functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: All those template and conditional tags are one thing, it's another to apply
+    them within the loop. In quite a few chapters of this book, we had to amend the
+    loop in a theme's template file or create a custom one. The following table contains
+    a description for each part of The Loop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Loop functions | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `<?php if(have_posts()) : ?>` | This function checks to make sure that there
+    are posts to display. If so, the code continues onto the next function below.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `<?php while(have_posts()) : the_post(); ?>` | This function shows the posts
+    that are available and continues onto the next function below. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `<?php endwhile; ?>` | This function closes the `while(have_posts...` loop
+    that was opened above once the available posts have been displayed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `<?php endif; ?>` | This function ends the `if(have_posts...` statement that
+    was opened above once the `while(have_posts..`. loop has completed. |'
+  prefs: []
+  type: TYPE_TB
+- en: Setting up WordPress shortcodes
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This whole appendix has been about useful references. We should take a quick
+    look at shortcodes. They were first introduced in version 2.5\. If you're comfortable
+    with writing functions in WordPress, shortcodes can help you take longer bits
+    of code (such as custom loops and complex template tag strings) or even just markup
+    and text that you feel you'd use a lot in your theme (or plugin) and allow you
+    to compress them in to cleaner, simpler bit of reusable code. You can add shortcodes
+    to your theme's `functions.php` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You''re probably familiar with shortcodes and may not realize it. If you''ve
+    ever taken a look at how WordPress''s media manager inserts captions into images,
+    you''ve probably noticed something like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's a built in shortcode for captions and alignment in WordPress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To create a shortcode, you do need to create a PHP function in your theme's
+    `functions.php` file. If your theme does not have a `functions.php` file, simply
+    create a new file and name it `functions.php` and place it in the root of your
+    theme's directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a basic shortcode
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We''ll start off by opening up our `functions.php` file and at the end of it,
+    create a simple function that returns a string of text and markup for our shortcode
+    like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, to really take advantage of shortcodes, you do need to know some PHP which,
+    to fully cover, is a bit beyond the scope of this title. But even without much
+    PHP experience, if you follow this example, you'll start to see how flexible this
+    WordPress feature is in saving you time, not just in your theme, but in your day-to-day
+    use of WordPress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the previous sample, inside our function brackets `{}`, I set up a very basic
+    variable **`$donateText`** and assigned it a string of text and markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `return` statement is a very basic PHP function that will make sure our
+    `quickadd` function passes back whatever has been assigned to that variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re now ready to use WordPress'' `add_shortcode()` function by adding it
+    just *underneath* our `quickadd` function that we previously set up. The `add_shortcode`
+    function has two parameters. For the first parameter, you''ll enter in a reference
+    name for your shortcode and in the second, you''ll enter in the name of the function
+    that you''d like your shortcode to call, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now the fun part: Pick any template page in your theme and use the `broughtby`
+    shortcode by simply adding in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Wherever you paste that `[broughtby]` shortcode in your theme's template files,
+    the **This page is brought to you by the letter Z** text, with a link to the letter's
+    page, will appear!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Bonus:** You are not restricted to using this shortcode in just your template
+    files! Paste it directly into a post or page through the Administration panel,
+    you''ll get the same result. And, you guessed it, the output from shortcodes are
+    easily leveraged and enhanced by jQuery!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have an enhancement that might take a bit more HTML markup than the WYSIWYG
+    editor in WordPress can handle, and the site's content editor is overwhelmed by
+    switching over to the HTML view, creating a solution with a shortcode may be just
+    what you need! For example, it would be much easier for your client to add a set
+    of square brackets with some parameters than mark up a definition list, which
+    the basic WYSIWYG editor doesn't allow for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This would turn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Into a simpler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: In addition to helping out WordPress content editors with markup, shortcodes
+    are a wonderful way to shortcut your time if you're a busy WordPress content author.
+    Even if you're not creating your own theme from scratch, you can easily add your
+    own shortcodes to any theme's `functions.php` file and ramp up your productivity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Those of you more comfortable with PHP can take a look at WordPress'' Shortcode
+    API and see how to extend and make your shortcodes even more powerful by adding
+    parameters to them: [http://codex.wordpress.org/Shortcode_API](http://codex.wordpress.org/Shortcode_API).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Hopefully after taking a run through this appendix, you've dog-eared it and
+    trust that you'll be back anytime you have a quick question about usage or syntax
+    with the top jQuery and WordPress issues most WordPress developers have regarding
+    jQuery. We also took a quick turn through the "underbelly" of WordPress' core
+    functions and shortcodes which hopefully open you up to the endless possibilities
+    of creating useful enhancements for WordPress sites. I hope you've enjoyed this
+    book and found it useful in aiding your WordPress sites with jQuery creations
+    and enhancements.
+  prefs: []
+  type: TYPE_NORMAL

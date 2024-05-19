@@ -1,0 +1,584 @@
+- en: Chapter 11. Using Tooltips
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the tooltip state
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using custom markup in tooltips
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displaying mouse movement
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying effects to the tooltip display
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tooltips for selected text
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we'll explore the various dimensions of the **tooltip** widget,
+    used to provide contextual information to the user. The tooltip widget works well
+    with existing code because by default, it uses standard HTML attributes for the
+    text of the tooltip. Furthermore, it's easy to create tooltip instances for the
+    entire user interface with one line of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Going beyond the simple use cases, we'll look at the different types of content
+    we can pass into the widget, and how the content can be generated dynamically.
+    We'll also look at how the tooltip can aid the development process as a tool,
+    and how developers can manipulate the available effects for showing and hiding
+    the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the tooltip state
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The visual display of the tooltip widget has a default state. That is, out of
+    the box, the widget is nicely designed, using elements from the theme framework.
+    We may want to change that, however, depending on the state of some resource in
+    the application. For example, a button that is new to the user as a result of
+    a change in permissions might want a tooltip state that stands out visually, relative
+    to the other tooltips on the page. By the same token, if there is a broken resource,
+    and the user hovers over one of its components, the tooltip displayed should take
+    on an error state. Of course, when changing the state of the tooltip, we should
+    keep in mind that the state should match the context and tone of the actual tooltip.
+    For example, don't put an error state on a tooltip that reads "everything is good
+    to go!". Let's look at a quick and easy entry point into tooltip customization.
+    We'll use a standard tooltip option to pass the state CSS class in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll use the following HTML for our tooltip widgets. What we have here are
+    three buttons, each with their own states, and their own tooltip instances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we''ll create the tooltip widgets for their respective buttons using
+    the following JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Hovering over each one of the buttons in the browser shows you the default,
+    highlight, and error states as shown in the following images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default state:![How to do it...](img/2186_11_01.jpg)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The highlight state:![How to do it...](img/2186_11_02.jpg)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The error state:![How to do it...](img/2186_11_03.jpg)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this particular example, we're utilizing the `tooltipClass` option to pass
+    the state CSS classes from the theme framework to the widget. First, we simply
+    make each button on the page a tooltip widget. After this call the tooltip constructor,
+    we have three tooltip instances, all using the default state. Next, we find the
+    button with the `tt-highlight` class and pass the `tooltipClass` option a value
+    of `ui-state-highlight`. Finally, we locate the button with the `tt-error` class
+    and assign that tooltip widget the `ui-state-error` class using the `tooltipClass`
+    option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are a few downsides to the approach we've used previously. For one thing,
+    the user can't tell that something is wrong till they move their mouse over the
+    element and see that the tooltip is in an error state. In a more realistic scenario,
+    if there were something wrong with the button, it would probably have an error
+    state applied to the button itself. So to apply the error state, we had to invent
+    our own class names and determine at tooltip-creation time which class to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A more robust solution would center around using the actual states from the
+    framework on the element instead of inventing our own. Furthermore, the tooltip
+    should be intelligent enough to change its class depending on the state of the
+    element to which it is applied. In other words, if the button has the `ui-state-error`
+    class applied to it, it should use this class as the `tooltipClass` option. Let's
+    add an `inheritState` option to the tooltip widget that'll turn on this behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the modified HTML source:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is the definition of the tooltip widget extension with the new option
+    included:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This version of the code should behave identically to the first iteration. The
+    difference, of course, is that the buttons themselves have a visible state, and
+    we want the tooltip widgets to pick up on that. We tell it to do so by setting
+    the `inheritState` option to `true`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_11_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Our new option, `inheritState`, gets added to the default `options` object set
+    forth by the original implementation of the tooltip widget. In the `_create()`
+    method, the widget constructor, we're checking if the `inheritState` option is
+    `true`, or if the `tooltipClass` option has already been set. In either case,
+    we return, calling the original implementation. Otherwise, we check if the element
+    has either of the states in the `states` array, and if so, we set that class as
+    the `tooltipClass`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using custom markup in tooltips
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're not limited to using the `title` attribute to supply basic text strings
+    to the tooltip content. Sometimes, the content of the tooltip widget warrants
+    formatting. For example, a title section would have different font styles than
+    that of the main text section. The tooltip widget allows developers to pass in
+    custom content through the `content` option. This can either be a raw string,
+    or a function that returns the content we would like displayed. Let's look at
+    how to go about using this option in your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll create two `button` elements; each have a `title` attribute, the text
+    of which we'll use in the tooltip. We're also going to add the name of the button
+    as the tooltip title.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, let's create the basic CSS styles that format our tooltip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we'll create the tooltip widgets using a custom content function to
+    format the tooltip content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The tooltip, when we hover over one of the `button` elements, should look something
+    like the following screenshot. Notice the formatted title section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_11_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `content` function we've passed to each tooltip widget wraps the content
+    into a `div` element, stored in the `$content` variable. The purpose is to store
+    the title and the main text elements inside this `div`, and that way we simply
+    return the `$content` variable from the function. The title `div` uses the button
+    text, or, its name. This `div` gets the `ui-tooltip-title` class we defined earlier,
+    which simply modifies the font, and adds some space to the bottom of the element.
+    Next, we add the main content `span` element, which just uses the `title` attribute
+    of the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The approach to modifying the tooltip we've just examined is free-form—the function
+    can return just about anything it wants. Let's look at a more structured approach
+    to modifying the tooltip content. We'll alter the tooltip widget so that it accepts
+    specific content section options. To demonstrate this, we'll utilize the **Rotten
+    Tomatoes API**. The only HTML we'll need is a simple `div` element that looks
+    like `<div class="titles"></div>`. Now let's define the CSS styles for the titles
+    that we're going to list, as well as the specific tooltip content sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is the customized tooltip widget declaration which adds the new content
+    options. When the document loads, we call the Rotten Tomatoes API and display
+    five images in our container `div`. Each image is also a tooltip that uses the
+    new specific content options we've added to the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Viewing this page in the browser should populate the titles `div` with five
+    images, and when you hover the mouse pointer over each one, you should see our
+    custom tooltip content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_11_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Let's start by looking at the API call we're making to the Rotten Tomatoes API
+    when the document has finished loading. All we're fetching are the first five
+    movies from the in-theaters catalog. We're then creating an `img` element and
+    setting the `src` attribute to the appropriate thumbnail for the movie. This is
+    how the images you see in the example are rendered. We're also calling the tooltip
+    constructor on each of the images, passing to it the new options we've defined.
+    Namely, these are the sections of the tooltip content, the `header`, `body`, and
+    `footer`. Notice, that we have to tell the tooltip that that this is an `img`
+    element and it won't find the tooltip content in the usual places—this is done
+    using the `items` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking now at our customizations implemented in the tooltip widget, we can
+    see that the options are defined by assigning a new option to the `options` attribute—these
+    get merged into the default tooltip `options` object. Next, we have a custom implementation
+    of the `_create()` method, which is called when the tooltip is instantiated. The
+    goal here is to check if any one of the three content sections has been specified,
+    and if not, we have nothing to do and simply exit. The original version of the
+    `_create()` method was called using `_super()`, and so at this point, the widget
+    has already been created. Our last job in the constructor is to assign the `content`
+    option a function that generates the tooltip content. In this case, it is a proxy
+    to the `_content()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_content()` method wraps it's returned HTML in a `div` element, this is
+    stored in the `$content` variable. We then add the specified content to the `div`
+    element as specified in the options. Each content section is a `div` element,
+    and they're given a corresponding CSS class to control the appearance—`ui-tooltip-header`,
+    `ui-tooltip-body`, and `ui-tooltip-footer`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying the mouse movement
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can use the tooltip widget as an aid during development, and not necessarily
+    a widget that ships with the finished product. For example, we can use the tooltip
+    widget to track the mouse movements and to display the X and Y coordinates. This
+    could help us diagnose some tricky mouse behavior as we're piecing together the
+    UI components. We'll look at tracking the mouse coordinates for specific elements,
+    but bear in mind, the concept is what counts. We can use this technique to display
+    any number of event properties—we simply discard the call when no longer needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll create the required CSS first. These simply position the `div` elements
+    that we'll want to track mouse movements on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next comes the HTML itself, two `div` elements that we're in the midst of designing.
+    We'd like our mouse tracking utility to show us what happens when the user moves
+    the mouse over these elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Last but not least, we'll implement our tracker tool. It's a widget called tracker
+    and it extends the tooltip widget. We're calling it something else so as to not
+    confuse it with the existing tooltip widget that we're probably using in our production
+    systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Looking at these two `div` elements in the browser, you should see something
+    similar to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_11_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The tracker widget we've just defined extends the tooltip widget by filling
+    in a couple of options with new defaults as well as by providing a new option.
+    The `track` tooltip option tells the widget to position itself relative to the
+    mouse movement. Since we're implementing a mouse coordinate tracker, it makes
+    sense to turn this on by default. The next tooltip option value we want changed
+    is the `items` option. This tells the tooltip which target elements make valid
+    tooltips, and in our case, we would like it to be the class given to our tracker
+    widget—`ui-tracker`. The `relative` option is something new we're adding to the
+    widget. This tells the tracker, when `true`, to display the coordinates relative
+    to the element in question, instead of relative to the page, which is the default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we're extending the `_create()` method of the tooltip widget, which is
+    the constructor. The first thing we do before calling the original implementation
+    of the constructor is add the track widget class to the element. This is necessary
+    in order for the element to be considered a valid tracker— see the `items` option.
+    Once we've finished with the `_super()` method, we assign the `content` option
+    a callback, which is a proxy to the `_callback()` method of this widget. The `_callback()`
+    method simply returns the template content we want displayed in the tooltip. This
+    includes the X and Y coordinates of the mouse event. We have to figure out if
+    the label should be a page, or if it should be an element, based on the `relative`
+    option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're overriding the `open()` method to set up our `mousemove` event handling.
+    Typically, this would be done in the `_create()` method. But there is no need
+    to track the mouse movement when the tooltip isn't open and the callbacks firing
+    would be a waste of valuable CPU cycles. We use the `_on()` utility method to
+    bind a proxy handler to the `_mousemove()` method of this widget. The `_mousemove()`
+    method is responsible for updating the content of the tooltip. Specifically, it
+    sets the text value of the `#ui-tracker-x` and `#ui-tracker-y` labels generated
+    by our `_content()` method. The values of the X and Y coordinates will be based
+    either on the `pageX` and `pageX` properties of the event alone, or in conjunction
+    with the offset values, depending on the `relative` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tracker widget is instantiated in the same way as the tooltip widget. When
+    we no longer need these values displayed, as in, when we're ready to go live,
+    these widget calls would be removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying effects to the tooltip display
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The tooltip widget ships with options to control the display, and hide the actions
+    of the element. These are the `show` and `hide` options, respectfully, and each
+    accepts an object that specifies animation options. Since the `show` and `hide`
+    options control different aspects of the widget display, we have the freedom to
+    use different settings, such as delay for the show and hide actions. Or, we could
+    be drastic about it and use two completely different effects for the animations.
+    Let's explore the various `show` and `hide` options available to us in the tooltip
+    widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, let's create some button elements that we'll use to display the tooltips.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll instantiate a tooltip widget for each of the buttons, passing in
+    our custom `show` and `hide` animation options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Look at the three buttons in your web browser and move the mouse over each one.
+    You'll notice they each display and hide their tooltips in a unique fashion. For
+    example, here is the last tooltip, mid-explosion as it's being hidden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_11_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Some effects accept options that others don't, such as direction. The `button.drop`
+    tooltip widget is using the `drop` effect for both the show and hide actions.
+    However, `show` is specifying the `direction` as `up` while the `hide` action
+    specifies the `direction` as `down`. This means that the tooltip will enter the
+    page in a upward motion, and will exit the page in a downward motion. The same
+    concept applies to the `button.slide` widget where we're using the `slide` effect.
+    The tooltip will slide in from the left, and will slide out to the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `button.explode` tooltip is using two different effect types—`show` uses
+    the `clip` effect while `hide` uses the `explode` effect. In general, mixing effects
+    like this works fine, but often involves some trial and error time in finding
+    two effect classes that complement one another as opposed to looking out of place.
+    Lastly, we're applying the `delay` and `duration` options to the `show` and `hide`
+    options for the tooltips we've created. The `delay` option postpones the actual
+    display of the tooltip while the `duration` controls the runtime of the animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tooltips for selected text
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Most applications use terms that the user is encountering for the first time.
+    And so, it's helpful to provide a glossary of sorts so they may look up the meaning
+    of a new term. However, deciding on where to put this glossary inside the user
+    interface is a big deal. For example, if I'm performing some task, I don't want
+    to drop it to go look something up. This is where tooltips help—the user gets
+    a contextual explanation of something.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Out of the box, tooltips work great when applied to a specific element on the
+    page, such as a button or a progress bar. But what about paragraphs of text? Let's
+    look at how we could allow the user to select some text, and display some contextual
+    definition for the selection using the tooltip widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll design a new dictionary widget, based on the tooltip widget, used to work
+    with text. This widget will handle text selection by displaying a tooltip with
+    the appropriate tip if one is found. First, here are the paragraphs we'll use,
+    taken from the preceding section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: And here is the implementation of the dictionary widget, and how to apply it
+    to our two paragraphs of text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you were to open this page in the browser and select "tooltips" using the
+    mouse pointer, you should get a tooltip as is shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_11_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our new dictionary widget adds the ability for users to select paragraph text
+    and get contextual definitions for their selection if one exists. The widget accepts
+    a `terms` option, which is just an array of terms and tips. This is the dictionary
+    data used to perform lookups when some text is selected. The `ttPos` attribute
+    is a reference to the default tooltip `position` settings object. We keep this
+    handy because we need to use it each time the user selects text and the tooltip
+    widget is displayed. The `_create()` method, called when the widget is instantiated,
+    sets up the event handling. In particular, we're interested in the `mouseup` and
+    `mouseenter` events, both of which display the tooltip widget depending on a number
+    of things. The `_destroy()` method makes sure that the tooltip widget we're using
+    is also destroyed by calling `_destroyTooltip()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_tip()` method is like the main program, so to speak, of this widget as
+    it ties together all the methods that have specific responsibilities. We get the
+    selected text using the `_selectedText()` method. We get the selected term from
+    the dictionary using the selected text. Now, either of these values may be undefined—the
+    user may not have selected anything when `_tip()` is called, or the user has selected
+    text that doesn't exist in the dictionary. If either case is true, we have to
+    ensure that the tooltip is destroyed. If, on the other hand, a term is found,
+    we create and display the tooltip using the `_createTooltip()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_createTooltip()` method accepts an event object as well as a term object.
+    The event object is used to position the tooltip when it is opened. Recall that
+    we stored the default position options of the tooltip in the `ttPos` attribute.
+    We create a new `position` object by extending the property with the event. This
+    means that we can position the tooltip relative to where the user selected their
+    text. Now that we've set the position on the tooltip, we just have to set the
+    `title` attribute on the paragraph to the text we want displayed inside the tooltip.
+    This is the `tip` attribute of the selected term passed into the method. The `_destroyTooltip()`
+    takes care of both destroying the tooltip widget, but only if this element actually
+    is a tooltip, and restoring the `title` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One final note, you'll notice that we're passing in simple terms strings to
+    dictionary instances. But we're able to find several variants of the term in a
+    given user selection. For example, "tooltips" will find the term "tooltip" because
+    we're comparing with an added "s" in addition to the original string. We're also
+    normalizing the white space on either side of the selection in addition to case
+    insensitivity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The downside to our approach with the dictionary widget, where we make the user
+    select the text in order to get a contextual definition for the word, is that
+    the user doesn't know which words our dictionary defines. For example, the two
+    paragraphs in the example define a grand total of four terms. For this to work,
+    the user has to play a guessing game as to which text is actually defined. Further,
+    selecting paragraph text is intuitive, but only if you frequently perform this
+    action in the applications you use—most users do not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's enhance our dictionary widget by introducing a new mode – `hover`. When
+    this mode is `true`, we'll actually manipulate the paragraph text so that the
+    terms defined within the dictionary stand out. The terms will look like links,
+    and the tooltips containing the definition will behave like your typical tooltip.
+    First, let's add this simple CSS rule that we'll apply to each term within the
+    paragraph.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ll keep the same two paragraphs used previously, and the dictionary will
+    be instantiated using the new `mode` option and we''ll also modify the widget
+    definition to make use of this new option. Here is the new JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, when you look at the two paragraphs in the browser, you'll notice that
+    the terms we have defined in the dictionary data are underlined. So when the user
+    hovers their mouse pointer over the term, they get the help cursor icon, along
+    with the tooltip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_11_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The new `mode` option we've introduced to the dictionary widget accepts a string
+    value of either `select` or `hover`—it defaults to `select`, which is the behavior
+    we had originally implemented in this example. In the widget constructor, the
+    `_create()` method, we're checking the `mode` value. If we're in the `hover` mode,
+    we call the `_formatTerms()` method which changes the visual appearance of the
+    terms inside the paragraph. Next, we call `_createTooltip()`, the same method
+    used in the original implementation except that it too is now mode-aware. The
+    `_formatTerms()` stores the text of the given element and then iterates through
+    the dictionary terms. For each term, it builds a regular expression and replaces
+    any found terms with a `span` element used to create the tooltips.
+  prefs: []
+  type: TYPE_NORMAL

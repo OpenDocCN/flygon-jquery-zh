@@ -1,0 +1,1030 @@
+- en: Styling and Animating
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If actions speak louder than words, then in the JavaScript world, effects make
+    actions speak louder still. With jQuery, we can easily add impact to our actions
+    through a set of simple visual effects and even craft our own sophisticated animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The effects offered by jQuery supply simple visual flourishes that grant a sense
+    of movement and modernity to any page. However, apart from being mere decoration,
+    they can also provide important usability enhancements that help orient the user
+    when something happens on a page (especially common in Ajax applications).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the styling of elements on the fly
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hiding and showing elements with various built-in effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating custom animations of elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sequencing effects to happen one after another
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modifying CSS with inline properties
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we jump into jQuery effects, a quick look at CSS is in order. In previous
+    chapters, we have been modifying a document's appearance by defining styles for
+    classes in a separate stylesheet and then adding or removing those classes with
+    jQuery. Typically, this is the preferred process for injecting CSS into HTML because
+    it respects the stylesheet's role in dealing with the presentation of a page.
+    However, there may be times when we need to apply styles that haven't been or
+    can't easily be defined in a stylesheet. Fortunately, jQuery offers the `.css()`
+    method for such occasions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This method acts as both a **getter** and a **setter**. To get the value of
+    a single style property, we simply pass the name of the property as a string and
+    get a string in return. To get the value of multiple style properties, we can
+    pass the property names as an array of strings to get an object of property-value
+    pairs in return. Multiword property names, such as `backgroundColor` can be interpreted
+    by jQuery when in hyphenated CSS notation (`background-color`) or camel-cased
+    DOM notation (`backgroundColor`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For setting style properties, the `.css()` method comes in two flavors. One
+    flavor takes a single style property and its value, and the other takes an object
+    of property-value pairs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: These simple key-value collections, called **object literals**, are real JavaScript
+    objects that are created directly in code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Object literal notation
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a property value, strings are enclosed in quotes as usual, but other data
+    types such as numbers do not require them. Since property names are strings, they
+    would typically be contained in quotes. However, quotation marks are not required
+    for property names if they are valid JavaScript identifiers, such as when they
+    are written in camel-cased DOM notation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We use the `.css()` method the same way we''ve been using `.addClass()`; we
+    apply it to a jQuery object, which in turn points to a collection of DOM elements.
+    To demonstrate this, we''ll play with a style switcher similar to the one from
+    [Chapter 3](2036c6b0-e8c5-405a-b54b-b3f31eab404c.xhtml), *Handling Events*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By linking to a stylesheet with a few basic style rules, the page will initially
+    look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once we're done with our code, clicking on the Bigger and Smaller buttons will
+    increase or decrease the text size of `<div class="speech">`, while clicking on
+    the Default button will reset `<div class="speech">` to its original text size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting computed style property values
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If all we wanted was to change the font size a single time to a predetermined
+    value, we could still use the `.addClass()` method. But, let's suppose now that
+    we want the text to continue increasing or decreasing incrementally each time
+    the respective button is clicked. Although it might be possible to define a separate
+    class for each click and iterate through them, a more straightforward approach
+    would be to compute the new text size each time by getting the current size and
+    increasing it by a set factor (for example, 40 percent).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our code will start with the `$(() => {})` and `$(''#switcher-large'').click()`
+    event handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, the font size can be easily discovered using the `.css()` method: `$(''div.speech'').css(''fontSize'')`.
+    However, the returned value is a string, containing both the numeric font size
+    value and the units of that value (`px`). We''ll need to strip the unit label
+    off in order to perform calculations with the numeric value. Also, when we plan
+    to use a jQuery object more than once, it''s generally a good idea to cache the
+    selector by storing the resulting jQuery object in a constant:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first line inside `$(() => {})` creates a **constant** containing a jQuery
+    object pointing to `<div class="speech">`. Note the use of a dollar (`$`) sign
+    in the name, `$speech`. Since the dollar sign is a legal character in JavaScript
+    identifiers, we can use it as a reminder that the constant is a jQuery object.
+    Unlike in other programming languages such as PHP, the dollar symbol holds no
+    special significance in JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's a good reason to use constants (`const`) instead of variables (`var`).
+    Constants were introduced in the ES2015 version of JavaScript, and they can help
+    reduce certain types of bugs. Take our `$speech` constant for instance. Is it
+    ever going to hold a value other than `<div class="speech">`? No, it isn't. Since
+    we've declared this as a constant, trying to assign another value to `$speech`
+    results in an error. These errors are easy to fix. If `$speech` were declared
+    as a variable and we mistakenly assigned it a new value, the failures would be
+    subtle and difficult to diagnose. Of course, sometimes we *need* the ability to
+    assign new values, in which case, you would use a variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `.click()` handler, we use `parseFloat()` to get the font size property's
+    numeric value only. The `parseFloat()` function looks at a string from the left-hand
+    side to the right-hand side until it encounters a non-numeric character. The string
+    of digits is converted into a floating-point (decimal) number. For example, it
+    would convert the string `'12'` to the number `12`. In addition, it strips non-numeric
+    trailing characters from the string, so `'12px'` becomes `12`. If the string begins
+    with a non-numeric character, `parseFloat()` returns `NaN`, which stands for *Not
+    a Number*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All that''s left to do is to modify the parsed numeric value and to reset the
+    font size based on the new value. For our example, we''ll increase the font size
+    by 40 percent each time the button is clicked. To achieve this, we''ll multiply
+    `num` by `1.4` and then set the font size by concatenating the result and `''px''`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now when a user clicks on the Bigger button, the text becomes larger. Another
+    click and the text becomes larger:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To get the Smaller button to decrease the font size, we will divide rather
+    than multiply: -`num / 1.4`. Better still, we''ll combine the two into a single
+    `.click()` handler on all the `<button>` elements within `<div id="switcher">`.
+    Then, after finding the numeric value, we can either multiply or divide depending
+    on the ID of the button that was clicked. *Listing 4.4* illustrates this.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `e.target.id` value is used to determine the behavior of the click event.
+    The `sizeMap` is where these behaviors are stored. This is a simple object that
+    maps the element ID to a function. This function is passed the current `fontSize`
+    value. The reason we want to use a map like this is that it's a lot easier to
+    add or remove behavior than if it were coded as something like an `if` statement.
+    For example, let's say the current font size was `"10px"` and the user clicked
+    the Bigger button. Then, the template string ``${sizeMap[e.target.id](num)}px``
+    would result in `"14px"`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It would also be nice to have a way to return the font size to its initial
+    value. To allow the user to do so, we can simply store the font size in a variable
+    as soon as the DOM is ready. We can then restore this value whenever the Default
+    button is clicked. All we have to do is add another function to the `sizeMap`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice how we didn't have to touch the click handler at all to accommodate this
+    new behavior? We created a new constant called `defaultSize`, which will always
+    hold the original font size. Then, we just needed to add a new function for the
+    `switcher-default` ID to `sizeMap`, which returns the `defaultSize` value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With a map like this one, it's much easier to change our click handler behavior
+    than it would be if we had to maintain `if` or `switch` statements in the handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using vendor-specific style properties
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When browser vendors introduce experimental style properties, they often prefix
+    the property name until the browser''s implementation aligns with the CSS specification.
+    When both the implementation and the specification are stable enough, vendors
+    will shed that prefix and allow the standard name to be used. In a stylesheet,
+    therefore, it is not uncommon to see a set of CSS declarations like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we wanted to apply the same in JavaScript, we would need to test for the
+    existence of the DOM equivalent of these variations: `propertyName`, `WebkitPropertyName`,
+    `msPropertyName`, and so on. With jQuery, however, we can simply apply the standard
+    property name, such as `.css(''propertyName'', ''value'')`. If that name is not
+    found as a property of the style object, jQuery loops through the vendor prefixes
+    behind the scenes--`Webkit`, `O`, `Moz`, and `ms`--and uses the first one it does
+    find as a property, if any.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hiding and showing elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The basic `.hide()` and `.show()` methods, without any parameters, can be thought
+    of as smart shorthand methods for `.css('display', 'string')`, where `'string'`
+    is the appropriate display value. The effect, as might be expected, is that the
+    matched set of elements will be immediately hidden or shown with no animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.hide()` method sets the inline style attribute of the matched set of
+    elements to `display: none`. The smart part here is that it remembers the value
+    of the display property--typically `block`, `inline`, or `inline-block`--before
+    it was changed to `none`. Conversely, the `.show()` method restores the display
+    properties of the matched set of elements to whatever they initially were before
+    `display: none` was applied.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The display property
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information about the `display` property and how its values are visually
+    represented in a web page, visit the Mozilla Developer Center at [https://developer.mozilla.org/en-US/docs/CSS/display](https://developer.mozilla.org/en-US/docs/CSS/display)
+    and view examples at [https://developer.mozilla.org/samples/cssref/display.html](https://developer.mozilla.org/samples/cssref/display.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This feature of `.show()` and `.hide()` is especially helpful when hiding elements
+    that have had their default `display` property overridden in a stylesheet. For
+    example, the `<li>` element has the property `display: list-item` by default,
+    but we might want to change it to `display: inline` for a horizontal menu. Fortunately,
+    using the `.show()` method on a hidden element such as one of the `<li>` tags
+    would not merely reset it to its default `display: list-item`, because that would
+    put the `<li>` tag on its own line. Instead, the element is restored to its previous
+    `display: inline` state, thus preserving the horizontal design.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can set up a quick demonstration of these two methods by working with a
+    second paragraph and adding a read more link after the first paragraph in the
+    example HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When the DOM is ready, we select an element and call `.hide()` on it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.eq()` method is similar to the `:eq()` pseudo-class discussed in [Chapter
+    2](195342ed-f533-42e7-8a8d-f9a3462382b7.xhtml), *Selecting Elements*. It returns
+    a jQuery object pointing to a single element at the provided zero-based index.
+    In this case, the method selects the second paragraph and hides it so that the
+    read more link appears immediately following the first paragraph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_03.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When the user clicks on read more at the end of the first paragraph, we call
+    `.show()` to display the second paragraph and `.hide()` to hide the clicked link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note the use of `.preventDefault()` to keep the link from activating its default
+    action. Now the speech looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `.hide()` and `.show()` methods are quick and useful, but they aren't very
+    flashy. To add some flair, we can give them a duration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Effects and duration
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When we include a duration (sometimes also referred to as a speed) with `.show()`
+    or `.hide()`, it becomes animated--occurring over a specified period of time.
+    The `.hide(duration)` method, for example, decreases an element''s height, width,
+    and opacity simultaneously until all three reach zero, at which point the CSS
+    rule `display: none` is applied. The `.show(duration)` method will increase the
+    element''s height from top to bottom, width from the left-hand side to the right-hand
+    side, and opacity from 0 to 1 until its contents are completely visible.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Speeding in
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With any jQuery effect, we can use one of the two preset speeds, `'slow'` or
+    `'fast'`. Using `.show('slow')` makes the show effect complete in 600 milliseconds
+    (0.6 seconds), `.show('fast')` in 200 milliseconds. If any other string is supplied,
+    jQuery's default animation duration of 400 milliseconds will be used. For even
+    greater precision, we can specify a number of milliseconds, for example, `.show(850)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s include a speed in our example when showing the second paragraph of
+    Abraham Lincoln''s Gettysburg Address:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we capture the paragraph''s appearance at roughly halfway through the
+    effect, we see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_05.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Fading in and fading out
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'While the animated `.show()` and `.hide()` methods are certainly flashy, in
+    practice, they animate more properties than are useful. Fortunately, jQuery offers
+    a couple of other prebuilt animations for a more subtle effect. For example, to
+    have the whole paragraph appear just by gradually increasing the opacity, we can
+    use `fadeIn(''slow'')` instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now when we look at the paragraph during the effect, it looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_06.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The difference here is that the `.fadeIn()` effect starts by setting the dimensions
+    of the paragraph so that the contents can simply fade into it. To gradually decrease
+    the opacity we can use `.fadeOut()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sliding up and sliding down
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The fading animations are very useful for items that are outside the flow of
+    the document. For example, these are typical effects to apply to *lightbox* elements
+    that are overlaid on the page. However, when an element is part of the document
+    flow, calling `.fadeIn()` on it causes the document to jump to provide the real
+    estate needed for the new element, which is not aesthetically pleasing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In these cases, jQuery''s `.slideDown()` and `.slideUp()` methods are the right
+    choice. These effects animate only the height of the selected elements. To have
+    our paragraph appear using a vertical slide effect, we can call `.slideDown(''slow'')`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This time when we examine the paragraph at the animation''s midpoint, we see
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_07.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: To reverse the effect, we would instead call `.slideUp()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Toggling visibility
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Sometimes we have a need to toggle the visibility of elements, rather than
+    displaying them once as we have done in the previous examples. This toggling can
+    be achieved by first checking the visibility of the matched elements and then
+    calling the appropriate method. Using the fade effects again, we can modify the
+    example script to look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we did earlier in the chapter, we're caching our selector here to avoid repeated
+    DOM traversal. Notice too that we're no longer hiding the clicked link; instead,
+    we're changing its text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To examine the text contained by an element and to change that text, we're using
+    the `.text()` method. We will delve into this method more fully in [Chapter 5](fa35636a-37d4-49b9-ba72-aa6596bab015.xhtml),
+    *Manipulating the DOM*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using an `if-else` statement is a perfectly reasonable way to toggle an element''s
+    visibility. But with jQuery''s compound effect methods, we can remove some conditional
+    logic from our code. jQuery provides compound methods `.fadeToggle()` and `.slideToggle()`,
+    which show or hide elements using the corresponding effects. Here is what the
+    script looks like when we use the `.slideToggle()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **ternary expression** (`$(e.target).text() === 'read more' ?`) checks for
+    the text of the link rather than the visibility of the second paragraph, since
+    we're only using it to change the text. We can use ternary expressions as a shorter
+    alternative to full-blown `if` statements when we need a value based on some condition.
+    Think of ternary expressions as calling a function that returns a different value
+    based on the arguments supplied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating custom animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In addition to the prebuilt effect methods, jQuery provides a powerful `.animate()`
+    method that allows us to create our own custom animations with fine-grained control.
+    The `.animate()` method comes in two forms. The first takes up to four arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An object of style properties and values, which is similar to the `.css()` argument
+    discussed earlier in this chapter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An optional duration, which can be one of the preset strings or a number of
+    milliseconds
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An optional easing type, which is an option that we will not use now, but which
+    we will discuss in [Chapter 11](18ed1c5d-dfac-4361-b647-0cb63f5dd58b.xhtml), *Advanced
+    Effects*
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An optional callback function, which will be discussed later in this chapter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'All together, the four arguments look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The second form takes two arguments: an object of properties and an object
+    of options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this form, the second argument wraps up the second through fourth arguments
+    of the first form into another object and adds some more advanced options to the
+    mix. Here''s what the second form looks like with actual arguments passed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: For now, we'll use the first form of the `.animate()` method, but we'll return
+    to the second form later in the chapter when we discuss queuing effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building effects by hand
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We have already seen several prepackaged effects for showing and hiding elements.
+    To begin our discussion of the `.animate()` method, it will be useful to see how
+    we could achieve the same results by calling `.slideToggle()` using this lower-level
+    interface. Replacing the `.slideToggle()` line of the previous example with our
+    custom animation turns out to be quite simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is not a perfect replacement for .`slideToggle()`; the actual implementation
+    also animates the margin and padding of elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the example illustrates, the `.animate()` method provides convenient shorthand
+    values for CSS properties, such as `'show'`, `'hide'`, and `'toggle'`, to ease
+    the process when we want to emulate the behavior of prepackaged effect methods
+    such as `.slideToggle()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating multiple properties at once
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'With the `.animate()` method, we can modify any combination of properties simultaneously.
+    For example, to create a simultaneous sliding and fading effect when toggling
+    the second paragraph, we simply add `opacity` to the properties that are passed
+    to `.animate()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Additionally, we have not only the style properties used for the shorthand
+    effect methods at our disposal, but also numeric CSS properties such as `left`,
+    `top`, `fontSize`, `margin`, `padding`, and `borderWidth`. In *Listing 4.5*, we
+    changed the text size of the speech paragraphs. We could animate this increase
+    or decrease in size by simply substituting the `.animate()` method for the `.css()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The extra animation properties allow us to create much more complex effects,
+    too. We can, for example, move an item from the left-hand side of the page to
+    the right-hand side while increasing its height by 20 pixels and changing its
+    border width to 5 pixels. We will illustrate this complicated set of property
+    animations with the `<div id="switcher">` box. Here is what it looks like before
+    we animate it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_08.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'With a flexible-width layout, we need to compute the distance that the box
+    needs to travel before it lines up at the right-hand side of the page. Assuming
+    that the paragraph''s width is 100 percent, we can subtract the Text Size box''s
+    width from the paragraph''s width. We have the `jQuery.outerWidth()` method at
+    our disposal to calculate these widths, including padding and border. We''ll use
+    this method to compute the new `left` property of the switcher. For the sake of
+    this example, we''ll trigger the animation by clicking on the Text Size label
+    just above the buttons. Here is what the code should look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is worth examining these animated properties in detail. The `borderWidth`
+    property is straightforward, as we are specifying a constant value with units,
+    just as we would in a stylesheet. The `left` property is a computed numeric value.
+    The unit suffix is optional on these properties; since we omit it here, `px` is
+    assumed. Finally, the `height` property uses a syntax we have not seen before.
+    The `+=` prefix on a property value indicates a relative value. So, instead of
+    animating the height to 20 pixels, the height is animated to 20 pixels greater
+    than the current height. Because of the special characters involved, relative
+    values must be specified as a string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Although this code successfully increases the height of the `<div>` tag and
+    widens its border, at the moment, the `left` position appears unchanged:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_09.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: We still need to enable changing this box's position in the CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Positioning with CSS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When working with `.animate()`, it's important to keep in mind the limitations
+    that CSS imposes on the elements that we wish to change. For example, adjusting
+    the `left` property will have no effect on the matching elements unless those
+    elements have their CSS position set to `relative` or `absolute`. The default
+    CSS position for all block-level elements is `static`, which accurately describes
+    how those elements will remain if we try to move them without first changing their
+    `position` value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information on absolute and relative positioning, see CSS Tricks: [https://css-tricks.com/almanac/properties/p/position/](https://css-tricks.com/almanac/properties/p/position/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our stylesheet, we could set `<div id="switcher">` to be relatively positioned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Instead, though, let''s practice our jQuery skills by altering this property
+    through JavaScript when needed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With the CSS taken into account, the result of clicking on Text Size after
+    the animation has completed will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_10.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Simultaneous versus queued effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `.animate()` method, as we've just discovered, is very useful for creating
+    **simultaneous** effects affecting a particular set of elements. There may be
+    times, however, when we want to **queue** our effects to have them occur one after
+    the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with a single set of elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When applying multiple effects to the same set of elements, queuing is easily
+    achieved by chaining those effects. To demonstrate this queuing, we''ll revisit
+    *Listing 4.17* by moving the Text Size box to the right-hand side, increasing
+    its height and border width. This time, however, we perform the three effects
+    sequentially simply by placing each in its own `.animate()` method and chaining
+    the three together:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.18
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recall that chaining permits us to keep all three `.animate()` methods on the
+    same line, but here we have indented them and put each on its own line for greater
+    readability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can queue any of the jQuery effect methods by chaining them, not just `.animate()`.
+    We could, for example, queue effects on `<div id="switcher">` in the following
+    order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fade its opacity to 0.5 with `.fadeTo()`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Move it to the right-hand side with `.animate()`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Fade it back in to full opacity with `.fadeTo()`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Hide it with `.slideUp()`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Show it once more with `.slideDown()`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'All we need to do is chain the effects in the same order in our code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.19
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bypassing the queue
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'But what if we want to move the `<div>` tag to the right-hand side at the same
+    time as it fades to half opacity? If the two animations were occurring at the
+    same speed, we could simply combine them into a single `.animate()` method. But,
+    in this example, the fade is using the `''fast''` speed while the move to the
+    right-hand side is using the `''slow''` speed. Here is where the second form of
+    the `.animate()` method comes in handy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.20
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second argument, an options object, provides the `queue` option, which when
+    set to `false` makes the animation start simultaneously with the previous one.
+    Which makes sense if you think about it, because anything that sits in a queue,
+    has to wait for anything that's already in the queue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Queuing effects manually
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One final observation about queuing effects on a single set of elements is that
+    queuing does not automatically apply to other non-effect methods such as .`css()`.
+    So, let's suppose we wanted to change the background color of `<div id="switcher">`
+    to red after the `.slideUp()` method, but before the `slideDown()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We could try doing it like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.21
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, even though the code that changes the background color is placed at
+    the correct position in the chain, it occurs immediately upon the click.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One way we can add non-effect methods to the queue is to use the appropriately
+    named `.queue()` method. Here is what it would look like in our example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.22
+  prefs: []
+  type: TYPE_NORMAL
+- en: When given a callback function, as it is here, the `.queue()` method adds the
+    function to the queue of effects to perform on the matched elements. Within the
+    function, we set the background color to red and then call `next()`, a function
+    that is passed as a parameter to our callback. Including this `next()` function
+    call allows the animation queue to pick up where it left off and complete the
+    chain with the following `.slideDown('slow')` line. If we hadn't called `next()`,
+    the animation would have stopped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information and examples of `.queue()`, visit [http://api.jquery.com/category/effects/](http://api.jquery.com/category/effects/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll discover another way to queue non-effect methods as we examine effects
+    with multiple sets of elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with multiple sets of elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Unlike with a single set of elements, when we apply effects to different sets,
+    they occur at virtually the same time. To see these simultaneous effects in action,
+    we''ll slide one paragraph down while sliding another paragraph up. We''ll be
+    working with paragraphs three and four of our sample document:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To help us see what''s happening during the effect, we''ll give the third paragraph
+    a 1-pixel border and the fourth paragraph a gray background. We''ll also hide
+    the fourth paragraph when the DOM is ready:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.23
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our sample document now displays the opening paragraph followed by the read
+    more link and the bordered paragraph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_11.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Finally, we''ll apply a `click` handler to the third paragraph so that when
+    it is clicked, the third paragraph will slide up (and eventually out of view)
+    while the fourth paragraph slides down (and into view):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.24
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A screenshot of these two effects in mid-slide confirms that they do, indeed,
+    occur simultaneously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_12.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The third paragraph, which started visible, is halfway through sliding up at
+    the same time as the fourth paragraph, which started hidden, is halfway through
+    sliding down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Queuing with callbacks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In order to allow queuing effects on different elements, jQuery provides a callback
+    function for each effect method. As we have seen with event handlers and with
+    the `.queue()` method, callbacks are simply functions passed as method arguments.
+    In the case of effects, they appear as the last argument of the method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we use a callback to queue the two slide effects, we can have the fourth
+    paragraph slide down before the third paragraph slides up. Let''s first try moving
+    the `.slideUp()` call into the .`slideDown()` method''s completion callback:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.25
+  prefs: []
+  type: TYPE_NORMAL
+- en: Had we decided to use `$(this)` in both the `click()` callback function and in
+    the `slideDown()` callback function, things wouldn't have worked as expected.
+    That's because `this` is contextual. Instead, we can avoid it all together and
+    reference `$(e.target)` to get the `<p>` element that we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This time, a snapshot halfway through the effects reveals that both the third
+    and the fourth paragraphs are visible; the fourth has finished sliding down and
+    the third is about to begin sliding up:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_04_13.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now that we''ve discussed callbacks, we can return to the code from *Listing
+    4.22*, in which we queued a background-color change near the end of a series of
+    effects. Instead of using the `.queue()` method, as we did then, we can simply
+    use a callback function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 4.26
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here again, the background color of `<div id="switcher">` changes to red after
+    it slides up and before it slides back down. Note that when using an effect's
+    completion callback rather than `.queue()`, we don't need to worry about calling
+    `next()` from within the callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a nutshell
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With all the variations to consider when applying effects, it can become difficult
+    to remember whether the effects will occur simultaneously or sequentially. A brief
+    outline might help.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Effects on a single set of elements are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simultaneous when applied as multiple properties in a single .`animate()` method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Queued when applied in a chain of methods, unless the `queue` option is set
+    to `false`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Effects on multiple sets of elements are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simultaneous by default
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Queued when applied within the callback of another effect or within the callback
+    of the `.queue()` method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using the effect methods that we have explored in this chapter, we should now
+    be able to modify inline style attributes from JavaScript, apply prepackaged jQuery
+    effects to elements, and create our own custom animations. In particular, you
+    learned how to incrementally increase and decrease text size using either the
+    `.css()` or `.animate()` methods, gradually hide and show page elements by modifying
+    several attributes, and how to animate elements (simultaneously or sequentially)
+    in a number of ways.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first four chapters of this book, all of our examples have involved manipulating
+    elements that have been hardcoded into the page's HTML. In [Chapter 5](fa35636a-37d4-49b9-ba72-aa6596bab015.xhtml),
+    *Manipulating the DOM*, we will explore ways to manipulate the DOM directly, including
+    using jQuery to create new elements and insert them into the DOM wherever we choose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The topic of animation will be explored in more detail in [Chapter 11](18ed1c5d-dfac-4361-b647-0cb63f5dd58b.xhtml),
+    *Advanced Effects*. A complete list of effect and styling methods is available
+    in Appendix B of this book, or in the official jQuery documentation at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The challenge exercise may require the use of the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alter the stylesheet to hide the contents of the page initially. When the page
+    is loaded, fade in the contents slowly.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Give each paragraph a yellow background only when the mouse is over it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Make a click on the title `(<h2>)` and simultaneously fade it to 25 percent
+    opacity and grow its left-hand margin to `20px`. Then, when this animation is
+    complete, fade the speech text to 50 percent opacity.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Here''s a challenge for you. React to presses of the arrow keys by smoothly
+    moving the switcher box 20 pixels in the corresponding direction. The key codes
+    for the arrow keys are: `37` (left), `38` (up), `39` (right), and `40` (down).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

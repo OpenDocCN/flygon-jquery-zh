@@ -1,0 +1,1736 @@
+- en: Chapter 6. Animating in jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Hands up who like a static website? Thought not, animating a website gives it
+    life; overdoing it can be disastrous!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Two common effects we frequently use to help breathe life into any website
+    are AJAX and animation; we covered the former in detail back in the previous chapter.
+    In this chapter, we''ll take a look at when to use jQuery over CSS (or vice versa),
+    how to manage queues better, and how to implement some slick custom animation
+    effects. You''ll also see how you can easily create some useful custom-easing
+    effects, as a basis for converting them to CSS equivalents at some point in the
+    future. In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When to use CSS over jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing or avoiding the jQuery animation queue
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Designing custom animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing some custom animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating in a responsive website
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ready to make a start? Let's go…
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing CSS or jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's start this topic with a question.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take a look at the Dia do Baralho site, hosted at [http://www.diadobaralho.com.br](http://www.diadobaralho.com.br)
+    - how many of you think the animations you see there, were created using just
+    jQuery?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you thought yes, then sorry to disappoint you; the answer is actually no!
+    If you look closely at the source, you will find instances where a mix of both
+    CSS3 animations and jQuery have been used. Now, you might be thinking: why are
+    we talking about CSS3 animations when this book is about mastering jQuery?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s a good reason for this; remember when I mentioned, earlier in the
+    book, that any individual with the right skills can write jQuery? The difference
+    between an average coder and a good developer is this: why will I use jQuery?
+    Now, this might sound as though I''ve really lost my marbles, but I haven''t.
+    Let me explain what I mean, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A CSS3 animation does not have any dependency on an external library; given
+    that jQuery still weighs in at a good size, one less resource request is always
+    a good thing!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For light, simple animations, there is no benefit in referencing jQuery when
+    CSS3 animations are sufficient. Despite the need to provide vendor-prefixed versions
+    of the same statements (and excluding the use of jQuery), the amount of code required
+    is likely to be smaller than that required if jQuery is used.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'There is a performance impact in using jQuery, which makes using CSS animations
+    all the more tempting, for several reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The library was never designed to be a performant animation engine; it's code
+    base has to serve many purposes, which can lead to layout thrashing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery's memory consumption often means that we have garbage collections take
+    place, which can lead to the momentary freezing of animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery uses `setInterval` instead of `requestAnimationFrame` to manage animations
+    (although this is due to a change in a forthcoming version of jQuery)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'There are an equal number of reasons why we should prefer to use jQuery; even
+    though it has its limitations as a library, there are occasions where we may need
+    to use jQuery in place of native CSS3 animations, as stated here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS animations are taxing on GPUs, which can result in stuttering and banding
+    when the browser is under load—this is particularly prevalent in mobile devices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a useful discussion about the impact of hardware acceleration and CSS3
+    at [http://css-tricks.com/myth-busting-css-animations-vs-javascript/](http://css-tricks.com/myth-busting-css-animations-vs-javascript/).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Most browsers support CSS3 animations with the exception of IE9 or below; for
+    this, jQuery must be used.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CSS3 animations are not (yet) as flexible as their jQuery equivalents—they are
+    evolving all the time, so there will come a point when the two become very similar.
+    For example, we cannot use different eases in keyframes when working with CSS3;
+    the same ease must be applied to the whole keyframe.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The key point here is that we have the freedom to choose; in fact, as noted
+    by the developer David Walsh, it is more sensible to use CSS3 animations when
+    we need nothing more than simple state changes. His argument is based on being
+    able to retain animation logic within style sheets and reducing bloat on pages
+    from multiple JavaScript libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The proviso though is that if your needs are more complex, then jQuery is the
+    way forward; developer Julian Shapiro argues that using animation libraries maintains
+    the performance of each animation and keeps our workflow manageable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To see the effects of animating multiple objects using JavaScript or CSS, head
+    over to [http://css3.bradshawenterprises.com/blog/jquery-vs-css3-transitions/](http://css3.bradshawenterprises.com/blog/jquery-vs-css3-transitions/),
+    which shows a very enlightening demo!
+  prefs: []
+  type: TYPE_NORMAL
+- en: As long as we are careful with our CSS, for simple, self-contained state animations,
+    a smarter move is to use native CSS3 and to not always rely on using jQuery as
+    the answer to all our needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an aside, it is worth noting that a relatively new API is being considered:
+    the Web Animations API. This API is aimed at creating animations using JavaScript,
+    that run as efficiently as native CSS3 animations. This is worth looking out for,
+    given the inherent issues we have with using jQuery; support is limited to Chrome
+    and Opera only at the time of writing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For details of the support of the Web Animations API, check out the Can I use
+    website at [http://caniuse.com/#search=Web%20animation](http://caniuse.com/#search=Web%20animation);
+    there is also a useful tutorial posted at [http://updates.html5rocks.com/2014/05/Web-Animations---element-animate-is-now-in-Chrome-36](http://updates.html5rocks.com/2014/05/Web-Animations---element-animate-is-now-in-Chrome-36)—this
+    is for Chrome only though!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Enough of theory, let''s do some coding! Assuming that we need to use jQuery
+    for our animation projects, there is one key issue that is likely to floor developers:
+    rapid cycling through queued animations that can be set for any feature that uses
+    animation. Let''s delve in to see what this means and what we can do to reduce
+    or get rid of the issue.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the jQuery animation queue
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'If you have spent any time developing with jQuery, there is no doubt that you
+    will come across a key issue when working with animations: how many times have
+    you seen a browser cycle through multiple queued animations when you switch to
+    another browser window and back again?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I can bet that the answer is quite a few times; the key to this issue boils
+    down to jQuery queuing all the animations it has been asked to perform. If too
+    many initiations take place, then jQuery''s animation queue becomes confused and
+    hence it seems to go crazy! Let''s take a look at the issue in action before working
+    through a simple fix for the problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start by extracting the `blockedqueue.html` and `blockedqueue.css` files from
+    the code download that accompanies this book—they will provide some simple markup
+    to illustrate our queuing issue.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a text editor, add the following to a new file, saving it as `blockedqueue.js`
+    in the `js` subfolder of our project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we run our demo now, then when we repeatedly move the mouse over each bar,
+    we can see all of them increase or decrease in quick succession, with the next
+    bar changing before the previous one has finished animating, as shown here:![Controlling
+    the jQuery animation queue](img/image00382.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Clearly, this behavior isn't desired; had this demo been automated and set to
+    work in conjunction with `requestAnimationFrame` (which we will cover later in
+    [Chapter 9](part0080.xhtml#aid-2C9D01 "Chapter 9. Using the Web Performance APIs"),
+    *Using the Web Performance APIs*), then we would have seen a frenzied rush of
+    animations being completed when we switch away from a tab and go back to the original.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fixing the problem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'How do we fix this issue? It''s really simple; all we need to do is add the
+    `.stop()` method in our statement chain; this will clear the preceding animation
+    before starting the next. Let''s take a look and see what this means in practice
+    by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a copy of the `blockedqueue.html` file, go ahead and modify the `<head>`
+    section as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We need to slightly change the markup in the body of our demo, so alter the
+    code as highlighted:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Save this as `unblockqueue.html`. In a new file, add the following code and
+    then save it as `unblockedqueue.js` in the `js` subfolder of our project area.
+    This contains the modified markup, with the addition of `.stop()`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we run the demo now and then rapidly move over each of the bars in turn,
+    we should see that the bars will increase and decrease in turn, but the next one
+    will not change until the preceding bar has returned to its original size, as
+    shown here:![Fixing the problem](img/image00383.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Hopefully, you will agree that adding `.stop()` has made a significant improvement
+    to our code—adding `.stop()` will terminate the previous animation but queue the
+    next one, ready for action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making the transition even smoother
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can go one step further. A closer look at the attributes available for `.stop()`
+    shows that we can use `clearQueue` and `jumpToEnd` to stop running animations
+    on matched elements, making for even cleaner transitions, as shown in the following
+    figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Making the transition even smoother](img/image00384.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information about using `.stop()`, please refer to the main jQuery
+    documentation at [http://api.jquery.com/stop/](http://api.jquery.com/stop/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s alter our jQuery code to see what this means in practice by performing
+    the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Go back to the `unblockedqueue.js` file and then alter the code as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save your work and then preview the results of the demo in a browser. If all
+    went well, you should see no change in the bars themselves but the animation effect
+    will appear smoother when you hover over each bar.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this stage, we should have an animation that still works but with a smoother
+    transition—it is worth noting that this trick will only work with animations.
+    If your projects use other function queues, then these will need to be cleared
+    using `.clearQueue()` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a comparison on the different ways of using `.stop()`, it's worth taking
+    a look at a demo by Chris Coyier, at [http://css-tricks.com/examples/jQueryStop/](http://css-tricks.com/examples/jQueryStop/)—this
+    produces some intriguing effects! A similar explanation is also available at [http://www.2meter3.de/code/hoverFlow/](http://www.2meter3.de/code/hoverFlow/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a pure CSS solution
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Okay, so we have our animation in jQuery; for a simple animation, what will
+    it look like if we used pure CSS instead? Although we can''t replicate the same
+    effect as `.stop()`, we can get pretty close. Let''s take a look and see what
+    this means in practice, using `unblockedqueue.html` as the basis for our demo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start by removing the two JavaScript links, one to `unblockqueue.js` and the
+    other to jQuery itself.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Add the following at the bottom of `blockedqueue.css`—this contains the animation
+    style rules required for our demo:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: At this point, if we preview the results in a browser, we should see no *visible*
+    difference in our animated list elements; the real change is seen if we use Google
+    Chrome's developer toolbar to monitor the timeline. Let's see what the change
+    looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fire up Google Chrome. Press *Shift* + *Ctrl* + *I* to bring up the **Developer
+    Toolbar** (or *Option* + *Cmd* + *I* for Apple Macs).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on the **Timeline** tab and then click on the gray-colored circle immediately
+    below the magnifying glass—the circle will turn red in color.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Try hovering over the list items in turn; Chrome will monitor and collect details
+    of the actions performed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: After a couple of minutes, click on the red-colored circle to stop generating
+    the profile; you will end up with something that looks like this:![Using a pure
+    CSS solution](img/image00385.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We can clearly see that a CSS-only solution barely has an impact on the performance
+    of the browser. In comparison, take a look at the same timeline, when we run the
+    `unblockedqueue.html` demo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using a pure CSS solution](img/image00386.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Notice the difference? Although this was a quick, nonscientific test, we can
+    clearly see the difference when we look at the detailed numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Over a period of approximately 3 seconds, Google Chrome spent 33 ms rendering
+    and 48 ms painting when running the CSS-only solution. Running `unblockedqueue.html`
+    shows that the numbers almost double: 107 ms for scripting, 78 ms for rendering,
+    and 76 ms for painting! This is definitely something to think about…'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving jQuery animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: From the previous section, we can easily see that CSS has a clear advantage
+    when being rendered in a browser—this is despite the somewhat unscientific approach
+    used in the demo!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key point though is that, what we gain with flexibility and all-round browser
+    support when using jQuery, we lose in speed—jQuery was never designed to be performant
+    when rendering animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To help improve performance, there are a couple of plugin options that you
+    can explore:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Velocity.js**: This plugin reengineers `$.animate()` to provide significantly
+    faster performance and can be used with or without jQuery; this includes IE8\.
+    The plugin can be downloaded from [http://julian.com/research/velocity/](http://julian.com/research/velocity/).
+    This also contains some preregistered effects—we will cover more on creating custom-easing
+    effects later in this chapter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**jQuery-animate-enhanced**: This plugin detects and reengineers animations
+    to use native CSS transitions automatically, for WebKit, Mozilla, and IE10 or
+    greater. It can be downloaded from [http://playground.benbarnett.net/jquery-animate-enhanced/](http://playground.benbarnett.net/jquery-animate-enhanced/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can go further and delve into using jQuery to be notified when an animation
+    has completed, using the `transitionend` event. While this may not stop the original
+    issue with an animation queue build-up, using jQuery will allow you to separate
+    animation effects from your jQuery logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For an interesting article and demo on using `transitionend` (and its vendor-prefixed
+    versions), take a look at an article on the Treehouse website, at [http://blog.teamtreehouse.com/using-jquery-to-detect-when-css3-animations-and-transitions-end](http://blog.teamtreehouse.com/using-jquery-to-detect-when-css3-animations-and-transitions-end).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've seen how we can make our animations smoother, let's move on and
+    take a look at how we can generate custom animations; the theory being that we
+    can put some of our knowledge to create more complex and interesting animations,
+    while at the same time, reduce some of the issues we see with running the queue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, before we do so, I want to leave you with two useful tips when it
+    comes to improving your animations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Have a look at [http://blog.teamtreehouse.com/create-smoother-animations-transitions-browser](http://blog.teamtreehouse.com/create-smoother-animations-transitions-browser);
+    it explores some of the issues we encounter with animations and transitions and
+    how these affect performance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The article at [http://developer.telerik.com/featured/trimming-jquery-grunt/](http://developer.telerik.com/featured/trimming-jquery-grunt/)
+    explores how we can trim our version of jQuery, to remove functionality that is
+    not needed (and consequently reduce the load on the server when running animations)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's take a look at designing these custom animations, beginning with an initial
+    look at using easing functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing easing functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When animating any object or element on a page, we can simply slide it up or
+    down or move it from one place to another on the page. These are perfectly valid
+    effects, but they lack the realism you might get when opening a drawer, for example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animations don't always move at a constant speed; instead, we might get a little
+    bounce back if we were bouncing a ball or a slow down when opening a chest of
+    drawers. To achieve this effect, we need to use easing functions, which control
+    the rate of change. There are plenty of examples available on the Internet—a great
+    place to start is [http://www.easings.net](http://www.easings.net)—or perhaps
+    we can watch the effects on sites such as [http://matthewlein.com/ceaser/](http://matthewlein.com/ceaser/).
+    Over the next few pages, we're going to explore these in more detail and look
+    at tips and tricks that we can use to push our animation skills to a new level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing custom animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you've spent any time developing jQuery code that animates objects or elements
+    on a page, you will no doubt have used either the jQuery UI or possibly a plugin,
+    such as jQuery Easing, created by George Smith ([http://gsgd.co.uk/sandbox/jquery/easing/](http://gsgd.co.uk/sandbox/jquery/easing/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both are great ways of animating objects on a page, using easing methods such
+    as `easeIn()` or `easeOutShine()`. The trouble is that both require the use of
+    plugins, which add unnecessary baggage to our code; they are also a very safe
+    way of achieving the effect we need. What if I said we don't need either and can
+    produce the same effects just by using jQuery itself?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before I go through how to do this, let''s take a look at a working demo that
+    shows this in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s make a start by extracting the relevant files from the code download
+    that accompanies this book—for this demo, we will need copies of the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`customanimate.html`: Save this file in the root area of our project folder'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`customanimate.css`: Save this file in the `css` subfolder of our project folder'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`customanimate.js`: Save this file in the `js` subfolder of our project folder'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Open the Sans font; save this in the `font` folder of our project folder; alternatively,
+    the font is available at [http://www.fontsquirrel.com/fonts/open-sans](http://www.fontsquirrel.com/fonts/open-sans).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If you preview the `customanimate.html` file in a browser and then run the demo,
+    you should see something akin to this screenshot, where the `<div>` tag is partway
+    through running the animation:![Designing custom animations](img/image00387.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: So, what happened here? Well, we've used nothing more earth-shattering than
+    a standard `.animate()` to increase the size of and move the `<div>` tag to its
+    new location.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There''s nothing new here then, right? Wrong, the "new" bit here is actually
+    how we constructed the easing! If you take a look at `customanimate.js`, you will
+    find this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All we''ve done is take the math needed to achieve the same effect and wrapped
+    it in a jQuery object that extends `$.easing`. We can then reference the new easing
+    method within our code, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This opens up lots of possibilities; we can then replace the custom-easing
+    function with our own creation. A trawl of the Internet threw up lots of possibilities,
+    such as these two examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: To really get stuck into understanding how easing functions work is outside
+    the scope of this book—if you are interested in the math behind it, then there
+    are several sites on the Internet that explain this in greater detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Two examples of how to work with easing functions include [http://upshots.org/actionscript/jsas-understanding-easing](http://upshots.org/actionscript/jsas-understanding-easing)
+    and [http://www.brianwald.com/journal/creating-custom-jquery-easing-animations](http://www.brianwald.com/journal/creating-custom-jquery-easing-animations)—note
+    that they do make for dry reading though!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Suffice to say that the best source for the easing functions is the source code
+    for jQuery, where we can view each of the calculations required and use these
+    as a basis for creating our own easing effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is all well and good; it's a great way to achieve good animations without
+    producing complex code that is difficult to understand or debug. But…you know
+    me; I think we can still do better. How? That's easy, what if we can replicate
+    some of the easing effects we might see in CSS transitions in jQuery?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Converting to use with jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point, you probably think I really have lost it now; CSS transitions
+    use Bezier curves, which are not supported when working with jQuery's `animate()`
+    method. So, how can we achieve the same effect?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The answer lies, as always, with a plugin—granted, this goes against what we''ve
+    talked about in the previous demo though! However, there is a difference: this
+    plugin weighs in at 0.8 KB when compressed; this is significantly smaller than
+    using the jQuery UI or the Easing plugin.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The plugin that we''re going to use is the Bez plugin by Robert Grey, available
+    at [https://github.com/rdallasgray/bez](https://github.com/rdallasgray/bez); this
+    will allow us to use cubic-bezier values, such as `0.23, 1, 0.32, 1`, which is
+    the equivalent of `easeOutQuint`. Let''s take a look at this in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first need to download and install the Bez plugin—we can download it from
+    GitHub at [https://github.com/rdallasgray/bez](https://github.com/rdallasgray/bez);
+    add a reference to it from within `customanimate.html`, immediately underneath
+    the link to jQuery.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, open up a copy of `customanimate.js`; go ahead and alter this line as
+    shown, which replaces the `easeInBackCustom` action we used earlier:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save both the files; if you preview the results in a browser, you will see a
+    different action when running the demo as compared to what you saw in the previous
+    example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, how did we get here? The trick behind this is a combination of the plugin
+    and the easings.net website. Using `easeOutQuint` as our example easing, if we
+    first visit [http://easings.net/#easeOutQuint](http://easings.net/#easeOutQuint),
+    we can see the cubic-bezier values required to produce our effect: `0.86, 0, 0.07,
+    1`. All we need to do is insert this into a call to the Bez plugin and we are
+    all set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If, however, we want to create our own cubic-bezier effect, then we can use
+    [cubic-bezier.com](http://cubic-bezier.com) to create our effect; this will give
+    us the values we need to use, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Converting to use with jQuery](img/image00388.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can then plug these into our object call in exactly the same way as we did
+    in the previous example. The beauty of using this method is that we have an easy
+    route to convert the animations to CSS3 equivalents, should we later decide to
+    reduce our usage of jQuery at some point in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To learn more about the theory behind Bezier curves, take a look at the Wikipedia
+    article available at [http://en.wikipedia.org/wiki/B%C3%A9zier_curve](http://en.wikipedia.org/wiki/B%C3%A9zier_curve).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Okay, so we''ve covered how to create our own animation-easing functions; what
+    if we wanted to use effects available from existing libraries? No problem, there
+    are some good examples available on the Internet, which include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://daneden.github.io/animate.css/](http://daneden.github.io/animate.css/):
+    This is the home of the Animate.css library; we can reproduce the effects within
+    this library using the `jQuery.Keyframes` plugin available at [https://github.com/jQueryKeyframes/jQuery.Keyframes](https://github.com/jQueryKeyframes/jQuery.Keyframes).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/yckart/jquery-custom-animations](https://github.com/yckart/jquery-custom-animations):
+    This library contains a number of different effects, created in a style similar
+    to the jQuery UI; this can be dropped in and the effects can be referenced in
+    a similar fashion to the *Designing custom animations* demo from earlier in this
+    chapter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://github.com/ThrivingKings/animo.js](https://github.com/ThrivingKings/animo.js):
+    Animo.JS takes a different approach; instead of using jQuery''s `animate()` function,
+    it uses its own `animo()` method to animate objects. It uses the effects from
+    the `Animate.css` library, created by Dan Eden—although one might argue whether
+    it is worth the extra overhead, it is nonetheless worth a look as a possible source
+    of animations for your projects.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://lvivski.com/anima/](http://lvivski.com/anima/): It''s worth taking
+    a look at this library carefully; the source code contains a number of cubic-bezier
+    values within the `easings.js` source file. These can be easily lifted into your
+    own code projects if desired or can provide inspiration for your own examples,
+    perhaps.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It's time to put some of the animation concepts we've covered to good use; let's
+    move on and take a look at some of the examples of using animation in our own
+    projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing some custom animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this chapter, we've explored the use of jQuery to animate objects
+    and seen how this can be compared with CSS-based animations; we've also looked
+    at creating some custom-easing patterns that control how the elements are moved
+    on screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enough of the theory, let's get stuck into some practical uses! Over the next
+    few pages, we're going to take a look at some examples of animating elements;
+    we will include some examples for responsive sites, as this is a popular topic,
+    with the rise in the use of mobile devices to access content on the Internet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's make a start, with a look at animating a simple element, in the form of
+    some buttons—watch out for the twist at the end of the demo!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating rollover buttons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The humble button must be one of the most important elements on any website;
+    buttons come in all shapes and sizes, and can be created from the standard `<button>`
+    HTML element, or by the use of an `<input>` field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this demo, we're going to use jQuery to not only slide in and slide out the
+    button icons, but also to rotate them at the same time. But hold on—we all know
+    that jQuery doesn't support the rotating of elements, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could can use plugins such as QTransform ([https://github.com/puppybits/QTransform](https://github.com/puppybits/QTransform))
+    or even jQuery Animate Enhanced ([http://playground.benbarnett.net/jquery-animate-enhanced/](http://playground.benbarnett.net/jquery-animate-enhanced/)),
+    but this has an overhead—let's take a different route. Instead, we'll use a monkey
+    patch to directly retrofit support; to prove that it works, we'll update a **Codrops**
+    demo, which had the original version of the rolling buttons on its site, to use
+    jQuery 2.1 instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The original version of this demo is available at [http://tympanus.net/codrops/2010/04/30/rocking-and-rolling-rounded-menu-with-jquery/](http://tympanus.net/codrops/2010/04/30/rocking-and-rolling-rounded-menu-with-jquery/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at the demo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Extract the relevant files from the code download that accompanies this book;
+    for this demo, we will need the following files:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`rollingbuttons.html`: Save this file in the root subfolder of your project
+    area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`style.css`: Save this file in the `css` subfolder of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery-animate-css-rotate-scale.js`: Save this file in the `js` subfolder
+    of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`rollingbuttons.js`: Save this file in the `js` subfolder of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`img`: Copy this folder to the project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The original version of this monkey patch is available at [http://www.zachstronaut.com/posts/2009/08/07/jquery-animate-css-rotate-scale.html](http://www.zachstronaut.com/posts/2009/08/07/jquery-animate-css-rotate-scale.html);
+    it was developed for jQuery 1.3.1+, but I have not seen any adverse effects when
+    I used it with jQuery 2.1.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Run the demo in a browser and then try hovering over one or more buttons. If
+    all is working OK, then we will see the green-colored icon image start to spin
+    out to the left while the gray background expands to form a long pill, with the
+    links held within, as shown here:![Animating rollover buttons](img/image00389.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Exploring the code in more detail
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This demo produces a nifty effect as well as acts as a space saver; the information
+    is only exposed when visitors need to view it and is hidden at all other times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we delve into the code in more detail though, it reveals an interesting
+    concept: jQuery does not offer native support for the use of rotating elements
+    when using `.animate()`, as mentioned at the start of this demo.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, how are we going to get around this? We can use a plugin, but instead, we're
+    using a monkey patch (created by the developer Zachary Johnson) to retrofit support
+    to jQuery. It's worth noting that there is always a risk in using patches (as
+    outlined in [Chapter 2](part0021.xhtml#aid-K0RQ1 "Chapter 2. Customizing jQuery"),
+    *Customizing jQuery*), but in this instance, it seems that despite the update
+    to using jQuery 2.1, there are no noticeable ill-effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you want to see the difference when the patch is being used, activate a
+    DOM Inspector, such as Firebug, before running the demo. Hover over one of the
+    icons; you should see something akin to this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exploring the code in more detail](img/image00390.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you want more in-depth details on how `matrix()` works, then visit the notes
+    on Mozilla's site, at [https://developer.mozilla.org/en-US/docs/Web/CSS/transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's move on and take a look at our next animation example. I'm sure you've
+    used an overlay in some form or other, but we're going to take a look at an overlay
+    that takes a whole new approach and does away with the gray mask that is typical
+    with most overlays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating an overlay effect
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you've spent any time visiting websites on the Internet, you will no doubt
+    have come across ones that use some form of overlay, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You know the drill: they first black out the screen with a semitransparent
+    overlay and then begin to display an enlarged version of an image or video. It''s
+    a typical effect found on thousands of sites worldwide and can be very effective
+    if put to good use.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, you know me better than this; I like to take things further! What
+    if we break the tradition and have an overlay that doesn''t show an image but
+    shows an all-over display? Intrigued? Let''s take a look at what I mean in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Animating an overlay effect](img/image00391.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For this demo, we're going to run a version of the overlay effect, shown at
+    [http://tympanus.net/Tutorials/ExpandingOverlayEffect/](http://tympanus.net/Tutorials/ExpandingOverlayEffect/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by extracting the following files from the code download that
+    accompanies this book; save them in the relevant folders within your project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`jquery.min.js`: Save this file in the `js` subfolder of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fittext.js`: Save this file in the `js` subfolder of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`boxgrid.js`: Save this file in the `js` subfolder of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`default.css`, `component.css`, and `climacons.css`: Save these files in the
+    `css` subfolder of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`overlayeffect.html`: Save this file in the root of your project area'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Run `overlayeffect.html` and then try clicking on one of the colored boxes.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Notice what happens? It displays an overlay effect as you expected, but this
+    one covers the entire browser window and does not have the mask effect that is
+    frequently displayed with the more traditional overlay effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this demo, we've used a mix of HTML to produce our initial grid; the `fittext.js`
+    plugin is used to help ensure that the text (and consequently the overlay) is
+    resized to fill the screen; the overlay effect is produced using the `boxgrid.js`
+    plugin from within our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The magic happens in `boxgrid.js`—this contains the `jquery.debouncedresize.js`
+    plugin by Louis Remi; although this is 2 years old; it still works perfectly well
+    within modern browsers. You can download the original plugin from [https://github.com/louisremi/jquery-smartresize/blob/master/jquery.debouncedresize.js](https://github.com/louisremi/jquery-smartresize/blob/master/jquery.debouncedresize.js).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's change focus and move on to take a look at how you can equally apply jQuery
+    animation to responsive websites. In the first of two demos, you'll see how to
+    apply a mix of CSS3, jQuery, and `history.pushState` in order to create some pleasing
+    transition effects that can turn a multiple-page site into what appears to be
+    a single page application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating in a responsive website
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: How often have you visited a site only to find out that you have to wait for
+    ages between each page load? Sounds familiar?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our expectations of page transitions have changed over the last few years—the
+    clunky side effects of elements rearranging on a page will not suffice; we expect
+    more from a website. JavaScript-based **Single Page Application** (**SPA**) frameworks
+    are often seen as the answer, but at the expense of having to use obtrusive code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can do much better than this. We can introduce smoothState.js, a useful plugin
+    created by Miguel Ángel Pérez, that allows us to add transitions to make the whole
+    experience smoother and more enjoyable for visitors. In this example, we're going
+    to use a modified version of the demo provided by the plugin's author; some of
+    the code has been reorganized and cleaned up from the original.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at the plugin in action and see how it can make for a much
+    smoother experience. To do this, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From the code download that accompanies this book, extract copies of the following
+    files:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`smoothstate.html` and `smoothstate.css`: Save these files in the root area
+    and `css` subfolder of your project folder, respectively.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.smoothstate.js`: Save this in the `js` subfolder of your project area;
+    the latest version can be downloaded from [https://github.com/miguel-perez/jquery.smoothState.js](https://github.com/miguel-perez/jquery.smoothState.js).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.min.js`: Save this in the `js` subfolder of your project area.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`animate.css`: Save this in the `css` subfolder of your project area; the latest
+    version is available at [http://daneden.github.io/animate.css/](http://daneden.github.io/animate.css/).'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The Roboto font: A copy of the two fonts used are in the code download that
+    accompanies this book. Alternatively, they can be downloaded from the Font Squirrel
+    website, at [http://www.fontsquirrel.com/fonts/roboto](http://www.fontsquirrel.com/fonts/roboto).
+    We only need to select the WOFF font; we will use the light and regular versions
+    of the font in our demo.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Run the `smoothstate.html` file in a browser; try clicking on the middle link
+    of the three and see what happens. Notice how it displays the next page, which
+    is `transitions.html`. Instead of the pause we frequently get when loading new
+    pages, smoothState.js treats the site as if it were a SPA, or single page application.
+    You should see a very simple page display, as shown in this screenshot:![Animating
+    in a responsive website](img/image00392.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Traditionally, when faced with this issue, many might resort to an SPA framework
+    in order to fix the issue and improve the transition appearance. Using this approach
+    will work, but at the expense of the benefits gained from using unobtrusive code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, we can use a mix of jQuery, CSS3, `history.pushState()`, and progressive
+    enhancement to achieve the same effect, resulting in a better experience for our
+    end users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's worth taking a look at the website documentation, available at [http://weblinc.github.io/jquery.smoothState.js/index.html](http://weblinc.github.io/jquery.smoothState.js/index.html).
+    There is a useful tutorial on the CSS-Tricks website, at [https://css-tricks.com/add-page-transitions-css-smoothstate-js/](https://css-tricks.com/add-page-transitions-css-smoothstate-js/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maintaining a good user experience should always be at the forefront of any
+    developer's mind—this is more important when working with responsive sites. A
+    key part of this should be to monitor the performance of our animations, in order
+    to ensure that we get a good balance of user experience against the demand on
+    our servers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a few tricks that we can use to help with performance when it comes
+    to using jQuery-based animations on responsive sites. Let's take a look at some
+    of the issues and how we can either mitigate or resolve them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Considering animation performance on responsive sites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this modern age of accessing the Internet from any device, the emphasis on
+    user experience is more critical than ever—this is not helped when jQuery is used.
+    Acting as the lowest common denominator, it helps to simplify working with content
+    (particularly for complex animations) but is not optimized for their use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are a few issues that we will come across when animating content using
+    jQuery—we''ve covered some of them earlier in the chapter, in *Choosing CSS or
+    jQuery*; they apply equally to responsive sites. In addition, there are other
+    considerations we need to be aware of, which include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animations that use jQuery will consume a lot of resources; this coupled with
+    content that might not suit a mobile environment (due to its volume) will create
+    a slow experience on desktops. This will be even worse on laptops and mobile devices!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: End users on a mobile device are frequently only interested in getting the information
+    they need; animations may make a site look good but are often not optimized for
+    mobile devices and are likely to slow access and result in the browser crashing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery's garbage collection process is frequently known to cause issues; its
+    use of `setInterval()` in place of `requestAnimationFrame()` will result in high
+    frame rates, making for an experience that is likely to stutter and show a high
+    rate of frame dropouts.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At the time of writing, there are plans to replace `setInterval` (and `clearInterval`)
+    in jQuery with `requestAnimationFrame` (with `clearAnimationFrame`).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If we are using animations—both jQuery or plain CSS—then on some platforms,
+    we frequently need to enable hardware acceleration. While this can help with performance
+    on mobile devices, it can also lead to flickering if hardware-accelerated elements
+    overlap with other elements that are not hardware-accelerated. We will touch on
+    how to enable 3D rendering later in this chapter, in the *Improving the appearance
+    of animations* section.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery's `.animate` increments the element's `style` attribute on every animation
+    frame; this forces the browser to recalculate the layout and leads to continual
+    refreshes. This is particularly acute on responsive sites, where each element
+    needs to be redrawn each time the screen is resized; this will place additional
+    demands on server resources and impact performance. If desired, plugins such as
+    jQuery Timer Tools ([https://github.com/lolmaus/jquery.timer-tools](https://github.com/lolmaus/jquery.timer-tools))
+    can be used to throttle back or delay actions so that they are only executed when
+    necessary, or multiple repetitive calls are effectively merged into one single
+    execution.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If the display state of elements is changed (using `display`... or `display:
+    none`), then this has the effect of adding or removing elements from the DOM.
+    This can have an impact on performance, if your DOM is heavy with lots of elements.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using jQuery leaves inline styles in the DOM that have very high specificity
+    and that will override our well-maintained CSS. This is a big issue if the viewport
+    is resized and triggers different breakpoints.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: CSS specificity is where the browser decides which property values are most
+    relevant to the elements and are applied as a result—check out [https://css-tricks.com/specifics-on-css-specificity/](https://css-tricks.com/specifics-on-css-specificity/)
+    for more details.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: As an aside, we lose the separation of concerns (or defining separate sections
+    for our code) as styles are defined in JavaScript files.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Is it possible to reduce or remove these issues? Yes, but it''s likely to require
+    some sacrifices; these will depend on what your requirements are and the target
+    devices that need to be supported. Let''s take a moment to consider where we can
+    make changes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consider the use of CSS over jQuery where practical, at least for mobile sites;
+    most browsers (with the exception of Opera Mini) support CSS keywords such as
+    `translate` or `transform`. As they are native to the browser, this removes the
+    reliance on the extra code being referenced, resulting in the resources and bandwidth
+    usage being saved.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If animation isn't possible using jQuery or the effort required outweighs the
+    benefits gained, then consider the use of a plugin such as Velocity.js (available
+    from [https://github.com/julianshapiro/velocity](https://github.com/julianshapiro/velocity)),
+    as this has been optimized to animate content.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's worth noting that discussions are being held to integrate Velocity.js into
+    jQuery—for more details, see [https://github.com/jquery/jquery/issues/2053](https://github.com/jquery/jquery/issues/2053).
+    There is also a post that is worth reading at [http://www.smashingmagazine.com/2014/09/04/animating-without-jquery/](http://www.smashingmagazine.com/2014/09/04/animating-without-jquery/),
+    which discusses the use of Velocity in more detail.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: A better alternative is to use the jQuery.Animate-Enhanced plugin or the animate
+    helper from jQuery++; both will convert animations to use CSS3 equivalents by
+    default, where supported.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So, how do we handle animation requests on a responsive site when working with
+    jQuery? There are several ways of doing this; let's explore this key question
+    in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling animation requests on a responsive site
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The best route to animate content within a responsive site when working with
+    jQuery might actually seem a little perverse: don''t use jQuery unless you absolutely
+    have to! At this point, you may think I have completely lost the plot, but here
+    are a few good reasons for this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery is not optimized for animation; the line of demarcation between styles
+    in the style sheet, HTML, and JavaScript will start to blur, which means that
+    we lose control over how our content is styled.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animation doesn't work well on mobile devices when done with jQuery; to improve
+    performance, additional CSS styling has to be used.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We lose control over which rules are applied to specific elements due to CSS
+    specificity—keeping styles within the CSS style sheet means that we can retain
+    control.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery animations are resource-hungry by default. On a simple site, this will
+    have a minimal impact, but on larger sites, the impact will be significantly higher.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A bonus of using a pure CSS approach is that it allows you to make use of CSS
+    preprocessors, such as **Syntactically Awesome Stylesheets** (**SASS**) or Less,
+    to handle media queries. This form of shorthand CSS allows you to be more efficient
+    at writing styles while still maintaining the final desired output.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'With this in mind, let''s take a look at a few pointers that we can use to
+    handle animation requests on responsive sites:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Think mobile first. If you're using CSS, then work on the basis of the smallest
+    screen you want to accommodate first and then add additional media queries to
+    handle changes to the layout when viewed on increasingly larger devices. Consider
+    the use of a CSS Media Queries boilerplate, such as the one created by developer
+    Paul Lund at [http://www.paulund.co.uk/boilerplate-css-media-queries](http://www.paulund.co.uk/boilerplate-css-media-queries);
+    we can then insert animation rules within each of the appropriate breakpoints.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Avoid the use of the `.css` statement in your jQuery code, but use the `.addClass()`
+    or `.removeClass()` methods instead—this allows you to maintain a separation of
+    concerns, with a clear demarcation between the content and presentational layers.
+    A good example of how this can be used (for those who are not sure) is given at
+    the Animation Cheat Sheet site by Justin Aguilar, at [http://www.justinaguilar.com/animations/](http://www.justinaguilar.com/animations/).
+    This produces a variety of different animations, all of which can be added using
+    `.addClass()`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Work on the basis of using prefix-free versions of attributes in your code and
+    then use an autoprefixer to add any vendor prefixes automatically, as needed.
+    This becomes a cinch when using something to the likes of Grunt and a plugin,
+    such as grunt-autoprefixer.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Consider making use of the jQuery.Animate-Enhanced plugin (available at [https://github.com/benbarnett/jQuery-Animate-Enhanced](https://github.com/benbarnett/jQuery-Animate-Enhanced))
+    where possible. Although it is a few years old, it still works with the current
+    versions of jQuery; it extends `$.animate()` to detect transitions and replaces
+    them with CSS equivalents.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Another plugin that is worth taking a look at is Animsition, available at [http://git.blivesta.com/animsition](http://git.blivesta.com/animsition).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The trick here is to not rely on its use as a permanent part of the site but
+    as a tool for replacing the existing jQuery animations with CSS equivalent styles.
+    The more you can shift to using CSS, the less impact there will be on your pages,
+    as demands for server resources will be reduced.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keep a close eye on [http://www.caniuse.com](http://www.caniuse.com). Although
+    browser support for CSS3 transformations and transitions is very good, there are
+    still a couple of instances where WebKit prefixes have to be used, namely for
+    Safari and iOS Safari (mobile).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Make use of `requestAnimationFrame` (and `clearAnimationFrame`) where possible
+    within your animations. This will help conserve resources when animations are
+    not visible. This will require the use of jQuery, but as we should aim to keep
+    this for the most complex animations, the impact of using the library will be
+    reduced.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Take a look at sites such as [http://cssanimate.com/](http://cssanimate.com/)—these
+    allow you to generate complex keyframe-based animations that can be dropped into
+    your existing code. If you have concerns that the existing content can't be animated,
+    then it is possible that this site will help remove some of your doubt.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Ask yourself this question: "If my animation is really complex, is it going
+    to be effective?" Animations can be visually stunning if done well, but this does
+    not mean that they need to be complex. Often, simple and well thought out animations
+    work better than their complex, resource-hungry equivalents.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The important point to consider here is that using jQuery to animate content
+    should not be completely discounted; with browser support for CSS animations continually
+    evolving, it makes a strong case for using the latter as the basis for most animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery Team is conscious that jQuery was never designed for the efficient
+    animating of content. There are ongoing discussions, at the time of writing this
+    book, around the introduction of a version of Velocity.js; in principle, this
+    will likely improve the effectiveness of using jQuery to animate content, but
+    this is some way off becoming reality!
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the meantime, we should give careful consideration to the balance of jQuery
+    versus CSS animation that is used, and aim to remove jQuery animations being used
+    if CSS animations can be used in their place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To help prove a point, Chris Coyier produced a CodePen example of how a reasonably
+    simple site can be made responsive and can contain CSS-based animations, which
+    you can view at [http://codepen.io/chriscoyier/pen/tynas](http://codepen.io/chriscoyier/pen/tynas).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, let's move on. We'll stay with the theme of animating, but this time we'll
+    look at how we can achieve this on mobile devices. There are some considerations
+    we need to be aware of; let's take a look at these in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating content for mobile devices
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we've considered the use of jQuery to animate content on responsive
+    sites, but what about the mobile platform? There has been a significant increase
+    in the use of non-desktop devices (such as laptops and smartphones) to view content.
+    This brings some additional considerations that we need to make in order to make
+    the most of performance on mobile devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating on a mobile platform is less about writing code but more about deciding
+    which technologies to use; in most cases, simply writing jQuery code will work,
+    but it won't be as effective as it should be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The secret behind getting the best experience is in the use of the smartphone's
+    **GPU** or **Graphics Processing Unit**; to do this, we can offload standard jQuery
+    animations (which are slower) by enabling 3D rendering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Although this browser should work on all desktop and mobile devices, you will
+    get best results in a WebKit-based browser, such as Google Chrome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s explore this in more detail with a simple example, which has 3D rendering
+    enabled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this demo, we need three files. Go ahead and extract `mobileanimate.html`,
+    `mobileanimate.css`, and `jquery.min.js` from the code download and save them
+    in the relevant folders in your project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, add the following code. It handles the animation of our drop-down
+    box. We''ll go through it in detail, beginning with the assignment of a number
+    of variables needed for our code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next up comes the initial check that adds the `accordion_css3_support` class
+    to the `ul` object, if the browser supports CSS3 transforms:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The magic happens in this event handler. If CSS3 transitions are not supported,
+    then the drop-down will use the `slideToggle` method to open or close; otherwise,
+    it will use a CSS3 transform instead:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the file as `mobileanimate.js`. If all went well, you will see a styled
+    drop-down box ready to be opened, as shown here:![Animating content for mobile
+    devices](img/image00393.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Try clicking on the drop-down arrow. At face value, it will appear that our
+    drop-down is no different from any other; it expands and contracts in the same
+    way as any other drop-down box. In reality, our code uses two important tricks
+    to help manage animations; let's take a moment to go through the significance
+    of both when working with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving the appearance of animations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If we take a closer look at the code, there are two points of interest for
+    us; the first is in the jQuery code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The second is shown in two places in the CSS style sheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '"Why are these important?," I hear you ask. The answer is easy. In most cases,
+    we will probably use the `slideToggle()` event handler. There''s nothing wrong
+    in this, except that the animation is not hardware-accelerated (and will also
+    need you to convert it to CSS) and hence isn''t going to make the best use of
+    the platform''s capabilities. In addition, it blurs the line between code and
+    styles; it makes it harder to debug styles if we have them both in the code and
+    in a style sheet.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A better alternative is to work out whether the browser supports CSS3 transforms
+    (or similar) and to apply a new class that we can style within the style sheet.
+    If the browser doesn't support transforms, then we simply fall back to using the
+    `slideToggle()` method in jQuery instead. The benefit of the former is that CSS
+    styles will reduce the resources required to run the animation and help conserve
+    resources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If jQuery must still be used, then it is worth testing the value set for `jQuery.fx.interval`—try
+    somewhere around 12 fps to see whether this helps improve performance; more details
+    are available in the main documentation at [http://api.jquery.com/jquery.fx.interval/](http://api.jquery.com/jquery.fx.interval/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second point of interest is perhaps a little less obvious; if we apply
+    the transform `translate3d(0,0,0)` to any CSS rule that contains animations, then
+    this is enough to enable 3D rendering and allows the browser to give a smooth
+    experience, by offloading animations to the GPU. In some browsers (such as Google
+    Chrome), we might get instances of flickering; we may need to add the following
+    line of code to remove the unwanted flicker:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is also possible that `translate3d(x, y, z)` doesn''t enable hardware acceleration
+    for some platforms (such as iOS 6); we can use `–webkit-transform: translate (0)`
+    instead.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ultimately, while there may be instances where we need (or prefer) to use jQuery
+    to animate content, thought should be given as to whether it is really the right
+    tool and whether CSS animations can be used in its place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good example of this is shown at JSFiddle ([http://jsfiddle.net/ezanker/Ry6rb/1/](http://jsfiddle.net/ezanker/Ry6rb/1/)),
+    which uses the Animate.css library from Dan Eden to handle the animations, leaving
+    jQuery as a dependency for jQuery Mobile that is used in the demo. Granted, the
+    version of jQuery is a little old, but the principle is still very sound!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Treehouse team posted a good blog entry that explores the science of how
+    animations and transitions affect performance, which is worth a read; you can
+    find it at [http://blog.teamtreehouse.com/create-smoother-animations-transitions-browser](http://blog.teamtreehouse.com/create-smoother-animations-transitions-browser).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's change focus and move on. Hands up if you've visited a site with a parallax
+    scrolling effect? Parallax…scrolling…Not sure what it's all about? No problem,
+    over the next few pages, we're going to take a look at what has become one of
+    the hottest techniques in web design but can equally backfire if it is not properly
+    implemented in our projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing responsive parallax scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: What is parallax scrolling all about? Put simply, it involves moving the background
+    at a slower rate than the foreground to create a 3D effect while you scroll down
+    the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Originally created by Ian Coyle for Nike back in 2011, parallax scrolling is
+    a popular technique to use. It can provide a subtle element of depth but can be
+    equally overwhelming if you don't use it properly!
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get a flavor of what is possible, take a look at the article on the Creative
+    Bloq website, at [http://www.creativebloq.com/web-design/parallax-scrolling-1131762](http://www.creativebloq.com/web-design/parallax-scrolling-1131762).
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are dozens of parallax scrolling plugins available, such as the parallax.js
+    plugin from PixelCog (at [http://pixelcog.github.io/parallax.js/](http://pixelcog.github.io/parallax.js/))
+    or Stellar.js by Mark Dalgleish, available at [http://markdalgleish.com/projects/stellar.js/](http://markdalgleish.com/projects/stellar.js/).
+    Arguably, the most well-known plugin is Skrollr, which can be downloaded from
+    [https://github.com/Prinzhorn/skrollr](https://github.com/Prinzhorn/skrollr)—this
+    will form the basis of our next demo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a parallax scrolling page
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you spend any time to research on the Internet, you will no doubt come across
+    lots of tutorials that cover adding a parallax scrolling effect to a site. Over
+    the next few pages, we'll use a tutorial by the Australian frontend developer,
+    Petr Tichy, as a basis for our next exercise. After all, there is no sense in
+    trying to reinvent the wheel, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The original tutorial can be viewed at [https://ihatetomatoes.net/how-to-create-a-parallax-scrolling-website/](https://ihatetomatoes.net/how-to-create-a-parallax-scrolling-website/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our next demo will use the well-known Skrollr library (available at [https://github.com/Prinzhorn/skrollr](https://github.com/Prinzhorn/skrollr))
+    to construct a simple page that scrolls through five images, but we''ll also use
+    a number of effects to control how the images scroll down the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Building a parallax scrolling page](img/image00394.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now that we''ve seen what our demo will produce, let''s get stuck in by performing
+    the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll begin by extracting the `parallax` folder from a copy of the code download
+    that accompanies this book; save the entire folder to your project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We need a couple of additional plugins for our demo to work, so go ahead and
+    download the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**ImagesLoaded**: [https://raw.githubusercontent.com/desandro/imagesloaded/master/imagesloaded.pkgd.js](https://raw.githubusercontent.com/desandro/imagesloaded/master/imagesloaded.pkgd.js);
+    save the file as `imagesloaded.js`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Skrollr**: [https://raw.githubusercontent.com/Prinzhorn/skrollr/master/src/skrollr.js](https://raw.githubusercontent.com/Prinzhorn/skrollr/master/src/skrollr.js)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**ViewPortSize**: [https://github.com/tysonmatanich/viewportSize](https://github.com/tysonmatanich/viewportSize)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Save all of these plugins in the `js` subfolder within the `parallax` folder.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In a new file, add the following code; this handles the initialization of the
+    Skrollr plugin. Let''s go through it in detail, beginning with a `ready` DOM statement
+    that sets up a number of variables and then preloads the images using the ImagesLoaded
+    plugin before resizing them and fading in each section:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Immediately below the DOM function and before the closing brackets, add the
+    following code. This handles the resizing of each of the slides to the appropriate
+    window height or to a minimum height of `550px`, whichever is greater:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, when you preview the results, images will cross from one to
+    another when we scroll up or down, as shown in this screenshot:![Building a parallax
+    scrolling page](img/image00394.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Parallax scrolling as a technique can produce some really stunning effects when
+    used well. For some great examples, take a look at Costa Coffee's site, at [http://www.costa.co.uk](http://www.costa.co.uk),
+    or Sony's Be Moved site, at [http://www.sony.com/be-moved/](http://www.sony.com/be-moved/).
+    It's hard to believe that such original designs are based on parallax scrolling!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take a look at one of Petr's tutorials on how to make parallax scrolling responsive,
+    at [https://ihatetomatoes.net/make-parallax-website-responsive/](https://ihatetomatoes.net/make-parallax-website-responsive/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Considering the implications of parallax scrolling
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Although it may be hard to believe that such beautiful sites can be created
+    using parallax scrolling, this must be tempered with a warning: this technique
+    does not come without its issues. Granted, most (if not all) can be overcome with
+    some care and attention; nevertheless, these issues can trip up any designer if
+    care is not taken over the design and implementation. Let''s explore some of these
+    issues in more detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The biggest killer is that parallax scrolling is not SEO-friendly by default.
+    There are techniques available to get around this, such as jQuery or multiple
+    pages, but they will impact analytics or server resources. The digital marketing
+    strategist Carla Dawson has written an excellent article that discusses the merits
+    of these workarounds, which is available at [http://moz.com/blog/parallax-scrolling-websites-and-seo-a-collection-of-solutions-and-examples](http://moz.com/blog/parallax-scrolling-websites-and-seo-a-collection-of-solutions-and-examples)—it
+    is worth a read!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parallax scrolling will (naturally) require visitors to scroll; the key here
+    is to ensure that we are not creating single pages that scroll for too long. This
+    might have an impact on performance for mobile users and put visitors off.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The use of jQuery to create effects based on this technique can itself be a
+    drawback; jQuery will have an impact on page loading times, as the position of
+    each element on the page has to be calculated. We can mitigate against this to
+    a degree, by customizing our copy of jQuery using the techniques we covered back
+    in [Chapter 1](part0014.xhtml#aid-DB7S1 "Chapter 1. Installing jQuery"), *Installing
+    jQuery*, but there will always be an element of reduced performance when using
+    the library.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Parallax scrolling can reveal a number of usability issues. The layout can appear
+    haphazard to end users, if the balance of visual appeal against content and ease
+    of access is not even. Parallax scrolling will be suitable instances where you
+    might expect visitors to browse your site once, or for a company to show case
+    what they can do—it can be harmful for those situations where you are pitching
+    for a product or business.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In a number of cases, you will find that parallax scrolling doesn''t work on
+    mobile devices; this is largely due to how animations are executed at the end,
+    which breaks parallax scrolling. Attempts have been made to work around this,
+    with varying levels of success. The following are a couple of examples of successful
+    attempts:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the Stellar.js jQuery parallax plugin, which is available at [http://markdalgleish.com/projects/stellar.js/](http://markdalgleish.com/projects/stellar.js/);
+    this in tandem with the Scrollability plugin, from [http://joehewitt.github.com/scrollability/](http://joehewitt.github.com/scrollability/),
+    can be used to produce a touch-friendly parallax scrolling effect. The plugin
+    works both in desktop and mobile browsers, so consideration should be given to
+    checking for touch support and switching methods, as appropriate. The plugin author
+    Mark Dalgleish explains how to achieve this using iScroll.js at [http://markdalgleish.com/presentations/embracingtouch/](http://markdalgleish.com/presentations/embracingtouch/).
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A pure CSS version by Keith Clark is available at [http://codepen.io/keithclark/pen/JycFw](http://codepen.io/keithclark/pen/JycFw)—he
+    explains the principles used in detail on his site, at [http://keithclark.co.uk/articles/pure-css-parallax-websites/](http://keithclark.co.uk/articles/pure-css-parallax-websites/).
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The key message for parallax scrolling is to not rush in; it's true that there
+    are some sites that have managed to create some stunning examples of parallax
+    scrolling, but a lot of thought and planning will have gone into building the
+    example so that it is performant, caters to SEOs, and still presents a usable
+    experience to the visitor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Animating content within projects can be very satisfying if done well; this
+    relies on us not just using the right code but also deciding whether jQuery is
+    the right tool or whether CSS animations will be preferable for our needs. We've
+    covered a lot over the last few pages, so let's take a moment to recap what we
+    learned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a discussion on the merits of using jQuery or CSS and when
+    it might be preferable to use one instead of the other; we saw some of the benefits
+    of using CSS and that circumstances may dictate the use of jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then moved on to take a look at the classic issue that besets jQuery developers
+    at some point in their lives, namely controlling the animation queue; we saw how
+    to implement a quick and dirty fix, with subsequent improvements to reduce or
+    eliminate the issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up came a discussion on the use of easing functions; we saw how easy it
+    is to not just rely on tried and tested sources such as the jQuery UI but also
+    to develop simple actions that extend core jQuery. We took a look at building
+    our own custom-easing functions followed by converting those that we might see
+    in CSS to jQuery equivalents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then rounded out the chapter with a look at some animation examples in the
+    form of animating buttons, implementing an overlay effect with a twist and animating
+    content on a responsive site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we're going to take a look at advanced event handling.
+    In most cases, people use `.on()` or `.off()`, but as we'll see, this only scratches
+    the surface of what is possible with jQuery.
+  prefs: []
+  type: TYPE_NORMAL

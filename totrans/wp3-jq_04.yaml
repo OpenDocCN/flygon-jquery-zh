@@ -1,0 +1,1070 @@
+- en: 'Chapter 4. Doing a Lot More with Less: Making Use of Plugins for Both jQuery
+    and WordPress'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point, you understand enough about jQuery and WordPress basics—as well
+    as the different ways to integrate them together—that you can start to get truly
+    creative in your solutions. In this chapter and the following three chapters,
+    we're going to roll up our sleeves and work out solutions for some often requested
+    projects and start getting jQuery to do some useful and just plain cool work within
+    our WordPress sites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re going to bring all available components of WordPress and jQuery together.
+    In this chapter, we''ll be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with the very robust and popular jQuery plugin, ColorBox, by *Jack Moore*
+    of Color Powered.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We'll also work with the robust and popular WordPress plugin, cforms II, by
+    *Oliver Seidel* of Deliciousdays.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We'll then customize our default theme so that it works seamlessly with cforms
+    II and ColorBox, giving our site a seamless event registration experience.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We're not done! We'll then enhance cform II's already great validation with
+    jQuery for a smooth user experience.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Get ready to put your WordPress site to work!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The project overview: Seamless event registration'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While we will continue to work with the default theme, we're going to imagine
+    a different hypothetical client and scenario for this chapter's jQuery enhancement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this scenario, the "client" is a not-for-profit/awareness group. They've
+    created an **Events** category in their WordPress site and whenever a new event
+    is planned, it is up to each event's coordinator to post information about their
+    upcoming event to the Events category.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of their events are free but very disorganized as it's up to each coordinator
+    to decide how they want to accept registration for an event, through e-mails or
+    phone calls. People get confused and e-mail the wrong people on the site, and
+    then there's no reliability of who's coming to what events so that the organization's
+    leaders can gather stats from busy event coordinators in order to keep track of
+    how effective the events are for their cause.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The good news is, we can still help them fix all this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What the "client" wants
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: After sitting down and discussing all the options, ultimately, they want one,
+    simple registration form that can have the event name passed to it, and then e-mailed
+    on to the event administrator, who will dole the RSVPs out among the various event
+    organizers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'They''ve also received feedback by registrants who have complained that the
+    event''s publish date confuses them: They don''t register for events because,
+    unless the coordinator makes the date bold or places it inside the title, it looks
+    like the event is happening on that day, or has happened in the past. Because
+    of this, the client would like their event posts template restyled and cleaned
+    up a bit so that it''s easier to recognize them as events and not the same as
+    other posts on the site.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Last, and most importantly, they've been really impressed and influenced by
+    the feedback and other forms they've seen on several sites lately, and would really
+    like it if their registration form opened up in a modal box so that people can
+    register for an event while staying on the **Events** page. When they're done
+    registering for an event, they can continue browsing the **Events** category and
+    easily register for more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Part 1: Getting everything set up'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Luckily for us, with a little WordPress and jQuery knowledge under our belt,
+    this task is not as complicated as it sounds. In the last chapter, I extolled
+    the virtues of keeping design and functionality separate and wrapping your jQuery
+    enhancements in WordPress plugins. I also mentioned the fact that there are always
+    exceptions. Well, here''s a scenario where we''ll be inclined to apply our enhancements
+    directly to the theme for a couple of reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll already be tweaking the theme to create a custom category page for events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: And, we'll also need to create a custom page template for the form that can
+    load into a modal box without reloading the rest of the site's headers and footers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Because these requests require that the client understand they'll need to take
+    care if they ever want to update or swap out their theme, we might as well leverage
+    the full power the WordPress theme API can provide us for this enhancement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we'll need
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s start with the main parts of the enhancement: We''ll need a form with
+    e-mail capability and a modal box to load it in. The rest we''ll do with a few
+    custom jQuery scripts and customizations to the WordPress theme.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ColorBox
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For the modal box, there are several good jQuery plugins. You've probably heard
+    of ThickBox which is very good, but I myself prefer ColorBox for several usage
+    and aesthetic reasons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can download the jQuery ColorBox plugin from here: [http://www.colorpowered.com/colorbox/](http://www.colorpowered.com/colorbox/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Why ColorBox and not ThickBox?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The ThickBox plugin comes bundled with Wordpress and I was a big ThickBox fan,
+    yet, I also preferred the simplicity of jQuery LightBox (jQuery LightBox only
+    works with images). I was quite impressed when I came across ColorBox, there are
+    a few reasons for this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both ThickBox and ColorBox plugins offer modal windows for more than just images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can call up inline elements, external files, and iFrames as well as basic
+    AJAX calls. No problems at all.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: However, ColorBox, compared to ThickBox has a few advantages. For ColorBox,
+    *Jack Moore* really took some time and effort to come up with five, very slick
+    styles for the modal window, and a nice set of callback and extension functions
+    for the more advanced developer to take advantage of. Second, all image loading
+    for the modal window components (the transparent background, close, **Next**,
+    and **Back** buttons) is handled entirely in the stylesheets, so it's very easy
+    for a designer to custom-style the modal window. On several occasions, I've had
+    to hand edit the `thickbox js` file in order to get the images to load properly
+    if they were not relative to the `plugins js` file the way ThickBox intended or
+    if I needed to add a new image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Last, ThickBox relies on you hand adding the `.thickbox` class attribute to
+    elements you want to launch the modal window from. While this approach works great
+    for web developers who have the luxury of handcoding everything up, it's a pain
+    for implementing inside a publishing platform such as WordPress for less technical
+    users. Having to coach (and coax) clients through setting their Administration
+    panel editor to **HTML** and custom adding `class` attributes to their markup
+    is just painful. None of that is necessary for ColorBox. It is easily controlled
+    with jQuery selectors, so the theme or plugin developer can take care of selections
+    based on WordPress's HTML output allowing the content editors to simply focus
+    on their content without any HTML understanding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cforms II
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To create the registration form we have numerous WordPress plugins to choose
+    from, but I find the best to be **cforms II**. Cforms II states upfront: "Admittedly,
+    cforms is not the easiest form mailer plugin, but it may be the most flexible."
+    And they''re right. And after working with it just once, you''ll find that it''s
+    much easier than you''d think.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can download the WordPress cformsII plugin from here: [http://www.deliciousdays.com/cforms-plugin/](http://www.deliciousdays.com/cforms-plugin/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the WordPress plugin
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once you've downloaded the cforms II plugin, you should follow the instructions
+    provided by the developer for installing and activating them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Essentially, this entails unzipping the package, placing `cforms` directory
+    in your WordPress installation's `wp-content/plugins` directory, and then navigating
+    to the Administrator's **Manage Plugins** page. You'll then select **Activate**
+    for the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing the WordPress plugin](img/1742_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once you have the plugin installed and activated, let's get to work with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the registration form with cforms II
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The cforms II plugin offers many powerful form-building features for the not-so-technical
+    WordPress administrator. As a more technical WordPress developer, it flat out
+    saves you tons of time. The cforms administration interface does take a while
+    to get used to, but it is by far the most powerful and flexible form plugin I've
+    used with WordPress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CformsII is a complex plugin that requires a large amount of administration
+    real estate, and several screen pages. For this reason, once you activate the
+    plugin, you'll find a whole new panel available on your left-hand side Administration
+    area.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Setting up the registration form with cforms II](img/1742_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Out of the box, cformsII allows for the use of AJAX, in that it will submit
+    and update the form without reloading the page. It also allows for the very easy
+    creation of all basic types of form elements: `input, select, check`, and `radio`
+    boxes as well as `textarea` boxes. You can wrap form elements in custom `fieldset`
+    tags with `legend` text tags for easy grouping of related form elements.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Powerful server-side validation is built right in. It's very easy to assign
+    fields to be required and check for valid e-mail addresses. Beyond that, you can
+    also easily assign your own, custom regular expressions for custom validation.
+    The cforms **Help!** panel even gives you helpful examples of regular expressions
+    that you can use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Setting up the registration form with cforms II](img/1742_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Setting up cforms II securely**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll want to read up on the cforms documentation, and if possible, have a
+    chat with the site's Admin or Hosting provider's tech support. You'll want to
+    take care to go through the **Global Settings** panel and make sure your installation
+    of cforms II is as secure as possible for your needs of the forms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If at all possible, try to use Captcha fields to reduce spam and turn off file
+    upload capabilities if you don't need them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Striking a balance: Forms should be short and easy and yet retrieve useful
+    information'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The goal of a form is to strike a balance between gaining as much information
+    from the user as possible without making them feel as though you're asking for
+    too much personal information or, if nothing else, boring them with the tediousness
+    of filling out too many fields.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I've kept this registration form very short and to the point. First, I filled
+    out the form name and set it to **Ajax enabled**. This will help us out as the
+    page will be loading in a modal box, so when it's refreshed it won't pop out into
+    a new page, outside the modal window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Striking a balance: Forms should be short and easy and yet retrieve useful
+    information](img/1742_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Next, using the default form set that's already provided, let's set up a `fieldset`
+    with `legend` text and the five form inputs that the event coordinators need to
+    know for planning the events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First up the event, that is, the name of the event will be passed by the post
+    and not filled out by the user, but I want to show it and it needs to be in a
+    form element to be e-mailed to the administrator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After the event field, we'll need to ask for the user's name. As no money is
+    being exchanged and this form is more to have a "head count", I've left this to
+    a single field. It's a required field, but I'll allow the user to be as casual
+    or formal as they please.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we'll ask for an e-mail address. This is required and I've opted for server-side
+    validation using the checkboxes to the right. If a user suggests they can bring
+    something to the event, the event coordinator may want to reply to them and get
+    back in touch with them. Also, updates about the events may need to be broadcast
+    to registrants, so a valid e-mail is essential.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let's set up a select box to ask how many guests a registrant may bring
+    to the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Striking a balance: Forms should be short and easy and yet retrieve useful
+    information](img/1742_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Last, the message area is a text area that has some text suggesting the registrant
+    offer to bring something and if they can, to state what they can bring in the
+    message area.
+  prefs: []
+  type: TYPE_NORMAL
+- en: OK. So there's our form. In order to view it, it now needs to be placed in a
+    WordPress page or post. We'll be placing it in it's own page, which means we should
+    create that page in WordPress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the register page using WordPress 3.0's custom menu option
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you look at the Pages column on the left-hand side of your Administration
+    panel, you'll now see that the pageMash plugin is part of the options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll simply select **Add New** from the option in the left-hand menu under
+    **Pages** and create a page named **Register**. We'll leave the content area blank,
+    but you'll notice now, in **Edit** view, there's a **cforms** button in the editing
+    panel for the page/post.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the register page using WordPress 3.0''s custom menu option](img/1742_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Clicking on to that button will allow you to select the form you'd like placed
+    on the page (you can create multiple forms in cforms II and even place multiple
+    forms in a single post or page, but that's overkill for our purposes). Once you
+    select your form, you should see a placeholder for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the register page using WordPress 3.0''s custom menu option](img/1742_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You should now see your form in the **Register** page on your site, as shown
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the register page using WordPress 3.0''s custom menu option](img/1742_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Working with WordPress 3.0's custom menu option
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: However, we don't want the **Register** page to show up in our Page navigation
+    and we need it to be in its own template page so that it will load more nicely
+    into our modal box, without the theme's header and footer graphics and styling.
+    We'll need to modify our template, but first, let's create a custom menu in WordPress
+    3.0 that will override the **Page** menu and then we can easily specify what pages
+    should show up so the registration page won't appear in our site's navigation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First up, you''ll want to navigate to **Appearance | Menus** in the Administration
+    panel. Once there, you can click on the + (plus) tab to create a new menu and
+    then select options from the right to add to it. You can then, in the upper-right
+    panel set the menu to be your "primary navigation", which will overwrite the standard
+    Page navigation in the Twenty Ten default theme''s header. The following screenshot
+    illustrates the three main steps to set up a new main navigation and assign it
+    as the site''s primary navigation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with WordPress 3.0''s custom menu option](img/1742_04_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You can also include the **Event** category into the menu as shown in the following
+    screenshot (we''ll be needing access to this page later):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with WordPress 3.0''s custom menu option](img/1742_04_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: OK! We now have a "hidden" page holding our registration form. Let's get started
+    with the theme customizations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing the theme
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Again, we''ll need to customize the theme in two ways: First, we want a custom
+    page template to hold our registration form that will load into the modal box
+    and second, we''ll need to create a custom category template and modify it so
+    that it will display only posts assigned to the **Events** category and launch
+    the modal box with the registration form in it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the custom page template
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: First up, we'll need to create a new page template that we can assign our registration
+    page to. We'll start by creating a copy of our **page.php** template and renaming
+    it **registration-page.php**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the custom page template](img/1742_04_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The whole point of this form is to load in the ColorBox modal window, so having
+    our theme's header and footer styling will be a bit distracting. We'll simply
+    remove the `get_header()` and `get_footer()` WordPress template tag commands from
+    this template page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, while we don''t want the header and footer styles, we do need the page
+    to be a properly formatted HTML page that loads in jQuery. We''ll manually add
+    a doctype and borrow some of the WordPress header code from the `header.php` file,
+    just from a `body` tag to the beginning of this template''s loop, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: You'll notice that we've simplified it a lot compared to the `header.php` file's
+    `head` tag code. We don't need to worry about comments or a sidebar on this page,
+    so those bits of PHP WordPress code have been removed. We do need jQuery to load
+    in and I've also gone ahead and added a few manual styles the cforms use to spruce
+    up our form a bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll then add this new footer markup; just the closing body and HTML tags
+    just below the template page''s loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Don''t forget about your plugin hooks when customizing template pages**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note, I made sure that the `wp_head()` and `wp_footer()` were manually placed
+    in our registration template page. Many plugins require those hooks to be in a
+    theme to work. If you're creating custom pages, make sure that they be included
+    in the header or footer or that you place them in manually if the theme's `header.php`
+    and `footer.php` files won't be included, as this template page does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Last, for this new page to be recognized as a special template for WordPress,
+    we have to add a **template header** to the very top of the document in commented
+    out PHP as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As with our plugin in [Chapter 3](ch03.html "Chapter 3. Digging Deeper: Understanding
+    jQuery and WordPress Together"), *Digging Deeper: Understanding WordPress and
+    jQuery Together*, make sure there are no spaces or hard returns before the `<?php`
+    tag. Otherwise, you may get an error about headers already having been sent.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, if we return to our **Registration** page in the Administration panel,
+    on the right-hand side, we'll see that our new page template is available to be
+    assigned to the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the custom page template](img/1742_04_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can now see that if we use the browser's address bar to navigate to the URL
+    of our **Register** page, it loads up without any other WordPress styling and
+    is ready to be loaded into our ColorBox modal window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the custom page template](img/1742_04_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: That's the first half of our solution. Let's now finish it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the custom category template
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We now need to create a special category template for the **Events** category.
+    Again, we'll want each event to have a registration link. That link will pass
+    the event's title to the registration form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the custom category template](img/1742_04_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To get started with this, if you''ll recall the Template Hierarchy from [Chapter
+    3](ch03.html "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"),
+    *Digging Deeper: Understanding WordPress and jQuery Together*, the `category.php`
+    template page trumps the `archive.php` template page. Turns out, the default template
+    that we''re using doesn''t have a `category.php` page. We''ll simply create one
+    by duplicating the `archive.php` page and naming it `category.php`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But wait; we don''t just want this page to show *any* category. We want to
+    only show the Events category. You''ll also recall from [Chapter 3](ch03.html
+    "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"), *Digging
+    Deeper: Understanding WordPress and jQuery Together*, that you can further trump
+    the `category.php` template with a specific `category-ID.php` template page such
+    as **category-3.php**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It just so happens that in my local setup of WordPress, the ID for the Event
+    category is 3, so that's what we'll name the file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the custom category template](img/1742_04_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Finding your category ID**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Those of you working in your own WordPress installation, the category ID numbers
+    are assigned as you create categories. First, you'll need to determine what your
+    **Events** category's ID number is. You can do this by navigating to the **Posts
+    | Categories** page in the Administration panel and selecting **Edit** under the
+    **Events** category. You can then check the URL in that category's **Edit** page.
+    At the very end of the URL you'll see the category's ID number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the custom category template](img/1742_04_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We're now ready to customize the `category-3.php` template for the **Events**
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First up, as we saw in the previous chapter, this page calls the `get_template_part(
+    'loop', 'category' )` function from the `loop.php` template page. We actually
+    want a custom, very simple setup for the **Events** category *only*. While we
+    certainly could update the `if...else` statement of `loop.php` with an additional
+    custom loop (which is a tad beyond the scope of this book, stay tuned for the
+    upcoming **WordPress 3.0 Theme Design** book from Packt!), for this custom client
+    project we'll just comment out the call to that loop and add in our own very simple
+    loop that, thanks to the Template Hierarchy, will only work on our **Events**
+    category page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you haven't done so, you might want to deactivate your **Add Author Bio**
+    plugin that we built in the previous chapter. It's not necessary for this project,
+    though it doesn't hurt to have it activated (it will just be sitting there in
+    the Event's posts).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Notice that in the loop towards the bottom, we made a `link` tag that references
+    the register form. I''ve ammended a **variable string** named `evnt` to that link
+    and added the title of the event using the `get_title()` template tag as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ll now go back up to the top of the template page and make sure that the
+    header title makes sense. There''s a bunch of `if...else` statements at the top
+    checking to see if the content returned is from an archive, category, or tag (remember,
+    this page was duplicated from the default template''s `archive.php` page). As
+    this template page will only load up Event posts now, we don''t really need all
+    that PHP, but it doesn''t hurt. Mostly, we''ll want to add in a main header with
+    the following markup and code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: That will give us a title named **Upcoming Events** on the page (or whatever
+    you actually named your own **Events** category, that is, Shows, Parties, and
+    so on—you get to name it. That `single_cat_title()` template tag will pull it
+    in for you).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the very bottom of the theme''s `style.css` sheet, we''ll add the following
+    rules to style our registration link and float it to the right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: When we look at an event post now, we'll see our Event post with a dynamic link
+    at the bottom to **Register:**
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating the custom category template](img/1742_04_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Getting jQuery in on the game plan
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Alright! I don't know about you, but I feel that was quite a bit of prep-work.
+    It's all going to come together now as we load up the ColorBox plugin and cook
+    up a few final custom jQuery scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Including the ColorBox plugin
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In our theme, let's create a `js` directory, and within that directory, let's
+    create an additional directory named **colorbox**. This will allow us to place
+    in the CSS sheet and image collateral for the ColorBox plugin and keep everything
+    tidy and working the way it prefers to work in the **colorbox.css** sheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Including the ColorBox plugin](img/1742_04_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We''ll unzip our ColorBox plugin and move over the minified version into our
+    `js/colorbox` directory. We''ll then take the stylesheets and collateral from
+    the `example1` folder (I like it the best, the striped, transparent background
+    and rounded corners are great), and drop them into the **colorbox** directory.
+    We''ll then go to our theme''s `header.php` file and include both the **colorbox.css**
+    stylesheet, underneath the theme''s main stylesheet as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, above the `wp_head` function, we''ll add in our main jQuery include as
+    well as the ColorBox plugin using the methods that we learned in the previous
+    chapters, taking advantage of the script API as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Writing a custom jQuery script
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now, in the root of our `js` directory, let''s create a new `custom-jquery.js`
+    file and also be sure to include it in our `header.php` file, *under* our ColorBox
+    includes as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Get set for some jQuery fun now. Since we've gone through the trouble of hand
+    including the ColorBox plugin into our WordPress theme, we might as well make
+    sure it can load up images in addition to our registration form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To ensure that ColorBox only loads up images, and not every link on the page,
+    we''ll think of some examples back to [Chapter 2](ch02.html "Chapter 2. Working
+    with jQuery in WordPress"), *Working with jQuery in WordPress*, and do a little
+    creative selecting. We''ll add this rule to our `custom-jquery.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This selection only works on tag links that are in posts, inside the `.entry`
+    class, that *have* thumbnail `img` tags. No other links will activate ColorBox.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Writing a custom jQuery script](img/1742_04_19.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, to get the registration page to launch ColorBox, we''ll be a bit more
+    clever. While I''ve added a `.registration` class, I don''t want to rely on it
+    to launch ColorBox. The only link that should trigger the modal window is a link
+    to the registration form, so I''ll be sure to select for that. In my `cb-registration.js`
+    file, inside my document ready function and after my image select `colorbox` function,
+    I''ll add this script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: That particular jQuery selector will make sure that again, only links that contain
+    (that's what the asterisk `*` is for) the word `register` in the `href` attribute
+    will trigger the ColorBox modal window, in ColorBox's iframe mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll notice that I also used ColorBox's available parameters to set a constrained
+    height and width for the registration form's modal box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, only our Registration links and image links with thumbnails launch ColorBox:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Writing a custom jQuery script](img/1742_04_20.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Pulling it all together: One tiny cforms II hack required'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You'll recall that we set up our registration link to pass the name of the event
+    in the URL via a **GET call**, sometimes called a **variable string**, to the
+    Registration form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right now, there is no way that the cforms administration panel will pick up
+    that variable, but there's a quick, and fairly commonly used "hack" for cforms
+    to make sure you can pass your own custom variables to the form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: cforms II creates little-bracket-enclosed template names for the variables it
+    can pick up, like adding the variable template:`{Title}` will display post or
+    page title that the form is on. We want to pass it a post title from another page
+    (rather than having to manually add this form to every Event post), so we'll add
+    our own variable template to the cformsII plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Customizing a plugin? Keep copious notes!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: WordPress and jQuery developers usually keep updating and refining their plugins.
+    Your best bet is to try to find a solution that doesn't require you to edit the
+    actual plugin source files. However, as in this case, if you find you do edit
+    a plugins source file, add your own `customization-readMe.txt` file to the directory
+    and keep detailed notes of what you amended or edited in the plugin. When the
+    developer releases and upgrades their plugin, especially WordPress plugins that
+    sometimes need updating to keep up with the current WordPress core version, you'll
+    lose your amendments and hacks when you update the plugin. Your notes will make
+    it easy to reintegrate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the cforms II plugin directory, locate the `lib_aux.php` file. Around line
+    421, just after code that looks like `...$m = str_replace( ''{BLOGNAME}'',..`.
+    add this line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, in the cforms administration panel for my Registration form, we can now
+    add the **{Event}** variable to the `Event` field that I added to the `lib_aux.php`
+    page in the plugin. Let's also make sure the field is set to "read only".
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Pulling it all together: One tiny cforms II hack required](img/1742_04_21.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Just for clarity, I''d like the event name to show up in the header of the
+    form as well. The header is not part of cforms, but part of the page template.
+    In my theme directory, I''ll open up `registration-page.php` and next to the header''s
+    `the_title()` template tag on line 41, I''ll add the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the form launches, you'll now see the name of the event in the header and
+    in the Event field, which is set to read only and not editable by the user. Now
+    when the form is submitted and e-mailed to the administrator, it's clear what
+    event the registration is for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Pulling it all together: One tiny cforms II hack required](img/1742_04_22.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We now have an Event page that shows the user's upcoming events and lets them
+    seamlessly register for those in a form that loads in a modal window as planned.
+    Great job! Let's see about making this experience even better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Part 2: Form validation—make sure that what''s submitted is right'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The great news is, cformsII provides nifty, awesomely CSS styled, server-side
+    validation already built-in and ready to go. You can see if I click on **Submit**
+    on my form without filling out the required details, or an improperly formatted
+    e-mail address, the form reloads showing me the fields that are incorrect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Part 2: Form validation—make sure that what''s submitted is right](img/1742_04_23.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: But why wait until the user clicks on the **Submit** button? While **server-side
+    validation** is essential and the only way to properly validate data, by adding
+    in a little **client-side** validation, with jQuery, we can easily enhance and
+    speed up the user's process by alerting them as they work through the form that
+    they're missing details or have data improperly formatted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Why is server-side validation important?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Client-side validation with JavaScript and jQuery should never be relied on
+    for data validation or to prevent improperly formatted information from being
+    submitted and sent to the server. Users can always disable JavaScript in their
+    browser and then submit any values they want (sometimes using improperly formatted
+    values to hack into your server through the form). Client-side validation, for
+    this reason, should only be used to *enhance* the user's experience and not actually
+    protect the server or data integrity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The trick to client-side validation: Don''t just tell them when it''s wrong!'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Everyone responds to positive feedback. Instead of waiting for your users to
+    mess up or forget a field, with the use of jQuery and a few styles you can let
+    them know that they filled the field out correctly and are ready to move on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Inkscape, I've made a simple little "check" and "x" set of icons that
+    can be applied as a background image to a span added by jQuery. Using the CSS
+    sprite image technique of adjusting the background position to display the "check"
+    or the "x" icons, the user will visually see quickly if the form field is correctly
+    filled out and that it's OK to move on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The trick to client-side validation: Don''t just tell them when it''s wrong!](img/1742_04_24.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Blank input validation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In order to set up this basic validation, we''ll write up a jQuery script that
+    selects for the input items and on `blur`, sets off a function. Let''s place the
+    script in the `registration-page.php` just below the loop code, above the `wp-footer()`
+    hook, as shown (note the bold comments in the code to follow along with what each
+    jQuery statement does):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The previous code appends an exclamation point (`!`) for an invalid, empty
+    field, or a quick `thanks`. for a valid, filled-out one. However, as the user
+    focuses and blurs the input fields, the spans keep getting appended with the `after`
+    function. To compensate for that, we''ll add a custom script that works on `focus`,
+    just underneath our `blur` script. It will remove the `after` appended spans as
+    shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gives us some very nice, basic validation that checks for blank inputs.
+    You''ll note that our `span` tags have classes amended to them. I''ve added the
+    "check" and "x" images to my theme''s image directory, and now, at the very bottom
+    of my theme''s `style.css` stylesheet, I''ll add the following class rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The end result is a pretty nice, obvious visual display of what happens when
+    you mouse or tab through the fields, but leave the two required fields blank,
+    before ever clicking on the **Submit** button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Blank input validation](img/1742_04_25.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Properly formatted e-mail validation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s just take this one small step further. It''s one thing to leave the
+    e-mail address blank, but we might as well point out if it''s not well formed.
+    Steve Reynolds, has an excellent how-to post on his site about using jQuery to
+    validate an e-mail address. You can read up on it here: [http://www.reynoldsftw.com/2009/03/live-email-validation-with-jquery/](http://www.reynoldsftw.com/2009/03/live-email-validation-with-jquery/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Steve's code demonstration is particularly interesting and worth a look at,
+    as he uses jQuery's `keyup` function to check validation against the e-mail expression
+    in real time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our purposes, we'll be borrowing Steve's regular expression function and
+    fitting it into the validation check we've already started, which works on the
+    `blur` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First up, below our existing script, we''ll add in Steve''s `isValidEmailAddress`
+    function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll take a close look at our existing script. What we want to do, is
+    after checking for a value of nothing (`val().length == 0`), we'll double-check
+    that the input field is not the email field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Firefox and Firebug, I explored the DOM and discovered that the email
+    field form has a unique class named as `.fldemail`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll place our new statement as an extension of our current if statement with
+    an `else if` statement before our general `else` statement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our updated `blur` script now looks like this (note the new email validation,
+    `if...else` statement in bold):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now not only check for empty fields, but also check for a valid e-mail
+    address on `blur` of a field input:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Properly formatted e-mail validation](img/1742_04_26.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Validation tip: don''t go overboard!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cforms II plugin server-side validation is more than adequate. Again, we're
+    just trying to speed things along with a little client-side validation, and not
+    frustrate our users because we've created a bunch of strict formatting rules for
+    data. Some people may have phone numbers, or zip codes that are a little differently
+    formatted than you would expect, and for most intents and purposes, this is OK.
+    Your best bet is to use your jQuery validation to prompt hints and inline help
+    and guide the user, rather than force them to comply with exact data formatting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Final thoughts and project wrap up: It''s all about graceful degrading'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As with everything you do with jQuery, you need to keep in mind that you're
+    creating useful enhancements that are great to have, but if for some reason a
+    user didn't have JavaScript enabled or available, the process or site won't break.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our client is very happy with our seamless registration solution. Going through
+    the registration process with JavaScript disabled, the registration process does
+    work just fine using the standard browser back keys. The only drawback I find
+    is that the registration form loads up *outside* of the WordPress theme, which
+    is what we had to do so it would load in nicely into the ColorBox modal window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the whole, I don't think this is that big of a problem. Going through my
+    various website stats, I'm hard-pressed to find a visitor who didn't have JavaScript
+    enabled. The two or three who didn't were probably in text-only browsers, so a
+    lack of WordPress theming would probably not be noticed at all (in fact, it's
+    probably nice for disabled users using text-to-speech browsers, not having to
+    wade through the header info to get to the form).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because we''re always thinking of hypotheticals in this title, if by some chance,
+    the client ever decided they''d like the form to work outside of ColorBox within
+    the WordPress template in the event JavaScript was disabled, I''ve come up with
+    the following solution:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, you'd need to load the form into *two* WordPress pages. One named `register`,
+    as we've done with the special template and another one named `register-b` (that's
+    just the permalink slug, the header could still say **Register** on both pages).
+    For the `register-b` page, you would not assign the special template; you'd leave
+    the **Page Template** as **Default Template**. You can place a cform on to as
+    many pages and posts as you like, so having this form in two places definitely
+    won't be a problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, you''ll go into the `category-3.php` Events template page and change
+    the link to call the alternative, default themed page as follows (note the bold
+    `-b` is the only difference from our original link):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Last, in your `custom-jquery.js` file, you'll simply create a jQuery script
+    that will rewrite that `href` link to the modal page form by removing the `-b`.
+    Be sure to place this script *before* your colorBox function scripts, just to
+    make sure the `href` transforms before setting up the colorBox functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: If JavaScript is enabled, jQuery will change all the register `href` instances
+    and the whole process will flow as planned using the ColorBox plugin. If not,
+    the user will register using the standard WordPress theme form and not be any-the-wiser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you can see in the following screenshot, the form would just load in as
+    part of the site if JavaScript were disabled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Final thoughts and project wrap up: It''s all about graceful degrading](img/1742_04_27.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''ve now learned how to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Really leverage a theme to aid in jQuery enhancements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enhance the very robust cforms II WordPress plugin with the jQuery ColorBox
+    plugin and a few custom scripts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: And this was just one of many ways to achieve this particular solution! As the
+    aim of this book is using jQuery within WordPress, I went down a route that focused
+    more on jQuery and accessible WordPress features. But sure, we could have plugin-ized
+    the ColorBox plugin; we could have plugin-ized the whole thing! Or made a plugin
+    that just extended the cforms plugin. The list of solution strategies is almost
+    endless.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, you'll need to look at each project and assess it accordingly. Coming
+    up in the next chapter, get ready to bust out the "eye candy" with some slick
+    HTML and CSS-based chart animation as well as image gallery slideshows and rotators,
+    and a few other clever ways to catch your user's attention.
+  prefs: []
+  type: TYPE_NORMAL

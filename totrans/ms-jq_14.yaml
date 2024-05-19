@@ -1,0 +1,504 @@
+- en: Chapter 14. Testing jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To test or not to test, that's the question…
+  prefs: []
+  type: TYPE_NORMAL
+- en: To paraphrase that world-famous detective, the answer to this question should
+    be elementary!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you''ve spent any time with jQuery, you will no doubt be aware of its unit:
+    the need to test code, and that the most popular way is to use its testing library,
+    QUnit. Throughout this chapter, we''ll recap how to use it and then look at some
+    of the best practices we should use as well as explore how we can really cut down
+    our workflow effort, by automating the tests we perform on our code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Revisiting QUnit
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Automated testing using NodeJS and RequireJS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Best practices when using QUnit
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Are you ready to get stuck in? Let's get started…
+  prefs: []
+  type: TYPE_NORMAL
+- en: Revisiting QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Testing any code is vital to the successful construction of any online application
+    or site; after all, it goes without saying that we don't want bugs appearing in
+    the end result, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tests can be performed manually, but there is an increased risk of the human
+    factor, where we can't always be sure that the tests were performed 100 percent
+    identically. To reduce (or even eliminate) this risk, we can automate tests using
+    jQuery's unit testing suite, QUnit. We can, of course, run the QUnit tests manually,
+    but the beauty of QUnit is that it can be completely automated, as we will see
+    later in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For now, let's take a moment to recap the basics of how to get QUnit installed
+    and run some basic tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing QUnit
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are three ways to install QUnit. We can simply include the two links to
+    it in our code, using the JavaScript and CSS files available at [https://qunitjs.com](https://qunitjs.com).
+    These can be referenced directly, as they are hosted on QUnit's CDN links that
+    are provided by MaxCDN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The alternative is to use NodeJS. To do this, we can browse to the NodeJS site
+    at [http://www.nodejs.org](http://www.nodejs.org), download the appropriate version
+    for our platform, and then run this command on the NodeJS command prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can even use Bower to install QUnit; to do so, we need to first install
+    NodeJS and then run this command to install Bower:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once Bower is installed, QUnit can then be installed with this command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: At this stage, we're ready to start creating our automation tests with QUnit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to really push the boat out, you can test the latest committed version
+    of QUnit—the links are available at [http://code.jquery.com/qunit/](http://code.jquery.com/qunit/);
+    it should be noted that this is not for production use!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a simple demo
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we have QUnit installed, we''re ready to run a simple test. To prove
+    that it''s working, we''re going to modify a simple demo in order to test for
+    the number of letters in a textbox and indicate whether it is above or below a
+    given limit, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by extracting copies of the code required for our demo from the
+    code download that accompanies this book; go ahead and extract the `qunit.html`
+    file along with the `css` and `js` folders and store these in your project area:![Creating
+    a simple demo](img/image00492.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Don't worry about the presence of the `node_modules` folder; we will be creating
+    this later in the chapter, when Node is installed.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We now need to modify our test markup, so go ahead and open up `qunit.html`
+    and then modify it, as indicated:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, open up a text editor of your choice and add the following code, saving
+    it as `qunittest.js` in the `js` folder. The first block performs a check on the
+    length of the text field and displays a count; it turns the background of that
+    count red if it is over the prescribed length of eight characters:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add these lines of code immediately below the previous block; this calls QUnit
+    to test for the length of our text field and displays the results below the letter
+    count:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: With the files in place, we're ready to run the tests; go ahead and run `qunit.html`
+    in a browser. If all went well, we should see the results of our test, which in
+    this instance will show a pass:![Creating a simple demo](img/image00493.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Not every test that we perform in real life will be successful; there will
+    be occasions when our tests fail, if we''ve not provided the right values or performed
+    a calculation that gives an unexpected result. To see how this looks in QUnit,
+    go ahead and add these lines to the `qunittest.js` file, as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, refresh your browser window; this time around, you should see the tests
+    completed but with one failure, as shown in the following screenshot:![Creating
+    a simple demo](img/image00494.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a completed version of this example in the code download, in the `completed
+    version` folder, which explores the outcome of the tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although this was designed as a simple demo, it nevertheless highlights how
+    easy it is to create simple tests that give the appropriate responses; let's pause
+    for a moment to consider what we have covered in this exercise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key to each test lies in the use of the `assert.ok()` function—this performs
+    a simple Boolean check. In our examples, we check whether the text length is 8
+    characters or less or 8 characters or more and either show pass or fail depending
+    on the outcome. Additionally, we can either ask QUnit to show a standard text
+    or override it with a personalized message. This approach should be sufficient
+    to get started with unit testing your code; as time progresses, we can always
+    develop the tests further, if desired.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The beauty of this library is that we can use it with either jQuery or JavaScript;
+    our examples in this chapter are naturally based around using the former, but
+    QUnit is flexible enough to work with the latter, should we decide to move away
+    from using jQuery in the future. QUnit is part of the jQuery family of products;
+    there are similarities to other simple testing libraries, such as JUnit (available
+    at [http://junit.org/](http://junit.org/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a huge amount that we can do when we harness the power of QUnit—what
+    we've seen here only scratches the surface of what is possible to achieve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you want to learn more about the basics of QUnit, then I suggest that you
+    refer to *Instant Testing with QUnit*, *Dmitry Sheiko*, available from Packt Publishing.
+    There are lots of tutorials available online too; you can try this one, as a starting
+    point: [http://code.tutsplus.com/tutorials/how-to-test-your-javascript-code-with-QUnit--net-9077](http://code.tutsplus.com/tutorials/how-to-test-your-javascript-code-with-QUnit--net-9077).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a taster of what is possible, we will focus on one particular feature that
+    will help you to take your jQuery development skills further: instead of running
+    the tests manually each time, how about automating them completely so that they
+    run automatically?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Automating tests with QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Hold on, surely QUnit automates the running of these tests for us anyway?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The answer is yes and no. QUnit automated the tests but only to an extent; we
+    had to run the set of tests manually each time. This is all well and good, but
+    you know what? I'm feeling lazy and don't have the time or inclination to continually
+    run tests by hand, as I am sure you won't either. We can do better than this;
+    it is possible to automate our testing using NodeJS/Grunt and PhantomJS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Granted, it will take some effort to set up, but it is worth the time saved
+    when tests run automatically as soon as any identified content has been altered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Automating tests with QUnit](img/image00495.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s take a look at what is involved in automating our test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll begin by installing NodeJS. To do this, browse to [http://nodejs.org/](http://nodejs.org/)
+    and download the appropriate binary for your system; it is available for Windows,
+    Mac OS, and Linux.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once installed, go ahead and open up the NodeJS command prompt and then change
+    to the `qunit` folder we created at the start of this chapter, in *Creating a
+    simple demo*.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'At command prompt, enter the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: NodeJS needs two files to be created in order to operate correctly; they are
+    `package.json` and `gruntfile.js`. Let's go ahead and create them now.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Switch to a normal text editor of your choice and then in a new file, add the
+    following code, saving it as `package.json`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Revert to the NodeJS command prompt and then enter the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In a separate file, add the following code and save it as `gruntfile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Revert to the NodeJS command prompt again and enter the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all went well, we should see something akin to the following screenshot appear:![Automating
+    tests with QUnit](img/image00496.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let''s now start Grunt and set it to watch for any changes in our code; to
+    do this, run this command in the NodeJS command prompt:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Open up a copy of `qunittest.js`, which we created earlier in this chapter,
+    and then save the file—I know this might sound crazy, but it is required to trigger
+    the process in Grunt.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If all went well, we should see this result appear in the NodeJS window:![Automating
+    tests with QUnit](img/image00497.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Revert to `qunittest.js` and then change this line as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save your file and then watch the Grunt window, which should now indicate a
+    failed test:![Automating tests with QUnit](img/image00498.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Let's change tack and move on to something else; although we've not covered
+    the use of QUnit in any great depth, it is nevertheless important to try and follow
+    best practices where possible, when using QUnit. Let's take a moment to consider
+    some of these best practices in order to see how they can improve our coding skills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring best practices when using QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The aim of any developer should be to follow best practices when possible;
+    it''s not always practical to do this, so it is important to learn where to compromise
+    if circumstances dictate. Assuming this won''t happen too often, there are a number
+    of pointers we can try to follow, as a best practice, when using QUnit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Make each test independent of each other**: Each test we run should only
+    test one specific behavior; if we test the same behavior in multiple tests, then
+    we will have to change all the tests if the behavior needs to be changed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Don''t make unnecessary assertions**: Ask yourself this question, "What behavior
+    are we trying to test?". A unit test is meant to be a design schematic of how
+    a certain behavior should work and not detail everything the code happens to do.
+    Try to keep assertions to one per test where possible; there is no point in running
+    a test if an assertion is already tested elsewhere in our code.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Test only one code unit at a time**: The architecture design of your code
+    must support testing units (that is, classes or very small groups of classes)
+    independently and not chained together. If not, you risk creating a lot of overlap,
+    which will cascade and cause failures elsewhere in your code. If the design of
+    your application or site doesn''t allow this, then the quality of your code will
+    suffer; it may be necessary to use **Inversion of Control** (**IoC**) to test
+    your work instead.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The usual practice is for the custom code to call into generic, reusable libraries
+    (such as QUnit); IoC flips the process so that in this instance, the tests are
+    performed by QUnit calling our custom code instead.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Mock out all external services and state data**: A key part of unit testing
+    is to reduce the effect of external services on your code, where possible—the
+    behavior of these services can overlap with your tests and impact the results.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Avoid mocking up too many objects or state data**: If you have any data that
+    controls the state of your application or site, then try to keep any mock data
+    to below 5 percent; anything higher and you risk making your tests less trustworthy.
+    It is also wise to reset these back to a known value before running successive
+    tests, as different tests can influence these values for other tests. If you find
+    that you have to run tests in a specific order or that you have a dependency on
+    an active database or network connections, then your design or code is not right
+    and you should revisit both to understand why and how the dependencies can be
+    removed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Avoid unnecessary preconditions**: Avoid having common setup code that runs
+    at the beginning of lots of unrelated tests. This will confuse your tests, as
+    it won''t be clear which assumptions your test relies on and indicates that you''re
+    not testing just a single unit. It is key to create the right conditions, even
+    though this can be difficult—the trick is to keep them simple as much as it is
+    practical.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Don''t unit test configuration settings**: There is no benefit in inspecting
+    your configuration settings when running unit tests; it will likely result in
+    duplicated code, which isn''t necessary.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Don''t specify your implementation – specify the result instead**: Unit testing
+    is designed to focus on the results, not the implementation—does your function
+    produce what you expect it to do? Take an example of the following code snippet:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This seems perfectly reasonable, right? It's perfectly valid, if it weren't
+    for the fact that it focuses on *how* the code was implemented, not the result.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'A better way to test the code is to use this approach instead:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In this example, we're not focusing on the route taken to get our result but
+    on the end result itself; does it produce what we need to see?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Name your unit tests clearly and consistently**: A successful unit test will
+    clearly indicate its purpose; a useful way to name tests is using what I call
+    the **SSR** principle, or **Subject, Scenario, and Result**. This means that we
+    can identify what is being tested, when the tests should be run, and what the
+    expected result will be. If we simply name it with just the subject, then it will
+    become difficult to maintain if we don''t know what we''re trying to maintain!'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These tips only scratch the surface of what should be followed as a good practice;
+    for a more in-depth discussion, it is worthwhile to read the article by Adam Kolawa
+    on applying unit testing, which is available at [http://www.parasoft.com/wp-content/uploads/pdf/unittestting.pdf](http://www.parasoft.com/wp-content/uploads/pdf/unittestting.pdf).
+    The key point to remember though is to keep it simple, logical, and not try to
+    over-complicate your tests, or they will become meaningless!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've now reached the end of the chapter; even though it was short, it covered
+    some useful points on unit testing practices and how we can save ourselves time
+    and effort by automating our testing. Let's quickly recap what we learned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a quick revisit of the principles of QUnit and how to install
+    it; we briefly covered the most popular method but also looked at how to use CDN
+    and Bower to make the libraries available in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up came a look at some basic examples of testing; while these are very
+    simple, they highlighted the principles we should use in unit testing. These were
+    explored further with a discussion on the best practices to follow when unit testing
+    with QUnit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've now reached the end of the book. I hope you enjoyed our journey through
+    *Mastering jQuery* and have seen that it is not just about writing code but about
+    some of the more soft topics, which will help enhance your skills as a jQuery
+    developer.
+  prefs: []
+  type: TYPE_NORMAL

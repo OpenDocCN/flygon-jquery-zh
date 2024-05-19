@@ -1,0 +1,1116 @@
+- en: Chapter 5. jQuery Animation within WordPress
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We're going to continue to build on our knowledge of jQuery and WordPress while
+    delving deeper into animation using jQuery. Animation is one of jQuery's strong
+    suites and while you may eschew animation as frivolous or a cheap trick, just
+    for "eye candy", it can be very useful when properly implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery animation of CSS properties, colors, and interface elements can ensure
+    that users clearly see alert, error, and conformation messages. Animation also
+    enables interface objects to fade and slide in and out of view for a better user
+    experience. Last but not least, a little "eye candy" certainly never hurt a site's
+    interest and popularity level with users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will be using animation to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grab your user's attention and direct it to alerts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Save space and animate through a series of rotating sticky posts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create some slick, animated mouse-over effects and easy animated graph charts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get started applying useful, high-end animations to our WordPress site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery animation basics
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To start off, we already have a little experience with jQuery animation. Let''s
+    refresh: In [Chapter 2](ch02.html "Chapter 2. Working with jQuery in WordPress"),
+    *Working with jQuery in WordPress*, in the *Events and effects* section, we learned
+    about the following functions: `show(), hide(), fadeIn(), fadeOut(), fadeTo(),
+    slideUp(), slideDown()`, and `slideToggle()`. I had also mentioned the `animate()`
+    and `stop()` functions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ve already worked with several of these functions in our previous projects
+    in [Chapter 2](ch02.html "Chapter 2. Working with jQuery in WordPress"), *Working
+    with jQuery in WordPress*; [Chapter 3](ch03.html "Chapter 3. Digging Deeper: Understanding
+    jQuery and WordPress Together"), *Digging Deeper: Understanding jQuery and WordPress
+    Together*; and [Chapter 4](ch04.html "Chapter 4. Doing a Lot More with Less: Making
+    Use of Plugins for Both jQuery and WordPress"), *Doing a Lot More with Less: Making
+    Use of Plugins for Both jQuery and WordPress*, particularly, `show()` and `hide()`,
+    as well as `fadeTo()` and `slideToggle()`. As we''ve seen, a very large portion
+    of your animation needs are easily met with these shortcut functions, though at
+    the same time, limited by them. Let''s now take a closer look at the `animate()`
+    function and pick up some fine grain control over our jQuery animations.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS properties made magical
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `.animate()` function allows you to animate any *numerical* CSS property.
+    Pixels `px` are the understood norm for most numerical property values, but you
+    can specify `em` and `%` (percentage) units. Pretty much anything you can place
+    in the handy `.css()` function, can be used in the `.animate()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, rather than numeric values, you can add the shortcut strings `"show",
+    "hide"`, and `"toggle"` to any property. They will essentially take the value
+    from 0 to 100, or vice versa, or toggle from 0 or 100 to the opposite number for
+    you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at a quick example of this clever function. Remember, you''ll
+    want to place any jQuery scripts you write inside the document ready function:
+    `jQuery(function(){//code here})`; also inside `<script>` tags, so that your jQuery
+    will launch when the DOM has finished loading:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This snippet will animate all `.post p` paragraph tags on the page, increasing
+    the font size and adding a border.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll notice that I added a `border` property that does not have a single numeric
+    value. You'll also notice that when you test this code on your site, the border
+    does not animate in; instead, it just appears at the very end as the animation
+    completes. Adding CSS properties that are not basic numeric values (like borders
+    or background color, hex values) will not animate, but you can add all CSS properties
+    using the `.animate()` function, which will act like the `.css()` function once
+    it's *completed* running. This is probably not the best way to add regular CSS
+    properties, but if you're animating something anyway, just know you can add other
+    non-numeric CSS properties, they just won't animate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Your property doesn''t work?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You probably noticed this with the `.css()` function as early as [Chapter 2](ch02.html
+    "Chapter 2. Working with jQuery in WordPress"), *Working with jQuery in WordPress*
+    already, but just in case you didn''t: property names must be **camel cased**
+    in order to be used by the `.animate()` and `.css()` function. It''s a bit confusing
+    as you''re probably just thinking of them as properties that you''d use in an
+    actual CSS stylesheet but you''ll need to specify `paddingBottom` instead of `padding-bottom`
+    and `marginRight` not `margin-right`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making it colorful
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You probably agree that as cool as the `.animate()` function is, it's not that
+    impressive without color (and a little jarring with color that just changes abruptly
+    at the end of the animation). You long to cross fade in brilliant color. Who doesn't?
+    Unfortunately, the core animate function isn't robust enough to calculate all
+    the variances of numbers in a single hex web color, much less between two hex
+    colors (let's just say, some serious math is involved). It's much more complicated
+    than moving a value anywhere from 0 to 100, or down again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The good news is, the animate function can be *extended* with the Color plugin.
+    The even better news? Yes, this plugin comes bundled with WordPress!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s add this plugin to our theme with the `wp_enqueue_script` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Registering and including a script that only needs to load on a particular
+    page?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You''ll recall in [Chapter 2](ch02.html "Chapter 2. Working with jQuery in
+    WordPress"), *Working with jQuery in WordPress*, that you can wrap your `wp_enqueue_script()`
+    functions in `if` statements that use WordPress'' conditional tags that check
+    for what page the site is on: `is_home()`, or `is_front_page()`, or `is_admin()`,
+    and so on. Be sure to use these to your advantage to help keep your site running
+    as optimized as possible and not unnecessarily slowed down by loading scripts
+    that aren''t needed. To find out more about conditional tags, check out their
+    use with the Script API in [Chapter 2](ch02.html "Chapter 2. Working with jQuery
+    in WordPress"), *Working with jQuery in WordPress*, and the conditional tag quick
+    reference in [Chapter 9](apa.html "Appendix A. Appendix: jQuery and WordPress
+    Reference Guide"), *jQuery and WordPress Reference*. You can also check out WordPress''
+    Codex at [http://codex.wordpress.org/Conditional_Tags](http://codex.wordpress.org/Conditional_Tags).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, this plugin *extends* the existing `.animate()` function, so there are
+    no new properties to learn! Once you've included the Color plugin into your project
+    you can animate in background colors to your heart's content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should now see the `.post` paragraphs fade elegantly to a nice, light-blue
+    color, as seen in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Making it colorful](img/1742_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Taking it easy, with easing control
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you're familiar with animation using various video editing tools or Adobe
+    Flash, you've probably heard of easing. **Easing** is the control of acceleration
+    and deceleration in an animation. It's most common use is to give animations a
+    more natural feel, mimicking various properties of physics found in the real world,
+    instead of calculated and rigid movement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Almost as complicated as animating hex color values, easing applies virtual
+    physics properties to the object being animated using various algorithms to control
+    the speed of an animation as it starts off and ends. Serious math indeed. jQuery
+    comes with a type of built-in easing, so we're saved from having to really think
+    about any of it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery's default easing option is called "swing". Technically, there are two
+    options—"linear" and "swing". **Linear easing** simply animates the object along
+    its values from point A to point B, like a good programming script should. No
+    acceleration or deceleration, so yeah, it is a tad "stiff".
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Swing easing** starts off more slowly, gains full speed, and then slows down
+    again as the animation completes. jQuery chose swing as the default easing option
+    as it looks best in most situations. That''s probably because this is how most
+    objects react in our real physical world; heading off a little slower while gaining
+    speed, then decelerating and slowing down as they come to rest (provided the object
+    didn''t crash into anything while at the maximum speed).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As swing easing is the *default*, let''s take a look at our previous script
+    that animates in our post''s paragraph blue background color and see if we can
+    detect the difference:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's subtle, but a definite difference is there. Linear easing is much more
+    rigid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Advanced easing: There''s a plugin for that!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you''ve probably guessed, plenty of "mathy" people have figured out all
+    sorts of variations in the easing algorithm to mimic all sorts of different physics
+    environments and yes, there''s a jQuery plugin for that. While this plugin doesn''t
+    come bundled with WordPress, that shouldn''t stop you from downloading and experimenting
+    with it. You can download and test out all the available easing options here:
+    [http://gsgd.co.uk/sandbox/jquery/easing/](http://gsgd.co.uk/sandbox/jquery/easing/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin, like the Color plugin, *extends* the `.animate()` function and provides
+    you with over 25 easing options, which include some pretty cool options such as
+    jswing bounce and elastic, as well as a host of vector easing paths such as circular
+    and sine wave.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The majority of these options are a bit of overkill for most projects that
+    I''ve been on but I do love the elastic and bounce easing options. By the way,
+    if you''re one of those "mathy" people I referred to a second ago, you''ll enjoy
+    checking out the magic behind the easing algorithms here: [http://www.robertpenner.com/easing/](http://www.robertpenner.com/easing/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Timing is everything: Ordering, delaying, and controlling the animation que'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Again, if you're familiar with animation, be it traditional animation, video,
+    or multimedia work with Flash, you've probably learned—*timing is everything*.
+    The more control you have over the timing and playback of your animations the
+    better. Easing, for example, depends on how much time to give the object to animate
+    and move. No matter how "smooth" you'd like an object to move, it's going to look
+    fairly jerky if you only give it a second or less to get across the screen. Let's
+    take a look at the three main ways to get a handle on your timing and playback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Getting your ducks in row: Chain ''em up'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We've discussed chaining functions in previous chapters, and you're most likely
+    aware that any events you've chained together in a jQuery statement kick off in
+    the order that they were *appended* to the chain. As far as I can tell, and based
+    on what the experts say, you can chain to your heart's content as many functions
+    as you'd like, infinitely (or until the browser crashes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the whole, I find laying out jQuery functions in separate lines, with their
+    own selector sets, can take up some space, but keeps your jQuery scripts much
+    more organized and manageable. Remember, you always start a jQuery statement with
+    an initial selector for a wrapper set, but based on additional chained functions
+    that can move you around the DOM and take their own selectors, you'll find that
+    you can move around and affect the DOM a whole lot just from one statement! Along
+    the way, possibly generating some quite magnificent "spaghetti code" that's hard
+    to follow and will make any developer who has to work with you hate your guts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, for functions that need to be run on a single initial selector set,
+    especially animation functions, I really like jQuery chains as they help keep
+    my animation sequences in the order that I want them to kick off, and it's clear
+    what wrapper set is going to be affected by the chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, even initially concise animation chains can get a little complicated.
+    That''s OK; unlike some scripting languages, JavaScript and jQuery rely on the
+    semi colon ";" as a clear ending statement, not the actual end of the line. So
+    you can organize your chains into separate lines so that it''s a little easier
+    to follow and edit like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Delay that order!
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Because timing is everything, I often discover I want a function''s animation
+    to complete, and yet, depending on the easing option, especially those that are
+    *elastic* or *bounce*, I don''t necessarily want the very next function to kick
+    off quite so fast! As of jQuery 1.4, it''s easy to **pause** the chain with the
+    `.delay()` function. Let''s place a three second pause in our chain like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Check your jQuery version!** `delay()` **requires 1.4+**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As soon as this function became available, I've put it to use in all sorts of
+    invaluable ways with my jQuery animations. However, if you find the delay function
+    is not working for you, you're probably working with version 1.3.2 or older of
+    jQuery. The delay function is only available with version 1.4+. You may want to
+    go back to [Chapter 2](ch02.html "Chapter 2. Working with jQuery in WordPress"),
+    *Working with jQuery in WordPress* and see about registering jQuery from the Google
+    CDN or including it directly in your theme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Jumping the queue
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Queues—those irritating lines that ensure everyone or everything in them is
+    processed fairly and in the order they arrived. jQuery's animation queue works
+    similarly, only processing each object's animation request, in the order it was
+    assigned to the object. Sometimes special needs and requirements arrive that shouldn't
+    be forced to waste time in the queue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, we've seen how the `.animate()` function, in addition to CSS properties,
+    can be passed various optional parameters specifying the *duration*, (slow, fast,
+    or numerical milliseconds) and the type of *easing* (swing, linear, or plugin
+    extended easing).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `que` parameter is a **true or false** Boolean that can be set if you don't
+    want the animate function to have to wait its turn. For the instances that you'd
+    like an object to have several animations to run in parallel with each other,
+    like sliding *and fading* at the same time, disabling the `queue` in your animate
+    function will do the trick.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to set the `queue` option in your code, instead of using the previous
+    syntax we''ve been working with, you will have to *wrap* all the other options
+    into a more advanced syntax which clearly labels each optional parameter like
+    so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the post is fading out *while* changing in height
+    at the same time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Jumping the queue](img/1742_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can see by the previous screenshot that the code we just wrote fades the
+    first `.post` div in *while* it's sliding down. If you change `false` to `true`,
+    and reload the page, you'll discover that the first `.post` div slides all the
+    way down to `500` pixels high *and then* fades in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stepping to completion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The final options that can be passed into the `.animate()` function are `step`
+    and `complete`. The `step` parameter allows you to set up an additional function
+    that can be called after each step of the animation is complete (sometimes useful
+    if you have multiple CSS properties you're animating). The `complete` parameter
+    allows you to specify a callback function when the entire animation function has
+    been completed. Keep in mind, you can chain multiple animation functions together,
+    and the steps with complete parameters are unique to each instance of the animation
+    functions that they belong to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have an animation that absolutely should not kick-off until the current
+    animation function has completed, the `.delay()` function might not be the best
+    way to go. You can use the `step` and `complete` parameters to kick off other
+    functions and animations in the exact order you wish.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The previous code snippet will generate JavaScript alerts at the `.animate()`
+    function's completed steps once it's completely finished.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Stepping to completion](img/1742_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: I've personally never needed to hook into the `step` parameter for a WordPress
+    project, but I can see how it could be very useful for hooking into and creating
+    a chain of cascading type effects. I have found the complete `parameter` very
+    useful for many of my animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grabbing the user's attention
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: OK, sample code snippets aside, it's time to get to work! Back in "hypothetical
+    land", our previous clients have enthusiastically touted our jQuery solutions
+    to a few associates and we now have quite a few requests for help with WordPress
+    sites. Let's walk through a few new hypothetical client situations and see if
+    we can solve their problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First up: a common way many sites employ "sticky" posts and how to enhance
+    them with a little jQuery animation.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Project: Animating an alert sticky post'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here's a quick and simple one. You've got a client who has a good friend, who
+    runs a non-profit educational organization's site, and they need a favor (meaning;
+    do this "for free" please).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The organization's after-school care runs on the public school's schedule (as
+    many kids are bussed over from different schools). If the public school system
+    takes a snow day or some other emergency day, the after-school program also closes
+    down. The organization does their best to notify people through their WordPress
+    site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Despite making it clear to parents that it's their responsibility to check the
+    site, or call to find out the center's schedule, there's been a few misunderstandings
+    with people who claim that they checked the site but *"didn't see the closing
+    alert"*. Apparently, even though they've been making the posts "sticky" so they
+    stay at the top, the posts look awfully similar to the rest of the site's content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You're happy to help (especially as they were referred to you by a client with
+    well-paying gigs). It helps that this is a really easy fix. First off, you can
+    simply add a few `.sticky` styles to their theme's `style.css` file, which makes
+    the sticky posts stand out a lot more on the site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: They've made it clear they only use the "sticky" feature for daycare and other
+    center alerts that affect the organization's center building being open to the
+    public so you decide to do a quick Google search for "creative `commons, public
+    domain, alert icon svg"` and download a very nice SVG file from [http://commons.wikimedia.org/wiki/File:Nuvola_apps_important.svg](http://commons.wikimedia.org/wiki/File:Nuvola_apps_important.svg).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's open that SVG file into Inkscape and size it down to 48 pixels wide to
+    save a transparent `.png` of it (I took the liberty of adding a little blur to
+    the shadow, but you may not want to). Name the PNG `sticky-alert.png`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Animating an alert sticky post](img/1742_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You then add the new `sticky-alert.png` image to their theme''s image directory
+    and update the stylesheet at the very bottom *or below* the existing `.sticky`
+    class, if one exists, with a few class rules for the `.sticky` calls like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the newly re-styled sticky posts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Animating an alert sticky post](img/1742_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is more than good enough. Now anyone going to the site regardless of JavaScript
+    being available will certainly notice that. But hey, since you're poking around
+    in the theme anyway, and you've decide to register jQuery, the jQuery Color plugin
+    from the WordPress bundle, and include a `custom-jquery.js` page to their `header.php`
+    file, you might as well add in this nice and simple few lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The previous code will fade our sticky posts from light yellow to darker orange,
+    and then *repeat* it again for emphasis. The following image shows the post faded
+    to darker orange:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Animating an alert sticky post](img/1742_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Again, a bit hard to see the animation in a book, but we just made sure that
+    the alert `.sticky` post, upon loading, will fade up to orange (`#ff9900`) and
+    back down to the yellow (`#ffffcc`), and then repeat one more time for quite the
+    "orange alert" effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The alert posts are very noticeable now and the organization can't thank you
+    enough! Which is more than enough for your few minutes worth of work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating easy, animated graphs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The non-profit organization was so impressed with your alert sticky post solution,
+    they've allocated some funds together and have got another request for you. They
+    noticed how you fixed up the alert icon using Inkscape and they've asked you how
+    much trouble it would be to generate a monthly graph for them for another post
+    they put up. The post is their top five stats from their green recycle program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the bulleted list is super easy for the site administrator to implement,
+    people don't really notice or remember the information, so they were thinking
+    of posting graphs to the site, but need someone to draw them or generate them
+    in some way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Looking through their site, you notice the editor always consistently formats
+    the information posted. All post titles have **"... Monthly Stats"** in them,
+    all the information is in bullets, and the percentage number always comes *after*
+    a colon "**:**". It is great that the admin has been so consistent. It will make
+    it very easy to work out a solution that allows the editor to continue doing what
+    they''ve always done. The posts currently look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating easy, animated graphs](img/1742_05_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You let the admin know as long as he/she continues to consistently format the
+    posts in this way, you can write up a jQuery script that will draw the chart for
+    them. They almost don't believe you, and are happy to have you proceed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started, we''ll need to first make sure we''re targeting the correct
+    posts for **Monthly Stats** only. We''ll do this by setting up a jQuery selector
+    like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we can see, this little "test" selection grabs all `h2` tags which are inside
+    `.posts` that only contain the text "Monthly `Stats"`. We then move along the
+    DOM and target the `.entry-content` div and then the **first** `ul` inside that.
+    We can see the previous code is properly targeting what we want in these posts
+    by changing the background color, as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating easy, animated graphs](img/1742_05_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now that we can target the specific posts we want, without changing the theme's
+    output or making our client do any work, let's get to work on the rest of the
+    graph!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First up, because we''ll be loading a background image, and those just load
+    a lot nicer from a theme''s stylesheet (it''s easier to target the images), let''s
+    use Inkscape again to help us create a basic background about 450 pixels wide
+    that shows the progression from "Just getting started" to "Yes!", like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating easy, animated graphs](img/1742_05_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Let's export a PNG of that graphic and add it to the image directory of our
+    client's theme. Then, using jQuery, let's dynamically add a class to all our targeted
+    `ul:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now go into the client''s theme stylesheet, and just as we did for the
+    sticky alert posts, create custom CSS rules for our new class. Open up the theme''s
+    `style.css` stylesheet and add these rules at the end:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first rule adds our new `greenBackground.png` chart image and sets some
+    basic properties so that the list items can start accommodating our upcoming jQuery
+    additions. The next two rules after that fix specific `.entry-content li` issues
+    that the client's theme (in this case, the default theme) places on every `li`
+    element inside an `.entry-content` div. We don't want the "little squares" before
+    our chart items, and we want the padding on each `li` moved in about `10px` more.
+    Again, we only want to affect the `.entry-content` li items if jQuery has added
+    our `.greenStats` class so we're sure to add that class name into the CSS rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we're ready for some serious jQuery magic. I hope you've been getting really
+    comfortable working with selectors and traversing the DOM until now. We're going
+    to have to put a fair amount of that knowledge to work to accomplish the next
+    few tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We want to place an `.each()` function item on our targeted `li` and begin manipulating
+    the content inside of them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by setting up this jQuery statement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, *inside* our `.each()` function, we''ll place code that start''s manipulating
+    the HTML and text inside each `li` object. We want to look for the colon ":" and
+    use that as a point to wrap a `div` around the number that comes after it. After
+    that, we''ll look for the ending `</li>` tag and use that as a point to close
+    our `div` that we started. We''ll accomplish this by using the `.text()` and `.replace()`
+    functions like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That previous code snippet now gives us custom `div` with the class `.nVal`
+    that we can start working with. The `.nVal` divs are ultimately going to be the
+    "bars" in our green stats graph! Underneath the previous code, we''ll continue
+    to flesh-out our `.each()` function with the following code, again *inside* the
+    `.each()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous code snippet, note that I used the `.delay()` function. That
+    function is optional if you're not using jQuery 1.4.2 or a higher library. I just
+    think a good half second or so pause to make sure that users notice the animation
+    is helpful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We again used the `.text()` function to pull the text from inside the `.nVal`
+    divs and use it in a mathematical equation to calculate the `width` of the divs
+    with the `.animate()` function. We multiply `nVar` by `3.8` because within our
+    chart design, a div width of about 380 pixels wide would be the equivalent of
+    100 percent. If your chart has different dimensions, you'd change those accordingly
+    to have the chart bars extend out properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The result looks great! Here''s our chart animation as it starts off:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating easy, animated graphs](img/1742_05_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'And here it is at its completion, a fun visually clear display of the organization''s
+    shining greensters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating easy, animated graphs](img/1742_05_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Delving deeper into animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Thanks to your animated green stats chart, you''re ready to take on some slightly
+    more complicated requests: clients *insisting* on Flash development. As someone
+    who got into web development through Flash in the 90s, a request for Flash development
+    is no problem. Complain all you want, you have to admit, Flash sure can animate.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, Flash does require a plugin and despite being the most popular desktop
+    browser plugin out there, it's not always a good way to display core content you
+    want to ensure everyone can see, much less essential elements such as site navigation.
+    Plus, while it's the most popular plugin for *desktop/laptop browsers*, Flash
+    is a "no-go" in Safari Mobile for iPhone and other WebKit-based browsers for most
+    SmartPhones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With all the advances of CSS and JavaScript support in browsers these days
+    (especially mobile browsers), my first question for Flash requests is always:
+    "Sure. First, tell me exactly what you''d like done, and we''ll see". Sure enough,
+    our client wants their main navigation panel animated.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flash can certainly do this, but then so can jQuery, and when JavaScript is
+    not an option, it will elegantly degrade into nicely styled CSS elements and in
+    the worst case, with no CSS, the page will load our WordPress theme's clean, semantic
+    XHTML into a text-only browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While there are plenty of ways to serve up Flash content and applications so
+    they degrade elegantly into compliant HTML alternatives (and you should *always*
+    offer these alternatives when working with the Flash player), why add that extra
+    layer of development and complexity if it's not essential? The client doesn't
+    need to serve up streaming video, or have custom cartoon characters animated,
+    much less want an in-depth, multimedia slathered and mashed up **Rich Interface
+    Application** (**RIA**). So, let's leave Flash for what Flash does best and use
+    jQuery to enhance what our client's WordPress site already does best.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luckily, the client is reasonable and willing to see what jQuery can do before
+    we resort to Flash. Let's show them what their WordPress site is made of with
+    a little jQuery inspiration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Project: Creating snazzy navigation'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Our Flash-inspired client has a business that recycles and refits materials
+    that NASA and other space agencies have junked and sold. They''d like their navigation
+    panel to represent this futuristic (and at the same time, retro) feel to their
+    users and provide a page navigation that, according to the client: "has a smooth
+    animation and our logo/icon rocket as a pointer".'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's go ahead and prep the theme so that we can get started. We'll continue
+    to use the Default Theme with the Page Navigation CSS changes that we made in
+    [Chapter 2](ch02.html "Chapter 2. Working with jQuery in WordPress"), *Working
+    with jQuery in WordPress*. We'll be enhancing the navigation with a smooth indent
+    and release animation that triggers on hovering on and off the menu items. We'll
+    top it off with a cool floating point selector (which also happens to be the site's
+    space ship icon).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First up, we''ll need to trace the client''s space ship icon used in their
+    logo, into a basic silhouette form so that we can create a floating pointer with
+    it. Again, this is easily done using Inkscape:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating snazzy navigation](img/1742_05_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We''ll take an extra step here and rotate the ship, and since it''s going to
+    be a transparent PNG file, add a nice drop shadow and afterburn gloss to give
+    it some depth:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating snazzy navigation](img/1742_05_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We''ll export this image as a 37 pixel wide transparent `.png`. Next up, we''ll
+    need to prep our theme''s stylesheet to accept this background image. We''ll be
+    creating a `div` called `#shipSlide` in jQuery to hold the image so our stylesheet
+    needs to accommodate that `id` name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Again, as with many examples in this book, to keep the process concise and
+    easy to understand, we''ll be doing things as directly as possible, but not necessarily
+    as optimized as possible. In a real-world project you may want to create a separate
+    stylesheet for any project like this or wrap your jQuery work into a plugin or
+    even in a WordPress plugin using the techniques we covered in [Chapter 3](ch03.html
+    "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"), *Digging
+    Deeper: Understanding jQuery and WordPress Together*. This all depends on how
+    flexible and portable you''d like the jQuery enhancement to be afterwards.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we''ll get to work in jQuery. As usual, for every project you''ll make
+    sure that jQuery is included into the theme, and that you have a `custom-jquery.js`
+    file included and set up to work in. Also, for this navigation, we''ll be using
+    the Color and Easing plugin. You can register the bundled Color plugin, but you''ll
+    need to download and include the custom Easing plugin into your theme manually.
+    Get it from: [http://gsgd.co.uk/sandbox/jquery/easing/](http://gsgd.co.uk/sandbox/jquery/easing/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our particular default theme, we'll start off with some jQuery to make it
+    a little clearer what our nav will do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our first bit of jQuery looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Before I fade the `#shipSlide` div with jQuery''s `.fadeTo()` function, I did
+    load it up into the browser to check and make sure the background image was loading
+    in from the CSS. The following screenshot shows the ship image loaded in and faded
+    by our budding jQuery script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating snazzy navigation](img/1742_05_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'OK, next up, let''s set up a basic animation that pushes the navigation `li.page_item`
+    objects in from the left, 35 pixels, relative to where they are. We''ll also then
+    target the tags and change their background color. We''ll use the `.hover` function
+    to make sure this happens on rollover and rollout of the `li.page_item` objects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, *inside* the first hover function, just *below* the a object''s color
+    animation, we''ll add in the following code snippet, which will move the `#shipSlide`
+    object to the position of the `li.item_page` (note the bold code only):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we've set up a variable we named `position` and also used a function called
+    `.position()` to be able to pull an array of information from the `li.page_item`
+    objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `#shipSlide` object's animate function moves the `marginLeft` of the ship
+    left to the `position.left` of the `page_item`, minus 175 pixels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll also notice in the previous code snippet's `animate` function that we
+    set the `queue` to `false` and that we're using the `easeOutBack` easing method
+    that's only available to us because we included the Easing plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The very last bit of code we need, *below* the `li.page_item .hover()` code
+    is another jQuery selection and `.hover()` function, which will fade the `#shipSlide`
+    object in and out on hover of the `#mainNav` object. Again, just place this jQuery
+    below all the other navigation code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: The final result looks great, the ship and menu item animation is smooth, and
+    the client is very happy with their new snazzy navigation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating snazzy navigation](img/1742_05_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Project: Creating rotating sticky posts'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Earlier we discovered that working with WordPress sticky posts is pretty easy!
+    That's good to know because our Mr. "I want Flash" client has now requested an
+    additional enhancement solution. They are using WordPress sticky posts to make
+    site viewers aware of the products that they're featuring. Making the posts sticky
+    works great keeping their product mentions up top (usually two to four at a time),
+    while their regular news posts and updates flow below the product features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, when they have more than two products to feature, (especially when
+    they have three or more products to feature) their current posts get pushed down,
+    sometimes way below the fold. They're worried that people just glancing at the
+    site from time to time may feel it's stale if they don't take the time to scroll
+    down and see the current posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'They''ve seen plenty of examples of sites that have really cool image rotators
+    with slide or cross-fade effects up on top of featured items and they''d like
+    to work something like that into their site. They originally thought they''d do
+    this in Flash and give up convenience, but since the jQuery navigation panel turned
+    out so well, they''d like to create a solution that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conserves space, so other posts don't get pushed "below the fold"
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Looks really nice and draws attention to the sticky feature posts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Means it's still easy for their marketing administrator to implement new featured
+    items (as easy as just creating a post and marking it "sticky"!)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This client''s theme already has the sticky post''s CSS changed slightly, in
+    that there''s a simple background that makes the posts have a dark gradation as
+    well as some font color changes. You''ll find these CSS rules at the bottom of
+    their theme''s `style.css` stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result looks like this, and you can see how just three sticky posts leave
+    NO room for checking out the current posts below those, and leave the user with
+    quite a bit of scrolling to do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating rotating sticky posts](img/1742_05_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Essentially, we'll want to collapse these stickies on top of themselves, maybe
+    make them a little shorter if possible, hide all of them except the *first* sticky
+    post, and then proceed to fade in the remaining posts *over* the first one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First up, it seems obvious, but again, make sure that you've registered and
+    included jQuery into the theme along with the Color and Easing plugins discussed
+    earlier. You can include jQuery however you wish, but I'll be using 1.4.2 from
+    the WordPress 3.0 bundle as discussed in [Chapter 2](ch02.html "Chapter 2. Working
+    with jQuery in WordPress"), *Working with jQuery in WordPress*. And per usual,
+    you'll also want to be sure to include a `custom.js` file to the theme so that
+    you can keep your jQuery code out of the WordPress `header.php` template (this
+    is also covered in [Chapter 2](ch02.html "Chapter 2. Working with jQuery in WordPress"),
+    *Working with jQuery in WordPress*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once jQuery and your plugins are included in the theme, we'll get to work with
+    jQuery. Because the site is functional the way it is, and the client is OK with
+    this as an alternative view, we'll leave the theme and `style.css` alone and make
+    sure *all* our enhancements are done with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Again, the following code may not be the most elegant way to achieve the client's
+    goals, but it's written to make sure each step of what's happening is clear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by changing the CSS properties of the sticky posts so that they
+    all stack up on top of each other. The easiest way to do this? Make the `.sticky`
+    class `position: absolute`. Let''s also go ahead and make the width and the height
+    correct and that any overflow is hidden like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next up, we'll move the `h2` header up a bit and most importantly, as our actual
+    posts are *under* the positioned absolute `.sticky` posts, we'll move those down
+    so they show up under our soon-to-be-animated sticky posts. We'll also adjust
+    the image's right-hand side margin a bit for placement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Pay special attention to the bold jQuery selector in the previous code snippet.
+    You can refer to [Chapter 3](ch03.html "Chapter 3. Digging Deeper: Understanding
+    jQuery and WordPress Together"), *Digging Deeper: Understanding jQuery and WordPress
+    Together* for more on using selectors if you need to refresh your knowledge. Essentially,
+    we''re targeting the *first* `.post` div that does *not* have the `.sticky` class
+    assigned to it. Nice!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The result looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating rotating sticky posts](img/1742_05_18.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'OK! jQuery has that really nice function we''ve looked at previously called
+    `.each`, which will run additional functions on every object in a wrapper set.
+    If all we wanted to do was run through each item one time, we could use this bit
+    of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: This looks good! However, once the last `div` has faded in, it stops and doesn't
+    continue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating rotating sticky posts](img/1742_05_19.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Nope, there's no super slick jQuery way to keep the `.each()` function going.
+    Yet, an `.each` function is so easy to set up, it's a shame not to leverage them,
+    even for "infinite loops".
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, a quick explanation here: you can do a Google search for `"infinite animation
+    loops jquery"`, if you dare, and see that for all ten-thousand-some results, there
+    appears to be about that many ways JavaScript developers like to set up repeating,
+    or infinite loops, and each developer seems to feel (of course!) that their method
+    is the best method available. My preference is to resort to regular JavaScript,
+    and use a `setInterval` function and some custom variables set up in a way that
+    makes it very easy to leverage my existing jQuery `.each()` statement and functions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get started creating our loop, we'll take our existing jQuery statement and
+    place it *inside* its own function. You'll need to make sure this function is
+    **outside** your main `jQuery(function(){...` document ready function. Otherwise,
+    the `setInterval` function will not launch it properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s call our new function `loopStickies`. You''ll find it familiar, aside
+    from the first statement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'OK, that''s just the start, now that we have our `loopStickies` function, located
+    *outside* the jQuery document ready function, let''s place the rest of our code,
+    back **inside** the `jQuery(function(){...` document ready function. Follow along
+    with the comments in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: The way this works is, our original jQuery statement and `.each()` function
+    runs through each sticky post in the jQuery selection by evoking the `loopStickies`
+    function. At the *same time*, the `setInterval` function is kicked off, but because
+    we have the `intervalDuration` variable set to calculate our `duration` variable
+    times the number of sticky posts, it's not going to kick off for 18 seconds. Just
+    in time for our original function to complete! The `setInterval` function will
+    take it from there and loop our sticky posts into infinity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: OK, let's take a look; we now have a very nice set of sticky posts, holding
+    for six seconds and then crossfading to the next post!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Creating rotating sticky posts](img/1742_05_20.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Putting in a little extra effort: Adding a loop indicator'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The rotating stickies are great! Yet, while the client will only have three
+    or four stickies rotating at any given time, it's a good practice to at least
+    let a user know about how long a view they're in for should they decide to look
+    at all the rotations. Most rotating slide shows have an indicator somewhere to
+    let a user know how many panels are going to be displayed and allowing the user
+    to navigate around the panels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see about adding this functionality to our rotating posts. First up,
+    we''ll need to create a little interface. Inside our `#stickyRotate` wrapper that
+    we created in the previous code, after the last sticky post object, I''ll add
+    in a `div` with inline styles. Again, this is not necessarily ideal for a working
+    project, but I want to make each step clear. In reality, you''ll probably create
+    custom stylesheets or amend the theme you''re working on. At any rate, here''s
+    our interaction holder. I''ve placed this code at the bottom of my previous code
+    inside the jQuery document ready function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And below that code, we''ll add some more jQuery which will insert numbers
+    for each sticky post into the `#stickyNav` div we just created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code uses another `each` function, but we only need, and want, it to run
+    once, and append the numbers 1 through 3 (or however many sticky posts we have)
+    to the `#stickyNav` div.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Last, to really finalize this effect, we''ll need to dip back inside our `loopStickies`
+    function. Inside the `.animate` function''s call back function, we''ll add the
+    following code that''s in bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the `:eq()` selector in the previous code, we're able to target the corresponding
+    number in the interface display and make it stand out compared to the other numbers.
+    This allows users to see how many slides there are, and which slide they're on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Putting in a little extra effort: Adding a loop indicator](img/1742_05_21.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You''re now a pro at handling animations with jQuery! From these examples you
+    can probably recognize several ways to incorporate further enhancements into your
+    WordPress sites. You should now know how to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use animation to direct a user's attention to key information
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generate animated bar graphs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create some really slick, animated page navigation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Develop rotating sticky posts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Up next, let's take a look at the jQuery UI plugin and the many ways it can
+    benefit a WordPress site.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1003 @@
+- en: Chapter 6. Building Responsive Image Sliders
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The image slider has been used a lot and has become a very popular web element.
+    On a website, with beautiful transitions and animations, captions and descriptions,
+    and the use of custom timings, an attractive business presentation is delivered
+    online. Also, a good image slider can display a product showcase, catches the
+    user's attention, and improves its sale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will learn about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Different types of responsive image sliders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introducing touch gestures in user experience
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing touch events with JavaScript plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Responsive image sliders
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Opening a website and seeing an image slider in the header area is common nowadays.
+    Image sliders display highlighted content, which are really useful, within a limited
+    space. Although the free space is more limited when a site is viewed through mobile
+    devices, the slider element still catches the client's attention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The difference between how much area can be used to display a highlighted content
+    and the resource available to render it is really big if compared with desktop,
+    where we generally do not have problems with script performance, and the interaction
+    of each transition is performed through the use of arrow signs to switch images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the responsive era started, the way that people normally interacted with
+    image sliders was observed, and changes, such as the way to change each slide,
+    were identified, based on the progressive enhancement concept. The solution was
+    to provide a similar experience to the users of mobile devices: the adoption of
+    gestures and touches on image slider elements for devices that accept them instead
+    of displaying fallbacks.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the constant evolution of browsers and technologies, there are many image
+    slider plugins with responsive characteristics. My personal favorite plugins are
+    Elastislide, FlexSlider2, ResponsiveSlides, Slicebox, and Swiper. There are plenty
+    available, and the only way to find one you truly like is to try them!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's look in detail at how each of them works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Elastislide plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Elastislide is a responsive image slider that will adapt its size and behavior
+    in order to work on any screen size based on jQuery. This jQuery plugin handles
+    the slider's structure, including images with percentage-based width inside, displaying
+    it horizontally or vertically with a predefined minimum number of shown images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Elastislide is licensed under the MIT license and can be downloaded from [https://github.com/codrops/Elastislide](https://github.com/codrops/Elastislide).
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we are implementing an image slider, simply decreasing the container size
+    and displaying a horizontal scrollbar will not solve the problem for small devices
+    gracefully. The recommendation is to resize the internal items too. Elastislide
+    fixes this resizing issue very well and defines the minimum elements we want to
+    show instead of simply hiding those using CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, Elastislide uses a complementary and customized version of jQuery library
+    named jQuery++. jQuery++ is another JavaScript library very useful to deal with
+    DOM and special events. In this case, Elastislide has a custom version of jQuery++,
+    which enables the plugin working with **swipe events** on touch devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As we will see four different applications of this plugin for the same carousel,
+    we will use the same HTML carousel''s structure and may modify only the JavaScript
+    before executing the plugin, specifying the parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of the DOM (before the `</body>` closing tag), we will need to
+    include the jQuery and jQuery++ libraries (required for this solution), and then
+    the ElastiSlide script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, include the CSS stylesheet inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Alright, now we already have the basis to show four different examples. For
+    each example, you must add different parameters when executing the plugin script,
+    in order to get different rendering, depending on the project need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example 1 – minimum of three visible images (default)
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'In this first example, we will see the default visual and behavior, and whether
+    we will put the following code right after it, including the ElastiSlide plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The default options that come with this solution are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minimum three items will be shown
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Speed of scroll effect is 0.5 seconds
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Horizontal orientation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Easing effect is defined as ease-in-out
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The carousel will start to show the first image on the list
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot represents what the implementation of this code will
+    look like. Look at the difference between its versions shown on tablets and smartphones:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 1 – minimum of three visible images (default)](img/3602OS_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example 2 – vertical with a minimum of three visible images
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'There is an option to render the carousel vertically, just by changing one
+    parameter. Furthermore, we may speed up the scrolling effect. Remember to include
+    the same files used in Example 1, and then insert the following code into the
+    DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By default, three images are displayed as a minimum. But this minimum value
+    can be modified as we will see in our next example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 2 – vertical with a minimum of three visible images](img/3602OS_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example 3 – fixed wrapper with a minimum of two visible images
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: In this example, we will define the minimum visible items in the carousel, the
+    difference may be noticed when the carousel is viewed on small screens and the
+    images will not reduce too much. Also, we may define the image to be shown starting
+    from the third one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remember to include the same files that were used in Example 1, and then execute
+    the scripts informing the following parameters and positioning them after including
+    the ElastiSlide plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Example 3 – fixed wrapper with a minimum of two visible images](img/3602OS_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example 4 – minimum of four images visible in an image gallery
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'In the fourth example, we can see many JavaScript implementations. However,
+    the main objective of this example is to show the possibility which this plugin
+    provides to us. Through the use of plugin callback functions and private functions
+    we may track the click and the current image, and then handle this image change
+    on demand by creating an image gallery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Example 4 – minimum of four images visible in an image gallery](img/3602OS_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For this purpose, ElastiSlide may not have big advantages if compared with other
+    plugins because it depends on our extra development to finalize this gallery.
+    So, let's see what the next plugin offers to solve this problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: FlexSlider2 – a fully responsive slider
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: FlexSlider2 is a lightweight jQuery plugin for image slider which includes fade
+    and slide animations, touch gestures for mobile devices, and a bunch of customizable
+    options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: FlexSlider2 is demonstrating a constant confidence in the developers' community,
+    and some of the known **CMS** (**Content Management Systems**), such as Drupal
+    and WordPress, have already imported this plugin to be used on their systems since
+    the plugin was released in 2011.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The stable Version 2.0 also supports users with old browsers since Safari 4,
+    Chrome 4, Firefox 3.6, Opera 10, and IE7\. Android and iOS devices are supported
+    as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To see the wide variety of options which this plugin provides, we will see the
+    following three application examples of the most-used plugin options. We will
+    start by showing the default layout of the slider. Then, we will see a slider
+    using a navigation to support a situation where we have a high quantity of images
+    to be shown, and in the last example we will see another way to configure a carousel
+    of images provided by FlexSlider2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may find the downloadable files at [https://github.com/woothemes/FlexSlider](https://github.com/woothemes/FlexSlider);
+    for the additional plugin options, we recommend you to read the well-done documentation
+    on the official website of the plugin at [http://www.woothemes.com/flexslider/](http://www.woothemes.com/flexslider/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example 1 – basic slider (default)
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Let''s start by including the CSS stylesheet inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of the DOM (before the `</body>` closing tag), we will need to
+    include two files: jQuery library and FlexSlider2 script.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Good so far, the first example starts here, when we are defining the carousel
+    structure using a simple unordered list. There are only two requirements for it,
+    which are, defining a `flexslider` class to the wrapping `<div>` and the `slides`
+    class to `<ul>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After including the FlexSlider2 library, let''s add this following code to
+    execute the script. We will see the default visual and behavior of this plugin
+    only displaying the common slide of image elements inside the carousel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The style that comes with this plugin seems beautiful on smartphones and desktop
+    versions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 1 – basic slider (default)](img/3602OS_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example 2 – slider with carousel slider as navigation control
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: The initial HTML structure is almost the same, but now we have to duplicate
+    the slides structure for carousel. By executing the JavaScript function, the relationship
+    between these two elements is identified and connected to the expected behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember to include the same files used in Example 1, and then insert the following
+    code into the HTML code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: To create this image gallery, we must identify the elements which the plugins
+    will affect by using IDs, avoiding any kind of behavior conflicts. Comparing this
+    example with Example 1, where FlexSlider2 was instantiated only once, we have
+    two calls to the plugin script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the first part of the following code, the slideshow of pictures is being
+    created, and in addition some other options that the plugin offers, such as `animation`,
+    `itemWidth`, `itemMargin`, and `asNavFor`, are being complemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the second part of this code, the navigation control is being created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `asNavFor` option transforms `#slider` in a thumbnail navigation for `#carousel`.
+    And the `sync` option creates a mirror of actions performed on `#slider` to `#carousel`.
+    For example, if the user navigates through the slider, the carousel items will
+    follow the actions showing the same active slider and vice versa.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Very simple, professional, and useful! So, let''s see this responsive slider
+    visual with navigation control on small devices and a desktop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 2 – slider with carousel slider as navigation control](img/3602OS_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example 3 – carousel setting minimum and maximum range
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Remember to include the same files used in Example 1, and then insert the following
+    code into the HTML code. Notice that it uses the same HTML structure as the first
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, to build it we need to change the JavaScript code, where we inform
+    different parameters such as `itemWidth`, `itemMargin`, `minItems`, and `maxItems`,
+    as we will see in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The options `itemWidth` and `itemMargin` should be measured and defined in pixels,
+    but do not worry, the plugin will handle this fixed unit very well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, `minItems` and `maxItems` are being used to define the values of minimum/maximum
+    elements displayed on the screen depending on the device width. In the following
+    screenshot, we will see the preceding code in practice in both versions, mobile
+    and desktop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 3 – carousel setting minimum and maximum range](img/3602OS_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: ResponsiveSlides – the best of basic slides
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ResponsiveSlides is a jQuery plugin, which is a very lightweight solution that
+    basically acts in two different modes. Also, it just automatically fades the images,
+    or operates as a responsive image container with pagination and/or navigation
+    to fade between the slides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ResponsiveSlides performs on a wide range of browsers including the older versions
+    of IE and the Android Version 2.3 and above. It also adds the CSS `max-width`
+    support for IE6 and other browsers that do not natively support it. This property
+    helps to keep it responsive for small screens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This plugin has two dependencies which are the jQuery library and that all of
+    the images must have the same dimensions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will find the downloadable files and more details about plugin options at
+    [https://github.com/viljamis/ResponsiveSlides.js](https://github.com/viljamis/ResponsiveSlides.js).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How do to it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the following sections, you will find three examples where we can see the
+    main features which this plugin offers. In the first example, we will see which
+    files are necessary for working it out and what are the default options of ResponsiveSlides.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second example, we will add various parameters to check how this plugin
+    can be customized and meet the needs of our projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the third example, we will implement an additional navigation through images,
+    facilitating the user access to go to the specific slide they want to view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example 1
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'So, we will start by including the CSS file responsible for ResponsiveSlides
+    theme inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, the plugin supports the use of a simple HTML unordered list to
+    craft our slideshow. However, we need to define a classname for this `<ul>`, making
+    sure the plugin will detect which `<ul>` must be transformed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, at the bottom of the DOM (before the `</body>` closing tag), we should
+    include the jQuery library and ResponsiveSlides script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we will just have to execute the ResponsiveSlides script for `<ul>` with
+    the `rslides` class when the site has loaded. Let''s put this code after the inclusion
+    of ResponsiveSlides:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Inside the `demo.css` file (that comes with plugin files), there is a bunch
+    of CSS stylesheets, which may help us customize the slideshow. This file is not
+    required, but it makes a lot of difference on the visual and may be useful for
+    further references.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is the default visual of the plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 1](img/3602OS_06_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example 2
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: So, we will start the same way as we did with the previous example by including
+    the CSS file inside the `<head>` tag, then at the bottom of the DOM code (before
+    the `</body>` closing tag), we will include the jQuery library and ResponsiveSlides
+    script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this example, we added a div wrapping to the slideshow `slider_container`,
+    helping us to position the arrows and the caption text for each slide. If some
+    projects need this caption text to explain the slide, ResponsiveSlides may handle
+    this feature very well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, let''s test it on this next slideshow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, remember to execute the ResponsiveSlides script for `<div>` with the
+    `slider-example2` ID when the site has loaded, by putting this code after the
+    inclusion of ResponsiveSlides:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is also possible to inform the plugin to render only next/previous arrows
+    with no pager navigation by setting `false` for the `pager` option and `true`
+    for the `nav` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following screenshot, we will see this example with the caption and
+    navigation arrows styles from `demo.css`, which come with the plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 2](img/3602OS_06_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example 3
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'This example is focused on creating a custom navigation, based on thumbnail
+    images and images created by us previously, offering another way to the user to
+    display a slideshow gallery. In order to build it, we will insert other simple
+    unordered lists showing thumbnail images and setting an ID to inform to the plugin
+    later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Again, we must ensure that the CSS file will be included inside the `<head>`
+    tag, then include the jQuery library and ResponsiveSlides script at the bottom
+    of the HTML code. When we execute ResponsiveSlides for `#slider-example3`, we
+    will set the `manualControls` option and specify our custom pager navigation ID
+    for that thumbnail image structure, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot depicts the visual of this navigation feature implemented:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Example 3](img/3602OS_06_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Swiper – performatic touch image slider
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Swiper is a lightweight mobile touch slider with hardware-accelerated transitions
+    (where supported) and amazing native behavior. It is intended to be used on mobile
+    websites, but also works great on modern desktop browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two reasons why this plugin is my favorite: its performance is really
+    good, especially on smartphones, and it also allows a desktop user to feel almost
+    the same touch gestures experienced when navigating through the slider content.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download this solution from [https://github.com/nolimits4web/Swiper/](https://github.com/nolimits4web/Swiper/).
+    For more information about plugin options, visit [http://www.idangero.us/sliders/swiper/api.php](http://www.idangero.us/sliders/swiper/api.php).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'So, we will start by including the JS and CSS files inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we will execute the Swiper script, informing the `container` and `pagination`
+    classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note that this CSS file only customizes the slide animation. Even so, we need
+    to add the following code to customize the slide structure as we want, complementing
+    the styles that come with Swiper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, the plugin supports the use of a simple HTML unordered list to
+    craft our slideshow. Also, we need to define some class names for this structure
+    in order to ensure the plugin performs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `swiper-container` and `swiper-wrapper` classes are wrapped by all the slider
+    structure. Also, the `swiper-slide` class defines the div as a slide item and
+    the `pager` class specifies the div which will display the slide pagination.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The visual adopted on the site demonstration provided by the plugin developers
+    is beautiful; however, those styles are not inside `idangerous.swiper.css`. It
+    still depends on our entire slide customization, as we will see in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_06_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Featured options
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'By analyzing the code, this plugin seems very clever and provides a fast rendering
+    to the browser. Another important consideration is the constant update by the
+    community, fixing major and minor mistakes. Its current differences from other
+    plugins are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vertical/horizontal sliding
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rich API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Flexible configuration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Nested Swipers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 3D flow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the plugin Version 1.8.5, they introduced the 3D flow complement to the Swiper.
+    It simply provides an amazing realistic 3D gallery with dynamic shadows, providing
+    a big advantage compared to other slider plugins. Let's see how to implement it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the 3D flow style on Swiper
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Since it is a complement of Swiper, we need to include the same files of the
+    previous example, starting by the CSS on `<head>`. Also, append these following
+    new JS and CSS files referred to the 3D flow styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s change the code we have used to execute Swiper previously. The
+    following one has many parameters, which come with it by default, and it will
+    execute our 3D-flow script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alright, look at the big difference this complement may bring to the slider
+    visual. Just by using the CSS3 Transform, the Swiper plugin may provide us an
+    automatic way to display a different slideshow effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the 3D flow style on Swiper](img/3602OS_06_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: By visiting the site [http://www.idangero.us/sliders/swiper/plugins/3dflow.php](http://www.idangero.us/sliders/swiper/plugins/3dflow.php),
+    we will find more examples and other usage options for 3D flow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Slicebox – a slice animation when using slide images
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Slicebox is a jQuery plugin for responsive 3D image sliders with a graceful
+    fallback (for older browsers that do not support the new CSS properties).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The visual effect of this plugin is really cool. Once the slide is changed,
+    the image is sliced in three or five pieces of image and it is rotated, showing
+    an incredible effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'So, after downloading the plugin from [https://github.com/codrops/Slicebox](https://github.com/codrops/Slicebox),
+    we will start by including the CSS file inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, there is a wrapping configuration missing in CSS that comes with the
+    plugin and should be made by us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, we will make use of a simple HTML-unordered list to craft our slideshow,
+    and define some required IDs for this structure, such as `sb-slider`, `shadow`,
+    `nav-arrows`, and `nav-dots`, and name code sections for the plugin reading:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Also, there are some utility classes complementing the code such as `wrapper`
+    (for slider wrapping) and `sb-description` (to display the content as the slider
+    description).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the bottom of DOM (before the `</body>` closing tag), include the jQuery
+    and Slicebox libraries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: After that, we will execute the Slicebox script by inserting the next code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: However, in my opinion, this is the major problem of this plugin because there
+    are many lines of code exposed to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code is too extensive and avoiding typos, you will find the code
+    to be downloaded from [http://www.packtpub.com/support](http://www.packtpub.com/support).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a screenshot of the effect on mobile devices and desktops:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_06_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Introducing touch gestures to user experience
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Touchscreen devices are ruling the mobile platform nowadays. Most of the smartphones
+    and tablets have many elements using touch gestures and now it''s coming to our
+    desktop development. In his article *Optimizing for Touch Across Devices*, *Luke
+    Wroblewski* says:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"So what does it mean to consider touch across all screen sizes? Two things:
+    touch target sizes and placement of controls."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Luke Wroblewski* highlights two of the most important points to consider with
+    responsive touch design: touch target sizes and placement of controls:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Touch target sizes**: They are relatively easy to implement and any navigation
+    system that needs to work with touch needs to have menu options that can be comfortably
+    used by people with imprecise fingers to prevent accidental taps and errors. Some
+    articles mentioning the minimum measure of touchable area should be 44 px.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Placement of controls**: Controls need to be positioned in a way that aligns
+    with how people hold and use touch-enabled devices. The bottom area of a smartphone
+    screen is where we want to put an application''s most common and important interactions
+    so that they may be reached quickly and easily, as shown in the following website
+    example:![Introducing touch gestures to user experience](img/3602OS_06_14.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Similarly, we can look at tablet postures or at how people typically hold tablet
+    computers. People hold them with their two hands along the sides, or just type
+    over the screen on their lap:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing touch gestures to user experience](img/3602OS_06_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Implementing touch events with JavaScript plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are some important JavaScript extensions and plugins that allow us to
+    integrate touch gestures into our responsive website, improving the user interaction
+    experience. Some examples are QuoJS and Hammer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: QuoJS – simple touch interaction library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is a micro, modular, object-oriented, and concise JavaScript library that
+    simplifies the HTML document traversing, event handling, and Ajax interactions
+    for rapid mobile web development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that QuoJS does not require jQuery for its working; however, it is a simple
+    and good plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This lightweight plugin, with 5-6 KB when gzipped, allows us to have powerful
+    writing, flexibility, and adapted code. You will find the downloadable files at
+    [https://github.com/soyjavi/QuoJS](https://github.com/soyjavi/QuoJS) and further
+    details about some extra options at [http://quojs.tapquo.com/](http://quojs.tapquo.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'QuoJS have these gestures to help us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Single tap
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hold (650ms+)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Double tap
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: And different types of Swipe, Pinch, and Rotate are included in its code package
+    too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At the bottom of the DOM (before the `</body>` closing tag), include the QuoJS
+    script; only then will we be able to execute the script by creating event listeners.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following example, we will implement an action if users hold their finger
+    over the element with the ID equal to the toolbox:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: QuoJS uses the `$$` symbol in the syntax, avoiding conflicts with the `$` jQuery
+    symbol which we are probably using on websites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hammer – a nice multitouch library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Hammer is a jQuery lightweight library for multitouch gestures with only 3 KB
+    when gzipped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hammer supports these gestures:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tap
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DoubleTap
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Swipe
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Drag
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pinch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rotate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each gesture triggers useful events and event data that comes with the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'First of all, let''s download the library from [https://github.com/EightMedia/hammer.js](https://github.com/EightMedia/hammer.js).
+    At the bottom of the DOM (before the `</body>` closing tag), include the Hammer
+    script and then we will be able to execute the script by creating event listeners:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Sometimes the version that does not require jQuery seems faster, but it might
+    not work in all browsers. To switch the versions, we just need to replace the
+    `jquery.hammer.min.js` file with `hammer.min.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, it captures the touch interaction and applies the `open-box`
+    class on objects. However, there are many other touch events to work on and further
+    details on its usage may be found at [https://github.com/EightMedia/hammer.js/wiki](https://github.com/EightMedia/hammer.js/wiki).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercise 6 – creating an image slider using the Swiper plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Just to remind us, this is a screenshot of our initial design:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exercise 6 – creating an image slider using the Swiper plugin](img/3602OS_06_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This image is just a suggestion. You can find any image to replace this one.
+    The main focus here is the creation of a responsive image slider within a responsive
+    label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, just select one image per slide, and by using the Swiper solution, insert
+    a slogan on each slider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flexibility is everything
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A few well-designed movements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Muscle control develops the body uniformly
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Physical fitness is the first requisite of happiness
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As we saw in [Chapter 4](ch04.html "Chapter 4. Designing Responsive Text"),
+    *Designing Responsive Text*, the use of `@font-face` is highly recommended for
+    responsive websites. So, complementing this exercise, use the free font Titan
+    One from Google Fonts for customizing the slogans.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember to use the FontSquirrel kit if necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have learned about slider plugins prepared for responsive
+    sites such as the Elastislide, FlexSlider, ResponsiveSlides, Swiper, and Slicebox.
+    We have also learned how to build them, their advantages, and effect characteristics.
+    Although many of these slider plugins have already implemented gesture touches,
+    as we saw in this chapter, we have also shown you how to incorporate touch functions
+    by using the QuoJS and Hammer libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will see how to deal with tables in small width devices.
+    We will see how to implement each technique that has often been used, such as
+    horizontal scrolling, reducing visible columns, and converting into stack table.
+  prefs: []
+  type: TYPE_NORMAL

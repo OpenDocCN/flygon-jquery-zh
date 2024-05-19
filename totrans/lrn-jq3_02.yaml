@@ -1,0 +1,977 @@
+- en: Selecting Elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery library harnesses the power of **Cascading Style Sheets** (**CSS**)
+    selectors to let us quickly and easily access elements or groups of elements in
+    the **Document Object Model** (**DOM**).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of the elements on a web page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use CSS selectors to find elements on the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What happens when the specificity of a CSS selector changes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom jQuery extensions to the standard set of CSS selectors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The DOM traversal methods, which provide greater flexibility for accessing elements
+    on the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using modern JavaScript language features to iterate over jQuery objects efficiently
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding the DOM
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: One of the most powerful aspects of jQuery is its ability to make selecting
+    elements in the DOM easy. The DOM serves as the interface between JavaScript and
+    a web page; it provides a representation of the source HTML as a network of objects
+    rather than as plain text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This network takes the form of a family tree of elements on the page. When
+    we refer to the relationships that elements have with one another, we use the
+    same terminology that we use when referring to family relationships: parents,
+    children, siblings, and so on. A simple example can help us understand how the
+    family tree metaphor applies to a document:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, `<html>` is the ancestor of all the other elements; in other words, all
+    the other elements are descendants of `<html>`. The `<head>` and `<body>` elements
+    are not only descendants, but children of `<html>` as well. Likewise, in addition
+    to being the ancestor of `<head>` and `<body>`, `<html>` is also their parent.
+    The `<p>` elements are children (and descendants) of `<div>`, descendants of `<body>`
+    and `<html>`, and siblings of each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/3145OS_02_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: To help visualize the family tree structure of the DOM, we can use the browser's
+    developer tools to inspect the DOM structure of any page. This is especially helpful
+    when you're curious about how some other application works, and you want to implement
+    something similar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this tree of elements at our disposal, we'll be able to use jQuery to efficiently
+    locate any set of elements on the page. Our tools to achieve this are jQuery **selectors**
+    and **traversal methods**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the $() function
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The resulting set of elements from jQuery's selectors and methods is always
+    represented by a jQuery object. These objects are very easy to work with when
+    we want to actually do something with the things that we find on a page. We can
+    easily bind events to these objects and add visual effects to them, as well as
+    chain multiple modifications or effects together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that jQuery objects are different from regular DOM elements or node lists,
+    and as such do not necessarily provide the same methods and properties for some
+    tasks. In the final part of this chapter, we will look at ways to directly access
+    the DOM elements that are collected within a jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to create a new jQuery object, we use the `$()` function. This function
+    typically accepts a CSS selector as its sole parameter and serves as a factory,
+    returning a new jQuery object pointing to the corresponding elements on the page.
+    Just about anything that can be used in a stylesheet can also be passed as a string
+    to this function, allowing us to apply jQuery methods to the matched set of elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making jQuery play well with other JavaScript libraries
+  prefs: []
+  type: TYPE_NORMAL
+- en: In jQuery, the dollar sign `($)` is simply an alias for `jQuery`. Because a
+    `$()` function is very common in JavaScript libraries, conflicts could arise if
+    more than one of these libraries were being used in a given page. We can avoid
+    such conflicts by replacing every instance of `$` with `jQuery` in our custom
+    jQuery code. Additional solutions to this problem are addressed in [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
+    *Advanced Events*. On the other hand, jQuery is so prominent in frontend development,
+    that libraries tend to leave the `$` symbol alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The three primary building blocks of selectors are **tag name**, **ID**, and
+    **class**. They can be used either on their own or in combination with others.
+    The following simple examples illustrate how these three selectors appear in code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **Selector type** | **CSS** | **jQuery** | **What it does** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **Tag name** | `p { }` | `$(''p'')` | This selects all paragraphs in the
+    document. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **ID** | `#some-id { }`                             | `$(''#some-id'')`  
+                            | This selects the single element in the document that
+    has an ID of `some-id`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| **Class** | `.some-class { }`                                           
+        | `$(''.some-class'')`                                         | This selects
+    all elements in the document that have a class of `some-class`. |'
+  prefs: []
+  type: TYPE_TB
+- en: As mentioned in [Chapter 1](33c0dcc2-d368-4c19-b3aa-15fd462917f8.xhtml), *Getting
+    Started*, when we call methods of a jQuery object, the elements referred by the
+    selector we passed to `$()` are looped through automatically and implicitly. Therefore,
+    we can usually avoid explicit iteration, such as a `for` loop, that is so often
+    required in DOM scripting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we covered the basics, we're ready to start exploring some more powerful
+    uses of selectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The jQuery library supports nearly all the selectors included in CSS specifications
+    1 through 3, as outlined on the World Wide Web Consortium''s site: [http://www.w3.org/Style/CSS/specs](http://www.w3.org/Style/CSS/specs).
+    This support allows developers to enhance their websites without worrying about
+    which browsers might not understand more advanced selectors, as long as the browsers
+    have JavaScript enabled.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Progressive Enhancement
+  prefs: []
+  type: TYPE_NORMAL
+- en: Responsible jQuery developers should always apply the concepts of progressive
+    enhancement and graceful degradation to their code, ensuring that a page will
+    render as accurately, even if not as beautifully, with JavaScript disabled as
+    it does with JavaScript turned on. We will continue to explore these concepts
+    throughout the book. More information on progressive enhancement can be found
+    at [http://en.wikipedia.org/wiki/Progressive_enhancement](http://en.wikipedia.org/wiki/Progressive_enhancement).
+    Having said this, it's not very often that you'll encounter users with JavaScript
+    disabled these days--even on mobile browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To begin learning how jQuery works with CSS selectors, we''ll use a structure
+    that appears on many websites, often for navigation--the nested unordered list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Downloadable code examples
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following Github repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that the first `<ul>` has an ID of `selecting-plays`, but none of the
+    `<li>` tags have a class associated with them. Without any styles applied, the
+    list looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The nested list appears as we would expect it to--a set of bulleted items arranged
+    vertically and indented according to their level.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling list-item levels
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s suppose that we want the top-level items, and only the top-level items--Comedies,
+    Tragedies, and Histories--to be arranged horizontally. We can start by defining
+    a `horizontal` class in the stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `horizontal` class floats the element to the left-hand side of the one following
+    it, removes the bullet from it if it's a list item, and adds a 10-pixel margin
+    on all sides of it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Rather than attaching the `horizontal` class directly in our HTML, we''ll add
+    it dynamically to the top-level list items only, to demonstrate jQuery''s use
+    of selectors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: As discussed in [Chapter 1](091dd3f4-9663-47df-af02-817487c3038f.xhtml), *Getting
+    Started*, we begin jQuery code by calling `$(() => {})`, which runs the function
+    passed to it once the DOM has been loaded, but not before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second line uses the child combinator (`>`) to add the `horizontal` class
+    to all the top-level items only. In effect, the selector inside the `$()` function
+    is saying, "Find each list item (`li`) that is a child (`>`) of the element with
+    an ID of `selected-plays` (`#selected-plays`)".
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With the class now applied, the rules defined for that class in the stylesheet
+    take effect, which in this case means that the list items are arranged horizontally
+    rather than vertically. Now, our nested list looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_03.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Styling all the other items--those that are not in the top level--can be done
+    in a number of ways. Since we have already applied the `horizontal` class to the
+    top-level items, one way to select all sub-level items is to use a negation pseudo-class
+    to identify all list items that do not have a class of `horizontal`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This time we are selecting every list item (`<li>`) that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Is a descendant of the element with an ID of `selected-plays` (`#selected-plays`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Does not have a class of `horizontal`  (`:not(.horizontal)`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'When we add the `sub-level` class to these items, they receive the shaded background
+    defined in the stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now the nested list looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Selector specificity
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Selectors in jQuery have a spectrum of specificity, from very general selectors,
+    to very targeted selectors. The goal is to select the correct elements, otherwise
+    your selector is broken. The tendency for jQuery beginners is to implement very
+    specific selectors for everything. Perhaps through trial and error, they've fixed
+    selector bugs by adding more specificity to a given selector. However, this isn't
+    always the best solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at an example that increases the size of the first letter for top-level
+    `<li>` text. Here''s the style we want to apply:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here''s what the list item text looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screenshot-from-2016-11-27-11-02-54-3.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As you see, Comedies, Tragedies, and Histories have the `big-letter` style
+    applied to them as expected. In order to do this, we need a selector that''s more
+    specific than just `$(''#selected-plays li'')`, which would apply the style to
+    every `<li>`, even the sub-elements. We can use change the specificity of the
+    jQuery selector to make sure we''re only getting what we expect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All three of these selectors do the same thing--apply the `big-letter` style
+    to the top-level `<li>` elements in `#selected-plays`. The specificity is different
+    in each of these selectors. Let''s review how each of these work, and what their
+    strengths are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`#selected-plays > li`: This finds `<li>` elements that are direct children
+    of `#selected-plays`. This is easy to read, and semantically relevant to the DOM
+    structure.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`#selected-plays li.horizontal`: This finds `<li>` elements or sub-elements
+    of `#selected-plays` with the `horizontal` class. This is also easy to read and
+    enforces a particular DOM schema (applying the `horizontal` class).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`#selected-plays li:not(.sub-level)`: This is difficult to read, inefficient,
+    and doesn''t reflect the actual DOM structure.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are endless examples where selector-selector specificity comes up. Every
+    application is unique, and as we just saw, there's no one correct way to implement
+    selector specificity. What's important is that we exercise good judgement by considering
+    the ramifications of selectors on the DOM structure, and consequently, the maintainability
+    of our application or website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attribute selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Attribute selectors are a particularly helpful subset of CSS selectors. They
+    allow us to specify an element by one of its HTML attributes, such as a link''s
+    `title` attribute or an image''s `alt` attribute. For example, to select all images
+    that have an `alt` attribute, we write the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Styling links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Attribute selectors accept a wildcard syntax inspired by regular expressions
+    for identifying the value at the beginning (`^`) or end (`$`) of a string. They
+    can also take an asterisk (`*`) to indicate the value at an arbitrary position
+    within a string or an exclamation mark (`!`) to indicate a negated value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s say we want to have different styles for different types of links. We
+    first define the styles in our stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, we add the three classes--`mailto`, `pdflink`, and `henrylink`--to the
+    appropriate links using jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add a class for all e-mail links, we construct a selector that looks for
+    all anchor elements (`a`) with an `href` attribute (`[href]`) that begins with
+    `mailto:` (`^="mailto:"`), as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because of the rules defined in the page''s stylesheet, an envelope image appears
+    after the mailto: link on the page.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_05-1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To add a class for all the links to PDF files, we use the dollar sign rather
+    than the caret symbol. This is because we''re selecting links with an `href` attribute
+    that ends with `.pdf`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '*Listing 2.5*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The stylesheet rule for the newly added `pdflink` class causes an Adobe Acrobat
+    icon to appear after each link to a PDF document, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_06-1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Attribute selectors can be combined as well. We can, for example, add the class
+    `henrylink` to all links with an `href` value that both starts with `http` and
+    contains `henry` anywhere:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With the three classes applied to the three types of links, we should see the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_07-1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note the PDF icon to the right-hand side of the Hamlet link, the envelope icon
+    next to the email link, and the white background and black border around the Henry
+    V link.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To the wide variety of CSS selectors, jQuery adds its own custom selectors.
+    These custom selectors enhance the capabilities of CSS selectors to locate page
+    elements in new ways.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performance note
+  prefs: []
+  type: TYPE_NORMAL
+- en: When possible, jQuery uses the native DOM selector engine of the browser to
+    find elements. This extremely fast approach is not possible when custom jQuery
+    selectors are used. For this reason, it is recommended to avoid frequent use of
+    custom selectors when a native option is available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Most of the custom selectors allow us to choose one or more elements from a
+    collection of elements that we have already found. The custom selector syntax
+    is the same as the CSS pseudo-class syntax, where the selector starts with a colon
+    (`:`). For example, to select the second item from a set of `<div>` elements with
+    a class of `horizontal`, we write this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that `:eq(1)` selects the second item in the set because JavaScript array
+    numbering is zero-based, meaning that it starts with zero. In contrast, CSS is
+    one-based, so a CSS selector such as `$('div:nth-child(1)')` would select all
+    `div` selectors that are the first child of their parent. Because it can be difficult
+    to remember which selectors are zero based and which are one based, we should
+    consult the jQuery API documentation at [http://api.jquery.com/category/selectors/](http://api.jquery.com/category/selectors/)
+    when in doubt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling alternate rows
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Two very useful custom selectors in the jQuery library are `:odd` and `:even`.
+    Let''s take a look at how we can use one of them for basic table striping given
+    the following tables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With minimal styles applied from our stylesheet, these headings and tables
+    appear quite plain. The table has a solid white background, with no styling separating
+    one row from the next, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_08-1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, we can add a style to the stylesheet for all the table rows and use an
+    `alt` class for the odd rows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we write our jQuery code, attaching the class to the odd-numbered
+    table rows (`<tr>` tags):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But wait! Why use the `:even` selector for odd-numbered rows? Well, just as
+    with the `:eq()` selector, the `:even` and `:odd` selectors use JavaScript''s
+    native zero-based numbering. Therefore, the first row counts as zero (even) and
+    the second row counts as one (odd), and so on. With this in mind, we can expect
+    our simple bit of code to produce tables that look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_09.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Note that for the second table, this result may not be what we intend. Since
+    the last row in the Plays table has the alternate gray background, the first row
+    in the Sonnets table has the plain white background. One way to avoid this type
+    of problem is to use the `:nth-child()` selector instead, which counts an element''s
+    position relative to its parent element rather than relative to all the elements
+    selected so far. This selector can take a number, `odd` or `even` as its argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As before, note that `:nth-child()` is the only jQuery selector that is one
+    based. To achieve the same row striping as we did earlier--except with consistent
+    behavior for the second table--we need to use `odd` rather than `even` as the
+    argument. With this selector in place, both tables are now striped nicely, as
+    shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_10.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `:nth-child()` selector is a native CSS selector in modern browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding elements based on textual content
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'For one final custom selector, let''s suppose for some reason we want to highlight
+    any table cell that referred to one of the Henry plays. All we have to do--after
+    adding a class to the stylesheet to make the text bold and italicized ( `.highlight
+    {font-weight:bold; font-style: italic;}` )--is add a line to our jQuery code using
+    the `:contains()` selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, now we can see our lovely striped table with the Henry plays prominently
+    featured:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_11.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: It's important to note that the `:contains()` selector is case sensitive. Using
+    `$('td:contains(henry)')` instead, without the uppercase "H", would select no
+    cells. It's also important to note that `:contains()` can cause catastrophically
+    bad performance, since the text of every element that matches the first part of
+    the selector needs to be loaded and compared to our supplied argument. When `:contains()`
+    has the potential to search hundreds of nodes for content, it's time to rethink
+    our approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Admittedly, there are ways to achieve the row striping and text highlighting
+    without jQuery--or any client-side programming, for that matter. Nevertheless,
+    jQuery, along with CSS, is a great alternative for this type of styling in cases
+    where the content is generated dynamically and we don't have access to either
+    the HTML or server-side code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Form selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The capabilities of custom selectors are not limited to locating elements based
+    on their position. For example, when working with forms, jQuery''s custom selectors
+    and complementary CSS3 selectors can make short work of selecting just the elements
+    we need. The following table describes a handful of these form selectors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **Selector** | **Match** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `:input` | Input, text area, select, and button elements |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `:button` | Button elements and input elements with a `type` attribute equal
+    to `button` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `:enabled` | Form elements that are enabled |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `:disabled` | Form elements that are disabled |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `:checked` | Radio buttons or checkboxes that are checked |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `:selected` | Option elements that are selected |'
+  prefs: []
+  type: TYPE_TB
+- en: As with the other selectors, form selectors can be combined for greater specificity.
+    We can, for example, select all checked radio buttons (but not checkboxes) with
+    `$('input[type="radio"]:checked')` or select all password inputs and disabled
+    text inputs with `$('input[type="password"], input[type="text"]:disabled')`. Even
+    with custom selectors, we can use the same basic principles of CSS to build the
+    list of matched elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have only scratched the surface of available selector expressions here. We
+    will dive further into the topic in [Chapter 9](27c55a6c-368a-4007-9e8c-1f9d9be254f8.xhtml),
+    *Advanced Selectors and Traversing*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM traversal methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery selectors that we have explored so far allow us to select a set of
+    elements as we navigate across and down the DOM tree and filter the results. If
+    this were the only way to select elements, our options would be somewhat limited.
+    There are many occasions when selecting a parent or ancestor element is essential;
+    that is where jQuery's DOM traversal methods come into play. With these methods,
+    we can go up, down, and all around the DOM tree with ease.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some of the methods have a nearly identical counterpart among the selector
+    expressions. For example, the line we first used to add the `alt` class, `$(''tr:even'').addClass(''alt'')`,
+    could be rewritten with the `.filter()` method as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For the most part, however, the two ways of selecting elements complement each
+    other. Also, the `.filter()` method in particular has enormous power because it
+    can take a function as its argument. The function allows us to create complex
+    tests for whether elements should be included in the matched set. Let''s suppose,
+    for example, that we want to add a class to all external links:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'jQuery has no selector for this sort of thing. Without a filter function, we''d
+    be forced to explicitly loop through each element, testing each one separately.
+    With the following filter function, however, we can still rely on jQuery''s implicit
+    iteration and keep our code compact:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The supplied function filters the set of `<a>` elements by two criteria:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They must have an `href` attribute with a domain name (`a.hostname`). We use
+    this test to exclude mailto links, for instance.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The domain name that they link to (again, `a.hostname`) must not match (`!==`)
+    the domain name of the current page (`location.hostname`).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: More precisely, the `.filter()` method iterates through the matched set of elements,
+    calling the function once for each and testing the return value. If the function
+    returns `false`, the element is removed from the matched set. If it returns `true`,
+    the element is kept.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With the `.filter()` method in place, the Henry V link is styled to indicate
+    it is external:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_12.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the next section, we'll take another look at our striped table example to
+    see what else is possible with traversal methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Styling specific cells
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Earlier, we added a `highlight` class to all cells containing the text Henry.
+    To instead style the cell next to each cell containing Henry, we can begin with
+    the selector that we have already written and simply call the `.next()` method
+    on the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The tables should now look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_13.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The `.next()` method selects only the very next sibling element. To highlight
+    all of the cells following the one containing Henry, we could use the `.nextAll()`
+    method instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the cells containing Henry are in the first column of the table, this
+    code causes the rest of the cells in these rows to be highlighted:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_14.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As we might expect, the `.next()` and `.nextAll()` methods have counterparts:
+    `.prev()` and `.prevAll()`. Additionally, `.siblings()` selects all other elements
+    at the same DOM level, regardless of whether they come before or after the previously
+    selected element.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To include the original cell (the one that contains Henry) along with the cells
+    that follow, we can add the `.addBack()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this modification in place, all of the cells in the row get their styles
+    from the `highlight` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_02_15.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There are a multitude of selector and traversal-method combinations by which
+    we can select the same set of elements. Here, for example, is another way to select
+    every cell in each row where at least one of the cells contains Henry:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rather than traversing across to sibling elements, we travel up one level in
+    the DOM to the `<tr>` tag with `.parent()` and then select all of the row's cells
+    with `.children()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The traversal method combinations that we have just explored illustrate jQuery's
+    chaining capability. With jQuery, it is possible to select multiple sets of elements
+    and do multiple things with them, all within a single line of code. This chaining
+    not only helps keep jQuery code concise, but it can also improve a script's performance
+    when the alternative is to respecify a selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How chaining works
+  prefs: []
+  type: TYPE_NORMAL
+- en: Almost all jQuery methods return a jQuery object and so can have more jQuery
+    methods applied to the result. We will explore the inner workings of chaining
+    in [Chapter 8](091dd3f4-9663-47df-af02-817487c3038f.xhtml), *Developing Plugins*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is also possible to break a single line of code into multiple lines for
+    greater readability, as we''ve been doing throughout this chapter so far. For
+    example, a single chained sequence of methods could be written in one line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This same sequence of methods could also be written in seven lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: The DOM traversal in this example is contrived and not recommended. There are
+    clearly simpler, more direct methods at our disposal. The point of the example
+    is simply to demonstrate the tremendous flexibility that chaining affords us,
+    especially when many calls need to be made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chaining can be like speaking a whole paragraph's worth of words in a single
+    breath--it gets the job done quickly, but it can be hard for someone else to understand.
+    Breaking it up into multiple lines and adding judicious comments can save more
+    time in the long run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Iterating over jQuery objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'New in jQuery 3 is the ability to iterate over jQuery objects using a `for...of`
+    loop. This by itself isn''t a big deal. For one thing, it''s rare that we need
+    to explicitly iterate over jQuery objects, especially when the same result is
+    possible by using implicit iteration in jQuery functions. But sometimes, explicit
+    iteration can''t be avoided. For example, imaging you need to reduce an array
+    of elements (a jQuery object) to an array of string values. The `each()` function
+    is a tool of choice here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We start off with an array of `<td>` elements, the result of our `$(''td'')`
+    selector. We then reduce it to an array of strings by passing the `each()` function
+    a callback that pushes each string that starts with "H" onto the `eachText` array.
+    There''s nothing wrong with this approach, but having callback functions for such
+    a straightforward task seems like a bit much. Here''s the same functionality using
+    `for...of` syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 2.18
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can now reduce jQuery objects using simple for loops and if statements. We'll
+    revisit this `for...of` approach later on in the book for more advanced usage
+    scenarios involving generators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accessing DOM elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Every selector expression and most jQuery methods return a jQuery object. This
+    is almost always what we want because of the implicit iteration and chaining capabilities
+    that it affords.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Still, there may be points in our code when we need to access a DOM element
+    directly. For example, we may need to make a resulting set of elements available
+    to another JavaScript library, or we might need to access an element''s tag name,
+    which is available as a property of the DOM element. For these admittedly rare
+    situations, jQuery provides the `.get()` method. To access the first DOM element
+    referred to by a jQuery object, for example, we would use `.get(0)`. So, if we
+    want to know the tag name of an element with an ID of `my-element`, we would write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For even greater convenience, jQuery provides a shorthand for `.get()`. Instead
+    of writing the previous line, we can use square brackets immediately following
+    the selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's no accident that this syntax appears to treat the jQuery object as an array
+    of DOM elements; using the square brackets is like peeling away the jQuery layer
+    to get at the node list, and including the index (in this case, `0`) is like plucking
+    out the DOM element itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With the techniques that we covered in this chapter, we should now be able to
+    locate sets of elements on the page in a variety of ways. In particular, we learned
+    how to style top-level and sub-level items in a nested list using basic CSS selectors,
+    how to apply different styles to different types of links using attribute selectors,
+    add rudimentary striping to a table using either the custom jQuery selectors `:odd`
+    and `:even` or the advanced CSS selector `:nth-child()`, and highlight text within
+    certain table cells by chaining jQuery methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, we have been using the `$(() => {})` document ready handler to add a
+    class to a matched set of elements. In the next chapter, we'll explore ways in
+    which to add a class in response to a variety of user-initiated events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The topic of selectors and traversal methods will be explored in more detail
+    in [Chapter 9](27c55a6c-368a-4007-9e8c-1f9d9be254f8.xhtml), *Advanced Selectors
+    and Traversing*. A complete list of jQuery's selectors and traversal methods is
+    available in Appendix B of this book and in the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Challenge exercises may require the use of the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add a class of `special` to all of the `<li>` elements at the second level of
+    the nested list.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a class of `year` to all the table cells in the third column of a table.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add the class `special` to the first table row that has the word Tragedy in
+    it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Here's a challenge for you. Select all the list items (`<li>s`) containing a
+    link (`<a>`). Add the class `afterlink` to the sibling list items that follow
+    the ones selected.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Here's another challenge for you. Add the class `tragedy` to the closest ancestor
+    `<ul>` of any `.pdf` link.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

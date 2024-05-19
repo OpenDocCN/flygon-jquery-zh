@@ -1,0 +1,857 @@
+- en: Chapter 7. AJAX with jQuery and WordPress
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: AJAX is an acronym that *Jesse James Garrett*, a user-experience expert who
+    founded [www.AdaptivePath.com](http://www.AdaptivePath.com), coined back in 2005\.
+    It quickly morphed into a buzzword who's descriptiveness (and verby-ness) as we'll
+    see, goes way beyond its actual acronym definition. We'll take a quick look at
+    what AJAX really is and how easy it is to implement, not to mention cook up a
+    few more cool solutions for our "hypothetical" clients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''re going to take a look at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basics of using jQuery's AJAX `.load()` function and the more robust `.ajax()`
+    function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with JSON and hooking into other site's APIs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a custom AJAX enhanced home page and comment form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Refining that functionality using animation and events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get started by taking a look at what jQuery does for AJAX.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What AJAX is and isn''t: A quick primer'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To start, if you're new to AJAX, I'll just point out that **AJAX** is actually
+    not a technology or language! The acronym stands for **Asynchronous JavaScript
+    and XML**. It's the technique of using JavaScript and XML to send and receive
+    data between a web browser and a web server. The most obvious (and cool) use of
+    this technique means you can dynamically update a piece of content on your web
+    page with a call to the server, without forcing the entire page to reload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The implementation of this technique has made it obvious to many web developers
+    that they can start creating advanced web applications (sometimes called **Rich
+    Interface Applications(RIAs)**) that work and feel more like desktop software
+    applications, instead of like web pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As eluded to above, the word AJAX is starting to have its own meaning (as you''ll
+    also note its occasional use in this book and others, as well as all over the
+    web as a proper noun: "Ajax", rather than an all-cap acronym). For example, a
+    web developer using predominately Microsoft technology may develop their site
+    using a browser scripting language called VBScript instead of JavaScript, to sort
+    and display content transformed into a lightweight data format called JSON instead
+    of XML. You guessed it, that developer''s site would still be considered an AJAX
+    site, rather than an "AVAJ" site (let''s face it, AJAX simply sounds cooler).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In fact, as we noted in [Chapter 5](ch05.html "Chapter 5. jQuery Animation within
+    WordPress"), *jQuery Animation within WordPress*, it's getting to the point where
+    just about anything on a website (that isn't in Flash) that slides, moves, fades,
+    or pops up without rendering a new browser window is considered an "Ajaxy" site.
+    In truth, most of these sites don't truly qualify as using AJAX and if you use
+    just a few of the jQuery examples from this book in your WordPress site, it will
+    probably be considered Ajaxy, despite not calling asynchronously to the server.
+    But after this chapter, it will.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'AJAX: It''s better with jQuery'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the past, when writing up introductions to AJAX or going over the pros and
+    cons of using AJAX with my clients for their projects, I used to give long, in-depth
+    disclaimers and warnings for using AJAX techniques: regaling tales of worst-case
+    scenarios and horror stories of lost browser functionality, not-to-mention ruined
+    accessibility for special needs users. While some of those concerns are still
+    valid, much of the "implementation dread" has pretty much ended with jQuery.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As with all things jQuery that we've learned so far, the point is to create
+    great *enhancements* that degrade gracefully down to basic, working HTML functionality.
+    You'll find the same holds true for AJAX techniques so long as they're thoughtfully
+    implemented with jQuery. If the core content or functionality of your site can
+    be accessed and retrieved without JavaScript enabled in the browser, you'll find
+    that all your users, no matter what their browser or accessibility requirements
+    are, should be able to enjoy your content and effectively use your site. The majority
+    of your users will get to use your site with slick, visually appealing enhancements
+    that make the site easier to use and can even aid in understanding the content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assessing if AJAX is right for your site—a shorter disclaimer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sure, accessibility and compliance aside, there are still some considerations
+    to make for your site's users. Most notably, as you start to realize the power
+    that AJAX techniques can bring to your site, you'll want to make an effort to
+    stay within the *conventions of standard web practices*. Essentially, most web
+    users expect web pages, even really cool web pages, to simply act like web pages!
+  prefs: []
+  type: TYPE_NORMAL
+- en: That doesn't mean you can't break standard conventions, especially if your site
+    is more of an RIA than a pure content site. Just make sure that you inform your
+    users of what to expect. For example, if the navigation panel is not at the top
+    of the site or sidebar, you'll need to find some way to tell people up-front where
+    it is and why you think it's more conveniently located where you put it. If you
+    use a different indicator other than underlines and button boxes for click-able
+    objects, tell people what to look for so they know what's click-able and what's
+    not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that said, let's take a look at what our latest crop of hypothetical clients
+    have to ask of us and get to work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started with jQuery's AJAX functionality
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At the heart of jQuery's AJAX functionality is the `.ajax()` function. This
+    little guy allows you to do some heavy lifting and has everything you need for
+    all your **XML HTTP Requests** (**XHR**) needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For those of you with a little AJAX experience under your belts, you'll be pleased
+    to find that in true jQuery form, this function eliminates the need for setting
+    up the traditional `if/else` statement to test for support for the `XMLHTTPRequest`
+    object and if not then, the `ActiveXObject` (for IE browsers).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the .ajax() function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s take a quick look at some of the functionality available in the `.ajax`
+    call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For example, implemented within WordPress, an `.ajax()` call might look something
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the given code, when the user clicks on the `.ajaxIt` object jQuery selector,
+    as seen in the next screenshot, the `.ajax` function loads the *whole* **About**
+    page into the first post''s `.post` div:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the .ajax() function](img/1742_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'By changing the CSS properties on the div to hide the overflow and set the
+    height, we can keep it from looking too messy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the .ajax() function](img/1742_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There you have it! Your first use of AJAX within WordPress! However, you''re
+    probably thinking: "That''s a fair bit of work for something that I''d never really
+    want to do in real life. (Reloading in the whole site into a div *including* the
+    header? Yuk!)"'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You're right. Let's take a look at shortcutting-in some more accessible and
+    useful functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking shortcuts
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can see the `.ajax()` function is quite robust and flexible. As cool as
+    that is, you''re probably already hoping for a shortcut. Never fear, similar to
+    the `.animate()` function we''ve already worked with, jQuery has nicely broken
+    down a few of the more "routine" tasks into bite size functions that are much
+    easier to use and leverage. Here are the most important for WordPress users:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.load`—you can call through POST and GET with this function and pull specific,
+    jQuery-selected content and tuck it a lot more easily into other jQuery selected
+    areas.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.get`—like `.load`, but only does get requests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.post`—like `.load`, but focuses on post requests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.getJSON`—allows you to pull JSON data (this is a good way to go if you''re
+    cross site scripting—that is, pulling data in from another URL, such as `twitter.com`
+    for example).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.getScript`—allows you to kick off the actions tucked in a script that''s
+    not attached to your WordPress theme. (Very useful if you want to add functionality
+    that you don''t want other people to be able to easily find and comb through,
+    and you can also pull in JavaScripts from other domains to work with.)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In most WordPress projects, you'll find that you won't need to use the `.ajax()`
+    function at all. You'll use `.load, .post` or `.get`, sometimes `.getJSON` or
+    `.getScript`. But, like the `.animate()` function, you'll occasionally come up
+    with scenarios where the flexibility and granular control of the `.ajax` function
+    is handy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most useful of all of these shortcut functions and the one we'll focus on
+    the most is the `.load` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specifying where to .load() it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can achieve the exact same effect we got from our full `.ajax()` function
+    with the parred-down code here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, kinda cool, in that the code snippet is a lot simpler. It's AJAX; the
+    page itself isn't reloading, but why would you *want* to do that? (Again, to keep
+    the example from being too messy, I used the `.css` function to change the CSS
+    properties and hide the overflow and lock the height of the `.post` div.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It does seem rare that this would be useful for a project (and if it was useful,
+    an `iframe` would achieve the same effect). What we really want to do is be able
+    to load in key pieces of content from another page into our current page. The
+    good news is, we can achieve that easily:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By extending the `url` parameter of the `.load` function, the given snippet
+    of code will replace our first `.post` div with content from the `#post-104` div
+    on the **About** page. The result is this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Specifying where to .load() it](img/1742_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You'll also note that I was able to remove the `.css` function because only
+    useful content is loaded in, nice and clean.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Transforming loaded content
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s say we need to transform some of the content that we load in. Not a
+    problem. There''s a basic "success" callback function available. We can take advantage
+    of it like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Transforming loaded content.ajax() function, using.load function, using](img/1742_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, the content is now "part" of our page, and a set of DOM objects
+    as our h3s in the ajaxed content changed along with other selected matches on
+    the page. Now this seems a lot more useful. I bet you can think of a lot of uses
+    for functionality like this! Guess what—so can our "clients".
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Project: Ajaxifying posts'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Lets assume you've got a client (relax, this is the *last* hypothetical client!)
+    who's an "open source media designer" and would like a very clean and sparse home
+    page. So sparse, they'd like only a list of the titles of the top, most current
+    posts from two specific categories to appear. (In an ideal world, a decision like
+    this would ensure their site's awesome design could sink in on the user before
+    bombarding them with content.)
+  prefs: []
+  type: TYPE_NORMAL
+- en: They'd of course like it to be slick. When you click on the title for a post,
+    it loads in through AJAX, nice n' smooth. There's no reloading over to a single
+    content page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get started on this request, we'll have to reference what we understand of
+    the Template Hierarchy and custom loops. We'll create a `home.php` template page
+    that will become the default home page which only displays the five most recent
+    posts for the "WordPress Design" and "Inkscape Illustration" categories. Sounds
+    straightforward enough, so let's get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First create a new custom template page called `home.php` and insert your `#content`
+    div markup as well as the theme's header and footer (and anything else you want).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, inside our `#content` div, we''ll place in our custom loops which load
+    up the "WordPress Themes" and "Inkscape Illustration" categories. We know that
+    the categories IDs are `5` and `6` so our custom "mini loops" look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The custom loops will result in a page that appears like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Ajaxifying posts](img/1742_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Because we set up our loops to display the title *inside* an `href` link to
+    the single page layout, if we check what we''ve got so far in WordPress, we''ll
+    see the post titles, and if we click on them, we''ll be taken to the full post
+    page, as seen in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Ajaxifying posts](img/1742_07_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'That''s what we want. If the user doesn''t have JavaScript enabled for whatever
+    reason, the site will still work and give them the info they want. This is always
+    the point we want to start from when working with jQuery: basic, working HTML
+    and CSS. The goal is always to *enhance*, and not exclude, people who don''t use
+    one of the latest browsers for various reasons, or have one of the cool JavaScript
+    enabled, smartphones.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point we're going to leverage a technique that we got a little taste
+    of in [Chapter 6](ch06.html "Chapter 6. WordPress and jQuery's UI") with the PDF
+    download enhancement. We're going to "hijack" the link to the post (this technique
+    is often called "hijax") and use the URL to our advantage in the jQuery `.load`
+    command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First up, we'll need something to load the content into, so in our `custom-jquery.js`
+    file, we'll `.append` a new `div` to the bottom of the `#content` div.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, as we saw in our previous examples, we certainly don''t want *everything*
+    from the opening body tag to the closing to load in! We really only want the `.post
+    div`. So let''s set up our `.load` function and narrow down what loads in as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Can you believe how simple that is? Any link that's clicked on will *fade* out
+    the content that's loaded and *slide* in the new content! We now have a super
+    slick effect that uses AJAX super simply, on our home page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Ajaxifying posts](img/1742_07_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: '.getJSON: The littlest birds get the most re-tweets'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Twitter is ridiculously popular these days, as a result, there are tons of
+    great jQuery plugins for connecting to it already. My personal favorite is: *Damien
+    du Toit ''s* **jQuery Plugin for Twitter:** [http://coda.co.za/blog/2008/10/26/jquery-plugin-for-twitter](http://coda.co.za/blog/2008/10/26/jquery-plugin-for-twitter).
+    If you really want nice control over your twitter displays, you can''t go wrong
+    with this plugin.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the Twitter Search and User Timeline API methods for JSON are pretty
+    straightforward; thus, it makes for a great "quick tutorial" on how to use jQuery's
+    `.getJSON` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plus, you guessed it, our hypothetical client thinks the initial home page layout
+    might be "too sparse", asking if we can just add in the three latest tweets from
+    their username.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSON and jQuery basics
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we dive into Twitter and other services, let's go over the basics of
+    JSON and how to use it with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSON (pronounced often like the name Jason) is an acronym for **JavaScript Object
+    Notation**. Essentially, it's a simple machine-readable data-interchange format,
+    which makes constructing and working with API applications in JavaScript a snap
+    (and it can be used with other programming languages). If you're into learning
+    the history of it, you can take a look at [http://json.org](http://json.org) to
+    find out more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What JSON looks like
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You'll be pleasantly surprised to find that JSON markup syntax looks the same
+    as most parameter/values syntax you've already been using so far in jQuery, or
+    with CSS. It is based on most C language object notations such as Java and JavaScript,
+    so it makes things quite nice and handy when dealing with in JavaScript and jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, jQuery''s `.css()` function can have multiple values values passed
+    within `{}` brace brackets, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the same manner, JSON data can be set up as such:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Pretty similar all right! Let's take a look at using it within jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using JSON in jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let's take a closer look at the `.getJSON` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first parameter of this function is just like the `.load` function; you'll
+    place in the the URL that you are planning to read. The `data` parameter is used
+    if you need to POST data to the URL (you can do this in a query string or array
+    object). The call back function is not required, unless you're calling a URL from
+    a server other than your own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's now take a look at putting `.getJSON` to use in our WordPress site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using .getJSON with Twitter
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'First up, when dealing with other service APIs, there''s no excuse for not
+    reading and using their documentation. Services often update their APIs to make
+    them better and faster, but then the methods used to connect to and work with
+    them change from time to time. It can sometimes take quite a bit of diligence
+    to keep your code up-to-date with an API. Twitter''s API documentation can be
+    found here: [http://apiwiki.twitter.com/Twitter-API-Documentation](http://apiwiki.twitter.com/Twitter-API-Documentation).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, many API services require that you sign up as a developer and use OAuth
+    to use some or all of their services (or their own authenticating system to protect
+    your user login and data).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**What''s OAuth?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'OAuth is an open standard that allows users to hand out tokens instead of usernames
+    and passwords to their hosted data by a given service provider. Many API service
+    providers use it and you can find out more from their site: [http://oauth.net/about/](http://oauth.net/about/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, I'll cover the basics of connecting to the user timeline method
+    in the twitter API. This method doesn't require OAuth so long as the user has
+    a publicly viewable twitter stream, so you don't need to register for an OAuth
+    application (but it certainly doesn't hurt to sign up).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Twitter's user timeline method
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The URL parameter in our `.getJSON` function will contain the following API,
+    formatted URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can choose from the following formats (but guess which one we''ll be using!):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: atom
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**json**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: rss
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: xml
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: First up, we'll need to place our tweets on the home page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have two options here, we can go into the `home.php` template file and create
+    an "actual" `div` and `ul` list, or we can create it entirely with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Honestly, a call like this is just up to you. At this point in the book, you
+    should be plenty comfortable editing and tweaking your theme files or generating
+    useful DOM objects with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because the tweets are completely dependent on JavaScript being enabled, and
+    we aren't trying to custom display any WordPress content with template tags, I'm
+    happy to do all the work in jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start off in our `custom-jquery.js` file, inside the document ready
+    statement, create the space for the tweets like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next we''ll set up the Twitter API URL as a variable with our "clients" twitter
+    user name (we''ll use one of mine: ozoopa).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can now make our `.getJSON` call. Follow along in the bold comments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see in the next screenshot, our tweets are showing up just great!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Twitter''s user timeline method](img/1742_07_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: What's Twitter sending back?
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'You''ll note that we focused in on just getting the "tweet" text itself back.
+    Here''s a taste of what twitter is actually sending back through JSON in that
+    URL (the bold part is what we actually used):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, you're given back a lot of data to work with! Again, it pays
+    to dig through the API and see what's available to leverage; you can also have
+    hours of fun just experimenting with displaying all of the various items available
+    in the JSON feed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using getJSON with Flickr
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The client likes it! And of course, they now think the home page is now "too
+    text heavy". What about adding in the six latest images from Flickr images tagged
+    `"wordpress theme"` in the sidebar? That should balance it out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, this is not a problem either.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Again, your first stop should be the Flickr API documentation: [http://www.flickr.com/services/api/](http://www.flickr.com/services/api/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But we''ll go ahead and get started, again, creating a little space in the
+    home page''s sidebar for the images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here with their public photo stream method URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And now we can set up our `getJSON` call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Flickr JSON string returns an array called `items` that offers all sorts
+    of data. You'll notice that it's a little different when targeting the information
+    we want compared to the twitter API. By pulling the `media.m` url to a thumbnail
+    we're able to create a quick list of images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It looks like this under **Our Tweets:**
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using getJSON with Flickr](img/1742_07_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Other popular services that offer APIs with JSON format
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The fun doesn't have to stop there! Now that you're familiar with using `.getJSON`,
+    your world is open to implement all sorts of custom cross-site mashups and solutions
+    in your WordPress sites. Understanding JSON and the `.getJSON` function also makes
+    you more adept at being able to "massage" a good WordPress or jQuery Plugin into
+    handling your custom needs better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following popular services offer APIs with JSON support:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'YouTube: [http://code.google.com/apis/youtube/2.0/developers_guide_json.html](http://code.google.com/apis/youtube/2.0/developers_guide_json.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Netflix: [http://developer.netflix.com/](http://developer.netflix.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'delicious: [http://delicious.com/help/api](http://delicious.com/help/api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'bitly: [http://code.google.com/p/bitly-api/wiki/ApiDocumentation](http://code.google.com/p/bitly-api/wiki/ApiDocumentation)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'goodreads: [http://www.goodreads.com/api](http://www.goodreads.com/api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'LibraryThing: [http://www.librarything.com/api](http://www.librarything.com/api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Look around! If you use a great service that offers any kind of "social" capability,
+    they might offer an API that serves up data in the JSON format. You may need to
+    register as a developer with that service in order to authenticate your requests
+    (usually using OAuth) but if the end result you get back is a JSON string, you're
+    good to go with jQuery and your WordPress project!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Project: Ajax-izing the built-in comment form'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: From the working samples we've done so far with `.load` and `.getJSON`, you
+    can probably think of many extremely cool ways to implement AJAX in your WordPress
+    site. The most useful application of this is the comment form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First up, we don't even need to amend any template page HTML or WordPress Template
+    Tag, PHP code. This is great as again, as often as possible (all the time really)
+    we always want our site to work without the jQuery enhancement.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Ajaxing the WordPress comment form is deceptively simple. And for you "premium"
+    theme developers, it''s a great way to entice people to download your theme: "Built
+    in AJAX comments!". It is something that we''d like full control over, so we''ll
+    be using the `.ajax()` function instead of `.load` (see, I told you `.ajax` would
+    come in handy every now and then).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First off, in experimenting with the comment form, we'll be wanting to change
+    its CSS properties to alert users to errors. I've found it's just better to set
+    the form's CSS to something consistent that we can then change easily in jQuery
+    for other uses. Add the following code to your `custom-jquery.js` file to change
+    the CSS properties of the default theme's comment form styles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''re now ready to "take control" of the form. Upon submit, we want our jQuery
+    to do the talking, not the form''s "action" attribute. So we''ll use a handy function
+    called `.submit()` like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note our use of another handy, little known jQuery function called `.serialize()`.
+    This takes all the data in our `#commentform` form and upon submit, turns it into
+    a handy object that we can now pass on in our `.ajax` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the `.submit` function, *under* the comment variable, let''s add in
+    our `.ajax` call. We''ll be using this function because we need a little extra
+    control and will be taking advantage of its `success:` and `error:` callback functions.
+    Read through the code''s bold comments to follow along:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's the gist. We're now ready to get down to work by setting up the `success:`
+    and `error:` functions. Let's start with the `success:` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll first want to create a `div` that will contain a message. We'll then add
+    our message to that div along with the `comment` variable that we set up earlier
+    (under our `formData` serialized object) to pull the comment entered in the form
+    into our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll also be sure to add in a little jQuery "shine" and leverage some of
+    those animation skills from [Chapter 5](ch05.html "Chapter 5. jQuery Animation
+    within WordPress"), *jQuery Animation within WordPress* to make sure the `success`
+    response loads in nice and smooth. *Inside* the `success: function()` brace brackets,
+    insert the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When the Form is properly filled out, the end result is this message that fades
+    in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Ajax-izing the built-in comment form](img/1742_07_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We're now ready to tackle the people who don't fill the form out properly. The
+    `wp-comments-post.php` file does throw an error back if the required fields are
+    not filled out. We can use this to our advantage by just checking for an error
+    using the `error:` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Project: Ajax-izing the built-in comment form](img/1742_07_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Nice, we just created some slick commenting functionality for our WordPress
+    site using AJAX!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Shouldn''t some of these examples be WordPress plugins?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As mentioned in [Chapter 3](ch03.html "Chapter 3. Digging Deeper: Understanding
+    jQuery and WordPress Together"), *Digging Deeper: Understanding jQuery and WordPress
+    Together*, if you create a jQuery enhancement that doesn''t require any tweaks
+    or edits to the WordPress theme, and will work with most themes released for public
+    use, you may want to consider wrapping up your scripts into a separate WordPress
+    plugin.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a handy practice if you''re busy and don''t want to amend a new theme
+    with all your custom jQuery scripts every time you swap themes, or if you''re
+    part of a larger project with lots of people or if you just simply want to share
+    your jQuery work with less technical WordPress users. Follow the steps in [Chapter
+    3](ch03.html "Chapter 3. Digging Deeper: Understanding jQuery and WordPress Together"),
+    to wrap your jQuery scripts and plugins into simple WordPress plugins so that
+    any less-technical administrators can easily add and remove them from their projects.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also remember,[Chapter 3](ch03.html "Chapter 3. Digging Deeper: Understanding
+    jQuery and WordPress Together"), walks you through creating a jQuery plugin as
+    well. You''ll probably be able to condense and clean up your code by placing it
+    into a jQuery plugin that you then wrap into a WordPress plugin. This should also
+    make creating updates and enhancements of your scripts easier to manage. You''ll
+    then have better organized code that you can document and share with both worlds:
+    jQuery developers and WordPress enthusiasts.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Think about it though: if a jQuery enhancement *is dependent* on any custom,
+    special markup that you''ve edited a theme to generate (such as our post list
+    example at the beginning of this chapter), it''s better to leave that jQuery script
+    as part of the theme, as it won''t work outside of it. This is a good thing for
+    super-custom or premium themes. By making your enhancements part of your theme,
+    you can entice people to download it because it offer features they don''t need
+    to then go out and find separate WordPress Plugins for.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Who knew AJAX was so darn easy these days? As you can see, leveraging the strengths
+    of WordPress themes and jQuery''s AJAX events and requests, it''s very easy to
+    make some mighty dynamic sites. In this chapter we took a look at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating custom loading content and hijacking (hijaxing) links to do with as
+    we please
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with `.getJSON` and other site's APIs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating our own custom AJAX loading comment form (probably one of the most
+    popular enhanced theme features and plugins sought after by WordPress site owners)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Further enhancing our AJAX work with simple jQuery animation features
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You now understand a lot about applying jQuery to specific enhancements and
+    features to WordPress sites. We've started off with the basics and really learning
+    how to leverage selectors so that your WordPress editor's workflow doesn't have
+    to be interrupted and applied that to some very exciting enhancements that include
+    slick animation, the UI plugin and AJAX. We also covered getting those solutions
+    into your WordPress site's theme, a WordPress Plugin as well as jQuery Plugins.
+    For the majority of your WordPress and jQuery development needs, you are all set!
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next and final chapter, we'll take a look at some tips and tricks for
+    working with jQuery and WordPress plus; the final appendix of this book is a condensed
+    "cheat sheet" of reference information for key jQuery functions as well as important
+    WordPress function and template tags and classes, all to aid you in your jQuery
+    and WordPress development.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,512 @@
+- en: Chapter 5. Adding Dialogs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying effects to dialog components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Waiting for API data to load
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using icons in the dialog title
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding actions to the dialog title
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying effects to dialog resize interactions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using modal dialogs for messages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The dialog widget gives UI developers a tool with which they can present the
+    user with forms or other pieces of information without disrupting what is currently
+    on the page; dialogs create a new context. Out-of-the-box, developers can do a
+    lot with dialog options, and many of these capabilities are turned on by default.
+    This includes the ability to resize the dialog, and move it around on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we'll address some common pitfalls of dialog usage typical
+    in any web application. There is often a need to adjust the controls of the dialog
+    and its overall appearance; we'll touch on a few of those. We'll also look at
+    how interacting with API data complicates dialog usage and the ways to deal with
+    that. Finally, we can add some polish to dialog widgets by looking at the various
+    ways in which we can apply effects to them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying effects to dialog components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Out-of-the-box, the dialog widget allows developers to show animations when
+    the dialog is opened, as well as hide animations, when closed. This animation
+    is applied to the dialog as a whole. So, for example, if we were to specify that
+    the `show` option is a `fade` animation, the entire dialog will fade into view
+    for the user. Likewise, if the `hide` option was `fade`, the dialog would fade
+    out of view instead of instantaneously disappearing. To liven up this `show` and
+    `hide` behavior, we could operate on individual dialog components. That is, instead
+    of applying show and hide effects to the dialog as a whole, we could apply them
+    to the individual parts inside the widget, like the title bar and the button pane.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The dialog we're going to create here is just about as simple as they come in
+    terms of content. That is, we're going to only specify some basic `title` and
+    content strings for the dialog in the HTML.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to turn this idea of animating individual dialog components into reality,
+    we''ll have to extend the dialog widget in a few places. In particular, we''re
+    going to animate the title bar, at the top of the widget, as well as the button
+    pane near the bottom. Here is what the JavaScript code looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you open the page, you''ll see the individual dialog components fade into
+    view, independent of the `fade` animation we''ve specified for the dialog as a
+    whole. Once visible, the dialog should look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_05_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You'll also notice that the `scale` effect isn't applied until the `fade` effect
+    is applied to the title bar and button panes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This code is one of those exceptions to the rule where we're not providing a
+    mechanism with which to turn off our new extended functionality. That is, we have
+    hard-coded changes in our custom implementation of some dialog methods that cannot
+    be turned off by supplying an option value. However, the exception is made in
+    an effort to trade-off complexity for desired functionality. Chances are that
+    this type of custom animation work would happen as part of a specific project
+    requirement, and not as a generalized extension of the dialog widget capabilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we change about the default dialog implementation is in the
+    `_create()` method, where we hide the `.ui-dialog-titlebar` and `.ui-dialog-buttonpane`
+    components. This is done after calling the `_super()` method, which is responsible
+    for creating the basic dialog components. Even if the dialog is set to open automatically
+    with the `autoOpen` option, the `_create()` method doesn't actually display it.
+    So, we can hide the title bar and button pane without the user noticing it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason we've hidden the two components is because we would like to apply
+    a display effect once the dialog opens. The next method, `open()`, that we're
+    overriding does exactly that. It first calls the `_super()` method, which initiates
+    the effect for displaying the dialog (in our case, we've told it to fade on display).
+    We then use the `fold` effect on the title bar and on the button pane.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You'll notice that we don't wait for any animations to complete before starting
+    the next. The dialog display animation is started, followed by the title bar and
+    the button pane. All three could be executing at the same time, potentially. The
+    reason we've done it this way is to retain the correct layout of the dialog. The
+    last method to override is the `close()` method. This introduces an interesting
+    work-around we must use in order to get `_super()` to work in a callback. Even
+    with the `self` variable in the enclosing scope, we have problems calling the
+    `_super()` method inside the callback. So, we use the widget element and pretend
+    like we're calling `.dialog( "close" )` from outside of the widget. The `isCallback`
+    argument tells the `close()` method to call _`super()`, and return. The reason
+    we need a callback to begin with is that we don't actually want to execute the
+    dialog hide animation until we've finished animating the button pane.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Waiting for API data to load
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: More often than not, the dialog widget needs to load data from an API. That
+    is, not all dialogs are composed of static HTML. They need data from the API to
+    construct some of the elements using API data, such as `select` element options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading data from the API and building the resultant elements isn't the issue;
+    we do this all the time. The challenge comes when we try to perform these activities
+    within the dialog context. We don't necessarily want to display the dialog until
+    the data has been loaded from the API, and the UI components used to display them
+    inside the dialog components have been built. Ideally, we would block the dialog
+    from displaying until the components displayed by the dialog are ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is especially tricky with remote API functionally, where it is impossible
+    to predict latency issues. Furthermore, the dialog may depend on more than one
+    API call, each populating its own UI component in the dialog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To implement a solution for the API data problem, we''ll need some basic HTML
+    and CSS to define the dialog and its content. We''ll have two empty `select` elements
+    in the dialog. This is what the HTML looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And, this is the supporting CSS for the previous code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll give the dialog widget the ability to block while waiting on API requests
+    by extending the widget with a new option. This option will allow us to pass in
+    an array of deferred promises. A promise is an object used to track the state
+    of an individual Ajax call. With a collection of promises, we''re able to implement
+    complex blocking behavior using simple code like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once the API data is returned, for both the calls, the dialog is displayed
+    and should look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's start by looking at the document ready handler where we're actually instantiating
+    the dialog widget. The first two variables defined here, `repos` and `users`,
+    are `$.Deferred` objects. These represent two API calls we're making to the GitHub
+    API. The objective of these calls is to populate the `#repos` and the `#users`
+    `select` elements, respectively. These `select` elements make up part of our `#dialog`
+    content. The `success` option specified in each Ajax call is a callback that performs
+    the work of creating the `option` elements, and placing them in the `select` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Without customizing the dialog widget, these two API calls would work just fine.
+    The dialog would open, and eventually, the options would appear in the `select`
+    elements (after the dialog has already opened). You'll notice, however, that we're
+    passing an array of `deferred.promise()` objects to the dialog. This is a new
+    capability we've given to the dialog widget. A deferred object, simply put, allows
+    developers to postpone the consequences of some action that might take a while
+    to complete, such as an Ajax call. A promise is something we get from a deferred
+    object that lets us compose some criteria that says when a complex sequence, such
+    as making multiple Ajax calls, is complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The custom `promises` option we've added to the dialog widget is used in our
+    implementation of the `open()` method. It is here that we can make use of these
+    promises. Essentially, we're making a transaction out of one or more promise objects
+    passed to the dialog—once they've all completed or resolved to use the jQuery
+    terminology, we can open the dialog. We do so by passing the array of promise
+    objects to the `$.when()` function, which calls the `open()` method on the dialog.
+    However, a complication arises here that we must deal with. We can't call `_super()`
+    from within a callback function because the core widget machinery doesn't understand
+    how to find the parent widget class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, we have to pretend as though we're calling `open()` from outside of the
+    widget. We do this by using `self.element`, and the additional `isPromise` parameter,
+    instructing our custom `open()` implementation on how to behave.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using icons in the dialog title
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With some dialogs, depending on the nature of the application and the content
+    of the dialog itself, it may be beneficial to place an icon beside the dialog
+    title. This could be beneficial in the sense that it provides additional context
+    to the user. For example, an edit dialog might have a pencil icon, whereas a user
+    profile dialog might contain a person icon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To illustrate adding an icon to the title bar of the dialog widget, we''ll
+    use the following as our basic HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The first thing we''ll need to define is a custom CSS class used to properly
+    align the icon once we place it in the title bar of the dialog. The CSS looks
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we have our JavaScript code to customize the dialog widget by adding
+    a new `icon` option as well as creating an instance of the widget using our HTML
+    as the source:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting dialog, when opened, should look something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this particular dialog instance, we would like to display the pencil icon.
+    Our `icon` option we've added to the dialog widget allows the developer to specify
+    an icon class from the theme framework. In this case, it's `ui-icon-pencil`. The
+    new `icon` option has a default value of `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're overriding the default dialog implementation of the `_create()` method
+    so that we can inject a new `span` element into the dialog title bar if the `icon`
+    option was provided. This new `span` element gets the icon class passed as the
+    new option value, in addition to the `ui-dialog-icon` class, which is used to
+    position the icon we defined earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding actions to the dialog title
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By default, the dialog widget provides the user with one action that doesn't
+    require developer intervention—the close button in the title bar. This is a universal
+    action that applies to almost any dialog, as users would expect to be able to
+    close them. Additionally, it isn't by accident that the close dialog action button
+    is an icon positioned in the top-right corner of the dialog. This is a standard
+    location and action in graphical windowing environments as well, in addition to
+    other actions. Let's take a look at how we might go about extending the actions
+    placed in the title bar of the dialog widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this demonstration, we only need the following basic dialog HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we''ll implement our dialog specialization that adds a new option and
+    some code that creates a new dialog instance using that option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When this dialog is opened, we''ll see the new action buttons we passed to
+    the dialog in the top-right corner, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've created a new option for the dialog called `iconButtons`. This new option
+    expects an array of objects, where each object has attributes related to an action
+    button. Things like the text, the icon class, and the click event have to be executed
+    when the user opens the dialog, and clicks on the button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The bulk of the work in this customization takes place in our version of the
+    `_create()` method. Here, we iterate over each button supplied in the `iconButtons`
+    option. The first thing we do when inserting a new button into the title bar is
+    create the `button` element. We also get the width of the last action button added
+    using the `.ui-dialog-titlebar [role='button']:last` selector (this is needed
+    to compute the horizontal placement of the action button).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we bind the `click` event as specified in the button configuration. For
+    each button in the array that we're adding, we want it placed to the left of the
+    previous button. So when we first start iterating over the `iconButtons` array,
+    the default close action is the last button in the title bar. Since the CSS structure
+    requires a fixed right value, we have to compute it. And to do that, we need the
+    value of the last button in the list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying effects to dialog resize interactions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By default, the dialog widget allows users to resize by dragging the resize
+    handle. The actual resize capability is provided by the `resizable()` interaction
+    widget setup internally by the dialog when the `resizable` option is `true`. Let's
+    take a look at how to gain access to the internal resizable component, so that
+    we can use the `animate` feature. This option, when set on a resizable component,
+    delays the redrawing of the resized component until the user has stopped dragging
+    the resize handle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We only need simple dialog HTML for this demonstration, like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's add a new option to the dialog widget called `animateResize`. When this
+    option is `true`, we'll turn on the `animate` option of the internal resizable
+    interaction widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: When this dialog is created and displayed, you'll be able to resize the dialog,
+    observing that the actual resize is now animated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ve added the `animateResize` option to the dialog and provided it with
+    a default value of `false`. To actually perform this capability, we''ve completely
+    overwritten the `_makeResizable()` method, which the dialog widget uses internally
+    when the dialog is created. In fact, we''ve taken the internal code for `_makeResizable()`
+    and changed only one thing about it—`animate: this.options.animateResize`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is slightly redundant, copying all this code for turning on a simple feature
+    like animating the dialog resize interaction. Indeed, it isn't the ideal solution.
+    A better approach would be to call the `_super()` version of `_makeResizable()`,
+    then just turn on animate by calling `this.uiDialog.resizable( "option", "animate",
+    true )`. But at the time of this writing, this doesn't behave as expected. Our
+    alternative route, even though it involves redundant code, just goes to show the
+    flexibility of the widget factory. If this animation quality were a real requirement
+    of a user interface, we quickly found a work-around with a negligible trade-off.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using modal dialogs for messages
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The dialog widget has a `modal` option reserved for when we need to focus the
+    user's attention on just one thing. This option displays the dialog while preventing
+    the user from interacting with the rest of the user interface. They have no choice
+    but to take notice. This goes without saying, the modal dialog should be used
+    sparingly, especially if you want to use it to broadcast messages to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's look at how we can strip down the dialog in order to construct a generic
+    notification tool in our application. It is a modal dialog in essence that is
+    used for those cases where we cannot let the user continue what they're doing
+    without ensuring they've seen our message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here is what the HTML we'll need for this example looks like. Notice that the
+    `#notify` `div`, which will become a dialog widget, has no content as our new
+    notify widget will supply some.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s go ahead and define a new notify widget, capable of displaying both
+    error and information messages to the user like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two buttons we''ve created here are used for demonstrating the notify widget''s
+    capabilities. If you click the `#show-info` button, you''ll see the following
+    informational message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If you click the `#show-error` button, you''ll see this error message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `notify` widget we've just created inherits all of the dialog widget's capabilities.
+    The first thing we define in our widget is the available options. In this case,
+    we're extending the `options` object of the dialog widget, and adding some new
+    options. You'll notice, too, that we're providing some updated default values
+    for the dialog options such as turning `modal` on and turning `draggable` off.
+    Every notify instance will share these defaults, so it doesn't make much sense
+    to have to define them each and every time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `open()` method belongs to the dialog widget, and we're overriding it here
+    to implement custom functionality that inserts the text of the notification message
+    into the dialog content. We also set the state of the dialog based on the `error`
+    option. If this is an error message, we apply the `ui-state-error` class to the
+    entire dialog. If the `error` option is `false`, we apply the `ui-state-highlight`
+    class. Finally, the dialog title bar component is stripped down by removing some
+    classes, since we're not using it in the message display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the application code, the first thing we're creating is an instance of the
+    notify widget. We then create the demo buttons and bind the `click` event to the
+    functionality that will display an error message or an informational one, depending
+    on which button is clicked.
+  prefs: []
+  type: TYPE_NORMAL

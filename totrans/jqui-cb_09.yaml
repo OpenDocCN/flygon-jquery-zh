@@ -1,0 +1,610 @@
+- en: Chapter 9. Using Spinners
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing the input focus outline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Formatting currencies for local cultures
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Formatting time for local cultures
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling the step between values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Specifying the spin overflow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simplifying the spinner buttons
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we'll be working with spinners. A **spinner** is nothing more
+    than an adornment on a text `input` element. But at the same time, it's plenty
+    more. For example, the spinner does a lot to assist with formatting numbers to
+    local cultures as we'll see in this chapter. We'll also explore some of the options
+    that the spinner widget ships with, and how we can expand on and improve these
+    options. Finally, we'll take a look at some of the ways we can modify the look
+    and feel of the spinner widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing the input focus outline
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Most browsers will automatically apply an input focus outline around the `input`
+    element when it gains the focus from the user. The element receives focus when
+    the user either clicks the `input` element, or tabs their way there. The spinner
+    widget is essentially an `input` element with adornments. This includes the ability
+    to utilize the innate jQuery state classes from the CSS theme framework. While
+    the automatic focusing behavior of the browser may work well on `input` elements
+    by themselves, these focus rings can make the spinner look a little cluttered.
+    Let's take a look at how we can remove the automatic focus outline, while maintaining
+    the same level of accessibility
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll create just a simple `input` element for this example. Here is what the
+    HTML structure looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: And, here is the custom CSS used in conjunction with our widget modifications
+    to remove the focus outline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, here is our JavaScript code which alters the definition of the spinner
+    widget, and creates an instance with no automatic outline applied by the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: To give you a better idea of the change we've introduced, this is what the spinner
+    widget we just created looked like before our modifications to the spinner definition.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here, you can clearly see that the `input` element has the focus, but we could
+    do without the double border as it doesn't exactly fit nicely with our theme.
+    Following is the modified version of the same widget in the focused state after
+    introducing our changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We no longer have the focus outline, and the widget still changes its state
+    visually when it gains focus. Except now, we're changing the appearance using
+    state classes from the CSS theme, and not relying on the browser to do it for
+    us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The CSS class that takes care of removing the outline for us, the `ui-spinner-input-no-outline`
+    class, is easy enough to understand. We simply set the `outline` to `0` which
+    overrides the default browser way of doing things. Our custom extension of the
+    spinner widget knows how to make use of this class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've added a new `inputOutline` option to the spinner widget. This option will
+    apply our new CSS class to the `input` element if it is set to `false`. However,
+    `inputOutline` defaults to `true`, because we don't want to override the default
+    browser functionality by default. Furthermore, we also don't want to necessarily
+    override the default spinner widget functionality by default. Instead, it's safer
+    to provider an option that when explicitly set, changes the defaults. In our implementation
+    of the `_create()` method, we call the original implementation of the spinner
+    constructor. Then, if the `inputOutline` option is `true`, we apply the `ui-spinner-input-no-outline`
+    class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, you may have noticed the last thing we do is apply the `_focusable()`
+    method to the `this.uiSpinner` property. The reason being, we need to make up
+    for the lost accessibility; the outline is no longer applied by the browser, and
+    so we need to apply the `ui-state-focus` class when the widget gains focus. The
+    `_focusable()` method is a simple helper defined in the base widget class, and
+    so available to all widgets, that makes the passed elements handle the focus events.
+    This is much simpler than dealing with the event setup and tear-down ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formatting currencies for local cultures
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It is possible to use the spinner widget in conjunction with the **Globalize**
+    jQuery library. The Globalize library is an effort by the jQuery foundation to
+    standardize the way jQuery projects format data for different cultures. A culture
+    is a set of rules that formats strings, dates, and currencies according to cultural
+    norms. For example, our application should treat German dates and currencies differently
+    from French dates and currencies. This is how we're able to pass a `culture` value
+    to the spinner widget. Let's look at how we can use the Globalize library with
+    the spinner widget to format currencies to local cultures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing our application needs when working with several locales is to
+    include the `globalize` libraries. Each culture is contained in its own JavaScript
+    file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll define the HTML used to display the culture selector, made up of
+    radio buttons, and the spinner widget, used to display currencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we have our JavaScript code used to populate the `culture` selector,
+    instantiate the spinner widget, and bind the change event to the culture selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you first look at this UI in your browser, you'll notice that **English**
+    is the selected culture, and the spinner will format the currency accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: But, a change in culture results in a currency format change in the spinner
+    widget, as previously illustrated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we do in the JavaScript code, once the DOM is ready, is populate
+    the `culture` selector using the `Globalize.cultures` object. The Globalize library
+    constructs this object based on the available cultures; you'll notice a direct
+    correlation from the available culture options and the culture scripts that we've
+    included in the page. We store the name of the culture as the `id` attribute since
+    this is what we pass to the spinner widget later. The `Globalize.cultures` object
+    also has a default culture, and we use this value to determine which option is
+    selected when the page first loads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The spinner instance we've created uses a `numberFormat` option value of `C`.
+    This string actually gets passed directly to the `Globalize.format()` function
+    upon rendering of the spinner value. The next three options, `step`, `min`, and
+    `max` are typical with any numerical spinner instances. The `culture` option,
+    which we're setting to the selected default culture, tells the spinner widget
+    how to format the currency. Finally, we've setup an event handling that is triggered
+    anytime the culture selection changes. This handler will update the spinner widget
+    to use the newly-selected culture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formatting time for local cultures
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The spinner widget utilizes the Globalize jQuery project; an effort to standardize
+    on data formats according to the local culture. The spinner widget utilizes this
+    library to format its values. For example, specifying the `numberFormat` and `culture`
+    options allow us to use the spinner widget to display currency values according
+    to local culture. However, currency is just one value that we like to format locally;
+    time is another. We can use the built-in Globalize capabilities only to an extent
+    in the spinner widget for displaying time values. A little more work is required
+    on our part to extend the widget to properly allow for time values. In fact, let's
+    create our own time widget, based on the spinner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, let's look at the markup required for creating two time widgets in which
+    we'll display the Toronto time and the London time. We're not showcasing the time-zone
+    computation abilities here, simply the fact that we have two different cultures
+    in the same UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, let's have a look at the JavaScript used to define the new time widget,
+    and create two instances of it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Looking at the two time widgets in the browser, we can see that they've been
+    formatted to their own local culture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's first look at the two input elements used to define the time widget instances.
+    Notice the `value` attribute, they both have a default time, expressed using the
+    same format. Now, let's jump to the definition of the new time widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing you'll notice here is that we're using the widget factory to
+    define the time widget under the `ab` namespace. You'll also notice that we're
+    extending the spinner widget. That's because it is essentially a spinner that
+    we're building here, with a couple of small but important distinctions. This is
+    actually a good example of something you'll have to consider when designing jQuery
+    UI widget customizations that are derived from the standard set of widgets. Should
+    you retain the original widget name, in this case spinner, or should you call
+    it something else, in this case time? The one thing that can help you guide this
+    decision is thinking about how this widget will be used. For example, we could
+    have left the spinner widget intact to display these cultured time values, but
+    that would mean introducing new options, and potentially confusion for the developers
+    using this widget. We've decided that the use cases here are simple ones, and
+    that we should allow the time to be displayed with as few options as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The options we're defining here aren't new; the `step` and `numberFormat` options
+    are already defined by the spinner widget, we're just setting them to default
+    values that make sense for our time widget. The `step` value will be incrementing
+    against a `timestamp` value, and so we give it a default that will step by one
+    second. The `numberFormat` option specifies the format, the spinner expects when
+    parsing, and when formatting output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our extension of the spinner, the `_parse()` method, is where we're using the
+    Globalize library directly to parse the time strings. Recall that our inputs have
+    the same string formats. This becomes a problem if we're trying to parse a value
+    that has an unrecognizable format. So we try to parse the time value without specifying
+    what culture the value is. If that doesn't work, we use the culture attached to
+    this widget. This way, we can specify the initial values using one format, as
+    we've done here, and we can change the culture on-the-fly; everything will still
+    work. Our version of the `_format()` method is simple since we know the value
+    is always going to be a timestamp number, all we have to do is pass a new `Date`
+    object back to the original spinner `_format()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we have the two time widget instances, where one is passed a culture
+    of `en-CA`, and the other, `en-GB`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the step between values
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are several ways with which we can control the steps in the spinner widget.
+    The step is the value that the spinner widget uses to move its number either up
+    or down. For example, you'll often see loop code that increments a counter `cnt
+    ++`. Here, the step is one and this is what the spinner step value defaults to.
+    Changing this option in the spinner is trivial; we can even change this value
+    after the widget has been created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other measures we can take to control the stepping behavior of the
+    spinner. Let's take a look at the incremental option and see how this impacts
+    the spinner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll create three spinner widgets to demonstrate the potential of the incremental
+    option. Following is the HTML structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And following is the JavaScript used to create the three spinner instances:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The three spinner widgets should look something like this in your browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've created three different spinner instances, all of which behave differently
+    when the user holds down one of the spin buttons. The `#spin1` spinner has a step
+    value of `5`, and will always increment the spinner value by `5`. You can try
+    this out by holding down the spinner button. You'll notice this will take you
+    a really long time to get to a larger integer value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `incremental` option takes a boolean value, as we saw with the first spinner,
+    but it also accepts a `callback` function. The `#spin2` spinner has a step value
+    of `10`, but that will change based on our function passed to the incremental
+    option. This `incremental callback` function we've defined gets passed through
+    the number of spins that have happened, since the user held the spin button down.
+    We start off normally here, for the first `10` spins, and then we pick up speed
+    from that point forward by returning `2` instead of `1`. When we return `2`, our
+    step value becomes `20` since the returned value of this function is a multiplier.
+    But it's only used while the user is holding down the spin button; this function
+    doesn't permanently alter the `step` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our last spinner instance, `#spin3`, also uses an `incremental callback` function.
+    However, this function will use a progressively larger value as the user continues
+    to spin. Every hundred spins, we increase the multiplier, and also the step. This
+    latter incremental function is useful as the spinner value itself gets larger,
+    and we can control the pace at which the step changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've just seen how to control the step of the value of the spinner widget.
+    The `step` option dictates how far, in either direction, the value moves for a
+    given spin. When the user holds the spin button down, we can use the use the `incremental`
+    option to compute a step value. This helps speed up, or slow down the time it
+    takes to spin to a given destination value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another approach is to alter the actual timing delay in-between spins. This
+    might be handy, if you want to slow the spinning down, when the user is holding
+    down the spin button. Let''s look at an example of how we would go about altering
+    the spin delay. Following is the HTML structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: And here is the custom spinner widget definition, and three instances that all
+    use different spin values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can try each one of these spinners in the browser, and observe the contrast
+    in spin delay.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_09_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The new `spinDelay` option we've added to the spinner widget allows us to specify
+    the delay in milliseconds. In order to actually use this option, we have to perform
+    some alterations in one of the core spinner widget methods. The `_repeat()` method
+    is used internally by the widget when the user holds down the spinner button.
+    It actually does a fair amount of work using little code. Essentially, the goal
+    is to repeat the given event, over and over, until the user lifts the button and
+    the spinning should stop. However, we cannot just call `_spin()` over and over
+    without some kind of delay, otherwise the user would see nothing more than a blur
+    each time the text input is updated with a new value. And so, the spinner makes
+    use of the `_delay()` method for this exact purpose. The `_delay()` method sets
+    a delayed execution for the past function, and is defined in the `base widget`
+    class; all widgets have access to `_delay()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our version of the `_repeat()` method is nearly identical to the original, except
+    we're not hard-coding the delay between spins; we get that from the `spinDelay`
+    option now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specifying the spin overflow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The spinner widget will happily let the user spin, indefinitely. It'll even
+    change the display to use exponential notation when the JavaScript integer limit
+    is reached, that's fine. Almost no application needs to worry about these limits.
+    And in fact, it's probably best to put some limitations in place that actually
+    make sense for the application. That is, specify a `min` boundary and a `max`
+    boundary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This works well, but it could work even better if we plug some logic into the
+    spinner that handles overflow, when the user wants to go beyond the boundary.
+    Rather than just stop spinning as is the default behavior, we just send them in
+    the same direction, but starting from the opposite boundary. The best way to picture
+    these constraints is by default, the spinner min-max boundary is like a straight
+    line. We want to make it look more like a circle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll have two spinner widgets, the first using the default boundary constraint
+    logic, and the second using our own custom-defined behavior. Following is the
+    HTML structure used to create the two widgets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And, here is the JavaScript used to instantiate the two spinners when the document
+    has loaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Following are the two widgets in the browser. The latter spinner, you'll see,
+    handles the boundary overflow differently than the default implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When the `#spin1` spinner reaches either of the boundaries, `1` or `100`, the
+    spinning will just stop. On the other hand, the `#spin2` spinner will pick up
+    at the other end. You'll notice that we're passing two non-standard spinner options
+    here; `minOverflow` and `maxOverflow`. These don't actually constrain the boundary
+    of the spinner the way `min` and `max` do. Adding these new options was intentional
+    on our part because we don't want the regular constraint logic to fire.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `spin` callback function we've supplied to this widget gets called on every
+    spin. If we had used the traditional spinning `min` and `max` options, we would
+    never know if we're experiencing an overflow because `min` would be less than
+    `1` and `max` would never be more than `100`. So, we use the new options to redirect
+    the value, depending on the direction. If the value has gone above `100`, then
+    we set the value back to `minOverflow`. Or if the value has gone below `1`, then
+    we set the value to `maxOverflow`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You may decide that the overflow behavior, where we bring the user around to
+    the other side of the spinner boundary, it isn''t exactly what you''re looking
+    for. You may just want to stop the spinning, once the boundary is reached. However,
+    we can still improve on the widget by disabling the spinner button once the boundary
+    in that direction has been reached. This is just a different approach to spinner
+    overflow, whereby we simply supply better feedback to the user, as opposed to
+    altering the business logic as we did earlier. Let''s take a look at how we can
+    make this change. Following is the HTML structure used for a simple spinner widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: And here is our JavaScript used to create the widget once the page loads.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you start interacting with this widget in the browser, you'll notice that
+    when you hit the `min` option value, in this case, `1`, the down spinner button
+    is disabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_09_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Likewise, when you hit the `max`, which is `100` here, the up spinner button
+    is disabled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_09_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We've introduced this new spinner behavior by passing the constructor a `spin`
+    callback function, executed on each spin. In this callback, we create a reference
+    to both spinner buttons in the `buttons` variable. Then we check if either the
+    `max` value has been reached, or if the `min` value has been reached. We then
+    disable the appropriate button. If we're somewhere in-between `min` and `max`,
+    then we simply enable the buttons. You'll also notice that we have some extra
+    filtering involved here; `not(.ui-state-disabled)` and `.ui-state-disabled`. This
+    is necessary because of the way the spinner widget fires spin events. Disabling
+    buttons can trigger a spin, leading to an infinite loop. And so we have to take
+    care to disable only those buttons that haven't been disabled yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simplifying the spinner buttons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The default spin buttons implemented in the spinner widget might be a bit much,
+    depending on context. For example, you can clearly see that these are button widgets
+    added to the slider as subcomponents. And this works perfectly when we get to
+    build larger widgets out of smaller ones. This is more along the lines of an aesthetic
+    preference. Maybe the spinner would look better if the individual up and down
+    spin buttons didn't have a hover state, and didn't have a background or border,
+    either for that matter. Let's try taking these style properties away from the
+    buttons in the slider and make them appear more tightly integrated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here is the basic HTML structure used as the foundation of our `spinner` widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is the CSS we''ll use to remove the button styles we''re no longer
+    interested in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `input` element isn''t yet a widget, and the new CSS class we''ve created
+    isn''t yet part of the spinner widget. Here is what the JavaScript code to do
+    both of those things, looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you take a look at the spinner we've created in the browser, you'll notice
+    that the borders and backgrounds of the spinner buttons have been stripped. It
+    now looks more like one whole widget. You'll also notice that the mouse cursor
+    uses a pointer icon when the user hovers over either of the buttons, which helps
+    indicate that they're clickable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_09_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The new CSS class we've just created, `ui-spinner-basic`, works by overriding
+    the button widget styles within the context of the spinner. Specifically, we're
+    removing the `border` and `background`, from both the button widgets. In addition,
+    we have set the `cursor` property to `pointer` in order to give the user the impression
+    that the arrows are clickable. We've also customized the definition of the spinner
+    widget itself a little bit. We've done so by adding a new `basic` option, which
+    when `true`, will apply the new `ui-spinner-basic` class to the widget. We don't
+    need to explicitly remove this class when the widget is destroyed because it was
+    added to an element that is created by the spinner widget. This element is automatically
+    removed by the base spinner implementation, and so our code doesn't have to worry
+    about it.
+  prefs: []
+  type: TYPE_NORMAL

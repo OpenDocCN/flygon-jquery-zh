@@ -1,0 +1,942 @@
+- en: Chapter 7. Advanced Event Handling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: How many times do you go to a website to perform an action? It might be online
+    banking, or perhaps purchasing something from Amazon; in both cases, the sites
+    will detect the actions taking place, and respond accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Part of working with jQuery is knowing how and when to respond to different
+    types of events. In most cases, people are likely to use the `.on()` or `.off()`
+    event handlers to handle them. While this works perfectly well, it just scratches
+    the surface of what can be done with event handling. In this chapter, we will
+    take a look at some of the tips and tricks we can use to expand our skills when
+    it comes to event handling. We will cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delegating events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the `$.proxy` function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating and decoupling custom event types
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Namespacing events
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Intrigued? Let's get on with it then!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing event handling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A question – how often do you go online to perform a task? I'll bet it's a fair
+    few times a week; it could be anything from online banking, to hitting Amazon
+    to get that latest DVD (DVDs – who downloads them, I wonder?)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That aside, we can''t escape having to click on a link or a button to advance
+    through a process. In most cases, the code behind the event is likely to be the
+    ubiquitous click handler, or it could even be `.change()` or `.hover()`. All are
+    shorthand forms of the `.on()` (or even `.off()`) event handlers, and are of course
+    functionality equivalent to something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will turn the selected element to a nice shade of red. However, there is
+    more to event handling than simply defining an action on a known element. Over
+    the next few pages, we're going (to quote a nautical term) to push the boat out,
+    and take a look at a few tips and tricks that we can use, to help develop our
+    skills further. We'll begin with a look at event delegation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delegating events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Someone once said that the art of being a good manager is to know when to delegate.
+    I hope that this wasn't an excuse for them to offload a horrible job to a subordinate,
+    although the cynical might say otherwise!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leaving aside the risk, delegation follows the same principles in jQuery. If
+    we need to create an application which requires binding some form of event handler
+    to lots of elements of the same type, then we might consider writing event handlers
+    to cover each element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It'll work to an extent, but is very wasteful of resources. If the list is large,
+    then events will be bound to all of the elements within, which uses more memory
+    than is needed. We can get around this by using **event delegation**, where we
+    can shift to binding one event handler to a single ancestor element that serves
+    multiple descendants, or enable event handling for newly created elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a few tricks we can use to help us with better managing of events
+    using delegation. Before we take a look at them, let's quickly recap the basics
+    of how event delegation works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Revisiting the basics of event delegation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A question – how often have you used `.on()`, or even `.off()` when coding event
+    handlers in jQuery? I'll bet the answer is probably countless times. If you've
+    not already used event delegation before, then you're already halfway to using
+    it without realizing it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event delegation relies on the use of **event propagation**, or event bubbling
+    as it is sometimes known. It is the key to understanding how delegation works.
+    Let's work through a quick example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine we''re using the following HTML code as the basis for a list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Nothing outrageous here – it''s a simple example. Any time one of our anchor
+    tags is clicked, a click event is fired for that anchor. The event is dispatched
+    in one of the three phases: **capturing**, **target**, and **bubbling**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It will be captured at the document root, work its way down until it hits its
+    target (The `li` tag), before bubbling back up to the document root, as shown
+    next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: document root
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<html>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<body>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<div #container>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<ul #list>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<li>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`<a>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Yikes! This means that each time we''re clicking on a link, we''re effectively
+    clicking on the whole document! Not great! It''s expensive on resources, and even
+    if we were to add additional list items using code such as this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We would find that the aforementioned click handler wouldn't work with these
+    items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The bubbling example used here is somewhat simplified, and doesn't show all
+    the various phases. For a useful discussion, head over to the comments posted
+    on Stack Overflow at [http://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing](http://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reworking our code
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Instead of adding a directly bound handler, we can take advantage of event
+    propagation, and rework our handler to listen for **descendant** anchors, instead
+    of binding to existing anchor tags only. This can be seen in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only difference in the code is that we've moved the `a` selector to the
+    second parameter position of the `.on()` method. This creates a single event handler
+    against `#list`, with the event bubbling up one level from `a` to `#list`. Event
+    delegation removes the need to create multiple event handlers, which is wasteful
+    - the code will work equally well with both existing anchor tags within `#list`,
+    and with any that are added in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more about event delegation, then it is worth viewing
+    the jQuery API documentation, which is at [http://learn.jquery.com/events/event-delegation/](http://learn.jquery.com/events/event-delegation/).
+    The jQuery documentation also has a useful section on using `.on()` within delegated
+    events at [http://api.jquery.com/on/](http://api.jquery.com/on/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Supporting older browsers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A small point – if you need to rework older code, then you may see `.bind()`,
+    `.live()`, or `.delegate()` as event handlers. All were used to delegate events
+    prior to jQuery 1.7, but should now be replaced with `.on()`. In fact, the first,
+    `.bind` is a one line function that calls to `.on` (and its partner, `.off()`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Supporting older browsers](img/image00395.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The same applies for `.delegate()` and its partner event handler, `.undelegate()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Supporting older browsers](img/image00396.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It should be noted that `.on()` mimics the behaviors found when using `.bind()`
+    or `.delegate()`. The former is very resource hungry as it attaches to every single
+    element it can match; the latter still has to work out which event handler to
+    invoke. However, the scope of this should be smaller in comparison to using the
+    `.bind()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've delved into the inner workings of `.on()`, let's put it into
+    action, and create a simple demo to remind ourselves of how delegation works within
+    jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring a simple demonstration
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It''s time for a little action, so let''s start with a quick reminder of how
+    event delegation works, when using jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by extracting the files we need from the code download that accompanies
+    this book. For this demo, we need the `simpledelegation.html`, `simpledelegation.css`,
+    and `jquery-ui.min.css` files.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save the CSS files within the `css` subfolder of our project area. The HTML
+    markup needs to be stored in the root area of the project folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, add the following code—save the file as `simpledelegation.js`,
+    and store it in the `js` subfolder of our project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, we should see the following list of items, when previewing the
+    results in a browser:![Exploring a simple demonstration](img/image00397.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Try clicking on a number of the links – if you click on any of the remove links,
+    then the list item will be removed; clicking on one of the list items will remove
+    all of the items from the list.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The key to this demo is the following one line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although we have multiple items within the list, we've created one single delegated
+    event handler. It bubbles up to the parent of the `<li>` item we clicked, then
+    removes it. In this instance, we've separated out the function that is called
+    when the event is triggered; this could easily have been incorporated into the
+    handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've revisited the basics of event delegation, let's take a look at
+    some of the reasons why event delegation can lead to increased performance, when
+    working with a lot of similar elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the implications of using event delegation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The key benefit of implementing delegated events in place of direct equivalents,
+    is reducing memory usage and avoiding memory leaks if multiple event handlers
+    are present in our code. Normally, we would need to implement an event handler
+    for each instance where we need something to happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The real impact of using event delegation is around the savings in memory usage,
+    gained from where event handler definitions are stored within the internal data
+    structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, reducing the number of event handlers means that we can reduce memory
+    leaks and improve performance (by reducing the amount of code that has to be parsed).
+    As long as we are careful about where we bind the event handler, there is a potential
+    to dramatically reduce the impact on the DOM and the resulting memory usage, particularly
+    in larger applications. The bonus is that if event delegation has been implemented,
+    it will apply equally to existing elements that have been defined, as well as
+    those that have yet to be created. Directly applied event handlers will not work;
+    they can only be applied to elements that already exist prior to the event handler
+    being called in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ability to handle events that exist, and those that have yet to happen,
+    sounds like a good thing. After all, why repeat ourselves, if one event handler
+    can handle multiple events, right? Absolutely – as long as we manage it carefully!
+    If we trigger an event on a specific element, such as an anchor tag for example,
+    then this will be allowed to handle the event first. The event will bubble up
+    until it reaches document level, or a lower event handler decides to stop event
+    propagation. This last part is key – without control, we could end up with unexpected
+    results, where event handlers have responded, or not fired, contrary to expectations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To see a detailed explanation of what can happen, take a look at [http://css-tricks.com/capturing-all-events/](http://css-tricks.com/capturing-all-events/).
+    It contains links to examples on CodePen that illustrate this issue very well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To help reduce the impact of event bubbling causing event handlers to fire out
+    of turn, we use methods such as `event.stopPropagation()`. This is not the only
+    trick we can use, so let's take a moment to explore some of the options available
+    when using event delegation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling delegation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Taking advantage of event bubbling increases the scope for reducing the number
+    of event handlers we need to implement within our code; the downside is the instances
+    of unexpected behavior, where event handlers may not be triggered at the desired
+    points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To control which elements might trigger a delegated event handler, we can use
+    one of the following two tricks: `event.stopPropagation()`, or trapping the event
+    target and determining if it matches a given set of conditions (such as a specific
+    class or `data-` name).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at this second option first – an example block of code might
+    look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That''s one clumsy way of doing things! Instead, we can simply instigate a
+    check on the class name, using a variation of the delegated event handler, as
+    shown next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a really simple trick we can use – it''s so simple, it probably doesn''t
+    count as a trick, as such! To see how easy it is to make the change, let''s run
+    through a quick demo now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the code download, we need to extract the `propagation-css.html` and `propagation.html`
+    files. These contain some simple markup and styles for our basic list. Save the
+    CSS file in the `css` subfolder of our project area, and the HTML markup at the
+    root of the same area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we need to create the event handler that will fire when the conditions
+    match. Go ahead and add the following to a new file, saving it as `propagation-css.js`
+    in the `js` subfolder of our project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: At this point, if we preview the results in a browser, we will have a simple
+    list, where list items darken if we hover over a specific item. Nothing particularly
+    special about this – it's just borrowing some styling from jQuery UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, if we fire up a DOM inspector, such as Firebug, and then hover over
+    each item, we can see console output is added each time we hover over an item
+    with a class of `.yes`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Controlling delegation](img/image00398.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: So, instead of providing a selector as we did back in *Exploring a simple demonstration*,
+    we simply used a class name; the event handler function will only fire if it matches
+    the specified class name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We can even apply a `data-` tag as our check:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the stopPropagation() method as an alternative
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As an alternative, we can use an all-jQuery solution in the form of `stopPropagation()`.
+    This prevents the event from bubbling up the DOM tree, and stops any parent handlers
+    from being notified of the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This one-liner is a breeze to implement, although the key to using it is ensuring
+    we add it at the right point in our code. If you''ve not used it before, then
+    it needs to go within the event handler, immediately after the last command in
+    the handler (as highlighted in the following snippet):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As a quick check, try extracting the `propagation-js` files from the code download
+    that accompanies this book. Save them in the relevant folders within our project
+    area. If we preview them in a browser, we''ll see a simple **span** enclosed within
+    a **div**. Refer to the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the stopPropagation() method as an alternative](img/image00399.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The key to this demo lies within the DOM Inspector. Try clicking on the grey-brown
+    outer ring, or the span within it, and we will see the results of what we''ve
+    selected appear in the console log, as shown next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the stopPropagation() method as an alternative](img/image00400.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you comment out the `event.stopPropagation()` line within the code, the click
+    event attached to `div` will also be invoked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Event propagation should not be stopped unless necessary. There is a useful
+    article at [https://css-tricks.com/dangers-stopping-event-propagation/](https://css-tricks.com/dangers-stopping-event-propagation/)
+    which discusses the problems you might encounter if propagation is stopped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, let's change focus and switch to another key concept within event handling.
+    It's time to take a look at using the `$.proxy` function, and why this is needed,
+    if event delegation doesn't propagate sufficiently for our needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the $.proxy function
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Up until now, we've covered how making use of event bubbling can help us reduce
+    the need for lots of event handlers; provided we manage the bubbling carefully,
+    then delegation can prove a very useful tool in developing with jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The flipside of this is that in some instances we may need to give jQuery a
+    helping hand; when it doesn't propagate sufficiently high enough up the chain!
+    At first this may not make sense, so let me explain what I mean.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s, for argument sake, imagine we have an event handler that has been created
+    as an object, and that we want to call it when clicking on a link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we ran this in a browser, what would you expect to see in the console log
+    area?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To find out, try extracting the `proxy-before.html` file from the code download
+    that accompanies this book. Make sure you have a DOM inspector installed!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you were expecting to see **Hello, Homer Simpson**, then I will have to
+    disappoint you; the answer won''t be what you expect, but instead will be **Hello,
+    undefined**, as shown in the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the $.proxy function](img/image00401.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Okay, so what gives?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason for this is that the context being used is within the `clickHandler`
+    event, and not the `evntHandler` object; we don't have a `myName` property within
+    the `clickHandler` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Thankfully, there is a simple fix for this. We can use `$.proxy` to force a
+    change of context, as shown next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To see this in action, extract the `proxy-before.html` and `proxy-after.html`
+    files from the code download that accompanies this book. If you run them in a
+    browser, you will see the same results as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using the $.proxy function](img/image00402.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is a simple change to make, but it opens up a wide variety of possibilities.
+    It is a shorthand method of setting the context for a closure. We could of course
+    use the plain JavaScript `.bind()` methods. Instead, using `$.proxy` ensures that
+    the function passed in is actually a function, and that a unique ID is passed
+    to that function. If we add namespaces to our events, we can be sure that we unbind
+    the correct event. The `$.proxy` function is seen as a single function within
+    jQuery, even if it is used to bind different events. Using a namespace rather
+    than a specific proxied function will avoid unbinding the wrong handler in our
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more about using `$.proxy`, then it is worth reading
+    the documentation on the main jQuery site, which is available at [http://api.jquery.com/jquery.proxy/](http://api.jquery.com/jquery.proxy/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To give us a real flavor of what is possible, consider this for a moment: how
+    many times have you ended up with functions nested three to four levels deep?
+    Consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Rather than working with the above mentioned code, we can refactor it to increase
+    readability, by using `$.proxy`, as shown next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: I think you will agree that this is much easier to read, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay – let's move on. I'm sure we are all familiar with creating event handlers
+    in jQuery. However, chances are that you're working with standard event handlers.
+    These will work perfectly well, but we're still limited in what we can do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, let's change that. Using jQuery, we can create custom events that break
+    the otherwise familiar mould of what we know is possible, and will allow us to
+    create all kinds of event handlers. Let's take a look at how we can do this in
+    action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating and decoupling custom event types
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you've spent any time developing jQuery, then I am sure you are more than
+    familiar with the standard event types that we can use, such as `.click()`, `.hover(),`
+    or `.change()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These all serve a useful purpose, but all have one thing in common – we're a
+    bit limited in what we can do with them! Our code will be dictated by the extent
+    of what these handlers can do. What if we can break this limitation, and create
+    *any* type of custom event handler?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, we can always combine multiple events together, to be served by
+    the same function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: But this is still limited to those event handlers that are available out of
+    the box. What we need is to break the mould and get creative in designing our
+    own handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: No problem – we can use jQuery's special event functionality to build pretty
+    much any type of event to suit our needs. This opens up a real world of possibilities,
+    which might warrant a book in its own right. Over the next few pages, we'll cover
+    a few of the concepts to help get you started on the right path to creating events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a more in-depth look at creating custom events, there is a useful article
+    on the learn jQuery site, at [http://learn.jquery.com/events/introduction-to-custom-events/](http://learn.jquery.com/events/introduction-to-custom-events/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The great thing about events is that they act just like their standard cousins,
+    including bubbling up the DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: So, what goes into the makeup of a special event? Special events will often
+    take the form of a plugin; the format may be similar, but we'll frequently see
+    any one of the several **fixHooks**, which we use to control the behavior of event
+    processing in jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: jQuery special event hooks are a set of per-event-name functions and properties
+    that allow code to control the behavior of event processing within jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a moment to have a look at the typical makeup of a special event
+    plugin, before diving into an example of such a plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a custom event
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The fixHooks interface provides a route to normalize or extend the event object
+    that will override a native browser event. We might typically see a format such
+    as the following used in our event plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It''s worth noting that when creating special event types, there are two methods
+    that we will use frequently - `.on()`, for binding events, and `.trigger()`, for
+    manually firing a specific event when needed. In addition, a special event plugin
+    will expose a number of key methods which are useful to learn. Let''s explore
+    these for a moment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Name of method / property | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `noBubble: false` | Boolean set to `false` by default. Indicates whether
+    bubbling should be applied to this event type if the .`trigger()` method is called.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `bindType` | When defined, these string properties specify that a special
+    event should be handled like another event type until the event is delivered.
+    Use the `bindType` for directly attached events, and `delegateType` for those
+    that have been delegated. In both cases, these should be standard DOM types, such
+    as `.click()`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `handle: function(event: jQuery.Event, data: Object)` | Calls a handle hook
+    when the event has occurred, and jQuery would normally call the user''s event
+    handler specified by `.on()` or another event binding method. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `setup: function(data: Object, namespaces, eventHandle: function)` | Called
+    the first time an event of a particular type is attached to an element. This provides
+    the hook an opportunity to do processing that will apply to all events of this
+    type on this element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `teardown: function()` | Called when the final event of a particular type
+    is removed from an element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `add: function(handleObj)``remove: function(handleObj)` | Called when an
+    event handler is added to an element through an API such as `.on()`, or removed
+    when using `.off()`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `_default: function(event: jQuery.Event, data: Object)` | Called when the
+    `.trigger()` or `.triggerHandler()` methods are used to trigger an event for the
+    special type from code, as opposed to events that originate from within the browser.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: It's worth getting to know these methods well, particularly if you use jQuery
+    Mobile in your development. Mobile has a dependency on special events, to produce
+    events such as `tap`, `scrollstart`, `scrollstop`, `swipe`, or `orientationchange`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more details on each method, take a look at the Gist by Ben Alman, which
+    is available at [https://gist.github.com/cowboy/4674426](https://gist.github.com/cowboy/4674426).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Special events will require a deeper level of knowledge, if you are using them
+    to override standard behavior of events such as click or mouseover. To understand
+    more of the inner workings, it is worth reading the article on the jQuery Learning
+    Site at [http://learn.jquery.com/events/event-extensions/](http://learn.jquery.com/events/event-extensions/).
+    Note though – it will get quite complex!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've seen some of the inner workings of a special event plugin, it's
+    time to get stuck in and see something in action. For this, we're going to use
+    the jQuery Multiclick plugin produced by James Greene, to show how easy it is
+    to capture an action such as triple-clicking, and use it to perform an action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with the Multiclick event plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Creating a custom event can be as simple or as complex as is needed. For this
+    demo, we''re going to use the jQuery Multiclick event plugin by James Greene.
+    The plugin is available from [http://jamesmgreene.github.io/jquery.multiclick/](http://jamesmgreene.github.io/jquery.multiclick/).
+    We''ll use it to post some messages on screen, with the message changing on every
+    third click. Refer to the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the Multiclick event plugin](img/image00403.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s take a look at what is involved:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by extracting the following files from the code download that accompanies
+    this book. For this demo, we'll need the `jquery.multiclick.js`, `jquery.min.js`,
+    `multiclick.css`, and `multiclick.html` files. Store each of the files in the
+    relevant subfolder within our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, add the following code, saving it as `multiclick.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is required to configure the multiclick plugin, and trigger the appropriate
+    responses when the mouse has been clicked.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Try running the demo in a browser. If all is well, we should see something similar
+    to the screenshot shown at the start of the exercise, once we've clicked on the
+    **Click me!** button a few times.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Although it probably has to be said that this isn't entirely representative
+    of a real-world example, the techniques involved are nonetheless the same. The
+    plugin is bound to the standard click handler, and will fire if the number of
+    clicks reached is a multiple of the value stated in the configuration options
+    for the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Namespacing events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we've seen how we can delegate events and create handlers that can take
+    custom triggers. These methods are perfect if we have a single click event handler,
+    but what happens if we need to have multiple click handlers, for example?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Well, fortunately there''s a simple solution: add a namespace to the event!
+    Rather than talk about how it works, let''s take a quick look at the following
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code is perfectly acceptable – nothing wrong with this at all. Sure, it
+    might not be quite as readable as some might like, but we're not worried about
+    that – at least not for now!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The critical point here is if we were to call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we would lose not only the first click handler, but the second one as
+    well. This is not ideal. We can fix this by adding a namespace or identifier to
+    the command, as shown next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we run the same `.off` command now, then clearly neither event handler will
+    be removed. But – suppose we make the following change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we can safely remove the first event handler, without removing the second.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we had written `$("#element").off(".firsthandler")` instead, then it would
+    have removed all event handlers that had this namespace assigned to them. This
+    can be very useful when developing plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The best way to understand how this works, is to see it in action. Let''s take
+    a look at the following simple example now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The code for this demo is available in the code download that accompanies this
+    book, as the `namespacing.html` file. You will need to extract it and a copy of
+    jQuery in order to run the demo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here, we''ve assigned two resize functions. We then remove the second using
+    the namespace, which will leave the first completely untouched, as displayed in
+    the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Namespacing events](img/image00404.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If we use a DOM Inspector to inspect the code, we can clearly see the namespace
+    being assigned; to do so, set a breakpoint on line 12, then expand the list on
+    the right, as shown in the next image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Namespacing events](img/image00405.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: At first, this may seem like a really simple change, but I am a great believer
+    in the phrase KISS - you get the idea!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is no limit to the depth or number of namespaces used; for example, `resize.layout.headerFooterContent`.
+    Namespaces can equally be used with standard event or custom event handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a namespace identifier is a really quick and easy fix that we can apply
+    to any event handler. It gives us perfect control over any event handler, particularly
+    when assigning functions to multiple instances of the same event type within our
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are frequently creating complex event handlers, then it may be worth
+    to take a look at the Eventralize library by Mark Dalgleish, which is available
+    from [http://markdalgleish.com/projects/eventralize/](http://markdalgleish.com/projects/eventralize/).
+    Note, though, it hasn't had any updates for 2-3 years, but may be worth testing
+    it to see if it helps consolidate and simplify your events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Event handling is key critical to the success of any website or online application.
+    If we get it right, it can make for an engaging user experience; getting it wrong
+    can lead to some unexpected results! Over the last few pages, we've looked at
+    few concepts to help develop our event handling skills; let's take a moment to
+    review what we've learnt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a quick introduction into event handling, before moving swiftly
+    onto exploring event delegation as one tool where we can benefit from its use
+    in our code. We first looked at the basics of event delegation, before examining
+    the implications of using it, and learning how we can control it within our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up came a look at `$.proxy`, where we saw how jQuery sometimes needs a
+    helping hand to ensure that an event is fired within the right context if our
+    code means it doesn't propagate sufficiently high enough up the chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then turned our attention to a brief look at creating custom event types
+    and handlers, before exploring how such event handlers are constructed. We then
+    used the jQuery Multiclick plugin as an example of how we can create these custom
+    event handlers, before rounding up the chapter with a look at using namespacing
+    to ensure that we can bind or unbind the right event handler in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll be looking at some of the visual ways we can enhance
+    our sites – we'll see how applying effects, and managing the resultant effects
+    queue can help either make or break the success of our sites.
+  prefs: []
+  type: TYPE_NORMAL

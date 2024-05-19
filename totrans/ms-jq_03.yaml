@@ -1,0 +1,1314 @@
+- en: Chapter 3. Organizing Your Code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To organize or not organize, that's the question…
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our journey so far, we''ve covered the various means of downloading jQuery
+    and seen how we can override core functionality with custom code, but—to misquote
+    that famous detective: how should we organize our code?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, you might think I'm losing the plot here, but bear with me on this; mastering
+    a language such as jQuery is not just about producing complex code but about producing
+    code that is well structured, concise, and clear to read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''re going back to the basics with an introduction to some
+    of the design patterns that are available within jQuery. We''ll see how some of
+    the techniques discussed in this chapter will help improve your code formatting
+    and make you a better coder. In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing design patterns and why we should use them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dissecting the structure of a design pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring some examples of the different design patterns available and the benefits
+    of using them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring the use of patterns within the jQuery library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ready to get started? Let's begin…
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing design patterns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: How many times have you viewed a website to stand in awe at the beautiful design,
+    only to find that the code looks like the proverbial dog's dinner? A commonly
+    held misconception is that appearance is the domain of the designer; this is not
+    true, as the design of the code plays an equally important part as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How can we get around this? Easy, we can use a **design pattern** or a set of
+    constructs that help provide a solution and allow us to concentrate more on the
+    functionality we want to provide within our project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First created in 1977 by the architect Christopher Alexander, engineers have
+    since used the early principles and developed them into what we now know as design
+    patterns. This work was further promoted by the **Gang of Four** (**GoF**) in
+    their iconic book *Design Patterns: Elements of Reusable Object-Oriented Software*,
+    published in 1995.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They helped to not only push the use of design patterns further afield but also
+    provided some design techniques and pitfalls; they were also instrumental in providing
+    the twenty-three core patterns that are frequently used today (of which, we will
+    be covering those that are used within jQuery development). We'll take a look
+    at some of the patterns that are in use today, but first, let's answer a simple
+    question. What do we really mean by a design pattern and how do they help us to
+    write clear and concise code, which reduces unnecessary duplication?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining design patterns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At a basic level, design patterns take the format of predefined templates or
+    a set of reusable principles that help classify different approaches, as part
+    of supporting good design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Why use them? Simple, there are three main benefits to incorporating a design
+    pattern into our project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Design patterns are proven solutions**: They are based on solid approaches
+    to solving an issue in software development and are based on the experience of
+    developers who help create the pattern being used'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Patterns can be reused**: Although they often represent an out-of-the-box
+    solution, they can be easily adapted as per our needs'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Patterns are expressive**: They contain a set structure and vocabulary to
+    help you express large solutions clearly and elegantly'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At this point, you may be forgiven for thinking that patterns must be an exact
+    science, where we're constrained by the framework of the pattern we're using.
+    It's not so; they are not an exact solution but merely a scheme to help provide
+    a solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Taking it further, there are a number of other reasons why we should consider
+    using design patterns in our work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can effectively code out or prevent minor issues that might cause us major
+    problems later in the development process—using tried and tested techniques eliminates
+    the need to worry about the structure of our code and allows us to concentrate
+    on the quality of our solution.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Patterns are designed to provide generalized solutions that don't tie them to
+    a specific problem but can be applied to improve the structure of our code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some patterns, if chosen wisely, can help reduce the amount of code by avoiding
+    repetition; they encourage us to look at our code carefully, to reduce duplication
+    and keep to using **Don't Repeat Yourself** (**DRY**) principles that are one
+    of the tenets of jQuery.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Patterns are not a one-shot, point-in-time solution; our work may help improve
+    existing designs or even provide scope for creating new patterns! This constant
+    improvement helps ensure that patterns become more robust over time.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Irrespective of its purpose, one of the key tenets of design patterns is that
+    they are not always considered a design pattern, unless they have been rigorously
+    tested by the pattern community. Many might appear to be a pattern; in reality,
+    they are more likely to be a proto-pattern or a pattern that has been created
+    but not yet been sufficiently tested to be classed as a true pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The core principle of any design pattern is based on Alexander's belief that
+    they should always represent a process and an output. The latter term is deliberately
+    meant to be vague; it should represent something visual but the exact context
+    of what that visual output is will depend on the chosen pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, now that we've seen what a design pattern is, let's discuss what they look
+    like. Are they made up of specific elements or constructs? Before we take a look
+    at some examples, let's first consider the makeup of a design pattern and how
+    we can use it to good effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dissecting the structure of a design pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'If you take a look at any design pattern in detail, you will find that it is
+    made up of a rule that establishes a relationship between the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A context
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A system of forces that arises in that context
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A configuration that allows these forces to resolve themselves in the context
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These three key aspects can be further broken down into a number of different
+    elements, in addition to a pattern name and description:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Element | Purpose or function |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Context outline | The context in which the pattern is effective in responding
+    to the users'' needs. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Problem statement | A statement of the problem being addressed, so we can
+    understand the intent of the pattern. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Solution | A description of how the user''s problem is being solved in a
+    list of steps and perceptions that are easy to understand. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Design | A description of the pattern''s design and, in particular, the user''s
+    behavior when interacting with it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Implementation | A guide to how the pattern will be implemented. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Illustrations | A visual representation of the classes in the pattern, such
+    as a UML diagram. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Examples | An implementation of the pattern in a minimal form. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Corequisites | What other patterns may be needed to support the use of the
+    pattern being described? |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Relations | Does this pattern resemble (or mimic) any existing ones? |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Known usage | Is the pattern already being used in the wild? If so, where
+    and how? |'
+  prefs: []
+  type: TYPE_TB
+- en: '| Discussions | The team or the author''s thoughts on the benefits of using
+    the pattern. |'
+  prefs: []
+  type: TYPE_TB
+- en: The beauty about using patterns is that while they may entail a degree of effort
+    during the planning and documentation stages, they are useful tools that help
+    to get all the developers in a team on the same page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is worth taking a look at the existing patterns first, before creating new
+    ones—there may be one in use already, which reduces the need to design from scratch
+    and go through a lengthy process of testing before being accepted by other developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Categorizing patterns
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we''ve seen the structure of a typical design pattern, let''s take
+    a moment to consider the types of patterns that are available. Patterns are usually
+    grouped into one of the following three categories, which are the most important
+    ones:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Creational patterns**: These focus on how we can create objects or classes.
+    Even though this might sound simple (and in some aspects, like common sense),
+    they can be really effective in large applications that need to control the object
+    creation process. Examples of creational patterns include Abstract, Singleton,
+    or Builder.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Structural design patterns**: These focus on ways to manage relationships
+    between objects so that your application is architected in a scalable way. A key
+    aspect of structural patterns is to ensure that a change in one part of your application
+    does not affect all the other parts. This group covers patterns such as Proxy,
+    Adapter, or Façade.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Behavioral patterns**: These focus on communication between objects and include
+    the Observer, Iterator, and Strategy patterns.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With this in mind, let's take a moment to explore some of the more commonly
+    used designs, beginning with the **Composite Pattern**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Composite Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you''ve spent time developing with jQuery, how often have you written code
+    similar to this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Without realizing it, we're using two instances of the Composite Pattern—a member
+    of the Structural group of patterns; it allows you to apply the same treatment
+    to a single object or a group of objects in the same manner, irrespective of how
+    many items we're targeting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a nutshell, when we apply methods to an element, or a group of elements,
+    a jQuery object is applied; this means that we can treat either set in a uniform
+    manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, what does this mean? Let''s take a look at a couple of other examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The beauty of using Composite Patterns is that we can use the same method in
+    each instance but apply different values to each element; it presents a uniform
+    interface to the end user while applying the change seamlessly in the background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Composite Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Using Composite Patterns can be as simple or complex as we make it; there are
+    advantages and drawbacks to using this pattern, which we should consider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can call a single function on a top-level object and have it apply the same
+    results to any or all of the nodes within the structure
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All the objects in the composite design are loosely coupled, as they all follow
+    the same interface
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The composite design gives a nice structure to the objects, without the need
+    to keep them in an array or as separate variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'There are some drawbacks to using composite patterns; the following are the
+    key ones to be considered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can't always tell whether we're dealing with a single item or multiple items;
+    the API uses the same pattern for both
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The speed and performance of your site will be affected, if the composite pattern
+    grows beyond a certain size
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's move on and take a look at some more patterns; the next one up is the
+    **Adapter Pattern**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Adapter Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can use jQuery to switch classes assigned to selectors; in some cases though,
+    this may be an overkill for our needs, or assigning a class to a selector may
+    present issues that we need to avoid. Fortunately, we can use the `.css()` function
+    to directly apply styles to our elements—this is a great example of using an Adapter
+    Pattern in jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A pattern based on the Structural design pattern, the Adapter Pattern, translates
+    the interface for an element in jQuery into an interface that is compatible with
+    a specific system. In this case, we can assign a CSS style to our chosen element,
+    using an adapter in the form of `.css()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The beauty of this is that once the style is set, we can use the same command
+    to get the style value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Adapter Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are several key benefits of using the Adapter design pattern; the key
+    one being its ability to link two incompatible interfaces, which would otherwise
+    have had to remain independent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In addition, it is worth making a note of the following additional benefits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Adapter pattern can be used to create a shell around an existing block of
+    code, such as a class, without affecting its core functionality
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This pattern helps makes the code reusable; we can adapt the shell to include
+    additional functionality or modify the existing code if circumstances dictate
+    a need to do so
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Using an Adapter Pattern presents some drawbacks, if we''re not careful:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a performance cost in using keywords such as `.css()`—do we really
+    need to use them? Or, can we apply a style class or selector and move CSS styling
+    into the style sheet instead?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Using keywords, such as `.css()`, to manipulate the DOM can lead to a performance
+    hit if we have not simplified our selectors and if we''ve used something like
+    this:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This likely to not be noticeable on a small site or where such manipulation
+    is only lightly used; it will be noticeable on a larger site!
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Adapter patterns allow you to chain jQuery commands; although this will help
+    reduce the amount of code that needs to be written, it comes with a trade-off
+    in terms of legibility. Chaining commands will make it harder to debug code at
+    a later date, particularly if there is a change in the developer involved; there's
+    something to be said for keeping code simple and clean, if only to help maintain
+    one's sanity!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's move on and take another look at another pattern, namely the **Façade
+    Pattern**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Facade Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Originally from French, façade translates as *frontage* or *face*—this is a
+    perfect description for this next pattern; its outward appearance can be very
+    deceptive, in just the amount of code that can be hidden!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **Façade Pattern**, another member of the Structural group of patterns,
+    provides a simple interface to a larger, more complex body of code; in a sense,
+    it abstracts some of the complexity, leaving us with simple definitions that we
+    can manipulate at will. Notable examples of Façade Patterns are DOM manipulation,
+    animation, and, of course, the perennial favorite, AJAX!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, simple AJAX methods such as `$.get` and `$.post` both call the
+    same parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These are façades to two more functions in their own right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which in turn are façades to a huge amount of complex code! The complexity in
+    this instance stems from the need to iron out cross-browser differences for XHR
+    and make it a cinch to work with actions, such as `get`, `post`, `deferred`, and
+    `promises` in jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a simple animation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'At a very simple level, the `$.fn.animate` function is an example of a façade
+    function in jQuery, as it uses multiple internal functions to achieve the desired
+    result. So, here''s a simple demo that uses animation code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding code will produce this animation effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a simple animation](img/image00346.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can make use of the function shown in the following screenshot within the
+    core library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a simple animation](img/image00347.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The code for the demo in this section is available in the code download link
+    that accompanies this book, as the `animation.html` file; you will need to extract
+    the whole code folder for this demo to work correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you've seen the Façade Pattern in use, let's consider some of the benefits
+    of using it in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Façade Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Using the Façade pattern to hide complex code is a really useful technique;
+    in addition to being easy to implement, there are other advantages of using this
+    pattern, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enhances security of your web application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Works well in combination with other patterns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Makes it easy to patch internal code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Provides a simpler public interface to the end user
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In contrast to other patterns, there are no real notable drawbacks when using
+    this pattern; it provides a unified set of interfaces to us as end users, so we're
+    not forced to make any compromises. It is worth noting that there is a cost involved
+    in implementation, when abstracting code—this is something that we should always
+    bear in mind when using façade patterns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Observer Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since it is a member of the Behavioral group of patterns, we will already be
+    familiar with this next pattern—if you spend time creating custom events, then
+    you are already using the **Observer Pattern**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A key part of developing with jQuery is using its well-established publishing/subscribing
+    system to create custom events—access to these events is possible using `.trigger()`,
+    `.on()`, or `.off()`. We can define Observer Patterns as those patterns where
+    specific objects are subscribed to others and can be notified by them when a particular
+    event takes place:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Observer Pattern](img/image00348.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'For a moment, let''s say we have the following HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We want the inner `<div>` elements to trigger an event called `customEvent`;
+    this will happen when they are clicked on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s make the document element subscribe to `customEvent`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the custom event is triggered by one of the `div` elements, the observer/subscriber
+    is notified and a message is logged to the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For purists, some of you may prefer to use a typical publish/subscribe model—an
+    example is available at [https://gist.github.com/cowboy/661855](https://gist.github.com/cowboy/661855).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's consider some of the benefits of using this pattern and where you may
+    need to make allowances in your code in order to avoid falling into some of the
+    traps associated with using this design pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Observer Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Using the Observer Pattern forces us to consider the relationship between the
+    various components of an application, at a far greater level than we might otherwise
+    have been used to considering. It is also great at doing the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Promoting loose coupling in jQuery, where each component knows what it is responsible
+    for and doesn't care about other modules—this encourages reusable code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Allowing you to follow the separation of concerns principle; if code blocks
+    are self-contained, they can be reused with little difficulty in new projects.
+    We can then subscribe to single events and not worry about what happens in each
+    block.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Helping us to pinpoint where the dependencies are within our project, as a potential
+    basis for determining whether these dependencies can be reduced or eliminated
+    altogether with a little effort.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are drawbacks to using the Observer Pattern though; the key drawbacks
+    are the switching of a subscriber from one publisher to another can be costly
+    in terms of code, and it becomes harder to maintain the integrity of our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To illustrate this, let's take a brief look at a simple example, where we can
+    see at least one instance of where we've had to make extra allowances for the
+    switch of publisher.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a basic example
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Getting our heads around how the Observer Pattern works is critical; it is
+    one of the patterns that is more in-depth and provides more opportunity than a
+    simple set of protocols, such as the Façade design pattern. With this mind, let''s
+    run through a quick working demo to illustrate how it works, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by downloading and extracting copies of the code for this chapter—we
+    need the `observer.html` file, along with the `css` and `js` folders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'If you run the demo, you should see two labels in red, which you can click;
+    if you try clicking them, you will see the counts increase, as shown in this screenshot:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![Creating a basic example](img/image00349.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'At this point, let''s consider the code—the key functionality is in the `observer.js`
+    file, which I have reproduced in full here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice how there is a single event handler for the `.click` class. We've used
+    a callback here to allow jQuery to execute the next click, even though it may
+    not have finished completing the previous execution. In this instance, it's not
+    going to be too much of an issue, but if we had to update a number of different
+    statements or apply more changes (through the use of additional functions), then
+    the callback will prevent errors from being generated in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we subscribe to the observable, which—in this instance—are the two **Click
+    Me** statements; the `.click` event handler allows us to update both the click
+    counts and the **Last element clicked** statement, without throwing an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To learn more about the intricacies of using callbacks in jQuery, you may want
+    to browse through the API documentation, which can be viewed at [http://api.jquery.com/jquery.callbacks/](http://api.jquery.com/jquery.callbacks/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the meantime, let's change focus and take a look at a different pattern.
+    We all know that jQuery is famed for its DOM manipulation abilities; up next is
+    the Iterator pattern, which is based on this particular feature of jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Iterator Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now, how many times have you heard, or read, that jQuery is famed for its DOM
+    manipulation? I bet that it's a fair few times and that the `.each()` keyword
+    is used at some point in those examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'DOM manipulation in jQuery uses a special variation of the Iterator Pattern,
+    from the Behavioral group of patterns—this is as it sounds; we can use this pattern
+    to traverse (or iterate) through all the elements of a collection, leaving jQuery
+    to handle the internal workings. A simple example of such a pattern might look
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In both the cases, we've used the `.each` function to iterate through either
+    the array or each instance of the `li` selector; there is no need to worry about
+    the internal workings of the iterator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our examples contain minimal code, in order to iterate through each selector
+    or class within the page; it''s worth taking a look at the amount of code that
+    is behind `jQuery.fn.each()` function, within the core library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Iterator Pattern](img/image00350.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This, in turn, calls the `jQuery.each()` function—the first one is for internal
+    use only, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Iterator Pattern](img/image00351.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This is then supplemented by a special fast case, that is, for the most common
+    use of the `.each()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The Iterator Pattern](img/image00352.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Advantages and disadvantages of the Iterator Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The ability to iterate over elements in the DOM is one of the key elements
+    of jQuery—as a critical part of the Iterator pattern; these are some benefits
+    of using this pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Iterator pattern hides much of the functionality required to iterate through
+    a collection, without the need to understand the inner workings of the code providing
+    this functionality
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can use the same consistent pattern to iterate through any object or set
+    of values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the Iterator process can also help to reduce or eliminate typical `for`
+    loop syntax across our code, making the code easier to read
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unlike other patterns, there are very few disadvantages of using this pattern.
+    It's a key facet of jQuery, so provided it is not abused by having to iterate
+    over an excessive number of objects, this simple pattern will prove to be very
+    useful!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Lazy Initialization Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Hehe, this sounds like something I might follow on a Sunday morning! Okay, I
+    know that was a terrible joke, but all jokes aside, this creational-based pattern
+    allows you to postpone expensive processes until they are needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At its simplest level, we might configure a plugin with a number of different
+    options, such as the number of images to be displayed, whether we should show
+    an overlay, or how each image is displayed. Sounds simple, right? So, where does
+    the lazy initialization part come in? Aha! This is simpler than you might think.
+    Take the example of the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our example used the initialization command for the WOW Slider (available from
+    [http://www.wowslider.com](http://www.wowslider.com))—the key to using this pattern
+    is in the initialization process; it is not fired until the first moment it is
+    needed on our page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A more complex example of the lazy initialization pattern is a callback; these
+    won''t be processed until the DOM is ready:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: We might make use of this example directly in our code; it is more likely that
+    we will use it within a lazy loading plugin, such as the version by Mika Tuupola
+    at [http://www.appelsiini.net/projects/lazyload](http://www.appelsiini.net/projects/lazyload).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Lazy Initialization Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The key benefit of using this design pattern is simple: to delay the loading
+    of expensive resources until they are needed; this helps to speed up access to
+    a site and to reduce bandwidth usage (at least initially).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there are some drawbacks of using this method, which include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It needs careful management by the setting of a flag to test whether the summoned
+    object is ready for use; if not, then a race condition can be generated in multithreaded
+    code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The prior use of any lazy variable or object will bypass the initialization
+    on the first access principle and mean that we lose any benefit of not loading
+    these large objects or variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This method requires the use of a map to store instances so that you get the
+    same instance when you next ask for one with the same parameter as the one previously
+    used
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is a time penalty involved with using this pattern, if large objects need
+    to be loaded; the pattern only really works if these objects are not loaded initially
+    and if there is a good chance that they will not be used
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ultimately, using this pattern needs some consideration and careful planning;
+    it will work well, provided we've chosen not to load the right objects, so to
+    speak! Talking of strategy, let's move on and take a look at another pattern that
+    helps us determine what will happen when changing states on objects or variables,
+    namely the **Strategy Pattern**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Strategy Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Cast your mind back a few years, when using Flash to animate content on sites
+    was the latest design fad; there were some really well-designed examples, although
+    all too often sites were slow and not always as effective as they should be! Moving
+    forward, CSS animations are preferred now—they don't need a browser plugin to
+    operate, can be stored in a style sheet, and are less resource hungry than Flash.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Why are we talking about animations?", I hear you ask, when this chapter is
+    about design patterns. That''s a good question; the answer is simple, though:
+    some of you may not realize it but animations are a perfect example of our next
+    design pattern. At a basic level, animations are all about changing from one state
+    to another—this forms the basis of the Strategy pattern, from the Behavioral group
+    of patterns.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also known as the policy or state pattern, the Strategy pattern allows you
+    to select the appropriate behavior at runtime. In a nutshell, this is what the
+    pattern does:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defines a family of algorithms (or functions) used to determine what should
+    happen at runtime
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Encapsulates each algorithm (or function) into its self-contained unit and makes
+    each algorithm interchangeable within that family
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A good example of where strategy patterns can be used is in the validation of
+    entries in a form—we need some rules in place to determine what is valid or invalid
+    content; we clearly won't know what the outcome will be until that content is
+    entered!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key point here is that the rules for validation can be encapsulated in their
+    own block (potentially as an object in their own right); we can then pull in the
+    relevant block (or rule), once we know what the user wants us to validate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At a more basic level, though, there is a simpler example of a strategy pattern;
+    it takes the form of animating content, such as using `.toggle()`, where we switch
+    from one state to another or back again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each resulting state can be set as a class in its own right; they will be called
+    at the appropriate time, once we know what the requested action should be. To
+    help set the context, let's knock up a simple demo in order to see this in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a simple toggle effect
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Okay, granted that this is jQuery 101, but why complicate matters when it shows
+    what we need perfectly?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this demo, we perform a simple toggle action to show or hide two `<p>` statements—the
+    key point here is that we don't know what is going to happen next, until the button
+    is pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see this in action, download a copy of the `code` folder for this chapter;
+    run the `strategy.html` demo and then click on **Toggle ''em** to see the `<p>`
+    statements appear or disappear, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Building a simple toggle effect](img/image00353.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The magic takes place in this function; it''s a simple use of the `.toggle()`
+    command to switch the visibility of each `<p>` statement as required:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, we can easily abstract the function contained in the click event handler
+    into a separate IIFE and then simply call the function in our code, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code is already easier to read—we've removed the bulk of the original action
+    away from the event handler; this removes the need to edit the event handler if
+    we need to change the code at a later date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you are interested in learning more about IIFEs, then you may want to take
+    a look at Wikipedia's entry for more details, which is available at [https://en.wikipedia.org/wiki/Immediately-invoked_function_expression](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Switching between actions
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Although we've concentrated on animations in our example, the observant amongst
+    us might be wondering whether the same techniques will apply to commands such
+    as `switch()`. The answer is yes; we've not discussed it here as it is a pure
+    JavaScript command, but you can apply the same principles as an alternative to
+    use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Strategy Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Defining a sensible strategy is the key to successful coding; these are some
+    benefits that we can gain by using the Strategy pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code is easier to read; if we abstract functions into their own class, we
+    can move them away from the decision-making process, either as separate blocks
+    of code in the same file or even as separate files in their own right
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The code is easier to maintain; we only need to go to the class to change or
+    refactor the code, and we only need to make minimal changes to the core code in
+    order to add links to new classes or object event handlers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can maintain the separation of concerns—each independent class or object
+    that we abstract retains no awareness of the other components, but when provided
+    with each strategy object's responsibility and the same interface, they can communicate
+    with other objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the Strategy pattern allows you to take advantage of the open/closed principle;
+    the behavior of each abstracted class or object can be altered by initiating a
+    new class or object instance of the existing behaviors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more details about the open/closed principle, please refer to [http://en.wikipedia.org/wiki/Open/closed_principle](http://en.wikipedia.org/wiki/Open/closed_principle).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These are some of the disadvantages that we need to be mindful of, though:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use of the Strategy pattern allows you to respect the open/closed principle,
+    but at the same time, you may end up initiating a new class or object of code
+    that contains a lot of unnecessary functions or actions that make your code more
+    cumbersome
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There may be instances where using the Strategy pattern won't suit your purposes;
+    if your code only contains a small number of functions, the effort required to
+    abstract them may outweigh the benefits of doing so
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the Strategy pattern will increase the number of objects within our code,
+    making it more complex and potentially requiring more resources to manage
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enough strategizing for the moment; let's move on and take a look at a different
+    protocol, in the form of the **Proxy** design pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Proxy Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When working with jQuery, there will be occasions where you might want to write
+    a generic event handler that takes care of managing styles on certain elements—a
+    good example might be switching from active to disabled state, or even selected
+    state; we can then style these using normal CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using this approach, this is how a generic event handler might look:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At face value, this will work perfectly well, but what if we were to introduce
+    a delay before changing the style class? We would normally use a `setTimeOut()`
+    function to achieve this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Did anyone spot a small but rather crucial problem here? Passing any function
+    to `setTimeout` will give you the wrong value—it will refer to the window object,
+    not the object being passed!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A workaround for this is jQuery''s `proxy()` function; we can use this function
+    to implement a Proxy pattern, or a go-between, in order to ensure that the right
+    value is passed through to the `.addClass()` method in the right context. We can
+    adapt our previous example as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last `this` parameter we're passing tells `$.proxy()` that our DOM element
+    is the value we want `this` to refer to—in this instance, it's the checkbox and
+    not the window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Proxy Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Proxy patterns are useful designs from the Structural group, which can help
+    with optimizing and maintaining fast sites; at its core, the pattern is based
+    on the principle of not loading expensive elements until absolutely necessary.
+    (and then ideally not loading at all, if it can be helped!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are some benefits we can gain by using this design pattern, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use a proxy pattern to provide a placeholder for more expensive objects
+    that are yet to be loaded or which may never be loaded; this includes objects
+    that may be loaded from outside the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a proxy can act as a wrapper, providing delegation to the real object,
+    while also protecting it from undue complexity
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Incorporating proxy patterns into our page can help reduce the perceived slowness
+    or lack of responsive from code-heavy sites
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The downsides to using this pattern include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a risk that a proxy pattern can hide the life cycle and state of a
+    volatile resource from its client; this means that the code has to wait until
+    the right resource becomes available again or produces an error. It needs to know
+    that it is interacting with the original resource and not with another resource
+    that may appear similar to the original.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we are using proxy patterns to represent a remote resource, this will disguise
+    the use of communication between the two; communication with a remote resource
+    should be treated differently to that of a local one.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With care, proxy patterns can prove very useful, provided we're sensible about
+    what we decide to load or not load into our pages. Let's change tack and look
+    at another design pattern; this one is based on how we may need to construct one
+    or more elements dynamically; this concept is at the core of the **Builder Pattern**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Builder Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: During the development of any project, there may be occasions where we need
+    to create new elements dynamically; this can range from building a single `<div>`
+    element to a complex mix of elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We might want the flexibility of defining the final markup directly in our code,
+    which can get messy, or we can separate out the elements into a standalone mechanism
+    that allows us to simply build those elements, ready for use later in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The latter, or the Builder Pattern to give it its technical name, is preferable;
+    it's easier to read and allows you to keep a clear distinction between variables
+    and the rest of your code. This particular pattern falls into the Creational group
+    of patterns and is one of the few common examples you will see of this type of
+    pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You may see references to the **Abstract Pattern** online, or in books—it is
+    very similar in style to the Builder Pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can use jQuery''s dollar sign to build our objects; we can either pass the
+    complete markup for an element, partial markup and content, or simply use jQuery
+    for construction, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once created, we can cache these objects using variables and reduce the number
+    of requests to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's worth noting that design patterns are not exclusive to script code; they
+    can be applied to plugins using similar principles. We will cover more design
+    patterns for jQuery plugins in [Chapter 11](part0098.xhtml#aid-2TEN41 "Chapter 11. Authoring
+    Advanced Plugins"), *Authoring Advanced jQuery Plugins*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of the Builder Pattern
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Using a builder pattern won''t suit all circumstances; it is worth noting the
+    benefits that can be gained by using it in order to see if these will suit your
+    requirements. These benefits include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can construct the markup needed to create objects dynamically within jQuery,
+    without the need to explicitly create each object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can cache the markup, which can then be separated from the main functionality
+    and which makes it easier to read the code and reduce requests to the server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The core markup will remain immutable, but we can apply different functions
+    to it in order to alter values or its appearance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can go further and turn our Builder pattern into a state machine or a mechanism
+    to expose public methods or events, while still maintaining private constructor
+    or destructor methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'There are some disadvantages of using the Builder pattern; the key disadvantage
+    is the abuse of the use of chaining, but we should also consider the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is scope to define markup that can't be easily reused; this means that
+    we may need to create a handful of the variables that contain markup, all of which
+    will take resources that should be used elsewhere.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Take an example of the following code snippet:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The use of the Builder pattern allows actions to be chained, provides a consistent
+    API, and follows the Builder pattern. However, the main drawback of this pattern
+    is that it makes the code harder to read and, therefore, harder to debug.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: We've explored a number of different design pattern types at a conceptual level;
+    for some, it may still prove difficult to relate this back to what we know as
+    the jQuery Core.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The beauty though is that jQuery uses these patterns throughout—to help put
+    some of what you've learned into practice, let's take a moment to examine the
+    core library and see some examples of how these patterns are used internally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the use of patterns within the jQuery library
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now, you''re probably thinking: I''m still not sure how these patterns relate
+    to my work. Right?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thought so. Throughout this chapter, we've spent time examining some of the
+    more commonly used patterns, as a means of going back to basics; after all, the
+    secret of improving oneself is not just through writing code!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The key point here is that if you spend time developing with jQuery, then you
+    are already using design patterns; to help reinforce what you learned, let''s
+    take a look at a few examples from within the jQuery library itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For the purposes of this demo, I've used jQuery 2.1.1; if you use a different
+    version, then you may find that some of the line numbers have changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Start by opening up a copy of `jquery.js` within a text editor of your choice—we'll
+    begin with the classic `document.ready()` function, which uses the Façade pattern
+    and is run from this function at or around line **3375**, as shown in the following
+    screenshot:![Exploring the use of patterns within the jQuery library](img/image00354.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How many times have you toggled the state of an element in your page? I'm guessing
+    it will be a fair few times; the `toggle` command is a classic example of a Strategy
+    design pattern, where we decide the state of an element, as shown here:![Exploring
+    the use of patterns within the jQuery library](img/image00355.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, I'm sure you've clicked on countless elements or used the `click` event
+    handler, right? I hope so, as it is one of the first event handlers we are likely
+    to have started with when first learning about jQuery. It's also a good example
+    of the Observer pattern. Here's the relevant code in jQuery, from around line
+    **7453**:![Exploring the use of patterns within the jQuery library](img/image00356.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There are plenty more examples of how design patterns are used within the jQuery
+    core library; hopefully, this shows the benefit of using them within your own
+    code and that they should not be limited to the source code for jQuery itself!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Phew! We certainly covered a lot of theory on design patterns; let's take a
+    breather and recap what you've learned throughout this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with an introduction to what design patterns are and how they
+    came about; we then moved on to exploring the benefits of using them and why we
+    should consider using them within our projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up came a look at the structure of a design pattern, where we broke down
+    a typical design into its different elements and saw what role each element plays
+    in the scheme of the design. We also looked at how to categorize design patterns
+    into different types, namely Creational, Structural, and Behavioral.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then moved on to take a look at a number of common design patterns, where
+    we went through what each type does and examined some examples of how we will
+    use them. We then looked at the benefits and drawbacks of each of the design patterns
+    covered throughout this chapter, before finishing up with a look at how some of
+    these patterns are actually used within the jQuery library itself, and not just
+    within our own code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think that's enough theory for now; let's move on and get practical. In the
+    next chapter, we'll see how to take your form development skills up a notch with
+    some techniques to master form development.
+  prefs: []
+  type: TYPE_NORMAL

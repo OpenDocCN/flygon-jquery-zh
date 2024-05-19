@@ -1,0 +1,1115 @@
+- en: Chapter 5. Integrating AJAX
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A question – what do **Deferreds**, **Promises**, and /**ˈeɪdʒæks**/ have in
+    common?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The answer is simple – for at least two of them; they are utilities that work
+    with AJAX; the third is actually the International Phonetic spelling of AJAX.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throughout the history of the Internet, we as end users were forced to endure
+    page refreshes – you had to force a page refresh to show new content. Not so now
+    – we can refresh content without needing to clear the page, using the power of
+    AJAX, but not without its issues. Enter Deferreds and Promises – not for beginners,
+    but a useful tool once you understand how it works!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Over the next few pages, we''ll look at a number of topics relating to the
+    use of AJAX with jQuery. These would include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detailing AJAX best practices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Improving the speed of loading data with static sites
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using callbacks to handle multiple AJAX requests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enhancing your code with jQuery Deferreds and Promises
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Seeing Deferreds and Promises in action
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's get stuck in…!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Revisiting AJAX
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Does anyone remember the days when clicking on a link or button would force
+    a refresh of the page, no matter which site we were looking at? Those were the
+    days when you knew that to order a pizza takeaway, or books from an online book
+    store meant clicking through many pages…yawn!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, the advent of AJAX in 2006 as a standard has put paid to that need.
+    Today, we are no longer constrained by the need to refresh our page entirely;
+    we can easily update a page's contents asynchronously. Okay – so we don't need
+    to refresh our page, but…AJAX? Isn't that some old technology from last century,
+    which died its death some time ago?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The answer is, not yet – granted that even though the magic of jQuery allows
+    us to update on a page asynchronously, AJAX still has an important role to play.
+    The phenomenal rise of using the Internet means that there will be instances where
+    we need to fetch pages from another site. As we all know, security settings in
+    most browsers will block access of content, if it violates the **Cross-Origin
+    Resource Sharing** (**CORS**) policy, as displayed in the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Revisiting AJAX](img/image00374.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: To circumvent the security controls associated with CORS, we can use AJAX. Before
+    we get involved in more complex uses, let's take a moment to recap what AJAX is,
+    and how we can use it in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To see this effect in action, you can run the `ajaxblocked` demo that is available
+    in the code download that accompanies this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining AJAX
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you've spent any time using AJAX, no doubt you will have come across one
+    or more of the variations, such as AHAH, AJAH, or AJAJ work using similar principles.
+    However, the interchange of data differs; for example, AJAH uses HTML, AJAJ works
+    with JSON, and AHAH is based around HTML.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'No matter which variation is used, this group of interrelated technologies
+    may be mature, but it still plays an important role is the presentation of data
+    to the end user. Throughout the course of this chapter, we''ll work with what
+    is arguably the grandfather of them all, that is AJAX. As a reminder, it is made
+    up of the following individual technologies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML (or XHTML) and CSS for presentation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **Document Object Model** (**DOM**) for dynamic display of, and interaction
+    with, data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XML and **Extensible Stylesheet Language Transformations** (**XSLT**) for the
+    interchange and manipulation of data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `XMLHttpRequest` object for asynchronous communication
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: JavaScript to bring these technologies together
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'When used in jQuery, we can easily configure AJAX using the `$.ajax` object.
+    There are a host of options available, but some of the ones we might work with
+    frequently include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Configuration option | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `url` | The URL of the content, for the request. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `data` | The data to be sent to the server. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `error` | This function is called in the event of the request failing – the
+    function will be passed three arguments: the `jqXHR` object, a string describing
+    the error, and an optional exception object, if one is generated. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `dataType` | This describes the type of data that you''re expecting to see
+    returned from the server. By default, jQuery will try to work this out automatically,
+    but it could be one of the following: XML, JSON, script, or HTML. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `Success` | A function to be called if the request is successful. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `type` | The type of request to make, for example, `''POST''`, `''GET''`
+    or `''PUT''` – the default is `''GET''`. |'
+  prefs: []
+  type: TYPE_TB
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are many more options available. For a reminder, it is worth browsing
+    to [http://api.jquery.com/jQuery.ajax/](http://api.jquery.com/jQuery.ajax/) for
+    more details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enough theory – at least for the moment! Let's move on and take a look at developing
+    an example using AJAX and jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a simple example using AJAX
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we get stuck in developing code, and pushing the boundaries of what we
+    can do, let's spend a moment understanding what typical AJAX code looks like in
+    action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a typical application that relies on importing content, we might come across
+    something akin to the following extract:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a standard configuration object for AJAX-enabled code. Let''s take
+    a look at some of these configuration options in a little more detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Option | Comments |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `url` | The URL of the |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `type` | Default is `GET`, but other verbs can be used instead, if required
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `cache` | The default is `true`, but `false` for `''script''` and `''jsonp''`
+    datatypes, so must be set on a per case basis |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `data` | Any request parameters should be set in the `data` object |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `datatype` | The `datatype` should be set for future reference |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `jsonp` | Only specify this to match the name of the callback parameter your
+    API is expecting for JSONP requests, which are being made of a server hosted in
+    a different domain |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `statusCode` | If you want to handle specific error codes, use the status
+    code mapping settings |'
+  prefs: []
+  type: TYPE_TB
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is plenty of documentation on the jQuery Core site – it is well worth
+    reading! A good place to start is with the main `ajax()` object, at [http://api.jquery.com/jQuery.ajax/](http://api.jquery.com/jQuery.ajax/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can use it to great effect to produce a simple demo, such as displaying
+    information from an XML file, or even plain HTML, as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a simple example using AJAX](img/image00375.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s take a look at this demo in more detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the code download that accompanies this book, extract copies of the `basicajax.html`,
+    `content.html,` and `basicajax.css` files – place the HTML files into the root
+    of our project folder, and the style sheet into the `css` subfolder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, add the following code to a new file, saving it as `basicajax.js` in
+    the `js` sub-folder of our project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Immediately below the declared `$description` variable, add the following helper
+    function to control the rendering of our extracted text on screen:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next up comes the core of our jQuery code – the call to `$.ajax`. Add the following
+    event handler immediately below the helper function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we preview the results in a browser, we can see the content appear when clicking
+    on the button, as shown in the screenshot at the start of this demo.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In this instance, we've created a simple demo. It first references the `content.html`
+    file, using the HTML format to import it to our page. Our jQuery code then pulls
+    the content and assigns it to `$response`, before first extracting the title,
+    then each of the paragraphs, and appending them to the `#info` div.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, it is worth noting that we could have referenced each of those
+    extracted paragraphs individually, using a statement such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This however is an inefficient way to extract the text – we would have to run
+    the code multiple times to reference subsequent values, which places an unnecessary
+    load on our server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving the speed of loading data with static sites
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we have seen an AJAX example in action, it may surprise you to learn
+    that the code used isn't *technically* as efficient as it could be, even with
+    the small amount of text that we displayed on screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Huh? I hear you ask – surely we can''t really improve on such a simple demo,
+    right? Well, strange as it might seem, we can already make one improvement. Let''s
+    take a look at some of the tricks we can use to reduce any slowness in our code
+    – not all of them have to do with simply changing our code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reduce the number of AJAX requests – no, I've not lost the plot; improving our
+    code isn't always about making changes to the code itself! If we consider when
+    each AJAX request is made, there may be opportunities to reduce the number, if
+    reordering means we can achieve the same result. For example, if we have AJAX
+    requests being made on a timer, we can set a flag to indicate that AJAX requests
+    should only be performed in changes have been made.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we need to fetch content, then it is often more effective to simply use GET,
+    rather than POST – the former simply retrieves content, while the latter will
+    cause a server reaction, such as updating a database record. If we don't need
+    to perform an action, then using GET is perfectly adequate.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When updating content on a page – make sure you are only updating a small amount;
+    AJAX performance will be affected if our page is set to update a broad sweep of
+    content, rather than a defined section.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reduce the amount of data to be transmitted – remember I said there was a change
+    we could make to our code? Here's where we can make it – while we don't need to
+    limit the content we retrieve, we can change from using HTML format to plain text.
+    This allows us to remove the markup tags, thereby reducing our content. We could
+    always go in the completely opposite direction, and switch to using XML, but this
+    wouldn't be without an equal increase in data size!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We should also check that our server has been properly configured – the two
+    key areas to check are the use of ETags (or Entity Tags), and that the server
+    is set to send the correct expires or Cache-Control headers for the content being
+    served, as shown in the next example:![Improving the speed of loading data with
+    static sites](img/image00376.jpeg)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In a nutshell, server will not send any response if it detects that ETags for
+    a URL have not changed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Head over to [http://en.wikipedia.org/wiki/HTTP_ETag](http://en.wikipedia.org/wiki/HTTP_ETag)
+    if you would like to learn more about ETags and how they work in a browser.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'We can further limit the impact of AJAX requests by only creating and destroying
+    the `XMLHttpRequest` at the right time – if they are only needed at certain instances,
+    then this will have a dramatic effect on AJAX performance. For example, we might
+    only instigate an AJAX request if our code doesn''t have an active class:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Ensure that your callbacks are set correctly – if our code has been updated,
+    then we need to tell our users as much, and not keep them waiting; after all,
+    the one thing we do not want to do is fall into the trap of callback hell! (Later
+    in this chapter, we will cover this in more detail.)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can take things even further! One way we can reduce unnecessary calls to
+    the server is by caching content. But – before you say "I know that", I didn't
+    say where!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes – the *where* in this instance is key and the *where* is - the localStorage.
+    This is built into each browser, and can be used to remove the need to continually
+    hit the server. While the amount you can store varies from browser to browser
+    (it's typically 5 MB, but can be as high as 20 MB), it works using the same principles
+    for each browser – the content must be stored as text, but can include images
+    and text (within reason!).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Intrigued? Using a simple plugin and making some small changes to code, we can
+    quickly implement a workable solution – let's revisit our basic AJAX demo from
+    earlier, and make those changes now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using localStorage to cache AJAX content
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Working with AJAX requires careful consideration – it is important to strike
+    a balance in fetching the right amount of content, at the appropriate points,
+    without making too many unnecessary requests to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've seen a number of tricks we can use to help reduce the impact of AJAX requests.
+    One of the more adventurous ways is to store content in the **localStorage** area
+    of each browser – we can do this using an AJAX prefilter. The developer Paul Irish
+    has wrapped up the code needed to do this in a plugin, which is available at [https://github.com/paulirish/jquery-ajax-localstorage-cache](https://github.com/paulirish/jquery-ajax-localstorage-cache).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re going to use it to alter our `basicajax` demo from earlier. Let''s take
+    a look at how we are going to do this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by extracting a copy of the `basicajax` demo folder from the code
+    download that accompanies this book, and saving it to our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, we need to download the plugin – this is available at [https://github.com/paulirish/jquery-ajax-localstorage-cache/archive/master.zip](https://github.com/paulirish/jquery-ajax-localstorage-cache/archive/master.zip).
+    From the zip file, extract `jquery-ajax-localstorage-cache.js`, and save it to
+    the `js` subfolder within `basicajax`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We need to make some changes to our JavaScript and HTML markup. Let''s first
+    change the JavaScript. In `basicajax.js`, add the following two lines as shown:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In `basicajax.html`, we need to reference the new plugin, so go ahead and alter
+    the script calls, as shown next:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we rerun the demo and click on the button to load the content, we should
+    not see anything different visually; the change will be apparent if we fire up
+    Firebug, switch to the **Net** tab, and then click on **JavaScript**:![Using localStorage
+    to cache AJAX content](img/image00377.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we explore further, we can now see signs of our AJAX content being stored
+    within the **localStorage** area of our browser:![Using localStorage to cache
+    AJAX content](img/image00378.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to see all of the localStorage settings, then try downloading
+    and installing the FireStorage Plus! plugin from [https://addons.mozilla.org/en-US/firefox/addon/firestorage-plus/](https://addons.mozilla.org/en-US/firefox/addon/firestorage-plus/).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: All of the content that we cache in this area can now be manipulated using jQuery
+    and the `localStorage.getItem` or `localStorage.clearItem` methods. If you would
+    like to learn more, then you may refer to my book *HTML5 Local Storage How-to*,
+    which is available from Packt Publishing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a working version of this code available in the code download that
+    accompanies this book, within the `basicajax-localstorage` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There may be instances where you find you want to reduce the cache TTL value
+    to minutes (or maybe even seconds?). You can do this by modifying lines `70` to
+    `72` in `jquery-ajax-localstorage-cache.js`, and remove one of the multipliers,
+    to leave the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let's change track . We mentioned earlier that one of the ways we can improve
+    performance when working with AJAX is to ensure that we keep the number of requests
+    to a minimum. If our code contains multiple requests, it will have an adverse
+    impact on performance, particularly if we have to wait for each request to be
+    completed before the next is started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could potentially use localStorage to reduce the impact, by requesting content
+    from within the browser, instead of the server; it will work, but may not suit
+    every type of request. Instead, as we'll see later, there are better alternatives
+    that allow multiple requests to be handled with ease. Let's delve into this issue
+    in more detail, beginning with the impacts of using callbacks to manage the multiple
+    requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using callbacks to handle multiple AJAX requests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When working with AJAX, we can use the `$.Callbacks` object to manage callback
+    lists – callbacks would be added using the `callbacks.add()` method, fired using
+    `.fire(),` and removed using the `.remove()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Normally we might initiate a single AJAX request if we have decided that content
+    should only appear when needed, and not be present all the time. There is nothing
+    wrong with this – it's a perfectly valid way of working, and reduces the need
+    for page refreshes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, if we decided we had to perform multiple requests at the same time,
+    and needed each of them to complete before we could continue, then things will
+    get messy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: We could be waiting for a while!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem here is the slow speed of response when working with multiple requests,
+    particularly if all of them have to finish before we can continue. I, for one,
+    certainly don't want to have to wait for a slow responding page to finish!
+  prefs: []
+  type: TYPE_NORMAL
+- en: To avoid what many affectionately term **callback hell**, we can make use of
+    an alternative – jQuery's Deferreds and Promises. These can be thought of as a
+    special form of AJAX. Over the next few pages, we'll dig into what makes this
+    technology tick, and work through a simple example that you can use as a basis
+    for developing your own ideas in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is even a website dedicated to the horrors of callback hell – you can
+    view it at [http://callbackhell.com/](http://callbackhell.com/) - it is definitely
+    worth a read!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look at how Deferreds and Promises work within jQuery, and how
+    we can use it to enhance our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enhancing your code with jQuery Deferreds and Promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Although Deferreds and Promises sound like a relatively new technology, they
+    have been available since 1976\. In a nutshell:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Deferred represents a task that has yet to finish
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A Promise is a value that is not yet known
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we have to use standard AJAX, then we will likely have to wait for each request
+    to complete before moving onto the next. This is not necessary with Deferreds
+    / Promises. We do not have to wait for each request to be processed when using
+    Deferreds / Promises. We can queue several to be fired at the same time through
+    the `jQuery.Deferred()` object and manage them individually or together, even
+    though each may take varying amounts of time to complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If your application uses, or could benefit from using, AJAX-enabled requests,
+    then it is worth spending the time to familiarize yourself with Deferreds and
+    Promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When working with standard AJAX, a key deficiency was the lack of *standard*
+    feedback from any AJAX call – it was difficult to tell when something had been
+    completed. jQuery AJAX now creates and returns a Promise object, that will return
+    a promise when all of the actions bound to it have been completed. Using jQuery,
+    the following way is how we would implement, using the `when()`, `then()` and
+    `fail()` methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can represent the principles of working with Deferreds and Promises, using
+    the following diagram:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Enhancing your code with jQuery Deferreds and Promises](img/image00379.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The key benefit of using Deferreds is that we can begin to chain together multiple
+    functions, instead of being limited to only calling one function at a time (as
+    is the case with standard AJAX). We can then either `.resolve()` or `.reject()`
+    individual Deferreds from within the `jQuery.Deferred` list, and provide a consistent
+    mechanism to determine what should happen if Deferreds are successful or if they
+    fail, using the `.success()`, `.fail(),` or `error()` event handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we can then call the `.done()` event handler to determine what should
+    happen once the actions bound to our Promise have been completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more about the inner workings of Deferreds and Promises,
+    there is a useful article at [https://github.com/promises-aplus/promises-spec](https://github.com/promises-aplus/promises-spec),
+    although it does make for somewhat dry reading (no pun intended!).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've covered the basics of Deferreds and Promises, let's change track
+    and take a look at using both in action, along with outlining why it is worth
+    spending time getting acquainted with the concepts behind them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with Deferreds and Promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Switching to using Deferreds and Promises will take some time, but is worth
+    the effort put into understanding how they work. To get a feel of the benefits
+    of using Deferreds and Promises, let''s take a look at some of the advantages
+    of incorporating them into our code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Cleaner method signatures, and uniform return**: We can separate out the
+    code that dictates what happens with the outcome of any request, which makes it
+    cleaner to read and allows chaining if desired, as shown next:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**Easy to put together**: We''re not forced to incorporate complex functions
+    to manage handling within each request; this means the core code required to initiate
+    each request is greatly simplified, as shown in the following example:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**Easy to chain statements together**: The architecture of a Deferred / Promise
+    allows us to chain a number of event handlers together, so that we can fire off
+    a number of methods with a single action, as shown next:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**Promises always run asynchronously**: They can be fired even when we don''t
+    know which callbacks will use the values generated by Promises, before the task
+    completes. Promises will store the resulting value, and we can call that value
+    either from existing callbacks, or any that we add after the promise has been
+    generated.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Exception-style error bubbling**: Typically with AJAX, we would have to use
+    a series of `if…then…else` statements, which makes for a convoluted (and sometimes
+    fragile) way of working. With Promises, we can simply chain together one or more
+    `.then()` statements to handle any outcome, as shown next:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is so much more to Promises than we can cover here. For a useful discussion
+    on comparing Promises with standard AJAX requests, check out this discussion at
+    [http://stackoverflow.com/a/22562045](http://stackoverflow.com/a/22562045).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Remember the code we examined back in *Using callbacks to handle multiple AJAX
+    requests*? The key drawback of using multiple callbacks is the resulting mess
+    (and ultimately the impact on performance of our site) – clearly we need a better
+    alternative!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The beauty about Deferreds and Promises is that it allows us to restructure
+    the code to make it easier to read. This includes not only the commands that we
+    need to run as part of the requests, but also what happens if they succeed or
+    fail. Let''s revisit that code extract from earlier, and see what it looks like
+    when rewritten to use Deferreds / Promises:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Hopefully you will agree that it looks significantly cleaner, and that we can
+    now run multiple requests from a single process, without having to wait for each
+    to complete before moving onto the next request!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time now for some code, I think – let's make use of Deferreds and Promises,
+    and build a demo that uses AJAX. We'll see how we can use it to respond to form
+    submissions, without the need for a page refresh.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying our advance contact form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the first part of our real-world example, we're going to reuse and develop
+    the basic AJAX form that we created earlier in this chapter, and from the *Developing
+    an advanced file upload form using jQuery* demo in [Chapter 4](part0037.xhtml#aid-1394Q1
+    "Chapter 4. Working with Forms"), *Working with Forms*. We will adjust it to display
+    confirmation of submission using AJAX, and for confirmation to also appear as
+    an e-mail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this exercise, we will need to avail ourselves of a couple of tools:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A local web server installed using default settings – options include WAMP (for
+    PC – [http://www.wampserver.de](http://www.wampserver.de) or [http://www.wampserver.com/en/](http://www.wampserver.com/en/)),
+    or MAMP (for Mac, [http://www.mamp.info/en/](http://www.mamp.info/en/)). Linux
+    users will likely already have something available as part of their distribution.
+    You will need to ensure that your version of PHP is 5.4 or greater, as the code
+    relies on functionality that breaks if an older version is used. You can also
+    try the cross-platform solution XAMPP, available from [https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html)
+    (note that the Test Mail tool is not needed if you use this option – e-mail support
+    is included in XAMPP).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The free Test Mail Server tool (Windows only), available from [http://www.toolheap.com/test-mail-server-tool/](http://www.toolheap.com/test-mail-server-tool/)
+    E-mailing from a local web server can be difficult to set up, so this brilliant
+    tool monitors port 25 and provides local e-mailing capabilities. For Mac, you
+    might try the instructions at [https://discussions.apple.com/docs/DOC-4161](https://discussions.apple.com/docs/DOC-4161);
+    Linux users can try following the steps outlined at [http://cnedelcu.blogspot.co.uk/2014/01/how-to-set-up-simple-mail-server-debian-linux.html](http://cnedelcu.blogspot.co.uk/2014/01/how-to-set-up-simple-mail-server-debian-linux.html).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Access to an e-mail package from the PC or laptop that is being used – this
+    is required to receive the e-mails that are sent using the Test Mail Server tool.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Okay – with the tools in place, let''s make a start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're going to start by opening a copy of the code download that accompanies
+    this book, and extracting the `ajaxform` folder; this contains the markup, styling,
+    and assorted files for our demo. We need to save the folder into the web server's
+    `WWW` folder, which (for PC) will usually be `C:\wamp\www`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The markup is relatively straightforward, and very similar to what we've already
+    seen throughout this chapter.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We need to make one small change to the `mailer.php` file – open it in your
+    text editor of choice, and then look for the following line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Change `<ENTER EMAIL HERE>` to a valid e-mail address that you can use to check
+    that an email has appeared afterwards.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The magic for this demo happens within `ajax.js`, so let''s take a look at
+    that now, beginning with setting some variables:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We start the real magic here, when the **Send** button is pressed. We first
+    prevent the form from submitting (as it''s default action), then serialize the
+    form data into a string, for submission:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The core of the AJAX action on this form is next. This function sets the type
+    of request to make, where the content will be sent to, and the data to send:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We then add the two functions to determine what should happen – first one deals
+    with successful submission of our form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next comes the function that handles the outcome if form submission fails:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Start the Email Test Server Tool by double-clicking on it. If we preview the
+    form in a browser, and fill out some valid details, we should see the following
+    image when submitting:![Modifying our advance contact form](img/image00380.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Our form is now in place and is able to submit, with confirmation appearing
+    by e-mail within a few moments. We will revisit the use of AJAX within jQuery
+    in greater depth in the next chapter; for now let's move on and continue to develop
+    our form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding file upload capabilities using AJAX
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Adding a file upload function is relatively straightforward; it requires both
+    client and server-side components to function correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our example, we''re going to focus more on the client-side functionality.
+    For the purpose of the demo, we will upload files to a fake folder stored within
+    the project area. To give you an idea of what we will build, following is a screenshot
+    of the completed example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding file upload capabilities using AJAX](img/image00381.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: To help us along with this demo, we're going to use the BlueImp file upload
+    plugin; at over 1300 lines long, it's a very comprehensive plugin! This, along
+    with BlueImp's PHP-based file manipulation plugin and some additional jQuery UI,
+    will help with creating a useable file upload facility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Copies of the plugin files are available in the code download that accompanies
+    this book, or from [https://github.com/blueimp/jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s make a start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll begin by extracting a copy of the `ajaxform-files` folder that is in the
+    code download that accompanies this book – this contains the BlueImp file upload
+    plugins, along with some additional custom CSS and JavaScript files.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add the files from the `ajaxform-files` folder into the `ajaxform` folder that
+    is stored within the webserver folder; the JavaScript files should go in the `js`
+    folder, the CSS stylesheet into the `css` folder, and the 2 PHP files can be dropped
+    into the root of our `ajaxform` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, we need to open a copy of the `ajaxform.html` file from the previous
+    exercise – we first need to add a link to `fileupload.css`, which will contain
+    some additional styles for our upload form:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We also need to reference the additional JavaScript files that we''ve just
+    downloaded – add the highlighted links below the reference to `ajax.js` as shown
+    here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next up comes some markup changes to `index.html`. So in `ajaxform.html`, go
+    ahead and first alter the title as shown next:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We now need to add the file upload code, so immediately after closing the `</div>`
+    tag of the message field, add the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save all your files.—If we preview the results using our local web server, then
+    we should expect to see an updated form that now shows a file upload area at the
+    bottom of the form.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to see a version with the changes already made, then there
+    is a completed version of this code in the code download that accompanies this
+    book, in the `ajaxform-completed` folder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examining the use of Promises and Deferreds in the demo
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Although our changes in the second part of this demo are relatively straightforward
+    to make, they hide a wealth of functionality. To get a feel of how AJAX can be
+    used, it is worth looking through the source code of the `jquery.fileupload.js`
+    plugin in detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we open a copy of `ajax.js`, we can see clear use of jQuery''s Deferred
+    object, in the form of `.done()`, as shown in the following extract:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If however, our AJAX code had failed, jQuery would be executing the methods
+    or functions outlined in the `.fail()` event handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we switch to looking at the code in `uploadfiles.js`, we could be forgiven
+    for thinking that it doesn't use AJAX at all. On the contrary, AJAX is used, but
+    in the `jquery.fileupload.js` plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we open up the plugin file in a text editor, we can see lots of instances
+    where Deferreds and Promises. Let''s take a look at some extracts as examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From the `upload` method – lines 762-766:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In the same method, but this time from lines 794-804:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This time, from the private `_onSend` method, at lines 900-904:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: These are just some examples of how we can use Deferreds and Promises to enhance
+    our code. Hopefully this has given a flavor of what is possible, and how we can
+    dramatically improve not only the readability of our code, but also the resulting
+    performance of our projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detailing AJAX best practices
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this chapter, we've revisited the basics, and explored some of the
+    techniques we can use to take our knowledge of AJAX to the next level – the key
+    being that it is not necessarily just about coding, but visiting some of those
+    tips and tricks that help make us a more rounded developer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In *Working with Deferreds and Promises* section, we explored the basics of
+    using jQuery''s Deferreds and Promises, and how the change in architecture when
+    using them can lead to significant improvements in performance. Before we round
+    up this chapter, there are some additional best practices that we should follow
+    wherever possible. Following list explains them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no need to call `.getJson()` or `.get()` directly. These are called
+    when using the `$.ajax()` object by default.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Don't mix protocols when calling requests. The preference is to use schemaless
+    requests where possible.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If you are just making GET requests, try to avoid putting request parameters
+    in the URL – instead send them using the `data` object setting, thus:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Try to specify the `dataType` setting so it's easier to know what kind of data
+    you are working with. For an example, please refer to the *Creating a simple example
+    using AJAX*, from earlier section in the chapter.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Use delegated event handlers for attaching events to content loaded using AJAX.
+    Delegated events can process events from descendant elements that are added to
+    the document at a later time:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To learn more, please refer to [http://api.jquery.com/on/#direct-and-delegated-events](http://api.jquery.com/on/#direct-and-delegated-events).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'AJAX as a technology has been around for years. It can arguably be seen as
+    a game-changer, where the use of JavaScript killed the need to continually refresh
+    page content within a browser. jQuery has helped to enhance this group of technologies.
+    In this chapter we revisited some of the basics, before exploring how best to
+    take our development skills further. Let''s recap what we''ve learnt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a brief look back at what AJAX is, and reminded ourselves
+    of the basics of constructing an AJAX request within jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we took a look at some of the tips and tricks we can use to improve the
+    speed of loading from static sites; we picked up one additional trick in the form
+    of using localStorage to cache content. We then moved onto discussing how implementing
+    callbacks can make code messy and slow, before moving onto seeing how Deferreds
+    and Promises can improve our code, and ultimately the performance of our sites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We finished off with a look at a demo, where we borrowed one of the forms from
+    [Chapter 4](part0037.xhtml#aid-1394Q1 "Chapter 4. Working with Forms"), *Working
+    with Forms*, and extended it by first adding an AJAX based-notification, then
+    by making use of the BlueImp plugin to incorporate a file upload facility, that
+    made use of Deferreds and Promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we're going to expand on one of my personal favorites.
+    It's time to get animated, as we take a look at using jQuery to bring life to
+    elements on our websites.
+  prefs: []
+  type: TYPE_NORMAL

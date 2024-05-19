@@ -1,0 +1,376 @@
+- en: Appnedix A – Testing JavaScript with QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this book we've written a lot of JavaScript code, and we've seen
+    the many ways in which jQuery helps us write this code with relative ease. Yet
+    whenever we've added a new feature, we've had to take the extra step of manually
+    checking our web page to ensure that everything is working as expected. While
+    this process may work for simple tasks, as projects grow in size and complexity,
+    manual testing can become quite onerous. New requirements can introduce *regression
+    bugs* that break parts of the script that previously worked well. It's far too
+    easy to miss these bugs that don't specifically relate to the latest code changes
+    because we naturally only test for what we've just done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we need instead is an automated system that runs our tests for us. The
+    **QUnit** testing framework is just such a system. While there are many other
+    testing frameworks, and they all have their own benefits, we recommend QUnit for
+    most jQuery projects because it is written and maintained by the jQuery project.
+    In fact, jQuery itself uses QUnit. In this appendix, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to set up the QUnit testing framework within a project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unit test organization to aid in code coverage and maintenance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The various types of tests available with QUnit
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Common practices for ensuring that tests are reliable indicators of successful
+    code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Suggestions for other types of testing beyond what QUnit offers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Downloading QUnit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The QUnit framework can be downloaded from the official QUnit website at [http://qunitjs.com/](http://qunitjs.com/).
+    There we can find links to the stable version (currently 2.3.0) as well as a development
+    version (qunit-git). Both versions include a style sheet in addition to the JavaScript
+    file for formatting the test output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the document
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Once we have the QUnit files in place, we can set up the test HTML document.
+    In a typical project, this file would be named `index.html` and placed in the
+    same test subfolder as `qunit.js` and `qunit.css`. For this demonstration, however,
+    we'll put it in the parent directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `<head>` element of the document contains a `<link>` tag for the CSS file
+    and `<script>` tags for jQuery, QUnit, the JavaScript we'll be testing (`A.js`),
+    and the tests themselves (`listings/A.*.js`). The `<body>` tag consists of two
+    main elements for running and displaying the results of the tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To demonstrate QUnit, we''ll use portions of [Chapter 2](195342ed-f533-42e7-8a8d-f9a3462382b7.xhtml),
+    *Selecting Elements*, and [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml),
+    *Sending Data with Ajax*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since [Chapter 2](195342ed-f533-42e7-8a8d-f9a3462382b7.xhtml), *Selecting Elements*,
+    code that we'll test depends on the DOM; we want the test markup to match what
+    we're using on the actual page. We can simply copy and paste the HTML content
+    that we used in [Chapter 2](195342ed-f533-42e7-8a8d-f9a3462382b7.xhtml), *Selecting
+    Elements*, which should replace the `<!-- Test Markup Goes Here -->` comment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Organizing tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'QUnit provides two levels of test grouping named after their respective function
+    calls: `QUnit.module()` and `QUnit.test()`. The **module** is like a general category
+    under which the tests will be run; the test is actually a *set* of tests; the
+    function takes a callback in which all of that test''s specific **unit tests**
+    are run. We''ll group our tests by the chapter topic and place the code in our
+    `test/test.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing A.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not necessary to set up the file with this test structure, but it's good
+    to have some overall structure in mind. In addition to the `QUnit.module()` and
+    `QUnit.test()` grouping, we have to tell the test how many assertions to expect.
+    Since we're just getting organized, we need to tell the test that there aren't
+    any assertions yet (`assert.expect(0)`) in order for the tests to run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Notice that our modules and tests do not need to be placed inside a `$(() =>
+    {})` call because QUnit by default waits until the window has loaded before it
+    begins running the tests. With this very simple setup, loading the test HTML results
+    in a page that looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/3145OS_AppB_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note that the module name is light blue and the test name is darker blue. Clicking
+    on either one will expand the results of that set of tests, which are collapsed
+    by default when all the tests in the set pass. The Ajax module does not appear
+    yet because we haven't written any tests for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding and running tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In **test-driven development**, we write tests before writing code. This way,
+    we can observe when a test fails, add new code, and then see that the test passes,
+    verifying that our change has the intended effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by testing the child selector that we used in [Chapter 2](195342ed-f533-42e7-8a8d-f9a3462382b7.xhtml),
+    *Selecting Elements*, to add a `horizontal` class to all `<li>` elements that
+    are children of `<ul id="selected-plays">`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing A.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re testing our ability to select elements on the page, so we use the assert
+     `assert.equal()` test to compare the number of top-level `<li>` elements against
+    the number `3`. If the two are equal, the test is successful and is added to the
+    number of passed tests. If not, the test fails:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-31-at-2.39.49-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Of course, the test fails because we have not yet written the code to add the
+    `horizontal` class. It is simple to add that code, though. We do so in the main
+    script file for the page, which we called `A.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing A.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we run the test now, the test passes as expected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-31-at-4.19.27-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now the Selecting: Child Selector test shows 1 in parentheses, indicating that
+    the total number of tests is one. We can take the testing a step further now by
+    adding a couple of attribute selector tests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing A.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we''ve introduced another type of test: `ok()`. This one takes two arguments:
+    an expression that should evaluate to `true` if successful, and a description.
+    Also note that we''ve moved the local `topLis` variable out of the Child Selector
+    test, where it was in *Listing A.2*, and into the module''s `beforeEach()` callback
+    function. The `QUnit.module()` function takes an optional second argument, which
+    is a plain object that can include a `beforeEach()` and an `afterEach()` function.
+    Within these functions, we can use `this` as the shared context for all of a module''s
+    tests.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Again, the new tests will fail without corresponding working code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-31-at-5.18.31-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Here we can see the difference in test failure output between the `assert.ok()`
+    test, which only shows the test's label (a.mailto) and source, and the `assert.equal()`
+    test, which also details the expected result (instead of always expecting `true`).
+    Because it provides more information for test failures, `assert.equal()` is typically
+    preferred over `assert.ok()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s include the necessary code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing A.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The two tests now pass, as we can see by expanding the set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-31-at-5.36.30-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: On failure, `assert.equal()` presented more information than `assert.ok()`.
+    On success, both tests simply display the label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Asynchronous testing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Testing asynchronous code such as Ajax requests presents an additional challenge.
+    The rest of the tests must pause while the asynchronous test occurs, and then
+    they must begin again when it is complete. This type of scenario is by now very
+    familiar; we have seen such asynchronous operations in effects queues, Ajax callback
+    functions, and promise objects. Asynchronous tests in QUnit are just like the
+    regular `QUnit.test()` function except that it will pause the running of tests
+    until we resume them with a call to a function created by `assert.async()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing A.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we''re simply requesting JSON from `a.json` and allowing the tests to
+    continue once the request has completed, whether it succeeds or fails, by calling
+    `done()` inside the `.always()` callback function. For the actual tests, we''re
+    going to check the `textStatus` value to ensure that the request is successful
+    and check the value of one of the objects within the response JSON array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing A.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For testing the response value, we use yet another test function: `assert.deepEqual()`.
+    Normally when two objects are compared, they are considered not equal unless they
+    actually refer to the same location in memory. If we want to compare the object''s
+    contents instead, `assert.deepEqual()` should be used. This function walks through
+    two objects to ensure that they have the same properties and that those properties
+    have the same values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other types of tests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: QUnit comes with a number of other test functions as well. Some, such as `notEqual()`
+    and `notDeepEqual()`, are simply the inverses of functions we've used, while others,
+    such as `strictEqual()` and `throws()`, have more distinct uses. More information
+    about these functions, as well as details and additional examples regarding QUnit
+    in general, are available on the QUnit website ([http://qunitjs.com/](http://qunitjs.com/))
+    as well as the QUnit API site ([http://api.qunitjs.com/](http://api.qunitjs.com/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Practical considerations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The examples in this appendix have been necessarily simple. In practice, we
+    can write tests that ensure the correct operation of quite complicated behaviors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ideally, we keep our tests as brief and simple as possible, even when the behaviors
+    they are testing are intricate. By writing tests for a few specific scenarios,
+    we can be reasonably certain that we are fully testing the behavior, even though
+    we do not have a test for every possible set of inputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, it is possible that an error is observed in our code even though we
+    have written tests for it. When tests pass and yet an error occurs, the correct
+    response is not to immediately fix the problem, but rather to first write a new
+    test for the behavior that fails. This way, we can not only verify that the problem
+    is solved when we correct the code, but also introduce an additional test that
+    will help us avoid regressions in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: QUnit can be used for **functional testing** in addition to **unit testing**.
+    While unit tests are designed to confirm the correct operation of code units (methods
+    and functions), functional tests are written to ensure appropriate interface responses
+    to user input. For example, in [Chapter 12](0446c068-e7fd-426a-ab8b-0157b1387e1f.xhtml),
+    *Advanced DOM Manipulation*, we implemented a table-sorting behavior. We could
+    write a unit test for a sorting method, verifying that once the method is called
+    the table is sorted. Alternatively, a functional test could simulate a user's
+    click on a table heading and then observe the result to check that the table is
+    indeed sorted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Functional testing frameworks that work alongside QUnit, such as dominator.js
+    ([http://mwbrooks.github.io/dominator.js/](http://mwbrooks.github.io/dominator.js/))
+    and FuncUnit ([http://funcunit.com/](http://funcunit.com/)), can help make writing
+    functional tests and simulating events much easier. To further automate tests
+    in a variety of browsers, the **Selenium** ([http://seleniumhq.org/](http://seleniumhq.org/))
+    suite can be used in conjunction with these frameworks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To ensure consistent results for our tests, we need to work with sample data
+    that is reliable and unchanging. When testing jQuery code that is applied to a
+    dynamic site, it can be beneficial to capture and store a static version of the
+    page to run tests against. This approach also isolates your code's components,
+    making it easier to determine whether errors are caused by server-side or browser-side
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'These considerations are certainly not an exhaustive list. Test-driven development
+    is a deep topic, and a short appendix is not enough to cover it fully. Some online
+    resources containing more information on the topic include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to unit testing ([http://qunitjs.com/intro/](http://qunitjs.com/intro/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*QUnit Cookbook* ([http://qunitjs.com/cookbook/](http://qunitjs.com/cookbook/))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *jQuery Test-Driven Development* article by Elijah Manor ([http://msdn.microsoft.com/en-us/scriptjunkie/ff452703.aspx](http://msdn.microsoft.com/en-us/scriptjunkie/ff452703.aspx))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The *Unit Testing Best Practices* article by Bob McCune ([http://www.bobmccune.com/2006/12/09/unit-testing-best-practices/](http://www.bobmccune.com/2006/12/09/unit-testing-best-practices/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Many books on the topic also exist, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Test Driven Development: By Example,* *Kent Beck *'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*The Addison Wesley Signature Series*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Test-Driven JavaScript Development*, *Christian Johansen*, *Addison Wesley*.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Writing tests with QUnit can be an effective aid in keeping our jQuery code
+    clean and maintainable. We've seen just a few ways that we can implement tests
+    in a project to ensure that our code is functioning the way we intend it to. By
+    testing small, discrete units of code, we can mitigate some of the problems that
+    occur when projects become more complex. At the same time, we can more efficiently
+    test for regressions throughout a project, saving us valuable programming time.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,840 @@
+- en: Chapter 1. Refreshing the UI Automatically with KnockoutJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you are reading this book, it is because you have discovered that managing
+    web user interfaces is quite complex. **DOM** (short for **Document Object Model**)
+    manipulation using only native JavaScript is very hard. This is because each browser
+    has its own JavaScript implementation. To solve this problem, different DOM manipulation
+    libraries have been born in the last few years. The library most frequently used
+    to manipulate the DOM is jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is increasingly common to find libraries that help developers to manage more
+    and more features on the client side. As we have said, developers have obtained
+    the possibility to manipulate the DOM easily and therefore to manage templates
+    and format data. Also, these libraries provide developers with easy APIs to send
+    and receive data from the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, DOM manipulation libraries don't provide us with mechanisms to synchronize
+    input data with the models in our code. We need to write code that catches user
+    actions and updates our models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When a problem occurs frequently in most projects, in almost all the cases,
+    it can surely be solved in a similar way. It was then that libraries that manage
+    the connection between the HTML files and JavaScript code began to appear. The
+    pattern these libraries implement was named MV* (Model-View-Whatever). The asterisk
+    can be changed by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controller, MVC (for example, AngularJS)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ViewModel, MVVM (for example, KnockoutJS)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Presenter (MVP) (for example, ASP.NET)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The library we are going to use in this book is Knockout. It uses view-models
+    to bind data and HTML, so it uses the MVVM pattern to manage the data binding
+    issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, you will learn the basic concepts of this library and you will
+    begin a task to use Knockout in a real project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: KnockoutJS and the MVVM pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**KnockoutJS** is a very lightweight library (just 20 KB minified) that gives
+    the ability to objects to become the nexus between views and models. It means
+    that you can create rich interfaces with a clean underlying data model.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this purpose, it uses declarative bindings to easily associate DOM elements
+    with model data. This link between data and presentation layer (HTML) allows the
+    DOM to refresh displayed values automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Knockout set up chains of relationships between model data to transform and
+    combine it implicitly. Knockout is also trivially extensible. It is possible to
+    implement custom behaviors as new declarative bindings. This allows the programmer
+    to reuse them in a just few lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The advantages of using KnockoutJS are many:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's free and open source.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is built using pure JavaScript.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It can work together with other frameworks.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It has no dependencies.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It supports all mainstream browsers, even ancient ones such as IE 6+, Firefox
+    3.5+, Chrome, Opera, and Safari (desktop/mobile).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is fully documented with API docs, live examples, and interactive tutorials.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Knockout''s function is specific: to join views and models. It doesn''t manage
+    DOM or handle AJAX requests. For these purposes, I would recommend jQuery. Knockout
+    gives us the freedom to develop our code the way we want.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![KnockoutJS and the MVVM pattern](img/7074OS_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: MVVM-pattern diagram
+  prefs: []
+  type: TYPE_NORMAL
+- en: A real-world application – koCart
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In order to demonstrate how to use Knockout in a real application, we are going
+    to build a simple shopping cart called koCart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all we are going to define the user stories. We just need a few sentences
+    to know what we want to achieve, which are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user should be able to view the catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We should have the ability to search the catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user can click on a button to add items to the catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The application will allow us to add, update, and delete items from the catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user should be able to add, update, and delete items from the cart
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will allow the user to update his personal information.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The application should be able to calculate the total amount in the cart
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user should be able to complete an order
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Through user stories, we can see that our application has the following three
+    parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The catalog, which contains and manages all the products we have in the shop.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The cart, which has responsibility for calculating the price of each line and
+    the total amount of the order.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The order, where the user can update his personal information and confirm the
+    order.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To develop our real-world project, we need to install a few components and set
+    up our first layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These are all the components you need to download:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Bootstrap: [https://github.com/twbs/bootstrap/releases/download/v3.2.0/bootstrap-3.2.0-dist.zip](https://github.com/twbs/bootstrap/releases/download/v3.2.0/bootstrap-3.2.0-dist.zip)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'jQuery: [https://code.jquery.com/jquery-2.1.1.min.js](https://code.jquery.com/jquery-2.1.1.min.js)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'KnockoutJS: [http://knockoutjs.com/downloads/knockout-3.2.0.js](http://knockoutjs.com/downloads/knockout-3.2.0.js)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Since we just work on the client side in the first chapters, we can mock data
+    in the client and will not need a server side for now. So we can choose any place
+    in our computer to start our project. I recommend you use the environment you
+    usually employ to do your projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To start, we create a folder called `ko-cart` and then create three folders
+    and a file inside it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the `css` folder, we will put all our css.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the `js` folder, we will put all our JavaScript.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the `fonts` folder, we will put all the font files needed by the Twitter
+    Bootstrap framework.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create an `index.html` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now you should set up your files the same way as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing components](img/7074OS_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The initial folder structure
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then we should set the content of the `index.html` file. Remember to set all
+    the links to the files we will need using the `<script>` and `<link>` tags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: With these lines of code, we have all we need to start our application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The view-model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **view-model** is a pure code representation of the data and operations
+    on a UI. It isn't the UI itself. It doesn't have any concept of buttons or display
+    styles. It's not the persisted data model either. It holds the unsaved data the
+    user is working with. View-models are pure JavaScript objects that have no knowledge
+    of HTML. Keeping the view-model abstract in this way lets it stay simple, so you
+    can manage more sophisticated behaviors without getting lost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create a view-model, we just need to define a simple JavaScript object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then to activate Knockout, we will call the following line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first parameter says which view-model object we want to use with the view.
+    Optionally, we can pass a second parameter to define which part of the document
+    we want to search for `data-bind` attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This restricts the activation to the element with `elementID` and its descendants,
+    which is useful if we want to have multiple view-models and associate each with
+    a different region of the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The view
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A **view** is a visible, interactive UI representing the state of the view-model.
+    It displays information from the view-model, sends commands to the view-model
+    (for example, when the user clicks on buttons), and updates whenever the state
+    of the view-model changes. In our projects, views are represented by the HTML
+    markups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To define our first view, we are going to build an HTML to display a product.
+    Add this new content to the container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Look at the `data-bind` attribute. This is called **declarative binding**. This
+    attribute isn't native to HTML, though it is perfectly correct. But since the
+    browser doesn't know what it means, you need to activate Knockout (the `ko.applyBindings`
+    method) to make it take effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display data from a product, we need to have a product defined inside our
+    view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add the view-model to the end of the script tags:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This will be the result of our app:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The view](img/7074OS_01_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Result of data binding
+  prefs: []
+  type: TYPE_NORMAL
+- en: The model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This data represents objects and operations in your business domain (for example,
+    products) and is independent of any UI. When using Knockout, you will usually
+    make AJAX calls to some server-side code to read and write this stored model data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Models and view-models should be separated from each other. In order to define
+    our product model, we are going to follow some steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a folder inside our `js` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Name it `models`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Inside the `models` folder, create a JavaScript file called `product.js`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The code of the `product.js` file is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This function creates a simple JavaScript object that contains the interface
+    of the product. Defining the object using this pattern, called the **revealing
+    module pattern**, allows us to clearly separate public elements from private elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To learn more about the revealing module pattern, follow the link [https://carldanley.com/js-revealing-module-pattern/](https://carldanley.com/js-revealing-module-pattern/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Link this file with your `index.html` file and set it at the bottom of all the
+    script tags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we can use the product model to define the product in the view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we run the code again, we will see the same result, but our code is more
+    readable now. View-models are used to store and handle a lot of information, because
+    of this view-models are commonly treated as modules and the revealing module pattern
+    is applied on them. This pattern allows us in a clear manner to expose the API
+    (public elements) of the view-model and hide private elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using this pattern when our view-model begins to grow helps us to clearly see
+    which elements belong to the public part of the object and which ones are private.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Observables to refresh the UI automatically
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The last example shows us how Knockout binds data and the user interface, but
+    it doesn't show the magic of the automatic UI refresh. To perform this task, Knockout
+    uses observables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Observables** are the main concept of Knockout. These are special JavaScript
+    objects that can notify subscribers about changes, and can automatically detect
+    dependencies. For compatibility, `ko.observable` objects are actually functions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To read an observable's current value, just call the observable with no parameters.
+    In this example, `product.price()` will return the price of the product, and `product.name()`
+    will return the name of the product.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: To write a new value to the observable, call the observable and pass the new
+    value as a parameter. For example, calling `product.name('Jeans')` will change
+    the `name` value to `'Jeans'`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The complete documentation about observables is on the official Knockout website
+    [http://knockoutjs.com/documentation/observables.html](http://knockoutjs.com/documentation/observables.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To show how observables work, we are going to add some input data into our template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add these HTML tags over `div` that contain product information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We have linked inputs to the view-model using the `value` property. Run the
+    code and try to change the values in the inputs. What happened? Nothing. This
+    is because variables are not observables. Update your `product.js` file, adding
+    the `ko.observable` method to each variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that when we update the data inside the inputs, our product values are
+    updated automatically. When you change the `name` value to `Jeans`, the text binding
+    will automatically update the text content of the associated DOM element. That's
+    how changes to the view-model automatically propagate to the view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Observables to refresh the UI automatically](img/7074OS_01_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Observable models are updated automatically
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing collections with observables
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want to detect and respond to changes in one object, you'd use observables.
+    If you want to detect and respond to changes in a collection of things, use an
+    `observableArray`. This is useful in many scenarios where you're displaying or
+    editing multiple values and need repeated sections of the UI to appear and disappear
+    as items are added and removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To display a collection of products in our application, we are going to follow
+    some simple steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open the `index.html` file and remove the code inside the `<body>` tag and
+    then add a table where we will list our catalog:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Define an array of products inside the view-model:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Knockout has a binding to repeat a piece of code for each element in a collection.
+    Update the `tbody` element in the table:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We use the `foreach` property to point out that all that is inside this tag
+    should be repeated for each item in the collection. Inside this tag we are in
+    the context of each element, so you can just bind properties directly. Observe
+    the result in your browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We want to know how many items we have in our catalog, so add this line of
+    code above the table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Inserting elements in collections
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To insert elements in the products array, an event should occur. In this case,
+    the user will click on a button and this action will fire an action that will
+    insert a new product in the collection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In future chapters, you will learn more about events. Now we will just need
+    to know that there is a binding property named `click`. It receives a function
+    as a parameter, and this function is fired when the user clicks on the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To insert an element, we need a form to insert the values of the new product.
+    Write this HMTL code just below the `<h1>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this template, we find some new bindings:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `with` binding: This creates a new binding context so that descendant elements
+    are bound in the context of a specified object, in this case `newProduct`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://knockoutjs.com/documentation/with-binding.html](http://knockoutjs.com/documentation/with-binding.html)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The `textInput` binding: The `textInput` binding links a textbox (`<input>`)
+    or text area (`<textarea>`) with a view-model property, providing two-way updates
+    between the `viewmodel` property and the element''s value. Unlike the `value`
+    binding property, `textInput` provides instant updates from the DOM for all types
+    of user input, including autocomplete, drag-and-drop, and clipboard events. It
+    is available from the 3.2 version of Knockout.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://knockoutjs.com/documentation/textinput-binding.html](http://knockoutjs.com/documentation/textinput-binding.html)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The `click` binding: The `click` binding adds an event handler so that your
+    chosen JavaScript function is invoked when the associated DOM element is clicked.
+    When calling your handler, Knockout will supply the current model value as the
+    first parameter. This is particularly useful if you''re rendering UI for each
+    item in a collection, and you need to know which item''s UI was clicked.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://knockoutjs.com/documentation/click-binding.html](http://knockoutjs.com/documentation/click-binding.html)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The `$parent` object: This is a binding context property. We use it to refer
+    to data from outside the `foreach` loop.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For more information about binding context properties, read the Knockout documentation
+    at [http://knockoutjs.com/documentation/binding-context.html](http://knockoutjs.com/documentation/binding-context.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Inserting elements in collections](img/7074OS_01_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using with to set a context and parent to navigate through them
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now it is time to add the `newProduct` object to our view-model. First we should
+    define a new product with empty data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We have defined a literal object that will contain the information we want
+    to put inside our new product. Also, we have defined a method to clear or reset
+    the object once the insertion is done. Now we define our `addProduct` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method creates a new product with the data received from the click event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The click event always sends the context as the first argument. Note also that
+    you can use array methods such as `push` in an observable array. Check out the
+    Knockout documentation ([http://knockoutjs.com/documentation/observableArrays.html](http://knockoutjs.com/documentation/observableArrays.html))
+    to see all the methods available in arrays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should implement the private method that will clean data from the new product
+    once it is added to the collection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Update the view-model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you run the code, you will notice that when you try to add a new product
+    nothing happens. This is because, despite the fact that our products have observable
+    properties, our array is not an observable one. For this reason, Knockout is not
+    listening to the changes. We should convert the array to an `observableArray`
+    observable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now Knockout is listening to what is going on with this array, but not what
+    is happening inside each element. Knockout just tells us about inserting or deleting
+    elements in the array, but not about editing elements. If you want to know what
+    is happening in an element, the object should have observable properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An `observableArray` observable just tracks which objects it holds, and notifies
+    listeners when objects are added or removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Behind the scenes, the `observableArray` is actually an observable whose value
+    is an array. So you can get the underlying JavaScript array by invoking the `observableArray`
+    observable as a function with no parameters, just like any other observable. Then
+    you can read information from that underlying array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Computed observables
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is not weird to think that some values we show in our interface depend on
+    other values that Knockout is already observing. For example, if we would like
+    to search products in our catalog by name, it is evident that the products in
+    the catalog that we show in the list are related to the term we have entered in
+    the search box. In these cases Knockout offers us **computed observables**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can learn in detail about computed observables in the Knockout documentation
+    at [http://knockoutjs.com/documentation/computedObservables.html](http://knockoutjs.com/documentation/computedObservables.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To develop the search function, define a textbox where we can write a term
+    to search. We are going to bind it to the `searchTerm` property. To update the
+    value as we write, we should use the `textInput` binding. If we use the value
+    binding, the value will be updated when the element loses the focus. Put this
+    code over the products table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: To create a filtered catalog, we are going to check all our items and test if
+    the `searchTerm` is in the item's `name` property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `ko.utils` object is not documented in Knockout. It is an object used by
+    the library internally. It has public access and has some functions that can help
+    us with observables. There are a lot of unofficial examples about it on the Internet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of its helpful functions is `ko.utils.arrayFilter`. If you look at line
+    13, we have used this method to obtain a filtered array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This function gets an array as the first parameter. Notice that we invoke the
+    `catalog` array observable to get the elements. We don't pass the observable itself,
+    but the contents of the observable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second parameter is the function that decides whether the item will be in
+    the filtered array or not. It will return `true` if the item has the conditions
+    to be in the filtered array. Otherwise it returns `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On line 14 of this snippet, we can find an array called `fields`. This parameter
+    will contain the fields that should comply with the criteria. In this case, we
+    just check that the filter value is in the `name` value. If we are pretty sure
+    that we are just going to check the `name` field, we can simplify the filter function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `ko.unwrap` function returns the value that contains the observable. We
+    use `ko.unwrap` when we are not sure if the variable contains an observable or
+    not, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Expose the filtered catalog into the public API. Notice that now we need to
+    use the filtered catalog instead of the original catalog of products. Because
+    we are applying the **revealing** **module pattern**, we can keep the original
+    API interface and just update the value of the catalog with the filtered catalog.
+    We don''t need to alert the view that we are going to use a different catalog
+    or other element, as long as we always maintain the same public interface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, try to type some characters in the search box and see in your browser how
+    the catalog updates the data automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Wonderful! We have completed our first three user stories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The user should be able to view the catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user should be able to search the catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user should be able to add items to the catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let''s see the final result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Computed observables](img/7074OS_01_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you have learned the basics of the Knockout library. We have
+    created a simple form to add products to our catalog. You have also learned how
+    to manage observable collections and display them in a table. Finally, we have
+    developed the search functionality using computed observables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You have learned three important Knockout concepts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**View-model**: This holds the data that represents the state of the view.
+    It is a pure JavaScript object.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Models**: This contains data from the business domain.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Views**: This displays the data we store in the view-model in a given instant
+    of time.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To build reactive UIs, the Knockout library provides us with some important
+    methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ko.observable`: This is used to manage variables.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ko.observableArray`: This is used to manage arrays.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ko.computed`: They respond to changes from observables that are inside them.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To iterate over the elements of an array, we use the `foreach` binding. When
+    we use the `foreach` binding, we create a new context. This context is relative
+    to each item. If we want to access out of this context we should use the `$parent`
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we want to create a new context relative to a variable, we can attach the
+    `with` binding to any DOM element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `click` binding to attach the click event to an element. Click on
+    event functions to always get the context as the first parameter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get values from a variable that we are not sure is an observable, we can
+    use the `ko.unwrap` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use the `ko.utils.arrayFilter` function to filter collections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we are going to use templates to keep our code maintainable
+    and clean. Template engines help us to keep our code arranged and allow us to
+    update views in an easy way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is a copy of the code developed in this chapter at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/jorgeferrando/knockout-cart/archive/chapter1.zip](https://github.com/jorgeferrando/knockout-cart/archive/chapter1.zip).'
+  prefs: []
+  type: TYPE_NORMAL

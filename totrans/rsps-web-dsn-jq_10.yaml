@@ -1,0 +1,562 @@
+- en: Chapter 10. Ensuring Browser Support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Different browsers have their own proprietary features and their own subset
+    of the standard features implemented in their own way, bringing a lot of work
+    for us to make these features work for all browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason for these differences is that the W3C specifications are constantly
+    updating, and with the constant competition among browsers, they always try promote
+    their products as having better functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, jQuery has good cross-browser compatibility, and the flexibility to
+    bridge some of these gaps in feature implementation across each browser. These
+    bridges are called **Polyfills**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Polyfills is the main subject of this chapter and we will also learn about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Checking the features the browser supports
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The meaning of polyfill
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding feature detection tools
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Polyfill implementations for HTML5 and CSS3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Checking the features the browser supports
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In website development, experience does bring much agility to a programmer.
+    Although this knowledge becomes outdated very fast, we must stay updated with
+    the new features, selectors, and enhancements as soon as they have compatibilities
+    with browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The three main sites to check the compatibility of techniques and features,
+    depending on our browser and device, are: [CanIUse.com](http://CanIUse.com), [MobileHTML5.org](http://MobileHTML5.org),
+    and [QuirksMode.org](http://QuirksMode.org).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CanIUse.com
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The [CanIUse.com](http://CanIUse.com) website is the best-known site among these
+    reference sites, where we can check the compatibility tables that support HTML5,
+    CSS3, SVG and more, in desktop and mobile browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you access the website [http://caniuse.com](http://caniuse.com), you will
+    see that its data is based on statistics collected by StatCounter GlobalStats
+    and it is constantly updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is also important to read the **Notes** and **Known Issues** tab (as we can
+    see in the following screenshot) because we are part of a community that greatly
+    contributes to the evolution of the entire development site. The tabs highlight
+    the exceptions that should be taken into consideration or report problems and
+    the techniques, which they had to use in a specific scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![CanIUse.com](img/3602OS_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: MobileHTML5.org
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The [MobileHTML5.org](http://MobileHTML5.org) website focuses on the compatibility
+    of HTML5 features on mobile and tablet browsers with tests on real devices. It
+    makes a difference because, as we have seen in the previous chapter, there are
+    few visual differences between a simulated view from a desktop browser and testing
+    the website on a mobile device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, this difference increases considerably when it involves hardware and
+    the operating system of the device, and only if we test the website on real devices,
+    we may detect potential problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The variety of devices that are listed is impressive. The following screenshot
+    illustrates part of the capabilities of older devices that no longer hold much
+    of a market share. It even displays the devices with operating systems recently
+    launched, such as FirefoxOS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try yourself to access the website [http://mobilehtml5.org](http://mobilehtml5.org),
+    and check the updated list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![MobileHTML5.org](img/3602OS_10_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: QuirksMode.org
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: On the [QuirksMode.org](http:// QuirksMode.org) website, we may prevent future
+    bad surprises during our development by checking if a specified selector or pseudo-class
+    is acceptable by the browsers before using it. Otherwise, we must check on each
+    browser we defined in the beginning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The [QuirksMode.org](http://QuirksMode.org) website focuses only on storing
+    and keeping updated information about the browser support of almost every CSS
+    selectors and properties. As we can see on [http://www.quirksmode.org/css/selectors](http://www.quirksmode.org/css/selectors),
+    this information is grouped into the following categories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Combinators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attribute selectors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pseudo-elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pseudo-classes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following is a part of the [QuirksMode.org](http://QuirksMode.org) website
+    checking the pseudo-elements technique:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![QuirksMode.org](img/3602OS_10_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Defining fallback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Fallback is part of a support process when developing a website. Its objective
+    is to provide an alternative to a technology we have applied to a website, but
+    not all browsers support this specific feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This term may be split into polyfills and webshims.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A **polyfill** is a specific code that emulates a specific feature for browsers
+    that do not support it natively. Polyfills always try to mimic the original browser
+    feature, but there are a few cases where it may cause slight side effects such
+    as an increase in the loading time or loss of performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An example of a polyfill is the html5shiv script that we simply drop in the
+    code and it will act as if nothing changed. We will talk about html5shiv later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Shims** provide a fallback, but often have their own API, and may require
+    an alteration of the code to allow the shim to work. This is why we have libraries
+    such as `yepnope.js` to load these, if required. We will see an example of using
+    `yepnope.js` later.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's look at two feature detection tools, which may be useful when we are providing
+    fallbacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Feature detection tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Feature detection is the first step we are able to provide as a progressive
+    enhancement to website users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, we have to test if the given feature is already implemented in the browser.
+    If so, we do not need to reimplement anything that already exists, but if the
+    browser is actually missing the feature, it is recommended to provide the correct
+    support for that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes we have to support browsers that have not completely implemented a
+    specific feature yet. However, new features make a difference when your website
+    is being viewed and popularity of the website often increases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS Browser Selector +
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A cross-browser responsive design helper is simpler than Modernizr because its
+    only function is detecting features, when the site is loaded and marking it in
+    code, using the class placed in the `<html>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It has an easy implementation, therefore it allows us to write a specific CSS
+    code and to solve visual problems which are, for instance, restricted to certain
+    operating systems, or browsers, being the end of the CSS hacks!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The main items that this JavaScript library identifies are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browser and browser version
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rendering engines
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Platforms and operating systems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Devices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `max-width` and `min-width` screen detection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Browser orientation detection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Language detection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Try this tool yourself by accessing the website [http://ridjohansen.github.io/css_browser_selector/](http://ridjohansen.github.io/css_browser_selector/),
+    and check the classes by inspecting the `<html>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This way, it is possible to fix the problems of a specific browser or even
+    help to create fallbacks like this one. Consider the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The less custom code to create exceptions we have, the better it is to implement
+    future updates and changes. When it is possible, the idea would be to identify
+    the root cause of the error rather than just fixing the visual difference between
+    browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading, we just need to include the `css_browser_selector.js` file
+    in our code inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Through detection it is possible to load up scripts or different features,
+    but this is not included in this solution. To solve this and to have access to
+    more types of feature detections, a more complete solution is recommended: Modernizr.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modernizr
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Modernizr is a JavaScript library that detects HTML5 and CSS3 features in the
+    user's browser, making it easy to write a conditional JavaScript and CSS for each
+    situation, whether a browser supports a feature or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It works by adding classes to the `html` element for our future selection on
+    the CSS. Furthermore, it creates a JavaScript object with the results used later
+    to support dozens of tests. When downloading Modernizr from [http://modernizr.com](http://modernizr.com),
+    we have the option of downloading the full development version or a custom build
+    that includes only the parts we intend to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Modernizr's website recommends downloading of a custom build version with
+    the features that fit the project instead of using a complete version from CDN,
+    because most times a custom version will be smaller than the fully developed one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After that, we may include `the modernizr.custom.85330.js` file in our code
+    inside the header section like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s observe how classes are arranged in the `<html>` tag with all the features
+    detected and ready to use, if viewed on Firefox:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This way, we can write this kind of code, where we are guaranteed that if your
+    browser does not support the `boxshadow` property, we can make two borders simulating
+    the shadow effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This simple example of code for shadow on borders will look like the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Modernizr](img/3602OS_10_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, let's see what we can do when the solution requires adding another library
+    to the website in demand with YepNope.js.
+  prefs: []
+  type: TYPE_NORMAL
+- en: YepNope.js
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: YepNope.js is a JavaScript library for asynchronous conditional loading of external
+    JavaScript and CSS resources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a sample illustrating how Modernizr has been used to test
+    CSS animations, and where YepNope has been used as a fallback where the browser
+    does not support `CSSTransforms`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: html5shiv
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The html5shiv library enables support for HTML5 elements in older versions of
+    IE browsers, in particular 6 to 8, and provides some basic support for IE9.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, this solution has another file named `html5shiv-printshiv.js`, which comes
+    with a printable version included. It also allows HTML5 elements and their child
+    elements to be styled, while being printed using IE6 to IE8.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can use this by simply selecting the option as shown on Modernizr''s download
+    page and when the library is included in the project, it will apply the polyfill
+    if the browser does not support that html5 element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![html5shiv](img/3602OS_10_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Polyfill implementations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are hundreds of polyfills and shims already developed. And this list grows
+    as soon as a new feature, element, or enhancement is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will see some polyfill implementations right now, but it is important that
+    you check the website [https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills](https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills),
+    checking if there is a polyfill already developed before you start creating a
+    new one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: MediaElements.js
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: MediaElements is a polyfill that creates a consistency of player designs for
+    the `<video>` and `<audio>` elements being viewed in older browsers, using Flash
+    technology that mimics the native HTML5 MediaElement API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following example, we will apply this library to improve the browser's
+    consistency when displaying videos. However, there is still a lot of work to get
+    every browser to play your audio/video because they require hosting multiple versions
+    of the file in different formats such as `.mp4`, `.webm`, and `.ogg`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the latest version from [http://www.mediaelementjs.com](http://www.mediaelementjs.com),
+    we may include the JavaScript library and the `stylesheet` file inside the `<head>`
+    tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following code is used for offering more accessibility for different browsers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, you can initialize the player for any `<video>` or `<audio>` element
+    in the document this way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the following screenshot, there is a sample of its default video player
+    UI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_10_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There is documentation with plenty of options in which we can configure the
+    player when it is being executed. These options may be found at [http://mediaelementjs.com/#options](http://mediaelementjs.com/#options).
+  prefs: []
+  type: TYPE_NORMAL
+- en: SVG
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**Scalable Vector Graphics** (**SVG**) is an image format for vector graphics.
+    There are a lot of advantages of its usage such as well compressed file sizes,
+    scaling to any size without losing clarity, great appearance on retina displays,
+    and allowing more interactivity by giving more control to designers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, its acceptance by browsers is not yet complete, requiring fallbacks.
+    There is a technique made by *Alexey Ten* which is very interesting because it
+    solves problems for browsers such as Internet Explorer 8 and Android 2.3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's understand a better way to cover the SVG implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'There are some different ways to put an SVG file on the site. We will approach
+    them with the methods: background image, as the `svg` tag, and as the `img` tag.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: SVG as a background image
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Modernizr has an SVG test. So, you can declare a fallback with the class names
+    that the Modernizr has injected into the HTML element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: SVG as the <svg> tag
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'This is the new technique where old browsers do not understand the highlighted
+    term very well and display the `.png` file instead of the `.svg` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: SVG as a simple <img> tag
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: By using Modernizr, we will test if the browser supports the SVG before inserting
+    the code. If not, the script will find the `.png` file which has the same name,
+    and it will display the `.png` file instead of the `.svg` one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, these consistent URL and filename patterns are required to keep the
+    website working well, otherwise the script will not locate the correct resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Respond.js
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Respond.js is a fast and lightweight polyfill for `min-width` / `max-width`,
+    which enables media query to support as it is reinterpreting the stylesheet, after
+    it has been loaded into a format that the Internet Explorer 6 to 8 browsers will
+    understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of our media queries do not require any extra change. We just need to ensure
+    that our `@media` statements are written properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Make sure to include `respond.min.js` after the CSS files if you have some.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If our CSS is using `@import` or is coded inline, Respond.js cannot read it.
+    Instead, use a typical `<link>` method. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    the Respond.js library, which can be downloaded at [https://github.com/scottjehl/Respond](https://github.com/scottjehl/Respond).
+    Make sure to include `respond.min.js` after the CSS files if you have any:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: And it is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we ensured the accessibility for viewers providing fallbacks.
+    We have learned how to detect browser characteristics and supported features by
+    using CSS Browser Selector and Modernizr. These libraries have helped us a lot
+    by offering support to perform a progressive enhancement. Also, we learned interesting
+    polyfills for HTML5, such as html5shiv, MediaElements, and techniques for `SVG`
+    and `FileAPI`. `Respond`, a useful polyfill for CSS was included in this chapter
+    too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will see thousands of plugins for creating a good responsive
+    website, complementing all of the chapters we have read so far.
+  prefs: []
+  type: TYPE_NORMAL

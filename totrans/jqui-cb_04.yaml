@@ -1,0 +1,598 @@
+- en: Chapter 4. Developing Datepickers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with different date formats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Making a full-sized calendar widget
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displaying month-to-month effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Appointment reminders as tooltips
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Restricting the date range
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hiding the input field
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Additional data and controls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **datepicker** widget augments the typical text input form element by presenting
+    the user with a date selection utility. We see these types of inputs everywhere
+    on the Web now. The graphical nature of the datepicker is intuitive for most users
+    because it closely resembles a physical calendar. The datepicker widget also addresses
+    the challenge of working with consistent date formats, something users don't have
+    to worry about.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with different date formats
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The datepicker widget supports a variety of date string formats. The date string
+    is the value populated in the text input when the user makes a selection. More
+    often than not, applications will try to follow the same date format throughout
+    the UI for consistency. So if you're not happy with the default format provided
+    by the widget, we can change it when the widget is created using the `dateFormat`
+    option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll start by creating two `input` fields where we require the date input
+    from the user:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll create two datepicker widgets using the preceding `input` fields
+    and by specifying our custom format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we make a selection in either of the datepicker widgets, you'll notice
+    the text `input` value changes to the selected date, using the format we've chosen.
+    The date format string itself, `"DD, MM d, yy"`, is modeled after those found
+    in most other programming languages, that is, there is no native JavaScript date
+    formatting facilities for the datepicker to use. When the user makes a selection
+    in the drop-down calendar of the datepicker, a `Date` object is created. The widget
+    then uses the `dateFormat` option to format the `Date` object, and populate the
+    text input with the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/2186_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we're building a reasonably large user interface, we'll probably use several
+    datepicker widgets in several different places. To keep up with the date formatting
+    consistency, we'll have to specify the `dateFormat` option each time we create
+    the datepicker widget. We will likely have several calls to create the widget
+    that use different selectors, so it becomes a little tedious to always specify
+    the same `dateFormat` option when it should just be the default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this scenario, we're better off just changing the default `dateFormat` value
+    to something our application uses throughout. This beats having to specify the
+    same format, over and over, while preserving the ability to change the date format
+    on a case-by-case basis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use the same HTML structure as before—the two `input` fields are our
+    datepicker placeholders. But let''s modify the JavaScript as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if you run this modified JavaScript, you'll get the same datepicker behavior
+    as before. What you'll notice, however, is that we're now making two calls to
+    the `datepicker()` constructor. Neither specifies the `dateFormat` option, because
+    we've altered the default value by customizing the `datepicker` widget and extending
+    `options`. We still have the option of providing a custom date format for each
+    individual widget, and this route could save us a lot of potentially repetitive
+    `dateFormat` options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making a full-sized calendar widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The typical use for the `datepicker` widget is to augment a standard form input
+    field. When the field comes into focus, it's then that we want to display the
+    actual datepicker for the user. This makes sense if we're following the standard
+    usage pattern for the widget—to pick dates. This is why, after all, it's called
+    a datepicker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But we could, however, take advantage of some flexibility afforded by the theme
+    framework and perform a few minor tweaks to display a larger calendar. Not necessarily
+    for the purpose of picking a date as input, but as a large window into date/time
+    related information. The changes we need to make to the widget are merely to scale
+    the inline display up in size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The datepicker widget already knows how to display itself inline. We just need
+    to call the datepicker constructor on a `div` element instead of an `input` element.
+    So we''ll use this basic markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And a plain old `datepicker()` invocation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The rest of the work is performed in the theme adjustments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The goal of adjusting the datepicker CSS is to make it scale up in size. The
+    idea is to make the widget look more like a calendar and less like a form input
+    field helper. The calendar is already displayed inline, so let's just include
+    this new CSS on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: With that, we have a scaled up calendar widget that still functions perfectly
+    fine as a datepicker, as we haven't altered any functionality with the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we're doing with these new style declarations is increasing
+    the width of the calendar display to `500px`. This could be any number we choose
+    that best fits the user interface we happen to be developing. Next, we're upping
+    the title section—the month and the year—in terms of the font size. We're also
+    increasing the font size of all the weekdays and month numbers, as well as providing
+    more padding between the month day slots. We have the space now, we might as well
+    use it. Finally, the `padding` set on the `td span` and `td a` elements fixes
+    the height of the entire calendar; otherwise, the aspect ratio would be way out
+    of whack. This is another number that we would want to fiddle with on a per-application
+    basis in order to get it right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying month-to-month effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When the datepicker selector is shown, we're typically displaying one month
+    at a time for the user. If the user needs to navigate backward through time, they
+    do so using the previous month button. Likewise, they can move forward through
+    time using the next month button. The datepicker widget just empties out the datepicker
+    `div` when this happens, regenerates some HTML for the calendar and inserts that.
+    This all happens very quickly, essentially instantaneously as far as the user
+    is concerned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's liven up this month-to-month navigation a little bit by injecting some
+    effects into the datepicker internals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can use any datepicker widget for this experiment, but it's probably more
+    straightforward to just use an inline datepicker display instead of using a text
+    `input`. That way, the datepicker is there when the page loads and we don't need
+    to open it. Inline datepickers are created using a `div` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll extend the datepicker widget as follows to allow for the jQuery `fadeIn()`
+    and `fadeOut()` functions to be applied while we're adjusting the the current
+    month.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now when the user clicks on the next or previous arrow buttons at the top of
+    the calendar, we'll see that the widget fades out and fades back in with a new
+    calendar month layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing you'll notice about this code is that it doesn't extend the
+    datepicker widget using the typical widget factory machinery. That's because the
+    default implementation of the datepicker hasn't yet moved over to the new widget
+    factory way of doing things. But that doesn't stop us from extending the widget
+    to suit our needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The datepicker widget is complicated—much more so than most others within the
+    framework. There are many considerations the core jQuery UI team must entertain
+    before such a drastic change is introduced. The plan, as of writing, is that the
+    datepicker widget we'll be a product of the widget factory, just like every other
+    widget in a future release.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're using the jQuery `extend()` function on the `$.datepicker` object. This
+    object is a singleton instance of the `Datepicker` class, which is what we're
+    interested in for the sake of brevity. The `_updateDatepicker()` method is what
+    we're targeting in this customization. The default datepicker implementation uses
+    this method to update the contents of the datepicker `div`. So we want to override
+    it. In our version of the method, we're hiding `inst.dpDiv` using `fadeOut()`.
+    Once that completes, we call `fadeIn()`. The `_super` variable is a reference
+    to the `Datepicker` class used to defined the widget. As `$.datepicker` is an
+    instance, the only way to access the `Datepicker` prototype is through `$.datepicker.constructor.prototype`.
+    The reason we need the `Datepicker` prototype is so that we can call the original
+    `_updateDatepicker()` method once we've finished with our effects, as it performs
+    several other tasks related to configuring the display.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Appointment reminders as tooltips
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Datepicker widgets help users select the proper date for an `input` field, or
+    serve as a basic display. In either case, wouldn't it be useful if we could provide
+    the user with some more context? That is, if I'm using the datepicker to select
+    the date on a form, it would be helpful to know that when I move the mouse pointer
+    over a day in the calendar, I've got something going on that day. Maybe I should
+    pick something else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll look at extending the capabilities of the datepicker
+    widget to allow for specifying reminders that appear as tooltips. These get passed,
+    as an option, to the datepicker constructor and probably originated within the
+    application somehow, perhaps from the user's profile in the database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll use a simple inline datepicker for this example with `<div class="calendar"></div>`
+    as the target markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's extend the datepicker's capabilities by accepting an array of reminder
+    objects, and creating tooltips for them. A reminder object is just a plain JavaScript
+    object with `date` and `text` fields. The date tells the datepicker where in the
+    calendar the tooltip should be placed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, when you move the mouse pointer over the provided reminder dates in the
+    datepicker widget, you should see the provided text as a tooltip:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's take a step back and think about the data passed to the reminders parameter,
+    and what we've done with it. The value passed is an array of objects, each with
+    `date` and `text` attributes. The text is what we want to display in the tooltip,
+    and the date tells the datepicker where to place the tooltip. So we take this
+    value and compare it against the dates rendered in the datepicker calendar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All the customized work is done in our own implementation of the `_updateDatepicker()`
+    method. This method is called every time the calendar is rendered. This includes
+    switching from month to month. We use our reference to the original datepicker
+    implementation in `_super` to call the `_updateDatepicker()` method. Once that
+    has completed, we can perform our customizations. We first check if the reminders
+    parameter has been supplied, otherwise, our work is done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we find and iterate over each `td` element that represents a day in the
+    currently-displayed month. For each day, we construct a JavaScript `Date` object
+    representative of the table cell—we'll need this to compare against each reminder
+    entry. Finally, we iterate over each reminder object in the `reminders` parameter.
+    If we're on the date that this reminder should be displayed, we construct the
+    tooltip widget after setting the `title` attribute of the `td` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Restricting the date range
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Your application may need to restrict allowable date selections for limiting
+    the date range. Perhaps this is predicated on some other condition being true
+    or event being triggered. Thankfully, we have enough flexibility to handle the
+    most common selection-restricted configurations of the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use the basic input element markup for our datepicker widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll create our datepicker widget as follows, using the `minDate` and `maxDate`
+    options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: When we activate the datepicker widget by clicking on the `input` field, you'll
+    notice that only a specific range of days are selectable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Both the `minDate` and `maxDate` options accept a variety of formats. In our
+    example here, we gave the `minDate` option a `Date` object, representing today.
+    This means that the user cannot select any dates prior to today. Further, we don't
+    want to allow the user to select any dates past two weeks into the future. This
+    is easy to specify by giving the `maxDate` option a delta of `14` days.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The restricted date range of a given datepicker instance doesn't have to be
+    statically defined. The actual range might depend on something dynamic within
+    the UI such as another datepicker selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look at how we might go about restricting the date range depending
+    on the selection of another date. We'll create two datepicker widgets. When the
+    user selects a date in the first widget, the second widget is enabled with an
+    updated range restriction. The user cannot select a date before the first datepicker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the markup we''ll use for the two datepickers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is the code to create our two datepicker widgets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: By default, the `#stop` datepicker is disabled because we need to know what
+    the `minDate` value should be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: But once the user makes a selection in the `#start` datepicker, we can make
+    a selection in the `#stop` datepicker—we just can't select anything prior to the
+    selection we made in the `#start` datepicker.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_04_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `#start` datepicker enables and updates the `#stop` datepicker when a selection
+    is made. It enables the widget and passes the value of `getDate` as the `minDate`
+    option. This forces the user in one direction based on a prior selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hiding the input field
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The goal of the datepicker widget is to populate a text `input` element once
+    the user makes a selection. So the widget has two uses for the `input` element.
+    First, it listens for `focus` events on the `input` element. This is how it knows
+    when to display the calendar selector. Second, once the selection is made, the
+    `input` element value is updated to reflect the date in the chosen format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Presenting the user with an `input` element would work fine in the majority
+    of cases. But perhaps for some reason, an input doesn't suit your UI well. Maybe
+    we need a different approach to displaying the calendar and storing/displaying
+    the selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this section, we'll look at an alternative approach to just using the datepicker
+    `input` element. We'll use a **button** widget to trigger the calendar display,
+    and we'll disguise the `input` element as being something else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's use the following HTML for this example. We'll lay out four date sections
+    where the user needs to press a button in order to interact with the datepicker
+    widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we'll need to make our date sections work as expected is some
+    CSS. This is important not only for laying out the UI we're building, but also
+    for disguising the `input` element, so that the user doesn't know it's there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we'll write the JavaScript code necessary to instantiate the datepicker
+    and button widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: With that, we now have four date sections where the user can click on the date
+    button to the right of the label and get the calendar displayed. They pick a date,
+    and the calendar is hidden. You'll notice that our CSS styles have hidden the
+    `input` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_04_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Most of the CSS style rules in this example are required for laying out the
+    UI components, `label`, `buttons`, and `input`. You'll notice that until a date
+    is selected, the input isn't visible. This is because it has no text value yet,
+    and because we've removed `border` in our `div.date-section` input CSS selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing our JavaScript code does on page load is create datepicker widgets
+    for each input element. We pass a custom string along to the `dateFormat` option
+    too. For each date section, we have a button. We use the button widget here to
+    create a calendar icon button that when clicked, displays the calendar. We do
+    this by calling `datepicker( "show" )`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additional calendar data and controls
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The datepicker widget has a variety of additional data and control options that
+    may be exposed by the developer using the widget. These are simple Boolean configuration
+    options that turn on the data or the control.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting started
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's prepare two `div` elements with which we can create two inline datepicker
+    instances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's create the two datepicker widgets. We're creating two widgets so that
+    we can contrast the differences between a regular datepicker and one with expanded
+    data and controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now you can see the differences between the two rendered datepickers. The latter
+    has been expanded with additional controls and data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_04_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'All we''ve done with the expanded `datepicker` instance is turn on some features
+    that are turned off by default. These are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`changeYear`: This enables the year drop-down menu.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`changeMonth`: This enables the month drop-down menu.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`showButtonPanel`: This enables the **Today** and **Done** buttons at the bottom
+    of the calendar.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`showOtherMonths`: This enables days being displayed from adjacent months.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`showWeek`: This enables the week-of-the-year column in the calendar.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,1053 @@
+- en: Using Plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout the first six chapters of this book, we examined jQuery's core components.
+    Doing this has illustrated many of the ways in which the jQuery library can be
+    used to accomplish a wide variety of tasks. Yet as powerful as the library is
+    at its core, its elegant **plugin architecture** has allowed developers to extend
+    jQuery, making it even more feature rich.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery community created hundreds of plugins--from small selector helpers
+    to full-scale user-interface widgets. You will now learn how to tap into this
+    vast resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading and setting up plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Calling jQuery methods provided by plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finding elements using custom selectors defined by jQuery plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding sophisticated user interface behaviors using jQuery UI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing mobile-friendly features using jQuery Mobile
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using a jQuery plugin is very straightforward. We need to simply obtain the
+    plugin code, reference the plugin from our HTML, and invoke the new capabilities
+    from our own scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can easily demonstrate these tasks using the jQuery **Cycle** plugin. This
+    plugin, by Mike Alsup, allows us to quickly transform a static set of page elements
+    into an interactive slideshow. Like many popular plugins, it can handle complex,
+    advanced needs well, but can also hide this complexity when our requirements are
+    more straightforward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading and referencing the Cycle plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To install any jQuery plugins, we'll use the `npm` package manager. This is
+    the de facto tool for declaring package dependencies for modern JavaScript projects.
+    For example, we can use a `package.json` file to declare that we need jQuery,
+    and a specific set of jQuery plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For help on installing `npm`, see [https://docs.npmjs.com/getting-started/what-is-npm](https://docs.npmjs.com/getting-started/what-is-npm).
+    For help on initializing a `package.json` file, see [https://docs.npmjs.com/getting-started/using-a-package.json](https://docs.npmjs.com/getting-started/using-a-package.json).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you have a `package.json` file in the root of your project directory,
+    you''re ready to start adding dependencies. For example, you can add a `jquery`
+    dependency from your command console as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And if we want to use the `cycle` plugin, we can install that as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The reason we use the `--save` flag with this command is so to tell `npm` that
+    we''re always going to need these packages, and that it should save these dependencies
+    to `package.json`. Now that we have `jquery` and `jquery-cycle` installed, let''s
+    include them on our page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We have now loaded our first plugin. As we can see, this is no more complicated
+    than setting up jQuery itself. The plugin's capabilities are now ours to use in
+    our scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calling a plugin method
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The Cycle plugin operates on any set of sibling elements on a page. To show
+    it in action, we''ll set up some simple HTML containing book cover images and
+    related information in a list, adding it to the body of our HTML document as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Some light styling in our CSS file presents the book covers one after the other
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_001-3.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The Cycle plugin will work its magic on this list, transforming it into an
+    attractive animated slideshow. This transformation can be invoked by calling the
+    `.cycle()` method on the appropriate container in the DOM as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This syntax could hardly be more simple. As we would with any built-in jQuery
+    method, we apply `.cycle()` to a jQuery object instance, which in turn points
+    to the DOM elements we want to manipulate. Even without providing any arguments
+    to it, `.cycle()` does a lot of work for us. The styles on the page are altered
+    to present only one list item at a time, and a new item is shown using a cross-fading
+    transition every 4 seconds:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_002-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This simplicity is typical of well-written jQuery plugins. A straightforward
+    method call is all it takes to achieve professional and useful results. However,
+    like many other plugins, Cycle offers a large number of options for customizing
+    and fine-tuning its behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specifying plugin method parameters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Passing parameters to plugin methods is no different than doing so with native
+    jQuery methods. In many cases, parameters are passed as a single object of key-value
+    pairs (as we saw with `$.ajax()` in [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml),
+    *Sending Data with Ajax*). The choices of options to provide can be quite daunting;
+    `.cycle()` alone has over 50 potential configuration options. The documentation
+    for each plugin details the effect of each option, often with detailed examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Cycle plugin allows us to alter the speed and style of the animation between
+    slides, affect how and when slide transitions are triggered, and react to completed
+    animations using callbacks. To demonstrate some of these capabilities, we''ll
+    provide three simple options to the  method call from *Listing 7.1* as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `timeout` option specifies the number of milliseconds to wait between each
+    slide transition (2,000). In contrast, `speed` determines the number of milliseconds
+    the transitions themselves will take (200). When set to `true`, the `pause` option
+    causes the slideshow to suspend itself when the mouse is inside the cycling region,
+    which is especially useful when the cycling items are clickable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying parameter defaults
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The Cycle plugin is impressive even with no supplied arguments. To accomplish
+    this, it needs a sensible set of defaults to use when options are not supplied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A common pattern, and the one followed by Cycle, is to gather all of the defaults
+    into a single object. In the case of Cycle, the `$.fn.cycle.defaults` object contains
+    all of the default options. When a plugin collects its defaults in a publicly
+    visible location like this, we can alter them in our own scripts. This can make
+    our code more concise when calling the plugin multiple times since we don''t have
+    to specify the new value for the option each time. Redefining the defaults is
+    simple, as can be seen in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we've set two defaults, `timeout` and `random`, prior to invoking `.cycle()`.
+    Since we declare a value of 2000 for `timeout` in our `.cycle()` call, our new
+    default of 10000 will be ignored. On the other hand, the new default of `true`
+    for `random` does take effect, causing the slides to transition in a random order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other types of plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Plugins need not be limited to providing additional jQuery methods. They can
+    extend the library in many ways and even alter the functionality of existing features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plugins can change the way other parts of the jQuery library operate. Some offer
+    new animation easing styles, for instance, or trigger additional jQuery events
+    in response to user actions. The Cycle plugin offers such an enhancement by adding
+    a new custom selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom selectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Plugins that add custom selector expressions increase the capabilities of jQuery's
+    built-in selector engine so that we can find elements on the page in new ways.
+    Cycle adds a custom selector of this kind, which gives us an opportunity to explore
+    this capability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Cycle''s slideshows can be paused and resumed by calling `.cycle(''pause'')`
+    and `.cycle(''resume'')`, respectively. We can easily add buttons that control
+    the slideshow, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, suppose that we want our Resume button to resume any paused Cycle slideshow
+    on the page, in case there were more than one. We want to find all the `<ul>`
+    elements on the page that are paused slideshows and resume them all. Cycle''s
+    custom `:paused` selector allows us to do this easily:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: With Cycle loaded, `$('ul:paused')` will create a jQuery object referencing
+    all of the paused slideshows on the page so that we can interact with them at
+    will. Selector extensions such as this that are provided by plugins can be freely
+    combined with any of the standard jQuery selectors. We can see that, with the
+    choice of appropriate plugins, jQuery can be molded to suit our needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Global function plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Many popular plugins provide new global functions within the `jQuery` namespace.
+    This pattern is common when plugins supply features that are not related to the
+    DOM elements on the page and thus are not good candidates for standard jQuery
+    methods. For example, the Cookie plugin ([https://github.com/carhartl/jquery-cookie](https://github.com/carhartl/jquery-cookie))
+    offers an interface for reading and writing cookie values on a page. This functionality
+    is provided through the `$.cookie()` function, which can get or set individual
+    cookies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s say, for example, that we want to remember when users press our slideshow''s
+    Pause button so that we can keep it paused if they leave the page and return to
+    it later. After loading the Cookie plugin, reading a cookie is as simple as using
+    the cookie''s name as the sole argument as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we look for the existence of a `cyclePaused` cookie; it doesn't matter
+    what the value is for our purpose. If the cookie exists, the cycle will pause.
+    When we insert this conditional pause immediately after the call to `.cycle()`,
+    the slideshow keeps the first image visible until the user at some point presses
+    the Resume button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, because we haven''t set the cookie yet, the slideshow is still cycling
+    through the images. Setting a cookie is as simple as getting its value; we just
+    supply a string for the second argument as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cookie is set to `y` when the Pause button is pressed, and it is deleted
+    by passing `null` when the Resume button is pressed. By default, the cookie remains
+    for the duration of the session (generally until the browser tab is closed). Also
+    by default, the cookie is associated with the page on which it was set. To change
+    these default settings, we can supply an options object for the function's third
+    argument. This is a pattern typical to jQuery plugins as well as jQuery core functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, to make the cookie available throughout the site and have it expire
+    after 7 days, we can call the function with `$.cookie(''cyclePaused'', ''y'',
+    { path: ''/'', expires: 7 })`. For information on these and other options available
+    when calling `$.cookie()`, we can refer to the documentation for the plugin.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery UI plugin library
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: While most plugins, such as Cycle and Cookie, focus on a single task, jQuery
+    UI tackles a wide variety of challenges. In fact, while the jQuery UI code may
+    often be packaged as a single file, it is actually a comprehensive suite of related
+    plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery UI team has created a number of core interaction components and full-fledged
+    widgets to help make the web experience more like that of a desktop application.
+    Interaction components include methods for dragging, dropping, sorting, selecting,
+    and resizing items. The current stable of widgets includes buttons, accordions,
+    datepickers, dialogs, and so on. Additionally, jQuery UI provides an extensive
+    set of advanced effects to supplement the core jQuery animations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The full UI library is too extensive to be adequately covered within this chapter;
+    indeed, there are entire books devoted to the subject. Fortunately, a major focus
+    of the project is consistency among its features, so exploring a couple of pieces
+    in detail will serve to get us started in using the rest of them as needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloads, documentation, and demos of all the jQuery UI modules are available
+    at
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://jqueryui.com/](http://jqueryui.com/). The download page offers a combined
+    download with all the features baked in, or a customizable download that can contain
+    just the functionality we need. The downloadable ZIP file also contains a stylesheet
+    and images, which we need to include when we use jQuery UI''s interaction components
+    and widgets.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The effects module of jQuery UI consists of a core and a set of independent
+    effect components. The core file provides animations for colors and classes, as
+    well as advanced easing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Color animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'With jQuery UI''s core effects component linked into the document, the `.animate()`
+    method is extended to accept additional style properties, such as `borderTopColor`,
+    `backgroundColor`, and `color`. For example, we can now gradually change an element
+    from white text on a black background to black text on a light gray background
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now when the mouse cursor enters the book slideshow region of the page, the
+    book title''s text color and background color both smoothly animate over a period
+    of one second (1000 ms):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_003-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Class animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The three CSS class methods that we have worked with in previous chapters--`.addClass()`,
+    `.removeClass()`, and `.toggleClass()`--are extended by jQuery UI to take an optional
+    second argument for the animation duration. When this duration is specified, the
+    page behaves as if we had called `.animate()` and directly specified all of the
+    style attributes that change as a result of applying the class to the element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By executing the code in *Listing 7.9*, we''ve caused a click on the page header
+    to add or remove the `highlighted` class. Since we specified a `slow` speed, though,
+    the resulting color, border, and margin changes animate into place rather than
+    immediately taking effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_07_04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Advanced easing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we instruct jQuery to perform an animation over a specified duration, it
+    does not do so at a constant rate. If, for example, we call `$('#my-div').slideUp(1000)`,
+    we know it will take a full second for the height of the element to reach zero;
+    however, at the beginning and end of that second the height will be changing slowly,
+    and in the middle it will be changing quickly. This rate alteration, called **easing**,
+    helps the animation to appear smooth and natural.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advanced easing functions vary this acceleration and deceleration curve to provide
+    distinctive results. For example, the `easeInExpo` function grows exponentially,
+    ending an animation at many times the speed at which it started. We can specify
+    a custom easing function in any of the core jQuery animation methods or jQuery
+    UI effect methods. This can be done by either adding an argument or adding an
+    option to a settings object, depending on the syntax being used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see this in action, we can provide `easeInExpo` as the easing style for
+    the `.toggleClass()` method we just introduced in *Listing 7.9* as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now whenever the header is clicked, the styles modified by toggling the class
+    attribute begin appearing very gradually, then accelerate and complete the transition
+    abruptly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: View easing functions in action
+  prefs: []
+  type: TYPE_NORMAL
+- en: Demonstrations of the full set of easing functions are available at
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://api.jqueryui.com/easings/](http://api.jqueryui.com/easings/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additional effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The individual effect files included in jQuery UI add various transitions, some
+    of which can be substantially more complex than the simple sliding and fading
+    animations offered by jQuery itself. These effects are invoked by calling the
+    `.effect()` method, which is added by jQuery UI. Effects that cause an element
+    to be hidden or shown can instead be invoked using `.show()` or `.hide()`, if
+    desired.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The effects supplied by jQuery UI can serve a number of purposes. Some, like
+    `transfer` and `size`, are useful when elements are to change shape and position.
+    Others, such as `explode` and `puff`, offer attractive hiding animations. Still
+    others, including `pulsate` and `shake`, call attention to an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: View effects in action
+  prefs: []
+  type: TYPE_NORMAL
+- en: All of the jQuery UI effects are showcased at [http://jqueryui.com/effect/#default](http://jqueryui.com/effect/#default).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `shake` behavior is particularly nice for reinforcing that an action is
+    not currently applicable. We could make use of this effect on our page when the
+    Resume button would have no effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our new code checks the length of `$('ul:paused')` to determine if there are
+    any paused slideshows to resume. If so, it calls Cycle's `resume` action as before;
+    otherwise, the `shake` effect is performed. We see here that `shake`, as with
+    the other effects, has options available to fine-tune its appearance. Here we
+    set the `distance` of the effect to a smaller number than the default, to make
+    the button rapidly shake back and forth when clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interaction components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The next major feature of the jQuery UI is its interaction components, which
+    are a set of behaviors that can be used to produce complex interactive applications.
+    One such component, for example, is **Resizable**, which can allow the user to
+    change the size of any element with natural dragging movements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Applying an interaction to an element is as simple as calling the method that
+    bears its name. For instance, we can make the book titles resizable with a call
+    to `.resizable()` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With jQuery UI''s CSS file referenced in the document, this code will add a
+    resizing handle to the bottom-right corner of the title box. Dragging this box
+    alters the region''s width and height as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_004-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As we might expect by now, these methods can be customized with a host of options.
+    If, say, we wish to constrain the resizing to only happen vertically, we can accomplish
+    that by specifying which drag handle should be added as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With a drag handle only on the south (bottom) side of the region, only the
+    height of the region can be altered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_005-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Other interaction components
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other jQuery UI interactions include Draggable, Droppable, and Sortable. Like
+    Resizable, they are highly configurable. We can view demos of all of them and
+    their configuration options at [http://jqueryui.com/](http://jqueryui.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In addition to these building-block interaction components, jQuery UI includes
+    a handful of robust user interface widgets that appear and function out-of-the-box
+    like the full-fledged elements we are accustomed to seeing in desktop applications.
+    Some of these are quite simple. The **Button** widget, for example, enhances buttons
+    and links on the page with attractive styling and rollover states.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Granting this appearance and behavior to all button elements on the page is
+    extremely simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the stylesheet for the jQuery UI Smoothness theme is referenced, the buttons
+    take on a glossy, beveled appearance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_07_07.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As with other UI widgets and interactions, Button accepts several options.
+    We may wish to provide appropriate icons for our two buttons, for example; the
+    Button widget comes with a large number of predefined icons that we can use. To
+    do so, we could separate our `.button()` call into two, and specify an icon for
+    each as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `primary` icons that we specified correspond to standard class names in
+    jQuery UI''s theme framework. By default, `primary` icons are displayed to the
+    left of the button text while `secondary` icons are displayed to the right:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_07_08.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'On the other hand, other widgets are much more sophisticated. The **Slider**
+    widget introduces a brand new form element, similar to an HTML5 range element
+    but cross-compatible with all popular browsers. This supports a greater degree
+    of customization, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A call to `.slider()` transforms a simple `<div>` element into a slider widget.
+    The widget can be controlled by dragging or by pressing the arrow keys, to aid
+    in accessibility:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_07_09.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: In *Listing 7.16* we've specified a minimum value of `0` for the slider, and
+    a maximum of the index of the last book in our slideshow. We can use this as a
+    manual control for the slideshow, by sending messages back and forth between the
+    slideshow and slider when their respective states change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To react to the slider''s value changing, we can bind a handler to a custom
+    event that is triggered by sliders. This event, `slide`, is not a native JavaScript
+    event, but acts like one in our jQuery code. However, observing these events is
+    so common that instead of calling `.on()` explicitly, we can just add our event
+    handler to the `.slider()` call itself, as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whenever the `slide` callback is invoked, its `ui` parameter is populated with
+    information about the widget, including its current value. By passing this value
+    along to the Cycle plugin, we can manipulate the current slide being shown.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also need to update the slider widget whenever the slideshow advances to
+    another slide. To communicate in this direction we can use Cycle''s `before` callback,
+    which is triggered before each slide transition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 7.18
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `before` callback, we call the `.slider()` method again. This time,
+    we call it with `value` as its first parameter to set the new slider value. In
+    jQuery UI parlance, we call `value` a *method* of slider, even though it is invoked
+    by calling the `.slider()` method, not by its own dedicated method name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other widgets
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other jQuery UI widgets include Datepicker, Dialog, Tabs, and Accordion. Each
+    widget has several associated options, events, and methods. For a full list, visit
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://jqueryui.com/](http://jqueryui.com/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery UI ThemeRoller
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'One of the most exciting features of the jQuery UI library is ThemeRoller,
+    a web-based interactive theme engine for the UI widgets. ThemeRoller makes creating
+    highly customized, professional-looking elements quick and easy. The buttons and
+    slider that we just created have the default theme applied to them; this theme
+    will be output from *ThemeRoller* if no custom settings are supplied:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_07_10.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Generating a completely different set of styles is a simple matter of visiting
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://jqueryui.com/themeroller/](http://jqueryui.com/themeroller/), modifying
+    the various options as desired, and pressing the Download Theme button. A `.zip`
+    file of stylesheets and images can then be unpacked into your site directory.
+    For example, by choosing a few different colors and textures, we can within minutes
+    create a new, coordinated look for our buttons, icons, and slider, as shown in
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_07_11.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The jQuery Mobile plugin library
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have seen how jQuery UI can assist us in assembling the user interface features
+    needed for even a complex web application. The challenges it overcomes are varied
+    and complex. A different set of hurdles exists, however, when preparing our pages
+    for elegant presentation and interaction on mobile devices. To create a website
+    or application for modern smart phones and tablets, we can turn to the jQuery
+    Mobile project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Like jQuery UI, jQuery Mobile consists of a suite of related components that
+    can be used *a**la carte* but which work together seamlessly. The framework provides
+    an Ajax-driven navigation system, mobile-optimized interactive elements, and advanced
+    touch event handlers. Again, as with jQuery UI, exploring all the features of
+    jQuery Mobile is a daunting task, so instead we will provide some simple examples
+    and refer to the official documentation for more details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloads, documentation, and demos for jQuery Mobile are available at
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://jquerymobile.com/](http://jquerymobile.com/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our jQuery Mobile example will use Ajax technology, so web server software will
+    be required in order to try these examples. More information is available in [Chapter
+    6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml), *Sending Data with Ajax*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML5 custom data attributes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The code examples we've seen so far in this chapter have all used JavaScript
+    APIs exposed by plugins in order to invoke the plugin functionality. We've seen
+    jQuery object methods, global functions, and custom selectors as some ways that
+    plugins offer their services to our scripts. The jQuery Mobile library has these
+    entry points as well, but the most common way of interacting with it is instead
+    via HTML5 data attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The HTML5 specification allows us to insert any attribute we want into an element,
+    so long as the attribute is prefixed by `data-`. Such attributes are completely
+    ignored when rendering the page, but are available to us in our jQuery scripts.
+    When we include jQuery Mobile on a page, the script scans the page for some `data-*`
+    attributes, and adds mobile-friendly features to the corresponding elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery Mobile library looks for a few specific custom data attributes. We
+    will examine more general ways of using this feature in our own scripts in [Chapter
+    12](0446c068-e7fd-426a-ab8b-0157b1387e1f.xhtml), *Advanced DOM Manipulation*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because of this design choice, we will be able to demonstrate some powerful
+    features of jQuery Mobile here without writing any JavaScript code ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mobile navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'One of the most prominent features of jQuery Mobile is its ability to simply
+    transform the behavior of links on a page into Ajax-powered navigation. This transformation
+    adds simple animation to the process, while preserving standard browser history
+    navigation. To see this in action, we''ll start with a document that presents
+    links to information about several books (the same content we used for building
+    a slideshow earlier) as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the downloadable code package for this chapter, the finished HTML example
+    page can be found in the file called `mobile.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So far we have not introduced jQuery Mobile at all, and the page is rendered
+    in the default browser style, as we would expect. This is shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_006-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Our next step is to change the `<head>` section of the document so that it
+    references jQuery Mobile and its stylesheet as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we have also introduced a `<meta>` element defining the viewport of
+    the page. This declaration tells mobile browsers to scale the content of the document
+    in such a way that it completely fills the width of the device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have to include the jquery-migrate plugin on the page, because without it,
+    the latest stable version of jQuery doesn't work with the latest stable version
+    of jQuery Mobile. Figure that one out. In any case, once the two officially work
+    together, you can simply remove the jquery-migrate plugin from the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The jQuery Mobile styles are now applied to our document, displaying a larger
+    sans-serif font and updating colors and spacing, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_007-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To properly handle navigation, jQuery Mobile needs to understand the structure
+    of our page. We provide this information by using the `data-role` attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now when the page loads, jQuery Mobile notices that we have a page header,
+    and renders a standard-looking mobile header bar across the top of the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_008-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When the text is too long for the header bar, jQuery Mobile truncates it and
+    adds an ellipsis at the end. In this case, we can rotate the mobile device to
+    its landscape orientation to see the full title:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_009-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'More importantly, this is all that is required in order to produce Ajax navigation.
+    On the pages linked to from this list, we use similar markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When the link to this page is clicked on, jQuery Mobile loads the page with
+    an Ajax call, grabs the portion of the document marked with `data-role="page"`,
+    and displays this content using a fading transition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_010-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Delivering multiple pages in one document
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In addition to offering Ajax functionality for loading other documents, jQuery
+    Mobile provides the tools to deliver the same user experience even if all the
+    content is contained within a single document. To implement this, we simply link
+    the anchors within the page using standard `#` notation, and mark those sections
+    of the page with `data-role="page"` just as if they were in separate documents,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can freely choose between these two techniques at our convenience. Placing
+    content in separate documents allows us to defer the loading of information until
+    it is needed, at the cost of some higher overhead due to multiple page requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interactive elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The bulk of the features offered by jQuery Mobile are specific interactive elements
+    for use on a page. These elements enhance basic web page functionality, making
+    page components more user-friendly for a touch interface. Among these elements
+    are accordion--style collapsible sections, toggle switches, sliding panels, and
+    responsive tables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is considerable overlap between the user interface elements offered by
+    jQuery UI and jQuery Mobile. It is not recommended to use the two libraries together
+    on the same page, but because the most important widgets are offered by both,
+    there is rarely a need to do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: List views
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Due to their small, vertical screen layouts, smart phone applications are often
+    heavily list-driven. We can use jQuery Mobile to easily enhance the lists on our
+    pages to behave much more like these common native app elements. Once again, we
+    simply introduce HTML5 custom data attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Adding `data-role="listview"` tells jQuery Mobile to make the links within
+    this list large and easy to activate with a finger in a touch interface, while
+    `data-inset="true"` gives the list a nice border to separate it from surrounding
+    content. The result is a familiar, native-looking control, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_011-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, we have large touch targets, but we can go a step further. List views
+    like this in mobile apps are often paired with search fields to narrow down the
+    items in the list. We can add such a field by introducing the `data-filter` attribute
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The result is a rounded input box with an appropriate icon, placed above the
+    list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_012-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Not only does this search field look native, but it behaves correctly too,
+    even though we have added no code of our own:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_013-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Toolbar buttons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Another user interface element enhanced by jQuery Mobile is the simple button.
+    Just as jQuery UI allows us to standardize button appearances, jQuery Mobile increases
+    the size and modifies the appearance of buttons to optimize them for touch input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In some cases, jQuery Mobile even creates appropriate buttons for us where
+    before there were none. For instance, there are often buttons in the toolbar of
+    a mobile app. One standard button is the Back button in the upper-left corner
+    of the screen, allowing the user to navigate up one level. If we add a `data-add-back-btn`
+    attribute to our page `<div>` elements, we can have this feature without any scripting
+    work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once this attribute has been added, a standard Back button is added to the
+    toolbar of each page we navigate to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_07_014-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: A complete listing of HTML5 data attributes for initializing and configuring
+    jQuery Mobile widgets can be found at [http://jquerymobile.com/](http://jquerymobile.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advanced features
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As our mobile pages require more customized design elements and more complex
+    interactions, jQuery Mobile provides robust tools to help us create them. All
+    of the features are documented on the jQuery Mobile site ([http://jquerymobile.com/](http://jquerymobile.com/)).
+    While these features are both too advanced and too numerous to discuss here in
+    detail, a few deserve a brief mention:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Mobile-friendly events**: When jQuery Mobile is referenced on a page, our
+    jQuery code has access to a number of special events including `tap`, `taphold`,
+    and `swipe`. Handlers for these events can be bound with the same `.on()` method
+    as for any other event. With `taphold` and `swipe` in particular, their default
+    configurations, which include touch duration, can be modified by accessing properties
+    of the `$.event.special.taphold` and `$.event.special.swipe` objects. In addition
+    to touch-based events, jQuery Mobile provides special events that react to scrolling,
+    orientation change, and various stages of its page navigation, as well as a set
+    of virtualized mouse events that react to both mouse and touch.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Theming**: As with jQuery UI, jQuery Mobile offers a ThemeRoller'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ([http://jquerymobile.com/themeroller/](http://jquerymobile.com/themeroller/))
+    for customizing the look and feel of widgets.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**PhoneGap integration**: Sites built with jQuery Mobile are easy to convert
+    to native mobile applications using PhoneGap (Cordova), with access to mobile
+    device APIs (such as camera, accelerometer, and geolocation) and app stores. The
+    `$.support.cors` and `$.mobile.allowCrossDomainPages` properties can even allow
+    access to pages not contained within the application, such as those on a remote
+    server.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter we have examined ways in which we can incorporate third-party
+    plugins into our web pages. We've looked closely at the Cycle plugin, jQuery UI,
+    and jQuery Mobile, and in the process have learned the patterns that we will encounter
+    time and again in other plugins. In the next chapter, we'll take advantage of
+    jQuery's plugin architecture to develop a few different types of plugins of our
+    own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Increase the cycle transition duration to half a second, and change the animation
+    such that each slide fades out before the next one fades in. Refer to the Cycle
+    documentation to find the appropriate option to enable this.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Set the `cyclePaused` cookie to persist for 30 days.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Constrain the title box to resize only in ten pixel increments.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Make the slider animate smoothly from one position to the next as the slideshow
+    advances.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Instead of letting the slideshow loop forever, cause it to stop after the last
+    slide is shown. Disable the buttons and slider when this happens.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a new jQuery UI theme that has a light blue widget background and dark
+    blue text and apply the theme to our sample document.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Modify the HTML in `mobile.html` so that the list view is divided up by the
+    first letters of the book titles. See the jQuery Mobile documentation for `data-role="list-divider"`
+    for details.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

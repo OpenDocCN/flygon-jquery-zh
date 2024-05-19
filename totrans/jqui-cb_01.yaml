@@ -1,0 +1,573 @@
+- en: Chapter 1. Creating Accordions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Section navigation using the Tab key
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dynamically changing the height style
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resizable content sections
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling spacing with themes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sorting accordion sections
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dragging-and-dropping between accordions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we will explore the various ways in which we can extend the
+    **accordion** widget to accommodate a number of scenarios. The accordion widget
+    offers a lot of out-of-the-box functionality. For example, without any configuration,
+    we get a themed container widget that groups contents into sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll focus on use cases that shed light on the inner workings of the accordion
+    widget. Keyboard events are one way to navigate the page, and we can enhance the
+    accordion's support for these events. Some magic happens behind the scene to come
+    up with each section's height, when expanded. We'll see how we can work with these
+    configurations, especially when the section height changes on the fly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also on the topic of height, we can let the user control the height of individual
+    sections, or, from a theme perspective, we can control the space between the accordion
+    components. Finally, we'll look at some of the more advanced accordion usage where
+    we give the user the freedom to sort their accordion sections and to drag sections
+    from one accordion to another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Section navigation using the Tab key
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In most desktop environments, the *Tab* key is a secret weapon in navigation—one
+    tool that many users are accustomed to. Likewise, we can utilize the *Tab* key
+    in HTML5 applications using the `tabindex` property. This tells the browser the
+    order in which to focus elements, each time the key is pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfortunately, this isn't as straightforward as it looks with accordion widgets.
+    We can't specify a `tabindex` value in each section header and expect the *Tab*
+    key events to work as expected. Instead, the default widget implementation provides
+    a different kind of key navigation—the *up* and *down* arrow keys. Ideally, it
+    would be useful to give users the ability to navigate through the accordion sections
+    using the *Tab* key that they're familiar with, while preserving the default key
+    navigation provided by the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To get started, we'll want a basic accordion; ideally, something simple that
+    has basic content within each section, so that we can visually see how the *Tab*
+    key behavior works before we implement custom events, and afterward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a guide, here is my basic accordion markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And, here is the code used to instantiate the accordion widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account at [http://www.packtpub.com](http://www.packtpub.com). If you
+    purchased this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We now have a basic collapsible accordion widget that we can look at in the
+    browser. The reason we're adding the `collapsible` option here is so that we can
+    experiment with the key navigation—we get a better view of which section is in
+    focus when all are collapsed. You can see how the *up* and *down* arrow keys allow
+    the user to traverse through the accordion sections while the *Tab* key has no
+    effect. Let's change that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're going to extend the accordion widget to include an event handler for `keypress`
+    events. The default accordion implementation has `keypress` events for dealing
+    with the *up*, *down*, *left*, *right*, and *Enter* keys. We don't need to change
+    that. Instead, we add our own handler that understands what to do when the *Tab*
+    key and *Shift* + *Tab* keys are pressed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Look at the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're creating a new accordion widget here by extending the default accordion
+    widget. The advantage to this approach of extending the accordion widget is that
+    we're not tinkering with instances of the widget; all accordion instances will
+    acquire this new behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_create()` method is replaced with our new implementation of it. The first
+    thing we do in this replacement method is call the original `_create()` method.
+    We don't want to prevent the default setup actions of the accordion widget from
+    taking place. So, using `_super()` we're able to do that. The next thing we do
+    is bind our new `tabkeydown()` event handler to the `keydown` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `tabkeydown()` handler is a simplified version of the `keydown` event handler
+    provided in the original accordion implementation. If the *Alt* or the *Ctrl*
+    key was pressed in combination with another key, we ignore the event. If the key
+    press was anything other than a *Tab*, we ignore the event too, since we're only
+    interested in altering the *Tab* key behavior when one of the accordion headers
+    is in focus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The guts of the handler determine what should happen when the *Tab* key is pressed.
+    In which direction should we move the accordion header focus? When do we ignore
+    the event and let the default browser behavior take over? The trick is, figuring
+    out our current index position. If we're on the first header and the user presses
+    *Shift* + *Tab*, meaning they want to traverse backward, then we don't do anything.
+    Likewise, if we're on the last header and the user presses *Tab*, we pass control
+    back to the browser so as not to interfere with the expected functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dynamically changing the height style
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Accordions are containers that are used to organize and display other UI elements.
+    Thinking about each accordion section as static content is a mistake. The contents
+    of accordion sections do change. For example, a user-triggered event might lead
+    to the creation of a new element within the section. In all likelihood, the components
+    inside a section will change size dynamically, and that's the part we need to
+    be aware of. Why does it matter that accordion contents change size? Since this
+    is an accordion, we'll likely have several sections (or at least a few). Does
+    it make sense to have all of them with a uniform height? It does, until the height
+    of one section grows too large. Then the section heights are no longer uniform.
+    When this happens, we need to take a look at the accordion section height when
+    they change, and potentially adjust some of the height settings on the fly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s use the following markup to create an accordion widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We''ll create the accordion using all the default option values as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, this is where we'll notice a slight inconsistency with regards to height.
+    Here is what the first section looks like. It has minimal content, but uses more
+    space than required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/2186OS_01_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'This is due to the default value of the `heightStyle` option, which says that
+    the height of every section in the accordion will be equal to that of the tallest
+    section. Thus, we have wasted space in the first section. Let''s look at the fourth
+    section in the following screenshot to see why this happens:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Getting ready](img/2186OS_01_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can see that the first section is as tall as the fourth section. This is
+    due to the `auto` value of `heightStyle`. In this particular example, the difference
+    isn't all that great. That is, the first section doesn't waste too much empty
+    space. Therefore, it would probably make sense to keep this accordion configuration
+    where each section has the same height.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The challenge arises when we're dealing with an application that is dynamically
+    feeding content into a particular accordion section, and at some point where a
+    certain threshold is reached, it no longer makes sense to keep the auto `heightStyle`
+    configuration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Setting the `heightStyle` to `auto` solves the problem for us, as each section
+    will only use the height necessary to display the content. However, it would be
+    nice if we were able to change this property of the accordion when the height
+    of the content itself changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: What we've done here is extend the accordion widget's `refresh()` method to
+    allow the `heightStyle` option to be changed to content on the fly. The default
+    implementation doesn't allow this. To illustrate this idea, consider the code
+    above where we're creating the accordion widget and adding 20 new items to the
+    last content section. We're using the default section height here, that is, `auto`.
+    So, had we not extended the `refresh()` method to allow this behavior after populating
+    the fourth section, we would have seen a scrollbar here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resizable content sections
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Resizable content sections allow the user to adjust the height by dragging the
+    bottom of the section. This is a nice alternative having to rely on the `heightStyle`
+    property. Thus, if each section of the accordion can be adjusted by the user,
+    they have the freedom to tailor the accordion layout. For example, if the accordion
+    has a tall section, with wasted space at the bottom, the user might choose to
+    shrink the height of that section to gain a better view of the accordion, and
+    other components of the UI for that matter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll extend the default accordion's `_create()` method by making each content's
+    `div` within the accordion resizable using the resizable interaction widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: You'll see something similar to the following. Notice that the second section
+    has been dragged down and has the resize mouse cursor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_01_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our new version of the `_create()` method works by first invoking the default
+    accordion's `_create()` method. Once that completes, we find all content sections
+    of the accordion and apply the `resizable()` widget. You'll notice, too, that
+    we've told the resizable widget to only show a `south` handle. This means that
+    the user will only be able to drag any given content section of the accordion
+    up or down, using the cursor at the bottom of the section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This specialization of an accordion also provides a new implementation of the
+    `_delete()` method. Once again, we're calling the original accordion's `_delete()`,
+    after which we're cleaning up the new resizable components we added. This includes
+    removing the `overflow` CSS property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can extend our resizable behavior within the accordion by providing a means
+    to turn it off. We'll add a simple `resizable` option to the accordion that checks
+    whether or not to make the accordion sections resizable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Controlling spacing with themes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The space between accordion sections is controlled by the CSS theme framework.
+    In particular, the visual structure for the accordion is defined by a set of CSS
+    rules that can be modified to control the spacing between accordion sections.
+    We could override the accordion theme CSS to adjust for more or less spacing between
+    sections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''re going to supply an additional CSS module to our UI—one that overrides
+    the accordion structure supplied in the theme we happen to be using. There''s
+    no need to fret, however, our change is a simple one. We''re going to update the
+    `margin-top` property. In a new CSS file called `theme.accordion.css`, let''s
+    add the following style rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now that we have the CSS, we need to include it in our HTML header. It should
+    look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_01_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're copying the same CSS selector as is found in any jQuery UI theme. The
+    particular property we've just changed alters the space between the accordion
+    sections. Since we're overriding the default theme value, it's important to include
+    our CSS files after the default theme file. This allows us to override the default
+    theme instead of the default theme overriding our modifications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting accordion sections
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Using the sortable interaction widget, we're able to transform a static accordion
+    section layout into something specified by the user. That is, sortable interaction
+    widgets take a container element, and allow all child elements to be sorted in
+    place. The user does this by dragging the element to the desired order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll look at how we can extend the accordion capabilities so that the sortable
+    section functionality is encapsulated, and can be switched on by a configuration
+    option at the time of creation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We have to perform several actions when the accordion widget is created, and
+    when the accordion is destroyed. Here is how we extend the widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: With our new accordion widget marked as `sortable`, users now have the ability
+    to drag header sections around within the accordion. For instance, if the first
+    accordion section belongs to the bottom, the user just drags it to the bottom.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_01_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With the help of the `sortable()` interaction widget, we're able to extend the
+    default accordion widget implementation to include sorting capabilities. As with
+    any jQuery UI widget enhancements, we don't actually need to extend the widget
+    in question; the new capabilities can always be tacked-on after the widget has
+    been instantiated. However, as you'll see throughout this book, the best practice
+    is to encapsulate customizations and present them to the widget client as a set
+    of options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we've extended the set of available accordion options to include a `sortable`
+    option. This is how we turn our customization on or off (it is a boolean value).
+    The customized version of `_create()` that we've implemented will call the default
+    version of the accordion's `_create()` method. Afterward, we'll see if the sortable
+    behavior is turned off (in which case we have nothing to do, and so return). Likewise,
+    our custom `_delete()` function checks if the sortable behavior has been turned
+    on after calling the original delete functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The tricky part of implementing sortable accordion sections is the fact that
+    we have to make a slight DOM manipulation inside the accordion element. This is
+    necessary in order to use the sortable interaction widget. Accordion widget markup
+    is structured such that all sections are adjacent to one another. That is, we
+    have an `h3` element, followed by a `div` element. This is one section, and is
+    followed by another `h3` and another `div`, and so on. It is a flat structure.
+    There are two ways to deal with this: alter the markup required to create the
+    widget, or inject some slight DOM modifications, and the widget client is none-the-wiser.
+    We''re going the latter route and not requiring the client to change their code.
+    This is another best practice, to keep the existing widget client code functional
+    when providing customizations.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our customized version of `_create()`, we're iterating over each accordion
+    header and wrapping the header element and the corresponding content element in
+    a `div` element so as to bundle them together. This way, the sortable widget knows
+    how to move this bundle around. Had we not done this, the user would only be able
+    to move the header section, thus severing it from its content. Finally, we're
+    creating the sortable widget, restricting movement to the *y*-axis and setting
+    the movable handle as the accordion header.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our customized `_destroy()` function undoes our modifications before calling
+    the original `_destroy()` method. This entails unwrapping our new `div` element
+    and destroying the sortable widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dragging-and-dropping between accordions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Some applications require a more fluid layout than others, not just from a screen
+    resolution perspective, but from a functional one too. The accordion widget is
+    a static grouping component that is used to organize smaller components into sections.
+    We can hide all the irrelevant material simply by expanding the section we're
+    interested in. As we have seen in the *Sorting accordion sections* recipe, we
+    can provide an accordion whose structure can be manipulated by the user. Indeed,
+    this has become the expectation of the users en masse—UI configuration by drag-and-drop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The sortable accordion focuses on a single accordion. In the spirit of giving
+    users freedom within the confines of the application of course, why don't we see
+    if we can support moving an accordion section to a new accordion?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this experiment, we''ll need two basic accordions. The markup should assume
+    a form along the lines of the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'With that in place, let''s turn this markup into two accordions. We''ll first
+    extend the accordion widget with some fancy drag-and-drop behavior. The intent
+    is to allow the user to drag accordion sections from the first widget to the second.
+    Here is how it''s done:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: We now have two basic-looking accordion widgets. However, if the user is so
+    inclined, they can drag a section of the first accordion into the second.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_01_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This might seem like a lot of code at the first glance, but for relatively little
+    (approximately 130 lines), we're able to drag accordion sections out of one accordion
+    and into another. Let's break this down further.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re adding two accordion options with this widget extension: `target` and
+    `accept`. Target allows us to specify the destination of sections of this accordion.
+    In the example, we used the second accordion as the target for the first accordion,
+    meaning that we can drag from `target-accordion` and drop into `accept-accordion`.
+    But, in order to make that happen, the second accordion needs to be told where
+    to accept sections from; in this case, it is `target-accordion`. We''re essentially
+    using these two options to establish a drag-and-drop contract between the two
+    widgets.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This example uses two interaction widgets: draggable and sortable. `target-accordion`
+    uses draggable. If the `target` option was specified, the `_createTarget()` method
+    gets called. The `_createTarget()` method goes through the accordion sections,
+    wraps them in a `div` element, and creates a `draggable()` widget. This is how
+    we''re able to drag sections out of the first accordion.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `accept` option was specified, the `_createAccept()` method gets called.
+    This follows the same pattern of wrapping each accordion header with its content
+    in a `div` element. Except here, we're making the entire accordion widget `sortable()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This may seem counterintuitive. Why would we make the second accordion that
+    wants to accept new sections into sortable? Would it not make more sense to use
+    droppable? We could go down that route, but it would involve a lot of work where
+    we're utilizing the `connectToSortable` option instead. This is a `draggable`
+    option specified in `_createTarget()` where we say that we would like to drop
+    these draggable items into a sortable widget. In this example, sortable is the
+    second accordion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This solves the problem of deciding on where exactly to drop the accordion section
+    relative to other sections (the sortable widget knows how to handle that). However,
+    an interesting constraint with this approach is that we must clone the dragged
+    item. That is, the section that ultimately gets dropped into the new accordion
+    is just a clone, not the original. So we must deal with that at drop time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As part of the sortable options defined in `_createAccept()`, we provide a `stop`
+    callback. This callback function is fired when we've dropped a new accordion section
+    into the accordion. Actually, this gets fired for any sorting activity, including
+    new sections being dropped. So, we must take care to check what we're actually
+    working with. We do so by checking whether the item has a `draggable` class attached
+    to it, and if so, we can assume we're dealing with a new accordion section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep in mind that this newly dropped accordion section is simply a clone of
+    the original, so some interesting things need to happen before we can start inserting
+    it into the accordion. First, this new section has the same ID as the original.
+    Eventually, we're going to remove the original from the first accordion, so we
+    store that ID for later use. Once we have it, we can get rid of the dropped section's
+    ID so as to avoid duplicates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With that taken care of, we have the new DOM element in place, but the accordion
+    widget knows nothing about it. This is where we reload the headers, including
+    the newly-dropped header. The new accordion section still isn't functional because
+    it doesn't handle events properly, so expanding the new section will not work,
+    for example. To avoid strange behavior, we turn off all event handlers and rebind
+    them. This puts the new accordion in its new context while the events are turned
+    on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We now have a new section in `accept-accordion`. But we can't forget about the
+    original section. It still needs to be removed. Recall that we stored the original
+    section's DOM ID, and we can now safely remove that section and refresh the accordion
+    to adjust the height.
+  prefs: []
+  type: TYPE_NORMAL

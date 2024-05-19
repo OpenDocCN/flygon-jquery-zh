@@ -1,0 +1,1484 @@
+- en: Chapter 13. Enhancing Performance in jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the book so far, we''ve covered an array of different topics: from customizing
+    jQuery to the use of animation, and even a little on the use of jQuery within
+    Node-WebKit.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there is one key topic we have not yet covered. While working with
+    jQuery can be very fulfilling, we must be mindful of optimizing our code where
+    practical, to ensure a positive user experience. Many developers might simply
+    eyeball the code, but this is time-consuming. In this chapter, we will look at
+    ways of optimizing your jQuery code, introduce the use of tools that can supplement
+    existing workflow, and help give real feedback on your changes. We will cover
+    a number of topics in this chapter, which will include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding why performance is important
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Monitoring performance when adding elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Monitoring the speed of jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Automating performance monitoring
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Node to lint our code automatically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing best practices for enhancing performance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Considering the case of using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ready to get started?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Throughout this chapter we will concentrate on using jQuery – you will find
+    that many of the tips given can also be applied to pure JavaScript using it more
+    in your code (as we will discuss later in the chapter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding why performance is critical
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Picture the scene if you will – your team has created a killer web-based application
+    using the latest techniques, which does everything under the sun, and you're ready
+    to sit back and enjoy the laurels of your success. Except for one small but rather
+    critical thing…
+  prefs: []
+  type: TYPE_NORMAL
+- en: No one is buying. Not one copy of your application is being sold – the reason
+    why? Simple – it's really slow and hasn't been properly optimized. No amount of
+    selling will get over the fact that in this age of mobile devices, a slow application
+    will turn off the users.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Should we be concerned with the performance of our application? Absolutely!
+    There are good reasons for being critical of our application''s performance; let''s
+    take a look at a few:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The advent of mobile devices with the associated costs of surfing means that
+    our content must be optimized to ensure the site displays quickly, before the
+    connection times out
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It's all too easy to focus on development instead of fixing cross-browser issues
+    – each quirk in itself may not be much, but the cumulative effect will soon add
+    up
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once you start writing considered code, then it will soon become second nature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Of course, it has to be said that there is a risk of **premature optimization**,
+    where we spend lots of time optimizing code for little gain, and may even cause
+    ourselves problems later if we remove code that is subsequently needed!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay – so assuming there is scope to optimize our code, what should we do? Well,
+    there are a few tricks we can use; while we may have the desire to optimize our
+    code ad nausea, it is not always worth the effort. The smarter approach is to
+    always consider the bigger picture, to make sure that the benefits of optimizing
+    scripts are not lost through badly written style sheets or large pictures, for
+    example!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a moment to consider some of the options available to us – they
+    include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building custom versions of jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Minifying our scripts
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fine-tuning the use of selectors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Being prudent with event bubbling
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Continuous use of appropriate tools to lint our code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Minimizing manipulation of the DOM
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are some of the options available to us. Our first stop though is to benchmark
+    our code, to see how it performs prior to making any changes. The first step in
+    this is to run a performance check on our scripts. Let's take a moment to see
+    what is involved, and how this works in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Monitoring the speed of jQuery using Firebug
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can wax lyrical about how critical performance is, but nothing beats seeing
+    it in action and working out how we can improve our code to gain that extra edge.
+    Manually working out where to make the changes is time-consuming and inefficient.
+    Instead, we can avail ourselves of a number of tools to help get a clearer indication
+    of where the issues lie in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are dozens of tools available to help with benchmarking performance of
+    our pages, which include interactions with jQuery or jQuery-based scripts and
+    plugins. Over the next few pages, we're going to look at a selection of different
+    methods. Let's start with a simple visual check, using Firebug, from [http://www.getfirebug.com](http://www.getfirebug.com).
+    Once installed, click on **Net** | **JavaScript**, then load your page to get
+    statistics on each plugin or script that is loaded on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following image, we can see the results from the Packt Publishing website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Monitoring the speed of jQuery using Firebug](img/image00471.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In comparison, following is the image showing the results from [http://www.jquery.com](http://www.jquery.com):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Monitoring the speed of jQuery using Firebug](img/image00472.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Before loading the page, clear your cache to avoid skewing the results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Viewing the statistics returned from Firebug gives us a good start, but to
+    get a better indication as to where the bottlenecks are, we need to profile our
+    code. Thankfully, it''s a cinch to do with console. Let''s take a look at how
+    we can use console to optimize code, using a copy of the `tooltipv2.html` demo
+    we created in [Chapter 11](part0098.xhtml#aid-2TEN41 "Chapter 11. Authoring Advanced
+    Plugins"), *Authoring Advanced Plugins*. For the purpose of this little demo,
+    we will run it from a local web server, such as WAMP:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the code download, extract a copy of the tooltip demo folder and store
+    it in the `www` folder of WAMP.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In `tooltipv2.js`, alter the first few lines as shown next – this adds in the
+    call to profile our code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We need to tell the browser when to stop profiling, so go ahead and alter the
+    code as shown next:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In the browser, load `tooltipv2.html`, and then open Firebug. If all is well,
+    we should see something akin to the following screenshot, where we see the first
+    few lines of the profile report:![Monitoring the speed of jQuery using Firebug](img/image00473.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Profiling our site using a tool such as Firebug can be very revealing. To give
+    a flavor of how, imagine if we had added more selectors; some of the figures shown
+    would have been much higher then.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to focus just on time taken, an alternative to using `console .profile()`
+    is to use `console.time()` and `console.timeEnd()` instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are many more tools available for profiling our sites. Not all are specific
+    to jQuery, but they can still be used to gain insight into how our scripts are
+    performing. Following are a few examples you can try, in addition to the classic
+    sites such as [JSPerf.com](http://JSPerf.com) ([http://www.jsperf.com](http://www.jsperf.com)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JSLitmus, from [http://code.google.com/p/jslitmus/](http://code.google.com/p/jslitmus/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: BenchmarkJS, available at [http://benchmarkjs.com/](http://benchmarkjs.com/),
+    or from the NPM site at [https://www.npmjs.com/package/benchmark](https://www.npmjs.com/package/benchmark)
+    – an example of how to use it is available at [https://gist.github.com/brianjlandau/245674](https://gist.github.com/brianjlandau/245674)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Online services such as SpeedCurve ([http://www.speedcurve.com](http://www.speedcurve.com)),
+    or Calibreapp ([https://calibreapp.com/](https://calibreapp.com/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: FireQuery Reloaded, from [https://github.com/firebug/firequery/wiki](https://github.com/firebug/firequery/wiki)
+    is coming; note that this is still in beta at the time of writing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DeviceTiming, from [https://github.com/etsy/DeviceTiming](https://github.com/etsy/DeviceTiming)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are definitely plenty of options available – not all will suit everyone's
+    needs; the key though is to understand what you are testing, and learn how to
+    interpret it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dave Methin, part of the core team for jQuery, wrote a brilliant article that
+    outlines the dangers of blindly trying to optimize code, without properly interpreting
+    the results from using something such as JSPerf. The developer Fionn Kelleher
+    puts it perfectly when he states that your code should be a work of art – there
+    is no need to optimize everything for the sake of doing so; it is far more important
+    that code should be readable and work well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay – time to move on. We've covered the basics of monitoring, but at the expense
+    of requiring manual effort. A much better option is to automate it. We can use
+    a number of tools to do this with our old friend Grunt, so let's dig in and see
+    what is involved in automating our monitoring.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Automating performance monitoring
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Hands up – as a developer, how many of you have used YSlow? Good – a fair few;
+    have you thought about automating those checks though?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'That''s right! We can always perform manual checks to get a feel for where
+    performance bottlenecks are showing; however, the smarter way is to automate those
+    checks using our good friend, Grunt. A module, created by the developer Andy Shora,
+    is available for this purpose; we can get the source code for it from [https://github.com/andyshora/grunt-yslow](https://github.com/andyshora/grunt-yslow).
+    Let''s take a moment to get it up and running, to see how it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's kick off by creating a project folder for our files. For the purpose of
+    this exercise, I will assume it is called `chapter13` (yes, I know – highly original);
+    change the name if yours is different.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For this exercise, we need to use NodeJS. I will assume you already have it
+    installed from previous exercises; if not, then head over to [http://www.nodejs.org](http://www.nodejs.org)
+    to download and install the version appropriate for your platform.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, add the following to a blank file, saving it as `gruntfile.js` within
+    our project folder – you will notice that our test will be for jQuery''s website
+    (as highlighted):'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In a NodeJS command prompt window, enter the following command to install the
+    `grunt-yslow` package:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Node will run through the installation. When completed, enter the following
+    command at the command prompt to perform the test:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, Node will display something akin to the following screenshot,
+    where it shows a fail:![Automating performance monitoring](img/image00474.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The results shown in the command prompt window are a little basic. To get a
+    better feel for where the issues are, we can install the YSlow plugin. Let''s
+    do that now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: At the time of writing, there were ongoing issues with running YSlow in Firefox;
+    please use Chrome to view the results instead. If you are a Mac user, then you
+    can try the YSlow plugin from [http://yslow.org/safari/](http://yslow.org/safari/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browse to [http://www.yslow.org](http://www.yslow.org), then click **Chrome**
+    under **Availability**, and then **Add** to add the plugin to Chrome:![Automating
+    performance monitoring](img/image00475.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once installed, we can run the report within YSlow. If we do it for the main
+    jQuery site, then we will end up with results similar to those seen in the following
+    screenshot:![Automating performance monitoring](img/image00476.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we take a look through the various grades given, we can clearly see that
+    there is room for improvement. Focusing on the scripts, a check will show that
+    at least five scripts should be moved to the bottom of the page, as the browser
+    cannot start any other downloads until these have been completed.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To see what impact this would have, take a look at the same page within Firebug.
+    Click **Net** | **JavaScript**, then refresh the page to view all the scripts
+    being called from the page. Hover over the jQuery link – this is proof that the
+    bigger the file, the longer it takes to load:![Automating performance monitoring](img/image00477.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In the previous screenshot, we can clearly see a number of scripts, all of which
+    show long times. In this instance, minifying those scripts that are not already
+    compressed will improve these times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can always spend time trying to optimize jQuery, but this should be taken
+    in the context of the bigger picture; we will clearly lose any benefit of optimizing
+    jQuery, if we're still loading large scripts elsewhere in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's worth noting that the threshold has been set higher than normal within
+    `gruntfile.js.` In this age of mobile devices, it is important to ensure that
+    the page content can be downloaded quickly; in both examples, we will see that
+    there is definitely room for improvement!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at a second example, to see how this compares. In this case,
+    we will use the Packt Publishing website, at [http://www.packtpub.com](http://www.packtpub.com):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s go back to the `gruntfile.js` file that we created at the beginning
+    of this section. We need to modify the following line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Save the file, then switch to NodeJS command prompt and enter the following
+    command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, Node will display the results of our assessment of `http://www.packtpub.com`,
+    where we see another failure, as shown in the following screenshot:![Automating
+    performance monitoring](img/image00478.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If we take a look using YSlow, as we did before, then we can see a number of
+    suggestions made, which will improve the performance. The key one for us is to
+    condense six scripts into a smaller number of files (and minify them). Refer to
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Automating performance monitoring](img/image00479.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In the previous screenshot, we see similar issues noted by YSlow, although
+    the numbers are not quite as high as on the jQuery website. The real issues show
+    up when we check the timings for loading the scripts called by the main page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Automating performance monitoring](img/image00480.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Although we are making fewer requests, which is good, only one of the scripts
+    is minified. This will cancel out the benefits of minimization. We can go some
+    way in rectifying this by minifying the code. We will take a look at how this
+    can be automated later in this chapter, in *Minifying code using NodeJS*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gaining insight using Google PageSpeed
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So far, we've seen how to monitor pages, but at a very technical level. Our
+    checks have concentrated on the sizes and return times of scripts being called
+    from our page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A better option is to run a test such as Google PageSpeed, using the Grunt
+    package available from [https://github.com/jrcryer/grunt-pagespeed](https://github.com/jrcryer/grunt-pagespeed);
+    we can see the results in this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Gaining insight using Google PageSpeed](img/image00481.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It doesn't look at specific scripts or elements on the page, but gives what
+    I would consider to be a more realistic view of how well our page is performing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This demo requires the use of Node and Grunt, so make sure you have both installed
+    before continuing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s now see it working in action, against the Packt Publishing website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by firing up a NodeJS command prompt, and then changing to our project
+    folder area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Enter the following to install the `grunt-pagespeed` package:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In a new file, add the following, saving it as `gruntfile.js` in the same folder
+    – there is a copy of this file in the code download; extract and rename `gruntfile-pagespeed.js`
+    to `gruntfile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At the NodeJS command prompt, enter the following command to generate the report:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, we should see a report appear, similar to that shown at the
+    start of our exercise.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The `grunt-pagespeed` plugin is just one example of several that can be run
+    using Grunt. There are other benchmarking tasks available that we can integrate
+    to continuously monitor our sites. These include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`grunt-topcoat-telemetry`: Get smoothness, load time, and other stats from
+    Telemetry as part of CI. This could help you set up a performance benchmarking
+    dashboard similar to the one used by Topcoat ([http://bench.topcoat.io](http://bench.topcoat.io)).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`grunt-wpt`: The grunt plugin for measuring WebPageTest scores.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`grunt-phantomas`: Response times for requests, responses, time to first `image`/`CSS`/`JS`,
+    on `DOM Ready` and more.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you prefer to use Gulp, then the previous Grunt plugins can be run using
+    `gulp-grunt`, available from [https://npmjs.org/package/gulp-grunt](https://npmjs.org/package/gulp-grunt).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we know our baseline, it's time to explore how we can optimize our
+    code; most developers will either eyeball the code manually, or potentially use
+    a site such as [www.jshint.com](http://www.jshint.com) (or even [jslint.com](http://jslint.com)).
+    There's nothing wrong in this approach. However, it's not the best approach to
+    take, as it is an inefficient use of our time, which risks missing an opportunity
+    to improve our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The smarter way to lint code is to automate the process – while it may not alert
+    you to any earth-shattering changes that need to be made, it will at least ensure
+    that our code doesn't fail optimization due to errors. It will, of course, also
+    give us a solid basis upon which we can make further optimizations. We will cover
+    more of this later in the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Time for a demo, I think! Let's take a moment to go through setting up the automatic
+    check using NodeJS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linting jQuery code automatically
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Linting code, or checking it for errors, is an essential part of jQuery development.
+    Not only does it help get rid of the errors, it also helps identify the code that
+    isn't being used within the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't forget – optimizing isn't just about adjusting selectors or even replacing
+    jQuery code with CSS equivalent (as we saw in [Chapter 6](part0056.xhtml#aid-1LCVG1
+    "Chapter 6. Animating in jQuery"), *Animating with jQuery*). We need to first
+    ensure that we have a solid base to work from – we can always do this manually,
+    but the smarter option is to automate the process using a task runner such as
+    Grunt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a moment to see how this works in action – note that this assumes
+    you still have NodeJS installed from previous exercises. This time around, we
+    will use it to install the `grunt-contrib-jshint` package, available from [https://github.com/gruntjs/grunt-contrib-jshint](https://github.com/gruntjs/grunt-contrib-jshint):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Setting up the automatic check is very easy. To start, we need to download
+    and install `grunt-contrib-jshint`. Open up a NodeJS command prompt, and enter
+    the following from within the project folder area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Once the installation has completed, go ahead and add the following to a new
+    file, saving it as `gruntfile.js` within the project folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: From the code download, we need to extract our target JavaScript file. Go ahead
+    and save a copy of `script.js` within a `js` subfolder in our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Revert back to the NodeJS command prompt, and then enter the following command
+    to run the `jshint` check over our code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, we should see it pop up three errors that need fixing, as shown
+    in the next screenshot:![Linting jQuery code automatically](img/image00482.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The observant of you may spot that this is the code from the quicktip plugin
+    we created back in [Chapter 11](part0098.xhtml#aid-2TEN41 "Chapter 11. Authoring
+    Advanced Plugins"), *Authoring Advanced Plugins*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can take this even further! Instead of manually running the check when code
+    has been updated, we can ask Grunt to do this automatically for us. To make this
+    happen, we need to install the `grunt-contrib-watch` package, and alter the Grunt
+    file accordingly. Let''s do that now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open a copy of `gruntfile.js`, and then add the following code immediately
+    before the closing `});` of the `grunt.initConfig` object:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At the end of the file, add the following line, to register the additional
+    task:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We need to alter the `registerTask` call to make Grunt aware of our new task.
+    Go ahead and modify as shown:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Switch back to the command prompt window, and then enter the following at the
+    command line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Switch back to `script.js`, and make a change somewhere in the code. If all
+    is well, Node will kick in and recheck our code.![Linting jQuery code automatically](img/image00483.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Running the code clearly shows that we have some issues we need to fix. At this
+    stage, we would spend time fixing them. As soon as changes are made, Node will
+    kick in and show an updated list of errors (or a pass!).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assuming our code is fit for purpose, we can really start with optimizing it.
+    An easy win is to minify the code, to help keep file sizes low. We can of course
+    manually compress it, but that is so old-school; time to dig out Node again!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minifying code using NodeJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A key part of any developer's workflow should be a process to minify the scripts
+    used in a site. This has the benefit of reducing the size of the downloaded content
+    to a page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can of course do this manually, but it's a time consuming process which adds
+    little benefit; a smarter way is to let NodeJS take care of this for us. The beauty
+    of doing this means that we can configure Node to run with a package such as `grunt-contrib-watch`;
+    any changes we make would be minified automatically. There may even be occasions
+    when we decide not to produce a minified file; if we're unsure that the code we
+    are writing is going to work. At times like this, we can instead fire off Grunt
+    from within our text editor, if we're using a package such as Sublime Text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to implement that level of control within Sublime Text, then take
+    a look at `sublime-grunt`, available from [https://github.com/tvooo/sublime-grunt](https://github.com/tvooo/sublime-grunt).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Okay, let''s start with setting up our minification process. For this, we''ll
+    use the well-known package, UglifyJS (from [https://github.com/mishoo/UglifyJS2](https://github.com/mishoo/UglifyJS2)),
+    and get Node to automatically check for us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will be using NodeJS for this demo, so if you haven't already done so, go
+    ahead and download the appropriate version for your platform from [http://www.nodejs.org](http://www.nodejs.org),
+    accepting all defaults.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'For this demo, we need to install two packages. UglifyJS provides support for
+    source maps, so we need to install this first. From a NodeJS command prompt, change
+    to the project folder, enter the following command, and then press *Enter*:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, enter the following command, and press *Enter*:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'When the installation has completed, we can run UglifyJS. At the command prompt,
+    enter the following command carefully:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, Node will run through the process, similar to this next screenshot:![Minifying
+    code using NodeJS](img/image00484.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At the end, we should have three files in our project area, as shown in the
+    following screenshot:![Minifying code using NodeJS](img/image00485.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We're now free to use the minified version of our code within a production environment.
+    While in this instance we've not made much of a saving, you can imagine the results
+    if we were to scale these figures up to cover larger scripts!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring some points of note
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The process of compressing scripts should become a de facto part of any developer''s
+    workflow. NodeJS makes it easy to add, although there are some tips that will
+    help make compressing files easier and more productive:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default configuration for UglifyJS will only produce files that show little
+    compression. Getting better results requires careful reading of all the options
+    available, to get an understanding of which one may suit your needs and is likely
+    to produce the best results.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We've included the source map option within our compression process. We can
+    use this to relate issues appearing to the original source code. Enabling source
+    map support will differ between browsers (for those that support it); in Firefox
+    for example, press *F12* to show the Developer Toolbar, then click on the cog
+    and select **Show Original Sources**:![Exploring some points of note](img/image00486.jpeg)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is worth checking to see if minified versions of files used in your project
+    are already available. For example, does your project use plugins where minified
+    versions have already been provided? If so, then all we need to do is concatenate
+    them into one file; minifying them again is likely to cause problems, and break
+    functionality in the file.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Minifying files is not a black art, but is equally not an exact science too.
+    It is difficult to know what improvement you will get in terms of file size, before
+    compressing them. You may get some results that you didn't expect to see. It's
+    worth exploring one such example now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working through a real example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While researching material for this book, I tried minifying one of the Drupal
+    files used on the Packt Publishing site as a test. The original weighed in at
+    590 KB; a compressed version using the same configuration options as in our demo,
+    produced a file that was 492 KB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What does this tell us? Well, there are a couple of things to note:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is important to maintain a realistic sense of expectation. Compressing files
+    is a useful trick we use, but it will not always produce the results we need.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We've used UglifyJS (version 2). This is really easy to use, but comes with
+    a trade-off in terms of raw compression ability. There will be some instances
+    where it won't suit our requirements, but this shouldn't be seen as a failing.
+    There are dozens of compressors available; we simply will have to choose a different
+    alternative!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To really get a significant reduction in size, it may be necessary to use `gzip`
+    to compress the file, and configure the server to decompress on the fly. This
+    will add an overhead to processing the page, which needs to be factored into our
+    optimization work.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Instead, it may be a better alternative to work through each script to determine
+    what is and isn''t being used. We can of course do this manually, but hey – you
+    know me by now: why do it yourself when you can put it off to something else to
+    do it for you (to badly misquote a phrase)? Enter Node! Let''s take a look at
+    `unusedjs`, which we can use to give us an indication of exactly how much extra
+    code our scripts contain.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We've concentrated on minifying one file, but it is a cinch to change the configuration
+    to minify any file automatically, by using wildcard entries instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working out unused JavaScript
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we've seen how we can easily minify code without any effort – but what
+    if minifying isn't enough, and we need to remove redundant code?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Well, we can manually eyeball the code – nothing wrong with that. It's a perfectly
+    acceptable way of working out what we can remove. The key thing though is that
+    it is a manual process, which requires a lot of time and effort – not to mention
+    the frequent attempts to find code that we can remove without breaking something
+    else!
+  prefs: []
+  type: TYPE_NORMAL
+- en: A smarter move is to set Node to work out for us what is being used, and what
+    could be safely dropped. The web performance expert Gaël Métais has created unused
+    JS to help with this. It works with Node, and is available at [https://www.npmjs.com/package/unusedjs](https://www.npmjs.com/package/unusedjs).
+    It's a work in progress, but as long as it is used as a guideline, it can produce
+    a useful basis for us to work out where we can make changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a moment to dig in and see how it works. For this demo, we'll use
+    the Tooltip plugin demo we created in [Chapter 12](part0108.xhtml#aid-36VSO1 "Chapter 12. Using
+    jQuery with the Node-WebKit Project"), *Using jQuery with the Node-WebKit Project*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working out unused JavaScript](img/image00487.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There are a few things that we need to bear in mind when using this functionality:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the time of writing, the status of this plugin is still very much alpha –
+    the usual risks around using alpha software apply! It is not perfect; it should
+    be used as a guideline only, and at your own risk. It doesn't work well with really
+    long scripts (such as the jQuery UI library), but will manage around 2,500-3000
+    lines.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You will need to clear your browsing history, so don't go and use it in a browser
+    where maintaining history is important.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The plugin uses Node. If you don't have this installed, then head over to the
+    Node site at [http://www.nodejs.org](http://www.nodejs.org) to download and install
+    the version appropriate for your platform.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We also need to use a local web server such as WAMP (for PC – [http://www.wampserver.com/de](http://www.wampserver.com/de)
+    or [http://www.wampserver.com/en/](http://www.wampserver.com/en/)), or MAMP (for
+    Mac – [http://www.mamp.info](http://www.mamp.info)) for the demo. Make sure you
+    have something set up and configured for use.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Assuming we have Node and a local web server installed and configured for use,
+    let''s start with setting the `unusedjs` script. We will use Firefox for the purpose
+    of running the demo, so adjust accordingly if you prefer to use a different browser.
+    Let''s begin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need to start somewhere. The first step is to install `unusedjs.` Run the
+    following command at the NodeJS prompt:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Start the server by writing the following in your console:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Click on the three bar icon and then **Options**, to show the options dialog.
+    Make sure the following entries are set as shown in this next image:![Working
+    out unused JavaScript](img/image00488.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Make sure the **No Proxy** field is empty. Then click **OK** to confirm the
+    settings.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, we need to clear the cache in the browser session. This is critical, as
+    we will likely get skewed results if the cache is not cleared.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this stage, open a copy of `tooltipv2.html` from the code download that accompanies
+    this book, and wait until the page is fully loaded.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Press *F12* to display Firefox''s console, and enter the following at the prompt:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, we should see something akin to the following screenshot, when
+    viewing the console results:![Working out unused JavaScript](img/image00489.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Try entering `_unusedjs.file(2)` in the console. This function shows a copy
+    of the code, with unused sections highlighted in red, as shown in this screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working out unused JavaScript](img/image00490.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can now concentrate on the highlighted sections to remove redundant code
+    from our own scripts. How much will of course depend on our own requirements,
+    and whether redundant code will later be used as part of any forthcoming changes
+    to our work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It goes without saying that we can't simply yank out code from a library such
+    as jQuery. We would need to build a custom version of jQuery – we covered this
+    in detail in [Chapter 1](part0014.xhtml#aid-DB7S1 "Chapter 1. Installing jQuery"),
+    *Installing jQuery*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've established our baseline, and worked out if any of our scripts
+    contain unused code, it's time to look at optimizing it. Let's take a look at
+    some of the tips and tricks we can use in our code; as a basis for embedding best
+    practice into our normal development workflow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing best practices
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Imagine the scenario – we've written our code and checked it to ensure that
+    all files are minimized where possible, and that we've not included lots of redundant
+    code. At this point, some might think that we're ready to release the code and
+    put our efforts out for public consumption, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Wrong! It would be remiss to release code at this stage, without reviewing
+    our code for both speed and efficiency. Larry Page, cofounder and CEO of Google,
+    put it perfectly, when he stated that :'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '|   | *"As a product manager you should know that speed is product feature
+    number one."* |   |'
+  prefs: []
+  type: TYPE_TB
+- en: '|   | --*Larry Page, co-founder and CEO of Google* |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Speed is absolutely king! We''ve gone some way towards satisfying Larry''s
+    comment, but we can do more. So far, we''ve looked at minifying our code and producing
+    custom versions of jQuery. We can take this further by assessing the code we''ve
+    written, to ensure it is being executed efficiently. Each person''s requirements
+    will naturally be different, so we would need to use a mix of tricks to ensure
+    efficient execution. Let''s take a look at a few:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It goes without saying, but we should execute a task against the DOM only when
+    absolutely necessary. Each hit on the DOM can potentially be expensive on resources,
+    making your application slower. For example, consider the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: On an empty `<body>` tag, the time taken to load the jQuery library and make
+    it available for use, is relatively less; as soon as we add elements to our page,
+    that value will increase. To see the difference, I ran a small demo using this
+    code. In the following image, the results of loading jQuery on empty `<body>`
+    tags is on the left, while the results of using `tooltipv2.html` from an earlier
+    demo, on the right:![Implementing best practices](img/image00491.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If version 1.11 of jQuery is used, then the effect is even more acute, as a
+    result of the code incorporated to support older browsers. To see the effects
+    for yourself, try running `test loading jquery.html`, and then switch to **Console**
+    within the Developer Toolbar of your browser to see the results of the test. Change
+    the version of jQuery to `1.11` to really see the difference!
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'To maintain performance, DOM elements should be cached in variables, then append
+    it only after it has been manipulated:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can see the results in action by running the test on JSPerf, at [http://jsperf.com/append-on-loop/2](http://jsperf.com/append-on-loop/2).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The flip side to this is if we need to modify several properties that relate
+    to a single element. In some respects, creating an object makes it easier to manipulate
+    it, but at the same time undoes all our effort!
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It is imperative that you check your selectors. jQuery reads them from right
+    to left. Where possible, use IDs as they are faster to access than standard class
+    selectors. Also, make sure that you are not using rules such as `.myClass1 #container`,
+    where an ID follows a class selector. This is inefficient – we lose the benefit
+    of specifying what can only be a single value, by having to constantly iterate
+    through code to ensure we''ve covered all instances of the class that we have
+    used in our code.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It goes without saying that any selector used should be cached. When referencing
+    selectors that go several levels deep, best practice states that we should be
+    as specific as possible on the left side (that is, `.data`), and less specific
+    on the right:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Above all, avoid using the universal selector in the form of a `*` or type,
+    such as `:radio`, without making your selector reference as explicit as possible
+    – these are both very slow!
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Although this book is about jQuery, there may be instances where we need to
+    use classic JavaScript methods if performance is such that jQuery is not up to
+    the mark. For instance, a `for` loop will be more efficient than the jQuery `.each()`
+    method, and using the `querySelector` API is better than using a jQuery selector.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you are loading a number of scripts, consider loading them at the end of
+    the page, once all the content has been loaded above the fold (or what is displayed
+    before scrolling down the page). jQuery should always be used to progressively
+    enhance pages, not run a code that will break a page if jQuery is disabled. Perception
+    can play a big part – your page may not be doing a great deal, but still be perceived
+    as slow. Reordering scripts (and content) can help alter this perception.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Some developers may still use jQuery''s AJAX object to handle asynchronous
+    HTTP requests. Although it works, it is not the cleanest way to manage such requests:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'A smarter option is to use jQuery `promises()`, where we can defer code into
+    functions that are cleaner to read and easier to debug. It matters not one jot
+    where the code is then stored; `promises()` will allow us to call it at the appropriate
+    point in the code:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we're calling whole scripts, then it makes sense to explore the use of conditional
+    loaders such as RequireJS (using plain JavaScript), or `grunt-requirejs` (if our
+    preference is to use Node).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It goes without saying that the same principle of lazy loading our code will
+    also apply to elements on the page, such as images; `jquery-lazy` is a perfect
+    example of a module for Node, which will help with this. It's available at [https://www.npmjs.com/package/jquery-lazy](https://www.npmjs.com/package/jquery-lazy).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The previous tip mentioning the use of `promises()` illustrated a perfect example
+    of where we can still make improvements. Some developers extol the virtues of
+    chaining code, which can appear to shorten the code. However, it makes it harder
+    to read and therefore debug; the resulting code spaghetti will lead to mistakes
+    and time wasting, ultimately requiring a partial or complete code refactor. The
+    example from the previous tip also highlights the need to ensure that a good naming
+    convention is used, as we can't be specific with our callback function names,
+    when chaining commands.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This next tip may seem a little contradictory, given we are talking about jQuery
+    throughout this book, but use less JavaScript – anything that can be offloaded
+    onto HTML or CSS will have a positive impact on our performance. Although it is
+    fun to use jQuery, it is based on JavaScript which is the most brittle layer of
+    the web stack, and will impact performance. A classic example of this is creating
+    animations. Take a look at [https://css-tricks.com/myth-busting-css-animations-vs-javascript/](https://css-tricks.com/myth-busting-css-animations-vs-javascript/)
+    to understand why it is foolish to use jQuery (or JavaScript) to power our animations
+    unless necessary.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Consider cutting the mustard, or dropping functionality for less capable browsers.
+    This will make for a much better experience when using jQuery-based sites on less
+    capable or mobile browsers. On some sites that have lots of polyfills running
+    to support functionality such as CSS3 styling, the impact of dropping these polyfills
+    could be substantial!
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: To get a feel for the difference in times for loading and parsing jQuery, check
+    out the tests performed by developer Tim Kadlec, at [http://timkadlec.com/2014/09/js-parse-and-execution-time/](http://timkadlec.com/2014/09/js-parse-and-execution-time/).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'There are many more tips and tricks we can use in our code. For more sources
+    of inspiration, take a look at the following links as a starting point:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://www.slideshare.net/MatthewLancaster/automated-perf-optimization-jquery-conference](http://www.slideshare.net/MatthewLancaster/automated-perf-optimization-jquery-conference):
+    Presented at the jQuery Conference by developer Matthew Lancaster in 2014, this
+    covers some useful tips; he particularly makes a point of emphasizing that we
+    can make some serious gains with little effort, although we should always be wary
+    of over-optimizing our code!'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://crowdfavorite.com/blog/2014/07/javascript-profiling-and-optimization/](http://crowdfavorite.com/blog/2014/07/javascript-profiling-and-optimization/):
+    This article goes through the process used by the authors to help optimize performance;
+    this gives a flavor of what is involved.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://chrisbailey.blogs.ilrt.org/2013/08/30/improving-jquery-performance-on-element-heavy-pages/](http://chrisbailey.blogs.ilrt.org/2013/08/30/improving-jquery-performance-on-element-heavy-pages/):
+    This article is a little older, but still contains some useful pointers for optimizing
+    our code.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://joeydehnert.com/2014/04/06/9-development-practices-that-helped-me-write-more-manageable-and-efficient-javascript-and-jquery/](http://joeydehnert.com/2014/04/06/9-development-practices-that-helped-me-write-more-manageable-and-efficient-javascript-and-jquery/):
+    This contains some very useful tips on optimizing jQuery, with some similar to
+    the ones we''ve covered in this chapter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The key point through all of this is that performance optimization should never
+    be considered a one-off exercise; we must consider it an ongoing process during
+    the life of the code. To help with this, we can design a strategy to stay on top
+    of optimization. Let's use some of these tips as a basis for what we need to consider
+    as part of this strategy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Designing a strategy for performance
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So far, we've concentrated on tips and tricks we can use to improve performance.
+    Taking a reactive approach will work, but requires extra time to be spent when
+    we can instead build in these tips and tricks at the time of creating the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this in mind, having a strategy to help encourage such a mindset will
+    help. Let''s take a look at a few key points that can form the basis for such
+    a strategy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Always use the latest version of jQuery – you benefit from improvements in code,
+    speed, and bug fixes for known issues.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Combine and minify scripts where possible, to reduce bandwidth usage.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use native functions instead of jQuery equivalents – a perfect example is to
+    use `for()` instead of `.each()`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use IDs instead of classes – IDs can only be assigned once, whereas jQuery will
+    hit the DOM multiple times looking for each class, even if only one instance exists.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Give selectors a context. Refer to the following code simply specifying a single
+    class:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Instead, a smarter way is to use contextualized selectors in the form of `$(expression,
+    context)`, thus yielding:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The second option runs much faster, as it only has to traverse the #class-container
+    element and not the entire DOM.'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Cache values wherever possible, to avoid manipulating the DOM directly.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use `join()` instead of `concat()` to join longer strings.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Always add return false, or use `e.preventDefault()` on click events on links
+    where `#` is used as the source link – not adding it will jump you to the top
+    of the page, which is irritating on a long page.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Set yourself a budget in terms of page weight, requests, and render time – see
+    [http://timkadlec.com/2014/11/performance-budget-metrics/](http://timkadlec.com/2014/11/performance-budget-metrics/).
+    It gives purpose to optimizing, and encourages a longer term performance monitoring
+    spirit.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use a performance monitoring service such as SpeedCurve to help monitor your
+    sites, and alert you to any issues when they appear.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Put performance on display in your office – this helps encourage a team spirit.
+    If someone in the team comes up with a change that has a positive impact on performance,
+    then credit them and make the rest of the team aware; it will help encourage a
+    healthy sense of competition amongst the team.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If however a change breaks the performance, then don't punish the culprit; this
+    will discourage them from taking part. Instead, try to foster a culture of owning
+    a problem, then learning how to prevent it from happening again. How about running
+    tests such as PhantomJS to help check and minimize the risk of issues appearing?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Automate everything. There are services that will compress images or shrink
+    scripts, but there is something to be said for investing time in developing similar
+    processes in-house that will save you time and money. The key here is that there
+    is no point in manually performing tasks such as optimizing images or minifying
+    scripts; it's up to you to work out what best suits your needs.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A key consideration is if you decide to use Grunt or Gulp – will either provide
+    additional functionality that is useful, or are they simply an overhead that can
+    be reduced or eliminated with careful use of NPM? The developer Keith Cirkel put
+    together a valid argument for just using NPM at [http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/](http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/);
+    it's a thought-provoking read!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Spend time influencing your colleagues and those higher up the chain – often
+    they may not be aware of the pain you might be experiencing on an issue, but may
+    actually be in a position to help you in your fight!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Spend time learning. All too often we spend too much time on client work, and
+    don't build in enough time for self-development; put aside some time to rectify
+    this. If it means having to alter prices to cover lost earnings as a result of
+    time not spent on client work, then this is something that needs to be considered.
+    It's all about setting a work/play/learning balance, which will pay off in the
+    long term.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is plenty of food for thought – not every trick will apply. There will
+    be instances where a blend of one or more will produce the results you need. It
+    is worth spending time on this though, as it will pay off in spades in the longer
+    term, and hopefully will become embedded in existing work culture within your
+    team.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s move on. We''re almost at the end of the chapter, but before we finish
+    and take a look at testing for jQuery, I want to ask a simple question: do we
+    really need to use jQuery at all, and if so, why should we?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Staying with the use of jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At this point, you would be forgiven for thinking that I've completely lost
+    the plot, particularly when we've just been examining ways of optimizing it, only
+    to suggest that we completely remove its use from our code. Why, I hear you ask,
+    would I even consider dropping jQuery?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Well, there are several good reasons for this. Anyone can write jQuery code,
+    but the smart developer should always consider if they should use jQuery to solve
+    a problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery is an abstraction library. It needs JavaScript, and was built at a time
+    when developing for browsers of the day could be a real challenge. The need to
+    abstract away browser inconsistencies is becoming less and less. It's important
+    to remember that we should use jQuery to progressively enhance plain JavaScript;
+    jQuery was first and foremost designed to make writing JavaScript easier, and
+    is not a language in its own right.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Browsers are closer than they've ever been, in terms of offering functionality.
+    With Firefox having ditched most vendor prefixes, there is little need for libraries
+    to smooth out inconsistencies. If something works in IE10 or the latest version
+    of Firefox, then it is likely the same will apply for Google Chrome or Opera.
+    Granted, there will be some differences, but this is really only for some of the
+    more esoteric CSS3 styles that have yet to make it into mainstream use. So - if
+    browsers are this close, why use jQuery?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using plain JavaScript will always be faster than jQuery, no matter how much
+    we try – it has the added bonus that JavaScript code will produce a smaller file
+    than equivalent JavaScript code (not including the library itself). If we're only
+    using a small amount of JavaScript code, then why reference a whole library? Absolutely,
+    we can always try to build a custom version of jQuery, as we saw back in [Chapter
+    1](part0014.xhtml#aid-DB7S1 "Chapter 1. Installing jQuery"), *Installing jQuery*
+    – but we're still going to be pulling in more than we need, no matter how much
+    we try to trim unnecessary code from the library! We can of course use `gzip`
+    to compress jQuery code even further, but it will still be more than plain JavaScript.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jQuery is all too easy to write – it has a huge community, and the learning
+    curve is low. This creates the perfect conditions for writing lots of low-quality
+    code, where we only use a small subset of the features available in jQuery. It
+    will be much better in the long run to learn how to use plain JavaScript effectively,
+    and then use jQuery to provide the metaphorical icing on the cake.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The key point here though is that we shouldn't completely drop jQuery – the
+    time has come though to really consider if we need to use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Granted – if we're using a significant amount of functionality that would otherwise
+    be awkward at best, or positively awful in plain JavaScript, then it will be necessary
+    to use jQuery. However, I'll leave you with a challenge, using taking photos as
+    an analogy. Compose your photo as normal. Then stop, close your eyes for ten seconds,
+    and take a couple of deep breaths. Now ask yourself if you are ready to still
+    take the same photo. Chances are you will change your mind. The same thing applies
+    to using jQuery. If you stopped and really considered your code, how many of you
+    would still decide to continue using it, I wonder?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Personally, I think jQuery will still have a part to play, but we're at a point
+    where we should not simply use it blindly or out of habit, but make a conscious
+    decision about when and where we use it in place of plain JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get a feel for how to switch from jQuery to JavaScript for the simple requirements,
+    take a look at the article by Todd Motto at [http://toddmotto.com/is-it-time-to-drop-jquery-essentials-to-learning-javascript-from-a-jquery-background/](http://toddmotto.com/is-it-time-to-drop-jquery-essentials-to-learning-javascript-from-a-jquery-background/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Maintaining performant sites is a key part of development. There is more to
+    it than just optimizing code, so let's take a moment to review what we've learnt
+    in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a look at the reasons for understanding why performance is
+    critical, before going through various ways to monitor performance, from the simple
+    eyeballing of statistics in Firebug to automating our checks using Grunt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then moved on to understand how we can lint our code automatically, as one
+    of the many ways of optimizing our code, before minifying it for production use.
+    We then dived off to take a look at how we can work out if our code contains any
+    unused code, which can be safely removed as part of streamlining our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then rounded up the chapter with a look at implementing best practices. The
+    focus here was less on providing specific examples, and more on sharing some tips
+    and tricks that can be applied to any site. We then used this as a basis for designing
+    a strategy to help maintain performant sites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're almost through our journey in mastering jQuery, but before we finish,
+    we need to take a quick look at testing our code. Developers are likely to use
+    QUnit, given it is part of the same jQuery family of projects; we'll take a look
+    at how we can take things further in the next chapter.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,702 @@
+- en: Advanced Events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To build interactive web applications, we need to observe the user's activities
+    and respond to them. We have seen that jQuery's event system can simplify this
+    task, and we have already used this event system many times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In [Chapter 3](2036c6b0-e8c5-405a-b54b-b3f31eab404c.xhtml), *Handling Events*,
+    we touched upon a number of features that jQuery provides for reacting to events.
+    In this more advanced chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event delegation and the challenges it presents
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Performance pitfalls associated with certain events and how to address them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom events that we define ourselves
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The special event system that jQuery uses internally for sophisticated interactions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Revisiting events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'For our sample document, we will create a simple photo gallery. The gallery
+    will display a set of photos with an option to display additional photos upon
+    the click of a link. We''ll also use jQuery''s event system to display textual
+    information about each photo when the cursor is over it. The HTML that defines
+    the gallery is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we apply styles to the photos, arranging them into rows of three will
+    make the gallery look like the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_10_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Loading additional pages of data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'By now, we are experts at the common task of reacting to a click on a page
+    element. When the More Photos link is clicked on, we need to perform an Ajax request
+    for the next set of photos and append them to `<div id="gallery">` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We also need to update the destination of the More Photos link to point to
+    the next page of photos:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our `.click()` handler now uses the `pageNum` variable to track the next page
+    of photos to request, and uses this to build the new `href` value for the link.
+    Since `pageNum` is defined outside the function, its value persists between the
+    clicks of the link. We remove the link once we have reached the last page of photos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should also consider using the HTML5 history API to allow the user to bookmark
+    our Ajax-loaded content. You can learn about this API at Dive into HTML5 ([http://diveintohtml5.info/history.html](http://diveintohtml5.info/history.html))
+    and implement it quite easily using the History plugin ([https://github.com/browserstate/history.js](https://github.com/browserstate/history.js)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying data on hover
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The next feature we want to provide on this page is to display the details
+    relating to each photo when the user''s mouse is in that area of the page. For
+    our first pass at displaying this information, we can use the `.hover()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When the cursor enters a photo''s boundary, the associated information fades
+    in to 70 percent opacity, and when it leaves, the information fades back out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_10_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There are, of course, multiple ways to perform this task. Since a portion of
+    each handler is the same, it''s possible to combine the two handlers. We can bind
+    a handler to both `mouseenter` and `mouseleave` at the same time by separating
+    the event names with a space, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the same handler bound to both events, we check for the event's type to
+    determine whether to fade the details in or out. The code locating `<div>`, however,
+    is the same for both events, so we can write it just once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This example is admittedly a little contrived, since the shared code in this
+    instance is so brief. In other cases, though, this technique can significantly
+    reduce code complexity. If we had chosen to add a class on `mouseenter` and remove
+    it on `mouseleave`, for example, rather than animate opacity, we could have taken
+    care of it with a single statement inside the handler, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In any case, our script is now working as intended, except that we haven't accounted
+    for the additional photos that we load when the user clicks the More Photos link.
+    As we noted in [Chapter 3](2036c6b0-e8c5-405a-b54b-b3f31eab404c.xhtml), *Handling
+    Events*, event handlers are only attached to the elements that are there when
+    we make the `.on()` call. Elements added later, such as from an Ajax call, won't
+    have the behavior. We saw that two approaches to addressing this issue are to
+    *rebind* event handlers after the new content is introduced, or to initially bind
+    the handlers to a containing element and rely on event bubbling. The second approach,
+    *event delegation*, is the one we'll pursue here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event delegation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Recall that to implement event delegation by hand, we check the `target` property
+    of the `event` object to see if it matches the element that we want to trigger
+    the behavior. The event target represents the innermost, or most deeply nested,
+    element that is receiving the event. With our sample HTML this time, however,
+    we're presented with a new challenge. The `<div class="photo">` elements are unlikely
+    to be the event target, since they contain other elements, such as the image itself
+    and the image details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we need is the `.closest()` method, which works its way up the DOM from
+    parent to parent until it finds an element that matches a given selector expression.
+    If no elements are found, it acts like any other DOM traversal method, returning
+    a new empty jQuery object. We can use `.closest()` to find `<div class="photo">`
+    from any element it contains, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that we also needed to change the event types from `mouseenter` and `mouseleave`
+    to `mouseover` and `mouseout`, because the former types are only triggered when
+    the mouse first enters the gallery `<div>` and finally leaves it, we need the
+    handlers to be fired whenever the mouse enters any of the photos *within* that
+    wrapping `<div>`. But the latter types introduce yet another scenario, in that
+    the detail `<div>` will fade in and out repeatedly unless we include an additional
+    check for the `event` object's `relatedTarget` property. Even with the additional
+    code, repeated quick mouse movements over and out of photos are handled unsatisfactorily,
+    leaving an occasional detail `<div>` visible when it should have faded out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery's delegation capabilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Event delegation can be frustratingly difficult to manage by hand when tasks
+    become more complex. Fortunately, jQuery''s `.on()` method has delegation built
+    into it, which can make life easier for us. Using this capability, our code can
+    return to the simplicity of *Listing 10.4*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: The selector, `#gallery`, remains the same as in *Listing 10.5*, but the event
+    types return to the `mouseenter` and `mouseleave` of *Listing 10.4*. When we pass
+    in `'div.photo'` as the second argument to `.on()`, jQuery maps `e.currentTarget` to
+    the element(s) matched by that selector within `'#gallery'`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing a delegation scope
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Because all of the photo elements we are dealing with are contained inside
+    `<div id="gallery">`, we have used `#gallery` as our delegation scope in the previous
+    example. However, any element that is an ancestor of all of the photos could be
+    used as this scope. For example, we could bind our handler to `document`, which
+    is the common ancestor of everything on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: It can be convenient to attach event handlers directly to `document` when setting
+    up event delegation. Since all page elements descend from `document`, we don't
+    need to worry about picking the right container. However, this convenience comes
+    at a potential performance cost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a DOM of deeply nested elements, relying on events to bubble all the way
+    up a multitude of ancestor elements could be costly. Regardless of which elements
+    we are actually observing (by passing in their selector as the second argument
+    of `.on()`), if we bind our handler to `document` then an event happening anywhere
+    on the page needs to be examined. In *Listing 10.6*, for example, whenever the
+    mouse enters any element on the page, jQuery needs to check to see whether it
+    is entering a `<div class="photo">` element or not. This can grow costly on large
+    pages, especially if delegation is used a lot. By being more specific in our delegation
+    context, this work can be reduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delegating early
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Despite these efficiency concerns, there are reasons we may yet choose to use
+    `document` as our delegation context. In general, we can only bind event handlers
+    once the DOM elements they are attached to are loaded, which is why we typically
+    place our code inside `$(() => {})`. However, the `document` element is available
+    immediately, so we don''t need to wait for the whole DOM to be ready before we
+    bind to it. Even if the script is referenced in the `<head>` of the document,
+    as it is in our example, we can call `.on()` right away, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Figure 10.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because we're not waiting for the entire DOM to be ready, we can be assured
+    that the `mouseenter` and `mouseleave` behaviors will apply to all `<div class="photo">`
+    elements as soon as they are rendered on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To see the benefit of this technique, consider a `click` handler directly bound
+    to a link. Suppose this handler performs some actions, and also prevents the default
+    action of the link (navigating to another page). If we were to wait until the
+    whole document was ready, we would run the risk of the user clicking on that link
+    before the handler was registered, thereby leaving the current page rather than
+    getting the enhanced treatment provided by the script. In contrast, binding a
+    delegated event handler to `document` gives us the benefit of binding the event
+    early without the cost of having to scan through a complex DOM structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining custom events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The events that get triggered naturally by the DOM implementations of browsers
+    are crucial to any interactive web application. However, we aren't limited to
+    this set of events in our jQuery code. We can also add our own custom events.
+    We saw this briefly in [Chapter 8](091dd3f4-9663-47df-af02-817487c3038f.xhtml),
+    *Developing Plugins*, when we saw how jQuery UI widgets trigger events, but here
+    we will investigate how we can create and use custom events outside of plugin
+    development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom events must be triggered manually by our code. In a sense, they are like
+    regular functions that we define, in that we can cause a block of code to be executed
+    when we invoke it from another place in the script. The `.on()` call for a custom
+    event behaves like a function definition, while the `.trigger()` call acts like
+    a function invocation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, event handlers are decoupled from the code that triggers them. This
+    means that we can trigger events at any time, without knowing in advance what
+    will happen when we do. A regular function call causes a single piece of code
+    to be executed. A custom event, however, could have no handlers, one handler,
+    or many handlers bound to it. In any case, all of the bound handlers will be executed
+    when the event is triggered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To illustrate this, we can revise our Ajax loading feature to use a custom
+    event. We will trigger a `nextPage` event whenever the user requests more photos,
+    and bind handlers that watch for this event and perform the work previously done
+    by the `.click()` handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.click()` handler now does very little work itself. It triggers the custom
+    event and also prevents the default link behavior by calling `.preventDefault()`.
+    The heavy lifting is transferred to the new event handlers for the `nextPage`
+    event, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our code really hasn''t changed much since *Listing 10.2*. The largest difference
+    is that we''ve split what was once a single function into two. This is simply
+    to illustrate that a single event trigger can cause multiple bound handlers to
+    fire. Clicking on the More Photos link results in the next group of pictures being
+    appended and the link''s `href` attribute being updated, as shown in the following
+    screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_10_001-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: With the code changed in *Listing 10.10,* we are also illustrating another application
+    of event bubbling. The `nextPage` handlers could be bound to the link that triggers
+    the event, but we would need to wait to do this until the DOM was ready. Instead,
+    we are binding the handlers to the document itself, which is available immediately,
+    so we can do the binding outside of `$(() => {})`. This is, in fact, the same
+    principle we took advantage of in *Listing 10.8*, when we moved the `.on()` method
+    outside of `$(() => {})`. The event bubbles up and, so long as another handler
+    doesn't stop the event propagation, our handlers will be fired.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Infinite scrolling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Just as multiple event handlers can react to the same triggered event, the same
+    event can be triggered in multiple ways. We can demonstrate this by adding an
+    infinite scrolling feature to our page. This technique lets the user's scroll
+    bar manage the loading of content, fetching additional content whenever the user
+    reaches the end of what has been loaded thus far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll begin with a simple implementation, then improve it in successive examples.
+    The basic idea is to observe the `scroll` event, measure the current scroll bar
+    position when scrolling occurs, and load new content if needed. The following
+    code will trigger the `nextPage` event we defined in *Listing 10.10*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `checkScrollPosition()` function we've introduced here is set as a handler
+    for the window's `scroll` event. This function computes the distance from the
+    top of the document to the bottom of the window and then compares this distance
+    to the total height of the main container in the document. As soon as these reach
+    equality, we need to fill the page with additional photos, so we trigger the `nextPage`
+    event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As soon as we bind the `scroll` handler, we immediately trigger it with a call
+    to `.trigger(''scroll'')`. This kick-starts the process, so that if the page is
+    not initially filled with photos, an Ajax request is made right away to append
+    more photos:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_10_002-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Custom event parameters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we define functions, we can set up any number of parameters to be filled
+    with argument values when we actually call the function. Similarly, when triggering
+    a custom event, we may want to pass along additional information to any registered
+    event handlers. We can accomplish this by using custom event parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first parameter defined for any event handler, as we've seen, is the DOM
+    event object, as enhanced and extended by jQuery. Any additional parameters we
+    define are available for our discretionary use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see this in action, we''ll add a new option to the `nextPage` event from
+    *Listing 10.10*, allowing us to scroll the page down to display the newly-added
+    content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have now added a `scrollToVisible` parameter to the event callback. The value
+    of this parameter determines whether we perform the new functionality, which entails
+    measuring the position of the new content and scrolling to it. Measurement is
+    easy using the `.offset()` method, which returns the top and left coordinates
+    of the new content. To move down the page, we call the `.scrollTop()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we need to pass an argument into the new parameter. All that is required
+    is providing an extra value when invoking the event using `.trigger()`. When `newPage`
+    is triggered via scrolling, we don''t want the new behavior to occur, as the user
+    is already manipulating the scroll position directly. When the More Photos link
+    is clicked, on the other hand, we want the newly added photos to be displayed
+    on screen, so we will pass a value of `true` to the handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the call to `.trigger()`, we are now providing an array of values to pass
+    to event handlers. In this case, the value of `true` will be given to the `scrollToVisible`
+    parameter of the event handler in *Listing 10.12*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that custom event parameters are optional on both sides of the transaction.
+    We have two calls to `.trigger('nextPage')` in our code, only one of which provides
+    argument values; when the other is called, this does not result in an error, but
+    rather each parameter in the handler has the value `undefined`. Similarly, the
+    lack of a `scrollToVisible` parameter in one of our `.on('nextPage')` calls is
+    not an error; if a parameter does not exist when an argument is passed, that argument
+    is simply ignored.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throttling events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A major issue with the infinite scrolling feature as we've implemented it in
+    *Listing 10.10* is its performance impact. While our code is brief, the `checkScrollPosition()`
+    function does need to do some work to measure the dimensions of the page and window.
+    This effort can accumulate rapidly, because in some browsers the `scroll` event
+    is triggered repeatedly during the scrolling of the window. The result of this
+    combination could be choppy or sluggish performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Several native events have the potential for frequent triggering. Common culprits
+    include `scroll`, `resize`, and `mousemove`. To account for this, we will implement
+    **event throttling**. This technique involves limiting our expensive calculations
+    so that they only occur after some of the event occurrences, rather than each
+    one. We can update our code from *Listing 10.13* to implement this technique as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rather than setting `checkScrollPosition()` directly as the `scroll` event handler,
+    we are using the JavaScript `setTimeout` function to defer the call by `250` milliseconds.
+    More importantly, we are checking for a running timer first before doing any work.
+    Since checking the value of a simple variable is extremely fast, most of the calls
+    to our event handler will return almost immediately. The `checkScrollPosition()`
+    call will only happen when a timer completes, which will at most be every 250
+    milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can easily adjust the `setTimeout()` value to a comfortable number that strikes
+    a reasonable compromise between instant feedback and low performance impact. Our
+    script is now a good web citizen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other ways to perform throttling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The throttling technique we''ve implemented is efficient and simple, but it
+    is not the only solution. Depending on the performance characteristics of the
+    action being throttled and typical interaction with the page, we may, for instance,
+    want to institute a single timer for the page rather than create one when an event
+    begins:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike our previous throttling code, this polling solution uses a single call
+    to the JavaScript `setInterval()` function to begin checking the state of the
+    `scrolled` variable every `250` milliseconds. Any time a scroll event occurs,
+    `scrolled` is set to `true`, ensuring that the next time the interval passes,
+    `checkScrollPosition()` will be called. The result is similar to that of *Listing
+    10.14*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A third solution for limiting the amount of processing performed during frequently-repeated
+    events is **debouncing**. This technique, named after the post-processing required
+    to handle repeated signals sent by electrical switches, ensures that only a single,
+    final event is acted upon even when many have occurred. We will see an example
+    of this technique in [Chapter 13](6bf83967-6247-454a-b1d2-3f3f48937865.xhtml),
+    *Advanced Ajax*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Some events, such as `mouseenter` and `ready`, are designated as **special events**
+    by the jQuery internals. These events use the elaborate event extension framework
+    offered by jQuery. Such events get the opportunity to take action at various times
+    in the life cycle of an event handler. They may react to handlers being bound
+    or unbound, and they can even have preventable default behaviors like clicked
+    links or submitted forms do. The event extension API lets us create sophisticated
+    new events that act much like native DOM events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The throttling behavior we implemented for scrolling in *Listing 10.13* is useful,
+    and we may want to generalize it for use in other projects. We can accomplish
+    this by creating a new event that encapsulates the throttling technique within
+    the special event hooks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To implement special behavior for an event, we add a property to the `$ .event.special`
+    object. This added property, which is itself an object, has our event name as
+    its key. It can contain callbacks called at many different specific times in an
+    event''s life cycle, including the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`add`: This is called every time a handler for this event is bound'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`remove`: This is called every time a handler for the event is unbound'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`setup`: This is called when a handler is bound for the event, but only if
+    no other handlers for that event are bound to the element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`teardown`: This is the converse of `setup`, called when the last handler for
+    the event is unbound from an element'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`_default`: This becomes the default behavior of the event, called unless the
+    default action is prevented by an event handler'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These callbacks can be used in some very creative ways. A fairly common scenario,
+    which we''ll explore in our example code, is to automatically trigger the event
+    in response to a browser condition. It would be wasteful to monitor the state
+    and trigger events if no handlers are listening for the event, so we can use the
+    `setup` callback to initiate this work only when needed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our scroll throttling event, we need to bind a regular `scroll` handler
+    that uses the same `setTimeout` technique as the one we developed in *Listing
+    10.14*. Whenever a timer completes, the custom event will be triggered. Since
+    we only need one timer per element, the `setup` callback will serve our needs.
+    By supplying a custom namespace for the `scroll` handler, we can easily remove
+    the handler when `teardown` is called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use this new behavior, all we have to do is bind handlers to the `throttledScroll`
+    event. This greatly simplifies the event binding code, and gives us a nicely reusable
+    throttling mechanism, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 10.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: More about special events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'While this chapter covers advanced techniques for dealing with events, the
+    event extension API is very advanced indeed, and a detailed investigation is beyond
+    the scope of this book. The previous `throttledScroll` example covers the simplest
+    and most common usage of the facility. Other possible applications include the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying the event object, so that event handlers have different information
+    available to them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Causing events that occur in one place in the DOM to trigger behaviors associated
+    with different elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reacting to new and browser-specific events that are not standard DOM events
+    and allowing jQuery code to react to them as if they are standard
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Changing the way event bubbling and delegation are handled
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Many of these tasks can be quite complicated. For an in-depth take on the possibilities
+    offered by the event extension API, we can investigate the jQuery Learning Center's
+    documentation at [http://learn.jquery.com/events/event-extensions/](http://learn.jquery.com/events/event-extensions/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery event system can be very powerful if we choose to leverage it fully.
+    In this chapter, we have seen several aspects of the system, including event delegation
+    methods, custom events, and the event extension API. We have also found ways of
+    sidestepping pitfalls associated with delegation and with events that are triggered
+    frequently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A complete list of event methods is available in [Appendix B](d9485d2d-4300-48c1-825b-1c26c9b57a66.xhtml),
+    *Quick Reference,* of this book, or in the official *jQuery documentation* at
+    [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The following challenge exercise may require the use of the official jQuery
+    documentation at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the user clicks on a photo, add or remove the `selected` class on the photo
+    `<div>`. Make sure this behavior works even for photos added later using the Next
+    Page link.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a new custom event called `pageLoaded` that fires when a new set of images
+    has been added to the page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Using the `nextPage` and `pageLoaded` handlers, show a Loading message at the
+    bottom of the page only while a new page is being loaded.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Bind a `mousemove` handler to photos that logs the current mouse position (using
+    `console.log()`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Revise this handler to perform the logging no more than five times a second.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Challenge: Create a new special event named `tripleclick` that fires when the
+    mouse button is clicked on three times within 500 milliseconds. To test the event,
+    bind a `tripleclick` handler to the `<h1>` element which hides and reveals the
+    contents of `<div id="gallery">`.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

@@ -1,0 +1,978 @@
+- en: Chapter 6. The Module Pattern – RequireJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can say now that our application has all the functionality we mentioned in
+    the [Chapter 1](ch01.html "Chapter 1. Refreshing the UI Automatically with KnockoutJS"),
+    *Refreshing the UI Automatically with KnockoutJS*. What we have done in the last
+    four chapters is a very good approach to solving code design in small projects.
+    The code is tidy and the folder structure is also cohesive. The code is easy to
+    read and follow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, when projects begin to grow this approach is not enough. You need to
+    keep the code tidy, not just in the file and folder structure, but logically as
+    well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this chapter, we are going to modularize our code to keep the different parts
+    of our application isolated and reusable. We will also see how to keep our context
+    cleaner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now the project begins to look more complex. It is important to know the tools
+    that help you to debug the code when you find an error. In the first part of the
+    chapter, you will learn about tools that can help you to inspect your KnockoutJS
+    code. You will use a browser plugin (Chrome Extension) to analyze the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the second part of the chapter, you will convert your files into modules.
+    That will help you to keep each part of the application isolated from the others.
+    You will use a pattern called 'dependency injection' to solve dependencies between
+    modules. Learn more about this pattern at [http://en.wikipedia.org/wiki/Dependency_injection](http://en.wikipedia.org/wiki/Dependency_injection).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the last part, you will learn how to create modules following the Asynchronous
+    Module Definition (AMD) specification. To create modules following the AMD specification,
+    you will use a library called RequireJS. This library will manage all dependencies
+    between the different modules. For more about AMD, refer to [http://en.wikipedia.org/wiki/Asynchronous_module_definition](http://en.wikipedia.org/wiki/Asynchronous_module_definition).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing the Knockout context debugger extension
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the previous chapters, you created a simple debugger to show the state of
+    your view-model. This is very useful to see the state of our application quickly.
+    With the debug binding, you don't need to open the extension tools to check what
+    is happening to your data. But you often isolate just a part of the application
+    or see what is happening with the models bound to a DOM element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Google Chrome, you have a very good extension called **KnockoutJS context
+    debugger**, which can be downloaded from [https://chrome.google.com/webstore/detail/knockoutjs-context-debugg/oddcpmchholgcjgjdnfjmildmlielhof](https://chrome.google.com/webstore/detail/knockoutjs-context-debugg/oddcpmchholgcjgjdnfjmildmlielhof).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This extension allows you to view the bindings of each DOM node and trace online
+    the changes in your view-model through the console. Install it and restart the
+    Chrome browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing the Knockout context debugger extension](img/7074OS_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Check in chrome://extensions whether KnockoutJS context debugger has been installed
+  prefs: []
+  type: TYPE_NORMAL
+- en: To check the context bound to your models, open **Chrome Developer Tools** by
+    pressing *F12* and opening the **Elements** tab. You will see two panels. The
+    left one has the DOM schema. The right panel has different tabs. By default, the
+    **Styles** tab opens. Select the tab that says **Knockout context**. There, you
+    should see all the bindings added to the root context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing the Knockout context debugger extension](img/7074OS_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How to show a KnockoutJS context that is bound to a DOM element
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you select a `<tr>` element from your catalog, you will navigate deeper into
+    the context and be inside the catalog item scope. You will not be able to see
+    the `$root` context; you will see the `$data` context. You can navigate up through
+    the `$parent` element or change the element in the DOM panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing the Knockout context debugger extension](img/7074OS_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can easily inspect item context inside foreach bindings
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also see the `ko` object. This is a good way to navigate through the
+    Knockout API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing the Knockout context debugger extension](img/7074OS_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can access the Knockout API and see methods, bindings, components, and so
+    on
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now locate the **KnockoutJS** tab (it is in the same collection as the **Elements**
+    tab). Press the **Enable Tracing** button. This function allows you to follow
+    real-time changes in the view-model. Changes are painted in the console.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing the Knockout context debugger extension](img/7074OS_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If you enable tracing, you can capture changes in the view-model through the
+    console
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, you can measure time and performance using the **Timeline** tab. You can
+    see how much time the application uses to render DOM elements when a change is
+    made in the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing the Knockout context debugger extension](img/7074OS_06_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: With tracing enabled, you can record events and obtain useful information
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that you have learned about this plugin, we can delete (or keep, it's your
+    choice) the debug binding we built before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The console
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **console** is one of the most important tools for developers. You can use
+    it to check the state of our application while it is in use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can locate the JavaScript code and set breakpoints to check what is happening
+    at a particular point. You can do this by locating the JavaScript file in the
+    **Sources** tab. Just click the line you want to stop at. Then you can check the
+    value of the variables and run the code step by step. Also, you can write the
+    word `debugger` in the code to stop the program at this place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The console](img/7074OS_06_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can set breakpoints in the code and check the values of variables
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you navigate to the **Console** tab you will see the console itself. There,
+    you can show information using the `console.log` function or check the console
+    object documentation to see the best method you can use at each moment ([https://developer.mozilla.org/en-US/docs/Web/API/Console](https://developer.mozilla.org/en-US/docs/Web/API/Console)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you write the word `window` in the console, you will see all the objects
+    that are in the global scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The console](img/7074OS_06_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: With the console, you can access variables in the current and global context
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can write the word `vm` (the view-model) to see the `vm` object we have
+    created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The console](img/7074OS_06_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: All components are set in the global scope
+  prefs: []
+  type: TYPE_NORMAL
+- en: But you can also write `Product` or `ProductService` or anything we have created
+    and you will see it. When you have a lot of information, to have all your objects
+    at the top level can be chaotic. Defining namespaces and keeping a hierarchy is
+    a good practice to keep your components isolated. You should keep just an entry
+    point to the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The module pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This pattern allows us to focus on which part of the code is exposed out of
+    the class (public elements) and which parts of the code are hidden to the final
+    user (private elements).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This pattern is commonly used in JavaScript software development. It is applied
+    in popular libraries like jQuery, Dojo, and ExtJS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This pattern has a very clear structure and is very easy to apply once you
+    know how to use it. Let''s apply the module pattern in our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, define the name of your module. If you define the module in different
+    files, it is important to define and initialize it applying a pattern that allows
+    it to be extensible. Using the `||` operator in the initialization indicates that
+    the `ModuleName` value will be assigned to itself if it has a value. If it hasn''t
+    got a value it means that this is the first time it has been created, so assign
+    to it a default value—in this case an empty object:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then, define each component of the module. It can be a function, a variable,
+    or another module:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, insert the dependencies of the module using the dependency injection
+    pattern. This pattern passes all module dependencies as parameters and invokes
+    the function immediately:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This how a complete module looks:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To define a component, return the `component` object. The first pattern to
+    define your component is to use the revealing module pattern. It consists of returning
+    an object to the end of the function that contains only the public interface.
+    These are singleton objects:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Creating the Shop module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To modularize our application, we are going to create a module called `Shop`
+    that will contain our entire application. This module will contain other submodules
+    and components. This hierarchical structure will help you to keep coherence in
+    your code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the first approach, group your components by file and by type. This means
+    that each component of the modules will be in a file and the files will be grouped
+    by type in a folder. For example, there is a folder named `services`. This means
+    that all services will be in this folder, and each service will be completely
+    defined in one file. As a convention, the components will have the same name as
+    the file in which they are, without the extension of course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, the files are already grouped by type so this is a job you don't need
+    to do again. We are going to focus our efforts on converting our files into modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ViewModel module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have just one view-model in our application. This is a component where we
+    can apply the singleton module approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are going to carefully create our first module step by step:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open the `viewmodel.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Define the `Shop` module, which is the top module of our application:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Initialize the `Shop` module by applying the extension pattern:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Define the `ViewModel` component:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Set the code from the unmodularized view-model version inside the module:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You have not converted other files into modules, but you are now going to add
+    dependencies into the module:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'At the end of the file, outside the module, initialize the template, validation,
+    and objects:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You need to update two methods in our view-model: the `activate` method and
+    the `allCallbackSuccess` method. The reason you need to update these methods is
+    because in the `allCallbackSuccess` method you need to run the `ko.applyBindings`
+    method, and `allCallbackSuccess` has no access to the this object because it is
+    out of the scope.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To solve this, we are going to use the same technique we used with the click
+    binding to attach more parameters. We are going to use the `bind` JavaScript method
+    to bind the `allCallbackSuccess` method to the this object. Therefore, we will
+    be able to run the `ko.applyBindings` using the this object as done in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using this pattern you can convert any piece of code into an isolated and portable
+    module. The next step is to create the `Models` module, the `Services` module,
+    and the `Resources` module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Models module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As we have done with the view-model, we are going to convert each model into
+    a component and we are going to wrap it inside a module called `Models`, the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open the `models/product.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Define our top-level module, `Shop`, and initialize it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then create the `Models` namespace. It will be an object or the value it has
+    before, in case it exists:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Define the product model with its dependencies. Remember, the first value is
+    the product itself. This allows us to extend the model in case we use many files
+    to define it. So, we define the product model as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Pass the dependencies. This time you just need to use the Knockout dependency
+    to use observables. Knockout is a global object and there is no need to add it
+    to the dependencies, but it is a good practice to do it as in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, set the code we had in the `models/Product.js` file earlier:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Follow the same steps to convert the `models/CartProduct.js` and `models/Customer.js`
+    files into modules. Models are perfect candidates to apply the pattern we use
+    to generate instantiable objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is important that you keep the consistency between components and file names.
+    Be sure that your files have the name of the component they contain with the `.js`
+    extension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the final result of converting the `models/CartProduct.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Also take a look at the result of the `models/Customer.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Resources module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In terms of code, building a module that contains a model and building one
+    that contains a resource is not so different. The module pattern applied is the
+    same. Nevertheless, you don''t need to create instances of the resources. To apply
+    CRUD operations to the models, you just need an object that handles this responsibility.
+    Therefore, the resources will be singletons, as done in the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open the `resources/ProductResource.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Create the top hierarchy module:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `Resources` namespace:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Define `ProductResource` using the module pattern:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Set the dependencies. In this case, jQuery is the dependency you need. jQuery
+    is a global object and you don't need to pass it as a dependency, but it's a good
+    practice to do so.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, set the following code in the `resources/ProductResource.js` file.
+    Since in our application resources are singleton, extend the resource with the
+    methods used in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now apply the same steps to the `OrderResouce` component. You can see the final
+    result in this piece of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Services module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Services are also singletons, like resources, so follow the same steps as the
+    resources module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open the `services/ProductService.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Create the top hierarchy module:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `Resources` namespace:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Define `ProductService`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In this case the service has no dependencies.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Finally, set the following code in the `services/ProductService.js` file. Since
+    in the application the resources are singleton, extend the resource with the methods
+    used in the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Events, bindings, and Knockout components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We are not going to modularize events, because they are specific to this application.
+    It makes no sense to isolate something that is not portable. We will not modularize
+    either bindings or components because they are injected into the Knockout object
+    as part of the library, so they are isolated enough and they aren't part of the
+    modules, but the Knockout object. But we need to update dependencies in all these
+    files because different parts of the application are now isolated in the `Shop`
+    module and its submodules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the add-to-cart-button component
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To update the component with new namespaces, update (overwrite) the references
+    to the dependencies, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Updating events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Update those lines of code that have dependencies from the new modules, as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: You have learned a very good pattern to manage dependencies without any external
+    tools. You can use it in almost all your projects. It will work better if you
+    combine all your files into one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This book is not going to cover how to join and minify files to use them in
+    a production environment. Joining and minifying files improves the performance
+    of applications because minifying reduces the size of files and joining them reduces
+    the number of HTTP calls to one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do this you can use Node.js ([http://nodejs.org/](http://nodejs.org/)) and
+    a build module like Grunt ([http://gruntjs.com/](http://gruntjs.com/)) or Gulp
+    ([http://gulpjs.com/](http://gulpjs.com/)). If you are interested in learning
+    about deployment practices like minification, combination of files, and so on,
+    there is a large bibliography about Node.js and deployment tools on the Internet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To access the code of this part of the chapter, go to the GitHub repository
+    at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/jorgeferrando/knockout-cart/tree/chapter6Part1](https://github.com/jorgeferrando/knockout-cart/tree/chapter6Part1).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using RequireJS to manage dependencies
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the previous section, you learned how to isolate different parts of the
+    code. You also grouped the files by type and component names, which follow a consistent
+    pattern. However, you have not solved one important problem that grows in proportion
+    to the size of the project. To give you a clue about what this problem is, let''s
+    see our `index.html` file. Look at the part of the `<script>` tags section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: You need to keep dependencies between all these files manually. The complexity
+    of doing this grows as the project does. Therefore, there is a problem when you
+    need to know the dependencies of all your files. This can be handled easily in
+    small projects, but when working on big projects this can be a nightmare. Also,
+    if you load all your files at the beginning, starting your application can be
+    penalized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To solve this problem, there are multiple libraries that can help. We are going
+    to use RequireJS (refer to [http://requirejs.org/](http://requirejs.org/) for
+    more information), which is focused on loading scripts asynchronously and managing
+    dependencies. It follows AMD to write different modules. This means it uses the
+    `define` and `require` statements to define and load different modules. AMD libraries
+    are focused on the client side of applications and help load JavaScript modules
+    when needed. For more information on AMD, please visit the following link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://en.wikipedia.org/wiki/Asynchronous_module_definition](http://en.wikipedia.org/wiki/Asynchronous_module_definition)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is very helpful because it optimizes the number of requests made. This
+    enables the application to start faster and load just the modules that the user
+    needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is another pattern to define asynchronous modules, called CommonJS (learn
+    more about it at [http://requirejs.org/docs/commonjs.html](http://requirejs.org/docs/commonjs.html)),
+    which is used by default by Node.js modules. You can use this definition in the
+    client-side application using Node.js and a library called **browserify** (learn
+    more about it at [http://browserify.org/](http://browserify.org/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this book, we are going to focus on RequireJS, because it doesn't require
+    Node.js or any compilation and is commonly used in client-side applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Updating the template engine
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Unfortunately, the `ExternalTemplateEngine` we have used until now is not AMD
+    compatible. This is why you should use other solutions. There is a KnockoutJS
+    extension called amd-helpers. You can download it from [https://github.com/rniemeyer/knockout-amd-helpers](https://github.com/rniemeyer/knockout-amd-helpers).
+    Ryan Niemeyer is the author of this extension. He is a very famous Knockout developer
+    and has a large following in the Knockout community. He has a blog called Knockmeout
+    ([http://knockmeout.net](http://knockmeout.net)) which has a large number of articles
+    about Knockout and good examples of how the amd-helpers library should be used.
+    In this book, we are just going to use the template engine. But this extension
+    has many other features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: RequireJS just loads JavaScript files natively. To load HTML files asynchronously,
+    download the text extension from [https://github.com/requirejs/text](https://github.com/requirejs/text)
+    and add it to the `vendors` folder. With this extension, you can load any kind
+    of file as text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, when we need to load a text file we just need to add the prefix `text!`
+    before the path of the file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Configuring RequireJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To configure RequireJS, create a file at the same level as the `viewmodel.js`
+    file lies. You can call it `main.js`, and follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Define the basic `config` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then, define the base URL for the scripts. This is where RequireJS will look
+    for scripts:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, define aliases for the paths of the vendor libraries in the `paths` attribute.
+    This helps you to avoid writing long paths in our module dependencies. You don''t
+    need to define the extension. RequireJS adds the extension for you:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Also, define dependencies inside the `shim` property. This tells RequireJS
+    which files must be loaded before a library is loaded:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Define the file that should be called when the configuration is done. In this
+    case the file is `app.js`. This file will be the entry point of the application
+    and will trigger all the dependencies that load at the start of our project:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now, remove all the `<script>` tags from the `index.html` file and reference
+    the `vendors/require.min.js` file. This file uses a `data-main` attribute to reference
+    the config file (`main.js`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Using RequireJS in our project
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To convert our modules into RequireJS-compatible modules, we will define them
+    using the AMD specification. This specification says that to define a module you
+    need to call the `define` function. This function receives an array that contains
+    strings. These strings represent paths or aliases from the configuration file
+    for each dependency (files required in the module).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second parameter that the `define` function needs is a function that will
+    return the module. This function will have dependencies from the array as arguments.
+    The good thing with this pattern is that code inside the `define` function will
+    not be executed until all dependencies are loaded. The following is what the `define`
+    function will look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function should always return the module variable, or whatever the module
+    needs to return. If we don't set the `return` statement the module will return
+    an undefined value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining the app.js file
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When we defined the RequireJS configuration, we said that the entry point will
+    be the `app.js` file. The following are the steps to create the `app.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create the `app.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Set the array of dependencies. Map these dependencies as arguments in the function.
+    There are some files that just execute code and they return an undefined value.
+    You don't need to map these files if they are at the end of the list of dependencies.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now define the body of the module. It will initialize global configurations
+    and global behaviors. Finally, it will return the view-model:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The first file has a lot of dependencies, which we should keep ordered. First
+    we have defined the libraries, then the view-model, mocks, components, and finally
+    events. Each of these files should also be defined as modules; when they are called,
+    the dependencies will be loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Notice how we have updated the template engine definition: the `defaultPath`
+    value to define where the templates are, the `deffaultSuffix` value to define
+    the extension of the templates, and the library used to load the templates (in
+    our case text). Now, we should apply this pattern to the rest of the files.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Converting a normal module into an AMD module
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To convert a normal module, we will perform the following steps. Always apply
+    the same steps for all our modules. We need to wrap them into the `define` function,
+    list dependencies, and return the module we returned in our old one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Open the `viewmodel.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Create the `define` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add all dependencies:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Export the module into the `define` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: When we write `knockout` as a dependency, RequireJS checks the configuration
+    to find the alias. If the alias doesn't exist, it looks in the path we have set
+    in the `baseUrl` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we should update all our files using this schema. Notice that elements that
+    should be set as dependencies are the same elements we have set using the module
+    pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying RequireJS to components
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We didn't modularize our bindings and components in the second part of the chapter.
+    But this doesn't mean that we couldn't.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use RequireJS not just to create modules, but also to load files asynchronously.
+    In our case, bindings and components don't need to return an object. When these
+    files are loaded, they extend the `ko` object and their job is done. A similar
+    case occurs with events. We initialize events and the work is done. So these files
+    just need to be wrapped into the `define` function. Add dependencies and load
+    them in the `app.js` file as we did in the previous section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the case of the `add-to-cart-button` component, the code in the file will
+    be the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Applying RequireJS to mocks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In the case of mocks, we need to require the Mockjax and the Mockjson library,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: Applying RequireJS to bindings
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Bindings are easy to convert. They just have jQuery and Knockout dependencies,
+    as shown in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: Applying RequireJS to events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Finally, we need to update the `events/cart.js` file. The confirm order event
+    needs to update the view-model. We can require the `viewmodel` as a dependency
+    and access its public interface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: The limits of the application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Finally we have a modularized application. Nevertheless, it has some limitations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the behavior of the browser's back and forward buttons? If we try to
+    use them our application doesn't work as it should.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we want to split our application into pages, do we always have to show and
+    hide templates in the same page?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As you can see, there is a lot of work to do. Knockout is good, but maybe it
+    needs to collaborate with other libraries to solve other issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a copy of the code developed in this chapter at [https://github.com/jorgeferrando/knockout-cart/tree/chapter6RequireJS](https://github.com/jorgeferrando/knockout-cart/tree/chapter6RequireJS).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you learned how to build modules in our projects and how to
+    load files on demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We talked about the module pattern and AMD specification to build modules. You
+    also learned how to debug KnockoutJS applications with the Chrome extension, Knockout
+    context debugger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we saw that when the application becomes bigger, it will need many
+    libraries to cover all the requirements. RequireJS is a library that helps us
+    with dependency management. Knockout is a library that helps us to apply the MVVM
+    pattern in our projects in an easy way, but big applications need other features
+    that Knockout doesn't provide.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next two chapters, you are going to learn about a framework called Durandal.
+    This framework that uses jQuery, Knockout, and RequireJS to apply the MVVM pattern.
+    In addition, Durandal provides more patterns to solve other problems, like routing
+    and navigation, and enables the addition of new features using plugins and widgets.
+    We can say that Durandal is the big brother of KnockoutJS.
+  prefs: []
+  type: TYPE_NORMAL

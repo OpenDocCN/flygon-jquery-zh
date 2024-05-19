@@ -1,0 +1,963 @@
+- en: Chapter 8. Developing Web Applications with Durandal – The Cart Project
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we know how Durandal works, it is time to migrate our old application
+    over to using our new framework. In this chapter, you will learn how to reuse
+    the code we have used in the book in other projects and also adapt part of the
+    code to the new environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We are going to develop a completely new application in this chapter. However,
+    we are going to reuse most parts of the code we developed in the last chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the disadvantages of working just with Knockout was that our application
+    needs to connect to many libraries as it grows. The application we have developed
+    during this book is very small, but has enough complexity and we haven't handled
+    an important problem like routing. Our application always lies on the same page.
+    We can't navigate between order and catalog or between cart and catalog. We have
+    our entire application on the same page, showing and hiding components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Durandal connects some libraries you have learned in this book and makes it
+    easy to connect to new ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Along the chapter, we are going to see some schemas with non-standard UML notation.
+    Nowadays, agile methods do not recommend using UML deeply, but these kinds of
+    diagrams help us to get a global and clearer view of the structure and requisites
+    of our features. Also, to deploy views we will see some sketches and mockups of
+    how the HMTL should be done:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introduction](img/7074OS_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The life cycle of our application
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the project
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To start the new project, we are going to follow some steps that will give
+    us a good starting point to develop our project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a new project as we did with the Knockout cart.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Inside this project, copy the content of the Durandal Starter Kit project.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Now we should have three folders in our project:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`app`: This contains our application'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`css`: This contains stylesheets'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`lib`: This contains third-party libraries'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Migrate the following libraries from the Knockout cart project to the Durandal
+    cart project:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`icheck`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`kovalidation`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`mockjax`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`mockjson`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Install a new library called Toastr from [http://codeseven.github.io/toastr/](http://codeseven.github.io/toastr/).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Update the `ko.validation.js` file on line 19 with the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Move the `style.css` file from the Knockout cart to the `css` folder in the
+    Durandal cart project.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Move the `models` folder inside the `app` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Move the `services` folder inside the `app` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a file called `bindings.js` at the same level as the `main.js` file and
+    move all the bindings inside the `koBindings.js` file there.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a file called `mocks.js` at the same level as the `main.js` file and
+    move all mocks inside the `mocks` folder there.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a file called `components.js` at the same level as the `main.js` file
+    and move all the components that are in the `components.js` file there.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Update the `knockout` library. The Durandal starter kit comes with version
+    3.1 and we are going to use 3.2, which is the version we used in the Knockout
+    cart project. Version 3.2 allows us to use the `inputText` binding and components.
+    You can see differences between all the versions at this link: [https://github.com/knockout/knockout/releases](https://github.com/knockout/knockout/releases).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Update the `main.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Set the project in your favorite server or copy the Mongoose executable in to
+    the folder where `index.html` lies.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Update `index.html` with the new css file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now our project is ready and it is time to migrate our cart step by step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Routing the project – the shell view-model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Durandal gives us the possibility of managing the routes in our project. We
+    are going to split different parts of our project into pages. That will give a
+    better user experience because we will be focused on just one task at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will split the app into four parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The cart
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The order
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The product CRUD
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These parts will contain more or less the same code we built in the Knockout
+    application. Sometimes we will need to adapt small pieces of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create these new routes, we will open the `shell.js` file and update the
+    router:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s review how the router works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`route` contains the relative URL. In the case of the catalog, there are three
+    URLs attached to this route. They are the empty route (''''), the slash (''/'')
+    route, and the catalog. To represent these three routes, we will use an array.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`title` will contain the title attached in the `<title>` tag.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`moduleId` will contain the view-model that handles this route. If we use conventions,
+    it will look for the view in the `views` folder, looking for the view which has
+    the same name as the view-model. In this case, it looks for `views/catalog.html`.
+    If we choose not to use conventions, Durandal will look in the same folder as
+    the view-model.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If `nav` is true, a link will be shown in the navigation menu. If it is false,
+    the router doesn't display the link in the navigation menu.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The navigation and shell templates
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As we did in [Chapter 7](ch07.html "Chapter 7. Durandal – The KnockoutJS Framework"),
+    *Durandal – The KnockoutJS Framework*, we are going to compose our `shell.html`
+    view in two parts: `shell.html` and `navigation.html`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The catalog module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the Knockout cart, we have a view-model that manages all parts of the application.
+    Here we are going to split that big view-model into several parts. The first part
+    is the catalog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we have a schema of how it should work:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The catalog module](img/7074OS_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The workflow of the catalog module
+  prefs: []
+  type: TYPE_NORMAL
+- en: Catalog will contain just the partial that includes the search bar and the table
+    with its actions. This makes the view-model smaller and therefore more maintainable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although files will be split into different folders, catalog is a module by
+    itself. It contains the view-model, the view, and some services that will only
+    work inside this module. Other components will be required, but they will be shared
+    by more modules along the live cycle of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file named `catalog.js` in the `viewmodels` folder and define a basic
+    reveal pattern skeleton to begin adding features:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a file named `catalog.html` in the `views` folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: By just doing this, our module is ready to work. Let's complete the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The catalog view
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We are going to use composition to create this template. Remember that composition
+    is one of the powerful features of Durandal. To complete this feature, we will
+    create three new templates that contain different parts of the root view. By doing
+    this, we made our view more maintainable because we isolated different parts of
+    the template in different files that are smaller and easy to read.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The catalog view](img/7074OS_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mockup of the catalog view
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Follow these steps to create the templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Open the `catalog.html` file and create the basic template:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a view called `catalog-searchbar.html`. We prefix child views with the
+    name of the root view, so if your editor orders files by name, they will be displayed
+    all grouped together. We can also group all of them inside a folder. We can choose
+    the way we feel more comfortable:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now it is time to define the view named `catalog-details.html`; it will contain
+    actions and cart details:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, we will define the `catalog-table.html`, which contains the table
+    we built in the Knockout cart project. Some `data-bind` elements should be updated
+    and the footer needs to be removed:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The catalog view-model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Now it''s time to define all the components we can identify along our templates.
+    We should begin defining the basic data we can locate inside the templates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once we define these variables, we realize that Knockout dependency is required.
+    Add it to the dependencies array and also as a parameter in the `module` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we should define the `filterCatalog` method. It''s the same method that
+    we have in our view-model in the Knockout project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `add-to-cart-button` component was defined in the Knockout project and we
+    don't need to touch any piece of code this component. This is a clear example
+    of how good components are and the potential they have.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To edit a product from the catalog, we need to navigate to the edit route. This
+    creates a dependency with the router plugin. We should add the `plugins/router`
+    dependency to our module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To remove a product from the catalog, we will need to remove it from the server
+    and also from the cart. To speak with the server, we will use the `services/product.js`
+    file, and to speak with the cart, we will create a new service in a file named
+    `services/cart`. Define the `remove` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: First we use the message component that Durandal has. It is very useful to handle
+    modal dialogs. We will ask the user whether the product should be removed. If
+    yes, we will remove it from the server and then refresh our view-model, and also
+    remove the product from the cart because it is not available any more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We should add a dependency to `durandal/app` and dependencies to `ProductService`
+    and `CartService`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`ProductService` was defined in the Knockout project. If we keep models and
+    services very simple, they will become portable and adapt themselves very well
+    to different projects.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now is the time to implement the `refresh` method. We will call the `ProductService.all()`
+    method and display a message letting the user know that the products are loaded.
+    We will return the promise this method generates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we use the same model for products that we used in the Knockout project.
+    We are seeing a lot of code, but most of it was done earlier in the book, so we
+    just need to move it from one project to the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The last step is to activate our view-model. When should a view-model be activated?
+    When our products come from the server and are ready to be shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first time we load the application, we check to see whether the catalog
+    has products. If it has, we just return that the catalog is ready. If the catalog
+    is empty, we create an event that lets other services notify the catalog that
+    it should be updated. Then we refresh the catalog to get new data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is the final result of our `catalog` view-model; of course we still need
+    to implement the log service and the cart service:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The cart service
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The cart service will manage cart data for all modules. The services have persistent
+    data along the session, so they can help us to share data between view-models.
+    In this case, the cart service will share some pages with the cart: catalog, cart,
+    and order.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cart service will react to operations performed over the `cart` observable.
+    The `add` operation is managed by the `add-to-cart-button` component but it would
+    be interesting to integrate this behavior here. The refactoring of code can be
+    a good exercise. In this example, we will keep the component and we will implement
+    the other methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cart service also stores the total amount of the cart in the `grandTotal`
+    observable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The cart service updates the cart as well. This will be useful because when
+    the catalog is updated, product references stored in the cart are different from
+    the new products in the catalog, so we need to renew these references. It also
+    updates the catalog, decreasing the stock by the units of each product that are
+    in the cart. We do this because the server sends us the data it has. The server
+    doesn''t know that we are shopping now. Maybe we decide not to shop, so the products
+    we have in the cart are not registered as sold. This is why we need to update
+    the units in the client once we get the products from the server. Here is the
+    code of the cart service:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The log service
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The log service allows us to display messages to inform the user about what
+    is happening in our application. To do this, we use a library called Toastr. We
+    can use Toastr directly on the application, but a good practice is to always encapsulate
+    libraries to separate the code we should not touch. Also, wrapping the library
+    in another one makes it easy to extend and customize the behavior of the library.
+    In this case, we have also added the ability to log the message in the console:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding products to the catalog
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The add feature is related with this route:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: To create this module, we need to create the add view and the add view-model.
+    To do this, create two files called `views/new` and `viewmodels/new.js` and repeat
+    the template we used with the catalog module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding products to the catalog](img/7074OS_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The add product workflow
+  prefs: []
+  type: TYPE_NORMAL
+- en: The add product view
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Creating or updating a product is more or less the same. The difference is that
+    when we edit a product, the fields have data, and when we add a new product, the
+    fields of this product are empty. This might make us wonder if maybe we can isolate
+    views.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s define the `new.html` file as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This means the `new.html` file is composed by the `edit.html` file. We just
+    need to define one template to manage both. Awesome, isn't it?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The add product view](img/7074OS_08_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The add new product mockup
+  prefs: []
+  type: TYPE_NORMAL
+- en: The edit view
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We just need to copy and paste the edit form we had in the Knockout project.
+    We have updated the layout, but we have used the same form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are some things that should be created dynamically, such as the title
+    of the layout and the button name. The `edit` method will say which method of
+    the product service should handle the product—`ProductService.create` or `ProductService.save`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The add product view-model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The add product view-model is coded in the `viewmodels/new.js` file. It will
+    create a new product. If all is successful, we notify the user and navigate to
+    the catalog. To show the new product in the catalog, we fire the `catalog:refresh`
+    event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the first version of our mocks, if we added a new project, our catalog wasn't
+    getting updated. It returned the same five products we got at the beginning. We
+    are going to improve our mock library to make it more realistic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making mocks real
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at our `mocks.js` file, specifically the get products mock:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Lets refactor this to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we are going to create the `updatedCatalog` function. We generate the array
+    of products at the beginning and then we always work with this copy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the old version of the mocks, when we got a product, we got one generated
+    randomly using a template. Now we are going to come back with the real one. We
+    will iterate along the catalog and return the product with the selected ID. Also,
+    we will update the mock object. Instead of writing a response text, we will create
+    a response function that will find the product and generate the correct response:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We should update the `POST` and `PUT` mocks to add products to the mocked catalog
+    and update the ones that exist:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We should also remove products from our mock when the `DELETE` method is invoked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we should move the order mock to this file in order to share the catalog.
+    When an order is performed, the stock in the catalog should be updated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: The order mock will generate a unique ID that identifies the order. This must
+    be sent back to the user to identify the order in the future. In our application,
+    this is the end of the life cycle of our project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is the `uuid` function we use to generate unique IDs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can leave this function in the mock module or create a new service that handles
+    unique ID generation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now our mock responds to the application in a more realistic way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The edit view-model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Coming back to our modules, we now need to create the `edit.js` view-model.
+    It will have the same structure as the `new.js` file, but in this case the activation
+    will retrieve the product we are going to edit. Then we will save the product
+    and the mock will update it on the (fake) server:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: We should notice that in both add product and edit product, the model is validated.
+    We made this in the Knockout project and now we are reusing it in this project.
+    Isn't it amazing?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cart module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The cart module will manage the partial that shows the cart. As we did in the
+    Knockout project, we should be able to update the quantity of the product. We
+    will remove items if we don't want them anymore. Also, we will only activate this
+    view if the cart has products in it, because it doesn't make sense to visit the
+    cart if it is empty. In that case, we will be redirected to the catalog.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The cart module](img/7074OS_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The cart workflow
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cart view
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The cart uses the same template we used in the Knockout project. Of course
+    we have adapted it a little bit to show it centered on the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we did with the cart item, we also compose the view here. The `cart-item.html`
+    file has the same code that is in the Knockout project. Just notice that `addUnit`
+    and `removeUnit` are now called by the parent:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![The cart view](img/7074OS_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The cart view mockup
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cart view-model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The cart view-model will talk to the cart service and will update the state
+    of the cart. Look how we are using the cart service to share information between
+    modules. This is because we have created the service as an object and it is a
+    singleton. Once it is loaded, it will persist during the application''s life cycle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are two ways to communicate between components in Durandal, services and
+    events. To share information between view-models, the best practice is to use
+    services. If you want to send messages from one service to a view-model, or between
+    view-models, you should use events. This is because services can be required inside
+    a module and you can call them explicitly. Moreover, we can't access view-models
+    from other view-models or services, which is why we need to send messages to them
+    using events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The order module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This module will manage the confirmation of our order. To complete an order,
+    we need to introduce our personal data. We can only access the order page if we
+    have something in our cart. Once we confirm our order, we will get a message from
+    the server with the order ID. The product's stock will be updated and we will
+    be able to continue shopping.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![The order module](img/7074OS_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The order workflow
+  prefs: []
+  type: TYPE_NORMAL
+- en: The order view
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The order view will be the same order view we built in the Knockout project.
+    This time we will use composition to make the view simpler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `order.html` file will contain the structure of the page and we will build
+    some partials to compose the entire view. These partials will be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`order-cart-detail.html`: This will contain the read-only cart'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`order-contact-data.html`: This will contain the personal data'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`order-buttons.html`: This will contain the action buttons of the page'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The `order.html` file will contain this code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `order-cart.html` file will contain the read-only cart. It's the same markup
+    you can find in the `order.html` template in the Knockout cart project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `order-contact.html` file will contain the form that is in the view `order.html`
+    Knockout cart project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, the `order-buttons.html` has the button to confirm the order. Of course,
+    you can find it in the `order.html` file we built in the Knockout cart project.
+    We re-use as much code as we are able to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![The order view](img/7074OS_08_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The order mockup
+  prefs: []
+  type: TYPE_NORMAL
+- en: The order view-model
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The order view will check whether our cart is empty to allow the activation.
+    Validation is managed by the customer model. This model was built in the Knockout
+    cart project. The rest of the code is partly from the big view-model we had in
+    the Knockout cart project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, our project is done and we have reused most of the old code. After
+    migrating the project, we can see the advantages Durandal gives us. Notice also
+    that we have not used the full potential of Durandal and Knockout. We can iterate
+    over this project and improve all the parts again and again. We can create perfect
+    isolated components. We can split the catalog into even smaller pieces and add
+    more functionality, such as ordering and pagination. However, this project gives
+    us a quick global overview of what Durandal is capable of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grouping code by feature – managing big projects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As you have seen in the `main.js` file, we are using Durandal conventions. This
+    means that all our view-models lie in the `viewmodels` folder and all our views
+    lie in the `views` folder. When we have a big project, having all the files in
+    the same folder can be difficult to manage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we remove the `viewLocator.useConvention();` statement from the
+    `main.js` file. This acts as an indication to Durandal that all the views are
+    in the same folder as the view-model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are going to group our project by features. We will define these features
+    in our project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: cart
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: order
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: product
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: shell
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'They will contain the code for each feature. Services, models, and other components
+    will be as we had when we used conventions. Take a look at what the folders look
+    like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Grouping code by feature – managing big projects](img/7074OS_08_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Files grouped by features
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We need to update some code. The first step is to update the main folder, setting
+    the new ID of the shell module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we should do the same with the router inside the shell module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, we need to update the compose paths. They should be full paths. This
+    means that where we have the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will now have the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our code will be ready to go.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that now it is easy to find where the code we are working on is. Usually,
+    we work on a feature and is more comfortable to have all the code of this feature
+    in the same place. Also, we can better see whether we are isolating our feature
+    properly. If we notice we are working too much out of the feature folder, maybe
+    it means you are doing something wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see the code for this chapter, you can download it from GitHub:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Durandal project using conventions from [https://github.com/jorgeferrando/durandal-cart/tree/chapter8part1](https://github.com/jorgeferrando/durandal-cart/tree/chapter8part1).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Durandal project grouping files by feature from [https://github.com/jorgeferrando/durandal-cart/tree/master](https://github.com/jorgeferrando/durandal-cart/tree/master).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Finally, we have developed a complete application that leads us to create Single
+    Page Applications using Durandal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: During this book, you have learned best practices to work with the JavaScript
+    code. These practices and patterns, such as the reveal pattern or the module pattern
+    are used in all frameworks and libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building isolated and small pieces of code helps us to migrate our code easily
+    from one environment to the other. In just one chapter, we have migrated our application
+    from a basic Knockout application to a Durandal one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we have developed good skills with Knockout and Durandal, we can try to
+    improve this application by ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can create a user module that enables users to log in and just allows administrators
+    to edit and delete projects from the catalog. Alternatively, we can paginate our
+    products and order them by price. We have acquired all the skills we need to successfully
+    develop all these features. We just need to follow the steps you have learned
+    during this book to complete these development tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I hope that you have enjoyed this book as much I have. I would like to tell
+    you that you need to push yourself to learn more about JavaScript, Knockout, Durandal
+    and all the fantastic JavaScript frameworks that nowadays exist on the Internet.
+    Learn the best practices and follow the best patterns to keep your code KISS and
+    SOLID.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,1349 @@
+- en: Chapter 5. Getting Data from the Server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We now have a cart application. To make it work as a real-world app, we need
+    it to get data from a server. However, this book is focused on how to develop
+    a project using KnockoutJS, not on how to configure and run a server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fortunately, this situation occurs in every project. Frontend developers begin
+    to work just with the data specification and without any backend servers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we are going to build a fully-functional frontend communication
+    layer without a server at the backend. To succeed in this task, we are going to
+    mock our data layer with fake objects. When we remove the mock layer, our application
+    will be able to work with real data. This will help us to develop our applications
+    faster and safer: faster because we don''t need to wait for a real server response,
+    and safer, because our data manipulation doesn''t affect the real server.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: REST services
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you are going to learn how to make the frontend layer communicate
+    with the backend layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You are not building a simple web page. You are building a web application.
+    This means that your project does not only contain data to display to the user,
+    along with some anchors to click on and navigate. This web page also has a logic
+    and model layer behind, and this makes it more complex than a simple web page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To communicate with the server the frontend uses web services. The **W3C**
+    (short for **World Wide Web Consortium**) defines a web service as a software
+    system designed to support interoperable machine-to-machine interaction over a
+    network. There are many protocols you can use to perform this interaction: SOAP,
+    POX, REST, RPC, and so on.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Nowadays in web development, RESTful services are most used. This is because
+    the **REST** (short for **Representational State Transfer**) protocol has some
+    characteristics that make it easy to use in such apps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: They are based on URI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Communication is made using internet media types (usually JSON, but it could
+    be XML or others)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'HTTP methods are standard: `GET`, `POST`, `PUT`, `DELETE`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is possible to use hyperlinks to reference the state of a resource
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To understand these concepts, we are going to see some examples. Considering
+    the cart scenario, suppose you want to retrieve all your products, do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Define the entry point to the API. RESTful protocol is URI based as:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now you want to retrieve all your products, so define a URI that points to
+    this resource as:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Since this is a retrieve operation, the HTTP header should contain the `GET`
+    method as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'To take advantage of the HTTP protocol, you can send metadata in the header;
+    for example, the type of the data you are sending and the data you want to receive,
+    in the following manner:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The server will respond with some data in the expected format and some information
+    that usually comes within HTTP headers, like the status of the operation: `HTTP/1.1
+    200 OK`. Following are the formats:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 2xx, if all goes fine
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 4xx, if there is an error on the frontend
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 5xx, if there is an error on the server side
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In case you want to update or delete an object, attach the ID of this object
+    to the URI and use the corresponding header. For example, to edit or delete a
+    product, call this URI using the proper method: `PUT` to edit and `DELETE` to
+    remove. The server will manage these requests properly looking for the information
+    in the URI and headers, for instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: To know more about REST and RESTful services, refer to [http://en.wikipedia.org/wiki/Representational_state_transfer](http://en.wikipedia.org/wiki/Representational_state_transfer).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining CRUD
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When you define a service to send and receive data, this object should usually
+    perform a minimum level of behavior. You can identify this behavior through the
+    acronym **CRUD**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Create (C)**: You need to send a message to the server with a new object
+    to persist it in a database. The HTTP `POST` verb is used for such requests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Retrieve (R)**: The service should be able to send a request to get a collection
+    of objects or just one specific object. The `GET` verb is used for such requests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Update (U)**: This is a request to update an object. By convention, the `PUT`
+    verb is used for such requests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Delete (D)**: This is a request to delete an object. The `DELETE` verb is
+    used for such requests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: More operations can be implemented, and sometimes you do not need to code all
+    CRUD methods. You should adapt your code to the application requirements and define
+    only operations that the application needs. Remember that writing more code than
+    the application needs means creating the possibility of writing more errors in
+    the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Singleton resources
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this application, we will refer to resources as objects that are related
+    to the URI contained in the API server. This means that to manage the `/products`
+    URI we are going to have a `ProductResource` object that will manage the CRUD
+    operations for this URI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will create this object as a singleton to guarantee that we have just one
+    object managing each URI in our application. For more information on singleton,
+    refer to [http://en.wikipedia.org/wiki/Singleton_pattern](http://en.wikipedia.org/wiki/Singleton_pattern).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting CRUD operations in the resource
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We are going to define some services to define CRUD operations for our products
+    and orders. A common mistake that some developers make is setting CRUD operations
+    within model classes. Best practice says that it is better to separate models
+    and communication layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To prepare your project, create a folder called `services`. In this folder,
+    store files that will contain CRUD operations. Perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create two files in the new folder. They represent two communication services:
+    `OrderResource.js` and `ProductResource.js`.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Open the `ProductResource.js` file and define basic CRUD operations as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This is the skeleton of the CRUD service. You use the `all` and `get` methods
+    to define the retrieve operation. The `all` method will return all the products,
+    and `get` just the product with the ID passed as the parameter. The `create` method
+    will create a product and the `update` method will update a product. The `remove`
+    method will perform the delete operation. We call it `remove` because `delete`
+    is a reserved word in the JavaScript language.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: To implement the body of these methods, use jQuery AJAX calls ([http://api.jquery.com/jquery.ajax/](http://api.jquery.com/jquery.ajax/)).
+    Such requests to the server are asynchronous and use a concept called promise
+    ([http://api.jquery.com/promise/](http://api.jquery.com/promise/)). A **promise**
+    is just an object that will contain a value in the future. This value is handled
+    by using a callback function.![Setting CRUD operations in the resource](img/7074OS_05_02.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Promise diagram: a promise executes asynchronous code'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To define the `retrieve` method, you need to define the configuration of the
+    AJAX request. Calling this method will return a promise. You can handle the data
+    contained inside this promise in the view-model in the following manner:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Notice that you just need to define the type of response and endpoint that the
+    server has available to get the data (you can see more parameters in the jQuery
+    documentation provided earlier). Also complete the `CREATE`, `UPDATE`, and `DELETE`
+    methods. Remember to respect the verbs (`POST`, `PUT`, and `DELETE`).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Remember that you are building a REST API, so follow the conventions of the
+    architecture. This means that a URL for an entity should be named as a plural.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To get all products, use the `/products` URL. To get just one product, still
+    use the `/products` URL, but also add the ID of the product to the URI. For example,
+    `/products/7` will return the product with the ID number `7`. If the relationship
+    is deeper, for example, "the customer 5 has messages", define the route as `/customers/5/messages`.
+    If you want to read the message with ID `1` from user `5`, use `/customers/5/message/1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are some cases where you can use singular names, such as `/customers/5/configuration/`,
+    because a user usually has just one configuration. It is up to you to define when
+    words should be pluralized. The only requirement is to be consistent. If you prefer
+    to use all names in the singular you can do so, there is no problem. Pluralizing
+    the name is just a convention, not a rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using resources in the view-model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we have created our product resource, we will use it in our view-model
+    to get our data back by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all, link the `ProductResource.js` file in the `index.html` file,
+    as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Since the resource works asynchronously, you can't apply bindings at the end
+    of the file because the data may not be ready yet. Therefore, bindings should
+    be applied when the data has arrived.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To do this, create a method called `activate`. This method will be fired at
+    the end of the file, on the same line we called `ko.applyBindings` earlier, in
+    the following manner:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Take this line of code:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Replace it with this one:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now define the `activate` method in the view-model:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'When you call the `all` method a jQuery promise is returned. To manage the
+    results of the promise, jQuery offers a promise API:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '`.done(callback)`: This method is triggered when a promise is resolved with
+    success. This means that a status different from 5xx or 4xx has been received.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.fail(callback)`: You can use this method to handle a rejected promise. It
+    is triggered by 5xx and 4xx headers.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.then(successCb, errorCb)`: This method gets two callbacks as parameters.
+    The first one is called if the promise is resolved and the second one if the promise
+    is rejected.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.always(callback)`: The callback passed to this method runs in both cases.'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By using HTTP headers you avoid sending extra information in the body response
+    to know that you have got an error. It is important to know about the protocol
+    you are using (HTTP in this case) and try to use all its advantages, in this case,
+    the possibility of sending information in its header.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Now it is time to define the `allCallbackSuccess` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: A jQuery AJAX callback always has the response as the first parameter. In this
+    case, you get a JSON response with all the items in the catalog.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The first step is to initialize the catalog as an empty array. Once the catalog
+    is initialized, iterate over the collection of items. This collection is stored
+    inside a data object. It is a good practice to isolate data within other variables.
+    This is just in case you want to add metadata to the response. Once you have the
+    catalog ready, link it to the `filteredCatalog` method.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: When you we have the initial data ready, that is the moment you can call the
+    `ko.applyBindings` method. If you call it outside the scope of callback you can't
+    be sure that the catalog will have all the items inside. This is because resources
+    perform operations asynchronously and that means that the code is not executed
+    sequentially. It is executed when the promise returned by the resource has data
+    available.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'The last step is to run the `activate` method at the end of the file, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we run our application, it will not work because there is no server to attend
+    to our requests. We will get a 404 error. To solve this problem, we are going
+    to mock our AJAX calls and data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using resources in the view-model](img/7074OS_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Making AJAX calls without a server behind will throw a 404 error
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Mockjax to mock HTTP requests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '**Mocking** **data** just means replacing the `$.ajax` calls with another function
+    that emulates its behavior. Mocking is a commonly-used technique when following
+    a test-driven development paradigm.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To mock jQuery AJAX calls, we are going to use a library called Mockjax. To
+    install Mockjax in the application, follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Download the library from [https://github.com/jakerella/jquery-mockjax](https://github.com/jakerella/jquery-mockjax).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save it into the `vendors` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Add a reference in the `index.html` page, just after the jQuery library. To
+    do this, use the `<script>` tag, as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Create a folder called `mocks` and create a `product.js` file inside it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In the `product.js` file, define a mock calling the `$.mockjax` function, as
+    follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In this definition, you are mocking the request called inside the `ProducResource.all()`
+    method. To define the mock you just need to define these parameters:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**url**: The URL you want to mock'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**type**: The type of request'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**dataType**: The kind of data you expect'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**responseTime**: The duration the response is going to take'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**responseText**: The body of the response'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating mock data with MockJSON
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Once you have mocked the HTTP call, you need to send some data in the response.
+    You have different possibilities:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can hand-write the data in the `responseText` attribute of the `$.mockjax`
+    call:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You can use a function to generate the mock data:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: You can use a library that generates complex and random data in the response.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This third option can be performed with a library called `mockJSON`. You can
+    download it from the GitHub repository at [https://github.com/mennovanslooten/mockJSON](https://github.com/mennovanslooten/mockJSON).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: This library allows you to generate data templates to create random data. This
+    helps you to keep your fake data more realistic. You can see on the screen many
+    different kinds of data. This will help you to check more data display possibilities,
+    such as words that overflow inside containers or text that is too long or too
+    short and appears ugly on the screen.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To generate a random element, define a mock template like this:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This template says that you want to generate between 5 and 10 elements that
+    have the following structure:'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: The ID will be a number between 1 and 100
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The product name will be a value stored in the `PRODUCTNAME` array
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The price will be a number between 10 and 500
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The stock will be a number between 1 and 9
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To generate the product name array, you just need to add an array or a function
+    to the `$.mockJSON.data` object, as follows:'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: You can generate any kind of data you can imagine. Just create a function and
+    return an array with the values you want to generate, or define a function that
+    generates a random result, a number, a unique ID, and so on.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'To return this as a response, attach this template to the response text. Your
+    code should look like this:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: Add the `mocks/product.js` file at the end of the `index.html` file with the
+    `<script>` tag and see how you get new random data each time you refresh the web
+    page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Generating mock data with MockJSON](img/7074OS_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: When a mock call is done, we see this message in the console
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving a product by ID
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To obtain just one product from our API, we are going to fake the `get` method
+    of `ProductResource`. The `ProductResource.get` method will be fired when we click
+    on the name of the product in the catalog list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This URI has the product's ID in the last segment of the URI. This means that
+    a product with ID=1 will generate a URI like `/products/1`. A product with ID=2
+    will generate a URI like `/products/2`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This implies, therefore, that we can't set the URL as a fixed string. We need
+    to use a regular expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you need more information about regular expressions check this link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to complete the code to retrieve a product, follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add a `mockjax` call to mock the URI. It should use the `GET` HTTP method.
+    Attach the regular expression to the `url` attribute, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a template that returns a single product object. To generate a random
+    description you can use the `@LOREM_IPSUM` magic variable that will return random
+    text. It works in the same way you built the `@PRODUCTNAME` variable. Let''s create
+    a template using the following code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Attach the following template to the `responseText` variable:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: In the `viewmodel.js` file, create a method that uses the `ProductResource`
+    object to retrieve the product. The method will display an alert box when the
+    data becomes available.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Bind the `showDescription` method to the `catalog.html` template:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Expose the `showDescription` method in the view-model interface:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Test how you get a description in the alert box.![Retrieving a product by ID](img/7074OS_05_05.jpg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Clicking on the product name will display the product description
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Creating a new product
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To create a product, follow the same steps as in the previous section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Add an AJAX mock call in the `mocks/product.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You should keep in mind some considerations:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You should use the `POST` verb to create an object. Actually, you can use any
+    verb you want, but as per the RESTful API conventions, the `POST` verb is the
+    one you should use to create new objects.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The response text is a message that provides some information about the result.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The result itself is managed by the headers:'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you get a `2xx` value in the status, the `done` method is fired.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you get a `4xx` or `5xx` error, the `fail` method is called.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Go to the `modelview.js` file and update the `addProduct` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Obviously, you can't send Knockout observables to the server. To convert objects
+    that contain observables into plain JSON objects, use the `ko.to` `JS` function.
+    This function iterates over the objects and extracts the value of each observable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can find information about `ko.to` `JS` and other methods at [http://knockoutjs.com/documentation/json-data.html](http://knockoutjs.com/documentation/json-data.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maybe you have noticed that when you add a new product, the stock goes down
+    by one. This is because when you use the `ko.toJS` function in the product it
+    executes all functions it has. So, to use it you should avoid methods that manipulate
+    the object and can change its values internally. We are going to solve this issue
+    in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Test that the application sends data when you call the `addProduct` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a new product](img/7074OS_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding new products uses the AJAX call; pay attention to URL and type fields
+  prefs: []
+  type: TYPE_NORMAL
+- en: Separation of concerns – behavior and data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have found a problem in our application. When we use the `ko.toJS` function,
+    the result is not as expected. This is a common scenario in software development.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have made a bad choice setting some logic in our models and we need to fix
+    it. To solve this problem, we are going to separate the data and these behaviors.
+    We are going to use some classes that we will call services.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Services will manage the logic of our models. This means that each model will
+    have a related service that will manage its state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the product service
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'If you look in the `models/product.js` file, you can see that the model contains
+    some logic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We are going to move this logic and some more to a service with the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a folder called `services`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Inside it, create a file called `ProductService`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Create a singleton object and add the `hasStock` and `decreaseStock` functions,
+    as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Update the `add-to-cart-button` component:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Notice that you need also to create a service to manage the cart item logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the CartProduct service
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The cart item service also extracts the logic of the `CartProduct` model. To
+    create this service, follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a file called `CartProductService.js` in the `service` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Remove the `addUnit` and `removeUnit` methods from the `CartProduct` model.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Update the service with these methods:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Updating a product
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In our catalog, we will want to update the value of our product. To complete
+    this action, follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, to update a product you need to mock the URI that handles the action:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add a button in each row in the `catalog.html` view, in the same cell you have
+    the `add-to-cart-button` component:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, open a modal with the data of this product:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The `tmpProduct` will contain a copy of the object you are going to edit:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The `selectedProduct` will contain the original product you are going to edit:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `clone` function in the `ProductService` resource:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Create the `refresh` function in the `ProductService` resource. This method
+    allows the service to refresh the product without losing the reference into the
+    cart.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add both methods to the service interface:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the `edit-product-modal.html` template to display the edit modal. This
+    template is a copy of the `create-product-modal.html` template. You just need
+    to update the form tag line, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'You also need to update the `button` bindings:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now, define the `cancelEditon` and the `saveProduct` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Finally, add these methods to the view-model API.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now you can test how to update different values of the product.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deleting a product
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To delete a product, follow some simple steps as you did with the `CREATE` and
+    `UPDATE` methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first step is to create the mocks in the `mocks/products.js` file, as follows:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This method is quite easy. Just add a button like the edit button and then the
+    action to remove it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a function to remove the product from the cart. This function iterates
+    over the cart items and locates the cart item which is related to the removed
+    product. Once this item is located, you can remove it as a normal item using the
+    `removeFromCart` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE46]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add a button in the catalog template next to the edit button:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Deleting a product](img/7074OS_05_07.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Edit and delete buttons
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Sending the order to the server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Once you can communicate with the server to manage our products, it''s time
+    to send the order. For this purpose, follow these instructions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a file named `resources/OrderResource.js` with this content:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE48]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Mock the call by creating a file called `mocks/order.js` and adding this code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Update the `finishOrder` method in the `viewmodel.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE50]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: One of the requirements of our application is that the user has the option to
+    update personal data. We are going to allow the user to attach personal data to
+    the order. This is important because when we send an order, we need to know who
+    is going to receive it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a new file in the `models` folder called `Customer.js`. It will contain
+    the following function that will generate a customer:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Link it to the view-model:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE52]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create also an observable array to store the countries that are available to
+    sell:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a form in the order template to show a form to complete the customer
+    data:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Send this information with the order request using the `finishOrder` method:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE55]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Our AJAX communication is complete. Now you can add and remove the `mocks/*.js`
+    files from your project to get fake data or real data. While using this method,
+    you don't need to have a server running behind your application when you are developing
+    frontend issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Sending the order to the server](img/7074OS_05_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once personal data is provided you can close the order
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling AJAX errors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We have built the happy path of our application. But in the real world an error
+    can occur during communication with the server. To manage this there are two ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `fail` method of the AJAX promise:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE56]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'A global AJAX error handler:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE57]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If you have a consistent error format, the global handler is a very good choice
+    to handle errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To test an error, update the status attribute of one mock from 200 to 404 or
+    501:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE58]'
+  prefs: []
+  type: TYPE_PRE
+- en: Validating data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now you can send and receive data, but what happens if the user sets some data
+    that is not allowed on the server? You have no control over user input. It is
+    important that if some values are not allowed, you alert the user to it. To validate
+    Knockout data, there is a library called Knockout Validation (which can be found
+    at [https://github.com/Knockout-Contrib/Knockout-Validation](https://github.com/Knockout-Contrib/Knockout-Validation))
+    that makes this very easy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This library extends the observables with some values that allow you to validate
+    the data when it changes. We are now going to update our models to add some kind
+    of validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending the product model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To validate our models using the Knockout Validation library, we are going
+    to extend our model''s attributes. **Extenders** are a basic feature of Knockout.
+    Using extenders we can add some properties to our observables to increase their
+    behavior. For more information on extenders, please refer to the following link:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://knockoutjs.com/documentation/extenders.html](http://knockoutjs.com/documentation/extenders.html)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are going to extend our product model with some properties that will allow
+    us to validate data by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go to the `models/Product.js` file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Update the `name` field. It should have at least three letters and should contain
+    just letters, numbers, and dashes:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE59]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Update the `price` to allow just numbers, and set a range (maximum and minimum
+    values) for it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE60]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Do the same with the `stock`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE61]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create a validation group to know when the full object is valid:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE62]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This error variable will contain an observable array. When this array has no
+    elements, all observables have a correct value.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'In the `add-to-catalog-modal.html` template, enable the create button only
+    if all values in the product are valid:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE63]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the same button to the `edit-product-modal.html` template:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE64]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'If you want to set a style for the error messages, you just need to define
+    CSS rules for the `validationMessage` class, as follows. A `span` element will
+    be shown next to the element that is bound with the validated observable:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE65]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Extending the customer model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'You also need to validate the customer data. These are the rules for validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A first name is required
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A last name is required and it needs a minimum of three characters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An address is required and it needs a minimum of five characters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An e-mail address is required and must match the built-in e-mail pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The zip code is required and must contain five numbers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To achieve this task, make some updates in the code, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Extend the customer object in the `models/Customer.js` file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE66]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Enable the buy button if the customer data is completed and valid in the `order.html`
+    template:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE67]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Show the user information in the `finish-order-modal.html` template:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE68]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Extending the customer model](img/7074OS_05_09.jpg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Validation messages that appear if information in the fields is not valid
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now our models are validated and we know that the data we are sending has a
+    valid format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To view the complete code of the application, you can download the code of this
+    chapter from [https://github.com/jorgeferrando/knockout-cart/tree/chapter5](https://github.com/jorgeferrando/knockout-cart/tree/chapter5).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you learned how to communicate with our application using jQuery
+    to perform AJAX calls. You also learned how easy it is to apply validation to
+    our models using the Knockout Validation library, which uses the `extend` method
+    native to Knockout to increase the behavior of observables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You experienced one of the problems that KnockoutJS has: you need to serialize
+    the objects to send them to the server and you need to wrap them in observables
+    when they come from the server. To solve this, you have the `ko.toJS` method,
+    but this implies having objects without code that allows them to update their
+    values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, you will learn how to manage dependencies between files
+    using RequireJS and the module pattern.
+  prefs: []
+  type: TYPE_NORMAL

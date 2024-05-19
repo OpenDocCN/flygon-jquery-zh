@@ -1,0 +1,818 @@
+- en: Chapter 11. Useful Responsive Plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With the constant evolution of technology and trends, there emerge new plugins
+    every day, helping more and more in the development of responsive websites. It
+    is important to keep yourself updated on them through blogs such as [http://www.smashingmagazine.com/](http://www.smashingmagazine.com/),
+    [http://bradfrostweb.com/blog/](http://bradfrostweb.com/blog/), and [http://www.lukew.com/ff/](http://www.lukew.com/ff/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will focus on showing different plugins by covering the
+    following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plugins for website structure such as Columns, Equalize, and Packery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plugins for menu navigation such as Sidr, EasyResponsiveTabstoAccordion, FlexNav,
+    and other miscellaneous plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plugins for website structure
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 2](ch02.html "Chapter 2. Designing Responsive Layouts/Grids"), *Designing
+    Responsive Layouts/Grids*, we have seen plugins such as Fluid Baseline Grid System,
+    1140 Grid, and Foundation 4, which form a development kit that will help us to
+    develop websites quickly. We need to keep in mind the objective to create a cohesive
+    website and avoid wasting time recreating something that is already done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are some other additional plugins such as Columns, Equalize, and Packery
+    which were not mentioned earlier in order to stay focused on building our website,
+    but they are very useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating simple responsive structures using Columns
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's start with the Columns plugin whose objective is to provide a quick creation
+    of responsive layouts just as the Grid systems do. Its simplicity makes it lightweight
+    and its learning curve is very fast. Columns has an MIT license, and works well
+    on IE9 and modern browsers. If you want to use IE8, it will require polyfills
+    for HTML5 and media queries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This plugin is recommended for small websites where we just need a simple and
+    quick responsive structure implementation. It does not mean it will not work for
+    medium and large websites, but in this case other frameworks may provide more
+    diversity of options and solutions that these websites may require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, there is an option to auto-adjust the minimum and maximum values
+    for font sizes depending on the screen size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For its implementation, we will need to access the website from [https://github.com/elclanrs/jquery.columns/](https://github.com/elclanrs/jquery.columns/)
+    and download the files of this solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, let''s insert the following code in the `<head>` tag of our DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s use this HTML code just as a sample to clarify the plugin usage,
+    but feel free to try this plugin on your current HTML structure. Notice that classes
+    such as `row-1` and `col` and IDs such as `content-1` and `content-2` will define
+    how the structure will look depending on breakpoint:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: By defining the classes, such as `row-2` or `row-4`, we are defining how many
+    columns are inside that section and IDs will give more control to display these
+    columns differently later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Basically, for this example we will use two breakpoints: 480 (standard for
+    plugin) and 1024\. At the bottom of DOM (before the `</body>` closing tag), we
+    will need to include the jQuery code and the Columns script. Then, we will run
+    the plugin by calling the `quickSetup` function and configure the column and breakpoint.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this sample, the section `content-2` starts with four columns per row when
+    the screen size is higher than 1024\. Then, we set 2 columns per row when the
+    screen size is less than 1024 pixels, and 1 column per row when it is less than
+    480 pixels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see the visual result of the plugin applied to a parent element viewed
+    on desktop and tablet screens:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating simple responsive structures using Columns](img/3602OS_11_01.jpg)![Creating
+    simple responsive structures using Columns](img/3602OS_11_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Also, the plugin allows you to add columns dynamically. But, to reflect this
+    change, it requires to call `$.columns.refresh()` on code after adding it on DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Equalize for element dimension adjustment
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When customizing the page to look like cards, there is a common problem that
+    occurs when loading the dynamic content whose dimensions may vary. We want to
+    keep all the items with the same look.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we float to the left of the list item elements, the content of each item
+    will influence to breaking the row, and instead the second row that starts from
+    left will start indented. So, the problem of undesirable layout card breaking
+    will look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Equalize for element dimension adjustment](img/3602OS_11_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Or if we define the same dimensions of all items, we will lose the dynamic dimension.
+    Something like that also happens to the width of the elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Equalize is created for equalizing the height or width of elements. It is a
+    lightweight and very helpful jQuery plugin that only requires specifying the parent
+    ID or class in order to be executed. Basically, it works by calculating the dimension
+    of bigger elements and defining it to other ones, avoiding any floating issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, it accepts all the following jQuery dimension methods to resize elements:
+    `height`, `outerHeight`, `innerHeight`, `width`, `outerWidth`, and `innerWidth`.
+    The most used is `height`, which is set to default by plugin.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's try to reproduce the same example seen before to see this plugin in action.
+    The objective is to implement the Equalize plugin, adjust all items to the same
+    dimension of the bigger element, and keep the floating working responsiveness
+    with no undesirable breaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After downloading it from [https://github.com/tsvensen/equalize.js/](https://github.com/tsvensen/equalize.js/),
+    we will start by adding the following HTML code in our source code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, at the bottom of DOM (before the `</body>` closing tag), we will need
+    to include the jQuery and Equalize libraries. After that, we will execute the
+    scripts for the `equalize-height` ID (parent of `<li>` elements).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'See the expected in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Equalize for element dimension adjustment](img/3602OS_11_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Implementing a card website layout with Packery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Packery is a jQuery plugin that uses an algorithm to fill empty gaps on website
+    layouts based on cards, adjusting them gracefully. The trend of the layout based
+    on cards came with Google+ and is gaining fans around the world.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Packery plugin has a GPL v3 license for non-commercial, personal, or open source.
+    If you want to use it on a public website, it will cost $25.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Its implementation is not too difficult, as we will see in the following example
+    of its usage. But to do it, we need to download it first from [https://github.com/metafizzy/packery](https://github.com/metafizzy/packery).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by creating an empty HTML file. A packaged source file includes
+    everything you need to use Packery. So, after downloading, let''s include this
+    suggested custom CSS on `<head>` tag to handle the card dimensions better:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, let''s use this `HTML` code where each item represents a card:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    jQuery and Packery libraries. Also, we will initialize the Packery script informing
+    the container ID, the class used for child elements which will be relocated, and
+    the desired space between columns (or gutter).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this is the visual result for tablets and desktops:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Implementing a card website layout with Packery](img/3602OS_11_12.jpg)![Implementing
+    a card website layout with Packery](img/3602OS_11_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Plugins for menu navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 3](ch03.html "Chapter 3. Building Responsive Navigation Menu"),
+    *Building Responsive Navigation Menu*, we have seen eight different popular menu
+    techniques, each one used for its own objective. There is no "jack of all trades"
+    menu that works well in all situations, unfortunately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to always stick together with the progressive user experience, we must
+    research how to improve our website as a product, commonly found by using new
+    JavaScript/jQuery plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will see three complementary plugins that bring small differences in approach
+    if compared with plugins we have seen. They are Sidr, EasyResponsiveTabstoAccordion,
+    and FlexNav.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a side menu with Sidr
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sidr is a jQuery plugin used for creating side menus, which are very common
+    on responsive websites. It also allows multiple Sidr menus (on both sides) and
+    works with external content as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's try to implement the following example by creating a standard HTML file
+    and adding the CSS file that is included in the plugin and may be downloaded from
+    [https://github.com/artberri/sidr](https://github.com/artberri/sidr). We will
+    find two options to display the menu in a dark (`jquery.sid` `r.dark.css`) and
+    a light way (`jquery.sidr.light.css`). We can use or extend them overriding some
+    styles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, after including one of them on the `<head>` tag, we may set the initial
+    style which will hide the menu header on screen sizes higher than 767 pixels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let''s use this HTML code just as a sample to clarify the plugin usage:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    the jQuery and Sidr libraries. After that, we will bind the execution of Sidr
+    with the menu button which is responsible for opening the side menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `#sidr-main` ID we have defined will be the ID of the sidebar menu `<div>`,
+    and `#navigation` is the ID of the menu we selected to display inside of this
+    sidebar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following screenshot, we will see the result of this implementation.
+    After clicking on the **Menu** link, the light-themed menu will appear on screens
+    smaller than 767 px (this value was customized by us):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a side menu with Sidr](img/3602OS_11_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Knowing about EasyResponsiveTabstoAccordion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: EasyResponsiveTabstoAccordion is a lightweight jQuery plugin which optimizes
+    normal, horizontal, or vertical tabs to accordion especially when displayed on
+    small devices such as tablets and smartphones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The objective of this plugin is to adapt the element according to the screen
+    size. Also, it prioritizes the content reading by starting to display the content
+    of the first tab followed by others. The effect implemented on this plugin is
+    entirely made by using jQuery which helps to provide cross-browser compatibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A better way to understand how it works is by practicing. After downloading
+    it from [https://github.com/samsono/Easy-Responsive-Tabs-to-Accordion/](https://github.com/samsono/Easy-Responsive-Tabs-to-Accordion/),
+    let''s create a standard HTML document and add the CSS file inside the `<head>`
+    tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we will use the following HTML code just as a sample of tab content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, at the bottom of DOM (before the `</body>` closing tag), we will need
+    to include the `jquery` and `easyResponsiveTabs` libraries. After that, we will
+    execute the scripts by informing the ID of our container element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is the visual result of the plugin when viewed on smartphones and screen
+    sizes more than 768 pixels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Knowing about EasyResponsiveTabstoAccordion](img/3602OS_11_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There are some optional parameters that would be informed when executing the
+    script, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`type: ''default''`: It can be set as `default`, `vertical`, `accordion`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`width: ''auto''`: It can be set as `auto` or any custom width'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`fit: true`: It helps fit the entire thing in a container'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`closed: false`: It closes the panels on start'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`activate: function(){}`: It is a callback function to include some custom
+    code which fires when the tab is changed'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding flexibility to your menu with FlexNav
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: FlexNav is a jQuery plugin that facilitates the creation of complex and responsive
+    navigation menus without having to write many lines of code. It has the mobile-first
+    approach which can reveal submenus for touchscreens just by tapping the target.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to controlling these nested subitems in a device-agnostic way, this
+    plugin has improved its accessibility for support navigation by keyboard tab and
+    has provided a fallback for old browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For its implementation you will find the downloadable files from [https://github.com/indyplanets/flexnav](https://github.com/indyplanets/flexnav).
+    Starting with a standard HTML document, it is necessary to add this code in the
+    `<head>` tag of code including the CSS file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we will include the following HTML code in a simple unordered list, adding
+    in the class and data attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, at the bottom of DOM (before the `</body>` closing tag), we will include
+    the jQuery and FlexNav libraries. After that, we will execute the scripts by informing
+    the ID or class of the menu element which we want to transform into responsive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a visual sample of what this plugin may offer if viewed on smartphones
+    and tablets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding flexibility to your menu with FlexNav](img/3602OS_11_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'It is also possible to inform the plugin of a few options when we are executing
+    the script, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`''animationSpeed'':''250''`: This sets the speed of animations that accepts
+    fast/slow too'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`''transitionOpacity'': true`: This specifies default opacity animation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`''buttonSelector'': ''.menu-button''`: This specifies the default menu button
+    class'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`''hoverIntent'': false`: This is used for hoverIntent plugin only'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`''hoverIntentTimeout'': 150`: This is used for hoverIntent plugin only'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Miscellaneous
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There is no specific category under which to regroup the following plugins we
+    will see. They are SVGeezy, Prefix free, Magnific Popup, Riloadr, and Calendario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: SVGeezy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: SVGeezy is a JavaScript plugin that handles SVG images for browsers such as
+    IE8 and earlier and Android 2.3 and earlier. Its working is very simple because
+    it only detects SVG images on our website and automatically searches for another
+    image (in PNG format for example) as a fallback for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fallback image must have the same filename. The change refers only to the
+    file format. Also, it is not necessary to be a PNG file. This format may be specified
+    when initializing the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you need support for these old browsers, we will see how to do it. First,
+    let's access and download the solution from [https://github.com/benhowdle89/svgeezy](https://github.com/benhowdle89/svgeezy).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, create a new standard HTML document and add the SVG image inside the
+    `<img>` tag, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Later, at the bottom of DOM (before the `</body>` closing tag), we will include
+    the jQuery and SVGeezy libraries. Then, we will execute the plugin by informing
+    two parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first one defines a classname which we can use if we do not have the SVG
+    fallback image or simply do not want to provide a fallback for that specific image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second one means that the extension of the image will be provided if the
+    browser does not support display of SVG images. The PNG extension is the most
+    common.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can also change `nocheck` to `false`, letting the plugin check all images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prefix free
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Prefix free provides us the facility to use only unprefixed CSS properties;
+    the plugin adds the current browser's prefix to any CSS code in a background service,
+    only when it's necessary. In order to make prefixes code independently, we do
+    not need to memorize what properties need prefixes anymore, and it may also avoid
+    refactoring the code later only to remove or add new prefixes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This plugin is not necessarily responsive, but since its objective is to give
+    more accessibility to the modern browsers, prevent the use of old prefixes and
+    do not forget to use them when it is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is not hard to start using it. First of all let's download it from [https://github.com/LeaVerou/prefixfree](https://github.com/LeaVerou/prefixfree).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this example, let''s re-use some HTML you already had and include `prefixfree.js`
+    in the `<head>` tag of DOM (right after the CSS files):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The plugin recommends including this in the header in order to minimize the
+    blink effect that happens (also known as the FOUC effect).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the comparison between before and after, where we may notice how many
+    lines of code we have saved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is how we commonly write a code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this one shows, how we could write the same cross-browser code when using
+    Prefix free:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: We saved many lines of code. Incredible, isn't it? Try it on your document and
+    check the benefits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Magnific Popup
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Magnific Popup is a jQuery plugin used for creating responsive popup windows
+    which have multiple uses, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Single image/image gallery displayed in overlay window
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Popup with video or map
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modal popup
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dialog with CSS animation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It focuses on performance and providing best experience for users with any device.
+    Regarding Internet Explorer browsers, Magnific Popups are compatible with Version
+    8 and earlier. It achieves it by providing a light and modular solution to be
+    downloaded from [http://dimsemenov.com/plugins/magnific-popup/](http://dimsemenov.com/plugins/magnific-popup/)
+    and clicking on the **Build tool** link.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The use of CSS3 transition instead of JavaScript animations significantly improves
+    the performance of animation. Also, this plugin has a kind of extendable microtemplating
+    engine that re-uses existing elements responsible to speed up the popup loading
+    when using the same pattern of popups (image gallery, for example).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s try to do this example by practicing it. We will start by creating a
+    new standard HTML document. After downloading the solution from [https://github.com/dimsemenov/Magnific-Popup](https://github.com/dimsemenov/Magnific-Popup),
+    let''s add the CSS file inside the `<head>` tag. This file is not required for
+    its working, but inside of it there are some useful styles responsible for good
+    effects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, we will add these two links on code displaying a simple image popup and,
+    the other one, a video popup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, at the bottom of DOM (before the `</body>` closing tag), we will need
+    to include the `jquery` and `magnificPopup` libraries. After that, we will execute
+    the scripts twice and inform the classes (we specified one link previously) for
+    each purpose:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is the visual of a simple image popup implementation viewed on
+    smartphones and tablets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Magnific Popup](img/3602OS_11_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There are many usage types which can be seen in detail in the plugin documentation
+    at [http://dimsemenov.com/plugins/magnific-popup/documentation.html](http://dimsemenov.com/plugins/magnific-popup/documentation.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Riloadr
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Riloadr is a responsive plugin for image loaders. In this section we will see
+    how it works with jQuery, although it is not required because it is framework-independent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This plugin is an alternative solution to deliver contextual images in responsive
+    layouts which use different image sizes at different resolutions in order to improve
+    page load time and user experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Riloadr uses the `data-src` and `data-base` attributes in the image tag element
+    instead of the common `src` attribute. So, this way we are able to handle the
+    image element selecting the best image to be displayed before the browser renders
+    the website.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are some highlight features that differentiate it from other competitors,
+    such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Absolute control on process of image loading
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unlimited breakpoints that may be set by using CSS properties, for example,
+    `minWidth`, `maxWidth`, and `minDevicePixelRatio`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Riloadr does not make multiple requests for the same image
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can create different Riloadr objects (named groups) and configure each one
+    to your needs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bandwidth testing to deliver high-resolution images only if the device has the
+    connection fast enough to download it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'After downloading it from [https://github.com/tubalmartin/riloadr](https://github.com/tubalmartin/riloadr),
+    the recommendation of the plugin is to let CSS and JavaScript files inside the
+    `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Once the Riloadr is loaded, we may set up its image groups:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The configuration of `minDevicePixelRatio` is related to the devices that support
+    high DPI images and load up the image used for 640 px (with a dimension twice
+    as large as normal).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we will just add this `<img>` tag on our HTML code using `data-src` and
+    `data-base`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Notice that on `data-base`, we will use `{breakpoint-name}` as a dynamic value
+    captured by Riloadr and identify on the breakpoint which has already been defined
+    previously. This name may be used as a place to store images by dimensions without
+    making a mess:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: When rendering the preceding code, the browser will detect the screen size and
+    select the correct breakpoint that it fits. Then, it will be replaced by the content
+    of the variable name we defined earlier, in this case, 320\. The same thing happens
+    if the browser identifies that the content of the variable name is 640, which
+    fits better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If the browser does not support JavaScript or something wrong happens, the `<noscript>`
+    tag will display the image we defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This following screenshot shows Riloadr in action, displaying images with different
+    dimensions being loaded only when it is required by the browser (depending on
+    breakpoints of 320 and 640 pixels):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Riloadr](img/3602OS_11_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Calendario
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Calendario is a jQuery responsive plugin which was built to provide a suitable
+    layout for improving a user's interaction with the calendar, keeping the calendar
+    structure fluid for easy adaptation to different screens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On large screens it displays a grid-based layout, while on smaller screens it
+    converts it into a stack of the days of the month vertically, facilitating its
+    visualization a lot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This solution will not work on all browsers yet because some of them do not
+    support new CSS properties such as `calc()`. These browsers are Internet Explorer
+    8, Opera Mini, and Android Browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calendario is available at [https://github.com/codrops/Calendario](https://github.com/codrops/Calendario).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by adding the CSS file that is included in the plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we will include this structured HTML, adding classes and IDs for JavaScript
+    handling later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, at the bottom of DOM (before the `</body>` closing tag), we will need
+    to include the jQuery and Calendario libraries. Then, we will initialize the script
+    by setting the container ID and will create two useful functions for month navigation
+    through the calendar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is a screenshot of this calendar viewed on smartphones/tablets
+    and desktops:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Calendario](img/3602OS_11_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'And how it may display on desktops:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Calendario](img/3602OS_11_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have learned about complementary plugins separated by three
+    categories which are complementing the previous chapters. For structure plugins,
+    we have learned how to use Columns for creating a simple responsive structure,
+    Equalize for better distribution of floated element on page, and Packery for creating
+    card layout websites. We have also learned different ways to display menus and
+    tabs by using Sidr, EasyResponsiveTabstoAccordion, and FlexNav. In the *Miscellaneous*
+    section, we have seen how to use SVGeezy, Prefix free, MagnificPopup plugin, Riloadr,
+    and Calendario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the last chapter, we will see different techniques to detect how fast the
+    website is loading. The performance topic is extensive, but since effective handling
+    of this metric is very important, we will see some techniques to improve the performance
+    when creating a responsive website.
+  prefs: []
+  type: TYPE_NORMAL

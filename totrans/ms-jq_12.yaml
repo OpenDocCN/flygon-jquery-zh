@@ -1,0 +1,1097 @@
+- en: Chapter 12. Using jQuery with the Node-WebKit Project
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this modern age, responsive design is the latest buzzword, where websites
+    built using jQuery can work correctly on any device or platform. Nevertheless,
+    this requires an Internet connection—what if we can develop an offline version
+    of the same app?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enter Node-WebKit (or NW.js, as it is now known). In this chapter, we're going
+    to take a break from exploring jQuery and explore one of the lesser-known ways
+    of using the library instead. You'll see how you can use the power of jQuery,
+    HTML5, and the desktop, mixing them to produce a replica of your site that works
+    offline in any desktop or laptop environment. We'll use it to have a little fun
+    with developing a simple file size viewer that uses jQuery, which can be easily
+    developed into something more complex that can run online or offline, as needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing Node-WebKit
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a simple site
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Packaging and deploying your app
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Taking things further
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ready to explore the world of Node-WebKit? Let's make a start…
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You may see references to NW.js online—this is the new name for Node-WebKit,
+    as of January 2015; you may see both names being used throughout this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the scene
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Imagine a scene, if you will, where a client has asked you to produce a web-based
+    application; they''ve outlined a specific set of requirements, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It must have a simple GUI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There shouldn't be any duplicates—it must be one version that works on all platforms
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The solution must be easy to install and run
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It needs to be portable so that it can be transferred if we change computers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hands up if you think a website will suffice? Now, hands up if you haven't read
+    the requirements properly…!
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this instance, a website isn't going to be enough; a desktop application
+    will deal with the duplication requirement, but it may not be easy to use and
+    certainly won't be cross-platform. So, where do we go from here?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing Node-WebKit
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Node-WebKit (or NW.js, as it is now known) was originally created by Intel but
+    open sourced in 2011 and is available at [http://nwjs.io/](http://nwjs.io/); the
+    project is an attempt to combine the best of SPA development with an offline environment
+    (where hosting a web server is not practical).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Node-WebKit is based on Chromium, a WebKit-based browser that has been extended
+    in order to allow you to control user interface elements that are normally off-limits
+    to web developers. The security model has been relaxed (on the basis that the
+    code we're running is trusted) and that it integrates NodeJS; this opens up an
+    array of possibilities, outside of what would normally be possible with HTML5
+    APIs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At first, it may seem like a complicated mix. However, fear not as most finished
+    solutions built in nothing more than plain HTML, CSS, and JavaScript, with a sprinkling
+    of images to finish it off.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The basic principle, as we will see throughout this chapter, is to produce
+    a normal site and then compress HTML, CSS, and all related resource files into
+    one ZIP file. We simply rename it to have an `.nw` extension and then run the
+    main `nw.exe` application. Provided that we''ve set up a requisite `package.json`
+    file, it will automatically pick up our application and display it on the screen,
+    as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing Node-WebKit](img/image00458.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Hold on though; this book is about jQuery, right? Yes, absolutely; here comes
+    the best part: Node-WebKit allows you to run standard JavaScript and jQuery along
+    with any Node third-party modules! This opens up a wide variety of opportunities;
+    we can use the main library or any of a host of additional jQuery-based libraries,
+    such as Three.js, AngularJS, or Ember.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The only key part that we really have to remember is that there are some quirks
+    of using NW.js, such as using a folder dialog to browse and select local folders;
+    we will cover this in more detail later in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, I am sure you will be asking yourself one question: why would
+    I want to use nw.js (or Node-WebKit)? This is a perfectly valid question; it might
+    well seem illogical that we''re running a web-based site as a desktop application!
+    In this apparent madness, there are some valid reasons for doing this, so let''s
+    take a look at them now and see why it makes sense to run a site as a desktop
+    application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Operating HTML applications on a desktop
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As developers, one of the biggest headaches we face is ensuring that users
+    have the same experience across all the browsers that we need to support when
+    accessing our site. Now, I should make it clear: in terms of the same experience,
+    there may be instances where this simply isn''t possible, so we have to at least
+    provide a graceful exit path for those browsers that don''t support a particular
+    piece of functionality.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, this concern is slowly but surely becoming less of an issue. The
+    great thing about Node-WebKit is that we only have to support Chrome (as this
+    is what Node-WebKit is based on).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In most cases, we can simply reuse the code created for Chrome; this allows
+    us to easily push out cross-platform applications using frontend frameworks (including
+    jQuery!) and Node modules that we already know or use. In addition to this, there
+    are several reasons why you will use Node-WebKit to help produce cross-platform
+    applications, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Access to the latest web technologies available in Blink, the rendering engine
+    behind Google Chrome.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: NW.js supports the *build once, run anywhere* concept—this may not suit all
+    applications, but many will benefit from sharing code between the desktop, web,
+    and mobile environments.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you want your app to run at a certain size or do some more advanced things
+    with popups, you get this control on the desktop. Most solutions also provide
+    a way to access the file system and allow other more advanced controls that you
+    wouldn't get with a regular web application.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Without wanting to appear negative, there are some considerations that you need
+    to be aware of; the principal concern is the size of the executable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A site or an application created with native UI libraries, such as jQuery,
+    may only be a few kilobytes in size. An equivalent version built using Node-WebKit
+    will be significantly bigger, as it includes a cut-down version of Node and Chromium.
+    It''s for this reason that you need to be careful about file sizes—you can use
+    some of the tips and tricks from [Chapter 2](part0021.xhtml#aid-K0RQ1 "Chapter 2. Customizing
+    jQuery"), *Customizing jQuery*, to reduce the size of jQuery. There are a couple
+    of other concerns that you need to be mindful of; they include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compared to native applications, desktop web applications typically require
+    a much larger amount of RAM and CPU power to run and render.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In terms of appearance, if you want to make your application look good on the
+    platform you're planning on deploying to, then you'll need to either recreate
+    common UI elements using CSS or create a totally new UI, including a new design
+    for every operating system-provided UI element, such as the title bar, menu bar,
+    and context menus.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Although Node-WebKit relaxes some of the security issues that are otherwise
+    found when using browser applications (such as the same origin policy), you still
+    only have access to the Node-WebKit context; and in some instances, you have to
+    use WebKit-specific tags, such as `nwdirectory`, when creating a select directory
+    dialog. The net effect means an increase in code, if you want to create one file
+    that supports both web and desktop environments. You can mitigate against the
+    effects of this issue: [http://videlais.com/2014/08/23/lessons-learned-from-detecting-node-webkit/](http://videlais.com/2014/08/23/lessons-learned-from-detecting-node-webkit/)
+    provides a useful trick to determine which environment you are in and allows you
+    to reference the appropriate files needed for that environment.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on some of the security considerations, take a look at
+    the security page on the NW.js Wiki, available at [https://github.com/nwjs/nw.js/wiki/Security](https://github.com/nwjs/nw.js/wiki/Security).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we've been introduced, let's delve in and get started with installing
+    Node before we start building our jQuery-based application. It should be noted
+    that the focus of this chapter will be largely based on Windows, as this is the
+    platform that is used by the author; changes will need to be made for those using
+    Linux or Mac platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing our development environment
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Over the next few pages, we're going to build a simple application that displays
+    the file sizes of any files dropped into the main window or selected via a file
+    dialog. In reality, we wouldn't use the application on its own, but as a basis
+    for uploading images for processing or perhaps as the offline version of a compression
+    application. There are plenty of ways in which we can develop it further—we will
+    touch on some ideas later in the chapter, in the *Taking things further* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the meantime, let''s get started with installing NW.js. Before doing this,
+    we need to avail ourselves of the following tools:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A compression program is needed; on the Windows platform, you can use the in-built
+    capabilities or something such as 7-Zip ([http://www.7-zip.org](http://www.7-zip.org)),
+    if preferred.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will need a text editor; throughout the course of this chapter, we will use
+    Sublime 2 or 3, but any good text editor should suffice if you already have a
+    personal preference. Sublime Text can be downloaded from [http://www.sublimetext.com](http://www.sublimetext.com),
+    with versions available for the Mac, Linux, and Windows platforms.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We''ll be making use of Node and Grunt to install additional packages. Node
+    is available at [http://www.nodejs.org](http://www.nodejs.org), so go ahead and
+    install the version suitable for your platform. Once installed, run this command
+    from a NodeJS command prompt to install Grunt:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Last, but by no means least, we need the Node-WebKit library (of course), so
+    head over to [http://nwjs.io/](http://nwjs.io/) and download the version appropriate
+    for your platform. If you expand the folder, you should see something similar
+    to what is shown in this screenshot:![Preparing our development environment](img/image00459.jpeg)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As an aside, Node-WebKit can be easily integrated into existing Grunt files,
+    which means that we can take the advantage of packages such as `cssmin` to minify
+    the CSS style sheets we create for our application. It is definitely worth exploring
+    as you become more familiar with Node-WebKit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enough of the chit-chat; it's time for us to start developing! As with all other
+    things, we need to start somewhere. Let's have a crack at creating a simple "Hello
+    World" example, before we look at how to use jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing and building our first application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'I wonder: how many times have you read books or online articles about a programming
+    language, which provide their own take on the ubiquitous "Hello World" example?
+    I''ll bet it must be quite a few times over the years…and yes, before you ask,
+    we''re not going to break the tradition either! Following in the footsteps of
+    anyone who has provided "Hello World" examples, here''s our own take.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing and building our first application](img/image00460.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To build this, we need to do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Browse to [http://nwjs.io/](http://nwjs.io/) and download the package for your
+    platform; we will assume the use of Windows for now, but packages are available
+    for Mac and Linux platforms as well.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Extract the `node-webkit-vX.XX.XX-win-x64` folder (where `XX` is the version
+    number), rename it as `nodewebkit`, and copy it to your main PC drive—Linux or
+    Mac users can copy this folder to their user areas. Once done, create a new folder
+    called `development` within the `nodewebkit` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next up, we need to install NodeJS. To do this, head over to [http://nodejs.org/download/](http://nodejs.org/download/)
+    in order to download and install a version suitable for your platform, accepting
+    all the defaults.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Node-WebKit can use any of the standard Node packages available. As an example,
+    we''re going to install the `markdown` package, which converts suitably marked
+    up plain text to valid HTML. Let''s continue the exercise by installing it and
+    seeing how it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the NodeJS command prompt, change to the `helloworld` folder and then enter
+    the following code and press *Enter*:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: '![Installing and building our first application](img/image00461.jpeg)'
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+- en: Close the window as you don't need it. Next, extract a copy of the `index.html`
+    and `package.json` files from the `helloWorld` folder in the code download that
+    accompanies this book; save these in the `helloWorld` folder in your project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create a new ZIP folder called `helloWorld.zip` and then add these two files
+    to it; rename `helloWorld.zip` to `helloWorld.nw`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We can now run our application; there are three ways to do this with Node-WebKit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the NodeJS command prompt, switch to the `nodewebkit` folder and then run
+    the following command:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Double-click on the `nw.exe` application; this will pick up the `package.json`
+    file and run the `helloworld.nw` file automatically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Drag and drop the `helloworld.nw` file onto `nw.exe` to run the application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whichever route you prefer to use, running it will show the **Hello World**
+    window shown at the start of this exercise. It's a simple, no-frills example of
+    using Node-WebKit—granted it won't win any awards, but it shows how simple it
+    is to create a functional application from existing HTML pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dissecting the package.json file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'At the heart of our application is the `package.json` file. This manifest file
+    tells Node-WebKit how to open the application and controls how the browser should
+    behave:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Dissecting the package.json file](img/image00462.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: It's worth getting to know this file in detail; it holds all the metadata for
+    the project and follows the standard format for all Node-based packages. If you're
+    not familiar with the manifest file, you can see a detailed example at [http://browsenpm.org/package.json](http://browsenpm.org/package.json)
+    with interactive explanations for each section; Node-WebKit's version works in
+    a similar fashion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more in-depth details about the Node-WebKit manifest file and the components
+    that make it up, head over to the documentation on the main NW.js site ([https://github.com/nwjs/nw.js/wiki/manifest-format](https://github.com/nwjs/nw.js/wiki/manifest-format)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right, it's time to get stuck in and build our example application!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building our simple application
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Over the next few pages, we''re going to build a simple application that allows
+    us to drag and drop a file onto a drop zone in order to render the file sizes.
+    It''s based on the tutorial by Martin Angelov, which is available at [http://tutorialzine.com/2013/05/mini-ajax-file-upload-form/](http://tutorialzine.com/2013/05/mini-ajax-file-upload-form/);
+    we''ll concentrate on the frontend UI interface and not worry about the backend
+    upload facility for the purposes of our demo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Building our simple application](img/image00463.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Even when just working on the frontend user interface, there''s still a fair
+    amount of code involved; our focus will be primarily on the jQuery code, so let''s
+    take a look at the demo in action first before exploring it in more detail. To
+    do this, perform the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use a small bit of PHP code in our demo, so we need to set up web server
+    space first, such as WAMP (for a PC—[http://www.wampserver.de/en](http://www.wampserver.de/en))
+    or XAMPP (or MAMP for Mac—[http://www.mamp.info/en](http://www.mamp.info/en)).
+    Linux users will have something available from within their distro. We'll use
+    WAMP for this demo—please adjust locations accordingly if yours are different;
+    use the default settings when installing it. If you prefer a cross-browser solution,
+    then XAMPP is a good option—it's available at [https://www.apachefriends.org/index.html](https://www.apachefriends.org/index.html).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next up, we need to extract a copy of the `FileSizeView` folder from the code
+    download that accompanies this book. This contains the markup required for our
+    application to work. Save the folder within `C:\wamp\www`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We need a copy of Node-WebKit to run our application, so go ahead and copy the
+    contents of the `nwjs` folder that is in the code download into the `FileSizeView`
+    folder. If all is well, you should have the files shown as follows:![Building
+    our simple application](img/image00464.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this stage, if we double-click on `nw.exe`, we should see our application
+    run. Also, you will see the window displayed at the start of this exercise.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Okay, so it shows the window; "how does it all work," I hear you ask? Well,
+    there are a few key points to note from this exercise, so let's spend some time
+    to go through things in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring our demo further
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you take a look at the `FileSizeView` folder in more detail, you should
+    see that most of the content centers around the `index.html` and `upload.php`
+    files, with the associated CSS, image, and JavaScript files needed to make the
+    demo work. In addition, we have a number of files from the Node-WebKit folder—these
+    provide a cut-down version of Node and Chromium, which is used to host our files:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`nw.exe` and `nw.pak`: This is the main Node-WebKit executable and JavaScript
+    library file that runs our code, respectively.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`package.json`: This is a manifest file that we saw in use earlier in the chapter,
+    in the *Installing and building our first application* section; this provides
+    directions to Node-WebKit on how to display our application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`ffmpegsumo.dll`: This is used to provide video and audio support; it isn''t
+    necessary for our demo but can be included for future use.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`filesizeview.nw`: This is our zipped up application; this is the file that
+    Node-WebKit runs once it has checked `package.json` to verify how it should be
+    displayed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`gruntfile.js`: This is the Grunt file for `grunt-node-webkit-builder`, which
+    we will use later in *Automating the process* to compile our files into one application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`icudtl.dll`: This is a network library required by Node-WebKit.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`libEGL.dll` and `libGLESv2.dll`: These files are used for **Web Graphics Library**
+    (**WebGL**) and GPU acceleration.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In some Node-WebKit applications that are available online, you may see the
+    presence of `D3DCompiler_43.dll` and `d3dx9_43.dll` too. These are from the DirectX
+    redistributable and are used to provide increased WebGL support.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dissecting our content files
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Okay, so we have our main Node-WebKit files; what else are we using? Well, in
+    addition to the standard HTML markup, images, and styles, we also use a number
+    of jQuery-based plugins and some custom jQuery code to tie together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main plugin files in use are jQuery, jQuery UI, jQuery Knob, and the BlueImp
+    file upload plugin. We also use some custom code to tie this all together—they
+    are in `window.js` and `script.js`. Let's take a look at these in more detail,
+    beginning with `window.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring window.js
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In `window.js`, we first make a call to `nw.gui`, the native UI library for
+    Node-WebKit that uses `require()`; this is a standard format for calling any module,
+    such as internal ones or even external third-party modules. We then assign this
+    to the `gui` variable before using this to get a handle on the window of our application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that as we can only access the Node-WebKit context, we must use the dedicated
+    library; we cannot access the window using a standard JavaScript call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For more information on accessing modules, take a look at the documentation
+    available at [https://github.com/nwjs/nw.js/wiki/Using-Node-modules](https://github.com/nwjs/nw.js/wiki/Using-Node-modules).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next up, we set two delegated document handlers, one to handle the minimizing
+    of the window and the other to close it completely:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This scratches the surface of what we can do; there is so much more. Head over
+    to [https://github.com/nwjs/nw.js/wiki/Window](https://github.com/nwjs/nw.js/wiki/Window)
+    in order to get a feel of what is possible to achieve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dissecting the BlueImp plugin configuration
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The main functionality within our site is hosted in `script.js`. This contains
+    the main configuration object for the BlueImp file upload plugin along with some
+    additional helpers. Let's take a look at it in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We start with the normal document-ready call before assigning a reference to
+    the `#upload li` list item as a variable, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next up, we configure the file upload plugin. First, we set the initial drop
+    zone to the `#drop` selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We then set up the `add` callback function. This deals with displaying each
+    list item that has been added to the list, either via drag and drop or by browsing
+    for the file. We start by creating a template and then cache it in the `tpl` variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We then find the filename that has just been added, before working out and
+    appending the `filesize` function to the list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next up, we initialize the jQuery Knob plugin. Although it is nonoperational
+    for now, it will produce a good circular status gauge of the progress in uploading
+    any file to the remote location:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the moment, we''re not using the cancel icon. This will be the event handler
+    we''d need to use to work out if we cancel the upload of any item while it is
+    in progress:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is the key method handler within the `fileupload` object. This takes care
+    of working out the percentage value of progress in uploading the file before triggering
+    a change to update the jQuery Knob plugin, as shown here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the file fails to upload, then we set a class of `.error`, which is appropriately
+    styled within the accompanying style sheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In addition to the main `fileupload` configuration object, we also set a couple
+    of helper functions. The first helper function prevents the normal action that
+    should take place if we drag anything over the document object, which will be
+    an attempt to display it within the browser window:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The second helper function handles the conversion of the file size from a byte
+    value to either its kilobyte, megabyte, or gigabyte equivalent, before returning
+    the value for rendering on the screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At present, there is definitely scope for improvement in our project: it will
+    work fine within a normal browser window but needs modification to make it operate
+    100 percent properly within a Node-WebKit context. We''ll cover some ideas as
+    to where we can improve the code later, within the *Taking things further* section,
+    but for now, there is one important tip we need to cover off before we consider
+    debugging our application.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Automating the creation of our project
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: One key theme that I've tried to maintain throughout this book is how we can
+    be smarter at doing things; anyone can write code, but the smarter developer knows
+    when it is time to automate some of the more mundane tasks and use their time
+    on tasks that will return more value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One way in which we can improve on creating and building our project is to
+    automate the generation of our skeleton project. Thankfully, we can do this using
+    the Yeoman generator for node-webkit applications (available at [https://github.com/Dica-Developer/generator-node-webkit](https://github.com/Dica-Developer/generator-node-webkit)),
+    which we can install using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The preceding command is followed by this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This displays the following screenshot, which shows the details being entered
+    for a test project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Automating the creation of our project](img/image00465.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If all went well, you should see your predefined folder structure in place,
+    ready for you to use, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Automating the creation of our project](img/image00466.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: This makes it a lot easier to create the folder structure needed and to maintain
+    consistency in projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugging your application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: At this point, you should have a working application that you can deploy. While
+    it has to be said that ours needs more work before it will be ready for release,
+    the principles behind deployment are still the same, irrespective of the application!
+    There is one small thing I want to cover off, before we look at deployment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remember how I mentioned Sublime Text will be used throughout this chapter?
+    Well, there''s a good reason for this: it lends itself perfectly to build the
+    application to a point where we can run it and debug the application. To do this,
+    we need to create a new build system file for Sublime Text (such as the one outlined
+    as follows, for Windows):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The process to add in the new build file for Sublime is quick—for full details,
+    head over to [https://github.com/nwjs/nw.js/wiki/Debugging-with-Sublime-Text-2-and-3](https://github.com/nwjs/nw.js/wiki/Debugging-with-Sublime-Text-2-and-3).
+    It's a useful trick to use while developing your application, as the manual build
+    process can get very tedious after a while!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Packaging and deploying your app
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Okay, so we have a working application that is ready for packaging and deployment;
+    how do we turn it into something that we can make available for download?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Packaging a Node-WebKit application is surprisingly easy. There are a couple
+    of caveats, but in the main the process centers around dropping all the Node-WebKit
+    distributable files into a folder along with our content and shipping it as a
+    renamed zipped file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are several different ways to package our files, depending on the platform
+    being used. Let's take a look at a couple of options using the Windows platform,
+    beginning with a manual compilation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For those of you who work on Apple Macs or Linux, details on how to package
+    apps are available at [https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps](https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating packages manually
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Assuming that we''re ready to deploy our application, these are the basic steps
+    to follow when creating packages manually—for this example, we''ll use the files
+    created earlier, in the *Building our simple application* section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a new blank ZIP file and add the `package.json`, `ffmpegsumo.dll`, `icudtl.dat`,
+    `libEGL.dll`, `libGLESv2.dll`, and `nw.pak` files—these are needed to host the
+    site within the cut-down version of Chromium and Node.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add the `css`, `img`, and `js` folders along with `index.html` to the ZIP file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Rename ZIP to the `.nw` file and then run `nw.exe`—this will use the `package.json`
+    file to determine what should be run.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Note that Node-WebKit packages do not protect, obfuscate, digitally sign, or
+    make the package secure; this means that making your package open source is a
+    much better option, if only to avoid any problems with licensing!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Automating the process
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Hang on, creating a package is a manual process that gets tedious after a while
+    if we're adding a lot of changes, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Absolutely, the smart way forward is to automate the process; we can then combine
+    it with a Grunt package, such as `grunt-contrib-watch` (from [https://github.com/gruntjs/grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)),
+    to take care of building our packages as soon as any change is made. There are
+    several ways to automate it—my personal favorite is to use `grunt-node-webkit-builder`,
+    from [https://github.com/mllrsohn/grunt-node-webkit-builder](https://github.com/mllrsohn/grunt-node-webkit-builder).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The node-webkit-builder plugin was created by the same developers as the ones
+    behind grunt-node-webkit-builder; the only difference is that the latter has additional
+    support for use with Grunt. If you want to switch to using Grunt, you can install
+    a supplementary package, `grunt-node-webkit-builder-for-nw-updater`, which is
+    available at [https://www.npmjs.com/package/grunt-node-webkit-builder-for-nw-updater](https://www.npmjs.com/package/grunt-node-webkit-builder-for-nw-updater).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at the plugin in action—the exercise assumes that you have
+    NodeJS already installed, before continuing with the demo:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a new file within the project folder, add the following code and save it
+    as `gruntfile.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next up, we need to install grunt-node-webkit-builder; therefore, go ahead and
+    fire up an instance of the NodeJS command prompt and then navigate to the project
+    folder, which we used earlier in the *Building our simple application* section.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Enter this command, then press *Enter*, and wait for it to complete:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'In the `package.json` file, you will see that the following lines have been
+    added, as indicated:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you need to see what the `package.json` will look like, then head over to
+    [https://github.com/3dd13/sample-nw](https://github.com/3dd13/sample-nw). There
+    is a sample file at [https://github.com/3dd13/sample-nw/blob/master/package.json](https://github.com/3dd13/sample-nw/blob/master/package.json),
+    which shows the contents of the code we've just entered into our own version of
+    the file.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: At this stage, we're now ready to build our package. At the prompt, type `grunt`
+    and then wait for it to complete; you should see it build the package, as shown
+    in the following screenshot:![Automating the process](img/image00467.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If you revert to the folder where our files are stored, you should now see that
+    a `builds` folder has appeared; navigating through it will show you something
+    similar to this screenshot, where you have the contents of the `win64` build folder
+    displayed:![Automating the process](img/image00468.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this stage, we can double-click on the `FileSizeView.exe` application to
+    launch the program. This will display our application in all its glory, ready
+    for use. Perfect! We can deploy the files now, right?
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Deploying your application
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Mmm…hold your horses; as you should know by now, we can always do better!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Absolutely; in this instance, better comes in the form of creating a setup
+    installer so that we only need to distribute a single file. This is much easier
+    to work with! It has the added bonus of compressing the files further; in our
+    example, by using the open source Inno Setup package, the results drop from approximately
+    80 MB to around 30 MB. Let''s take a look at what''s required to produce a setup
+    file for the Windows platform:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first need to download and install Inno Setup. Head over to [http://www.jrsoftware.org/isinfo.php](http://www.jrsoftware.org/isinfo.php)
+    and then click on **Download Inno Setup**; the `setup.exe` file can be downloaded
+    from the table about halfway down the page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Double-click on the `setup.exe` file and run through the process, accepting
+    all the defaults.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In our project folder, we need to create a new folder called `setup`. This will
+    store the source scripts for Inno Setup and the final builds.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: From the code download, go ahead and extract `filesizeview-1.0.iss` and store
+    it within the `setup` folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Double-click on the file to launch it and then click on the highlighted icon,
+    shown in the following screenshot, to compile the build file:![Deploying your
+    application](img/image00469.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When completed, Inno Setup will automatically start the newly created installer,
+    as shown here:![Deploying your application](img/image00470.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We can now follow through the installation process to completion, before using
+    the application in anger. Inno Setup has also taken care of the uninstallation
+    process, by including a `unins000.exe` file that we can use if we need to remove
+    the application from our system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For those of you using Mac, there will be similar packages available. Try the
+    instructions listed at [http://www.codepool.biz/tech-frontier/mac/make-pkg-installer-on-mac-os-x.html](http://www.codepool.biz/tech-frontier/mac/make-pkg-installer-on-mac-os-x.html)
+    as a starting point. You can also try using Inno Setup on Linux, using Wine—the
+    instructions are listed at [http://derekstavis.github.io/posts/creating-a-installer-using-inno-setup-on-linux-and-mac-os-x/](http://derekstavis.github.io/posts/creating-a-installer-using-inno-setup-on-linux-and-mac-os-x/),
+    although they are not for beginners!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking things further
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Phew! We've certainly covered a lot over the last few pages!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, in the grand scheme of life, we''ve only scratched the surface. We
+    can do a lot more with our application or even explore it to help improve our
+    skills when using Node-WebKit with jQuery. To get you started, here are a few
+    ideas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The application is a perfect base for resizing images or even compressing them;
+    we can do this online, but there are implications, principally around confidentiality
+    and the size of image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The upload facility is only partially working. We use the BlueImp file upload
+    plugin, but it's not actually doing anything. How about getting it working within
+    our application?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How about displaying an icon for the file type or even a small thumbnail if
+    we're uploading an image?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There's no way to clear the list without restarting the application—it should
+    be easy to fix this…
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We deliberately didn't include any error checking to keep things simple; how
+    about adding in some now?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'I think the interface is a little limiting in one respect: if we upload a file
+    with a really long name, then it is truncated; the truncation is a little messy!'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We haven't added any menu controls. While Node-WebKit is perfect for applications
+    where speed isn't an issue, it will still be good to be able to navigate around,
+    once we've added more functionality. For an example of how to add such a menu,
+    take a look at [http://www.4elements.com/blog/2013/12](http://www.4elements.com/blog/2013/12).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Hopefully, here you should find a few ideas to inspire you to take things further.
+    Once you''ve grasped the basics and allow the occasions where we have to use Node-specific
+    tags, the sky is the limit! A fair few people have produced applications of varying
+    complexity and released them online—it''s definitely worth doing some research
+    online to see what is available. Here are a few ideas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Irish developer Shane Gavin has created a useful video-based tutorial on
+    using Node-WebKit. This explores some of the techniques you can use when creating
+    Node-WebKit applications, and we've used some of them in our example. The tutorials
+    are available at [http://nodehead.co](http://www.nodehead.co).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: I am sure we've all heard of or played games such as *Pong* or *Breakout* in
+    some form or other. We can use the Phaser game library at [http://phaser.io](http://phaser.io)
+    to produce some of these classic games (and others). Have a look at the example
+    shown at [https://github.com/kandran/pong](https://github.com/kandran/pong) that
+    uses Node-WebKit to create *Pong*.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: David Neumann wrote a blog post about how the free educational game *Caterpillar
+    Count* was repackaged to work in Node-WebKit; leaving aside the nature of the
+    game, the post highlights some useful tips and tricks on the transfer process
+    ([http://blog.leapmotion.com/building-applications-for-simultaneous-deployment-on-web-and-native-platforms-or-how-i-learned-to-stop-worrying-and-love-node-webkit/](http://blog.leapmotion.com/building-applications-for-simultaneous-deployment-on-web-and-native-platforms-or-how-i-learned-to-stop-worrying-and-love-node-webkit/)).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Interested in experimenting with your webcam using HTML5 and Node-WebKit? Head
+    over to [http://webcamtoy.com/](http://webcamtoy.com/)—it should be relatively
+    easy to adapt the standard code to work from Node-WebKit, as it supports `getUserMedia`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If we're working with video or webcams, we can always look at taking screenshots.
+    There is a package available for Node-WebKit to help with this ([https://www.npmjs.com/package/node-webkit-screenshot](https://www.npmjs.com/package/node-webkit-screenshot));
+    it can easily form the basis of a useful little application.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We talked earlier about using other JavaScript libraries, such as Ember or Angular,
+    that can be easily used with Node-WebKit and jQuery—for two examples, head over
+    to [http://www.sitepoint.com/building-chat-app-node-webkit-firebase-angularjs/](http://www.sitepoint.com/building-chat-app-node-webkit-firebase-angularjs/)
+    and [http://sammctaggart.com/build-a-markdown-editor-with-node-webkit-and-ember/](http://sammctaggart.com/build-a-markdown-editor-with-node-webkit-and-ember/).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is an increasing amount of content available online. There have been some
+    recent name changes to the library (as was mentioned earlier), so if you want
+    to learn more about using Node-WebKit, then it is worth searching for both Node-WebKit
+    and NW.js to ensure full coverage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In recent years, the dividing line between online and offline applications has
+    blurred, with many people using mobile devices to access the Internet in place
+    of normal desktop browsers. With the advent of Node-WebKit, this opens up a lot
+    of opportunities to merge those boundaries even further—let's recap what we learned
+    over the last few pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with what seems to be a typically simple request, where most developers
+    will automatically think of designing a site. However, with the introduction of
+    Node-WebKit, we can explore creating an offline version of our application or
+    site. We explored a little of how the library works as well as discussed the pros
+    and cons of running such an application from the desktop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then moved on to prepare our development environment before taking a brief
+    look at installing Node-WebKit and using it to create our first application. We
+    delved into the `package.json` file, which is key to running our application,
+    before moving on to build our file size viewer application. Next up came a more
+    in-depth look at the code used behind the application; we also covered how we
+    can create the basic skeleton of our application using the Yeoman Node-WebKit
+    generator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next up came a look at a quick tip for debugging Node-WebKit apps, before moving
+    on to examine how we can package and deploy our applications either manually or
+    automate them using Grunt. The final stage in our journey covered the deployment
+    of our application. We looked at using Inno Setup to produce a `setup.exe` file
+    that can be deployed for use. We then rounded out the chapter with a look at a
+    few ideas of how we can take things further when developing with Node-WebKit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Phew! We''ve certainly covered a lot, but as they always say, there is no rest
+    for the wicked. In the next chapter, we will be taking a look at one of the most
+    important parts of using jQuery: optimizing and enhancing the performance of our
+    projects.'
+  prefs: []
+  type: TYPE_NORMAL

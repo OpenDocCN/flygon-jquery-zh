@@ -1,0 +1,525 @@
+- en: Chapter 6. Making Menus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating sortable menu items
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Highlighting the active menu item
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using effects with menu navigation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building menus dynamically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling the position of submenus
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying themes to submenus
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery UI **menu** widget takes a list of links and presents them as a cohesive
+    menu to the user by handling navigation in submenus, as well as applying classes
+    from the theme framework. We can customize the menu to a certain degree, using
+    just the default options available. In other cases, such as when we would like
+    the menu items sortable, we can easily extend the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating sortable menu items
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The menu widget, by default, preserves the order of the listed elements used
+    to create the menu items. It means that if the creator of the HTML used in the
+    menu widget were to change the ordering, this would be reflected in the rendered
+    menu. This is good for the developers because it gives us control over how we
+    would like the items to be presented to the user. But, perhaps the user has a
+    better idea on how the menu items should be ordered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By combining the menu widget with the **sortable interaction** widget, we can
+    provide the user with that flexibility. However, with this new capability, we
+    will have to address another question; preserving the order chosen by the user.
+    It is great if they can arrange the menu items how they see fit, but it is not
+    so great if they have to repeat the same process every time the page loads. So
+    we'll look, as well, at preserving the sorted menu order in a cookie.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s use the following HTML code for our menu widget. This will create a
+    menu with four items, all at the same level:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's now look at the JavaScript used to extend the menu widget in order to
+    provide the sortable behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you look at this menu in the browser, you'll notice that you can drag the
+    menu items into any order you like. Additionally, if you were to refresh the page,
+    you'll see that the ordering has been preserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_06_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The menu instance we're creating in this example is given a `sortable` option
+    value of `true`. This is a new option we've added to the menu widget. The bulk
+    of our extension work is performed in our own rendition of the `_create()` method.
+    The first thing we do here is call the original implementation of the method since
+    we want the menu to be created as usual; we do it by using the `_super()` method.
+    From here on out, we're maintaining the sort order of the menu items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the `sortable` option doesn't evaluate to `true`, we exit, not having anything
+    to do. In the event that this option is `true`, and we need to sort our menu items,
+    we attempt to load a cookie, using the ID of this menu. The value of this cookie
+    is stored in a variable called the `storedOrder`, because that's exactly what
+    it represents; the stored order as dictated by the user. If the user has sorted
+    the menu, we store the order of the menu items in the cookie. For example, the
+    cookie value might look like `second,fourth,first,third`. These are the IDs of
+    the menu items. When we split the comma-separated list, we have an array of menu
+    items, in the correct order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we have to apply the sortable interaction widget to the menu. We pass
+    the sortable configuration a function that is used when the sort order is updated.
+    It is here that we use the `toArray()` method of the sortable widget to serialize
+    the sort order of the menu items and it is here that we update the cookie value,
+    using the menu ID.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two things to note about the use of cookies in this example. First,
+    we're using the cookie jQuery plugin. This plugin is small and in widespread use
+    around the internet. However, it is worth mentioning that the plugin does not
+    ship with jQuery or jQuery UI and your project will have to manage this dependency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second thing to note is with regards to the localhost domain. The cookie
+    storage functionality will not work locally in all browsers. In other words, it
+    works fine if viewed from a web server. If you really need to test this code in
+    the Google Chrome browser, you can get around it as I did using Python. In an
+    operating system console, run the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Highlighting the active menu item
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With menu widgets, depending on how the items are configured, the only way to
+    tell if an item is active is when the page URL changes as a result of an item
+    being clicked on. The menu items don't give any obvious indication that anything
+    has actually happened. For example, the item in a menu, once clicked, could change
+    the visual state. This is especially helpful if the developer is using the menu
+    widget as a navigational tool in the user interface. Let's look at how we can
+    extend the capabilities of the menu widget in order to provide this functionality
+    using parts from the theme framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use the following HTML code for our menu example here. Notice that this
+    particular menu has a nested submenu:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to highlight the active menu item, we're going to need to extend the
+    theme framework with a few additional rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll extend the menu widget itself with a new `highlight` option and
+    the necessary functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you were to look at this menu, you'd notice that once you select a menu item
+    it would remain in the highlighted state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_06_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The CSS rules we've defined here are necessary for the `ui-state-highlight`
+    class to function properly when applied to a menu item. First, with the `.ui-menu`
+    `.ui-menu-item` selector, we're setting the `margin` to something that will appropriately
+    align the menu item once the `ui-state-highlight` class is applied. We're also
+    giving each menu item an invisible `border` so that the mouse enter and mouse
+    leave events don't nudge the menu items out of place. The next selector, `.ui-menu`
+    `.ui-menu-item` `a.ui-state-highlight`, applies to our menu items once we've applied
+    the `ui-state-highlight` class to them. The rules also control positioning, and
+    prevent the menu from becoming misaligned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving over to the JavaScript code, you can see that we've provided the menu
+    widget with a new `highlight` option. In our custom implementation of the `_create()`
+    method, we call the original implementation of the same method before proceeding
+    to add our event handlers. The `_on()` method, defined by the base jQuery UI widget,
+    is used here to bind our event handler to the `click .ui-menu-item:has(a)` event;
+    the same event used internally in the `menu` widget. Inside this handler, we remove
+    the `ui-state-highlight` class from any menu items it might already be applied
+    to. Finally, we add the `ui-state-highlight` class to the menu item just clicked
+    on, along with the `ui-corner-all` class, which gives the element rounded corners
+    as defined by the theme properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using effects with menu navigation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are several approaches we could take when it comes to applying effects
+    to the menu widget. Where could we apply effects in the menu widget? The user
+    hovers their mouse pointer over the menu items, which results in a state change.
+    The user expands a submenu. These two actions are the main interactions we could
+    improve visually with some animation. Let's look at how we can address these effects
+    using as little JavaScript as possible in favor of using CSS transitions. Transitions
+    are an emerging CSS standard in so far, that not all browsers support them using
+    standard syntax yet. In the spirit of progressive enhancement, however, applying
+    CSS in this way means that the basic menu functionality will work just fine even
+    in browsers that don't support it. And we can side-step having to write an overwhelming
+    amount of JavaScript to animate the menu navigation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this example, we can use any standard menu HTML code. Ideally, it should
+    have a submenu so we can observe the transitions applied to their expansion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, let's define the CSS required for the transitions we want to be applied
+    to the menu items and submenus as they change state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll introduce some modifications to the menu widget itself, necessary
+    to control the animation capabilities of any given menu instance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if you were to look at this menu in your browser and start interacting
+    with it, you would notice the smooth transitions in applying the hover state.
+    You'd also notice that the transition applied to the submenus appears to slide
+    them to the right when expanded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First, let''s consider the CSS rules that define the transitions we''re seeing
+    applied to the `menu` widget. The `.ui-menu-animated > li > ul` selector applies
+    transitions to submenus. The first property declared, `left: 0`, is merely an
+    initializer that allows a certain browser to work better with transitions. The
+    next four lines define the transition itself of the left property. The menu widget,
+    when expanding submenus, uses the position utility widget, which sets the left
+    CSS property on the submenu. The transition we''ve defined here will apply changes
+    to the left property over a `span` of `0.7` seconds, and will ease out of the
+    transition.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason we have multiple transition definitions is that some browsers support
+    their own vendor-prefixed version of the rule. So we start with the generic version,
+    followed by the browser-specific versions. This is a common practice, and when
+    the browser-specific rules become superfluous, we can remove them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following it comes the `.ui-menu-animated .ui-menu-item a` selector, which applies
+    to each menu item. You can see that the transition here involves several properties.
+    Each property in this transition is part of the `ui-state-hover` that we would
+    like to be animated. The duration of the `border-color` transition is slightly
+    longer as a result of our tweaks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let's look at the JavaScript that puts this CSS to use. We've extended the
+    menu widget by adding a new `animate` option, which will apply the above defined
+    transitions to the widget. In our version of the `_create()` method, we call the
+    original implementation of `_create()` then apply the `ui-menu-animated` class
+    to the main `ul` element, and any submenus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The extension of the `_close()` method is necessary for one reason only. This
+    is called when a submenu is closed. However, when a submenu is first displayed,
+    the `left` CSS property is computed by the `position` utility. The next time it
+    is displayed, it doesn't have to compute the `left` property. This is a problem,
+    for obvious reasons, if we're trying to animate a change in the `left` property
+    value. So all we do to fix this is set the `left` property back to a value of
+    `0` when the menu is closed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building menus dynamically
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Often, the menus change during interaction with a user. In other words, we may
+    need to extend the structure of the menu after the menu has been instantiated.
+    Alternatively, we might not have all the necessary information available to us
+    when building the HTML that ultimately becomes the menu widget; the menu data
+    may only be available in **JavaScript Object Notation** (**JSON**) format, for
+    instance. Let's look at how we can go about building menus dynamically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We will start with the following basic menu HTML structure. Our JavaScript code
+    will extend this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's create the menu widget, and then we'll extend the structure of the menu
+    DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Instead of just the three initial items we started off with, when you view this
+    menu, you are now presented with the three new items we have just added.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_06_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we don't keep adding the new menu items in our JavaScript code, we would
+    only see the original three items. However, we are using the core jQuery DOM manipulation
+    tools to construct and insert a submenu. Afterward, we have to call the `refresh()`
+    menu method, which adds the appropriate CSS classes and event handlers to the
+    new menu items. If, for example, we moved the DOM insertion code to before the
+    `menu` widget is instantiated, we would have no reason to call `refresh()` since
+    the menu constructor invokes it directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The above approach of inserting new items in a menu does have its drawbacks.
+    The obvious one being that the DOM insertion code that actually constructs the
+    new menu items and submenu isn't maintainable. Our example has hard-coded the
+    structure, which most applications never do. Instead, we typically have at least
+    one data source, from an API perhaps. It would be nice, if instead of hard-coding
+    the structure, we could pass the menu widget a data source, with a standard format.
+    The menu widget would then take care of the low-level details that we've implemented
+    above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s try and modify the code so that we shift more responsibility to the
+    menu widget itself. We''ll aim for the exact same outcome as the code above, but
+    we''ll do so by extending the menu widget, and passing in a data object that represents
+    the menu structure. We''ll use the exact same HTML structure. Here is the new
+    JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you run this modified code, you'll see no change in outcome compared to the
+    original code we've written above. This improvement is purely a re-factoring,
+    turning unmaintainable code into something with a longer shelf life.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The new option we''ve introduced here, `data`, expects an array of menu items.
+    The item is an object with the following attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`id`: It is the id for the menu item'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`href`: It is the href of the menu item link'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`text`: It is the item label'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data`: It is a nested submenu'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The last option is simply a nested array of menu items representing a submenu.
+    Our modifications to the `_create()` method will iterate over the data option
+    array, if provided, and call `_insertItem()` on each object. The `_insertItem()`
+    method is something new we've introduced, and does not override any existing menu
+    functions. Here, we're creating the necessary DOM elements for the passed in menu
+    data. If this object has a nested data array, a submenu, then we create a `ul`
+    element and recursively call `_inserItem()`, passing the `ul` as the parent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `data` we pass to the menu is significantly more readable and maintainable
+    than the previous version. Passing API data, for instance, would take relatively
+    little work now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the position of submenus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The menu widget uses the position widget to control the destination of any submenus
+    when visible. The default is to place the top left of the submenu to the right
+    of the menu item that expands the submenu. But depending on the size of our menu,
+    the depth of the submenus, and other constraints around size in our UI, we might
+    want to use different defaults for the submenu positions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will use the following HTML structure for this submenu positioning demonstration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When we instantiate this menu, we will pass it a `position` option as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With all the submenus expanded our menu will look similar to that shown in
+    the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_06_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `position` options that we're passing to the menu widget in the preceding
+    example are the same options we would pass directly to the position widget. The
+    `of` option, which the position utility expects, is the active menu item or the
+    parent of the submenu. All these options are passed to the position utility inside
+    the `_open()` method, which is responsible for expanding submenus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying themes to submenus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When the menu widget displays submenus, there is no discernible difference in
+    appearance. That is, visually, they look just like the main menu. We wanted to
+    present the user with a little contrast between the main menu and its children;
+    we can do so by extending the widget to allow for custom classes to be applied
+    to the submenus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s use the following markup to create our menu widget with a couple submenus:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will extend the menu widget by adding a new `submenuClass` option and apply
+    that class to submenus as shown in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is what the submenu looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_06_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here, we are extending the menu widget with a new `submenuClass` option. The
+    idea being that we want to apply this class only to the submenus of the widget
+    if supplied. We do this by overriding the `refresh()` menu method. We look for
+    all the submenus and apply the `submenuClass` to them. You'll notice that we apply
+    this class before calling the`_super()` method in the original implementation
+    of this method. This is because we are searching for menus that do not have the
+    `ui-menu` class yet. These are our submenus.
+  prefs: []
+  type: TYPE_NORMAL

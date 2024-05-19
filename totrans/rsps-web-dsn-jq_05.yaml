@@ -1,0 +1,885 @@
+- en: Chapter 5. Preparing Images and Videos
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The image preparation to be used in responsive sites has been one of the most
+    discussed issues recently because there is no technique approved by W3C yet. Meanwhile,
+    the community has created some techniques, each one with its advantages, trying
+    to resolve this issue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will begin this chapter by looking at basic image resizing. This technique
+    may be incorporated into the code with no difficulty, but mobile users are waiting
+    for better experiences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, only resizing the image is not so effective when it comes to smaller
+    devices such as smartphones and tablets, because loading images with high quality
+    in those devices may take a long time. Later, we will see the importance of image
+    breakpoints and its benefits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, we will focus our attention on videos, since they had been inserted into
+    our code before HTML5, avoiding issues on site conversions from fixed to responsive
+    ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, we will talk about some available jQuery plugins and how to use
+    each one of them, by saving development time and bringing improvements to our
+    interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic image resizing only using CSS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why to use image breakpoints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the picture tag will work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Controlling the image art direction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using image breakpoints with jQuery plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a responsive background with jQuery plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dealing with high-density displays
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Making the video elements responsive
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic image resizing only using CSS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following code may be used to give freedom to the image to scale whenever
+    its parent container had been resized. The maximum width was set to 100 percent
+    of the original size and its height may follow the same image proportion automatically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although, to use this effectively, the image must be large enough to scale up
+    to whatever size we may reasonably expect on the largest possible display. However,
+    images that are optimized for desktop sites are still quite heavy for a mobile
+    Internet speed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'If you are using the `max-width` or `height` tags to resize JPG images in your
+    DOM, you will probably see pixelated images only on browser IE7 or older versions.
+    However, there is a simple code for solving this problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This specific problem was fixed in IE8 and became obsolete in IE9.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using image breakpoints
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Adaptive images are not just about the issue of scaling images. It is about
+    dealing with other issues, and variables to be kept in mind when delivering the
+    best user experience. Variables such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Screen resolution
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bandwidth
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Browser width window
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The problem of trying to determine the best image to be sent to the browser
+    may be independent of each variable. And that is the problem. For instance, knowing
+    only the value of the screen resolution does not mean the user has a good bandwidth
+    to receive a high-definition picture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, based on these facts, how will we make a picture in our web application
+    that needs to be displayed with good quality on a bunch of devices, without causing
+    a huge waste of bandwidth?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using image breakpoints](img/3602OS_05_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When we are dealing with bitmap images (non-vectorized images such as SVG),
+    the ideal solution seems simple: to serve an image of a different size for each
+    group of resolutions, where each of these images would be suitable for certain
+    types of devices.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Usually, we consider three different screen sizes to cover the diversity of
+    devices:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**480 px**: Smartphones with standard resolution (mobile-first)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**1024 px**: iPhone retina (smartphones with high image density), tablets,
+    and desktops with normal resolution'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**1600 px**: iPad Retina (tablets with high image density) and desktops with
+    high resolution'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are many techniques that have already been trying to deal with this problem
+    and to bring solutions that will help us serve the correct image for each occasion.
+    They all work in a way slightly different from each other, and depending on your
+    requirements, you will make the choice that best meets your project needs. We
+    will see some of them soon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the picture tag works
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The W3C, facing this need of providing the correct image to the user, is working
+    hard to finish studying them. There is an unofficial draft of this initiative,
+    which includes the `<picture>` tag and different sources inside it, in its standards,
+    in order to make adaptation of the image easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Without this standard, browser developers cannot prepare their browsers to render
+    it well. Today, the frontend community is using CSS and JavaScript trying to do
+    this same task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is the definition of the `<picture>` tag by W3C:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"This specification provides developers with a means to declare multiple sources
+    for an image, and, through CSS Media Queries, it gives developers control as to
+    when those images are to be presented to a user."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'They also thought of older browsers, which will show a simple image as a fallback
+    content. The following is an example of how the tag will be used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: I would recommend checking the updated information about this specification
+    at [http://picture.responsiveimages.org/](http://picture.responsiveimages.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Control of art direction for responsive images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This topic has been discussed a lot recently. Authors should provide different
+    sources for images in different sizes, and based on their visual judgment, they
+    will focus the main element of the image for that particular breakpoint. This
+    is art direction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let me clarify it by showing this case here. When the image is displayed in
+    larger sizes, it makes sense for the image to show the couple on the boat and
+    the river in the background. The background helps explain where they are but,
+    in general, it gives no relevant information. Now, look what happens when we scale
+    the image down to fit a smaller screen. It is not art direction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Control of art direction for responsive images](img/3602OS_05_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Reducing to that size, you can barely recognize the couple. Instead of simply
+    resizing the image, it may make sense to crop it to get rid of some of the background
+    and focus on it. The end result is an image that works better in a smaller size.
+    Let''s compare the left picture (art direction) and the right picture as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Control of art direction for responsive images](img/3602OS_05_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Focal Point CSS framework
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Focal Point improves the focus on the most important part of the image before
+    scaling it down. This way it allows users to see the main part of the image in
+    a larger size on smartphones. All this without the use of JavaScript or jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With Focal Point, you may define an area that represents the parts you do not
+    want to miss out due to smaller resolutions. Parts covered by the Focal Point
+    stay visible no matter how far down you scale them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following classnames allow you to crop and resize into a general area of
+    the image. Note that X in the class names represents a number between one and
+    six:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**left-X**/**right-X**: These define how many units the image will focus on
+    horizontally'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**up-X**/**down-X**: These define how many units the image will focus on vertically'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**portrait**: By default, the value is set to landscape. But if an image has
+    height more than its width, add the class portrait too'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the CSS file from [https://github.com/adamdbradley/focal-point](https://github.com/adamdbradley/focal-point),
+    let''s insert this code in the `<head>` tag of our DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Later, we may see it in the action demonstrated as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_05_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The principle of Focal Point is simple: Imagine a grid of 12 x 12 units put
+    upon the picture:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_05_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, we suppose the head of this individual is the most important part of the
+    picture and we need to define it as the Focal Point. Even though the face of this
+    individual is on the right side of the picture, it will stay in focus when being
+    scaled down to smaller resolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To define the Focal Point technically, we just need to set two classes of an
+    image. These classes may position the Focal Point inside the grid, horizontally
+    and vertically. It will start from the center of the grid as shown in the following
+    picture:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_05_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following is the code to focus on the person''s face:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the Focal Point is defined to focus three grid units from the
+    center to the left and then to two units up. The `focal-point` class is as mandatory
+    as the surrounding div around the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternative solutions for the <picture> tag
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have just seen that W3C is working hard to set a standard to tag the picture
+    as soon as possible, which will enable you to provide visual contents that are
+    more appropriate for the device you are using to view our site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because of the great necessity of this functionality, the community has created
+    two JavaScript plugins leading to the expected result accepted by most used browsers.
+    They are Foresight and Picturefill.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Foresight – selecting the right image to display depending on the screen size
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Foresight provides web pages the ability to inform whether a user device is
+    capable of viewing high-resolution images (such as retina display devices), before
+    the image has been requested from the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Additionally, Foresight judges if the user device currently has a fast enough
+    network connection for high-resolution images. Depending on the device display
+    and the network connectivity, foresight.js will request the appropriate image
+    for the webpage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By customizing the `img source` attribute, using methods such as URI templates,
+    or finding and replacing values within the URI, it is possible to form requests,
+    which were built for your image's resolution variants, and specifically use a
+    hybrid implementation of the new CSS `image-set()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The basic format is that the `image-set ()` function may have one or many image-set
+    variants, each one separated by a comma. Each image-set variant may have up to
+    three arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**URL**: This is similar to `background-image:url()`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Scale factor**: The scale factor argument is used as a multiplier for the
+    image''s dimensions applied to identify the image density. Some mobile devices
+    have a pixel ratio of 1.5 or 2.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Bandwidth**: This can be defined as low-bandwidth or high-bandwidth.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Foresight also performs a quick network speed test to make sure the user device
+    can handle high resolution images, without making users with slow connectivity
+    wait for a long time to download images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let''s access the website [https://github.com/adamdbradley/foresight.js](https://github.com/adamdbradley/foresight.js)
+    and download the files. Then, we will insert the following code in the `<head>`
+    tag of our DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s see a real example of the following code, where we are using the mobile-first
+    concept:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, for windows, the width is at least 600 px and 800 px:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So, we highlighted some words to explain better how it works. The code will
+    find the fragment of a name inside the source of the `<img>` tag and will replace
+    it by another one. After that, the site will search for the changed name in its
+    files, verifying if the required code is there:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This engine is used to change the suffix of the filename, making it well scalable,
+    and it is really good because it avoids a lot of interventions on code when creating
+    new responsive images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we compare images in this example for the difference in KB, we will have
+    the larger image with 44 KB, the medium image with 20 KB, and the small image
+    with 12 KB. That is not a huge difference for just one image. However, by applying
+    it to the entire site, there may be great reduction on the loading of unnecessary
+    images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_05_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Picturefill – the solution that most closely resembles the picture tag
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Picturefill is a JavaScript plugin for responsive images, similar to the future
+    `picture` element that is ready to be used today. This very lightweight solution
+    uses the `span` tag instead of `picture` or `image` for the sake of its own safety.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picturefill natively supports HD (Retina) image replacement. Picturefill also
+    has the benefit of good performance, selecting the correct image depending on
+    the screen size without downloading the other ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more information about this plugin, you can visit [https://github.com/scottjehl/picturefill](https://github.com/scottjehl/picturefill).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the files of this solution, let''s insert this code in the
+    `<head>` tag of your DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is the code to be used in HTML. Note that it requires that you specify
+    the source of each image and their variations. See the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Maybe some projects need it as a solution (the entire specification inside the
+    HTML code and also their image variations), but we should bring scalability issues
+    if we have many images on the site and problems for site maintenance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Responsive background images by using jQuery plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Positioning a background image is not always an easy task for responsive sites
+    because its correct visualization depends on the behavior of its contents.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just to clarify, let me show you a sample of this problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Responsive background images by using jQuery plugins](img/3602OS_05_09b.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The problem is that sometimes we fix the content to keep the background still
+    correct and it needs to change. There are two plugins that help a lot in positioning
+    this background: Anystretch and Backstretch.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Anystretch – stretching your background easily
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Anystretch is a jQuery plugin that allows you to add a dynamically-resized background
+    image to any page or block-level element. Originally, Anystretch was forked from
+    Backstretch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The image will stretch to fit the page/element and will be automatically resized
+    as the window size changes. There are some options to configure it such as horizontal
+    positioning, vertical positioning, speed, positioning of the element, and data
+    name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another advantage of this plugin is if we want to change the image after Anystretch
+    has been loaded, we will only need to come up with it again, informing the new
+    path.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Yes, we can use it together with the Breakpoints.js plugin as we have seen in
+    [Chapter 2](ch02.html "Chapter 2. Designing Responsive Layouts/Grids"), *Designing
+    Responsive Layouts/Grids*, making it possible to change the image path and coming
+    up with Anystretch again, if it is necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the files from [https://github.com/danmillar/jquery-anystretch](https://github.com/danmillar/jquery-anystretch),
+    let''s use the following HTML code just to clarify how it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For this structure, there are two highlighted words:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`stretchMe`: This is used to identify that those elements will be handled by
+    the plugin'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-stretch`: This will inform the plugin what image may become a background'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At the bottom of the DOM (before the `</body>` closing tag), we will need to
+    include the jQuery code and the Anystretch script. Then, we will execute the plugin
+    for all elements that were set by the classname `stretchMe` (just a suggested
+    name).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this is the visual result of the plugin applied to a div element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_05_10b.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Good so far, but this method, if used will apply the same behavior for all responsive
+    backgrounds. In other words, if we want to change the characteristics, we need
+    to call the function separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we call the `anystretch` method twice for the same element, it will replace
+    the existing image and stop the previous processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we look at the previous HTML code, there is a class named `div-home`, which
+    may be executed with different options, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `speed` parameter will configure the time to fade in the image after downloading
+    it. By default, `positionX` and `positionY` are aligned in the center, but the
+    plugin permits us to change it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Backstretch – creating a responsive background slideshow
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Backstretch is a jQuery plugin that allows users to add a dynamically resized
+    background image to any page or element and it was the basis of the Anystretch
+    plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, Backstretch evolved and now also offers to resize the background images
+    from the slideshow element dynamically. All of these background images will stretch
+    to fit the page/element and will be automatically resized as the window/element
+    size changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another good improvement is the fetch of images that will be used after the
+    page is loaded, this way the users will not have to wait too long to complete
+    the download of the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can find the files to be downloaded at [https://github.com/srobbin/jquery-backstretch](https://github.com/srobbin/jquery-backstretch).
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'At the bottom of the DOM (before the `</body>` closing tag), we will include
+    the jQuery and the Backstretch libraries. Then we will execute the plugin attaching
+    the Backstrech to the element''s background:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the following is the visual result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_05_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: By default, the image alignment (vertical and horizontal) is set to the center
+    because it is more usual for people who are using this solution, but we can turn
+    it off, if necessary. The other option included is the `fade` parameter to configure
+    the time to fade in the image. The `parameter` duration is used for slideshows
+    and it is related to the amount of time (in milliseconds) each slide will be displayed
+    before switching it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We may also attach the Backstretch to any block-level element. By default,
+    the `<body>` tag will receive this responsive background. To do this, a better
+    way is by defining a class to receive this action using the following code instead
+    of the previous one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or, to start a slideshow, just inform an array of images and the amount of
+    time between slides:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: This plugin was well documented and provides a slideshow API for better handling.
+    It can be found at [https://github.com/srobbin/jquery-backstretch#slideshow-api](https://github.com/srobbin/jquery-backstretch#slideshow-api).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dealing with high-density displays
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Screen density refers to the number of device pixels on a physical surface.
+    It is often measured in **pixels per inch** (**PPI**). Apple has coined the marketing
+    term **Retina** for its double-density displays. According to Apple''s official
+    website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Retina display''s pixel density is so high your eye is unable to distinguish
+    individual pixels."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In other words, the retina display has a high enough pixel density to prevent
+    pixelation to be noticeable to the human eye. But, because these displays are
+    being widely implemented and used, it is more important than ever to create websites
+    and apps that support these displays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following figure, we compared the pixels between Retina and a standard
+    definition display. In Retina display, there are double the pixels in the same
+    amount of space as you would have with a traditional display:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Dealing with high-density displays](img/3602OS_05_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The word double is not exactly the value that is used for all devices that support
+    high-density images. Currently, there are other screen densities in the market
+    whose density values are 1.5 and 2.25.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The common value for retina images is twice the value of the normal images.
+    So, by using media queries, we can test if the browser supports high-density images.
+    Let''s check it in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the browser accepts, we make a request for another image to be displayed.
+    However, this usage makes two image requests: one before the check and the other
+    inside of media queries.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let's see how we can make only one request using Foresight.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it using Foresight
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This plugin has the ability to detect which screen density the device is showing,
+    before displaying any image to the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s see it in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the browser checks which image element has the class `fs-img`
+    and before showing any image (default behavior of Foresight), it checks if it
+    has support for retina images; in addition, it can check if the user is in a high
+    bandwidth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that before requesting the `castle-small.jpg` file, for example, it will
+    find the suffix `-small` and replace it with `-small-2x` and then request for
+    the file `castle-small-2x.jpg`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is an online tool that helps calculating the size that the image should
+    have if viewed with retina. It is available at [http://teehanlax.com.s3.amazonaws.com/files/teehanlax_density_converter.html](http://teehanlax.com.s3.amazonaws.com/files/teehanlax_density_converter.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making responsive video elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before using HTML5 in our website development, the use of videos was restricted
+    to the acceptance of Adobe Flash Player on devices. However, that obligation does
+    not exist anymore because of the great effort in the development of `<video>`
+    in HTML5, and also very powered by the positioning of Apple to deny Adobe Flash
+    Player on their devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Currently, this element `<video>` is very well accepted in the existing devices
+    and modern browsers (IE9 and later), making its handling and especially its flexibility
+    on responsive websites much easier. Just to clarify, the following is how the
+    `video` tag is commonly seen on DOM:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CSS code which makes the video fluid is quite simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, there are operational differences between the old and new browsers
+    and to increase the accessibility of the content. It is usually preferable to
+    use a safer way. This path would be to keep using embedded videos or the `<iframe>`
+    tags. We will soon see how to make those videos a little more responsive and flexible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let's focus on the current technology. The good news is that video providers
+    such as YouTube or Vimeo have already been supporting the `<video>` tag, but it
+    is still not the default behavior. This differently used code, depending on the
+    device, may also become a problem because we need to adapt the code to each situation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To solve this problem of adaptation, they created the FitVids plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: FitVids – a quick win solution for responsive videos
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'FitVids is a lightweight jQuery plugin that automates the job of making the
+    video width fluid in our responsive web design by creating a wrapper around the
+    iframe to preserve the ratio, otherwise the ratio of iframed videos will look
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![FitVids – a quick win solution for responsive videos](img/3602OS_05_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The currently supported players are YouTube, Vimeo, Blip.tv, Viddler, and Kickstarter.
+    But if it is necessary to use our own player, there is an option to specify this
+    custom player.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    the jQuery code and the FitVids script. Then, we only need to attach its execution
+    into a class or ID of the element, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, let''s use this HTML code just as a sample to see how it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows a sample of YouTube, Vimeo, and Viddler videos
+    using FitVids:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_05_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Exercise – creating different image versions for featured homepage images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As we have just seen, loading the correct image for each device is very important
+    for our responsive site. So, let''s practice this technique in our design showing
+    different images in the following breakpoints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maximum width = 480
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Maximum width = 1024
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Minimum width = 1025
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the site along with the photos I''m referring
+    to, as we saw in [Chapter 2](ch02.html "Chapter 2. Designing Responsive Layouts/Grids"),
+    *Designing Responsive Layouts/Grids*. For this exercise, I''m referring to the
+    highlighted images inside the boxes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exercise – creating different image versions for featured homepage images](img/3602OS_05_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For this activity, I recommend using the Foresight plugin because it provides
+    a better visualization of the image sources and breakpoints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Do not forget to check if the specific device you are using supports to show
+    high-density images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have learned to perform a simple conversion from a fixed
+    image to a flexible image, only to understand it is not enough to make them adaptable
+    to different devices. Also, we have learned other ways to provide the right image
+    to the user by using the Foresight and Picturefill plugins. We have also controlled
+    the art direction, focusing on the main element in the picture when the image
+    is being resized using the FocalPoint framework. Further, we have learned to make
+    the video dimensions fluid by using the FitVids plugin with no stress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will know which slider plugins are prepared for responsive
+    sites, learn how to build them, change some options and effects, and create a
+    good impression on the users. In addition, we will understand which gestures are
+    commonly used and implemented on mobile sites.
+  prefs: []
+  type: TYPE_NORMAL

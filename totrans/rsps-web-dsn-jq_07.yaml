@@ -1,0 +1,510 @@
+- en: Chapter 7. Designing Responsive Tables
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The HTML element table can be quite wide to be able to show a structured content.
+    Sometimes the entire row of data needs to be kept along to make sense in a table.
+    Tables can flex by default, but if they get too narrow, cell content will begin
+    to wrap; this is often not very cleanly done!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Garrett Dimon* mentioned an interesting topic about the difficulty of adjusting
+    table width accommodating different screen sizes and ensuring the sense in content
+    of the table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Data tables don''t do so well with responsive design. Just sayin''."'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will learn four different approaches to create responsive
+    tables:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Expandable responsive tables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stacked tables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Horizontal overflow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Link to full-table
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Responsive tables
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The following screenshot shows the most common problems found about responsive
+    table, which are: the minimum table width exceeds the screen size and the decrease
+    in the size of the whole table (text size included):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Responsive tables](img/3602OS_07_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: However, let's see the different ways to solve this responsive problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Expandable responsive tables
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Through FooTable we can transform our HTML tables into expandable responsive
+    tables, allowing devices with small screen sizes to keep the same content, and
+    the only change is you will have to prioritize the content that will be displayed.
+    Its function is to hide the columns you consider less important when viewed for
+    the first time depending on the breakpoint. So, the hidden data will appear when
+    clicking/touching the row only.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we look more deeply into this jQuery plugin, we will notice two big features
+    that have contributed for a good code and ease of development: **out of the box
+    customization** (via data attributes from DOM) and **breakpoint settings** (which
+    may be set different from breakpoints which have already been used on a website).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's see in the next example how to define it on DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After downloading the plugin from [https://github.com/bradvin/FooTable/](https://github.com/bradvin/FooTable/),
+    we will include the CSS stylesheet inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By default, there are only two breakpoints that FooTable uses: `phone` set
+    to `480` px and `tablet` to `1024` px. These breakpoint values need not be the
+    same as the ones you are probably using because it depends on how much space the
+    table needs. Also, we will see later how to change it if necessary.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s insert the following code as a sample into the HTML code just to practice
+    the plugin resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Data attributes facilitate the understanding of the functioning of FooTable,
+    knowing which columns will be hidden in phones or tablets by only looking at the
+    DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following are the basic data attributes used by FooTable and their functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`data-class`: This specifies a CSS class to be applied to all cells in a column.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-hide`: This defines which breakpoints will be hidden in a column. It
+    is possible to specify more than one breakpoint by separating them using a comma.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`data-ignore`: This hides the content only when the detailed information is
+    seen. It is normally used along with the `data-hide` class and the acceptable
+    values for this option may be `true` or `false`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For further information about a list of all data attributes, you may visit [http://fooplugins.com/footable/demos/data-attributes.htm](http://fooplugins.com/footable/demos/data-attributes.htm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If we use these data attributes, we should apply them on the `<th>` element
+    and the plugin will reflect its changes in the internal cells.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    two files: jQuery and FooTable libraries. After that, insert the following code
+    executing the script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to change the breakpoints of FooTable, we will only need to specify
+    our own values when executing the previous script, as is shown in the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the following screenshot, we will see what happens if we click on Bob''s
+    table row. Let''s compare our responsive tables on a Smartphone and a tablet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In this example, on each device there are some fields that are visible only
+    if you are clicking for more details of a specific contact. Although this approach
+    avoids massive data, it may be difficult to find a contact, for example, by e-mail,
+    as it requires clicking on all contacts to display the information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are some plugin extensions that solve this. Let's check them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending the plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another advantage of using the FooTable as a solution is its extensibility.
+    The plugin is modular, which allows you to include additional functionality such
+    as sorting, filtering, and pagination through the use of add-ons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The sorting add-on provides the capability of sorting the data contained within
+    your table columns. To do this, we will include this script file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we will set `data-sort-initial="true"` for items for which we want to
+    enable the sorting and `data-sort-ignore="true"` for items for which sorting does
+    not make sense, such as images and phones:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the following screenshot we can see the insertion of arrow icons, which
+    the plugin uses to order that specific table header:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Extending the plugin](img/3602OS_07_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The filtering add-on adds a search field allowing users to locate the data
+    they are looking for. The search result brings the correct data to us even if
+    it is hidden from viewers. To do so, let''s include the following in the script
+    file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Add a text input field to your page (before or after the table) with the `#filter`
+    ID, and then specify it on the `data-filter=#filter` data attribute of your table
+    element. The following is the code of this filter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the following screenshot the content was filtered showing just one item,
+    even the value found is hidden:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Extending the plugin](img/3602OS_07_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Also, the pagination add-on helps displaying part of the total content creating
+    a pagination of 10 items by default. To do this, we must include the following
+    code in the script file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So, in the previous table example, after `</tbody>` we will add the following
+    code which will receive the pagination. The `pagination` class in the following
+    div is required and other classes such as `pagination-centered` and `hide-if-no-paging`
+    are only complementary:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Also, for this example let''s limit two items per page, to see the pagination
+    in use, by adding `data-page-size="2"` on `table` element. And this is how it
+    looks:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Extending the plugin](img/3602OS_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: For further information about these add-ons and more plugin options, the complete
+    documentation can be found at [http://fooplugins.com/footable-demos/](http://fooplugins.com/footable-demos/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although this plugin looks very complete, there are some situations where the
+    content demands an other interface. Let's take a look at the stackedtable solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stackedtables
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Stackedtable is a jQuery plugin that offers another option for our responsive
+    table which is available to download from [http://johnpolacek.github.io/stacktable.js/](http://
+    http://johnpolacek.github.io/stacktable.js/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This solution creates a copy of the table and converts wide tables into a two-column
+    key/value format that works better on small screens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This solution is recommended for tables with few rows only because it increases
+    a lot of the vertical content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By using a simple media query, we can hide the original table and show the stacked
+    table. Let's take a look and see how we can put this into action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it using the table from the previous example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will start by including the CSS stylesheet inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to change the breakpoint, aiming to use this solution for Smartphones,
+    we only need to go inside the `stacktable.css` file and change the `max-width`
+    property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, we will add the base of the table that we saw in the previous solution,
+    just adding an ID and class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    two files: the `jquery` and `stacktable` libraries. After that, insert the following
+    code executing the script and inform the table ID and a class to restrict the
+    stacked table only for Smartphones as we want:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is a screenshot of the two views—for small device and desktop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it using the table from the previous example](img/3602OS_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Horizontal overflow
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: This technique works by freezing the first column, allowing you to scroll down
+    the other columns under it. This way we keep seeing the first column content for
+    each row, which permits left scrolling, to see the remaining content in order
+    to make data comparison easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This table is recommended for tables that have a greater number of columns and
+    the content of the first column is more important than others. Let's clarify how
+    it will look by practicing it in the next example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We will start by downloading the solution from [http://zurb.com/playground/responsive-tables](http://zurb.com/playground/responsive-tables).
+    After that, let''s create a new HTML file and include the CSS stylesheet inside
+    the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now insert the following HTML table code using more columns than the previous
+    one and with a class named `responsive`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of DOM (before the `</body>` closing tag), we will only need
+    to include jQuery and Responsive-Tables libraries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s look at the following screenshot showing this table on a Smartphone
+    and tablet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When the available screen width is over 767 px, changes start to occur on our
+    table. If we want to modify this default value, we need to open the `responsive-tables.js`
+    file, look for the value 767, and change it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is technically simple to do. However, we cannot underestimate its efficiency
+    on responsive websites, since it helps a lot to understand the table information,
+    especially on small devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Header orientation flip
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you find that the header row of our table is more important than the first
+    column and that you need to keep displaying the header row when using small devices,
+    *David Bushell* has created an interesting solution by using only the CSS code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This CSS solution swaps places with the first column and does not require any
+    JavaScript library, just CSS3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by including the CSS stylesheet inside the `<head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using a more realistic content, let''s create this table on our HTML code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s see the result on Smartphone and tablet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Header orientation flip](img/3602OS_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Link to full-table
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Linking to full-table is a technique less used because it does not solve the
+    situation completely. It works by replacing the table with a small mock table
+    and creating only a link to view the full table.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem persists, but this time, the user can swipe the screen to the left/right
+    in order to see all the content. There is a media query to handle this mechanism
+    for showing it only on small screens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First of all, let's begin by downloading the `full-table.css` file, which is
+    available in the downloadable code files that accompany this book. Then insert
+    it inside the `<head>` tag of the HTML code. Although we are dealing with a CSS
+    solution, this code is too extensive and it increases the chances of typo mistakes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s re-use a copy of the table code from the previous example but with alterations
+    in the table element, which is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    the `jquery` library and insert the following code which will display/hide the
+    solution based only on a class name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the following screenshot we will see the minified table for small screens,
+    driving the user to the full table visualization on clicking. This effect occurs
+    when the screen size is less than or equal to 520 px (this value can be modified
+    if we need to use the CSS file).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_07_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The plugin generates a horizontal scrollbar after clicking to see the table
+    in full width.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercise 6 – creating a responsive table of prices using the FooTable jQuery
+    plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's create a responsive table using the FooTable jQuery plugin and the contents
+    of the table in the following screenshot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The content of this table is not real and we will use it just for practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the following screenshot we can see the table as shown on Smartphone and
+    tablet, each device using a different design:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exercise 6 – creating a responsive table of prices using the FooTable jQuery
+    plugin](img/3602OS_07_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can start by creating the table structure based on the tablet's design and
+    then implement the FooTable plugin automatizing the compact visual for Smartphones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we learned four different ways to deal with wide tables in
+    small devices'' widths. We focused on how to implement each technique because
+    its usage depends on the type of table''s content. The techniques we just saw
+    are: expandable responsive tables (FooTable), stacked tables, horizontal overflow,
+    and link to full-tables.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will take a look at using forms and learn how to implement
+    features such as autocomplete, datepickers, and tooltips.
+  prefs: []
+  type: TYPE_NORMAL

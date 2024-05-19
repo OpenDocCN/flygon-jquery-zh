@@ -1,0 +1,950 @@
+- en: Chapter 1. Installing jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Local or CDN, I wonder…? Which version…? Do I support old IE…?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing jQuery is a thankless task that has to be done countless times by
+    any developer—it is easy to imagine that person asking some of the questions that
+    start this chapter. It is easy to imagine why most people go with the option of
+    using a **Content Delivery Network** (**CDN**) link, but there is more to installing
+    jQuery than taking the easy route!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are more options available, where we can be really specific about what
+    we need to use—throughout this chapter, we will examine some of the options available
+    to help develop your skills even further. We''ll cover a number of topics, which
+    include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading and installing jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing jQuery downloads
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building from Git
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using other sources to install jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding source map support
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with Modernizr as a fallback
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Intrigued? Let's get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading and installing jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As with all projects that require the use of jQuery, we must start somewhere—no
+    doubt you've downloaded and installed jQuery a thousand times; let's just quickly
+    recap to bring ourselves up to speed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we browse to [http://www.jquery.com/download](http://www.jquery.com/download),
+    we can download jQuery using one of the two methods: downloading the compressed
+    production version or the uncompressed development version. If we don''t need
+    to support old IE (IE6, 7, and 8), then we can choose the 2.x branch. If, however,
+    you still have some diehards who can''t (or don''t want to) upgrade, then the
+    1.x branch must be used instead.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To include jQuery, we just need to add this link to our page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Downloading the example code**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the example code files for all Packt books you have purchased
+    from your account from [http://www.packtpub.com](http://www.packtpub.com). If
+    you purchase this book elsewhere, you can visit [http://www.packtpub.com/support](http://www.packtpub.com/support)
+    and register to have the files e-mailed directly to you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, `X.X.X` marks the version number of jQuery or the Migrate plugin that
+    is being used in the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conventional wisdom states that the jQuery plugin (and this includes the Migrate
+    plugin too) should be added to the `<head>` tag, although there are valid arguments
+    to add it as the last statement before the closing `<body>` tag; placing it here
+    may help speed up loading times to your site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This argument is not set in stone; there may be instances where placing it in
+    the `<head>` tag is necessary and this choice should be left to the developer's
+    requirements. My personal preference is to place it in the `<head>` tag as it
+    provides a clean separation of the script (and the CSS) code from the main markup
+    in the body of the page, particularly on lighter sites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I have even seen some developers argue that there is little *perceived* difference
+    if jQuery is added at the top, rather than at the bottom; some systems, such as
+    WordPress, include jQuery in the `<head>` section too, so either will work. The
+    key here though is if you are perceiving slowness, then move your scripts to just
+    before the `<body>` tag, which is considered a better practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using jQuery in a development capacity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A useful point to note at this stage is that best practice recommends that CDN
+    links should not be used within a development capacity; instead, the uncompressed
+    files should be downloaded and referenced locally. Once the site is complete and
+    is ready to be uploaded, then CDN links can be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding the jQuery Migrate plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you've used any version of jQuery prior to 1.9, then it is worth adding the
+    jQuery Migrate plugin to your pages. The jQuery Core team made some significant
+    changes to jQuery from this version; the Migrate plugin will temporarily restore
+    the functionality until such time that the old code can be updated or replaced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The plugin adds three properties and a method to the jQuery object, which we
+    can use to control its behavior:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Property or Method | Comments |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `jQuery.migrateWarnings` | This is an array of string warning messages that
+    have been generated by the code on the page, in the order in which they were generated.
+    Messages appear in the array only once even if the condition has occurred multiple
+    times, unless `jQuery.migrateReset()` is called. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `jQuery.migrateMute` | Set this property to `true` in order to prevent console
+    warnings from being generated in the debugging version. If this property is set,
+    the `jQuery.migrateWarnings` array is still maintained, which allows programmatic
+    inspection without console output. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `jQuery.migrateTrace` | Set this property to `false` if you want warnings
+    but don''t want traces to appear on the console. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `jQuery.migrateReset()` | This method clears the `jQuery.migrateWarnings`
+    array and "forgets" the list of messages that have been seen already. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Adding the plugin is equally simple—all you need to do is add a link similar
+    to this, where `X` represents the version number of the plugin that is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you want to learn more about the plugin and obtain the source code, then
+    it is available for download from [https://github.com/jquery/jquery-migrate](https://github.com/jquery/jquery-migrate).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a CDN
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can equally use a CDN link to provide our jQuery library—the principal link
+    is provided by **MaxCDN** for the jQuery team, with the current version available
+    at [http://code.jquery.com](http://code.jquery.com). We can, of course, use CDN
+    links from some alternative sources, if preferred—a reminder of these is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Google ([https://developers.google.com/speed/libraries/devguide#jquery](https://developers.google.com/speed/libraries/devguide#jquery))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Microsoft ([http://www.asp.net/ajaxlibrary/cdn.ashx#jQuery_Releases_on_the_CDN_0](http://www.asp.net/ajaxlibrary/cdn.ashx#jQuery_Releases_on_the_CDN_0))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: CDNJS ([http://cdnjs.com/libraries/jquery/](http://cdnjs.com/libraries/jquery/))
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: jsDelivr (`http://www.jsdelivr.com/#%!jquery`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Don't forget though that if you need, we can always save a copy of the file
+    provided on CDN locally and reference this instead. The jQuery CDN will always
+    have the latest version, although it may take a couple of days for updates to
+    appear via the other links.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using other sources to install jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Right. Okay, let's move on and develop some code! "What's next?" I hear you
+    ask.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Aha! If you thought downloading and installing jQuery from the main site was
+    the only way to do this, then you are wrong! After all, this book is about mastering
+    jQuery, so you didn't think I will only talk about something that I am sure you
+    are already familiar with, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes, there are more options available to us to install jQuery than simply using
+    the CDN or main download page. Let's begin by taking a look at using Node.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Each demo is based on Windows, as this is the author's preferred platform; alternatives
+    are given, where possible, for other platforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using NodeJS to install jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So far, we''ve seen how to download and reference jQuery, which is to use the
+    download from the main jQuery site or via a CDN. The downside of this method is
+    the manual work required to keep our versions of jQuery up to date! Instead, we
+    can use a package manager to help manage our assets. Node.js is one such system.
+    Let''s take a look at the steps that need to be performed in order to get jQuery
+    installed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first need to install Node.js—head over to [http://www.nodejs.org](http://www.nodejs.org)
+    in order to download the package for your chosen platform; accept all the defaults
+    when working through the wizard (for Mac and PC).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next, fire up a Node command prompt and then change to your project folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In the prompt, enter this command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Node will fetch and install jQuery—it displays a confirmation message when the
+    installation is complete:![Using NodeJS to install jQuery](img/image00324.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'You can then reference jQuery by using this link:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Node is now installed and ready for use—although we've installed it in a folder
+    locally, in reality, we will most likely install it within a subfolder of our
+    local web server. For example, if we're running WampServer, we can install it,
+    then copy it into the `/wamp/www/js` folder, and reference it using `http://localhost/js/jquery.min.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to take a look at the source of the jQuery **Node Package Manager**
+    (**NPM**) package, then check out [https://www.npmjs.org/package/jquery](https://www.npmjs.org/package/jquery).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Node to install jQuery makes our work simpler, but at a cost. Node.js
+    (and its package manager, NPM) is primarily aimed at installing and managing JavaScript
+    components and expects packages to follow the **CommonJS** standard. The downside
+    of this is that there is no scope to manage any of the other assets that are often
+    used within websites, such as fonts, images, CSS files, or even HTML pages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '"Why will this be an issue?," I hear you ask. Simple, why make life hard for
+    ourselves when we can manage all of these assets automatically and still use Node?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing jQuery using Bower
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A relatively new addition to the library is the support for installation using
+    Bower—based on Node, it's a package manager that takes care of the fetching and
+    installing of packages from over the Internet. It is designed to be far more flexible
+    about managing the handling of multiple types of assets (such as images, fonts,
+    and CSS files) and does not interfere with how these components are used within
+    a page (unlike Node).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the purpose of this demo, I will assume that you have already installed
+    it from the previous section; if not, you will need to revisit it before continuing
+    with the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Bring up the Node command prompt, change to the drive where you want to install
+    jQuery, and enter this command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This will download and install the script, displaying the confirmation of the
+    version installed when it has completed, as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing jQuery using Bower](img/image00325.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The library is installed in the `bower_components` folder on your PC. It will
+    look similar to this example, where I''ve navigated to the `jquery` subfolder
+    underneath:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Installing jQuery using Bower](img/image00326.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'By default, Bower will install jQuery in its `bower_components` folder. Within
+    `bower_components/jquery/dist/`, we will find an uncompressed version, compressed
+    release, and source map file. We can then reference jQuery in our script using
+    this line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can take this further though. If we don''t want to install the extra files
+    that come with a Bower installation by default, we can simply enter this in a
+    command prompt instead to just install the minified version 2.1 of jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can be really clever at this point; as Bower uses Node''s JSON files
+    to control what should be installed, we can use this to be really selective and
+    set Bower to install additional components at the same time. Let''s take a look
+    and see how this will work—in the following example, we''ll use Bower to install
+    jQuery 2.1 and 1.10 (the latter to provide support for IE6-8):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the Node command prompt, enter the following command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will prompt you for answers to a series of questions, at which point you
+    can either fill out information or press *Enter* to accept the defaults.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Look in the project folder; you should find a `bower.json` file within. Open
+    it in your favorite text editor and then alter the code as shown here:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: At this point, you have a `bower.json` file that is ready for use. Bower is
+    built on top of Git, so in order to install jQuery using your file, you will normally
+    need to publish it to the Bower repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Instead, you can install an additional Bower package, which will allow you
+    to install your custom package without the need to publish it to the Bower repository:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the Node command prompt window, enter the following at the prompt:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'When the installation is complete, change to your project folder and then enter
+    this command line:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The `bower-installer` command will now download and install both the versions
+    of jQuery, as shown here:![Installing jQuery using Bower](img/image00327.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this stage, you now have jQuery installed using Bower. You're free to upgrade
+    or remove jQuery using the normal Bower process at some point in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want to learn more about how to use Bower, there are plenty of references
+    online; [https://www.openshift.com/blogs/day-1-bower-manage-your-client-side-dependencies](https://www.openshift.com/blogs/day-1-bower-manage-your-client-side-dependencies)
+    is a good example of a tutorial that will help you get accustomed to using Bower.
+    In addition, there is a useful article that discusses both Bower and Node, available
+    at [http://tech.pro/tutorial/1190/package-managers-an-introductory-guide-for-the-uninitiated-front-end-developer](http://tech.pro/tutorial/1190/package-managers-an-introductory-guide-for-the-uninitiated-front-end-developer).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bower isn't the only way to install jQuery though—while we can use it to install
+    multiple versions of jQuery, for example, we're still limited to installing the
+    entire jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can improve on this by referencing only the elements we need within the library.
+    Thanks to some extensive work undertaken by the jQuery Core team, we can use the
+    **Asynchronous Module Definition** (**AMD**) approach to reference only those
+    modules that are needed within our website or online application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the AMD approach to load jQuery
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In most instances, when using jQuery, developers are likely to simply include
+    a reference to the main library in their code. There is nothing wrong with it
+    per se, but it loads a lot of extra code that is surplus to our requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A more efficient method, although one that takes a little effort in getting
+    used to, is to use the AMD approach. In a nutshell, the jQuery team has made the
+    library more modular; this allows you to use a loader such as require.js to load
+    individual modules when needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's not suitable for every approach, particularly if you are a heavy user of
+    different parts of the library. However, for those instances where you only need
+    a limited number of modules, then this is a perfect route to take. Let's work
+    through a simple example to see what it looks like in practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Before we start, we need one additional item—the code uses the Fira Sans regular
+    custom font, which is available from Font Squirrel at [http://www.fontsquirrel.com/fonts/fira-sans](http://www.fontsquirrel.com/fonts/fira-sans).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s make a start using the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Fira Sans font doesn't come with a web format by default, so we need to
+    convert the font to use the web font format. Go ahead and upload the `FiraSans-Regular.otf`
+    file to Font Squirrel's web font generator at [http://www.fontsquirrel.com/tools/webfont-generator](http://www.fontsquirrel.com/tools/webfont-generator).
+    When prompted, save the converted file to your project folder in a subfolder called
+    `fonts`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We need to install jQuery and RequireJS into our project folder, so fire up
+    a Node.js command prompt and change to the project folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, enter these commands one by one, pressing *Enter* after each:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We need to extract a copy of the `amd.html` and `amd.css` files from the code
+    download link that accompanies this book—it contains some simple markup along
+    with a link to `require.js`; the `amd.css` file contains some basic styling that
+    we will use in our demo.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We now need to add in this code block, immediately below the link for `require.js`—this
+    handles the calls to jQuery and RequireJS, where we''re calling in both jQuery
+    and Sizzle, the selector engine for jQuery:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Now that jQuery has been defined, we need to call in the relevant modules.
+    In a new file, go ahead and add the following code, saving it as `app.js` in a
+    subfolder marked `js` within our project folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We used `app.js` as the filename to tie in with the `require(["js/app"]);` reference
+    in the code.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If all went well, when previewing the results of our work in a browser, we'll
+    see this message:![Using the AMD approach to load jQuery](img/image00328.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Although we've only worked with a simple example here, it's enough to demonstrate
+    how easy it is to only call those modules we need to use in our code rather than
+    call the entire jQuery library. True, we still have to provide a link to the library,
+    but this is only to tell our code where to find it; our module code weighs in
+    at 29 KB (10 KB when gzipped), against 242 KB for the uncompressed version of
+    the full library!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a completed version of our code available in the code download link
+    that accompanies this book—look for and run the `amd-finished.html` file to view
+    the results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, there may be instances where simply referencing modules using this method
+    isn't the right approach; this may apply if you need to reference lots of different
+    modules regularly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A better alternative is to build a custom version of the jQuery library that
+    only contains the modules that we need to use and the rest are removed during
+    build. It's a little more involved but worth the effort—let's take a look at what
+    is involved in the process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing the downloads of jQuery from Git
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If we feel so inclined, we can really push the boat out and build a custom version
+    of jQuery using the JavaScript task runner, Grunt. The process is relatively straightforward
+    but involves a few steps; it will certainly help if you have some prior familiarity
+    with Git!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The demo assumes that you have already installed Node.js—if you haven't, then
+    you will need to do this first before continuing with the exercise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Okay, let''s make a start by performing the following steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You first need to install Grunt if it isn''t already present on your system—bring
+    up the Node.js command prompt and enter this command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Next, install Git—for this, browse to [http://msysgit.github.io/](http://msysgit.github.io/)
+    in order to download the package.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Double-click on the setup file to launch the wizard, accepting all the defaults
+    is sufficient for our needs.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you want more information on how to install Git, head over and take a look
+    at [https://github.com/msysgit/msysgit/wiki/InstallMSysGit](https://github.com/msysgit/msysgit/wiki/InstallMSysGit)
+    for more details.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Once Git is installed, change to the `jquery` folder from within the command
+    prompt and enter this command to download and install the dependencies needed
+    to build jQuery:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The final stage of the build process is to build the library into the file
+    we all know and love; from the same command prompt, enter this command:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Browse to the `jquery` folder—within this will be a folder called `dist`, which
+    contains our custom build of jQuery, ready for use, as shown in the following
+    screenshot:![Customizing the downloads of jQuery from Git](img/image00329.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Removing redundant modules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If there are modules within the library that we don't need, we can run a custom
+    build. We can set the Grunt task to remove these when building the library, leaving
+    in those that are needed for our project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a complete list of all the modules that we can exclude, see [https://github.com/jquery/jquery#modules](https://github.com/jquery/jquery#modules).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, to remove AJAX support from our build, we can run this command
+    in place of step 5, as shown previously:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This results in a file saving on the original raw version of 30 KB as shown
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Removing redundant modules](img/image00330.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The JavaScript and map files can now be incorporated into our projects in the
+    usual way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a detailed tutorial on the build process, this article by Dan Wellman is
+    worth a read ([https://www.packtpub.com/books/content/building-custom-version-jquery](https://www.packtpub.com/books/content/building-custom-version-jquery)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a GUI as an alternative
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There is an online GUI available, which performs much the same tasks, without
+    the need to install Git or Grunt. It's available at [http://projects.jga.me/jquery-builder/](http://projects.jga.me/jquery-builder/),
+    although it is worth noting that it hasn't been updated for a while!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, so we have jQuery installed; let's take a look at one more useful function
+    that will help in the event of debugging errors in our code. Support for source
+    maps has been made available within jQuery since version 1.9\. Let's take a look
+    at how they work and see a simple example in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding source map support
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Imagine a scenario, if you will, where you've created a killer site, which is
+    running well, until you start getting complaints about problems with some of the
+    jQuery-based functionality that is used on the site. Sounds familiar?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using an uncompressed version of jQuery on a production site is not an option;
+    instead we can use source maps. Simply put, these map a compressed version of
+    jQuery against the relevant line in the original source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Historically, source maps have given developers a lot of heartache when implementing,
+    to the extent that the jQuery Team had to revert to disabling the automatic use
+    of maps!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For best effects, it is recommended that you use a local web server, such as
+    WAMP (PC) or MAMP (Mac), to view this demo and that you use Chrome as your browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Source maps are not difficult to implement; let''s run through how you can
+    implement them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the code download link that accompanies this book, extract a copy of the
+    `sourcemap` folder and save it to your project area locally.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Press *Ctrl* + *Shift* + *I* to bring up the **Developer Tools** in Chrome.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Click on **Sources**, then double-click on the `sourcemap.html` file—in the
+    code window, and finally click on **17**, as shown in the following screenshot:![Adding
+    source map support](img/image00331.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now, run the demo in Chrome—we will see it paused; revert back to the developer
+    toolbar where line **17** is highlighted. The relevant calls to the jQuery library
+    are shown on the right-hand side of the screen:![Adding source map support](img/image00332.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If we double-click on the `n.event.dispatch` entry on the right, Chrome refreshes
+    the toolbar and displays the original source line (highlighted) from the jQuery
+    library, as shown here:![Adding source map support](img/image00333.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It is well worth spending the time to get to know source maps—all the latest
+    browsers support it, including IE11\. Even though we've only used a simple example
+    here, it doesn't matter as the principle is exactly the same, no matter how much
+    code is used in the site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For a more in-depth tutorial that covers all the browsers, it is worth heading
+    over to [http://blogs.msdn.com/b/davrous/archive/2014/08/22/enhance-your-javascript-debugging-life-thanks-to-the-source-map-support-available-in-ie11-chrome-opera-amp-firefox.aspx](http://blogs.msdn.com/b/davrous/archive/2014/08/22/enhance-your-javascript-debugging-life-thanks-to-the-source-map-support-available-in-ie11-chrome-opera-amp-firefox.aspx)—it
+    is worth a read!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding support for source maps
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the previous section, where we''ve just previewed the source map, source
+    map support has already been added to the library. It is worth noting though that
+    source maps are not included with the current versions of jQuery by default. If
+    you need to download a more recent version or add support for the first time,
+    then follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Source maps can be downloaded from the main site using `http://code.jquery.com/jquery-X.X.X.min.map`,
+    where `X` represents the version number of jQuery being used.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Open a copy of the minified version of the library and then add this line at
+    the end of the file:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save it and then store it in the JavaScript folder of your project. Make sure
+    you have copies of both the compressed and uncompressed versions of the library
+    within the same folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let''s move on and look at one more critical part of loading jQuery: if, for
+    some unknown reason, jQuery becomes completely unavailable, then we can add a
+    fallback position to our site that allows graceful degradation. It''s a small
+    but crucial part of any site and presents a better user experience than your site
+    simply falling over!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with Modernizr as a fallback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A best practice when working with jQuery is to ensure that a fallback is provided
+    for the library, should the primary version not be available. (Yes, it's irritating
+    when it happens, but it can happen!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typically, we might use a little JavaScript, such as the following example,
+    in the best practice suggestions. This would work perfectly well but doesn't provide
+    a graceful fallback. Instead, we can use Modernizr to perform the check for us
+    and provide a graceful degradation if all fails.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Modernizr is a feature detection library for HTML5/CSS3, which can be used to
+    provide a standardized fallback mechanism in the event of a functionality not
+    being available. You can learn more at [http://www.modernizr.com](http://www.modernizr.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, the code might look like this at the end of our website page.
+    We first try to load jQuery using the CDN link, falling back to a local copy if
+    that hasn''t worked or an alternative if both fail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this way, we can ensure that jQuery either loads locally or from the CDN
+    link—if all else fails, then we can at least make a graceful exit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Best practices for loading jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So far, we''ve examined several ways of loading jQuery into our pages, over
+    and above the usual route of downloading the library locally or using a CDN link
+    in our code. Now that we have it installed, it''s a good opportunity to cover
+    some of the best practices we should try to incorporate into our pages when loading
+    jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Always try to use a CDN to include jQuery on your production site. We can take
+    advantage of the high availability and low latency offered by CDN services; the
+    library may already be precached too, avoiding the need to download it again.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Try to implement a fallback on your locally hosted library of the same version.
+    If CDN links become unavailable (and they are not 100 percent infallible), then
+    the local version will kick in automatically, until the CDN link becomes available
+    again:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note that although this will work equally well as using Modernizr, it doesn't
+    provide a graceful fallback if both the versions of jQuery should become unavailable.
+    Although one hopes to never be in this position, at least we can use CSS to provide
+    a graceful exit!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use protocol-relative/protocol-independent URLs; the browser will automatically
+    determine which protocol to use. If HTTPS is not available, then it will fall
+    back to HTTP. If you look carefully at the code in the previous point, it shows
+    a perfect example of a protocol-independent URL, with the call to jQuery from
+    the main jQuery Core site.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If possible, keep all your JavaScript and jQuery inclusions at the bottom of
+    your page—scripts block the rendering of the rest of the page until they have
+    been fully rendered.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use the jQuery 2.x branch, unless you need to support IE6-8; in this case, use
+    jQuery 1.x instead—do not load multiple jQuery versions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you load jQuery using a CDN link, always specify the complete version number
+    you want to load, such as `jquery-1.11.1.min.js`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you are using other libraries, such as Prototype, MooTools, Zepto, and so
+    on, that use the `$` sign as well, try not to use `$` to call jQuery functions
+    and simply use jQuery instead. You can return the control of `$` back to the other
+    library with a call to the `$.noConflict()` function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For advanced browser feature detection, use Modernizr.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It is worth noting that there may be instances where it isn't always possible
+    to follow best practices; circumstances may dictate that we need to make allowances
+    for requirements, where best practices can't be used. However, this should be
+    kept to a minimum where possible; one might argue that there are flaws in our
+    design if most of the code doesn't follow best practices!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you thought that the only methods to include jQuery were via a manual download
+    or using a CDN link, then hopefully this chapter has opened your eyes to some
+    alternatives—let's take a moment to recap what we have learned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a customary look at how most developers are likely to include
+    jQuery before quickly moving on to look at other sources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We started with a look at how to use Node, before turning our attention to using
+    the Bower package manager. Next, we had a look at how we can reference individual
+    modules within jQuery using the AMD approach. We then moved on and turned our
+    attention to creating custom builds of the library using Git. We then covered
+    how we can use source maps to debug our code, with a look at enabling support
+    for them within Google's Chrome browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To round out our journey of loading jQuery, we saw what might happen if we can't
+    load jQuery at all and how we can get around this, by using Modernizr to allow
+    our pages to degrade gracefully. We then finished the chapter with some of the
+    best practices that we can follow when referencing jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we'll kick things into a gear by taking a look at how we
+    can customize jQuery. This can be done by replacing or modifying a function or
+    applying a patch during runtime; are you ready to get stuck in?
+  prefs: []
+  type: TYPE_NORMAL

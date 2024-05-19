@@ -1,0 +1,1057 @@
+- en: Chapter 8. Using jQuery Effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Adding event handlers to any website is a necessary must; after all, we need
+    some way to respond to legitimate events in our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The flip side of this is adding effects – done well, they can be hugely rewarding,
+    although some of the novelty can wear off, particularly if you''ve used all of
+    the core effects to death! Revitalize your sites with new, custom effects – we''ll
+    see how to do this in this chapter, as well as managing the resulting queues.
+    Over the next few pages, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Revisiting basic effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding callbacks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Constructing custom effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating and managing the effect queue
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Intrigued? Let's make a start…
+  prefs: []
+  type: TYPE_NORMAL
+- en: Revisiting effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A question – how many times have you visited a site to see content smoothly
+    slide up, or gradually fade to nothing?
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'm sure that you will of course recognize these as effects provided in code;
+    these can be anything from a simple slide up, to content appearing to fade from
+    one image or element to another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating effects is a key consideration of any website. We've already touched
+    on some methods earlier in the book in [Chapter 6](part0056.xhtml#aid-1LCVG1 "Chapter 6. Animating
+    in jQuery"), *Animating with jQuery*. I'm sure we're all familiar with the basic
+    code for fading or toggling elements. No doubt you will have used codes such as
+    `$("blockquote").fadeToggle(400);` or `$("div.hidden").show(1250);` countless
+    times when developing websites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looks familiar? Over the next few pages, we'll touch on some additional tricks
+    we can use to help push out the boat when it comes to adding effects, as well
+    as considering some of the implications of using jQuery to provide these effects.
+    Before we do so, there is an important consideration we need to clear up, which
+    is to explore the key differences between simple animation and adding effects
+    to elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the differences between animation and effects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Some of you may think that we've covered the provision of effects when we touched
+    on animating back in [Chapter 6](part0056.xhtml#aid-1LCVG1 "Chapter 6. Animating
+    in jQuery"), *Animating with jQuery*. It is true that there is some cross-over;
+    a quick look at the API list for jQuery Effects will show `.animate()` as a valid
+    effects method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there is an important distinction – the content we've already covered
+    is about *moving* elements; providing effects will focus on controlling the *visibility*
+    of content. The great thing though, is that we can link the two together. `.animate()`
+    can be used to implement both movement and effects within code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that little distinction has been cleared up, let's get into some action.
+    We'll start with a look at adding custom easing functions to our effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating custom effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If you've spent any time applying effects to animated elements, then you will
+    very likely have used `.animate()`, or one of the shortcut methods, such as `.fadeIn()`,
+    `.show(),` or `.slideUp()`. All of them follow a similar format, where we need
+    to provide at least a duration, type of easing, and potentially a callback function
+    to either perform a task when the animation has completed, or log something to
+    the console to this effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All too often though, we may decide to stick with the standard values such
+    as `slow`, `fast`, or perhaps a numerical value such as `500`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: There is absolutely nothing wrong with using this approach - except, it's very
+    boring, and only using a fraction of what is possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Over the next few pages, we'll explore some of the tricks available to broaden
+    our knowledge when applying effects, and realize that we don't always have to
+    stick with the tried and tested methods. Before we explore some of these tricks,
+    it's worth learning a little about how some of these effects are handled within
+    the Core jQuery library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the animate() method as the basis for effects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you were asked to use a pre-configured effect such as `hide()` or `slideToggle()`,
+    then you might be expecting to use a named function within jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It should be noted that the line numbers given in this section apply to the
+    uncompressed version of jQuery 2.1.3, which is available from [http://code.jquery.com/jquery-2.1.3.js](http://code.jquery.com/jquery-2.1.3.js).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Well, this is true, but only in part: the preconfigured functions within jQuery
+    are all shorthand pointers to `animate()`, as shown in or around lines **6829**
+    to **6840**. They go through a two stage process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first stage is to pass one of three values to the `genFX()` method, namely
+    `show`, `hide`, or `toggle`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is then passed to `animate()` to produce the final effect, at lines **6708**
+    to **6725**
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A quick look in the code shows each of the values available within jQuery,
+    and how they are passed to .animate():'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exploring the animate() method as the basis for effects](img/image00406.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We covered the use of `animate()` in some detail back in [Chapter 6](part0056.xhtml#aid-1LCVG1
+    "Chapter 6. Animating in jQuery"), *Animating with jQuery*. It''s worth touching
+    on the following few key points about using `animate()` within our code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Only properties that take numeric values are supported, although there are some
+    exceptions. Some values such as `backgroundColor`, can't be animated without a
+    plugin (jQuery Color – [https://github.com/jquery/jquery-color](https://github.com/jquery/jquery-color),
+    or jQuery UI – [http://www.jqueryui.com](http://www.jqueryui.com)), along with
+    those that can take more than one value, such as `background-position`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can animate CSS properties by using any standard CSS unit where applicable
+    – a full list can be viewed at [http://www.w3schools.com/cssref/css_units.asp](http://www.w3schools.com/cssref/css_units.asp).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Elements can be moved using relative values, that are prefixed with `+=` or
+    `-=` in front of the property value. If a duration of `0` is set, the animation
+    will immediately set the elements to their end state.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As a shortcut, if a value of `toggle` is passed, an animation will simply reverse
+    from where it is and animate to that end.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All CSS properties set via a single `animate()` method will animate at the same
+    time.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Now that we've seen how custom effects are handled within the library, let's
+    explore creating some new effects, which combine those already available within
+    the library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting custom effects into action
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we spent our time developing code that was restricted to using the default
+    effects that are available within jQuery, we would quickly outgrow the limits
+    of what can be done within it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To prevent this from happening, it is worth spending time working out what effects
+    we really want to use, and to see if we can't build something to replicate them
+    from within jQuery. To prove this, we're going to delve into some examples; our
+    first one is to produce a toggle effect based on clicking a chosen element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a clickToggle handler
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The inspiration for the first of our three examples comes not from online comments,
+    but from jQuery itself. The Core library had a toggle function available (as shown
+    at [http://api.jquery.com/toggle-event/](http://api.jquery.com/toggle-event/)),
+    which was deprecated back in version 1.8, and removed in 1.9.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re going to explore how we can add similar functionality, using a mini-plugin,
+    the idea being that one of two functions will be run, depending on the state of
+    a value set in our plugin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a clickToggle handler](img/image00407.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s take a look and see what is required:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by extracting the relevant files from the code download for this
+    book. For this demo, we'll need the `clicktoggle.css`, `jquery.min.js`, and `clicktoggle.html`
+    files. Place the CSS file in the `css` subfolder, jQuery library in the `js` subfolder,
+    and the markup file at the root of the project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, we need to create our `clicktoggle()` event handler, so go ahead
+    and add the following code, saving it as `clicktoggle.js`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `apply()` function is used to call the context for a function – for more
+    details, see [http://api.jquery.com/Types/#Context.2C_Call_and_Apply](http://api.jquery.com/Types/#Context.2C_Call_and_Apply).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Immediately below the `clicktoggle` event handler, add the following functions:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, we should see something similar to the screenshot shown at the
+    start of the exercise, where we can see that the text has been clicked a few times.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A number of people have produced similar versions of this code - see [https://gist.github.com/gerbenvandijk/7542958](https://gist.github.com/gerbenvandijk/7542958)
+    for one example; this version uses `data-` tags and combines the handling functions
+    into one call.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Okay, let''s move on and take a look at another example: in this one, we''re
+    going to create a slide-fade toggle effect. This will use similar principles to
+    the previous example, where we check the state of the element. This time, we''ll
+    use the `:visible` pseudo-selector to confirm which callback message should be
+    rendered on screen.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As an idea, why not try combining this plugin with the Toggles plugin available
+    at [http://simontabor.com/labs/toggles/](http://simontabor.com/labs/toggles/)?
+    This could be used to produce some nice on/off buttons. We can then fire off events
+    that are handled by the `clickToggle` plugin created in this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sliding content with a slide-fade Toggle
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In our previous example, our effect appeared very abruptly on screen – it was
+    either one or the other statement, but nothing in between!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From a visual effect, this isn''t always ideal; it gives a softer impression
+    if we can make the transition smoother. Enter the Slide-Fade Toggle plugin. Let''s
+    take a look and see how to create it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start, as always, by extracting the relevant files that we need from the
+    code download that accompanies this book. For this demo, we'll need the usual
+    `jquery.min.js`, along with `slidefade.css` and `slidefade.html`. The JavaScript
+    files need to be dropped into the `js` subfolder, the style sheet into the `css`
+    subfolder, and the HTML markup file at the root of our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, let''s go ahead and create the `slideFadeToggle` effect. Add
+    the following lines, saving it as `slidefade.js` in the `js` subfolder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, then when we preview the results in a browser, we should see
+    the dark grey square fade as it slides up, once we click on the button. This is
+    shown in the following images:![Sliding content with a slide-fade Toggle](img/image00408.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The code creates a nice alert effect – it could be used to display a suitable
+    message to visitors within your site as it slides into view. We''ve based our
+    plugin on toggling between two states. If your preference is to simply use the
+    equivalent of the `fadeIn()` or `fadeout()` states on their own, then we could
+    easily use either of these functions, as appropriate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Okay, let''s move on. We''ve created some custom effects, but it still feels
+    like it''s missing something. Ah yes – I know what: how about easing from one
+    state to another? (And yes, pun absolutely intended!)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of simply setting slow, fast, normal, or even a numeric value to control
+    the duration of the effect, we can also add an easing capability that gives the
+    effect some much needed action. Let's delve in and see what is involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying custom easing functions to effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'If someone mentions the word "easing" to you, I''ll bet one of two things will
+    happen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will most likely think that you'll need to use jQuery UI, which has the
+    potential to add a fairly significant chunk of code to the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You'll run away, at the thought of having to work out some horrendous math!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The irony here though, is that the answer to both could be yes and no (at least
+    to the first part of the second comment). Hold on – how come?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason for this is that you most certainly don't need jQuery UI to provide
+    special easing functions. Granted, if you are already using it, then it would
+    make sense to use the effects contained within. While you might have to work out
+    some maths, this would only be necessary if you really want to get stuck into
+    complex formulae, which isn't always necessary. Intrigued? Let me explain more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Adding an easing to code need not be any more than a simple function that uses
+    any one of five different values, as shown in the following table:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Value | Purpose |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `x` | `null`Note that although `x` is always included, it is nearly always
+    set as a null value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `t` | Time elapsed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `b` | Initial value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `c` | Amount of change |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `d` | Duration |'
+  prefs: []
+  type: TYPE_TB
+- en: 'In the right combination, they can be used to produce an easing, such as the
+    `easeOutCirc` effect, available within jQuery UI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Taking it further, we can always work out our own custom easing functions. A
+    good example is outlined at [http://tumblr.ximi.io/post/9587655506/custom-easing-function-in-jquery](http://tumblr.ximi.io/post/9587655506/custom-easing-function-in-jquery),
+    along with comments indicating what needs to happen to make it work in jQuery.
+    As an alternative, you can also try [http://gizma.com/easing/](http://gizma.com/easing/),
+    which lists a number of examples of similar effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I think it's time for us to get practical. Let's dive in and make use of these
+    values to create our own easing function. We'll start with adding a predefined
+    easing to one of our previous examples, before stripping it out and replacing
+    it with a custom creation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a custom easing to our effect
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We could of course use the likes of the Easing plugin which is available to
+    download from [http://gsgd.co.uk/sandbox/jquery/easing/](http://gsgd.co.uk/sandbox/jquery/easing/)
+    or even jQuery UI itself. There is no need though. Adding a basic easing effect
+    only requires a few lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Although the math involved may not be easy, it is a cinch to add in a specific
+    easing value. Let''s take a look at a couple of examples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this demo, we'll start by extracting the relevant files from the code download
+    that accompanies this book. We'll need the `slidefade.html`, `slidefade.js`, `jquery.min.js,`
+    and `slidefade.css` files. These need to be saved to the relevant folders within
+    our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a copy of `slidefade.js`, we need to add our easing. Add the following code
+    immediately at the start of the file, before the `slideFadeToggle()` function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Although we''ve added our easing effect, we still need to tell our event handler
+    to use it. For this, we need to modify the code as shown next:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the files as `slidefadeeasing.html`, `slidefadeeasing.css`, and `slidefadeeasing.js`,
+    then preview the results in a browser. If all is well, we should notice a difference
+    in how the `<div>` element collapses and fades away to nothing.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'At this stage, we have a perfect basis for creating our own custom easing functions.
+    To test this, try the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Browse to the Custom Easing Function Explorer site, which is located at [http://www.madeinflex.com/img/entries/2007/05/customeasingexplorer.html](http://www.madeinflex.com/img/entries/2007/05/customeasingexplorer.html),
+    and then using the sliders, set the following values:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`Offset: 420`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`P1: 900`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`P2: -144`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`P3: 660`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`P4: 686`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`P5: 868`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This will produce the following equation function:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'As it stands, our equation won''t work when used in our code; we need to edit
+    it. Remove all instances of :`Number`, then add an `x` before the `t` in the parameters.
+    The code will look like the following when edited – I''ve assigned an easing name
+    to it:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Drop this into `slidefade.js`, then amend the easing name used in the `document.ready()`
+    block, and run the code. If all is well, our new custom easing will be used when
+    animating the `<div>` element.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This opens up lots of possibilities. It is feasible to write the functions we've
+    just generated manually, but it takes a lot of effort. The best result is to use
+    an easing function generator to produce the results for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, we can continue to work with functions such as the two we've examined here,
+    but this seems like a tough nut to have to crack each time we want to provide
+    some variety when animating elements! We could equally be lazy, and simply import
+    effects from jQuery UI, but that also brings across a lot of redundant baggage;
+    jQuery should be about providing a light touch approach!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, we can use a far easier option. While many might initially be scared
+    of using Bezier curves, some kind souls have already done most of the heavy lifting
+    for us, which makes it a breeze to use when creating effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Bezier curves in effects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A question – hands up if you can work out what Renault and Citroen have in common,
+    apart from being two rival care manufacturers? The answer is the subject of our
+    next topic – Bezier curves!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes, it may be hard to believe, but Bezier curves were used to design car bodies
+    at Renault back in 1962, although Citroen beat them to it, using them as early
+    as 1959.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, I digress – we''re here to look at using Bezier curves with jQuery,
+    such as the next example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Using Bezier curves in effects](img/image00409.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can view this example at [http://cubic-bezier.com/#.25,.99,.73,.44](http://cubic-bezier.com/#.25,.99,.73,.44).
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are not supported by default; an attempt was made to incorporate support
+    for them, which wasn't successful. Instead, the easiest way to include them is
+    to use the Bez plugin, which is available from [https://github.com/rdallasgray/bez](https://github.com/rdallasgray/bez).
+    To see how easy it is to use, let's take a look at it in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding Bezier curve support
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are a number of online sites that show off examples of easing functions;
+    my personal favorites are [http://easings.net/](http://easings.net/) and [http://www.cubic-bezier.com](http://www.cubic-bezier.com).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The former, by Andrey Sitnik, is one we visited back in [Chapter 6](part0056.xhtml#aid-1LCVG1
+    "Chapter 6. Animating in jQuery"), *Animating jQuery*. This provides working examples
+    of all the easings available with jQuery. If we click on one, we can see various
+    ways they can either be created or used within jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The easiest way to provide support is using the aforementioned Bez plugin.
+    I think it''s time for a short demo now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this demo, we'll start by extracting the relevant files from a copy of the
+    code download that accompanies this book. We'll need the `blindtoggle.html`, `jquery.min.css`,
+    `blindtoggle.css,` and `jquery.bez.min.js` files. These need to be stored in the
+    relevant subfolders of our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, let''s go ahead and create the jQuery effect. In this instance,
+    add the following to a new file, saving it as `blindtoggle.js` within the `js`
+    subfolder of our project area:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we preview the results in a browser, we can see the text first scroll up,
+    followed quickly by the brown background, as seen in the next image:![Adding Bezier
+    curve support](img/image00410.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'It seems like a fair bit of code, but the real key to this demo lies in the
+    following line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: We're using the `$.bez` plugin to create our easing functions from cubic-bezier
+    values. The main reason for this is to avoid the need to provide both CSS3 and
+    jQuery based cubic-bezier functions; the two are not mutually compatible. The
+    plugin gets around this by allowing us to provide easing functions as cubic-bezier
+    values, to match those that can be used in style sheets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Adding cubic-bezier support to our code opens up a world of possibilities.
+    To get you started, following are some links as inspiration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to replace the standard jQuery effects such as `easeOutCubic`? No problem
+    – [http://rapiddg.com/blog/css3-transiton-extras-jquery-easing-custom-bezier-curves](http://rapiddg.com/blog/css3-transiton-extras-jquery-easing-custom-bezier-curves)
+    has a list of cubic-bezier values that will provide the equivalent functionality
+    using CSS.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you happen to work with CSS preprocessors such as Less, then Kirk Strobeck
+    has a list of easing functions for Less, which is available at [https://github.com/kirkstrobeck/bootstrap/blob/master/less/easing.less](https://github.com/kirkstrobeck/bootstrap/blob/master/less/easing.less).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We talked briefly about the tool available at [http://www.cubic-bezier.com](http://www.cubic-bezier.com),
+    for working out the co-ordinate values. You can read about the inspiration behind
+    this awesome tool, from the creator Lea Verou at [http://lea.verou.me/2011/09/a-better-tool-for-cubic-bezier-easing/](http://lea.verou.me/2011/09/a-better-tool-for-cubic-bezier-easing/).
+    An alternative tool is also available at [http://matthewlein.com/ceaser/](http://matthewlein.com/ceaser/),
+    although this is not so easy to use, and is geared more towards CSS values.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It's worth spending time getting familiar with using cubic-bezier values. It's
+    a cinch to provide them, so it's over to you to create some really cool effects!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using pure CSS as an alternative
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When developing with jQuery, it's all too easy to fall into the trap of thinking
+    that the effects must be provided by jQuery. It's a perfectly understandable mistake
+    to make.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key to becoming a more rounded developer is to understand the impact of
+    using jQuery to provide such an effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On older browsers, we may not have had a choice. However, on newer browsers,
+    we do. Instead of simply using an effect such as `slideDown()`, consider whether
+    you can achieve the same (or very similar) effect using CSS. For example, how
+    about trying the following as an alternative to `slideDown()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can then shift our focus to simply changing the assigned CSS class, thus:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ah, but – this is a book about mastering jQuery, right? And why would we want
+    to avoid using jQuery code? Well – to quote Polonius from Shakespeare's *Hamlet*
+    - "…Though this be madness, yet there is method in't". Or, to put it another way,
+    there is a very sensible reason for following this principle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery is an inherently heavy library, weighing at 82 KB for a default minified
+    copy of version 2.1.3\. Granted, work is being done to remove redundant functionality,
+    and yes, we can always remove elements we don't need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But, jQuery is resource hungry; this puts an unnecessary burden on your site.
+    Instead, it's far more sensible to use functionality such as `toggleClass()` –
+    as we have here – to switch classes. We can then maintain separation with CSS
+    classes being stored in the style sheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It all comes down to your requirements. If, for example, you only need to produce
+    a couple of effects, then there is little point in pulling in jQuery for this
+    job. Instead, we can use CSS to create these effects, and leave jQuery for where
+    it will add most value in providing the heavy lifting within the site itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To prove a point, have a look at the `replacejquery.html` demo in the code download
+    that accompanies this book. You will need to extract the `replacejquery.css` file
+    too, to get it to work. This code creates a very basic, but functional slider
+    effect. Look carefully, and you should not see any jQuery in sight…!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, don't get me wrong. There may be some instances where jQuery is a must
+    (if for example supporting an older browser), or circumstances dictate that a
+    neater option requires use of the library (we can't chain when using pure CSS).
+    In these cases, we have to accept the extra burden.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To prove though that this should be the exception rather than the rule, following
+    are some examples to entice you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take a look at the well-known library `animate.css` by Dan Eden (available at
+    [http://daneden.github.io/animate.css/](http://daneden.github.io/animate.css/)).
+    This contains lots of CSS-only animations that can be imported into your code.
+    If you do need to use jQuery, then the Animo jquery plugin at [http://labs.bigroomstudios.com/libraries/animo-js](http://labs.bigroomstudios.com/libraries/animo-js)
+    is worth a look – this uses the `animate.css` library.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Have a look at [http://rapiddg.com/blog/css3-transiton-extras-jquery-easing-custom-bezier-curves](http://rapiddg.com/blog/css3-transiton-extras-jquery-easing-custom-bezier-curves).
+    In the table about half way down, is a list of Bezier curve equivalents for most
+    (if not all) of the easing effects available when using jQuery. The trick here
+    is to not use the extra functions that we've created in previous examples, but
+    to simply use `animate()` and the Bez plugin. The latter will be cached, helping
+    to reduce the load on the server too!
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A simple, but effective example of using CSS3 to provide a simple image fade-in
+    is available at [http://cssnerd.com/2012/04/03/jquery-like-pure-css3-image-fade-in/](http://cssnerd.com/2012/04/03/jquery-like-pure-css3-image-fade-in/).
+    The fade transition could use a slightly longer period, but it shows the effect
+    well.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The key message here is that it isn't always necessary to use jQuery – part
+    of becoming a better developer is to work out when we should and should not resort
+    to using a sledge hammer to crack that nut!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, time to crack on (sorry, pun intended). Let's take a quick look at adding
+    callbacks, and how with a change of mindset, we can replace this with an improved
+    alternative that makes for easier use within jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding callbacks to our effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Okay, so we''ve created our effect, and set it to run. What if we wanted to
+    be alerted when it completes, or even if it fails? Easy! We can provide a callback,
+    as long as we pass a function (with or without parameters). Then we can ask jQuery
+    to perform an action once the effect is completed, as shown in the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: It's a perfectly workable way of being notified, and a breeze to implement.
+    But it's not without its shortcomings. Two of the principal ones are maintaining
+    control over when and how the callback is executed, and only being able to run
+    one callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, we are not obliged to use standard callbacks, as jQuery's Deferreds
+    comes to the rescue. We touched on using it back in [Chapter 5](part0047.xhtml#aid-1CQAE1
+    "Chapter 5. Integrating AJAX"), *Integrating AJAX*. The beauty about Deferreds
+    and Promises is that they can be applied to any jQuery functionality; events are
+    particularly suited for this purpose. Let's take a look at how we can make use
+    of this functionality, within the context of effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling content with jQuery's Promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Promises, promises – how many times have I heard that phrase, I wonder?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unlike in real life, when promises made are often broken, we can always guarantee
+    that Promises made in jQuery will be satisfied at some point. Granted, the answer
+    may not always be positive one, but yes, there will at least be a response to
+    a Promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A question though, I hear you ask – why, if most events already have callback
+    options built in, do we need to use jQuery's `.promises()`?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The simple answer is that we have far more control over constructing and reading
+    Promises. For example, we can set a single callback that can be applied to multiple
+    Promises; we can even set a Promise to only fire once, if needed! The beauty though
+    is that using Promises makes it easier to read the code, and chain multiple methods
+    together:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can even hive off the main effect into a separate function, then chain that
+    function to the Promise to determine how it should be handled within our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see how easy it is to combine the two, let''s take a moment to consider
+    the following simple example, which uses the `slideUp()` effect in jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Controlling content with jQuery''s Promises](img/image00411.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We'll start by extracting the `promises.html`, `promises.css,` and `jquery.min.js`
+    files. Go ahead and store these in the relevant folders within our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In a new file, add the following code— this contains a click handler for the
+    button in our markup file, that will first slide up the `<li>` items, then display
+    a notice on screen when this is completed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Try running the demo in a browser. If all is well, we should see the three list
+    items roll up when clicking on the button on screen, as shown in the screenshot
+    at the start of this section.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This simple demo illustrates perfectly how we can use Promises to make our code
+    more readable. Sorry to disappoint you if you were expecting more! The key here
+    though is not necessarily about the *technical capability* of providing a callback,
+    but the *flexibility* and *readability* gained from using Promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It is worth noting in this example that we are using the jQuery object's `promise()`
+    method in this instance – we should ideally use a different object as the basis
+    for the Promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To really see how Promises can be used, take a look at [http://jsfiddle.net/6sKRC/](http://jsfiddle.net/6sKRC/),
+    which shows a working example in a JSFiddle. This extends the `slideUp()` method
+    to remove the elements in their entirety, once the animation has been completed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It should be noted that although this shows a great way to extend this effect,
+    the code itself could benefit from some tweaking to make it more readable. For
+    example, `this. slideUp(duration).promise()` can easily be separated into a variable,
+    which would make that line shorter and easier to read!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more about using jQuery's Promises and Deferreds,
+    then there are plenty of articles online on both subjects. Two that may be of
+    interest can be found at [http://code.tutsplus.com/tutorials/wrangle-async-tasks-with-jquery-promises--net-24135](http://code.tutsplus.com/tutorials/wrangle-async-tasks-with-jquery-promises--net-24135)
+    and [http://tutorials.jenkov.com/jquery/deferred-objects.html](http://tutorials.jenkov.com/jquery/deferred-objects.html).
+    It's definitely worth taking time to get your head around the subject, if you've
+    not used `promises()` before!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're coming close to the end of this chapter, but before we round it up, there
+    is one more important topic to cover. We've considered the benefits of using CSS
+    in some form or other, rather than just relying on jQuery. If circumstances dictate
+    that the latter must be used, then we should at least consider managing the queues
+    to gain the most benefit from using effects. Let's take a moment to explore this
+    in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating and managing the effect queue
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Queues, queues – who likes queuing, I wonder?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although not all of us like to queue for things, such as for getting lunch or
+    visiting a bank, queuing is critical to the success of running animations. It
+    matters not one jot if we're using `.slideUp()`, `.animate()` or even `.hide()`
+    – if we chain too many animations, we will hit a point where animations won't
+    run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To release the animation, we need to explicitly call `.dequeue()`, as the methods
+    come in pairs. Consider the following example for a moment, taken from [http://cdmckay.org/blog/2010/06/22/how-to-use-custom-jquery-animation-queues/](http://cdmckay.org/blog/2010/06/22/how-to-use-custom-jquery-animation-queues/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Imagine you''re making a game and you want to have an object start at `top:100px`,
+    then float upwards for 2000 milliseconds. Furthermore, you would like the said
+    object to stay completely opaque for 1000 milliseconds before slowly becoming
+    completely transparent over the remaining 1000 milliseconds:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Time (in ms) | Top | Opacity |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 0 | 100px | 1.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 500 | 90px | 1.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1000 | 80px | 1.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 1500 | 70px | 0.5 |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 2000 | 60px | 0.0 |'
+  prefs: []
+  type: TYPE_TB
+- en: 'At first glance, it appears that the `animate` command could take care of this,
+    as can be seen in the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Unfortunately, this code will fade the object out over 2000 ms, instead of waiting
+    1000 ms then fading out over the remaining 1000 ms. Delay can't help either, because
+    it would delay the upward floating as well. At this point, we can either fiddle
+    with timeouts or, you guessed it, use queues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this in mind, following is what the code would look like, altered to use
+    `.queue()` and `.dequeue()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this example, we have two queues: the `fx` queue and the `fader` queue.
+    First off, we setup the `fader` queue. Since we want to wait `1000` ms before
+    fading, we use the delay command with `1000` ms.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we queue up an animation that fades the object out over `1000` ms. Pay
+    close attention to the `queue: false` option we set in the animate command. This
+    is to ensure the animation doesn''t use the default `fx` queue. Finally, we unleash
+    the queue using `dequeue` and immediately follow it with a regular `fx`, using
+    the `animate` call to move the top of the object up `40` pixels.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We could even turn the use of `.queue()` and `.dequeue()` into a plugin. Given
+    that both need to be used, it would make sense to turn it into something that
+    is easier to read in code. Consider the next example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous example, we first animate the change in height to `.box` before
+    pausing and then sliding up the `.box` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key point to note is that `queue()` and `dequeue()` are based around the
+    `fx` object in jQuery. As this is already set by default, there is no need to
+    specify it within our plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you're unsure about the uses of `queue()` and `dequeue()`, then it's worth
+    taking a look at [http://learn.jquery.com/effects/uses-of-queue-and-dequeue/](http://learn.jquery.com/effects/uses-of-queue-and-dequeue/),
+    which outlines some useful case examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using `.queue()` and its counterpart `.dequeue()` provides a graceful means
+    of controlling animations. Its use is arguably more suited to multiple, complex
+    animations, particularly where animation timelines need to be implemented. If
+    we''re only using a small number of simple animations though, then the weight
+    of an extra plugin may not be necessary. Instead, we can simply add `.stop()`
+    to provide a similar effect. Refer to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: It may not be quite as graceful, but using `.stop()` does improve the look of
+    your animations!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Wow, we've covered a lot over the last few pages. It has certainly been intense!
+    Let's take a breather, and recap what we've learnt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a revisit on basic effects, as a reminder of what we can
+    use in jQuery, before exploring the key differences between standard animations
+    and effects. We then moved onto creating custom effects, with a look at the basis
+    for all effects, before creating two examples of custom effects in code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then turned our focus to adding custom easings, and explored how those we
+    saw earlier in the book can equally be applied to jQuery effects. We worked our
+    way through an example in the form of adding Bezier curve-based easing support,
+    before exploring how we can achieve similar effects using just CSS. We then briefly
+    covered adding callbacks to our effects, and then explored how we can better control
+    the callbacks by using jQuery's Deferreds / Promises options as an alternative
+    to standard callbacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then rounded up the chapter with a look at managing the effects queue. This
+    was a good opportunity to explore the benefits of careful queue management, so
+    that we can avoid any confusion or unexpected results when using effects within
+    jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving swiftly on, it's time for some real fun! Over the next couple of chapters,
+    we're going to explore two topics that you might not immediately associate with
+    jQuery; we'll start with exploring the Page Visibility API, where you'll see that
+    writing lots of complex code isn't necessarily a good thing.
+  prefs: []
+  type: TYPE_NORMAL

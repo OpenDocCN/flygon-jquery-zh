@@ -1,0 +1,738 @@
+- en: Advanced Ajax
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Many web applications require frequent network communication. Using jQuery,
+    our web pages can exchange information with the server without requiring new pages
+    to be loaded in the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml), *Sending Data with
+    Ajax*, you learned simple ways to interact with the server asynchronously. In
+    this more advanced chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Error-handling techniques for dealing with network interruptions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The interactions between Ajax and the jQuery deferred object system
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Caching and throttling techniques for reducing network traffic
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ways to extend the inner workings of the Ajax system using transports, prefilters,
+    and data type converters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing progressive enhancement with Ajax
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this book, we encountered the concept of *progressive enhancement*.
+    To reiterate, this philosophy ensures a positive user experience for all users
+    by mandating that a working product be put in place first before additional embellishments
+    are added for users with modern browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, we''ll build a form that searches GitHub repositories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The search form is a normal form element with a text input and a submit button
+    labeled as Request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-04-13-at-10.35.47-AM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When the Request button of this form is clicked on, the form submits as normal;
+    the user''s browser is directed to [https://github.com/search](https://github.com/search) and
+    the results are displayed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-27-at-4.46.23-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'However, we want to load this content into the `#response` container of our
+    search page rather than leaving the page. If the data was stored on the same server
+    as our search form, we could harvest the relevant portion of the page using the
+    `.load()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, since GitHub is under a different hostname, the default cross-domain
+    policy of the browser will not allow this request to happen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Harvesting JSONP data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml), *Sending Data with
+    Ajax*, we saw that JSONP is simply JSON with an added layer of server behavior
+    allowing requests to be made from a different site. When a request is made for
+    JSONP data, a special query string parameter is provided that allows the requesting
+    script to process the data. This parameter can be called anything the JSONP server
+    wishes; in the case of the GitHub API, the parameter uses the default name, `callback`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because the default `callback` name is used, the only setup required to make
+    a JSONP request is to declare to jQuery that `jsonp` is the data type we are expecting:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we can inspect the JSON data in the console. The data in this case is
+    an array of objects, each describing a GitHub repository:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All of the data we need to display about a repository is included in this object.
+    We simply need to format it appropriately for display. Creating the HTML for an
+    item is somewhat involved, so we''ll break that step out into its own helper function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `buildItem()` function converts the JSON object into an HTML list item. This
+    includes a link to the main GitHub repository page followed by the description.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At this point, we have a function that creates the HTML for a single item.
+    When our Ajax call completes, we''ll need to call this function on every returned
+    object and display all of the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have a functional `success` handler, performing a search nicely
+    presents the results in a column next to our form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-28-at-12.32.43-AM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Handling Ajax errors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Introducing any kind of network interaction into an application brings along
+    some degree of uncertainty. The user's connection could drop in the middle of
+    an operation or a temporary server issue could interrupt communications. Because
+    of these reliability concerns, we should always plan for the worst case and prepare
+    for error scenarios.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `$.ajax()` function can take a callback function named `error` to be called
+    in these situations. In this callback, we should provide some kind of feedback
+    to the user indicating that an error has occurred:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The error callback can be triggered for a number of reasons. Among these are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The server returned an error status code, such as 403 Forbidden, 404 Not Found,
+    or 500 Internal Server Error.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The server returned a redirection status code, such as 301 Moved Permanently.
+    An exception is 304 Not Modified, which does not trigger an error because the
+    browser can handle this condition correctly.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The data returned by the server could not be parsed as specified (for example,
+    it is not valid JSON data when `dataType` is `json`).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `.abort()` method is called on the `XMLHttpRequest` object.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Detecting and responding to these conditions is important in providing the best
+    possible user experience. We saw in [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml),
+    *Sending Data with Ajax*, that the error code, if any, is provided to us in the
+    `.status` property of the `jqXHR` object that is passed to the error callback.
+    We can use the value of `jqXHR.status` to react differently to different kinds
+    of errors, if that is appropriate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the server errors are only useful when they are actually observed.
+    Some errors are immediately detected, but other conditions can cause a long delay
+    between the request and eventual error response.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When a reliable server timeout mechanism is not available, we can enforce our
+    own client-side request timeout. By providing a time in milliseconds to the timeout
+    option, we tell `$.ajax()` to trigger `.abort()` on its own if that amount of
+    time elapses before a response is received:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the timeout in place, we can be assured that within 10 seconds either the
+    data will be loaded or the user will receive an error message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the jqXHR object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When an Ajax request is made, jQuery determines the best mechanism available
+    for retrieving the data. This transport could be the standard `XMLHttpRequest`
+    object, the Microsoft ActiveX `XMLHTTP` object, or a `<script>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because the transport used can vary from request to request, we need a common
+    interface in order to interact with the communication. The `jqXHR` object provides
+    this interface for us. It is a wrapper for the `XMLHttpRequest` object when that
+    transport is used, and in other cases, it simulates `XMLHttpRequest` as best it
+    can. Among the properties and methods it exposes are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.responseText` or `.responseXML`, containing the returned data'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.status` and `.statusText`, containing a status code and description'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.setRequestHeader()` to manipulate the HTTP headers sent with the request'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.abort()` to prematurely halt the transaction'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This `jqXHR` object is returned from all of jQuery's Ajax methods, so we can
+    store the result if we need access to any of these properties or methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ajax promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Perhaps a more important aspect of `jqXHR` than the `XMLHttpRequest` interface,
+    however, is that it also acts as a promise. In [Chapter 11](18ed1c5d-dfac-4361-b647-0cb63f5dd58b.xhtml),
+    *Advanced Effects*, you learned about deferred objects, which allow us to set
+    callbacks to be fired when certain operations are complete. An Ajax call is an
+    example of such operation, and the `jqXHR` object provides the methods we expect
+    from a deferred object's promise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using the promise''s methods, we can rewrite our `$.ajax()` call to replace
+    the success and error callbacks with an alternate syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: At first glance, calling `.then()` and `.catch()` doesn't seem any more useful
+    than the callback syntax we used previously. However, the promise methods offer
+    several advantages. First, the methods can be called multiple times to add more
+    than one handler if desired. Second, if we store the result of the `$.ajax()`
+    call in a constant, we can attach the handlers later if that makes our code structure
+    more readable. Third, the handlers will be invoked immediately if the Ajax operation
+    is already complete when they are attached. Finally, we should not discount the
+    readability advantage of using a syntax that is consistent with other parts of
+    the jQuery library, and with native JavaScript promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As another example of using the promise methods, we can add a loading indicator
+    when a request is made. Since we want to hide the indicator when the request completes,
+    successfully or otherwise, the `.always()` method will come in handy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we issue the `$.ajax()` call, we add the `loading` class to the response
+    container. Once the loading is complete, we remove it again. By doing so, we have
+    further enhanced the user experience because there is now a visual indicator that
+    something is happening in the background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To really get a grasp of how the promise behavior can help us, though, we need
+    to look at what we can do if we store the result of our `$.ajax()` call for later
+    use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Caching responses
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If we need to use the same piece of data repeatedly, it is wasteful to make
+    an Ajax request each time. To prevent this, we can cache the returned data in
+    a variable. When we need to use some data, we can check to see whether the data
+    is already in the cache. If so, we act on this data. If not, we need to make an
+    Ajax request, and in its `.done()` handler, we store the data in the cache and
+    act on the returned data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we exploit the properties of promises, it can be quite simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've introduced a new `Map` constant named `cache` to hold the `jqXHR` promises
+    that we create. The keys of this map correspond to the searches being performed.
+    When the form is submitted, we look to see whether there is already a `jqXHR` promise
+    stored for that key. If not, we perform the query as before, storing the resulting
+    object inside `api`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.then()`, `.catch()`, and `.always()` handlers are then attached to the
+    `jqXHR` promise. Note that this happens regardless of whether an Ajax request
+    was made. There are two possible situations to consider here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, the Ajax request might be sent if it hasn''t been before. This is just
+    like the previous behavior: the request is issued and we use the promise methods
+    to attach handlers to the `jqXHR` object. When a response comes back from the
+    server, the appropriate callbacks are fired and the result is printed to the screen.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, if we have performed this search in the past, the `jqXHR` promise
+    is already stored in `cache`. In this case, no new search is performed, but we
+    still call the promise methods on the stored object. This attaches new handlers
+    to the object, but since the deferred object has already been resolved, the relevant
+    handlers are fired immediately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery deferred object system handles all the hard work for us. With a couple
+    of lines of code, we have eliminated duplicate network requests from the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Throttling Ajax requests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A common feature of searches is to display a dynamic list of results as the
+    user is typing. We can emulate this "live search" feature for our jQuery API search
+    by binding a handler to the `keyup` event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we simply trigger the form's submit handler whenever the user types something
+    in the Search field. This could have the effect of sending many requests across
+    the network in rapid succession, depending on the speed at which the user types.
+    This behavior could bog down JavaScript's performance; it could clog the network
+    connection, and the server might not be able to handle that kind of demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re already limiting the number of requests with the request caching that
+    we''ve just put in place. We can further ease the burden on the server, however,
+    by throttling the requests. In [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
+    *Advanced Events*, we introduced the concept of throttling when we created a special
+    `throttledScroll` event to reduce the number of times the native scroll event
+    is fired. In this case, we want to make a similar reduction in activity; this
+    time with the `keyup` event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our technique here, sometimes referred to as debouncing, is a bit different
+    from the one we used in [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
+    *Advanced Events*. Whereas in that example we needed our `scroll` handler to take
+    effect multiple times as scrolling continued, here we only need the `keyup` behavior
+    to happen one time after typing has ceased. To do this, we keep track of a JavaScript
+    timer that starts whenever the user presses a key. Each keystroke resets that
+    timer, so only once the user stops typing for the designated amount of time (300
+    milliseconds) does the `submit` handler get triggered and the Ajax request is
+    performed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extending Ajax capabilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The jQuery Ajax framework is powerful, as we've seen, but even so there are
+    times when we might want to change the way it behaves. Unsurprisingly, it offers
+    multiple hooks that can be used by plugins to give the framework brand new capabilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data type converters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml), *Sending Data with
+    Ajax*, we saw that the `$.ajaxSetup()` function allows us to change the defaults
+    used by `$.ajax()`, thus potentially affecting many Ajax operations with a single
+    statement. This same function can also be used to add to the range of data types
+    that `$.ajax()` can request and interpret.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As an example, we can add a converter that understands the YAML data format.
+    YAML ([http://www.yaml.org/](http://www.yaml.org/)) is a popular data representation
+    with implementations in many programming languages. If our code needs to interact
+    with an alternative format such as this, jQuery allows us to build compatibility
+    for it into the native Ajax functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A simple YAML file containing GitHub repository search criteria:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can wrap jQuery around an existing YAML parser such as Diogo Costa's ([http://code.google.com/p/javascript-yaml-parser/](http://code.google.com/p/javascript-yaml-parser/))
+    to make `$.ajax()` speak this language as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Defining a new Ajax data type involves passing three properties to `$.ajaxSetup()`:
+    `accepts`, `contents`, and `converters`. The `accepts` property adds headers to
+    be sent to the server, declaring to the server that particular MIME types are
+    understood by our script. The `contents` property handles the other side of the
+    transaction, providing a regular expression that is matched against the response
+    MIME type to attempt to autodetect the data type from this metadata. Finally,
+    `converters` contains the actual functions that parse the returned data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: The partial implementation in *Listing 13.12* uses `$.ajax()` to read in the
+    YAML file, and declares its data type as `yaml`. Because the incoming data is
+    parsed as `text`, jQuery needs a way to convert one data type to the other. The
+    `converters` key of `'text yaml'` tells jQuery that this conversion function will
+    accept data that has been received as `text` and reinterpret it as `yaml`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the conversion function, we are simply logging the contents of the text
+    to ensure that the function is called correctly. To actually perform the conversion,
+    we need to load the third-party YAML parsing library (`yaml.js`) and call its
+    methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `yaml.js` file includes an object named `YAML` with an `.eval()` method.
+    We use this method to parse the incoming text and return the result, which is
+    a JavaScript object containing all of the `categories.yml` file''s data in an
+    easily traversable structure. Since the file we''re loading contains GitHub repo
+    search fields, we use the parsed structure to print out the top-level fields and
+    later will allow the user to filter their search results by clicking on them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-28-at-4.27.45-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Ajax operations may run immediately, without access to the DOM, but once
+    we have a result from them, we need to wait until the DOM is available before
+    proceeding. Structuring our code to use `Promise.all()` allows the network call to
+    be performed as early as possible, improving the user's perception of the page's
+    loading time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to handle clicks on the category links:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: By binding our `click` handler to `document` and relying on event delegation,
+    we avoid some costly repetition and we also can run the code right away, without
+    concerning ourselves with waiting for the Ajax call to complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the handler, we make sure the right category is highlighted and then
+    trigger the `submit` handler on the form. We haven''t yet made the form understand
+    our category list, but the highlighting works already:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-30-at-12.05.37-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Finally, we need to update the form''s `submit` handler to respect the active
+    category if there is one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of simply fetching the value of the search field, now we retrieve the
+    text of the active language or star count as well, passing both pieces of information
+    on through the Ajax call. We use a `Map` instance to map the link text to the
+    appropriate GitHub API syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can now view repositories by their primary language, or by their star count.
+    Once we''ve applied these filters, we can further refine what''s displayed by
+    typing in the search box:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Screen-Shot-2017-03-30-at-12.29.13-PM.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Anytime we have the need to support new data types not already handled by jQuery,
+    we can define them in a similar fashion to this YAML example. We can thus shape
+    jQuery's Ajax library to our specific project's needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding Ajax prefilters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `$.ajaxPrefilter()` function can add prefilters, which are callback functions
+    that allow us to manipulate requests before they are sent. Prefilters are invoked
+    before `$.ajax()` changes or uses any of its options, so they are a good place
+    to change the options or act on new custom options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Prefilters can also manipulate the data type of the request by simply returning
+    the name of the new data type to use. In our YAML example, we specified `yaml`
+    as the data type because we didn''t want to rely on the server supplying the correct
+    MIME type for the response. We could, though, provide a prefilter that ensures
+    the data type is `yaml` if the corresponding file extension ( `.yml`) is in the
+    URL we request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: A short regular expression tests whether `.yml` is at the end of `options.url`
+    and, if so, defines the data type as `yaml`. With this prefilter in place, our
+    Ajax call to fetch the YAML document no longer needs to explicitly define its
+    data type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining alternate transports
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've seen that jQuery uses `XMLHttpRequest`, `ActiveX`, or `<script>` tags
+    as appropriate to handle Ajax transactions. If we wish, we can further extend
+    this arsenal with new transports.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A **transport** is an object that handles the actual transmission of Ajax data.
+    New transports are defined as factory functions that return an object with the
+    `.send()` and `.abort()` methods. The `.send()` method is responsible for issuing
+    the request, handling the response, and sending the data back through a callback
+    function. The `.abort()` method should stop the request immediately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A custom transport can, for example, use `<img>` elements to fetch external
+    data. This allows image loading to be handled in the same way as other Ajax requests,
+    which can help make our code more internally consistent. The JavaScript required
+    to create such a transport is a little involved, so we will look at the finished
+    product and then discuss its components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: When defining a transport, we first pass a data type name into `$.ajaxTransport()`.
+    This tells jQuery when to use our transport rather than the built-in mechanisms.
+    Then, we provide a function that returns the new transport object containing the
+    appropriate `.send()` and `.abort()` methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For our `img` transport, the `.send()` method needs to create a new `<img>`
+    element, which we give a `src` attribute. The value of this attribute comes from
+    `url`, which jQuery passes along from the `$.ajax()` call. The browser will react
+    to the creation of this `<img>` element by loading the referenced image file,
+    so we just need to detect when this load has completed and fire the completion
+    callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Correctly detecting the completion of an image load is tricky if we want to
+    handle a wide variety of browsers and versions. In some browsers, we can simply
+    attach `load` and `error` event handlers to the image element. In others, though,
+    when the image is cached, `load` and `error` are not triggered as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our code in *Listing 13.17* handles these unusual browser behaviors by examining
+    the values of the `.complete`, `.width`, and `.naturalWidth` properties as appropriate
+    for each browser. Once we have detected that the image load has either successfully
+    completed or failed, we call the `callback()` function, which in turn calls the
+    `complete()` function that was passed to `.send()`. This allows `$.ajax()` to
+    react to the image load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling aborted loads is much simpler. Our `.abort()` method simply needs to
+    clean up after `.send()` by removing the `<img>` element if it has been created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to write the `$.ajax()` call that uses our new transport:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.18
+  prefs: []
+  type: TYPE_NORMAL
+- en: To use a particular transport, `$.ajax()` needs to be given a corresponding
+    `dataType` value. Then, the success and failure handlers need to take into account
+    the kind of data that is passed to them. Our `img` transport returns an `<img>`
+    DOM element when it is successful, so our `.done()` handler uses this element
+    as the HTML contents of a newly created `<div>` element that is inserted into
+    the document.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, in this case, the specified image file (`missing.jpg`) does not actually
+    exist. We take into account such a possibility with an appropriate `.catch()`
+    handler, which inserts an error message into the `<div>` where the image would
+    otherwise go:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_13_07.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We can correct this error by referencing an image that does exist:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 13.19
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, our transport is able to successfully load the image and we see this result
+    on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_13_08.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a new transport is uncommon, but even in this case, jQuery's Ajax functionality
+    can be bent to our needs. For example, the ability to treat image loading as a
+    promise means that we could use this Ajax call to synchronize with other asynchronous
+    behavior using `Promise.all()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this final chapter, we have taken an in-depth look at jQuery's Ajax framework.
+    We can now craft a seamless user experience on a single page, fetching external
+    resources when needed with proper attention to error handling, caching, and throttling.
+    We explored details of the inner operations of the Ajax framework, including promises,
+    transports, prefilters, and converters. You also learned how to extend these mechanisms
+    to serve the needs of our scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A complete list of *Ajax methods* is available in [Appendix B](d9485d2d-4300-48c1-825b-1c26c9b57a66.xhtml),
+    *Quick Reference*, of this book or in the official jQuery documentation at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The challenge exercises may require the use of the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alter the `buildItem()` function so that it includes the long description of
+    each jQuery method it displays.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Here's a challenge for you. Add a form to the page that points to a Flickr public
+    photo search ([http://www.flickr.com/search/](http://www.flickr.com/search/))
+    and make sure it has `<input name="q">` and a submit button. Use progressive enhancement
+    to retrieve the photos from Flickr's JSONP feed service at [http://api.flickr.com/services/feeds/photos_public.gne](http://api.flickr.com/services/feeds/photos_public.gne)
+    instead and insert them into the content area of the page. When sending data to
+    this service, use `tags` instead of `q` and set `format` to `json`. Also note
+    that rather than `callback`, the service expects the JSONP callback name to be
+    `jsoncallback`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Here's another challenge for you. Add error handling for the Flickr request
+    in case it results in `parsererror`. Test it by setting the JSONP callback name
+    back to `callback`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

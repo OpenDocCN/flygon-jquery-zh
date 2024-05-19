@@ -1,0 +1,546 @@
+- en: Chapter 4. Managing KnockoutJS Events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Interaction between our app and the user is the most important issue we need
+    to resolve. In the last three chapters, we have focused on the business requirements,
+    so now it is time to think about how to make it easy to use our app to the end
+    user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event-driven programming is a powerful paradigm that allows us to isolate our
+    code better. KnockoutJS gives us several ways to work with events. We can use
+    click binding or event binding if we want to use the declarative paradigm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are two different paradigms to declare events. The declarative paradigm
+    says that we can write JavaScript and custom tags in our HTML. On the other hand,
+    we have the imperative paradigm that tells us that we should isolate JavaScript
+    code from HMTL markup. For this purpose, we can use jQuery to write unobtrusive
+    events and also custom ones. We can wrap custom events using `bindingHandlers`
+    in order to reuse them along our applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event-driven programming
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we use sequential programming to write our apps, we know exactly how our
+    app is going to behave. We usually use this kind of programming paradigm when
+    our app has no interaction with external agents. In web development, we need to
+    use the event-driven programming paradigm because it is the end user who is going
+    to lead the flux of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though we haven't talked about events earlier, we know what they are because
+    we have been using one of the most important events in web development, the click
+    event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many events that users can throw. A click event, as we mentioned earlier,
+    is where the user can press a key on the keyboard; we can also receive events
+    from the computer like the ready event to notify us that DOM elements are all
+    loaded. Nowadays we also have touch events, if our screen is touchable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also define our custom events. This is useful if we want to communicate
+    to entities but we don''t want to create a dependency between them. For example,
+    suppose we want to add items to our cart. Now the responsibility to add items
+    to our cart lies with the view-model. We can create a Cart entity that encapsulates
+    all cart behavior: add, edit, delete, show, hide, and so on. If we begin to write
+    in our code: `cart.add`, `cart.delete` or `cart.show`, our application will depend
+    on the `cart` object. If we create events inside our application, we just need
+    to trigger them and forget about what is going to happen, as the event handler
+    will manage it for us.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Event-driven programming allows us to reduce coupling but also reduces cohesion.
+    We should choose in which grade you want to maintain your code readable. Event-driven
+    programming is sometimes a good solution, but there is one rule we should always
+    follow: KISS (Keep It Simple, Stupid). So if an event is an easy solution, get
+    it. If events just increase lines in the code and don''t give us a better result,
+    maybe you should consider dependency injection as a better approach.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Event-driven programming](img/7074OS_04_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Event-driven programming workflow
+  prefs: []
+  type: TYPE_NORMAL
+- en: The click event
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have been using the click binding in the last three chapters. In this one,
+    you are going to learn more about this event. The click event is the basic event
+    that users use to interact with an application since the mouse has been the peripheral
+    par excellence (also the keyboard).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You must have learned that if you attach a function to the click binding, this
+    function is fired with the click event. The problem is that in Knockout the click
+    event doesn't accept parameters. The arguments of our click function are predefined,
+    as far as we know.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing more parameters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As we have mentioned, the function we bind to the click event has a predefined
+    signature: `function functionName(data, event){...}`, and both the parameters
+    are already assigned: data is the data bound to the element and event is the click
+    event object. So what happens if we want to pass more parameters? We have three
+    solutions, which are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first one is to bind the parameters in the view-model:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The second option is to write the function inline. This is interesting if we
+    want to pass the parameters directly from context objects in the template.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Our third and final solution is a variant of the second one but more elegant:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We can use the one that best approximates our needs. For example, if the parameters
+    we want to pass are constants or observables from the view-model, we can use the
+    first one. But if we need to pass context variables, such as `$parent`, we can
+    use the last one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `bind` function is native to JavaScript. It creates another function using
+    `$data` as its context and then applies the rest of the arguments to itself. You
+    will find more information at [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Allowing the default click action
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default, KnockoutJS prevents the default action on click. This means that
+    if you use the click action in an anchor tag (`<a>`), the browser will run the
+    action we have linked and will not navigate to the link''s `href`. This default
+    behavior is useful because if you use a click binding, it is usually because you
+    want to perform a different action. If you want to allow the browser to run the
+    default action, just return `true` at the end of your function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Event bubbling
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By default, Knockout allows the click event to continue to bubble up to any
+    higher level event handlers. If your element has a parent that also handles the
+    click event, you will fire both functions. To avoid the bubbling event, you need
+    to include an additional binding that is named `clickBubble` and you should set
+    it to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Event bubbling](img/7074OS_04_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Event-bubbling workflow
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event types
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are many types of events that a browser can throw. You can find a complete
+    reference at [https://developer.mozilla.org/en-US/docs/Web/Events](https://developer.mozilla.org/en-US/docs/Web/Events).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we know, each browser has its own set of instructions; therefore, we can
+    classify events into the following groups:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Standard events**: These events are defined in official Web specifications,
+    and should be common across browsers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Non-standard events**: These events are defined for each browser engine specifically.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Mozilla-specific events**: These events are used in add-ons development and
+    include the following:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Add-on-specific events
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: XUL events
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Event binding
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To catch and handle all these different events, Knockout has the `event` binding.
+    We are going to use it to show and hide the debug panel when the mouse goes over
+    and out of text, with the help of the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first update of the `index.html` template is as follows. Replace the debug
+    div with this new HTML:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: This code says that when we set the mouse over the `div` element, we will show
+    the debug panel. Initially, only the `h3` tag content will be displayed.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'When we set the mouse over the `h3` tag, we will update the debug variable
+    value and the debug panel will be displayed. To achieve this, we need to update
+    our view-model with this code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Then we need to update our interface (the return value of our view-model).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now when the mouse goes over the `h3` tag, the debug panel will be showed. Try
+    it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unobtrusive events with jQuery
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In the last few years, it has been a good practice to remove all JavaScript
+    from HTML templates. If we remove all JavaScript code from HTML templates and
+    encapsulate it in JavaScript files, we are doing imperative programming. On the
+    other hand, if we write JavaScript code or use components and bindings in HTML
+    files, we are using declarative programming. Many programmers don't like to use
+    declarative programming. They think this makes it more difficult for designers
+    to work with templates. We should note that designers are not programmers and
+    they may not understand JavaScript syntax. Besides, declarative programming splits
+    related code into different files and may make it difficult to understand how
+    the entire application works. Also, they point out that the two-way binding makes
+    models inconsistent because they are updated on the fly, without any validation.
+    On the other side, we have people who think that declarative programming makes
+    code more maintainable, modular, and readable, and say that if you use imperative
+    programming, you need to fill the markup with unnecessary IDs and classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is no absolute truth. You should find the balance between both paradigms.
+    The declarative nature works great at removing regularly-used features and making
+    them simple. The `foreach` binding and its brothers, along with semantic HTML
+    (components), make the code easy to read and remove complexity. We'd have to write
+    on our own in JavaScript with selectors to interact with the DOM, and provide
+    a common platform for teams so they can focus on how the application works, and
+    not on how templates and models communicate with each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other frameworks such as Ember, React, or AngularJS that use declarative
+    paradigm with success, so it isn't such a bad idea after all. But if you feel
+    more comfortable defining events with jQuery, you are going to learn how to do
+    it. We are going to write the **Confirm Order** button in an unobtrusive way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First of all, remove the `data-bind` attribute and add an ID to locate the
+    button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now write this JavaScript code just over the `applyBindings` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Both the methods are correct; it's the programmer who makes the decision about
+    which paradigm to choose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we choose to write our events in a jQuery manner, it is also a good practice
+    to join all your events in files. If you don't have many events, you can have
+    a file called `events.js`, or if you have many events, you can have several files
+    such as `catalog.events.js` or `cart.events.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Unobtrusive events with jQuery](img/7074OS_04_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Imperative paradigm versus declarative paradigm
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delegation pattern
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we work with a big amount of data, normal event handling can impact the
+    performance. There is a technique to improve the response time of the events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we link the event directly to the item, the browser creates an event for
+    each item. However, we can delegate the event to other elements. Usually, this
+    element can be the document or the parent of the element. In this case, we are
+    going to delegate it to the document that is the event for adding or removing
+    one unit from a product. The problem is that if we just define one event manager
+    for all the products, how do we set the product we are managing? KnockoutJS gives
+    us some useful methods to succeed in this, `ko.dataFor` and `ko.contextFor`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should update the `cart-item.html` file''s add and remove buttons by adding
+    the `add-unit` and `remove-unit` classes respectively:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Then we should add two new events just below the `Confirm Order` event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Using the `ko.dataFor` method, we can get the same content we obtain with `$data`
+    if we were inside a KnockoutJS context. For more information on unobstrusive event
+    handlers, go to [http://knockoutjs.com/documentation/unobtrusive-event-handling.html](http://knockoutjs.com/documentation/unobtrusive-event-handling.html)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If we want to access the context, we should use `ko.contextFor`; as in this
+    example:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'So if we have thousands of products, we continue to have only two event handlers
+    instead of thousands. The following diagram shows how the delegate pattern improves
+    performance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Delegation pattern](img/7074OS_04_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The delegate pattern improves performance
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building custom events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes we need to make two or more entities of our application communicate
+    with each other, that are not related. For example, we want to keep our cart independent
+    of the application. We can create custom events to update it from the outside
+    and the cart will react to this event; applying the business logic that is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can split the event in two different events: the click and the action. So
+    when we click on the up arrow to add a product, we fire a new custom event that
+    handles the addition of a new unit, and the same to remove it. This give us more
+    information about what is happening in our application, and we realize that a
+    general meaning event such as click just gets the data and sends it to a more
+    specialized event handler that knows what to do with it. This means we can reduce
+    the number of events to just one.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a `click` event handler at the end of the `viewmodel.js` file that throws
+    a custom event:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Bold lines show how we should use the jQuery trigger method to emit a custom
+    event. Instead of focusing on the element that triggers an action, custom events
+    put the spotlight on the element being acted upon. That gives us some benefits,
+    such as clarity in the code because custom events have a meaning about their behavior
+    in their names (of course we can call an event `event1`, but we don't like this
+    practice, do we?).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: You can read more about custom events and see some examples in the jQuery documentation
+    at [http://learn.jquery.com/events/introduction-to-custom-events/](http://learn.jquery.com/events/introduction-to-custom-events/).
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Now that we have defined our events, it is time to move all of them to an isolated
+    file. We call this file `cart/events.js`. This file will contain all the events
+    of our application.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Finally, add the file to the end of the script section just below the `viewmodel.js`
+    script:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: We should notice that now the communication with the cart is done using events,
+    and we have no evidence that there is an object called `cart`. We just know that
+    the object we talk to has an interface that has two methods, `addUnit` and `removeUnit`.
+    We can change the object in the interface (HTML) and if we respect the interface,
+    it will work as we expect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Events and bindings
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can wrap events and custom events inside `bindingHandlers`. Suppose we want
+    filter products just when we press the *Enter* key. This allows us to reduce the
+    calls we make to the filter method, and if we are making calls to the server,
+    this practice can help us reduce traffic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Define the custom binding handler in the `custom/koBindings.js` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since this is an event, we should remember that event initialization can be
+    set in the `init` method itself. We catch the `keypress` event with jQuery and
+    track the key that has been pressed. The key code for the *Enter* key is 13\.
+    If we press the *Enter* key, we will call the `executeOnEnter` binding value in
+    the context of the view-model. That is what `allBindings.executeOnEnter.call(viewModel);`
+    does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then we need to update our view-model because our filtered catalog is a computed
+    observable that updates itself every time a key goes down. Now we need to convert
+    this computed observable into a simple observable array. So update your `filteredCatalog`
+    variable as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Realize the consequence of the following change:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: We are not making a copy, but instead we are creating a reference. If we do
+    it that way, we will lose items when we filter the catalog, and we will not be
+    able to get them again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we should create a method that filters the items of the catalog. The code
+    for this function is similar to the computed value we had in the previous version:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now add it to the `return` statement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The last step is to update the search element inside the `catalog.html` template:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if you write in the search, the input items are not updated; however, when
+    you press *Enter*, the filter is applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is how our folder structure looks after inserting the new code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Events and bindings](img/7074OS_04_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Folder structure
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, you have learned how to manage events using Knockout and jQuery.
+    You have learned how to combine both technologies to apply different techniques
+    depending on the requirements of your project. We can use declarative paradigms
+    to combine event attaching, `bindingHandlers` and HTML markup, or we can isolate
+    events in the JavaScript code using jQuery events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will address the issue of communicating with the server.
+    You will learn how to validate the input from the user to be sure that we send
+    clean and proper data to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also we will go through mocking techniques to fake the data server-side. Using
+    mock libraries will help us to develop our frontend application without the necessity
+    for a full operative server. In order to send an AJAX request, we will get a very
+    simple server to run our application because browsers don't allow local AJAX requests
+    by default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remember that you can check the code for this chapter at GitHub:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/jorgeferrando/knockout-cart/tree/chapter4](https://github.com/jorgeferrando/knockout-cart/tree/chapter4)'
+  prefs: []
+  type: TYPE_NORMAL

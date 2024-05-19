@@ -1,0 +1,1909 @@
+- en: Chapter 2. Working with jQuery in WordPress
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we understand the basics of jQuery and WordPress and have a little
+    background on how they''ll interact with each other, we''re now ready to take
+    a look at using jQuery to dynamically enhance a WordPress installation. We''ll
+    start with getting jQuery included in WordPress and end up with our first cool
+    project: Expanding and collapsing content. This is only the beginning of the jQuery
+    possibilities in store for your WordPress site! Again, we''ll be using WordPress
+    3.0 in this title and the new default Twenty Ten theme with jQuery 1.4.2, but
+    rest assured that if your site or project is still using WordPress 2.9, these
+    jQuery techniques will work just fine.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we''ll cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Registering jQuery in WordPress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Google's CDN to include jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reviewing all of jQuery's "secret weapons"
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Our first jQuery and WordPress enhancement
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting jQuery into WordPress
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'jQuery can be included into WordPress in three different ways as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download it from `jQuery.com`, and include it directly with a `script`
+    tag into your XHTML header tags, inside your theme's `header.php` file (this method
+    works, but is not really recommended for a variety of reasons)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can register WordPress' bundled jQuery in themes and plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can also take advantage of Google's CDN (Code Distribution Network) to register
+    and include jQuery into your theme and plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We covered the basics of the first method in [Chapter 1](ch01.html "Chapter 1. Getting
+    Started: WordPress and jQuery"), *Getting Started: WordPress and jQuery*. WordPress
+    is so flexible that any user with the right admin level can come along and update,
+    enhance the theme, or install additional plugins which may also use a version
+    of jQuery or other JavaScript libraries. Therefore, including jQuery or any JavaScripts
+    directly into the theme with hardcoded script tags is not recommended as it could
+    cause conflicts with other scripts and libraries included into the WordPress site
+    through theme customizations or plugins added to the WordPress installation. In
+    this chapter, let''s take a look at using the two remaining methods, registering
+    jQuery through WordPress'' **Script** API and using Google''s CDN.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: jQuery now comes bundled with WordPress
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As of WordPress 2.7, jQuery and several other JavaScript libraries and plugins
+    have been bundled and are available through WordPress' Script API through a handy
+    function called `wp_enqueue_script`. Actually, WordPress has had jQuery and quite
+    a few other JavaScript libraries (including `Script.aculo.us` with Prototype and
+    many more) bundled into the `wp-includes` directory for some time, but until version
+    2.7, these includes were not so easily accessible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Registering jQuery in a WP theme
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You can activate WordPress'' bundled jQuery in two different ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, you can place the following code in your `header.php` file before the
+    closing `</head>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternatively, you can register the `wp_enqueue_script` (and any custom jQuery
+    code you write) in your theme''s `functions.php` file. If your theme doesn''t
+    have a `functions.php` file, simply create a new file, name it `functions.php`,
+    and place it in your theme''s root directory with your other template files (`functions.php`
+    is a standard template file that''s included with the default theme we''re using).
+    Place the following code into your `functions.php` file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Avoiding problems registering jQuery
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The first time that I ever attempted to load up jQuery using the `wp_enqueue_script`
+    (both in the `functions.php` file and through the `header.php` file), I just could
+    not get it to work. After some hair pulling and a few hours on the WordPress Codex,
+    I finally realized the following facts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you're loading directly into your `header.php` template file, make sure that
+    the `wp_enqueue_script` function is above your `wp_head` function. Your custom
+    jQuery code must go below the `wp_head` function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you're registering the `wp_enqueue_script` in the `functions.php` file, make
+    sure that it comes before any custom functions that load through the `add_filter`
+    function into the `wp_head`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Read up on the** `wp_enqueue_script` **function!**'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'This function is part of WordPress'' Script API and it actually does a lot
+    more than just load up jQuery! As I mentioned, there are many, in fact well over
+    fifty, JavaScript toolkits, frameworks, user interface libraries, plugins, and
+    helpers that you can load up safely using the `wp_enqueue_script` function. Check
+    it out here: [http://codex.wordpress.org/Function_Reference/wp_enqueue_script](http://codex.wordpress.org/Function_Reference/wp_enqueue_script).'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Using Google's CDN
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Personally, I am a little torn about registering and referencing the copy that
+    comes with WordPress. I've discovered that loading the library from **Google Code's
+    Code Distribution Network** (**CDN**) is sometimes a better way to go. The CDN
+    saves on bandwidth, allowing your site to do some parallel processing while downloading
+    other scripts and collateral. Plus, it's easy to always get the most current version
+    of jQuery. jQuery's library loads very quickly from Google's CDN and, as a bonus,
+    the library will already be cached if your site's user has previously visited
+    another site that delivers jQuery from Google Code's CDN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Registering and including jQuery through Google's CDN into a theme
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To include jQuery from Google Code''s CDN, we''ll be sure to deregister jQuery
+    then register through Google''s CDN. This is the beauty of registering and using
+    the `wp_enqueue_script` function: if any other plugin or script requires jQuery,
+    and doesn''t have any conflicts with the version loading up from Google, that
+    script will use the already loaded Google CDN library. If a script depends on
+    a specific version of jQuery, say 1.3.2 or 1.2.6, and the CDN is loading up version
+    1.4.2, then that script will go ahead and load the version of jQuery it requires.
+    Because (as we''ll learn) every script loaded through the Script API stays in
+    `noConflict` mode, it''s OK to have the two library versions loaded as long as
+    they''re registered and required.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Google offers a great versioning system that allows you to be as precise as
+    you want, or just pull the latest stable version. Consider the previous code example
+    (note the highlighted number, 1.4, in the previous code example).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding Google's versioning system
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: That previous registration script references version 1.4.2 of jQuery (the most
+    recent version as of writing this title). When jQuery's developers release a new
+    version, say, 1.4.3, that version will automatically be called by that same URL
+    because I did not pinpoint the version's specifics. In the same vein, I could
+    choose to call `...jquery/1.3/jquery..`. that would give me `1.3.2` the highest
+    version in the `1.3` release. And you guessed it, targeting a simple `...jquery/1/..`.
+    would pull the most recent version of jQuery, up to version 1.9.x, until jQuery
+    turns over to version 2.0!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generally, it's good practice to always have the most recent library load, but
+    you never know, you may use a jQuery plugin or write some of your own code that
+    doesn't work well with a newer version. You'd then want to target the last specific
+    version of the library that works with your plugins or custom scripts, until you
+    can fix and update them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using WordPress' bundled jQuery versus including your own jQuery download or
+    using Google's CDN
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As I mentioned earlier, the `wp_enqueue_script` function allows for a safe load
+    of jQuery (and other includes) into `noConflict` mode. As long as you deregister
+    and register for jQuery from the Google CDN, the library will load into WordPress
+    with the same `noConflict` mode protection. I really like to take advantage of
+    Google's CDN, for the variety of performance reasons I mentioned, but for large
+    projects with lots of editors and administrators making different decisions on
+    how to manage the WordPress site and what WordPress plugins to use, I play it
+    safe and register the bundled version into the theme. Also, for development, I
+    find it nice to have jQuery already running locally on my MAMP or LAMP server,
+    if I'm developing a theme and yet have disconnected from the Web due to traveling
+    (or the need for enhanced productivity). Once a site is live, I'll consider switching
+    it over to the Google CDN version of jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping conflicts out!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Because WordPress and jQuery are anticipating other libraries to be loaded
+    which may use the short variable, `$`. The `wp_enqueue_script` ensures jQuery
+    is loaded up in `noConflict` mode. Therefore, you''ll also need to make sure to
+    write your custom jQuery code in `noConflict` mode''s **syntax**. The easiest
+    way to do this is to replace the `$` variable (common in many jQuery scripts)
+    with the full `jQuery` variable, as I''ve discussed in [Chapter 1](ch01.html "Chapter 1. Getting
+    Started: WordPress and jQuery"), *Getting Started: WordPress and jQuery*, and
+    done in my two previous samples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting your own jQuery variable
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you find the `jQuery` variable tedious to write out, yet want to remain
+    in `noConflict` mode, you can replace the standard `$` variable to any variable
+    you want as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: But I really want to use the $ variable!
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You **should not** use the `$` variable for jQuery within WordPress. OK, I
+    know, you''ve got a good reason. Say for instance, you''re copying a jQuery script
+    over from another non-WordPress project and it''s proving cumbersome to covert
+    all the `$` variables to `jQuery` or some other custom shortcut variable. Fine.
+    (Never heard of "Find and Replace"?) At any rate, here is an example of how to
+    shortcut jQuery to safely use the `$` variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only drawback to the above solution is, I've found it's easy to start working
+    with the `$` variable and then forget to encapsulate other scripts in the above
+    jQuery function. If all my jQuery scripts use the `jQuery` variable or a custom
+    variable (such as `$jq`), I'm much better at staying in `noConflict` mode.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Including jQuery in a WordPress plugin**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can include jQuery in a WordPress plugin using any of the earlier mentioned
+    methods. However, you''ll need some familiarity working with WordPress plugins.
+    We''ll cover this topic in detail by learning more about WordPress plugins later
+    in [Chapter 3](ch03.html "Chapter 3. Digging Deeper: Understanding jQuery and
+    WordPress Together"), *Digging Deeper: Understanding jQuery and WordPress Together.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Launching a jQuery script
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Most of the time you''ll want your script to launch and/or be available as
+    soon as the DOM is loaded and ready. For this, you can use the standard "on document
+    ready" technique as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can reduce the previous code, just a bit, by using the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: If the `jQuery` variable is evoked and a function immediately passed, jQuery
+    assumes the `.ready` event is implied and will run the next selection and function
+    as soon as the DOM is loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our first WordPress and jQuery setup
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I hear you. Enough talking already. Let's get jQuery rolling. The majority of
+    this book's code and samples use WordPress 3.0 RC and the brand new default theme
+    is "Twenty Ten". It's a great, clean, HTML5 valid theme. Even if you want to enhance
+    an older version of WordPress, say 2.8 or 2.9, you'll be glad to know that every
+    one of this title's scripts (or approximate versions of it) was originally written
+    and tested in version 2.8.6 and 2.9.2 before being ported over to 3.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where applicable, I'll show you alternative jQuery solutions for WordPress'
+    2.9.2 default theme as well as point out differences between jQuery's 1.3.2 library,
+    which comes bundled with version 2.9.2, and jQuery's 1.4.2 library, which is bundled
+    with WordPress version 3.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The point of every example is to show you not just how to enhance WordPress'
+    default theme, but any theme, and I hope you get creative with the examples and
+    find ways to apply them in unique ways to all sorts of WordPress versions, themes,
+    and plugins!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Registering jQuery in our setup
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Because the bundled version of jQuery that comes with WordPress 3.0 also happens
+    to be the most current version of jQuery available, 1.4.2, I''ll simply navigate
+    to `wp-content/themes/twentyten` and open up the `header.php` file and use the
+    basic `wp_enqueue_script` function to evoke jQuery as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Registering your own custom script file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Next, we'll need to include a separate script file into our theme that will
+    have our custom jQuery scripts. I would like to create a directory in the theme
+    named `js` where I will keep all of my JavaScripts. Inside that directory, I'll
+    create a file and name it as `custom-jquery.js`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here''s the neat bit: you can use `wp_enqueue_script` to include any script
+    that you write. You''ll do this so that you can announce that the script is dependent
+    on jQuery and WordPress will therefore, load jQuery as well, if for some reason,
+    jQuery isn''t loaded already! You''ll want to place your custom scripts below
+    the jQuery call, yet before the `wp_head()` call.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the above function, `wp_enqueue_script`, I first registered a name for my
+    script as `custom-jquery`. Then in the next parameter, I told WordPress where
+    to find my script, using the `get_bloginfo` template tag to direct WordPress to
+    the `twentyten` theme''s folder "`.../js/custom-jquery.js`". For the third parameter
+    of the function, I set the script as dependent on `jquery`, and in the final parameter
+    I simply set a version number. I usually set this number as the day''s date. If
+    I update the script, I try and update this date in the function, and as a result,
+    when the theme "renders" my script loads in looking like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This helps a browser load the script "fresh" instead of loading it from the
+    cache if I ever update it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**The previous custom script include method works for the jQuery library itself
+    too!**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Say in the near future jQuery updates to version 1.4.3 (or 1.5 and so on) but
+    it's going to be a while before WordPress updates and includes that version. You
+    could of course use the Google CDN to register the latest script version but if,
+    for some reason, you didn't want to use the Google CDN, you could simply download
+    the latest version of jQuery from the jQuery.com site and place it inside your
+    theme's root folder and register it using the custom registration method we just
+    used to include our `custom-jquery.js` file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don't forget to `deregister` the bundled jQuery first!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also: Calling a script in through `wp_enqueue_script`"registers" it at the
+    same time so there''s no need to call the `register` function separately if using
+    `wp_enqueue_script`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up the custom-jquery file
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Finally, let''s open up the `custom-jquery.js` file, and using the technique
+    we learned earlier, set up the shortcut for jQuery''s document ready function
+    as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it! Let's get started discovering jQuery's "secret weapons" and putting
+    them to use. You can now place any code described in the following sections in
+    your `custom-jquery.js` file and experiment with it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery secret weapon #1: Using selectors and filters'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'It is time to start having some fun with jQuery! I feel jQuery can be broken
+    down into three core strengths, what I deem as its "secret weapons":'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding selectors and filters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Manipulating CSS and content
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working with events and effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you get a handle on these top three strengths, you're well on your way to
+    being a jQuery rockstar!
+  prefs: []
+  type: TYPE_NORMAL
+- en: This first item, understanding selectors and filters, is **essential**. You
+    need to have a strong understanding of selectors and filters if you're going to
+    be able do anything else with jQuery. The better you are at using selectors and
+    filters, the better you'll be with jQuery period.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selectors and filters give you the ability to (you guessed it!) select objects
+    on your page into the jQuery wrapper object and then work with and manipulate
+    them in just about any way you'd see fit. The selectors will allow you to easily
+    grab an array of elements using easy CSS syntax. Filters will then further narrow
+    down and refine the results of that array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keep in mind, the objects selected into the jQuery wrapper using selectors and
+    filters are not really DOM elements anymore. They are an array of objects in the
+    jQuery object wrapper that have a whole set of functions and capabilities available.
+    If you ever need to, you can weed down through all the jQuery added items and
+    functionality in each array element to the actual DOM element, but why? The whole
+    point of jQuery is to get you around that but it's good to know it's there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selecting anything you want from the document
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the following examples, we'll be looking at selectors and filters; but to
+    illustrate jQuery's selection, I'll be using a function called `css()`. I'll cover
+    that function and a lot more in later sections. Right now, just focus on the selector
+    and filter at the beginning of the samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The essence of jQuery selectors is that they are CSS syntax based. This means
+    that most of you are going to find you can work with jQuery very easily, as far
+    as how you use CSS to target and style specific elements on your page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Selections are declared in the beginning of the main jQuery function as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can also select the following elements into the jQuery wrapper based on
+    CSS syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: HTML **tag names** such as `body, p, h1, h2, div`, and so on
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **id attribute** that is used to select instances and is denoted by a `#`
+    (hash) in CSS, as in `#header` or `#sidebar`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: And the **class attribute**, which is denoted by a `.(dot)` in CSS as in `.body`
+    or `.post`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Of course, any of the combinations that you''re allowed to use in CSS to target
+    an element, you can perform with jQuery. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`Tag` (space, or no space) `#id` or `.className`, such as `div#sidebar li`—this
+    will grab *all* `li` instances in a `div` with the ID name of `sidebar`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`Tag`,(comma) `.class` such as `p, .post`—the comma ensures this will grab
+    everything that is *either* a paragraph *or* marked with the `.post` class'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'To clarify, just like in CSS, you can also use **syntax** to *structure* the
+    selector:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A **comma** means select this element, (and) this element. For example: `div,
+    p` (selects all `div` tags *and* all `p` tags).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A **space** means select this element (which has) this element within it. For
+    example: `div p .className` (selects all `div` tags that have paragraph `p` tags
+    inside them *with* any other elements assigned to `.className` class *inside*
+    the `p` tag).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Last, **no space** would indicate a class applied directly to an element not
+    just held within it: `p.className` (selects all paragraph `p` tags with the `.className`
+    assigned to it. This *would not* select a `div` tag that had the same `.className`
+    class assigned to it).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In addition to standard CSS comma space and attached id and class names, within
+    jQuery you can also use these additional symbols to clarify your selections:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The greater than sign `>` will only find child elements of a parent that meets
+    the selection.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For example, `.post > p` will find paragraph p tags that are directly inside
+    the `.post` class. `p` tags inside a different class, within the `.post` class
+    *will not* be selected.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Let's compare `".post (space) p"` to `".post> p"` and take a look at the results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In our first example, we will examine the code as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that this code produces an output similar to the next screenshot, which
+    shows how all paragraphs are highlighted, even though they are nested another
+    level deep with a class named `.entry-content:`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Selecting anything you want from the document](img/1742_02_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'However, let''s look at this code example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: And let's also look at the following screenshot. We find that no paragraphs
+    are highlighted, because they are inside another `div` tag with a class named
+    `.entry-content` and thus, *not* a child of the `.post`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Selecting anything you want from the document](img/1742_02_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The `+` selector will find all *next* elements to the matching selector. For
+    example: `li + li` will select every list `li` item within a list, *except* for
+    the first item. Just the items *next* to that first item as shown:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot illustrates this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Selecting anything you want from the document](img/1742_02_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The `~` selector will find all the siblings of the selector. For example: `li
+    ~ li` will select every list item within a list again, except for the first item,
+    just the sibling items of that first item. The code example is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As siblings are often next to a selected item, the `+` and `~` selectors can
+    often receive similar results. Note how the following screenshot looks similar
+    to the previous one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Selecting anything you want from the document](img/1742_02_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Filtering those selections
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Many of you can probably do most of what you need with just the basic CSS style
+    selectors. But wait, there's more! Filters are the part of selections that I find
+    incredibly useful, especially considering that we're working with WordPress. Again,
+    with a WordPress theme, a lot of your HTML elements, IDs, and class names are
+    probably being generated by a theme that you're not the author of or, for various
+    reasons, you don't want to edit or perhaps you're just not allowed to edit the
+    theme. (What's that? Designers get a little "testy" when developers start mucking
+    about with their markup? I had no idea.) But that's OK. With filters, you simply
+    don't have to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The thing is, starting out with jQuery, it's tempting to want to go in and change
+    the HTML markup to something that is easier to select with jQuery. But with WordPress,
+    this is not easy. Changing the markup means you run the risk of breaking the theme
+    or worse, having to remind content editors to manually add specific markup to
+    posts and pages (which in some ways, defeats the purpose of using WordPress in
+    the first place). Understanding filters will allow you to have precise control
+    over your selections in every case and scenario, every time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's very easy to refine a filter, you're just going to include these items
+    that will take your selected elements and match them to specific conditions, like
+    their position or index relative to other elements. Again, in keeping with spirit
+    of CSS selection syntax, some of these filters look similar to **CSS pseudo classes**,
+    such as `:hover` and `:first-child`. These are not all actually CSS pseudo classes;
+    they won't work in a CSS stylesheet, but they'll work in jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These filters are broken down in the jQuery API in the following categories
+    (listed as I find them most useful to WordPress development): Basic filters, Content
+    filters, Child filters, Form filters, Attribute filters, and Visibility filters.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As you work with WordPress, I believe you''ll find the `:not()` filter and
+    the `:header` filters incredibly useful. The `:header` filter allows you to simply
+    select *all* the headers in a selection, no matter what level header they are.
+    Rather than having to select `h1` and `h2` and so on, adding the `:header` filter
+    to your selection will grab up all the headers, `h1` through `h6` into the wrapper.
+    Try it out, in your `custom-jquery.js` file, and add the following code (don''t
+    worry about the `.css(...)`; part of the code; we''ll get to that later. I''m
+    just using it to help us to visualize what jQuery can do):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You''ll see in the next screenshot that all headers are selected, `h1, h2`,
+    and so on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Basic filters](img/1742_02_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: My favorite filter is the `:not` filter. Ever noticed on an airplane, you're
+    often reminded that the "nearest exit may be located behind you"? The same principle
+    holds true when you're trying to scoop up the right elements into your jQuery
+    wrapper. Sometimes it's easier to tell jQuery what you *don't* want in the wrapper!
+    I once worked with a theme that had some very pretty e-mail and PDF icon elements
+    tucked inside the `.post` class. The theme did not have an `.entry` class. This
+    was irritating as I wanted to apply a general transformation to images that were
+    loaded into the WordPress posts, but these icons were affected! The theme author
+    had them wrapped in a class named `.postIcons`. Using the `:not()` filter, I was
+    able to transform all `img` tags that were in the `.post` class but *not* in the
+    `.postIcons` class. Sweet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Take a look at what happens when you add the `:not` filter with our previous
+    `:header` selection:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following filters now show us all headers selected, except for headers
+    in list items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Basic filters](img/1742_02_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You've probably noticed just from the previous example that you can get pretty
+    clever with filters, using them multiple times within a selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What''s that, you say? Yes, you''re correct: `(":headers:not(li h2)")` achieves
+    the *exact* same results as the previous example, and yes, it''s always better
+    to take the most direct route to your selections. I''m just trying to illustrate
+    how these two filters can be used. Eventually, you will run into more complex
+    situations where they''ll come in very handy. For everything else, use plain selectors
+    first, before resorting to filters.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look at each Basic filter, what it's syntax looks like, and what
+    it does in detail. Because most WordPress theme authors use the `.post` class,
+    and most of the time you'll be targeting post elements to make the syntax have
+    the most sense. I'll use `.post` class name often in my examples, but remember,
+    your main selector can be any `tag, id` name, or `class` name used in CSS selector
+    syntax!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :not(selector) | `jQuery(".post img:not(.pIcon)").jqFn()`; | Filters out
+    all elements matching the given selector. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :header | `jQuery(".post:header").jqFn()`; | Filters down to all elements
+    that are headers, such as h1, h2, h3, and so on. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :first | `jQuery(".post:first") .jqFn()`; | Filters down to the first selected
+    element only. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :last | `jQuery(".post:last") .jqFn()`; | Filters down to the last selected
+    element only. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :even | `jQuery(".post:even") .jqFn()`; | Filters down to even elements only.
+    Note: Arrays are zero-indexed! Zero is considered an even number so your first
+    item will be selected! |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :odd | `jQuery(".post:odd") .jqFn()`; | Filters down to odd elements only.
+    Note: Arrays are zero-indexed! Zero is considered an even number so your second
+    item will be selected! |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :eq(number) | `jQuery(".post:eq(0)") .jqFn()`; | Filters down to a single
+    element by its index, which again is zero-indexed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :gt(number) | `jQuery(".post:gt(0)") .jqFn()`; | Filters down to all elements
+    with an index **above** the given one, again this is zero-indexed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :lt(number) | `jQuery(".post:lt(2)") .jqFn()`; | Filters all elements with
+    an index below the given one. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :animated | `jQuery(".post:animated").jqFn()`; | Filters down to all elements
+    that are currently being animated (we''ll get to animation later in this chapter).
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: Child filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Anything in the jQuery wrapper is an array, and these child filters will come
+    in handy, but you'll probably find these filters come in most handy when working
+    with `li` tags or definition list elements in WordPress. By default, WordPress
+    splits a fair amount of its link content into `li` tag elements and galleries
+    that are are created by wrapping the images and descriptions in definition lists
+    (`dt dd` elements).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :nth-child(number/even/odd) | `jQuery(".linkcat li:nth-child(1)").css("background",
+    "#f60")`; | Filters down to the elements that are the "nth" child of its selector.
+    Note that this is **not** zero-indexed! `1` and odd selects the **first** element.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :first-child | `jQuery(".linkcat li:first-child").css("background", "#f60")`;
+    | Filters down to the elements that are the first child of their parent. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :last-child | `jQuery(".linkcat li:last-child").css("background", "#f60")`;
+    | Filters down to the elements that are the last child of their parent. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :only-child | `jQuery(".pagenav li:only-child").css("background", "#f60")`;
+    | Filters down to the elements that are only-children of their parent. If a parent
+    has more than one child, no elements are selected. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Here you can see the `:only-child` filter in action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Child filters](img/1742_02_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Here''s the `:nth-child` filter at work in the Meta list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Child filters](img/1742_02_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Content filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After the basic and child filters, the next most useful filters you'll run into
+    are content filters. Content filters allow you to make selections based on **matching**
+    various types of elements and content. The most useful content filter—I often
+    use it in WordPress—is the `:has()` filter. I often need to select elements that
+    have something *inside* them, like anchor `a` tags that have `img` image tags
+    inside them, or paragraph `p` tags that have list `li` tags, or other elements
+    with a particular class name inside them. It's easy to target a specific object,
+    but if you find you need to target a larger, parent object, based on what kind
+    of elements are inside it, the `:has()` filter will become your best friend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next most useful item is the `:contains()` element which, at first blush,
+    might seem very similar to `:has()!` But this filter is very different (and really
+    cool), in that it allows you to target specific *text* inside an element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Be careful with these two filters and make as many "preselections" as possible.
+    You want to make sure jQuery is pointed in the right direction for the elements
+    and text you're trying to select. Just specifying `...(p:contains('my text'))..`.
+    may be too general for a large page of content; you'll cause jQuery to lag, or
+    worse, hang and timeout because it has to search every single little `p, div`,
+    or `a` element on the page for your text or elements. A jQuery that specifies
+    `...(#divIdName .className a:contains('my text'))...` is much better because jQuery
+    only has to search through the text of every `a` element within one specific ID
+    container's specified classes, as opposed to the *entire* page of content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at the following content filters in more detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :has(selector) | `jQuery(".post:has(.entry)") .css("background", "#f60")`;
+    | Filters down to elements that have at least one of the matching elements inside
+    it. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :contains(text) | `jQuery(".post:contains(''Hello world'')").css("background",
+    "#f60")`; | Filters down to elements that contain the specific text. Note: This
+    is **case sensitive!** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :empty | `jQuery(":empty'')") .css("background", "#f60")`; | Filters down
+    to elements that have no children. This includes text nodes. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :parent | `jQuery(":parent'')") .css("background", "#f60")`; | Filters down
+    to elements that are the parent of another element. This includes text nodes.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: For an in-depth example, let's look at the sidebar of the default theme. The
+    sidebar has some items that are not denoted with a special `id` name or `class`.
+    If I want to target the `ul` list that is only under the Meta header, I can target
+    it using `:has()` and `:contains()`. Notice how I "direct" jQuery, by preselecting,
+    or pointing to the `.widget-area li` tags first, so that jQuery ignores the rest
+    of the page *before* I tell you to look for children elements and containing text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can see the result of the following code in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Content filters](img/1742_02_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Form filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As if all the previous selectors and filters weren't cool enough, you can also
+    explicitly filter to several types of form elements as well as types of events
+    for those elements. Using these filters, you'll be able to take control of your
+    WordPress generated comment forms as well as custom and WordPress plugin forms
+    and make them even more intuitive and easier to use. Later on in this book, we'll
+    see how jQuery can make form use and validation dead simple.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :input | `jQuery("form:input").css("background", "#f60")`; | Filters to all
+    input, text area, select, and button elements |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :text | `jQuery("form:text").css("background", "#f60")`; | Filters to all
+    input elements that are of type text |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :password | `jQuery("form:password").css("background", "#f60")`; | Filters
+    to all input elements that are of type passwords |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :radio | `jQuery("form:radio").css("background", "#f60")`; | Filters to all
+    input elements that are of type radio |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :checkbox | `jQuery("form:checkbox").css("background", "#f60")`; | Filters
+    to all input elements that are of type checkbox |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :submit | `jQuery("form:submit").css("background", "#f60")`; | Filters to
+    all input elements that are of type submit |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :image | `jQuery("form:image").css("background", "#f60")`; | Filters to all
+    image elements (classified as a form filter, but useful for regular images) |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :reset | `jQuery("form:reset").css("background", "#f60")`; | Filters to all
+    input elements that are of type reset |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :button | `jQuery("form:button") .css("background", "#f60")`; | Filters to
+    all input elements that are of type button |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :file | `jQuery("form:file").css("background", "#f60")`; | Filters to all
+    input elements that are of type file |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Using the following code, I''ve highlighted only the `text` input and `submit`
+    buttons, as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Form filters](img/1742_02_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Attribute filters
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Attributes are those additional properties found inside HTML tags that allow
+    the tag to refine itself. You're probably most familiar with the `id` and `class`
+    attributes as well as the `src` attributes for `img` and `script` tags and of
+    course the `href` attribute for `a` tags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attributes are powerful properties for defining and refining HTML elements,
+    so you can imagine how powerful being able to filter using them can be. Powerful
+    yes, but do keep in mind the simplest and the most direct approach to selecting
+    items into the jQuery wrapper is often the best. My examples will show different
+    class selections because they create nice visual examples, but in reality, you're
+    better off using regular selectors to target class items and saving attribute
+    filters for your more refined, tricky work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You''ll note that these filters differ from the other filters. Instead of `:`
+    (colon marks), these filters use `[]` (square brackets). This means you can easily
+    see in your selector syntax if you''re filtering for an attribute. You''ll also
+    note that for every attribute out there in HTML''s DOM, you can filter for it.
+    There''s no standard set of "attribute filter names"; you simply use the square
+    brackets to indicate whatever attribute you want to filter for. You can even structure
+    your attribute filter in a few ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| [attribute] | `jQuery("div [href]") .css("background", "#f60")`; | Filters
+    for an attribute, regardless of its value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| [attribute=value] | `jQuery("div [class=''entry'']") .css("background", "#f60")`;
+    | Filters for an attribute and an *exact* specified value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| [attribute!=value] | `jQuery("div [class!=''entry'']") .css("background",
+    "#f60")`; | Filters for attributes that do not have a specified value |'
+  prefs: []
+  type: TYPE_TB
+- en: '| [attribute^=value] | `jQuery("div [href^=''http://'']") .css("background",
+    "#f60")`; | Filters for attributes that have a value that *begins* with a specific
+    string |'
+  prefs: []
+  type: TYPE_TB
+- en: '| [attribute$=value] | `jQuery("div [href$=''/'']") .css("background", "#f60")`;
+    | Filters for attributes that have a value that *ends* with a specific string
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| [attribute*=value] | `jQuery("div [href*=''page_id'']").css("background",
+    "#f60")`; | Filters for attributes that contain a string |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Here, we can take a look at targeting only the local links in our sidebar with
+    the following jQuery code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following screenshot shows the result, and only `localhost` links referencing
+    the WordPress installation are highlighted:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Attribute filters](img/1742_02_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Visibility
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: I've saved these two filters for last, mostly because I don't use them very
+    much in most of my WordPress projects, but they are part of the selector/filter
+    API so I'll go ahead and cover them here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the time, everything you'll need to target with jQuery is by default,
+    visible. But occasionally, you may have an item that you've previously hidden
+    with a jQuery transformation or a form field that is hidden and you'll want to
+    run a transformation on it. For that, you can use the `:hidden` filter. This is
+    a little tricky, as you've selected the item into your wrapper, but you won't
+    necessarily see any transformation (unless the transformation is to make it visible).
+    If you find yourself with quite a few hidden elements, you can always filter for
+    what's visible, if that's easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :hidden | `jQuery("form:input:hidden") .css("background", "#f60")`; | Filters
+    for elements that have a display value of none or type value of hidden or have
+    an explicit width and height of `0` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| :visible | `jQuery("div .post:visible") .css("background", "#f60")`; | Filters
+    for elements that are visible |'
+  prefs: []
+  type: TYPE_TB
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'I''ve covered the main selectors and filters that I get the most use of being
+    a WordPress developer. Be sure to look through the jQuery documentation for all
+    the selectors and filters available listed in alphabetical order: [http://api.jquery.com/category/selectors/](http://api.jquery.com/category/selectors/).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery secret weapon #2: Manipulating CSS and elements in the DOM'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we can reliably select any *object* our WordPress site displays on
+    a page, let's start manipulating and enhancing our selections! We can manipulate
+    our CSS styles which display our objects and as if that isn't cool enough, we
+    can also manipulate the HTML objects themselves in the DOM. Let's get started
+    with manipulating CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating CSS
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'So far, everything that we''ve looked at regarding selectors and filters is
+    essential for targeting the elements you want to affect. Now that you can select
+    anything you want into the wrapper, let''s start making stuff happen! Thanks to
+    all of my previous examples, you''re already familiar with the `css()` function.
+    Mostly, you''ll use this function to assign standard CSS property values, such
+    as: `background, border, padding, margins`, and so on. If you can assign the property
+    in a CSS stylesheet, you can assign it using the `css()` function. You can also
+    retrieve and get CSS properties with this function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Within the Attributes API of jQuery, you''ll find more CSS manipulation features
+    such as the `.addClass, .removeClass`, and `.toggleClass`. These three functions
+    alone will give you a lot of power in making your WordPress site dynamic. Don''t
+    be confused by my continued talk of attributes! We''re not dealing with selectors
+    and filters anymore. We''re dealing with functions that allow you to manipulate
+    those selections. Let''s take a look at some of jQuery''s CSS and class attribute
+    manipulation functions in detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .css(''property'', ''value'') | `jQuery(".post") .css("background", "#f60");`
+    | Adds or changes the CSS properties of the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .addClass(''className'') | `jQuery(".post") .addClass("sticky");` | Adds
+    listed class(es) to each of the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .removeClass(''className'') | `jQuery(".post") .removeClass("sticky");` |
+    Removes listed class(es) from each of the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .toggleClass(''className'', switch-optional) | `jQuery(".post") .toggleClass("sticky");`
+    | Toggles listed class(es) from each of the selected elements based on their current
+    state. If the class is there, it''s removed, and if it''s not, it''s added. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .hasClass(''className'') | `jQuery(".post") .hasClass("sticky");` | Returns
+    true or false if listed class(es) from each of the selected elements exist. |'
+  prefs: []
+  type: TYPE_TB
+- en: Let's check out that `addClass()` function by adding the default's theme `sticky`
+    class to all posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: When making selections, you'll need to denote `class` names from `id` names
+    from `tag` names, but in these jQuery class attribute functions, you only need
+    to put in the name of the class. You don't need to denote it with a "." period.
+    The function is only expecting a class name so it's not necessary. As you might
+    expect, you obviously can't add an `id` name to a selection using the `addClass`
+    function (and nope, sorry, there's no `addId` function!)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can now see in the next screenshot that the `.sticky` class has been added
+    to all the `.post` classes through jQuery, not WordPress!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Manipulating CSS](img/1742_02_12.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Manipulating attributes
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can also affect the attributes of specific objects (this comes in handy
+    for switching our image paths, and provides another way to work with `class` names
+    and even `object` ID names)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .attr | `jQuery(".post") .attr();` | Retrieves the attribute''s value for
+    the first element of the selected elements |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .removeAttr | `jQuery(".post a") .removeAttr("href");` | Removes an attribute
+    from each of the selected elements |'
+  prefs: []
+  type: TYPE_TB
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**More power over CSS:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you ever need to work with HTML objects in a nice, cross-browser friendly
+    way, it''s easy to retrieve and set a host of property and height and width variables
+    on any selector you target. Occasionally, these will come in handy, but you''ll
+    find the brunt of your work done with the functions as listed in the previous
+    table. None-the-less, you''ll want to take a look at the positioning and height
+    and width functions under jQuery''s CSS API: [http://docs.jquery.com/CSS](http://docs.jquery.com/CSS).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating elements and content
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Manipulation section of jQuery's API is again extensive, but I find some
+    of the functions useful for helping along my WordPress and jQuery enhancements.
+    For example, if you make something expandable or retractable, you'll need an element
+    for the user to handle that event, rather than having to go into every post and
+    add control buttons (or remind your client or site editors to add control links
+    or buttons to each post—yeah, they'll do that). You can add and remove content
+    and HTML elements on the fly, using jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most useful functions are the `prepend()` and `append()` functions allowing
+    you to include text before or after your selection. These functions allow you
+    to focus on content, or specific selectors within your selection, whichever is
+    easiest for you to target.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next most useful functions are the `before()` and `after()` and `instertBefore()`
+    and `instertAfter()` functions. If you find you need to wrap elements inside a
+    class name or HTML element to add extra styling, that's no problem with the `wrap()`
+    function. You can even remove and clone elements! Let's take a look at these manipulation
+    functions in more detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .append(html & text) | `jQuery(".post") .append("<b>post ends here</b>");`
+    | Inserts content in the parameter, to the end of each selected element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .appendTo(selector) | `jQuery("<b>post ends here</b>").appendTo(".post");`
+    | Does the same thing as append, just reverses the element selection and content
+    parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .prepend(html & text) | `jQuery(".post") .prepend("<b>post starts here</b>");`
+    | Inserts content in the parameter, to the beginning of each selected element.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .prependTo(selector) | `jQuery("<b>post starts here</b>").prependTo(".post");`
+    | Does the same thing as prepend, just reverses the element selection and content
+    parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .after(string) | `jQuery(".post") .after("<b>This goes after</b>");` | Inserts
+    content in the parameter, after and outside of each selected element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .insertAfter(selector) | `jQuery("<b>This goes after</b>").insertAfter(".post");`
+    | Does the same thing as after, just reverses the element selection and content
+    parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .before(HTML & text) | `jQuery(".post") .before("<b>This goes before</b>");`
+    | Inserts content in the parameter, before and outside of each selected element.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .insertBefore(selector) | `jQuery("<b>This goes before</b>") .insertBefore("class");`
+    | Does the same thing as before, just reverses the element selection and content
+    parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .wrap(html or functionName) | `jQuery(".post").wrap("<div class=".fun" />");`
+    | Wraps an HTML structure around each selected element. You can also construct
+    a function that will wrap each element in HTML. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .wrapAll(HTML) | `jQuery(".post").wrapAll("<div />");` | Similar to wrap,
+    but places the HTML structure around all of the elements together, not each individual
+    element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .wrapInner(selector) | `jQuery(".post") .wrapInner("<div class=".fun" />");`
+    | Similar to wrap, but it places the HTML structure inside each of the selected
+    elements around any text or child elements of each selected element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .html(HTML & text) | `jQuery(".post") .html("<h2>Replacement Text</h2>");`
+    | Replaces any content and child elements of selected items with the content in
+    the parameter. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .text(text only HTML chars will be escaped) | `jQuery(".post") .text("Replacement
+    Text");` | Similar to HTML, but text only. Any HTML characters will be escaped
+    as ASCII codes. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .empty(selector) | `jQuery(".post").empty(".entry");` | Deletes any content
+    and child elements of a selected element. Leaves the element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .remove(selector) | `jQuery(".post").remove()`; | Similar to empty but deletes
+    the entire element. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .clone(selector) | `jQuery(".post").clone()`; | Duplicates the selected elements.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Here we can see how easy it is to use these types of functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above jQuery script adds **End of Post** to the end of every post as seen
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Manipulating elements and content](img/1742_02_13.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Working with the DOM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With jQuery, you can actually traverse and handle the DOM itself instead of
+    just dealing with the elements that are in the jQuery wrapper set (remember, these
+    are no longer pure DOM elements in the array). In order to work directly with
+    the DOM, you can use a few jQuery functions and properties. jQuery's documentation
+    site itself has a pretty exhaustive list of 20 or 30 functions that you can use
+    to help you traverse the DOM, though again working with WordPress, you most likely
+    will not need to work directly with it. The ones I use most are actually part
+    of the jQuery core and not found in the Traversing API, but I use them similarly
+    to help me refine and navigate DOM objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .length or size() | `jQuery(".post") .length;` | Returns the number of elements
+    in the selected set. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .get(number-optional) | `jQuery(".post") .get(3);` | This will return the
+    array of native DOM elements. Comes in handy if you don''t want to deal with DOM
+    directly and not the jQuery wrapped elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .find(selector) | `jQuery(".post") .find(".entry b");` | Returns an array
+    of jQuery elements inside the first selector that match the find function''s selector.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .each(functionName) | `jQuery(".post") .each(function(){//code});` | This
+    will run a function on every element that matches the jQuery selector. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'As these functions return numbers and arrays, you''ll find them most useful
+    for troubleshooting. To easily reference one of these functions, I simply set
+    up `alert()` functions with my jQuery statements as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can see the resulting alert here in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the DOM](img/1742_02_14.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Be sure to take a look at the full traversing functions.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Again, the point of jQuery is to get you away from the details of the DOM, but
+    as you get more sophisticated with your use of jQuery, you don't want to forget
+    these functions are available to you at [http://docs.jquery.com/Traversing](http://docs.jquery.com/Traversing).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also take a closer look at the jQuery core at [http://docs.jquery.com/Core](http://docs.jquery.com/Core).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'jQuery secret weapon #3: Events and effects (aka: the icing on the cake)'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: All right, you are a *selection* master; you can grab anything you want from
+    anyone's CSS and WordPress theme and you can *manipulate* those selections' CSS
+    properties and attributes until the cows come home. Just from these first examples,
+    you've probably managed to come up with your very own impressive jQuery enhancements.
+    But wait, there's more! Let's bring it all together with events and effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with events
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are lots of events that you can handle with jQuery. You can manually **bind**
+    and **unbind** events to elements, you can reference the **unified event object**,
+    and you can use event helpers. We're going to save looking at the jQuery's unified
+    event object until a little later in this book and for now, take a look at the
+    most direct ways to get started with events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Helpers are so helpful!
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The helper functions, also often referred to as "shortcuts", let you easily
+    set up events on a click or hover. You can also easily toggle events. We saw how
+    useful the `toggleClass()` function was in the CSS Manipulation section; imagine
+    being able to toggle *more* functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the time, `hover()` will accomplish your needs, but if you want your
+    event to be a click, then the `toggle()` function will probably work best. The
+    `toggle()` function allows a bit more flexibility than `hover` because you can
+    add in additional functions and not be constrained to just one or two functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .click(functionName) | `jQuery(".post") .click(function(){//code});` | Binds
+    a function to the `click` event type, executed on a single click. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .dbclick(functionName) | `jQuery(".post") .dbclick(function(){//code});`
+    | Binds a function to the `click` event type, executed on a double click. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .hover(functionName1, functionName2) | `jQuery(".post") .hover(function(){//code});`
+    | Works with the `mouseenter/mouseleave` event types and binds just two functions
+    to the selected elements, to be executed on `mouseenter` and `mouseleave`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .toggle(functionName1, functionName2, functionName3, etc) | `jQuery(".post")
+    .toggle(function(){//code});` | Works with the `click` event type and binds two
+    or more functions to the selected elements, to be executed on alternate clicks.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .mouseenter(functionName) | `jQuery(".post") .mouseenter(function(){//code});`
+    | Binds a function to be executed when the mouse enters the selected elements.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .mouseleave(functionName) | `jQuery(".post") .mouseleave(function(){//code});`
+    | Binds a function to be executed when the mouse leaves the selected elements.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .keydown(functionName) | `jQuery(".post") .keydown(function(){//code});`
+    | Binds a function to the `keydown` event type, executed only when the selected
+    element has a *focus* and keys are pressed down. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .keyup(functionName) | `jQuery(".post") .keyup(function(){//code});` | Binds
+    a function to the `keyup` event type, executed only when the selected element
+    has a *focus* and keys are pressed then released. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'With events comes a more live and dynamic page. Let''s set up a very simple
+    hover on our sidebar navigation items:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Helpers are so helpful!](img/1742_02_15.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Working with bind, unbind, and the event object
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We'll just do a quick overview of these functions; using this method is a bit
+    of overkill, but it might come in handy for specific uses and if nothing else,
+    make you appreciate all the helper shortcut functions jQuery provides you with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Occasionally, you may need to really refine the control of your events, and
+    using the `bind()` and `unbind()` functions, you may well handle this for yourself.
+    You can pass parameters of event types, such as `click` or `mouseenter`; you can
+    pass some data as well as an event handler (or you can call another function).
+    The data is an optional parameter and it's a tad beyond the scope of this chapter
+    to get into, but for those of you who have become really interested in developing
+    with jQuery, it's good to know you can pass data around if need be (and we'll
+    do our bit even in this chapter)!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a closer look and break down the parts of these functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .bind(event type, data, functionName) | `jQuery(".post").bind("mouseenter",
+    function(){//code})`; | Attaches a function to be triggered on a type of event
+    to the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .unbind(event type, functionName) | `jQuery(".post").bind("mouseenter", function(){//code})`;
+    | Removes the event type from the selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: 'We can recreate what we achieved with the hover class by using `bind` and `unbind`.
+    It''s a bit more cumbersome, and ultimately not the most elegant way to go for
+    a simple hover effect. The advantage of bind is that you can pass data around.
+    The following example demonstrates passing data, that is, the color of our background,
+    to the event''s function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the previous code sample, we worked with jQuery's event object to pass the
+    data. Working with the data, the unified event object returns can help you create
+    refined jQuery transformations, and I often use the object's information to help
+    pass event information to functions for cleaner code and to also help me with
+    troubleshooting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event.type` | Returns the type of event, such as a click or `mouseenter`
+    or `keyup`. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event.target` | Returns the selected element the event was triggered from.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event.data` | Returns and contains the optional data passed through the
+    bind function. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event.pageX, .pageY` | Determines the mouse position relative to the left
+    edge (pageX), or top (pageY) of the document. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event.result` | Returns the last value returned by an event handler that
+    was triggered by this event. Very useful for troubleshooting. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `event.timeStamp` | Returns the Unix timestamp of when the event was triggered.
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: 'The following code will track event object attributes on click:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here's one event object function which you may find useful—the `preventDefault()function`.
+    It can stop an element's default action. The most common example would be making
+    a `link` tag not executing its `href`. If you need to know if an element's default
+    event has had this called on it, you can use the `isPreventDefault()` function
+    to test for it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .preventDefault() | `jQuery(.post a).preventDefault()`; | Will prevent the
+    selected elements from their browser-set default actions. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .isPreventDefault() | `jQuery(.post a).isPreventDefault()`; | Returns true
+    or false if `ispreventDefault` was called on a set of selected elements. |'
+  prefs: []
+  type: TYPE_TB
+- en: Adding effects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: So now we're ready for the fun section of this chapter—adding slick effects.
+    The jQuery library provides some very basic animation and effects functions for
+    us to work with. These are all visual effects such as showing and hiding, fading
+    in and out, sliding up and down, or using the `animate` function to move around
+    elements on the screen, more precisely. Most of you will be very happy with the
+    standard shortcut animation functions, but we'll take a look at the `animate`
+    function as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The majority of these functions also allow for a callback function which makes
+    it easy to trigger additional animations or functionality that you want to have
+    completed when the element's animation is complete. Let's get started with effects
+    and animation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Showing and hiding
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first thing you'll want to note about showing and hiding is that the size
+    and the fade of the targeted elements are affected. If you want to just fade or
+    affect the size, then you'll want to look at the other animation functions. You
+    can also very easily use the `toggle` event we discussed before to aid in your
+    effects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .show(speed-optional, functionName) | `jQuery(".post") .css("background",
+    "#f60").show("slow")`; | Displays the matched elements; if a speed is set, the
+    object grows in from left to right and alpha fade 0 to 1\. A function can be called
+    upon completion. Speed can be "slow" or "fast" or milliseconds. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .hide(speed-optional, functionName) | `jQuery(".post") .css("background",
+    "#f60").show(200)`; | Similar to show but hides. If a speed is set, the element
+    shrinks from right to left and alpha fade 1 to 0\. A function can be called upon
+    completion. Speed can be "slow" or "fast" or milliseconds. |'
+  prefs: []
+  type: TYPE_TB
+- en: Sliding in and out
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You'll notice that showing and hiding "grew" the object from the right to left.
+    Sliding is an elegant way to handle opening and closing elements with a more direct
+    up and down motion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .slideUp(speed, functionName) | `jQuery(".post") .slideUp(''slow'', function()
+    {``// code``})`; | Slides the selected element up from bottom to top until it
+    is hidden. Speed can be "fast" or "slow" or milliseconds. A function can be called
+    when the animation is finished. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .slideDown(speed, functionName) | `jQuery(".post") .slideDown(''slow'', function()
+    {``// code``})`; | Slides a hidden selected element down from top to bottom until
+    its size is defined. Speed can be "fast" or "slow" or milliseconds. A function
+    can be called when the animation is finished. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .slideToggle() | `jQuery(".post") .slideToggle(''slow'', function() {``//
+    code``})`; | Toggles the visibility of the selected element using the slide animation.
+    Speed can be "fast" or "slow" or milliseconds. A function can be called when the
+    animation is finished. |'
+  prefs: []
+  type: TYPE_TB
+- en: Fading in and out
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A good fade in and out is nice as well. I do want to point out that `fadeIn()`
+    and `fadeOut()` only work when starting from an alpha of `0` or `1`. For example:
+    `fadeOut` only works if the element''s alpha is set to `1`, and `fadeIn` only
+    works if the element''s alpha is at `0`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'd also like to point out that if you've previously used the `fadeTo()` function
+    to fade to a specific alpha number, and then try to `fadeOut()` all the way or
+    `fadeIn()` all the way, it doesn't work. Just continue to use the `fadeTo()` function
+    to smooth your transitions up and down. Also, when using `fadeOut()`, once the
+    element's alpha is at `0`, it disappears completely. Any space it was taking up
+    collapses in a somewhat jarring effect. Take this into consideration when deciding
+    to use `fadeOut().`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .fadeOut(speed, functionName) | `jQuery(".post") .fadeOut("slow"`, | Fades
+    a selected element that''s visible or alpha is `1` to `0` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .fadeIn(speed, functionName) | `jQuery(".post") .fadeIn("slow"`, | Fades
+    a selected element who''s visibility is hidden or alpha is set to `0` to `1` |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .fadeTo(speed, alpha, functionName) | `jQuery(".post") .fadeTo("slow"`, |
+    Fades a selected element to a specific alpha from `0` to `1` |'
+  prefs: []
+  type: TYPE_TB
+- en: Working with the animate function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The three animation functions in the previous table will do most of what you
+    need. You may, however, find yourself in a situation that requires a tad more
+    control. In that rare instance, you can use the `animate` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Example | Syntax | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .animate(css properties, duration, easing, functionName) | `jQuery(".post")
+    .animate({width:` | Creates a custom transition of CSS properties on the selected
+    elements |'
+  prefs: []
+  type: TYPE_TB
+- en: '| .stop() | `jQuery(".post").stop()`; | Stops an animation on a selected element
+    |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Here''s an example of custom animating an `img` in a post with the `animate()`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It''s tough to capture animation in a book so I haven''t tried with the other
+    examples, but here you get the idea of the post''s image half way animated (the
+    image height is closing and the alpha is on it''s way to 0):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Working with the animate function](img/1742_02_16.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Making it all easy with statement chaining
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As I''ve mentioned, one of jQuery''s many powerful features is statement chaining,
+    that is, stringing multiple functions together that will be performed in the order
+    they''re added to the chain (left to right) on the selected set all in one nice
+    string of code. For example, we can change a CSS property, hide the selected elements,
+    and fade them smoothly with one line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: For a more in-depth example of statement chaining, let's get to our first jQuery
+    project in WordPress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our First Project: Expanding/collapsing WordPress posts'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: OK, this is a quick project, but it requires that we use a little bit of everything
+    we just covered. I've always liked that WordPress had the `<!--more->` feature
+    to make posts "condensable" for the main post view page, but that doesn't always
+    suit my purposes for some types of posts. Let's assume that my blog will have
+    relatively short posts, yet I really want a reader to be able to see as many headlines
+    as possible, above the fold, without having to scroll or scan any content (we'll
+    suspend reality and pretend that my post headers are just unbelievably interesting
+    and compelling).
+  prefs: []
+  type: TYPE_NORMAL
+- en: I'd like the user to have the option to expand the post that interests him,
+    while keeping him in the context of all the other post headlines. You've probably
+    seen similar enhancements to this on many sites. This is a very popular jQuery
+    enhancement for FAQ and press release posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's take a look at how we'd do that. Set up a clean `custom-jquery.js` file
+    in your theme and let's get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we''ll have to hide our post content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll need some sort of control for people to click on which also gives
+    them some intuitive instructions. Of course, it would be very inefficient to have
+    an editor add a control element to each post, so we won't do that (but sadly,
+    I've seen this done on a few projects). We could add it to the theme's `post.php`
+    page, but then, the control would appear even if the user had JavaScript disabled.
+    We want this to degrade gracefully, it's an *enhancement* after all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If someone comes across this content in a mobile browser without JavaScript
+    support or a text-only or text-to-speech browser, we'll want them to just view
+    the content as normal without any non-functional elements distracting them. We'll
+    use jQuery to add our control element. If JavaScript is disabled, it simply won't
+    appear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We now just need a nice way to show and hide the post''s content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Last, let''s make sure the instructions in the `.openIt` div update:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That''s it! Your very first, *useful* jQuery enhancement for WordPress. Here''s
+    a screenshot of what it looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Our First Project: Expanding/collapsing WordPress posts](img/1742_02_17.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Keeping jQuery readable
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the real world this enhancement could be cleaned up and refined quite a bit.
+    For example, it would be better to have an existing CSS style for `.openIt` instead
+    of applying styles to the `div`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, I highly recommend writing separate, named functions. For example, it''s
+    much easier to read:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And then, below that see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you find yourself working on a project with other developers, consider breaking
+    your functions down like this rather than packing them directly into jQuery functions
+    as my first example did. It makes for more maintainable code and you can reuse
+    your functions with other jQuery functions and scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To recap, we took a look at getting jQuery included into WordPress by registering
+    WordPress'' bundled version and by using Google''s CDN. We also took a look at
+    jQuery''s top three "secret weapons":'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Selectors and filters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Manipulating and changing content
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Events and effects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'After exploring the basics of jQuery within WordPress and getting a feel for
+    how they work, you may feel like you''re good to go! In many ways you are, but
+    we''re going to continue exploring WordPress and jQuery in more detail about the
+    parts of WordPress that generate content we can enhance with jQuery: We''ll look
+    deeper into WordPress themes and plugins as well as take a look at another type
+    of plugin, the jQuery plugin. Themes and plugins can make our WordPress development
+    work very powerfully and flexibly across multiple sites and projects.'
+  prefs: []
+  type: TYPE_NORMAL

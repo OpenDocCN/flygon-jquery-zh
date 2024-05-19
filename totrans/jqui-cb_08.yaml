@@ -1,0 +1,499 @@
+- en: Chapter 8. Using Sliders
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the size of the slider handle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Removing the handle focus outline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using master sliders and child sliders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Marking step increments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting range values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Changing the slider orientation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **slider** widget is almost like a progress bar that the user can manipulate.
+    The slider gives the user a handle that can be dragged along a plane in order
+    to produce the desired value. This is especially useful in working with form values.
+    The slider widget, by default, has useful options such as the ability to change
+    orientation and letting the user select a value range. In this chapter, we'll
+    look at some of the various ways we can tweak the slider widget by adding new
+    options, or by attaching even handler functions. We'll also look at some visual
+    tweaks, and how slider instances can communicate with one another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Controlling the size of the slider handle
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **slider handle** used to control the position of the slider, dragged by
+    the mouse, is a square shape. That is, the width is the same as the height, and
+    we may want a different shape for the slider handle. In the case of a **horizontal
+    slider**, the default orientation, let's look at how we can override widget CSS
+    styles to alter the shape of the slider handle in order to meet the needs of our
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML we'll create is for two slider widgets. We'll also give them a label
+    and wrap them each with container div elements to control the layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here is the CSS used to customize the slider handle. This overrides values
+    defined in the widget CSS, and so should be included in the page after the jQuery
+    UI stylesheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is the JavaScript code used to create two instances of the slider
+    widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As a reference, here is what the two slider widgets look like before applying
+    our custom CSS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'And here are the same two slider widgets with our custom CSS applied:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As you can see, the handle is taller, extending farther beyond the boundary
+    of the slider borders. This gives the user a larger surface area to click and
+    drag the slider handle around. The exact size changes we've introduced are arbitrary,
+    and can be tweaked on a per-application basis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.ui-slider-horizontal .ui-slider-handle` selector overrides three properties
+    defined in the widget CSS. The width is changed to `0.8em`, which makes it slightly
+    thinner. The `height` property's value is changed to `1.6em`, which makes it taller.
+    When we make the handle taller using the `height` property, we push it downward
+    so that it no longer aligns with the slider. To compensate for the change in height,
+    we pull it back up by decreasing the `top` value to `-0.48em`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing the handle focus outline
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Most browsers display a dotted or solid **outline** around an element when they
+    receive the focus. This isn't part of the user interface style, but rather a built-in
+    accessibility feature of the browser. This forced visual display around elements,
+    such as the slider handle, isn't always desirable. Let's look at how we can go
+    about removing this default browser behavior from the slider handle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can use any basic `div` element to base our sample slider widget on. So let's
+    jump right to our custom slider widget CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: And, now we have our customized implementation of the slider widget and an instance
+    of our customized slider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Before we applied our changes to the slider widget, the handle had an outline
+    that looked something like this after being dragged:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'After our changes have been applied to the slider widget, our slider instance
+    looks like this after the handle is dragged:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've added a new option to the slider widget called `handleOutline`. We've
+    set this option to `true` by default because it's always a good idea to support
+    native browser behavior out of the box. This option, when set to `false`, turns
+    off this native border outline functionality. It does so by adding `the ui-slider-handle-no-outline`
+    class to each handle element in the slider. There can be many handles in one slider,
+    for example, a range slider. So in the `_create()` method, we check if the `handleOutline`
+    option is `true`, and if so, we use the `handles` jQuery object stored as a property
+    of this widget to apply the new class we've created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The class itself is simple in that it only changes one property. In fact, we
+    could have simply added the `outline` property with a value of `0` to the `ui-slider-handle`
+    class instead of creating a new one. However, our chosen approach allows us to
+    keep the native widget styles intact, which allows the outline browser functionality
+    to toggle on or off for each instance of our widget. You'll also notice that the
+    handle, even without the native browser outline, doesn't lose any accessibility
+    because the jQuery UI state classes take care of this for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using master sliders and child sliders
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It is possible that your application will use some quantity that can be further
+    decomposed into smaller values. Additionally, the user may need to control these
+    smaller values and not just the aggregate. If we decide to use the slider widget
+    for this purpose, we can think of the child sliders observing the changing value
+    of the master slider. Let's take a look at how we might go about implementing
+    such a group of sliders. We'll design an interface that allows us to allocate
+    how much of the CPU this application is allowed to use. This is the **master slider**.
+    We'll assume a quad-core architecture, and so we'll have four subsequent sliders
+    that depend on, and observe, the main CPU slider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here is the HTML used to define the layout of our five sliders. Each slider
+    has its own `div` container, mainly used to define widths and margins. Inside
+    the `div` container, we have a label of each CPU, their current MHz allotment,
+    and the maximum. This is where each slider widget is placed too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we have some CSS styles to help align and position these components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we have our JavaScript code that extends the slider widget to provide
+    developers using it with two new options, `parent` and `percentage`. When the
+    document loads, we instantiate our CPU slider widgets and establish the appropriate
+    relations between them using our new slider capabilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Take a look at the resulting slider widgets in the browser and adjust some of
+    the child CPU values. You'll notice that the label updates have changed and that
+    each CPU has its own CPU allotment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, leaving the CPU values as they are, try adjusting the master CPU allocation
+    slider. You'll notice that the current and maximum values for each child CPU slider
+    change, but the ratio is preserved. This means that if we've set up CPU 1 to use
+    10 percent of the overall CPU allocation, it will continue to use 10 percent even
+    if the overall allocation increases or decreases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In each container `div` element we've created for CPU sliders, we have a header,
+    `slider-value`, used to display both the current value of the slider in addition
+    to the maximum value. This is an important addition we need to consider in most
+    cases while using the slider widget. The widget is great for allowing the user
+    to change values, but they need specific feedback that shows the result of their
+    actions. In this example, changing the master slider updates five labels, further
+    highlighting the need to label specific slider values outside the widget where
+    the user can see them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've added two new options to the slider widget, `parent` and `percentage`.
+    The two options are related to each other and basically translate to "the maximum
+    value of this slider is this percentage of this parent slider value". In the `_create()`
+    method, we're checking if both these options have an actual value before continuing,
+    as they default to `null`. If not, we've already called the original slider constructor
+    using the `_super()` method, and so it's safe for us to simply return.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If, on the other hand, we've been given a parent slider widget and a percentage,
+    we call the `_reset()` method, passing it the current value of our parent slider.
+    This will potentially update both the maximum and the current value of this widget.
+    Once that is done, we set up our observer that watches the parent slider for changes.
+    This is done using the `_on()` method, where we pass `parent` as the element we're
+    listening for events on and the configuration object. This object has a `slidechange`
+    event, which is the event we're interested in, and the callback function. Inside
+    the callback function, we're simply calling our `_reset()` method using the updated
+    value from the parent. It is worth noting that we must use `_on()` to register
+    our event handler. If the child slider is destroyed, the event handler is removed
+    from the parent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_reset()` method takes a value from the parent slider and resets both the
+    `value` and `max` options of this child slider. We're using this method both when
+    the child is first created and when the parent value changes. The goal is to preserve
+    the current value/max ratio. This is where the `percent` option comes into play.
+    Since this is passed to the widget as an integer, we must multiply it by `0.01`.
+    This is how we calculate that new maximum for this child. Once we have the new
+    maximum value, we can scale the current value either up or down.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, in the document-ready event handler where we instantiate each of the
+    five slider widgets, we've defined a generic callback function used to update
+    the label in each CPU `div`. This gets passed to the create and change options
+    of each slider widget. We're also using values for our newly-defined options here.
+    Each child slider has a unique `percentage` value of the overall CPU allocation,
+    and each child is using `#master` as its `parent`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Marking step increments
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The slider widget can be passed a step value, which determines the increments
+    by which the user can slide the handle. If unspecified, the `step` option is `1`,
+    and the handle slides smoothly back and forth. On the other hand, if the `step`
+    value were more pronounced, let's say `10`, we would notice the handle snapping
+    into position as we move it. Let's take a look at how we might extend the slider
+    widget to give the user a better feel for where these increments lie. We'll mark
+    the increments visually using ticks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll jump right into the custom CSS used for this widget enhancement. The underlying
+    `div` element used for the slider element can be as simple as `<div></div>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is our JavaScript code that extends the slider and creates an instance
+    of the widget using the new `ticks` option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Looking at this slider widget, we can see that the `step` value we've specified,
+    `20`, is depicted using tick marks underneath the slider.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's examine the additional capability we've introduced into the slider widget.
+    We've added the `ticks` Boolean option, which is turned off by default. This option,
+    when true, tells the widget to display the step increments using tick marks. In
+    the `_create()` method, we're calling the original implementation of `_create()`
+    using `_super()`, as we want the slider constructed as normal. Then, we check
+    to see if the `ticks` option has been turned on and if the `step` value is greater
+    than `5`. If the `ticks` option has been turned on and we have a `step` value
+    that is less than `5`, they'll appear to be close to each other; so we simply
+    don't display them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `cnt` counter variable controls our tick rendering loop, and is initialized
+    to the first `step` above the `min` option. Likewise, the loop exits before the
+    `max` option value. This is because we do not want to render tick marks at the
+    beginning or the end of the slider, but only the mid section. The `backgroud`
+    variable is used to extract the `border-color` CSS property from the slider widget.
+    What we're actually doing here is transferring the theme setting to a new element
+    we're adding to the widget. This allows the theme to be swapped, and the tick
+    marks will change color accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside the `while` loop, we're creating the `div` elements that represent the
+    tick marks. The `left` CSS property is computed to actually position the `div`
+    so that it lines up with the slider handle as the user moves it around. The `ui-slider-tick`
+    CSS class we're adding to the `div` element configures the common properties for
+    each tick mark, including the `z-index`, which pushes a portion of the `div` behind
+    the main slider bar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting range values
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The slider widget can be used to control a range value. So instead of moving
+    a fixed point, that is the handle, back and forth over the slider axis, the user
+    will move two handles back and forth. The space in between these two points represents
+    the range value. But how do we go about computing that number? The slider widget
+    gives us the raw data, the upper and lower bounds on the user selection. We can
+    use these values inside our event handlers to compute the range value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use just a basic slider for this demonstration, but we''ll need some
+    supporting CSS and HTML surrounding the slider so that we can display the range
+    values as they''re changed. Here is the CSS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is the HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll create the `slider` instance using the following JavaScript code. Note
+    that we're passing options specific to supporting range selections.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now when you view this slider in your browser, you'll notice that the range
+    value is displayed as a label outside the widget. And, if you move either one
+    of the slider handles, the label will reflect the changed range value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this example, we''re creating a simple slider widget that uses a range of
+    values instead of just a single value. We do this by passing an array of values
+    to the widget constructor, and by passing a `range` value of `true` to the constructor
+    as well. This is how the widget knows to use two handles instead of one, and to
+    fill in the space between them. We''re also passing the slider constructor with
+    two event callback functions: one for the `create` event and the other for the
+    `change` event.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The two callbacks do the same thing: they compute the range value and display
+    it in our `#range-value` label. The two callbacks, however, implement the same
+    logic in a slightly different manner. The `create` callback doesn''t have the
+    `values` array as part of the `ui` object, which is used to hold widget data.
+    So, our workaround here is the use of the `uiSlider` data, which holds an instance
+    of the JavaScript slider widget instance in order to access the `values()` method.
+    This returns the same data that we find in the `ui` object passed to the change
+    event callback.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The number we're computing here is simply the value of the first handle, minus
+    the value of the second. For example, if we're using a slider such as this in
+    a form, the API might not care about the two values as represented by the two
+    slider handles, but only the range value derived by the two numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the slider orientation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By default, the slider widget will render horizontally. It's easy for us to
+    change the slider orientation to a vertical layout using the `orientation` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use the following HTML to define our two widgets. The first slider will
+    be vertical while the second uses the default horizontal layout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we''ll use the following JavaScript code to instantiate the two widgets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you look at the two sliders in your browser, you can see the contrast between
+    the vertical layout and the default horizontal layout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_08_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The two slider widgets we've created here, `#vslider` and `#hslider`, are identical
+    in terms of content. The only difference is that the `#vslider` instance is created
+    with the `orientation` option set to `vertical`. The `#hslider` instance doesn't
+    specify an `orientation` option and so uses the default, `horizontal`. The key
+    difference between them is the layout as is made obvious in our example. The actual
+    layout itself is controlled by the `ui-slider-vertical` and `ui-slider-horizontal`
+    CSS classes, which are mutually exclusive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Being able to control the slider orientation is valuable depending on where
+    you want to put the widget in the context of the UI. The containing element, for
+    example, might not have a lot of horizontal space, and so using the vertical orientation
+    option might make good sense here. However, be careful about dynamically changing
+    the slider orientation. The handle can sometimes break away from the slider bar.
+    Therefore, it's best to decide on the orientation at design time.
+  prefs: []
+  type: TYPE_NORMAL

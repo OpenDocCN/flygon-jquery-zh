@@ -1,0 +1,680 @@
+- en: Chapter 12. Widgets and More!
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accordions to tabs, and back again
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a custom widget from scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building an observer widget
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using widgets with Backbone applications
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Until now, each chapter in this book has focused on working with a specific
+    widget that ships with jQuery UI. In this chapter, we're more interested in the
+    grand scheme of things. After all, you're building an application, and not a demonstration.
+    So, it's important that developers using jQuery UI be conscious not only about
+    how each individual widget works on their own, but also about how they behave
+    in their environment, and how they interact with other widgets and frameworks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll also address the nuts-and-bolts of the framework in this chapter by building
+    a widget from the ground up, with the help of the widget factory. With the generic
+    widget machinery at your disposal, you could write a handful of widgets that have
+    nothing to do with the default widgets. Although these custom widgets don't inherit
+    much functionality, they behave like jQuery UI widgets, and that alone is worth
+    the effort—cementing a layer of consistency into your application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accordions to tabs, and back again
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Both the accordion and the tabs widgets are containers. That is, their typical
+    use inside the context of an application is to organize subcomponents. These subcomponents
+    might be other widgets, or any other HTML element for that matter. So, both widgets
+    fit the generic description of a container, that is, a widget with different sections.
+    There are obviously subtleties to that description; for example, accordions don't
+    support remote Ajax content. Also, the way users traverse the sections are quite
+    different. Yet, they're essentially interchangeable. Why not introduce the ability
+    to switch between the two widgets, especially during run time where the users
+    can set their own preference and toggle between the two containers? It turns out
+    that we can implement something like this. Let's look at how we would go about
+    doing this. We need a bidirectional conversion between the two widgets. That way,
+    the tabs widget can be transformed into an accordion widget, and vice-versa.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To implement the kind of transformation between two different widgets we''re
+    talking about here, we''ll have to extend both the accordion and the tabs widget.
+    We''ll add a new method to each of the widgets that converts the widget to its
+    counterpart. Here is the HTML structure we''ll need to make this example happen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we have two toggle buttons, an accordion `div` and a tabs `div`. The
+    toggle buttons will morph their corresponding container widget, into another widget
+    type. Here is the JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When the page first loads and all the DOM elements are ready, we create the
+    toggle button widgets, an accordion widget, and a tabs widget. This is illustrated
+    in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/2186OS_12_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Now, clicking on the top toggle button will transform the accordion widget
+    into a tabs widget. Also, the second toggle button will transform the tabs widget
+    into an accordion. Here is the result of clicking on each of the toggle buttons
+    once:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/2186OS_12_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The toggle buttons work by using jQuery's `next()`function to grab the next
+    widget, either `#accordion` or `#tabs`, depending on the button clicked. This
+    is then stored in the `$widget` variable because we access it several times. Firstly,
+    we check if the widget is an accordion, and if so, we call the `tabs()` method
+    on the accordion. Likewise, if `$widget` is tabs, we call the `accordion()` method
+    to transform it. Notice that we're using the built-in widget selector that the
+    widget factory creates for each widget in order to determine what kind of widget
+    the element is. Also, notice that the namespace is `ab`, not `ui`, which is the
+    recommended practice when writing your own widgets, or customizing existing widgets,
+    as is the case here. Here, I've chosen my initials as the namespace. In practice,
+    this would be a standard convention that somehow relates to the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's now turn our attention to the `tabs()` method we've added to the accordion
+    widget. The essential job of this new method is to destroy the accordion widget,
+    manipulate the DOM elements so as to take on a form that the tabs widget will
+    recognize, and then to instantiate the tabs widget. So, this is what we do, we
+    call the `destroy()` method first. Notice, however, that we still have access
+    to some of the attributes of the accordion widget, such as `headers`. Destroying
+    a widget is mainly concerned with removing any adornments introduced into the
+    DOM as a result of creating the widget in the first place, in addition to removing
+    the event handlers. It doesn't, at the JavaScript level, care much about destroying
+    the widget object that we're working with here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, we have the `oldHeaders` variable, which points to the original
+    accordion's `h3` elements. Next, we have `newHeaders`, which is an empty `ul`
+    element. The `newHeaders` element is the starting point for the new elements the
+    tab widget expects to find. Next, we have to build the `li` elements that point
+    to the content panels of the tabs. For each header, we add a link to the `newHeaders`
+    `ul`. But, we also have to update the panel ID with an `id` that the header links
+    to. We first build an ID string using the position of the tab as well as the `uuid`
+    of the widget itself. The uuid isn't strictly necessary; however, it's a good
+    idea nonetheless to ensure unique tab IDs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, we add the new headers to the element, and remove the old headers. At
+    this point, we have enough to instantiate a tabs widget. And that's just what
+    we do. Notice that we return the newly-created object, so that if it is referenced
+    elsewhere in the code, it can be replaced by this method, for example, `myTabs
+    = myAccordion.accordion( "tabs" )`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `accordion()` method we've added to the tabs widget follows the same principles
+    applied in the `tabs()` method described above—we want to destroy the widget,
+    manipulate the DOM, and create the accordion widget. To make this happen, we need
+    to insert the `h3` header element before the corresponding content panel. We then
+    remove the `tablist` element, and the tabs `ul`, followed by a call to instantiate
+    and return the accordion widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a custom widget from scratch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The most powerful aspect of jQuery UI isn't the prebuilt widgets that ship with
+    it, but rather, the machinery used to build those widgets. Each widget shares
+    a common infrastructure called the widget factory, and this is exposed to developers
+    using the framework. The widget factory provides a means for developers to define
+    their own widgets. We've already glimpsed the widget factory in action throughout
+    this book. We've been using it to extend the capabilities of any given widget.
+    The focus of this section takes on a different perspective of the widget factory.
+    That is, how can we use it to build our own widgets from the ground up?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Well, we don''t want to start with nothing, as that would defeat the whole
+    purpose of the widget factory. Instead, the aim when building any widget is to
+    utilize the generic capabilities that the base widget class makes available. In
+    addition, there are some basic design principles that developers should try to
+    stick with when they''re creating widgets. For example, your widget should perform
+    clean up when destroyed, removing attributes, event handlers, and essentially
+    leaving the element as you found it. Widgets should also provide a simple API,
+    and it should be clear to the developers using your widget what it does, and more
+    importantly, what it does not do. Let''s touch on some principles to keep in mind
+    before you start, and while designing your widget:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Keep it simple**: With the latest version of jQuery UI, a number of the standard
+    widgets have undergone major refactoring work in an effort to simplify their interfaces.
+    Borrow from this lesson when designing your widgets and keep their responsibilities
+    to a minimum. It can be tempting, during the implementation phase of the widget,
+    to decide that you need to add another method to the API, perhaps several. Think
+    long and hard before doing this, because making the API larger generally leads
+    to a widget that is difficult to maintain and keep stable. And that is the whole
+    idea behind widgets, a small modular component that is reliable, and can be used
+    in a variety of contexts without blowing up. With that said, a widget that doesn''t
+    meet the needs of the application isn''t of any value either.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Design for extensibility**: Building on the keep it simple principle is that
+    of extensibility. Again, as we''ve seen throughout this book, extensibility is
+    often key in giving the widget extra capabilities the application needs to do
+    its job. These can be simple customizations, or a complete re-write of a method.
+    Regardless, assume that your widget will be modified, and that it will have observers
+    listening for events. In other words, a good widget will provide a reasonable
+    level of granularity with regards to how functionality is distributed among the
+    methods that realize it. Each method is an entry point for specialization, and
+    so the potential entry points should be a conscious concern. Events triggered
+    by the widget communicate the state of the widget to the outside world. So when
+    the state of your widget changes, be sure to let everyone else know about it.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Enough talk already—now, let's build a checklist widget. It really is as simple
+    as it sounds. We'll base the widget on a `ul` element, which will transform each
+    `li` element into a checklist item. The checklist won't just sit there by itself
+    though; we'll add a few external components to interact with our widget. We'll
+    want a button that adds a new checklist item, a button that removes an item, and
+    a progressbar for tracking the progress of our list. The main user interaction
+    with the widget itself is centered on checking and unchecking items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the HTML we''ll use in this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll add the CSS required by our checklist widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we'll add our widget definition using the following JavaScript code.
+    This code also creates the two button widgets and the progressbar widget used
+    in this example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you first load the page, the checklist widget, along with the other components
+    on the page, should look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_12_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can see that these are the default checklist items as specified in the HTML
+    structure. The hover state works as expected, but the progressbar is at 0\. This
+    is because the checklist doesn't have any selected items. Let's check some items
+    off, and add some more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_12_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can see that the progress bar is updated each time an item is added or removed
+    from the checklist, as well as when an individual item is checked or unchecked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's first discuss the HTML structure of the checklist widget along with the
+    new CSS required to display it. We'll then divide the definition and instantiation
+    of the widget into sections and conquer those. The HTML used in this example is
+    divided into three main container `div` elements. The first element holds our
+    add and remove item buttons. The second one is for the checklist widget, and the
+    last one is for the progressbar. That is the general layout.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most important aspect of the HTML structure is the `#container` element,
+    which is the foundation of our checklist widget. Each item is stored inside an
+    `li` element. Notice that the text of the item is wrapped in an `a` element as
+    well. This makes dealing with focusing the individual items, when the user is
+    tabbing through the page elements, much simpler to deal with. The main styles
+    of the checklist are controlled by the `ui-checklist` class. This class gets applied
+    to the element when the widget is first created, and it performs some standard
+    style manipulations for lists, like removing the bulleted images. Another thing
+    we need to handle is the border spacing, which becomes relevant when the user
+    hovers over an item, and `ui-state-hover` is added and removed. The `a` elements,
+    wrapping the item text, don't need any text decoration since we're not using them
+    as standard links. Finally, the `ui-checklist-checked` class is relevant to the
+    state of an individual checklist item and visually marks the item as checked.
+    It also serves as a query helper when we need to collect all checked items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's now turn our attention to the widget definition, and how we're instantiating
+    and using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The options**: The first thing our widget defines are its options, each with
+    a default value. Always make sure that any option you add to a widget has a default
+    value, as we can never rely on one being supplied during the time of creation.
+    The options we define here for our checklist widget are fairly simple, and will
+    rarely be changed by the developer. For example, the items we look up will generally
+    always be `li` elements. And, the classes we''ve defined here, that get applied
+    to the widget itself, probably will never change. However, they need to be declared
+    somewhere, and so we can hard code it, or put them somewhere the developer has
+    access to. Think of options as attributes, or properties of the widget object.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The private methods**: By convention, the private methods, or methods that
+    don''t make up part of the API visible to the user, are prefixed with an underscore.
+    Our first private method is the `_getCreateEventData()` method. This is called
+    internally by the base widget class when the create event for the widget is triggered.
+    This method is a hook for allowing us to supply custom data to the create event
+    handlers. All we''re doing here is passing an object that has the number of items
+    stored in the items attribute, and the number of checked items stored in the checked
+    attribute.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The create method**: The `_create()` method is probably the most common method
+    for any widget, since it''s called by the widget factory as the widgets constructor.
+    We''re using the `_super()` utility method to call the base widget constructor
+    for us, which performs some boilerplate initialization work for us. Next, we apply
+    the relevant widget CSS classes to the element using the `widgetClasses` option.
+    Next, we use the `_on()` method to setup an event handler for the click event.
+    Notice that we''re passing in a delegate selector after the event name`.ui-checklist-item`.
+    The reason we''re doing this is because items can be added, and items can be removed
+    from the checklist, and so it makes sense to use this approach rather than manually
+    managing the click events for each item.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The destroy method**: The `_destroy()` method is essential, as previously
+    mentioned, to performing clean up tasks. We use `_super()` here to call the base
+    widget `_destroy()` method which will clean up any event handlers we''ve created
+    using `_on()`. Then, we just need to remove any classes and attributes that we''ve
+    added throughout the lifespan of the widget. The last of the private methods is
+    the `_click()` method, the even handler bound to the click event when the widget
+    was first created. The job of this method is to change the state of the clicked
+    item, and we do this by calling the `check()` method, part of the API exposed
+    to developers. We also want to prevent the default action of the link clicks here,
+    because they have the potential to reload the page.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The API**: In the spirit of keeping our widget simple, the exposed API consists
+    of only two methods. The first one is the `refresh()` method, which is responsible
+    for locating the items that make up our checklist. These are stored in the `items`
+    attribute of the widget object, which is an example of something that isn''t exposed
+    through the API. The `items` attribute is only used internally; however, if a
+    developer were to extend our widget, their custom methods would be accessible,
+    and perhaps even useful. The `refresh()` method changes the state of the widget
+    when new items are found, and this is why it triggers the refreshed event. However,
+    there is a corner case during which we don''t want to trigger this event, and
+    that is when the widget is being instantiated for the first time. This is tracked
+    in the `trigger` variable (if we haven''t stored any items yet, then it''s safe
+    to assume that we''re creating, and not refreshing it). The reason we don''t want
+    to collide with the create event is that this is very misleading for developers
+    using the widget. We''re also using the `_hoverable()`, and `_focusable()` methods
+    on each newly-found item. This is a standard widget pattern for items within a
+    widget that the user interacts with.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The check method**: The `check()` method is the other half of the checklist
+    API, and it too changes the state of the widget. It fires a changed event, which
+    includes data about the item count and the checked count, same as the created
+    event data. You''ll notice that this method ensures the handling of the appropriate
+    `aria` attributes, as do the standard jQuery UI widgets. The `aria` standard promotes
+    accessibility, which is why the jQuery UI framework uses it, and our widget shouldn''t
+    be any different. Finally, it is the job of this method to toggle the class of
+    this item, using the value stored in the `checkedClass` option.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The main application**: When the page loads, the first thing we do is create
+    our two button widgets: `#add` and `#remove`. The `#add` button, when clicked,
+    adds a new item DOM element to the checklist. It then uses the `refresh()` method
+    to update the state of the widget, as well as trigger any events. Likewise, the
+    `#remove` button removes a DOM element, and calls the `refresh()` method, triggering
+    any state change behavior. The progressbar widget is instantiated without any
+    options, as it knows nothing about our checklist widget.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lastly, our checklist widget is created with three options. These are all event
+    handlers, and they all share the same responsibility—update the `#progressbar`
+    widget. For example, the widget is first created, and the progressbar is updated
+    with the items found in the DOM (nothing has been checked yet). The `refreshed`
+    event is triggered when new items are added or removed from the list; we want
+    to update the progressbar here too. The `checked` event handler fires anytime
+    the user checks or unchecks an item, and here, we're only interested in updating
+    the value for the progressbar since the total number of items is the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building an observer widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The typical approach to dealing with events triggered by jQuery UI widgets is
+    to bind an event handler to that event name, passed directly into the constructor.
+    It's the typical approach because it's easy to do, and it generally solves a specific
+    problem we're having. For example, suppose that when a section of our accordion
+    widget is expanded, we would like to update another DOM element. To do this, assign
+    an event handler function to the activate event when the accordion is constructed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This approach works well for small, single purpose jobs that apply to a single
+    instance of a given widget. However, most meaningful applications have many widgets,
+    all triggering their own events. The widget factory prefixes each event with the
+    name of the widget, which generally means that even outside of the widget context
+    we know what we're working with. This is especially helpful when we want to bind
+    event handlers to widget events, long after the widget has been created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's build an **observer** widget that will help us visualize all the potential
+    widget events taking place in an application. The observer widget is capable of
+    binding to a single widget, to a group of widgets, or the entire document. We'll
+    look at the latter case, where the observer will even pick up events for widgets
+    created in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at the CSS styles used by the observer widget first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let's look at the HTML used to create a basic page with a few sample widgets
+    on it. These widgets will trigger the events we're trying to pick up with our
+    observer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, here is what the implementation of the widget looks like, along with
+    the four widget instances used on this page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Looking at this page in the browser, the basic widget layout looks something
+    along the lines of the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_12_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Even simply creating these widgets will trigger events. For example, when the
+    page first loads, you'll see that the dialog created by the observer widget is
+    already populated with events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_12_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The observable widget, in this example, is applied to the `document` element.
+    This means that it will pick up any widget events that bubble up to that level.
+    The observable widget defines an `observables` option, an array of widgets whose
+    events we'd like to listen to. In this case, for the sake of brevity, we're only
+    including three widgets. This can always be extended, as needed by the application,
+    since it is an option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The purpose of the `_getEvents()` method is to read the `observables` option
+    and to build an object that we can use to bind these events to the `_event()`
+    method. Notice that we're automatically adding the widget prefix value to the
+    event name here—this is available in the `widgetEventPrefix` property of the widget
+    prototype. The job of the `_create()` method is to insert a `div` element into
+    the `body` element, which then becomes a dialog widget. We position it in the
+    top-right of the page so as to get out of the user's way. Finally, we start listening
+    for events using the object returned by `_getEvents()` using the `_on()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_event()` method is the single callback used anytime one of the widget
+    events we're listening to is fired. It simply logs the event to the observer dialog.
+    It also logs the time of the event; so, this tool is useful for experimenting
+    with any jQuery UI application, large or small, since it can highlight which events
+    actually take place, along with their orderings. The widget also takes care to
+    destroy the dialog widget it created earlier too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using widgets with Backbone applications
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: With the seemingly endless variations of JavaScript environments you may find
+    yourself working in, it's best to embrace the fact that not everything is done
+    the jQuery UI way. If you find yourself on a project where you're just itching
+    to use jQuery UI widgets, because the use cases are plentiful, you'll have to
+    take the time necessary in understanding the consequences of jQuery UI mingling
+    with another framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's generally ill-advised for any developer to mix completely different widget
+    frameworks together, so hopefully that is something easily avoided. You'll of
+    course have to work other homebrew HTML and CSS concoctions, but this is typical.
+    It is not so bad, as you can control it (not easily done with other open source
+    frameworks). So, if not other widget frameworks, what other frameworks might we
+    have to consider working with?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Backbone** is a general framework that builds on the lower-level `underscore.js`
+    utility library, for adding structure to web application clients. You''ll find
+    concepts such as models, collections, and views in a Backbone application. A full
+    treatment of the Backbone library is way beyond the scope of this book. But, it''s
+    helpful to think of Backbone as the application scaffolding, the part that doesn''t
+    change. It''ll run just the same with or without jQuery UI widgets. But, since
+    jQuery UI is what we''re interested in working with, let''s build ourselves a
+    little Backbone application that uses jQuery UI widgets.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The goal of the application is to display an autocomplete widget, where the
+    user can filter programming language names. When a selection is made, some details
+    about the language are displayed, including a delete button, which deletes the
+    language from the collection. Simple, right? Let's get into it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the page header, we'll be doing something different—including a template.
+    Templates are just strings of text, rendered by Backbone views. We'll give it
+    a type of `text/template`, so the browser will not try to interpret it as something
+    other than a template (JavaScript code, for instance). It has an `id`, so we can
+    reference the template text later when it's time to render the template.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, the minimal CSS used by this UI—simple font and layout adjustments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we have the actual markup used by the user interface. Notice how minimal
+    the `detail` class `div` is. That's because it's simply a holder for the template,
+    rendered by the view, as we'll see in a moment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we have the actual Backbone application that uses the autocomplete
+    and button jQuery UI widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For brevity, we're cutting out the bulk of the code listing here, trying to
+    just show the essentials. The fully-operational Backbone code is available for
+    download, along with all the other samples in this book.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this example will present the user with an autocomplete `input` element.
+    The details of the chosen language are shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_12_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Our entire Backbone application is declared within the document ready callback
+    function. Once that is done, everything is event-based. Let''s step through the
+    application components. The first thing you''ll notice is that we''ve declared
+    our variables up top, and given them brief categorical explanations. This is often
+    helpful when we''re sharing the same namespace with more than a handful of variables.
+    The categories are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Model and collection classes**: The classes used by our application to define
+    the data model.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**View classes**: Classes used by our application to provide the user with
+    different views of the data model.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Application router**: A single controller-like class that manipulates the
+    browser address, and executes relevant functionality when the path changes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Collection instance**: A collection instance represents the application data
+    – a collection of model instances.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Application and view instances**: The single application, along with the
+    various views used by that application to present data.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With that in mind, let's now dive into the specifics of how each Backbone class
+    works. The application has only one model class, `Language`. We can see here that
+    the `Language` declaration defines some default values for the attributes once
+    instantiated. Next, the `LanguageCollection` class is an extension of the Backbone
+    Collection class. This is where all our `Language` instances go. Notice that we're
+    specifying the model property to point to the `Language` class. Since we have
+    no RESTful API, we have to tell the collection that any synchronization actions
+    should be carried out locally. We have to include the local storage plugin for
+    Backbone in order to make this happen. This is actually an ideal way to bootstrap
+    UI development before the real backend is completely fleshed out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we have our first view class, `AutocompleteView`, which is specific to
+    the autocomplete jQuery UI widget. We've named it as such because we've done our
+    best here to make it generic enough that it could be used with another autocomplete
+    widget. We do have some language specifics hard-coded in the view class, but these
+    are trivial to improve upon should the need arise. The first property defined
+    in this class is the `events` object. These are mostly related to the autocomplete
+    widget events. Each callback event handler is defined as a view method below.
+    The `initialize()` method is the view constructor, and it is here that we call
+    `delegateEvents()` to activate our events handlers for current elements, as well
+    as future elements. The constructor then creates the autocomplete widget, and
+    listens to its connection for destroy events.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `autocompleteCreate()` method is fired after the autocomplete widget is
+    created, and assigns the `source` option of the widget. This is a proxy to the
+    `autocompleteSource` method of this view. The `autocompleteSelect` method fires
+    when the user selects an item, and navigates to the appropriate route. The `autocompleteChange()`
+    method is fired when the autocomplete widget loses focus and the item is different.
+    We do this to update the path if the user has removed his/her previous selection.
+    The `keyup()` handler exists to handle the route change when the user has removed
+    their selection, but hasn't yet blurred the autocomplete focus. Lastly, the `autocompleteSearch()`
+    method is how the autocomplete widget is populated with items when the user starts
+    typing. First, we perform a filter, using the underscore `filter()` method on
+    the collection, then we map using the underscore `map()` method on the collection.
+    The mapping is necessary to return a format the autocomplete widget expects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next crucial piece of our application is the `LanguageView` class, responsible
+    for rendering the programming language details. Like the previous view, this one
+    sets up event handlers using the `events` property. We're also using the `#template-detail`
+    text mentioned earlier, to compile the template rendered by this view using the
+    underscore template machinery. In the constructor, we're listing some events on
+    the collection of this view. One event to take note of is the `change:selected`
+    event. This will only fire when the `selected` attribute changes, which is good,
+    because that's all we're interested in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `render()` method is responsible for rendering the template, but only if
+    the model in question is actually selected. Once rendered, we can instantiate
+    the button widget used by this view. However, take note that the event handler
+    isn't bound again for the click event since that was delegated when the view was
+    first created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `AppRouter` class is the application controller in that it is responsible
+    for reacting to changes in the URL path. The `routeLang()` method responds to
+    a specific language and marks it as selected. The `routeDefault()` method handles
+    all other requests. Its only job is to make sure that no languages are marked
+    as selected, and as a side effect, any previously-selected languages will be removed
+    from the UI since `LanguageView` is listening for changes in the `selected` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we create instances of our model in the collection instance, and then,
+    our views and the application router.
+  prefs: []
+  type: TYPE_NORMAL

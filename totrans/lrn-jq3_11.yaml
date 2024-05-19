@@ -1,0 +1,712 @@
+- en: Advanced Effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Since learning about jQuery's animation capabilities, we have found many uses
+    for them. We can hide and reveal objects on the page with ease, we can gracefully
+    resize elements, and we can smoothly reposition elements. This effects library
+    is versatile, and contains even more techniques and specialized abilities than
+    we have seen so far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In [Chapter 4](6544cf68-239c-4a0b-99f6-2d128dc5f7b1.xhtml), *Styling and Animating*,
+    you learned about jQuery''s basic animation capabilities. In this more advanced
+    chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ways to gather information about the state of animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Methods for interrupting active animations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Global effect options that can affect all animations on the page at once
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Deferred objects, which allow us to act once animations have completed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Easing, which alters the rate at which animations occur
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animation revisited
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To refresh our memory about jQuery''s effect methods, we''ll set up a baseline
+    from which to build in this chapter, starting with a simple hover animation. Using
+    a document with photo thumbnails on it, we''ll make each photo *grow* slightly
+    when the user''s mouse is over it, and shrink back to its original size when the
+    mouse leaves. The HTML tags we''ll use also contain some textual information that''s
+    hidden for now, which we''ll use later in the chapter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The text associated with each image is initially hidden by the CSS by moving
+    each `<div>` to the left of its `overflow: hidden` container:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The HTML and CSS together produce a vertically arranged list of images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_11_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To alter the size of the image, we will increase its height and width from
+    `75` pixels to `85` pixels. At the same time, to keep the image centered, we will
+    decrease its padding from `5` pixels to `0` pixels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we repeat a pattern we saw in [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
+    *Advanced Events*, because much of the work we are performing when the mouse enters
+    the region, is the same as when it leaves; we are combining the handlers for `mouseenter`
+    and `mouseleave` into one function rather than calling `.hover()` with two separate
+    callbacks. Inside this handler, we determine the values of `size` and `padding`
+    based on which of the two events is being triggered, and pass these property values
+    on to the `.animate()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you see the object literal notation surrounding function arguments `({
+    type, target})`, it's called **object destructuring**. This is simply a convenient
+    way to get the exact properties we need out of the event object, leading to more
+    concise code in the function itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now when the mouse cursor is over an image, it is slightly larger than the
+    rest:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_11_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Observing and interrupting animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our basic animation already reveals a problem. As long as there is enough time
+    for the animation to complete after each `mouseenter` or `mouseleave` event, the
+    animations proceed as intended. When the mouse cursor moves rapidly and the events
+    are triggered quickly, however, we see that the images also grow and shrink repeatedly,
+    well after the last event is triggered. This occurs because, as discussed in [Chapter
+    4](6544cf68-239c-4a0b-99f6-2d128dc5f7b1.xhtml), *Styling and Animating*, animations
+    on a given element are added to a queue and called in order. The first animation
+    is called immediately, completes in the allotted time, and then is removed from the
+    queue, at which point the next animation becomes first in line, is called, completes,
+    is shifted, and so on until the queue is empty.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many cases in which this animation queue, known within jQuery as `fx`,
+    causes desirable behavior. In the case of hover actions such as ours, though,
+    it needs to be circumvented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Determining the animation state
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'One way to avoid the undesirable queuing of animations is to use jQuery''s
+    custom `:animated` selector. Inside the `mouseenter`/`mouseleave` event handler,
+    we can use the selector to check the image and see if it is currently being animated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the user's mouse enters the member `<div>`, the image will only animate
+    if it isn't already being animated. When the mouse leaves, the animation will
+    occur regardless of its state, because we always want it to ultimately restore
+    the image to its original dimensions and padding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ve successfully avoided the runaway animations that occur in *Listing 11.1*,
+    but the animations still need improvement. When the mouse quickly enters and leaves
+    the `<div>` tag, the image still has to complete the entire `mouseenter` animation
+    (growing) before it starts the `mouseleave` animation (shrinking). This is not
+    ideal, for sure, but the test of the `:animated` pseudo-class has introduced an
+    even greater problem: if the mouse enters the `<div>` tag while the image is *shrinking*,
+    the image will fail to grow again. Only a subsequent `mouseleave` and `mouseenter`
+    animation after the animation has stopped will execute another animation. While
+    using the `:animated` selector can be useful in some situations, here it doesn''t
+    help enough.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Halting a running animation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Fortunately, jQuery has a method to help us with both of the problems evident
+    in *Listing 11.2*. The `.stop()` method can halt an animation in its tracks. To
+    use it, we can return the code to the way it was in *Listing 11.1* and simply
+    insert `.stop()` between `.find()` and `.animate()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: It's worth noting that we stop the current animation *before* proceeding with
+    the new one. Now when the mouse enters and leaves repeatedly, the undesirable
+    effect of our previous attempts is gone. The current animation always completes
+    immediately, so there is never more than one in the `fx` queue. When the mouse
+    finally rests, the final animation completes, so the image is either fully grown
+    (`mouseenter`) or restored to its original dimensions (`mouseleave`) depending
+    on the last triggered event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Caution when halting animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Because the `.stop()` method, by default, halts animations at their current
+    position, it can lead to surprising results when used with shorthand animation
+    methods. Before animating, these shorthand methods determine the final value and
+    then animate to that value. For example, if `.slideDown()` is halted with `.stop()`
+    midway through its animation and then `.slideUp()` is called, the next time `.slideDown()`
+    is called on the element, it will only slide down to the height at which it stopped
+    the previous time. To mitigate this type of problem, the `.stop()` method can
+    accept two Boolean (`true`/`false`) arguments, the second of which is known as
+    `goToEnd`. If we set this argument to `true`, the current animation not only stops,
+    but also jumps immediately to the final value. Still, the `goToEnd` feature can
+    make the animation look *jerky*, so a better solution might be to store the final
+    value in a variable and animate to it explicitly using `.animate()` rather than
+    rely on jQuery to determine that value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another jQuery method, `.finish()`, is available for halting animations. It's
+    similar to `.stop(true, true)` in that it clears all queued animations and jumps
+    the current animation to the final value. However, unlike `.stop(true, true)`,
+    it jumps all the *queued* animations to their final values as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using global effect properties
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The effects module in jQuery includes a handy `$.fx` object that we can access
+    when we want to change the characteristics of our animations across the board.
+    Although some of this object's properties are undocumented and intended to use
+    solely within the library itself, others are provided as tools for globally altering
+    the way our animations run. In the following examples, we'll take a look at a
+    few of the documented properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Disabling all effects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We have already discussed a way to halt animations that are currently running,
+    but what if we need to disable all animations entirely? We may, for example, wish
+    to provide animations by default, but disable those animations for low-resource
+    devices where animations could look choppy, or for users who find animations distracting.
+    To do so, we can simply set the `$.fx.off` property to `true`. For our demonstration,
+    we will display a previously hidden button to allow the user to toggle animations
+    on and off:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The hidden button is displayed between the introductory paragraph and the subsequent
+    images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_11_03.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: When the user clicks on the button to toggle animations off, subsequent animations
+    such as our growing and shrinking images will occur instantaneously (with a duration
+    of `0` milliseconds), and any callback functions will be called immediately thereafter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Defining effect durations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Another property of the `$.fx` object is `speeds`. This property is an object
+    itself, consisting of three properties, as evidenced by the jQuery core file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You''ve already learned that all of jQuery''s animation methods provide an
+    optional speed, or duration, argument. Looking at the `$.fx.speeds` object, we
+    see that the strings `slow` and `fast` map up to 600 milliseconds and 200 milliseconds
+    respectively. Each time an animation method is called, jQuery goes through the
+    following steps to determine the duration of the effect, in this order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It checks if `$.fx.off` is `true`. If so, it sets the duration to `0`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It checks if the duration passed is a number. If so, it sets the duration to
+    that number of milliseconds.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It checks if the duration pass matches one of the property keys of the `$.fx.speeds`
+    object. If so, it sets the duration to the value of the property.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If the duration is not set by any of the above checks, it sets the duration
+    to the value of `$.fx.speeds._default`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Given this information, we now know that passing any string duration other
+    than `slow` or `fast` will result in a duration of 400 milliseconds. We can also
+    see that adding our own custom speed is as easy as adding another property to
+    `$.fx.speeds`. If we write `$.fx.speeds.crawl = 1200`, for example, we can use
+    `''crawl''` for any animation method''s speed argument to run the animation for
+    1200 milliseconds, like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although typing `'crawl'` is no easier than typing `1200`, custom speeds can
+    come in handy in larger projects when a number of animations that share a certain
+    speed need to change. In such cases, we could just change the value of `$.fx.speeds.crawl`
+    rather than searching throughout the project for `1200` and replacing each one
+    only if it represents an animation speed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While custom speeds can be useful, perhaps even more useful is the ability
+    to change the default speed. We can do this by setting the `_default` property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have defined a new faster default speed, any new animations we
+    add will use it unless we override their durations. To see this at work, we will
+    introduce another interactive element to the page. When the user clicks on one
+    of the portraits, we want to display the details associated with that person.
+    We will create the illusion of the details *unfolding* from the portrait by moving
+    them out from under the portrait into their final positions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a member is clicked, we use the `showDetails()` function as a handler.
+    This function first sets the detail `<div>` elements in their starting positions,
+    underneath the member's portrait. Then it animates each of the elements into its
+    final position. By calling `.each()`, we can calculate a separate final `top`
+    position for each element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the animation, the detail text is visible:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_11_04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Since the `.animate()` method calls are made on different elements, they happen
+    simultaneously rather than being queued. And, since the calls do not specify a
+    duration, they all use the new default duration of 250 milliseconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When another member is clicked, we want to hide the previously displayed one.
+    We can easily track which details are currently on the screen with the use of
+    a class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Ouch! Ten functions chained together? Well hang on a second, this might actually
+    be better than splitting them apart. For one thing, chaining calls together like
+    this means that there''s no need for temporary variables to hold intermediary
+    DOM values. Instead, we can just read one line after another to figure out what''s
+    happening. Let''s walk through these now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`.siblings(''.active'')`: This finds the active `<div>` siblings'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.removeClass(''active'')`: This removes the `.active` class'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.children(''div'')`: This finds the child `<div>` elements'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.fadeOut()`: This removes them'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.end()`: This clears out the `.children(''div'')` query'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.end()`: This clears out the `.siblings(''.active'')` query'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.addClass(''active'')`: This adds the `.active` class to the event target,
+    the container `<div>`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.find(''div'')`: This finds all child `<div>` elements to display'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.css()`: This sets relevant display CSS'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`.each()`: This adds animations to the `top` and `left` CSS properties'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note that our `.fadeOut()` call also uses the faster 250 millisecond duration
+    we've defined. The defaults apply to jQuery's pre-packaged effects just as they
+    do to custom `.animate()` calls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-property easing
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The `showDetails()` function almost accomplishes the unfolding effect we set
+    out to achieve, but because the `top` and `left` properties are animating at the
+    same rate, it looks more like a sliding effect. We can subtly alter the effect
+    by changing the easing equation to `easeInQuart` for the `top` property only,
+    causing the element to follow a curved path rather than a straight one. Remember,
+    however, that using any easing other than `swing` or `linear` requires a plugin,
+    such as the effects core of jQuery UI ([http://jqueryui.com/](http://jqueryui.com/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `specialEasing` option allows us to set a different acceleration curve for
+    each property that is being animated. Any properties that aren't included in the
+    option will use the `easing` option's equation if it is provided, or the default
+    `swing` equation if not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We now have an attractive animation presenting most of the details associated
+    with a team member. We aren't yet displaying a member's biography, however. Before
+    we do this, we need to take a small digression to talk about jQuery's deferred
+    object mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using deferred objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At times, we come across situations in which we want to act when a process completes,
+    but we don't necessarily know how long the process will take, or even if it will
+    be successful. To handle these cases, jQuery offers us **deferred objects** (promises).
+    A deferred object encapsulates an operation that takes some time to complete.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A new deferred object can be created at any time by calling the `$.Deferred()`
+    constructor. Once we have such an object, we can perform long-running operations
+    and then call the `.resolve()` or `.reject()` methods on the object to indicate
+    whether the operation was successful or unsuccessful. It is somewhat unusual to
+    do this manually, however. Typically, rather than creating our own deferred objects
+    by hand, jQuery or its plugins will create the object and take care of resolving
+    or rejecting it. We just need to learn how to use the object that is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rather than detailing how the `$.Deferred()` constructor operates, we will focus
+    here on how jQuery effects take advantage of deferred objects. In [Chapter 13](6bf83967-6247-454a-b1d2-3f3f48937865.xhtml),
+    *Advanced Ajax*, we will further explore deferred objects in the context of Ajax
+    requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Every deferred object makes a promise to provide data to other code. This promise
+    is represented as another object with its own set of methods. From any deferred
+    object, we can obtain its promise object by calling its `.promise()` method. Then,
+    we can call methods of the promise to attach handlers that are executed when the
+    promise is fulfilled:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.then()` method attaches a handler that is called when the deferred object
+    is resolved successfully
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `.catch()` method attaches a handler that is called when the deferred object
+    is rejected
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `.always()` method attaches a handler that is called when the deferred object
+    completes its task, either by being resolved or by being rejected
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These handlers are much like the callbacks we provide to `.on()`, in that they
+    are the functions called when some event happens. We can also attach multiple
+    handlers to the same promise and all will be called at the appropriate time. There
+    are a few important differences, however. Promise handlers will only ever be called
+    once; the deferred object cannot resolve a second time. A promise handler will
+    also be called immediately if the deferred object is already resolved at the time
+    we attach the handler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml), *Sending Data with
+    Ajax*, we saw a very simple example of how jQuery's Ajax system uses deferred
+    objects. Now we will put this powerful tool to use once again by investigating
+    the deferred objects that jQuery's animation system creates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animation promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Every jQuery collection has a set of deferred objects associated with it tracking
+    the status of queued operations on the elements in the collection. By calling
+    the `.promise()` method on the jQuery object, we get a promise object that is
+    resolved when a queue completes. In particular, we can use this promise to take
+    action upon the completion of all of the animations running on any of the matched
+    elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just as we have a `showDetails()` function to display the member name and location
+    information, we can write a `showBio()` function for bringing the biographical
+    information into view. But first, we''ll append a new `<div>` tag to the `<body>`
+    tag and set up two options objects:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: This new `movable`  `<div>` element is the one that we will actually animate
+    after injecting it with a copy of a biography. Having a wrapper element like this
+    is particularly useful when animating an element's width and height. We can set
+    its `overflow` property to `hidden` and set an explicit width and height for the
+    biographies within it to avoid the continual reflowing of text that would have
+    occurred if we had instead animated the biography `<div>` elements themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll use the `showBio()` function to determine what the movable `<div>`''s
+    starting and ending styles should be based on the member image that is clicked.
+    Note that we''re using the `$.extend()` method to merge the set of base styles
+    that remain constant with the `top` and `left` properties that vary depending
+    on the member''s position. Then, it''s just a matter of using `.css()` to set
+    the starting styles and `.animate()` for the ending styles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're queuing two `.animate()` methods so that the biography first flies from
+    the left as it grows wider and fully opaque, and then slides down to its full
+    height once it is in position.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In [Chapter 4](6544cf68-239c-4a0b-99f6-2d128dc5f7b1.xhtml), *Styling and Animating*,
+    we saw that callback functions in jQuery's animation methods are called when the
+    animation completes for each element in the collection. We want to show the member's
+    biography after the other `<div>` elements appear. Before jQuery introduced the
+    `.promise()` method, this would have been an onerous task, requiring us to count
+    down from the total number of elements each time the callback was executed until
+    the last time, at which point we could execute the code to animate the biography.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we can simply chain the `.promise()` and `.then()` methods to the `.each()`
+    method inside our `showDetails()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 11.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.then()` method takes a reference to our `showBio()` function as its argument.
+    Now a click on an image brings all of that member''s information into view with
+    an attractive animation sequence:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/Image5297_11_05-1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Since jQuery 3.0, the promises returned by the `promise()` method are fully
+    compatible with native ES 2015 promises. This means that where possible, we should
+    use the same API. For example, use `then()` instead of `done()`. They do the same
+    thing, and your asynchronous code will be consistent with other asynchronous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taking fine-grained control of animations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Even though we''ve looked at a number of advanced features, jQuery''s effects
+    module has much more to explore. A rewrite of this module for jQuery 1.8 introduced
+    a number of ways for advanced developers to fine-tune various effects and even
+    change the underlying engine that drives the animations. For example, in addition
+    to offering options such as `duration` and `easing`, the `.animate()` method provides
+    a couple of callback options that let us inspect and modify an animation each
+    step of the way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `step()` function, which is called roughly once every 13 milliseconds for
+    each animated property during the animation, allows us to adjust properties of
+    the `tween` object such as the end value, the type of easing, or the actual property
+    being animated based on the current value of a property via the passed `now` argument.
+    A complex demonstration might, for example, use the `step()` function to detect
+    a collision between two moving elements and adjust their trajectories on impact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `progress()` function is similarly called multiple times throughout the
+    lifecycle of an animation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It differs from `step()` in that it is called only once per element at each
+    step, regardless of how many properties are being animated
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It makes available different aspects of the animation, including the animation's
+    promise object, the progress, which is a number between `0` and `1`, and the number
+    of milliseconds remaining in the animation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All of jQuery's animations use a JavaScript timer function called `setTimeout()`
+    to repeatedly call functions--every 13 milliseconds by default--and change the
+    style properties during each tick. Some modern browsers, however, provide a new
+    `requestAnimationFrame()` function that has advantages over `setTimeout()`, including
+    increased precision (and therefore perceived smoothness of animations) and improved
+    battery consumption for mobile devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the lowest level of jQuery's animation system lie its `$.Animation()` and
+    `$.Tween()` functions. These functions and their corresponding objects can be
+    used to tweak every possible aspect of an animation. For example, we can use `$.Animation`
+    to create an animation **prefilter****.** One such prefilter could take a
+  prefs: []
+  type: TYPE_NORMAL
+- en: particular
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'action at the end of an animation based on the existence of a property passed
+    to the `.animate()` method''s `options` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With this code in place, calling `$(''#my-div'').fadeOut({ removeAfter: true
+    })` would automatically remove `<div>` from the DOM after it has finished fading
+    out.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have further investigated several techniques that can assist
+    us in crafting beautiful animations that are helpful to our users. We can now
+    individually control the acceleration and deceleration of each property we are
+    animating, and halt these animations individually or globally if needed. We learned
+    about the properties that jQuery's effects library defines internally, and how
+    to change some of them to suit our needs. We made our first foray into the jQuery
+    deferred object system, which we will explore further in [Chapter 13](6bf83967-6247-454a-b1d2-3f3f48937865.xhtml),
+    *Advanced Ajax*, and we got a taste of the many opportunities to fine-tune jQuery's
+    animation system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A complete list of effect and animation methods is available in *Appendix B* of
+    this book, or in the official jQuery documentation at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The challenge exercises may require the use of the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Define a new animation speed constant called `zippy` and apply this to the biography
+    display effect.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Change the easing of the horizontal movement of member details so that they
+    bounce into place.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a second deferred callback function to the promise that adds a `highlight`
+    class to the current member's location `<div>`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Challenge: Add a delay of two seconds before animating the biography. Use the
+    jQuery `.delay()` method.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Challenge: When the active photo is clicked, collapse the bio details. Stop
+    any running animation before doing so.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

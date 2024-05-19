@@ -1,0 +1,465 @@
+- en: Chapter 8. Implementing Responsive Forms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Coding with HTML5 has dramatically changed the landscape within frontend web
+    development. There are more opportunities to build better forms by using the appropriate
+    field type and native validation, which is the best scenario for SEO. All of these
+    features are gradually being adopted in all modern web browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the use of jQuery, we can enhance the HTML5 experience on our pages, with
+    the addition of complementary features to improve user experience.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will learn about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Types and attributes of form inputs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `autocomplete` feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `datepicker` feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `tooltips` feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Responsive frameworks with IdealForms
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Types and attributes of form inputs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The use of HTML5 input types brought two main advantages of developing to the
+    front: reduction of development time and improvement of user experience. Many
+    modern browsers have already adopted these new input types and attributes and
+    the entire web community is benefited from it, facilitating the spread of its
+    usage.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most frequently used HTML5 input types are `email`, `date`, `tel`, `number`,
+    and `time`. Also, the most common attributes that come with HTML5 are `placeholder`,
+    `required`, `autocomplete`, and `multiple`. We will see in [Chapter 10](ch10.html
+    "Chapter 10. Ensuring Browser Support"), *Ensuring Browser Support*, that not
+    all web browsers support HTML5 features the same way and require jQuery intervention
+    to provide the proper support.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, it still depends on jQuery technology to display features such as
+    `autocomplete` and other more complex validation. Normally, jQuery plugins work
+    really well with the new HTML5 input types, being almost mandatory for responsive
+    websites. Before starting the implementation of the feature, let''s create a basic
+    form; this is the first step and will be used in further examples. Create an empty
+    HTML site structure with basic tags and then keep the jQuery included, which will
+    be used soon:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: For the sake of progressive learning, each feature will be presented independently;
+    only the previous basic code will be reused.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These plugins we will see are not a replacement for server-side validation;
+    they only make the user experience better, reduce the server requests, and give
+    a better interactive interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The autocomplete feature with Magicsuggest
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Magicsuggest is a flexible autosuggest combobox that gives suggestions whenever
+    the user starts typing in the field. Using this feature will reduce the necessity
+    of typing, mainly on mobile devices, where the typing in of each letter is cumbersome.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, Magicsuggest has some good features, such as holding the *Ctrl*
+    key to select multiple items and allowing the user to add a new input using the
+    *Enter* key after having entered the text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The JSON data source is used to populate the combobox. There are some options
+    available here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**No data source**: When left as `null`, the combobox will not suggest anything.
+    It can still enable the user to enter multiple entries if the allowed FreeEntries
+    are set to `true` (default).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Static source**: It uses an array of JSON objects, an array of strings, or
+    even a single CSV string as the data source.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**URL**: We can pass the URL from which the component will fetch its JSON data.
+    The data will be fetched using a `POST` AJAX request that will include the entered
+    text as a query parameter.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Function**: We can set a function to return an array of JSON objects. Only
+    one callback function or return value is needed for the function to succeed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s start by downloading the files from [http://nicolasbize.github.io/magicsuggest/](http://nicolasbize.github.io/magicsuggest/).
+    After downloading, we will include the JavaScript and CSS files inside the `<head>`
+    tag from the already created basic code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, insert the following piece of code to create the JSON data with
+    these cities and then execute the Magicsuggest script, giving some options along
+    with it if necessary:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The next step is to add the `city` field inside the `<body>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As seen in the following screenshot, when the select field is clicked on, we
+    will see the suggestion feature appear instantly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to implement it](img/3602OS_08_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In the previous example, we implemented only the basic usage. However, this
+    plugin has other interesting implementations that may fit your needs in the future,
+    such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tag selection on the right
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Gmail-style combo
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Column-filter combo
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom template combobox using images
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The date and time pickers feature
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Mobile users already have an interface for entering dates and time, which they
+    are very familiar with. However, we will learn about a jQuery plugin that may
+    help in keeping the website's identity by displaying to the user the same features
+    on all devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pickadate – responsive date/time picker
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Pickadate is a responsive jQuery plugin that is quite interesting as well as
+    mobile friendly, responsive, and lightweight. It is possible to provide a custom
+    interface regardless of the browser or device.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a good way to facilitate the insertion of the correct date when filling
+    in a form because it avoids typing errors and gives better guidance to the user,
+    showing the full calendar of the month.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'After downloading the files from [http://amsul.ca/pickadate.js/](http://amsul.ca/pickadate.js/),
+    we will start by including JavaScript and CSS files inside the `<head>` tag from
+    the already created basic code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you need to support old browsers, the inclusion of the `legacy.js` file is
+    recommended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After that, we need to execute the scripts for `datepicker` and `timepicker`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The next step is to insert a field for date and another one for time inside
+    the `<body>` tag. The plugin requires the class names to be highlighted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is a screenshot of the `datepicker` plugin being activated on
+    a Smartphone and a tablet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_08_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following is the screenshot from when the user touches on the `time` field:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_08_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The `pickadate` plugin is very complete, providing its extension to add support
+    for:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Translations (including right-to-left languages)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Different formats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Date/time limits
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You will find further information about these extensions at [http://amsul.ca/pickadate.js/date.htm#options](http://amsul.ca/pickadate.js/date.htm#options).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tooltip feature
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: '`tooltip` is a useful way to present additional, context-sensitive information
+    about an element on a web page, and it is normally found in between a label and
+    an input field. Its job is to provide more information about a particular field.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As tooltips continue to become more common as a means for the users to interact
+    with the web page elements, the necessity for a good tooltip design and interaction
+    has become more important.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Normally, the tooltip can be displayed by putting the pointer of mouse over
+    the element and the message will be displayed. Since most mobile devices do not
+    have a pointer, this issue must be handled by plugins displaying the tooltip on
+    touch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tooltipster – modern tooltip feature
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Tooltipster is a powerful and flexible jQuery plugin that enables you to easily
+    create semantic and modern tooltips.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We will start by downloading the tooltipster files from [http://calebjacob.com/tooltipster/](http://calebjacob.com/tooltipster/)
+    and including the JavaScript and CSS files inside the `<head>` tag from the already
+    created basic code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To activate the plugin, we will add the `tooltipster` library and configure
+    it to execute for all elements that have the `.tooltip` class (in this example,
+    there is only one instance, but you may use more than one in your page):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After that, we will add a question mark image and define the `tooltip` class
+    on each element where we want to display the tooltip on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is a screenshot of the plugin after clicking/touching the element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it](img/3602OS_08_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We can also modify the default plugin theme by editing the `tooltipster.css`
+    file or override the existing theme by specifying the class in the `script` call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Responsive form using IdealForms
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: IdealForms, available at [https://github.com/elclanrs/jq-idealforms](https://github.com/elclanrs/jq-idealforms),
+    is a framework used to build and validate responsive HTML5 forms. Also, it has
+    keyboard support, fast validation as soon as the user moves to the next field,
+    and placeholder support for most of the browsers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The IdealForms framework also has a pagination option that helps a lot to improve
+    the user experience when filling extensive forms. Let's understand its usage by
+    practicing it step by step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to implement it
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Create a new HTML file and copy the basic code that we already wrote in the
+    beginning of the chapter. Then, we will include the CSS stylesheet inside the
+    `<head>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let''s insert the following sample code into the HTML structure whose interface
+    was divided into two tabs using the `<section>` tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the first tab, we will add the `username`, `password`, and `email` fields:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the second tab, we will add the `file`, `languages`, and `phone` fields.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we will add a `submit` button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the bottom of DOM (before the `</body>` closing tag), we will need to include
+    the `jquery` and `idealforms` libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: After that, insert the following code, which will execute the script that starts
+    creating a function that alerts the user when they fill in an incorrect value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here we will set which form element will be inspected by validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: After finishing the validation, we will execute the `idealforms` JavaScript,
+    loading all of the validations set before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: That's it! The client-side validation is already implemented.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a screenshot of the framework in action when viewed on Smartphone
+    devices:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to implement it](img/3602OS_08_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The same page may be viewed on a desktop and the default layout adapts very
+    well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to implement it](img/3602OS_08_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Exercise 8 – creating a contact form using the IdealForms framework
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Let's create a responsive contact form for the project based on the complete
+    step-by-step example seen previously and using the IdealForms framework as a base
+    for this form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, as we did before, let''s start including the CSS file and the following
+    fields: **Name**, **Email**, **Ideal first class** (date), and **Phone** as the
+    following screenshot shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Exercise 8 – creating a contact form using the IdealForms framework](img/3602OS_08_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The date field was not mentioned on IdealForms because, by default, it comes
+    with the jQueryUI solution. However, I would recommend to use the Pickadate plugin
+    because it is more lightweight if compared to jQueryUI and it also helps reinforcing
+    the example we have learned before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned how to work well with HTML5 form elements by complementing
+    the code with some jQuery plugins such as Magicsuggest for `autocomplete`, Pickadate
+    for `datepicker`, and Tooltipster for `tooltips` when necessary. In addition,
+    we have experienced how to work with IdealForms, a responsive form framework,
+    by building a contact form interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we will focus on testing the website by using tools and
+    scripts to ensure its responsivity on all devices. Understanding the next chapter
+    thoroughly is important to check for possible errors on our implementation for
+    old browsers or mobile devices and fix them further. Also, the testing phase is
+    important to avoid future surprises reported by our clients.
+  prefs: []
+  type: TYPE_NORMAL

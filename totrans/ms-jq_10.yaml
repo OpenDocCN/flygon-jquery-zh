@@ -1,0 +1,1367 @@
+- en: Chapter 10. Manipulating Images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It is often said that images paint a thousand words – websites are no different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use images to illustrate a process, help reinforce a message, or apply some
+    visual identity to what otherwise might be seen as very plain content. Images
+    play a key part of any website; the quality of images will either make or break
+    a site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A small part of using jQuery to manipulate images is how we can apply filters,
+    or manipulate the colors within images. In this chapter, we''ll explore how you
+    can use jQuery to manipulate images, before exploring a couple of real-world examples
+    of capturing images as a basis for further manipulation. In this chapter, we''ll
+    cover the following topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying filters using CSS and jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using plugins to edit images
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a simple signature pad using jQuery and canvas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Capturing and manipulating webcam images
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's start…!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating colors in images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A question – how often have you assumed that the only way to manipulate an image
+    is to use the likes of Photoshop, or even GIMP? I'll bet it is more than once
+    – what if I said that heavyweight applications such as these well-known applications
+    are (in some cases) redundant, and that all you need is a text editor and a little
+    jQuery?
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, you're probably wondering what we can do to manipulate images
+    using jQuery. Fear not! There are a few tricks up our sleeve. Over the next few
+    pages, we're going to take a look at each, and discover that while we can use
+    what is arguably one of the most popular JavaScript libraries available to developers,
+    it isn't always the right way to do things.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To see what I mean, let''s quickly recap the methods we can use, which are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using CSS3 filters, and switching them in or out using jQuery
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a mix of the HTML5 `<canvas>` element, jQuery, and the `getImageData`
+    method handler to manipulate the color elements of each image, before repainting
+    it back to the canvas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In this chapter, we'll take a look at each in turn, and explore why even though
+    we may be able to create complex filters using jQuery, it isn't always the right
+    answer. Hopefully, with a few tricks up our sleeve, it will make us better developers.
+    Let's begin with a look at using simple CSS3 filters, and how we can easily incorporate
+    their use into our jQuery code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding filters using CSS3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Filter support has been available for some time, at least within the major
+    desktop browsers, although we still need to use the `-webkit-` vendor prefix support,
+    as we are not yet entirely prefix free:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Adding filters using CSS3](img/image00428.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Information about the preceding image is taken from the CanIUse website, at
+    [http://caniuse.com/#feat=css-filters](http://caniuse.com/#feat=css-filters).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The beauty about using these methods is that they are very simple to apply;
+    we're not forced to spend hours reworking images if clients decide to change their
+    minds! We can apply and remove the styles using jQuery with ease, which helps
+    keep the styles separate from our markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating images can get very complex – in fact, to cover the math involved,
+    we could probably fill a book in its own right! Instead, we'll begin with a simple
+    recap of using CSS3 filters, before moving onto creating more complex filters,
+    and finishing with a couple of demos that help capture images from two unlikely
+    sources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Intrigued? All will become clear towards the end of this chapter, but we will
+    first begin with a simple exercise to reacquaint ourselves with applying CSS3
+    filters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we get stuck into our exercises, I would strongly recommend using Firefox
+    or IE for these demos; if you use Chrome, then some of the demos will show Cross-Origin
+    errors if run locally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good example is the cross-platform application XAMPP (available from [http://www.apachefriends.org](http://www.apachefriends.org)),
+    or you can try WAMPServer (for PC, from [http://www.wampserver.com/en](http://www.wampserver.com/en)),
+    or MAMP (for Mac, from [http://www.mamp.info](http://www.mamp.info)). I will assume
+    that you are running the demos from within a web server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating our base page
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In our first demo for this chapter, we''re going to start with a simple recap
+    of using the `addClass` method to apply a specific filter to an image on the page.
+    We''ll be using the Polaroid effect, developed by the Canadian developer Nick
+    La, and available from [http://webdesignerwall.com/demo/decorative-gallery-2/](http://webdesignerwall.com/demo/decorative-gallery-2/).
+    The `.addClass()` method is something you will almost certainly have used countless
+    times before; we''re using it here as an introduction to more complex effects
+    later in this chapter. Let''s begin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start by downloading and extracting the following files from the code
+    download that accompanies this book:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`cssfilters.html`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`cssfilters.css`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`jquery.min.js`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`cssfilters.js`'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Drop the HTML markup file into the root of our project area, and the JavaScript
+    and CSS files into the relevant subfolders in our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, go ahead and add the following simple block of code – this is
+    the event handler for the button, which we will use to change the filter state:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: At this stage, try previewing the results in a browser. If all is well, we should
+    see a picture of blue flowers, set in a Polaroid effect background. Refer to the
+    following image:![Creating our base page](img/image00429.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Take a closer look in `cssfilters.css` – near the bottom of the screen. We
+    should see the following:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'This is immediately followed by this block:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Now click on the **Change filter using CSS** button. If all is well, our image
+    should gradually become blurred, as shown in the next image:![Creating our base
+    page](img/image00430.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A nice simple demo – nothing too taxing at this stage, given some of the more
+    complex topics we've covered in this book till now!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'A tip – if you find that the filter doesn''t display in some versions of Firefox,
+    then check the **layout.css.filters.enabled** property in **about:config**. It
+    is not enabled by default in version 34 or earlier; this changed from version
+    35:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating our base page](img/image00431.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The key to this demo is of course the use of the `.addClass()` method handler.
+    We're simply applying a new, preset class to the image, when clicking the button.
+    The beauty here though is that we have access to a number of quick and easy filters
+    that can be used, and which can reduce (or even eliminate) the use of PhotoShop
+    or GIMP. To see how really easy it is to swap over, let's make that change now,
+    and switch to using the brightness filter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing the brightness level
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This next demo is a quick and easy change to the `cssfilters.css` file we''ve
+    just been working on. Following is a screenshot of what we will produce:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Changing the brightness level](img/image00432.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Make sure you have this file available before continuing with the steps listed
+    next:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In `cssfilters.css`, look for and amend the `.change-filter` rule as shown:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Click on **Change filter using CSS** now. If all is well, we should find that
+    the image has become brighter.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Again – nothing taxing here; hopefully this is a good point for a breather,
+    after some of what we've covered in this book! There are a good handful of CSS3
+    filters we can use; space constraints means we can't cover them all here, but
+    we can at least look at one more filter. The other filters available for use are
+    outlined immediately following this next exercise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a sepia filter to our image
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As before, we need to revert back to changing `cssfilters.css`, so make sure
+    you have this ready for use. Let''s take a look at what we need to do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Revert back to `cssfilters.css`, then alter this line as shown:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Click on **Change filter using CSS** now. If all is well, we should find that
+    the image now has a sepia filter applied, as shown in this screenshot:![Adding
+    a sepia filter to our image](img/image00433.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This is what I love about using CSS3 filters – despite what some purists may
+    say, it is not always necessary to revert back to using a graphics package; a
+    simple change of a value in CSS is all that is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could manually change that value if needed, but we now have the flexibility
+    to programmatically change it too, with little impact on performance. This last
+    point is important – as we will see later in this chapter. Creating complex filters
+    to manipulate images using jQuery is a resource hungry process, so it's not one
+    to be done too frequently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring other filters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Before we move on and take a look at a different way of manipulating images,
+    the following table gives you a flavor of the different filters available; all
+    of them can be set using jQuery as outlined in our previous exercises:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Name of filter | Example of how to use it |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `contrast()` |'
+  prefs: []
+  type: TYPE_TB
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| `hue-rotate()` |'
+  prefs: []
+  type: TYPE_TB
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| `grayscale()` |'
+  prefs: []
+  type: TYPE_TB
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| `invert()` |'
+  prefs: []
+  type: TYPE_TB
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| `Saturate()` |'
+  prefs: []
+  type: TYPE_TB
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '|'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To see examples of these in action, it is worth taking a look online – there
+    are plenty of examples available. As a starting point, have a look at the article
+    by Johnny Simpson at [http://www.inserthtml.com/2012/06/css-filters/](http://www.inserthtml.com/2012/06/css-filters/);
+    although it is a couple of years old, and some of the settings have been tweaked
+    since then, it still gives a useful flavor of what is possible with CSS3 filters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s change track for a moment – while we can use simple CSS3 filters to
+    manipulate aspects such as contrast and brightness, we can use an alternative
+    method: background blending.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Blending images using CSS3
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There may be instances where we prefer not to manipulate the image directly,
+    but alter a background image instead. Similar effects are easy to achieve in static
+    images within PhotoShop, but are less common on the Internet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Thankfully, we can achieve the same effect using the `background-blend` mode
+    within CSS – this has the effect of allowing us to merge two images together.
+    Using `background-blend` mode (for which browser support is good within desktop
+    browsers) removes the need to manually edit each photo, so if any are changed,
+    the same effect can easily be applied to their replacements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the same vein as those filters we''ve already examined, we would apply the
+    filters within CSS. We can then switch them on or off using jQuery at will. I
+    won''t revisit the jQuery code that would be required, as we''ve already seen
+    it earlier in the chapter; suffice to say that we would apply the `background-blend`
+    mode, using an example such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this instance, we''ve used the `overlay` filter. This complex filter multiplies
+    the colors, depending on the backdrop color value. It has the net effect of making
+    lighter colors go lighter, and darker colors go darker, as shown in the next screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Blending images using CSS3](img/image00434.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are two examples of this blend mode in the code download that accompanies
+    this book – look for the `overlay.html` and `multiply.html` files.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a good number of filter options available, such as multiply, lighten,
+    dodge, and color burn – these are intended to produce similar effects to those
+    used in PhotoShop, but without the need for expensive applications. All the filters
+    follow a similar format. It is worth searching Google for examples of how filters
+    appear, such as those shown at [http://www.webdesignerdepot.com/2014/07/15-css-blend-modes-that-will-supercharge-your-images/](http://www.webdesignerdepot.com/2014/07/15-css-blend-modes-that-will-supercharge-your-images/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more, then head over to Mozilla's Developer site
+    at [https://developer.mozilla.org/en-US/docs/Web/CSS/back ground-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/back%20ground-blend-mode).
+    For a really useful example of this filter (and a source of inspiration for combining
+    it with jQuery), check out the 2016 American Presidential Candidates demo at [http://codepen.io/bennettfeely/pen/rxoAc](http://codepen.io/bennettfeely/pen/rxoAc).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay, time to get really stuck into some jQuery, methinks! Let's switch to using
+    plugins, and see some of the effects we can achieve with what is available for
+    use. We'll start with a look at using CamanJS as our example, following it with
+    a more in-depth exploration of creating filters manually, and see why it's not
+    always the best way to achieve the desired effect!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying filters with CamanJS
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we've applied filters using CSS3\. This is perfect for lightweight solutions,
+    but there may be occasions where we need to do more, and CSS3 won't suffice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enter jQuery! Over the next few pages, we'll take a brief look at applying filters
+    using CamanJS as our example jQuery plugin. We'll then move on and see how easy
+    (or complex) it is to create the same effects manually, without needing to rely
+    on a third-party plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing CamanJS as a plugin
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: CamanJS is one of the several plugins available for jQuery, which allows us
+    to apply any number of filters; we can choose from either the preset ones that
+    come with the library, or create our own combinations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin is available from [http://camanjs.com/](http://camanjs.com/), and
+    can be downloaded from GitHub at [https://github.com/meltingice/CamanJS](https://github.com/meltingice/CamanJS).
+    Else, we can use NodeJS or Bower to install the library. The plugin is also available
+    via CDN at [http://www.cdnjs.com](http://www.cdnjs.com) – search for CamanJS to
+    get the latest URL to use in your project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is worth noting that filters can be applied using one of two methods – the
+    first is as a HTML data- attribute:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The second method is using jQuery, as we will see in the next demo; we'll be
+    using this method throughout our examples. With this in mind, let's get cracking,
+    and take a look at using CamanJS to apply filters, as shown in our next demo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a simple demo
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this demo, we'll be using the CamanJS library to apply any one of the three
+    filters to our flowers image that we've been using throughout this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember – if you use Chrome, run this demo from within a local webserver, as
+    suggested in the *Getting ready* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s begin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Start by extracting the following files from the code download that accompanies
+    this book. For this demo, we''ll need the following files: `caman.html`, `flowers.jpg`,
+    `usecaman.js`, `jquery.min.js,` and `usecaman.css`. Store the JavaScript files
+    in the `js` subfolder, the CSS file in the `css` subfolder, the image within the
+    `img` subfolder, and the HTML markup within the root area of our project folder.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Run the `caman.html` demo file. If all is well, we should see the following
+    image appear:![Building a simple demo](img/image00435.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Let's explore the jQuery required to operate the demo. If we peek inside `usecaman.js`,
+    we'll see the following code. This is used to get a handle on the `<canvas>` element
+    in our markup, before drawing the `flowers.jpg` image on it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Digging a little deeper, we should see the following method – this handles
+    the reset of the `<canvas>` element back to its original state; notice how the
+    `drawImage()` method is used, which is key to manipulating images with different
+    filters:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We then top it off with three different event handlers – these apply the relevant
+    CamanJS filter:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Our simple demo only scratches the surface of what is possible with CamanJS.
+    It is well worth having a look at the site in more detail, to get a feel for what
+    can be achieved using the library. As a source of inspiration, take a look at
+    the article by Carter Rabasa, which uses the library to create a Phonestagram
+    application, based on the well-known Instagram site; it's available at [https://www.twilio.com/blog/2014/11/phonestagram-fun-with-photo-filters-using-node-hapi-and-camanjs.html](https://www.twilio.com/blog/2014/11/phonestagram-fun-with-photo-filters-using-node-hapi-and-camanjs.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It's worth noting that CamanJS is able to handle HiDPI images with ease – all
+    we need to do is set the `data-caman-hidpi` attribute in our code. Caman will
+    automatically switch to using the hi-res version, if it detects that the device
+    supports hi-res images. Note though, that rendering takes longer, due to the additional
+    pixels being used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting really creative
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Cast your mind back to the beginning of this chapter, where I mentioned that
+    CSS3 filters provide a convenient and lightweight means of manipulating images.
+    Their use means that we can reduce the amount of work required when editing the
+    images, and that should the images change in size or content, then it is much
+    easier to update them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, using CSS3 filters can only go so far – this is where jQuery takes
+    over. To see why, let's work through another demo. This time, we'll use one of
+    the more advanced preset filters that comes with CamanJS, and which would be difficult
+    to achieve if we had to use CSS3 filters alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remember – if you use Chrome, please run this demo from within a local web
+    server, as suggested in the *Getting ready* section. Let''s start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this demo, we need some files from the code download that accompanies this
+    book. They are: `caman-advanced.css`, `caman-advanced.html`, `caman.full.js`,
+    `jquery.min.js`, and `flowers.jpg`. Place each file in the relevant subfolders,
+    and the HTML markup file in the root of our project area.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, add the following code to configure the CamanJS object to use
+    the pinhole filter supplied with the library; save this as `caman-advanced.js`
+    within the `js` subfolder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we preview the demo, we can see that the image now shows a pinhole camera
+    effect when the **Change filter** button is clicked. Refer to the following image:![Getting
+    really creative](img/image00436.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: There are plenty of examples of more unusual filters on the CamanJS site. Head
+    over to [http://camanjs.com/examples/](http://camanjs.com/examples/) to view what
+    is possible using the library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Although we''ve concentrated on using CamanJS as our example (partially due
+    to the breadth of what is possible to do with the library), there are other libraries
+    available that offer similar filter functionality, but not all to the same level
+    as CamanJS. Here are some examples to explore, to get you started:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**VintageJS**: [https://github.com/rendro/vintageJS](https://github.com/rendro/vintageJS)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Hoverizr**: [https://github.com/iliasiovis/Hoverizr](https://github.com/iliasiovis/Hoverizr)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**PaintbrushJS**: [http://mezzoblue.github.com/PaintbrushJS](http://mezzoblue.github.com/PaintbrushJS)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Colorimazer**: [http://colorimazer.tacyniak.fr/](http://colorimazer.tacyniak.fr/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For those of you who prefer not to use open source, one example that you may
+    like to explore is the JSManipulation library, which is available for sale from
+    the CodeCanyon site at [http://codecanyon.net/item/jsmanipulate-jquery-image-manipulation-plugin/428234](http://codecanyon.net/item/jsmanipulate-jquery-image-manipulation-plugin/428234).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Right, let's move on and really get stuck into something. So far, we've used
+    plugins which will serve most purposes for us. But in some instances, we may find
+    that we need to create our own filters manually, as existing filters are not available
+    for our needs. Let's take a look at a couple in action, to see what is involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To see what is possible when using Caman, take a look at this article by Martin
+    Angelov at [http://tutorialzine.com/2013/02/instagram-filter-app/](http://tutorialzine.com/2013/02/instagram-filter-app/).
+    It takes us through building an Instagram filter application, using jQuery, CamanJS,
+    and the jQuery Mousewheel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating simple filters manually
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The key to creating our own filters (and as is the case with many prebuilt plugins),
+    is to use the `<canvas>` element and familiarize ourselves with the `getImageData`
+    method. We can use the latter to manipulate the color channels within each image
+    to produce the desired effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could spend time talking about using this method in detail, but I think it
+    would be far better to see it in action. So let's dive in and use it to create
+    a couple of filters manually, beginning with grayscaling an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grayscaling an image
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For the first demo of three, we're going to desaturate the colors in a copy
+    of the `flowers.jpg` image that we've been using throughout this chapter. This
+    will give it a grayscale appearance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You may get cross-domain errors if running this demo locally. I would recommend
+    running it within a local web server, as suggested in the *Getting ready* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s look at what we have to do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's start by extracting a copy of `flowers.jpg`, `jquery.min.js`, `manual-grayscale.html,`
+    and `manual-grayscale.css` from the code download that accompanies this book.
+    Store the image in the `img` subfolder, the JavaScript file in the `js` subfolder,
+    and the style sheet in the `css` subfolder; the HTML markup needs to be stored
+    at the root of our project folder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, go ahead and add the following code, saving it as `manual-grayscale.js`
+    – this looks for each image set with a classname of picture, before calling the
+    `grayscale` function to perform the magic:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Add the following function immediately below the `$(window).load` method –
+    this rewrites the image with a grayscale equivalent:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If we run the demo at this point, we should see a copy of the image with the
+    Polaroid effect border as before, but this time, it has been converted to a grayscale
+    equivalent image, followed by the screenshot itself:![Grayscaling an image](img/image00437.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Before we continue with our next demo, there are a few key points to note,
+    relating to the code we''ve just used. So let''s spare a moment to cover these
+    in more detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Most of the work we've done uses the `<canvas>` element – this allows us to
+    manipulate the image at a much finer detail than if we were using a plain JPG
+    or PNG format image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In this instance, we've created the canvas element using plain JavaScript with
+    the statement `document.createElement('canvas').` Some may argue that mixing vanilla
+    JavaScript with jQuery is bad practice. In this instance, I personally feel it
+    provides a cleaner solution, as a context is not added automatically to `<canvas>`
+    elements that are created dynamically with jQuery.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`getImageData()` as a method is key to manipulating any image using this route.
+    We can then work with each of the color channels, namely red, green, and blue,
+    to produce the desired effect.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can use this process to produce any number of different filters – how about
+    a sepia one, for example? Let's take a look at how we can manually create such
+    a filter. In this instance, we'll go one further and turn it into a mini plugin
+    for reuse at a later date.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a sepia tone
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've seen how straightforward it is to produce a color filter from the ground
+    up – what about creating different types of filters? We can use similar techniques
+    for other filters, so let's go ahead and create a sepia-based one, to complement
+    the CSS3 version we used earlier in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember – if you use Chrome, please run this demo from within a local web server,
+    as suggested in the *Getting ready* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s make a start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start, as always, by extracting the relevant files from the code download
+    that accompanies this book. For this one, we''ll need the following: `jquery.min.js`,
+    `flowers.jpg`, `manual-sepia.css,` and `manual-sepia.html`. Store them in the
+    relevant subfolders of our project folder.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a new file, we need to create our sepia plugin, so go ahead and add the
+    following code, beginning with setting up the call to find all images with a classname
+    of `.sepia`:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next comes the all-important function – the `grayImage` function takes the
+    image, draws it to a canvas, then manipulates each of the color channels in the
+    image, before rendering it back to screen:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Let's preview the results in a browser. If all is well, we should see our image
+    with a nice sepia tone, as seen in the following image:![Adding a sepia tone](img/image00438.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This version of the filter may look slightly different in terms of the code
+    we've used, but most of this is due to reconfiguring it as a plugin, along with
+    some changes in variable names. If we look carefully though, we would see that
+    the same principles have been used in both examples, but have produced two different
+    versions of the same image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more about using the `getImageData()` method, then
+    take a look at the W3School's tutorial, which is available at [http://www.w3schools.com/tags/canvas_getimagedata.asp](http://www.w3schools.com/tags/canvas_getimagedata.asp).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Blending images
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For our third and final demo, and to prove how versatile `getImageData()` can
+    be, we're going to add a tint to the same flowers image that we've used throughout
+    this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This demo is relatively straightforward to implement. We already have the framework
+    in place, in the form of a plugin; all we need to do is swap out the nested `for…`
+    block, and replace it with our new version. Let''s start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a copy of `manual-sepia.js`, look for the following line at or around line
+    **17**:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Highlight and remove all the way down to line **25.** Replace it with the following
+    code:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: For now, save the file as `manual-sepia.js`, then preview `manual-sepia.html`
+    in a browser. If all is well, we should see the image appear, but this time with
+    a red tint, as in the following image:![Blending images](img/image00439.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The math used in this demo looks straightforward, but nonetheless may need a
+    little explaining. It is a two-stage process, where we use the `_weight` variables
+    to first work out the brightness levels, followed by using the `_intensity` variables
+    to work out the relevant intensity level, before reapplying this to the appropriate
+    color channel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting to grips with the math required to build filters using this method can
+    take time (and would be outside the scope of this book), but once you've understood
+    the math, it opens up some real possibilities!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For convenience, I've reused the same files in this demo to prove that we can
+    apply a specific color tint. In practice, we would need to rename the plugin name
+    to better reflect the color being used (and that in this instance, wouldn't be
+    sepia!).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can of course take things even further. To do so can require some hardcore
+    math, so won''t be for the faint-hearted! If you fancy the challenge, then a good
+    starting point is to learn about using **convolution masks**, which will look
+    something like the following (this one being for blurring images):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will allow us to make some really complex filters, such as a Sobel filter
+    ([http://en.wikipedia.org/wiki/Sobel_operator](http://en.wikipedia.org/wiki/Sobel_operator)),
+    or even a Laplace filter ([http://en.wikipedia.org/wiki/Discrete_Laplace_operator#Implementation_in_Image_Processing](http://en.wikipedia.org/wiki/Discrete_Laplace_operator#Implementation_in_Image_Processing))
+    – be warned: the math is really hardcore! To bring it back down to something a
+    little easier, have a look on Google. Following are some useful starting points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://halfpapstudios.com/blog/2013/01/canvas-convolutions/](http://halfpapstudios.com/blog/2013/01/canvas-convolutions/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://thiscouldbebetter.wordpress.com/2013/08/14/filtering-images-with-convolution-masks-in-javascript/](https://thiscouldbebetter.wordpress.com/2013/08/14/filtering-images-with-convolution-masks-in-javascript/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[http://beej.us/blog/data/convolution-image-processing/convolution.js](http://beej.us/blog/data/convolution-image-processing/convolution.js)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let's change track! We've applied a number of filters using different means
+    to our image, but has anyone noticed how abrupt the effect can be? A more pleasing
+    route is to animate the transition process. Let's take a look at how we can achieve
+    this, using the **cssAnimate** library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating images with filters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Okay, so we've covered a number of different ways of applying filters to manipulate
+    the appearance of images. Before we move on and take a look at some practical
+    examples, let's pause for a moment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did anyone notice how when using jQuery, we lose the ability to gradually transition
+    from one state to another? Transitioning is just one way of providing a nice touch
+    to any change of state – after all, it is far easier on the eye to gradually change
+    state, than to see an abrupt switch!
+  prefs: []
+  type: TYPE_NORMAL
+- en: We could spend time crafting a solution from the ground up using jQuery. However,
+    a more prudent solution would be to use a plugin for this purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introducing cssAnimate
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Enter cssAnimate! This little gem by Clemens Damke generates the necessary CSS3
+    styles to animate a state change, but falls back to using jQuery's `animate()`
+    method handler, if support is not available. The plugin is available for download
+    from [http://cortys.de/cssAnimate/](http://cortys.de/cssAnimate/). Although the
+    site indicates a minimum requirement of jQuery 1.4.3 or above, it works with no
+    noticeable issues when used with jQuery 2.1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at a screenshot of what we''re going to produce:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing cssAnimate](img/image00440.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Let''s start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll begin with extracting the following files from the code download that
+    accompanies this book: `cssanimate.html`, `cssanimate.css`, `flowers.jpg`, `jquery.min.js`,
+    and `jquery.cssanimate.min.js`.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Save the JavaScript files to the `js` subfolder, the image to the `img` folder,
+    the CSS file to the `css` subfolder, and the HTML markup to the root folder of
+    our project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In a separate file, add the following code, which animates a change of `hue-rotate`
+    filter:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: If all is well, we should see the flowers appear to turn a shade of dark pink
+    when clicking on the **Change filter using CSS** button, as shown at the beginning
+    of our exercise.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'At first appearance, the only change we will see is the transition to a darker
+    shade of pink in our image. However, the real change will show if we inspect our
+    code using a DOM Inspector, such as Firebug:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Introducing cssAnimate](img/image00441.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The beauty about this library is that despite it being a few years old, it still
+    appears to work well with modern versions of jQuery. It opens up some real avenues
+    that we can explore, in terms of the transition animations that we can use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Transition support is almost 100 percent across the main browsers, save for
+    Opera Mini. To get an up-to-date picture, it's worth checking the Can I Use site
+    at [http://caniuse.com/#feat=css-transitions](http://caniuse.com/#feat=css-transitions).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although the number of built-in animations is limited within cssAnimate, it
+    does at least include support for cubic-bezier values. Matthew Lein has produced
+    a file that contains a number of cubic-bezier equivalents for well-known easing
+    effects; this is available from [https://github.com/matthewlein/Ceaser/blob/master/developer/ceaser-easings.js](https://github.com/matthewlein/Ceaser/blob/master/developer/ceaser-easings.js).
+    We can use this to provide the values that can be dropped into our animation to
+    produce the desired effect. Alternatively, we can design our own cubic-bezier
+    easing effect using a site such as [http://cubic-bezier.com](http://cubic-bezier.com)
+    – this provides similar values that can be used in our animation in the same way.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As an aside – I came across this neat little demo when researching for this
+    book: [http://codepen.io/dudleystorey/pen/pKoqa](http://codepen.io/dudleystorey/pen/pKoqa).
+    I wonder if we could use cssAnimate to produce a similar effect?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Okay – enough of filters for the moment! Let's change focus and dive into something
+    a little more practical. How many of you have had to sign for something online,
+    using an electronic signature? It's a great effect to incorporate, should the
+    circumstances require it. We're going to take a look at how, but extend it further,
+    so that we can save the image for later use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a signature pad and exporting the image
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now that we've seen how we can manipulate images, let's turn our attention to
+    something more fundamental; capturing images drawn on canvas elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we move more and more into a digital world, there will be occasions when
+    we are asked to "sign" a document electronically, using our computer. It does
+    mean that we shouldn't consider signing anything the morning after a heavy night
+    out, but worse things can happen…! That in mind, let's take a look at how we can
+    capture the image, once the document has been signed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this demo, we're going to use the Signature Pad plugin for jQuery, by Thomas
+    Bradley. The plugin is available from [http://thomasjbradley.ca/lab/signature-pad](http://thomasjbradley.ca/lab/signature-pad).
+    We're going to take it a step further – instead of just signing our name, we will
+    provide an option to save the output as a PNG file, using the `canvas.toDataURL()`
+    method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Remember – if you use Chrome, please run this demo from within a local web server,
+    as suggested in the *Getting ready* section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll begin by downloading the CSS and HTML markup files that are required for
+    this demo, from the code download that accompanies this book. Go ahead and extract
+    the signature pad folder and save it to the project area.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Next, add the following code to a new file – save it as `signaturepad.js`,
+    within the `js` subfolder of our demo folder:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Note
+  prefs:
+  - PREF_IND
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is a version of this file already in the code download; extract and rename
+    `signaturepad-completed.js` to `signaturepad.js`, then store in the same `js`
+    folder as outlined in this demo.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: If we preview the results in a browser, we should see a signature pad displayed,
+    as shown in the following screenshot:![Creating a signature pad and exporting
+    the image](img/image00442.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In this screenshot, I''ve already added my name. Try clicking on **Draw It**
+    and then drawing your name – beware, it takes a steady hand! Next, click on the
+    link. If all is well, we will be prompted to open or save file named `signature.png`.
+    Opening it up in a suitable graphics package confirms that the signature was saved
+    correctly. Refer to the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Creating a signature pad and exporting the image](img/image00443.jpeg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Although this is a relatively simple demo, it opens up some real possibilities.
+    Outside of the signature plugin we''ve used, the key to this demo is two-fold:
+    the use of a `<canvas>` element to capture the drawn signature, and the `.toDataURL()`
+    method used to convert the contents of the canvas element to a data URI, which
+    contains a representation of the image in PNG format (by default).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We first get a handle of, then draw out the image onto, a canvas element. As
+    soon as the download event handler is fired, it converts the image to a data URI
+    representation, then renders it into a format that we can save for later use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you would like to learn more about the `toDataURL()` method, then Mozilla's
+    Developer Labs have a good article, which is available at [https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let's put this technique to good use and combine it with using the webcam and
+    the image manipulation techniques we covered at the start of this chapter. This
+    allows us to get really crazy; fancy having some fun with capturing and changing
+    webcam images?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Capturing and manipulating webcam images
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In our second and final demo for this chapter, we're going to have some fun
+    with a webcam – one of the ways we can acquire and manipulate images is to source
+    them from a laptop or stand-alone webcam.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key to this demo lies in the use of `getUserMedia`, which allows us to control
+    audio or video feeds. This is a relatively young API, which requires use of vendor
+    prefixes to ensure full support. As with other APIs, the need for them will disappear
+    over time, so it is worth checking [http://caniuse.com/#search=getusermedia](http://caniuse.com/#search=getusermedia)
+    regularly to see if support has been updated and the need for prefixes removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This demo will bring together some of the concepts we've explored, such as applying
+    filters, saving canvas images to file, and controlling a webcam. To operate this
+    demo correctly, we will need to run it from an HTTP protocol address and not `file://.`
+    For this, you will either need some web space available, or to use a local webserver
+    such as WAMP (for PC – [http://www.wampserver.com/en](http://www.wampserver.com/en)),
+    or MAMP (for Mac, and now PC, from [http://www.mamp.info/en/](http://www.mamp.info/en/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Okay, assuming this is in place, let''s start:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll start by extracting the `webcam demo` folder from the code download that
+    accompanies this book. It contains the styling, markup, and a copy of the jQuery
+    library that is needed for this demo.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Once extracted, upload the whole folder to your web space. I will assume you
+    are using WAMPServer, so this will be the `/www` folder; if you are using something
+    different, then please alter accordingly.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'We need to add the jQuery magic that is needed to make this demo work. In a
+    new file, go ahead and add the following code; we''ll work through it in sections,
+    beginning with assigning variables and a filter array:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The first function handles the paging through of the filters. We cycle through
+    the filter names stored within the filter array. If there is a corresponding style
+    rule within the style sheet, then the following is applied to the canvas image:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Next, we need to get an instance of `getUserMedia`, which we use to control
+    the webcam. As this is still a relatively young API, we are obliged to use the
+    vendor prefixes:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'The first of several event handlers, the `#startplay` button is the most important.
+    Here we capture the webcam source, then assign it to the video object and generate
+    the URL that references our content. Once assigned, we start the video feed playing,
+    which allows us to view the content on screen:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'We then need to assign some event handlers. In order, the following handle
+    requests to take a snapshot of the image, stop the video, change the filter, and
+    download a copy of the snapshot image:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Save the file as `webcam.js` within the `js` subfolder of the `webcam demo`
+    folder that we uploaded earlier in this demo.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: At this point, we can try running the demo within a browser. If all is well,
+    we will first get a request to allow the browser access to the webcam (for security
+    reasons), as shown in the following image:![Capturing and manipulating webcam
+    images](img/image00444.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This is then followed by an initialization of the camera. It starts with a placeholder
+    image, as shown next; this will then display the live feed within a few moments:![Capturing
+    and manipulating webcam images](img/image00445.jpeg)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'As this point, we can have all sorts of fun. Try clicking on **Snap Photo**
+    to take a snapshot of yourself; this will appear to the right of the live feed.
+    If we click on this image, it will cycle through several filters that we''ve set
+    up in the style sheet, and reference using the following line in `webcam.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Hang on – did anyone notice something about the image we get when clicking on
+    the **Download Photo** button? The keen-eyed amongst you will soon spot that it
+    is a copy of the original image, before filters have been applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reason for this is that the filters are set within CSS – naturally, they
+    only have any effect when displayed in the browser window! To fix this, we need
+    to alter our download event handler. We can use the CamanJS library that we explored
+    earlier to apply some basic filters, such as the Sunrise effect that comes with
+    the library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To do this, alter the `#download` event handler to show the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now try saving a copy of the screenshot. While it doesn't force a download to
+    your desktop, it will nonetheless display an image in the browser now that shows
+    the Sunrise filter applied to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've only scratched the surface of what is possible when using `getUserMedia`
+    – it is well worth exploring this online to learn more. A good starting point
+    is the article on the Mozilla Developer Network, which is available at [https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia](https://developer.mozilla.org/en-US/docs/NavigatorUserMedia.getUserMedia).
+    Note – `getUserMedia` is not supported in IE11 or below, so you will need to use
+    a polyfill library such as `getUserMedia.js` by Addy Osmani, which is available
+    for download at [https://github.com/addyosmani/getUserMedia.js](https://github.com/addyosmani/getUserMedia.js).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As an aside, I had considered including something on using the reveal.js library
+    to control a simple image gallery using hand gestures in this book, as shown at
+    [http://www.chromeexperiments.com/detail/gesture-based-revealjs/](http://www.chromeexperiments.com/detail/gesture-based-revealjs/).
+    The unfortunate thing is that the code isn't rock solid, and hasn't been updated
+    for some time. I'd be intrigued to hear what your thoughts are. It's a great way
+    of showing off a slick means of presenting content, but needs more work!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finishing up
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Before we round up this chapter, it's worth pausing for a moment to consider
+    the implications of some of the techniques that we've covered in this chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The purists may question the need to use jQuery to apply filters, particularly
+    if all we need to do is to use a method such as `.addClass()` or even `.toggleClass()`
+    to apply or remove a specific filter. The flip side of this is that this book
+    is of course about jQuery, and that this is what we should concentrate on using,
+    even at the cost of the apparent delay in showing some of the filter effects we've
+    used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The short answer to this will depend on you – anyone can write jQuery code to
+    a greater or lesser extent, but the difference between an average and a good developer
+    is not just in writing code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The real difference lies partially in making the right choices. jQuery is frequently
+    seen as the easy option, particularly as it provides the widest range of support.
+    We can create any kind of filter to fit our needs, but it is always at the expense
+    of processing power – we cannot get away from the fact that manipulating the canvas
+    element takes a lot of resources, so is slow to complete. This is no better if
+    high definition images are used (as we noted back in the *Applying filters with
+    CamanJS* section) – indeed, it's even slower, given that more pixels need to be
+    processed!
+  prefs: []
+  type: TYPE_NORMAL
+- en: The upshot of this is that we need to carefully consider what filters we need
+    to apply, and whether we can simply use CSS3 filters to fulfill our needs. It
+    is true that these may not provide a solution for all our needs, but support is
+    changing. We should really consider using jQuery filters where the delay isn't
+    an issue, and the application won't be used on a mobile platform (due to the resources
+    required to process each pixel!).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Manipulating images is one of the paradoxes within jQuery– we can use CSS3 filters
+    to produce concise effects with little effort, but be limited to what CSS3 filters
+    can offer; or we can produce any filter we desire, but at the expense of the processing
+    resources required to manipulate images at a pixel level! In this chapter, we've
+    covered a lot of information, so let's take a moment to recap what we've learnt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We kicked off with a look at adding filters using CSS3, and saw how easy it
+    is to apply these to an image. We then moved onto examining a different technique
+    of blending images using CSS3, before turning our attention to examining jQuery
+    image plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We spent a little time exploring some of the basic options to apply filters,
+    and then created our own jQuery based filters. We then switched to looking at
+    how we can animate the transition into using a filter, to help provide a smoother
+    crossover, before finishing with a look at creating basic demos using a signature
+    pad and a webcam, as a means of capturing images using jQuery.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We then rounded up the chapter with some final thoughts on when we should be
+    using CSS3 filters or jQuery, as a means of emphasizing that anyone can write
+    code, but that good developers know which tool to use at the right time in their
+    development process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next chapter, we're going to expand on the use of plugins, with a look
+    at taking our plugin development skills to the next level.
+  prefs: []
+  type: TYPE_NORMAL

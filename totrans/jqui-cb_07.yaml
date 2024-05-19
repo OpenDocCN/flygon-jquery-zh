@@ -1,0 +1,618 @@
+- en: Chapter 7. Progress Bars
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover the following recipes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying file upload progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Animating progress changes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating progress indicator widgets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using states to warn about thresholds
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Giving progressbars labels
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **progressbar** widget is quite simple—in that it doesn't have many moving
+    parts. In fact, it has exactly one moving part, that is, the value bar. But simplicity
+    doesn't make the progressbar any less powerful than other widgets. We'll look
+    at how we can leverage this simplicity throughout this chapter. The progressbar
+    can express anything from file upload progress to server-side processes to capacity
+    utilization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying file upload progress
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: It would be nice if there was a straightforward way to display the progress
+    of a file upload using the progressbar widget. Unfortunately, we are afforded
+    no such luxury. The uploading of a file happens between the transitions of pages.
+    However, the necessary hacks to display the upload progress using the progressbar
+    widgets have shrunk in size, thanks to the modern standards and browsers. Let's
+    take a look at how we can take advantage of the `onprogress` event of the XML
+    HTTP Request object in **Ajax** requests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this demonstration, we will create a simple form with a simple file field.
+    Inside the form, we'll create some HTML for displaying the progressbar widget.
+    It'll be hidden until the user initiates a file upload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The bulk of the work required to update the progressbar widget during a file
+    upload is actually performed in the Ajax request machinery and in the `onprogress`
+    event handler. The following code is a really good illustration of why widget
+    designers should aim for simplicity. The resulting widget is applicable to a wide
+    variety of contexts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you run this example and actually upload a file locally at `http://127.0.0.1:`
+    `8000/`, you'll want to use a large file. Smaller files will upload too fast and
+    in too short a time. A larger file upload will enable you to see something like
+    the following during an upload.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_07_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Accompanying the code in this book is a minimal Python server that will serve
+    this demo upload page and will process the file upload requests. The example can
+    be rearranged without much effort to work with any upload server, but the Python
+    server supplied only requires that Python be installed. Again, this isn't a requirement,
+    but it's just a handy server if you're eager to see the client code in action.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The goal of this example is to update the progressbar widget in real time, as
+    the file upload progress changes. There are several plugins that will provide
+    this capability, but if you're writing a jQuery UI application, you might as well
+    standardize on the progressbar widget. The first thing we do, once the document
+    is ready, is create the progressbar widget used to display the file upload progress.
+    `#upload-container` is initially hidden using the `ui-helper-hidden` class, as
+    we don't need to display the progress of an upload until an upload is actually
+    taking place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we set up our event handler for the `submit` event of our upload form.
+    This handler, before doing anything else, prevents the default form submission
+    from taking place. We're essentially substituting our own behavior for the default
+    form submission implemented by the browser. The reason we need to override this
+    behavior is so that we stay on the page, and apply updates to our progressbar
+    widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we set up the `$.ajax()` call that actually sends our selected files to
+    the server. We take the `url` argument from the form itself. The next several
+    arguments are prerequisites to sending multipart form data, including selected
+    files, as part of an Ajax request. The `xhr` option is where we supply a function
+    that returns the `xhr` object used internally by the `$.ajax()` function. This
+    is our opportunity to hijack the `xhr` object and attach additional behavior to
+    it. We're mainly interested in adding new behavior to the `onprogress` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After we've made sure that the upload object, an instance of `XMLHttpRequestUpload`,
+    actually exists, we can define our `onprogress` event handler function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firstly, we calculate the actual upload percentage, using the `loaded` and `total`
+    properties of the event. Next, we show the progress container and update the percentage
+    label using the value in `uploadPercent`. Finally, we make sure that the `max`
+    option of the upload progressbar widget is set to `total`, and we set the current
+    value of the progressbar using the `value()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Animating progress changes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The progressbar widget changes its visual appearance each time the `value` or
+    the `max` option is set. For example, the default value for `value` is `0` and
+    the default value for `max` is `100`. So when the progressbar widget is displayed
+    with these values, we don't actually see the graphical bar, yet that depicts the
+    progress percentage. However, setting the `value` option will update this bar.
+    If the bar is already visible, a change in the `value` option results in a change
+    of the width for the progressbar. These changes, using the default progressbar
+    implementation, simply change the widget instantaneously. Let's look at how we
+    can modify the widget to support a smooth transition between progressbar values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use the following simple markup as the basis of our progressbar widget
+    instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And, here is the JavaScript used to customize the progressbar widget in order
+    to support animating changes in progress:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This example includes an updater that will increment the progressbar value at
+    every 0.7 seconds interval. You'll notice the smooth width transition applied
+    as the value changes. To contrast this change with the default behavior, set the
+    `animate` option to `false`. You'll now start to really notice the visual jumps
+    the bar makes each time the value is updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our example code extends the progressbar widget by adding a new `animate` option.
+    The new `animate` option defaults to `false`. The other change we're introducing
+    to the progressbar widget is the new implementation of the `_refreshValue()` method,
+    which is called internally by the widget any time the `value` option changes.
+    This method is responsible for making the visual width change on the `div` element
+    `progress`. This is representative of the progress between `value` and `max`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Much of this code is borrowed from the original implementation of `_refreshValue()`,
+    as we're only making minor changes. First, we check if the `animate` option we've
+    added to the widget has a `true` value. If not, we just continue with the original
+    implementation. Otherwise, we use the same code, but make a slight adjustment
+    with how the width is applied. Then, we're calling `stop( true, true )` to complete
+    the current animation and to clear the animation queue. Next, instead of using
+    the `width()` function as does the original implementation, we're setting the
+    width by calling `animate()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As always, we're not limited to using the jQuery `animate()` function to apply
+    effects to the visual transitions between progressbar values. Instead of the `animate()`
+    function, we could apply CSS transitions to progressbar values. Of course, the
+    drawback is that not all browsers support CSS transitions, and we get into vendor-specific
+    style rules. Nonetheless, let's compare the previous approach with that of using
+    the CSS styles to animate the progressbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will use the same markup, but we''ll introduce the following styles into
+    the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: And, here are the necessary changes to the JavaScript code. It looks similar
+    to the previous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running this example will not look all that different from the previous implementation
+    of the `animate` option. The transition will behave much in the same way. The
+    key difference here is that we are extending the theme framework. We have introduced
+    a new CSS class for the progressbar widget—`ui-progressbar-animated`. The selector,
+    `.ui-progressbar-animated > .ui-progressbar-value,` applies to the progressbar
+    value `div`, the one that changes width. And, this is exactly what our new styles
+    do. They transition width property value changes over a span of 0.7 seconds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The JavaScript code is the chief benefactor of this approach simply because
+    there is less change in the progressbar widget. For instance, we're no longer
+    overriding the `_refreshValue()` method. Instead, we're overriding `_create()`,
+    and adding the `ui-progressbar-animated` class to the element if the `animated`
+    option is `true`. This is how our new styles are put into action. The rest of
+    the JavaScript that instantiates the widget and the value updater is no different
+    from the previous example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating progressindicator widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The progressbar widget is intended to show the progress of some process. The
+    end goal is the `max` option specified when creating the widget, which defaults
+    to `100`. If we know the size of the data we are processing ahead of time, we
+    would use the `max` option to reflect this end goal. However, we are sometimes
+    faced with the scenario where we have some processing to do on the client; or,
+    we are waiting for some backend process to complete and send a response back to
+    the client. For example, the user has initiated a backend task using the API,
+    and they're now waiting for a response. The bottom line is, we want to illustrate
+    to the user that progress is being made, and we just don't know how much progress
+    has been made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To display the fact that progress is being made, despite not knowing how much
+    progress, we need an indicator widget. We can write our own widget to achieve
+    this, extending the progressbar widget, since we can reuse many components there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For our progressindicator widget, we will use the same HTML as we would for
+    a basic progressbar widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we have some slight adjustments to make in the progressbar CSS styles.
+    These apply to the value bar inside the progressbar `div`. We're removing the
+    `border` and the `margin` since this looks better when sliding the value bar back
+    and forth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, we come to the implementation of the progressindicator widget. This code
+    will also create an instance of our progressindicator widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you look at this progressindicator widget in the browser, you will see that
+    it animates the value bar of the progressbar widget by sliding it back and forth,
+    indicating that something is happening.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_07_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have created a new progressindicator widget that inherits the progressbar
+    widget capabilities. The goal behind the progressindicator widget is to take the
+    progress value bar `div`, set a width on it, and slide it back and forth within
+    the progressbar container `div`. Visually, this indicates that something is taking
+    place behind the scene. This type of graphical depiction of an activity is universally
+    reassuring to users, as it gives the sense that something is happening, and the
+    application isn't broken.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first method we're overriding in the definition of the new progressindicator
+    widget is the `_create()` method of the progressbar. Here, we're calling the original
+    constructor of the progressbar widget, since we need all the UI components in
+    place before we start making changes. Next, we use the `value()` method to give
+    the value bar `div` a width. We're hardcoding this value in the `progressindicator()`
+    constructor simply because the developer using this widget has no need to change
+    it; we only need to set the width of the element. To further simplify this widget,
+    we're removing the corner classes from the elements. We could leave them, but
+    then we would have to handle several corner cases when it comes to animating the
+    bar, as we're after a simple widget here, one that requires no configuration on
+    behalf of the developer using the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Still inside the `_create()` method, we define two utility functions for executing
+    animation. As you may have guessed, the `_right()` function slides the progress
+    value bar to the right while the `_left()` function slides it to the left. We're
+    calling the `animate()` jQuery function on the `valueDiv` property of this widget.
+    The `_right()` function slides the value `div` to the right by updating the `margin-left`
+    value. You'll notice that the `margin` variable is defined locally inside `_create()`.
+    This is done by calculating how much space we have to the right of the value `div`,
+    which means that we set this value as the `margin-left` to slide it over to the
+    right. To slide it back to the left again, we simply set the `margin-left` CSS
+    property back to `0px` in the `_left()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The animation is bootstrapped by calling `_right()` at the bottom of the `_create()`
+    method. The progress indicator animation loop happens by passing `_left()` as
+    a callback to the initial animation. Likewise, we pass `_right()` as the animation
+    completion callback inside the `_left()` function. This process will continue
+    until the widget is destroyed. The `_destroy()` method is overridden by our widget
+    simply to make sure that all animations stop immediately. This includes any queued
+    animations waiting to execute. We then continue destroying the widget by calling
+    the original `_destroy()` implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One advantage to our progressindicator widget is that it provides a very simple
+    API. You can create and destroy the widget as needed, without having to deal with
+    any intermediary steps. Ideally, this widget would have a very short lifespan,
+    perhaps as little as one second (barely enough time to see one animation cycle).
+    Sometimes, however, things may take a little longer. If this widget were to display
+    for an extended period of time, it could pose a problem to the application. The
+    jQuery `animate()` function wasn't designed to run animations in an infinite loop.
+    Nor is our widget designed to be displayed for extended periods of time. The problem
+    is that `animate()` uses timers and can really eat away at the CPU cycles on the
+    client. Not only could this be disruptive to our application, but for others running
+    on the user's machine too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Despite this being a relatively minor concern, let''s look at an alternative
+    implementation of our progressindicator widget, one that uses CSS animations.
+    Here is how we would define our animations in the CSS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And, here is the modified JavaScript implementation of our `progressindicator`
+    widget that knows how to make use of the previous CSS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, if you view this modified version of the widget in your browser, you should
+    see a nearly identical result when compared with the previous implementation.
+    The key difference of course being that the animation is specified in the CSS
+    and executed directly by the browser. The browser can handle these types of CSS
+    animations much more efficiently than the JavaScript based counterparts. The browser
+    only needs to read the animation specification once, and then it runs the animation
+    internally, using native code as opposed to executing JavaScript, and directly
+    manipulating the DOM. We could run this version all day, and the browser would
+    happily chug along.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But this version of progressindicator isn't without its pitfalls. Firstly, let's
+    take a closer look at the CSS. The very fact that we're relying on CSS animations
+    to begin with isn't the best bet given the disparity in browser adoption. Here,
+    we're getting ourselves into a browser vendor prefix mess with our style. Support,
+    in general, isn't too bad though, as IE is the only browser that doesn't support
+    CSS animations; but the definition of the animations are straightforward. In the
+    `.ui-progressindicator > .ui-progressbar-value` selector, we are specifying that
+    the indicator animation will run for `2` seconds and will repeat infinitely. The
+    `@keyframes` indicator animation specifies how the `margin-left` property itself
+    changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In JavaScript, you will notice that the code itself is much simpler. This is
+    because it now has much less responsibility. Mainly, it needs to add the `ui-progressindicator`
+    class to the widget's DOM element on creation, and remove the class on destruction.
+    You will also notice that there is no longer a margin calculation taking place
+    in the JavaScript code that implements the widget. We have instead moved these
+    numbers to the CSS that defines the widget animation as hard-coded values. Again,
+    this is simply a trade-off that the widget designer must consider. We are exchanging
+    higher maintenance costs in the CSS for more efficient animations, and questionable
+    browser support for our widget for simpler JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using states to warn about thresholds
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The progressbar widget isn't restricted to marking the progression toward some
+    end point. It can also be used as a marker for utilization of some resource. For
+    example, your application might allow the user to store 100 MB worth of image
+    data. It might make sense to show them how much of this capacity is currently
+    in use. The progressbar widget is an ideal solution for graphically depicting
+    resource utilization scenarios such as these. Taking things a step further, we
+    might also want to warn the user about utilization thresholds. That is, at a certain
+    percentage, the resource is getting near capacity, but the user still has time
+    to do something about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting ready
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this demonstration, we will create two simple `div` elements for the two
+    progressbar widgets we want to display:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here is the JavaScript code that extends the progressbar widget, providing
+    a new option for specifying threshold values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: We instantiate two progressbar widgets here and launch a basic timer interval
+    that changes the value of both the progressbar widgets after every 1.30 seconds.
+    If you look at this example in your browser, you will notice that one or both
+    progressbar widgets will enter the error state because the value has surpassed
+    the supplied threshold value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_07_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The new `threshold` option we've added to the progressbar widget is a number
+    expressed as a percentage. This is the threshold of the progressbar at which the
+    state changes in order to give the user a visual warning. This is achieved by
+    overriding the `_percentage()` method. Here, we get the actual percentage value
+    by calling the original implementation of `_percentage()` and storing it in `percentage`.
+    We then make sure that the `threshold` value is nonzero and that the calculated
+    percentage is greater than the `threshold` value. The `_percentage()` method is
+    called internally by the progressbar widget each time the value is updated, and
+    the visual display changes. So in our implementation of `_percentage()`, if we're
+    over the threshold, we add the `ui-state-error` class to the `valueDiv` element,
+    the graphical bar inside the progress bar that moves from left to right. Otherwise,
+    we're below the threshold, and must be sure to remove the `ui-state-error` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we've created the two widgets, we're using `setInterval()` to continuously
+    assign a random value to both the progressbars. You can sit back and watch how
+    the progressbar widgets change state depending on whether the data fed into them
+    crosses over the thresholds that we've specified. In this case, the `#cpu-utilization`
+    progressbar has a threshold of `80` percent, while the `#memory-utilization` progressbar
+    has a threshold of `85%`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Giving progressbars labels
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The graphical bar that changes width to reflect the progress percentage does
+    a fine job. The power of the progressbar widget is in the ability to see, at a
+    glance, how much progress has been made, or how much of a resource is being utilized.
+    But there are times when we could use some accuracy with regard to the percentage,
+    that is, a label showing the underlying percentage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The progressbar widget has the ability to display the label inside the progressbar
+    container, which is more intuitive than displaying the percentage label outside
+    of the widget. Let's look at how we can extend the theme CSS, supply additional
+    markup to the widget, and extend the progressbar to take advantage of these new
+    additional features in order to display the label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We'll create the HTML for our two progressbar widgets first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll add the CSS class required by the progressbar label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, we'll extend the progressbar widget itself, tying together this new
+    HTML and the new CSS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can now view these two progressbars in the browser, and you'll notice that
+    the two labels, showing the percentage value, are positioned in the center of
+    the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186OS_07_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'By default, the progressbar widget does not support labels, and so we have
+    to place the label `div` inside the progressbar `div`. We also give this new label
+    `div` the `ui-progressbar-label` class, which is consistent with the jQuery UI
+    theme naming convention. This class actually serves two purposes: inside the widget
+    customizations that we have introduced, we use this class to search for the label
+    `div` and to apply label styles.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS rules specified in `ui-progressbar-label` help to position the label
+    text in the middle of the progressbar element. We give the label `div` a width
+    of `100%` and align the text horizontally using the `text-align` property. Finally,
+    we make the `font-weight` of the label `bold` in order to stand out; otherwise,
+    it is difficult to see it against the background of the progressbar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The customized JavaScript implementation of the progressbar widget that we've
+    introduced here overrides the `_create()` method. We create a new instance variable
+    called `labelDiv`, which stores a reference to our new element. We then call the
+    original `_create()` implementation and the constructor carries on as normal,
+    creating the value `div` beside our new label element. We're also overriding the
+    `_refreshValue()` method in order to update the content of the `labelDiv`. The
+    `_refreshValue()` method gets invoked internally by the widget any time the value
+    changes and the progressbar widget needs to update the value display. We're extending
+    this behavior by updating the `labelDiv` value using the `_percentage()` number,
+    before resuming with the original implementation of `_refreshValue()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One potential issue we may encounter with this approach to implementing progressbar
+    labels is the fact that we have to change the HTML structure. This violates the
+    DRY principle, because every label `div` we are adding, for each progressbar widget
+    we create, is exactly the same. Further, we may want to apply labels to progressbar
+    widgets that already exist in an application. Altering the HTML in an already
+    functional widget is not the best approach. Let's think about how we can improve
+    the previous code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CSS we have created that positions and styles the label element is fine.
+    It follows the correct naming conventions and it applies to all progressbar widget
+    instances. What we want to change is the necessary markup used to instantiate
+    a progressbar widget with a label displayed. The question is how. Ideally, through
+    an option that lets the developer toggle the label on and off. The widget itself
+    would then be responsible for inserting the label `div` where necessary since
+    it is the same for all instances of the widget, which in turn means minimal JavaScript
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at the simplified markup, following the same previous example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: We are now back to the original markup that the progressbar widget expects before
+    we introduced our modifications. Now let's update the widget code to make use
+    of this markup by adding a new option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we're extending the progressbar widget with the new `label` option, which
+    defaults to `false`. The idea is that when this value is `true`, we insert the
+    label `div` into the progressbar container. Our modifications to the `_create()`
+    and `_refreshValue()` methods are largely the same as the previous code, except
+    now we're checking if the `label` option is turned on before executing our custom
+    behavior. As you can see, we're supplying this new label option to the `#network-utilization`
+    div, but not the `#storage-utilization` div.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186OS_07_05.jpg)'
+  prefs: []
+  type: TYPE_IMG

@@ -1,0 +1,1042 @@
+- en: Developing Plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The available third-party plugins provide a bevy of options for enhancing our
+    coding experience, but sometimes we need to reach a bit farther. When we write
+    code that could be reused by others or even just ourselves, we may want to package
+    it up as a new plugin. Fortunately, the process of developing a plugin is not
+    much more involved than writing the code that uses it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding new global functions within the `jQuery` namespace
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding jQuery object methods that allow us to act on DOM elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating widget plugins using the jQuery UI widget factory
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Distributing plugins
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the dollar ($) alias in plugins
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we write jQuery plugins, we must assume that the jQuery library is loaded.
+    We cannot assume, however, that the dollar (`$`) alias is available. Recall from
+    [Chapter 3](2036c6b0-e8c5-405a-b54b-b3f31eab404c.xhtml), *Handling Events*, that
+    the `$.noConflict()` method can relinquish control of this shortcut. To account
+    for this, our plugins should always call jQuery methods using the full jQuery
+    name or internally define `$` themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Especially in larger plugins, many developers find that the lack of the dollar
+    (`$`) shortcut makes code more difficult to read. To combat this, the shortcut
+    can be locally defined for the scope of the plugin by defining a function and
+    immediately invoking it. This syntax for defining and invoking a function at once,
+    often referred to as an **Immediately Invoked Function Expression** (**IIFE**),
+    looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The wrapping function takes a single parameter to which we pass the global `jQuery`
+    object. The parameter is named `$`, so within the function we can use the dollar
+    (`$`) alias with no conflicts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding new global functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Some of the built-in capabilities of jQuery are provided via what we have been
+    calling global functions. As we've seen, these are actually methods of the jQuery
+    object, but practically speaking, they are functions within a `jQuery` namespace.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A prime example of this technique is the `$.ajax()` function. Everything that
+    `$.ajax()` does could be accomplished with a regular global function called `ajax()`,
+    but this approach would leave us open for function name conflicts. By placing
+    the function within the `jQuery` namespace, we only have to worry about conflicts
+    with other jQuery methods. This `jQuery` namespace also signals to those who might
+    use the plugin that the jQuery library is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many of the global functions provided by the core jQuery library are utility
+    methods; that is, they provide shortcuts for tasks that are frequently needed,
+    but not difficult to do by hand. The array-handling functions `$.each()`, `$.map()`,
+    and `$.grep()` are good examples of these. To illustrate the creation of such
+    utility methods, we'll add two simple functions to their number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To add a function to the `jQuery` namespace, we can just assign the new function
+    as a property of the `jQuery` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, in any code that uses this plugin, we can write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will work just like a basic function call, and the code inside the function
+    will be executed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This `sum` method will accept an array, add the values in the array together,
+    and return the result. The code for our plugin is quite brief:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: To compute the sum, we're calling `reduce()` on the array, which simply iterates
+    over each item in the array, and adding it to the `result`. In the preceding code,
+    there's two callback functions that return values. Neither of them have a `return`
+    statement because they're arrow functions. When we don't include the curly braces
+    (`{}`), the return value is implicit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To test our plugins, we''ll build a simple table with an inventory of groceries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we''ll write a short script that populates the appropriate table footer
+    cell with the sum of all quantities:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A look at the rendered HTML page verifies that our plugin is working correctly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Adding multiple functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'If our plugin needs to provide more than one global function, we could declare
+    them independently. Here, we''ll revise our plugin, adding a function to compute
+    the average of an array of numbers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: For convenience and brevity, we're using the `$.sum()` plugin to assist us in
+    returning the value for `$.average()`. To decrease the chance of errors, we also
+    check the argument to make sure it is an array before computing the average.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that a second method is defined, we can call it in the same fashion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The average now appears in the third column:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Extending the global jQuery object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We can also employ an alternate syntax in defining our functions using the
+    `$.extend()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: When called this way, `$.extend()` adds or replaces properties of the global
+    jQuery object. This, therefore, produces the same results as the previous technique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Isolating functions within namespaces
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Our plugin now creates two separate global functions within the `jQuery` namespace.
+    We risk a different kind of namespace pollution here, though; we could still have
+    a conflict with function names defined in other jQuery plugins. To avoid this,
+    it is best to encapsulate all the global functions for a given plugin into a single
+    object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This pattern essentially creates another namespace for our global functions,
+    called `jQuery.mathUtils`. Though we will still informally call these functions
+    global, they are now methods of the `mathUtils` object, which is itself a property
+    of the global jQuery object. We, therefore, have to include the plugin name in
+    our function calls:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this technique (and a sufficiently unique plugin name), we are protected
+    from namespace collisions in our global functions. We now have the basics of plugin
+    development in our repertoire. After saving our functions in a file called `jquery.mathutils.js`,
+    we can include this script and use the functions from other scripts on the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing a namespace
+  prefs: []
+  type: TYPE_NORMAL
+- en: For functions that are solely for personal use, it often makes more sense to
+    place them within our own project's global namespace. So, instead of using `jQuery`,
+    we may instead choose to expose one global object of our own. We could, for example,
+    have a global object called `ljQ` and define the `ljQ.mathUtils.sum()` and `ljQ.mathUtils.average()`
+    methods instead of `$.mathUtils.sum()` and `$.mathUtils.average()`. This way,
+    we completely remove the chance of namespace collisions with third-party plugins
+    that we choose to include.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, we've now seen the namespace protection and guaranteed library availability
+    that jQuery plugins grant. These are just organizational benefits, though. To
+    really tap into the power of jQuery plugins, we need to learn how to create new
+    methods on individual jQuery object instances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding jQuery object methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Most of jQuery's built-in functionality is provided through its object instance
+    methods, and this is where plugins shine as well. Whenever we would write a function
+    that acts on part of the DOM, it is probably appropriate instead to create an
+    **instance method**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have seen that adding global functions requires extending the `jQuery` object
+    with new methods. Adding instance methods is similar, but we instead extend the
+    `jQuery.fn` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `jQuery.fn` object is an alias to `jQuery.prototype`, provided for conciseness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can then call this new method from our code after using any selector expression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our alert is displayed (once for each `<div>` in the document) when we invoke
+    the method. We might as well have written a global function, though, as we haven't
+    used the matched DOM nodes in any way. A reasonable method implementation acts
+    on its context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Object method context
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Within any plugin method, the keyword `this` is set to the current jQuery object.
+    Therefore, we can call any built-in jQuery method on `this` or extract its DOM
+    nodes and work on them. To examine what we can do with object context, we'll write
+    a small plugin to manipulate the classes on the matched elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our new method will take two class names and swap which class is applied to
+    each element with every invocation. While jQuery UI has a robust `.switchClass()`
+    method that even permits animating the class change, we''ll provide a simple implementation
+    for demonstration purposes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our plugin, we first test for the presence of `class1` on the matched element
+    and substitute `class2` if it is found. Otherwise, we test for `class2` and switch
+    in `class1` if necessary. If neither class is currently present, we do nothing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the code that uses the plugin, we bind a `click` handler to the table, calling
+    `.swapClass()` on every row when the table is clicked on. We'd expect this to
+    change the class of the header row from `one` to `two` and to change the class
+    of the sum row from `two` to `one`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we observe a different result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_03.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Every row has received the `two` class. To fix this, we need to correctly handle
+    jQuery objects with multiple selected elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implicit iteration
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We need to remember that a jQuery selector expression can always match zero,
+    one, or multiple elements. We must allow for any of these scenarios when designing
+    a plugin method. In this case, we are calling `.hasClass()`, which only examines
+    the first matched element. Instead, we need to check each element independently
+    and act on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The easiest way to guarantee proper behavior, regardless of the number of matched
+    elements, is to always call `.each()` on the method context; this enforces implicit
+    iteration, which is important for maintaining consistency between plugin and built-in
+    methods. Within the `.each()` callback function, the second argument refers to
+    each DOM element in turn, so we can adjust our code to separately test for and
+    apply classes to each matched element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, when we click on the table, the classes are switched without affecting
+    the rows that have neither class applied:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Enabling method chaining
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In addition to implicit iteration, jQuery users should be able to rely on chaining
+    behavior. This means that we need to return a jQuery object from all plugin methods,
+    unless the method is clearly intended to retrieve a different piece of information.
+    The returned jQuery object is usually just the one provided as `this`. If we use
+    `.each()` to iterate over `this`, we can just return its result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: Previously, when we called `.swapClass()`, we had to start a new statement to
+    do anything else with the elements. With the `return` statement in place, though,
+    we can freely chain our plugin method with built-in methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Providing flexible method parameters
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 7](e101ee08-ea8f-40f0-966c-e00b6af852ed.xhtml), *Using Plugins*,
+    we saw some plugins that can be fine-tuned to do exactly what we want through
+    the use of parameters. We saw that a cleverly constructed plugin helps us by providing
+    sensible defaults that can be independently overridden. When we make our own plugins,
+    we should follow this example by keeping the user in mind.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To explore the various ways in which we can let a plugin''s user customize
+    its behavior, we need an example that has several settings that can be tweaked
+    and modified. As our example, we''ll replicate a feature of CSS by using a more
+    brute-force JavaScript approach--an approach that is more suitable for demonstration
+    than for production code. Our plugin will simulate a shadow on an element by creating
+    a number of copies that are partially transparent overlaid in different positions
+    on the page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For each element this method is called on, we make a number of clones of the
+    element, adjusting their opacity. These clones are positioned absolutely at varying
+    offsets from the original element. For the moment, our plugin takes no parameters,
+    so calling the method is simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This method call produces a very simple shadow effect on the header text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_05.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Next, we can introduce some flexibility to the plugin method. The operation
+    of the method relies on several numeric values that the user might want to modify.
+    We can turn these into parameters so they can be changed on demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Options objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We have seen many examples in the jQuery API of `options` objects being provided
+    as parameters of methods such as `.animate()` and `$.ajax()`. This can be a much
+    friendlier way to expose options to a plugin user than the simple parameter list
+    we just used with the `.swapClass()` plugin. An object literal provides a visual
+    label for each parameter and also makes the order of the parameters irrelevant.
+    In addition, any time we can mimic the jQuery API in our plugins, we should do
+    so. This will increase the consistency and therefore ease of use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: The number of copies made and their opacity are now customizable. Within our
+    plugin, each value is accessed as a property of the `options` argument to the
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Calling this method now requires us to provide an object containing the option
+    values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The configurability is an improvement, but we now have to provide both options
+    every time. Next, we'll take a look at how we can allow our plugin users to omit
+    either option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Default parameter values
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'As the number of parameters for a method grows, it becomes less likely that
+    we will always want to specify each one. A sensible set of default values can
+    make a plugin interface much more usable. Fortunately, using an object to pass
+    in our parameters helps with this task; it is simple to omit any item from the
+    object and replace it with a default:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we have defined a new object called `defaults`. The utility function `$.extend()`
+    lets us take the `opts` object provided as an argument and use it to create a
+    new `options` object using `defaults` where necessary. The `extend()` function
+    merges any objects passed to it into the first argument. This is why we've passed
+    an empty object as the first argument, so that we create a new object for options,
+    rather than accidentally destroying existing data. For example, what if defaults
+    were defined somewhere else in the code and we accidentally replaced it's values?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We still call our method using an object literal, but now we can specify only
+    the parameters that need to take different values than their defaults:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Unspecified parameters use their default values. The `$.extend()` method even
+    accepts null values, so if the default parameters are all acceptable, our method
+    can be called without producing JavaScript errors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Callback functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Of course, some method parameters can be more complicated than a simple numeric
+    value. One common parameter type we have seen frequently throughout the jQuery
+    API is the callback function. The callback function can lend flexibility to a
+    plugin without requiring a great deal of preparation when creating the plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use a callback function in our method, we need to simply accept the function
+    object as a parameter and call that function wherever appropriate in our method
+    implementation. As an example, we can extend our text shadow method to allow the
+    user to customize the position of the shadow relative to the text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each slice of the shadow has a different offset from the original text. Previously,
+    this offset has simply been equal to the index of the copy. Now, though, we''re
+    calculating the offset using the `copyOffset()` function, which is an option that
+    the user can override. So, for example, we could provide negative values for the
+    offset in both dimensions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will cause the shadow to be cast up and to the left-hand side rather than
+    down and to the right-hand side:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_06.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The callback allows simple modifications to the shadow's direction, or much
+    more sophisticated positioning if the plugin user supplies the appropriate callback.
+    If the callback is not specified, then the default behavior is once again used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizable defaults
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We can improve the experience of using our plugins by providing reasonable default
+    values for our method parameters, as we have seen. However, sometimes it can be
+    difficult to predict what a reasonable default value will be. If a script author
+    needs to call our plugin multiple times with a different set of parameters than
+    we set as the defaults, the ability to customize these defaults could significantly
+    reduce the amount of code that needs to be written.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make the defaults customizable, we need to move them out of our method definition
+    and into a location that is accessible by outside code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The defaults are now in the namespace of the shadow plugin, and can be directly
+    referred to with `$.fn.shadow.defaults`. Now, code that uses our plugin can change
+    the defaults that all subsequent calls to `.shadow()` will use. Options can also
+    still be supplied at the time the method is invoked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This script will create a shadow using `10` copies of the element, because
+    that is the new default value, but will also cast the shadow to the left-hand
+    side and down due to the `copyOffset` callback that is provided along with the
+    method call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_07.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating plugins with the jQuery UI widget factory
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we saw in [Chapter 7](e101ee08-ea8f-40f0-966c-e00b6af852ed.xhtml), *Using
+    Plugins*, jQuery UI has an assortment of widgets--plugins that present a particular
+    kind of UI element, such as a button or slider. These widgets present a consistent
+    API to JavaScript programmers. This consistency makes learning to use one easy.
+    When a plugin that we're writing will create a new user interface element, extending
+    the jQuery UI library with a widget plugin is often the right choice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A widget is an intricate piece of functionality, but fortunately we are not
+    left to our own devices in creating one. The jQuery UI core contains a `factory`
+    method called `$.widget()`, which does a lot of the work for us. Using this factory
+    will help ensure that our code meets the API standards shared by all jQuery UI
+    widgets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Plugins we create using the widget factory have many nice features. We get
+    all of these perks (and more) with very little effort on our part:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin becomes **stateful**, meaning that we can examine, alter, or even
+    completely reverse the effects of the plugin after it has been applied
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: User-supplied options are merged with customizable default options automatically
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multiple plugin methods are seamlessly combined into a single jQuery method,
+    accepting a string to identify which submethod is being called
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom event handlers triggered by the plugin get access to the widget instance's
+    data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In fact, these advantages are so nice that we may wish to use the widget factory
+    to construct any suitably complex plugin, UI-related or otherwise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a widget
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: For our example, we'll craft a plugin that adds custom tooltips to elements.
+    A simple tooltip implementation creates a `<div>` container for each element on
+    the page that gets a tooltip and positions that container next to the element
+    when the mouse cursor hovers over the target.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The jQuery UI library contains its own built-in tooltip widget that is more
+    advanced than the one we'll develop here. Our new widget will override the built-in
+    `.tooltip()` method, which is not something we would likely do in a real project,
+    but it will allow us to demonstrate several important concepts without needless
+    complexity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A jQuery UI plugin is created by the widget factory each time `$.widget()` is
+    called. This function accepts the name of the widget and an object containing
+    widget properties. The name of the widget must be namespaced; we'll use the namespace
+    `ljq` and the plugin name `tooltip`. As a result, our plugin will be invoked by
+    calling `.tooltip()` on a jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first widget property we''ll define is `._create()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: This property is a function that will be invoked by the widget factory whenever
+    `.tooltip()` is called, once per matched element in the jQuery object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Widget properties, such as `_create`, which begin with an underscore, are considered
+    private. We will discuss public functions later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inside this creation function, we set up our tooltip for future displaying.
+    To do this, we make the new `<div>` element and add it to the document. We're
+    storing the created element in `this._tooltipDiv` for later use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the context of our function, `this` refers to the current widget instance
+    and we can add whatever properties we want to this object. The object has some
+    built-in properties that can be handy for us as well; in particular, `this.element`
+    gives us a jQuery object pointing to the element that was originally selected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use `this.element` to bind the `mouseenter` and `mouseleave` handlers to
+    the tooltip trigger element. We need these handlers to open the tooltip when the
+    mouse begins hovering over the trigger and to close it when the mouse leaves.
+    Note that the events are namespaced with the name of our plugin. As we discussed
+    in [Chapter 3](2036c6b0-e8c5-405a-b54b-b3f31eab404c.xhtml), *Handling Events*,
+    namespacing makes it easier for us to add and remove event handlers without stepping
+    on the toes of other code that also wants to bind handlers to the elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we need to define the `._open()` and `._close()` methods that we bound
+    to the `mouseenter` and `mouseleave` handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `._open()` and `._close()` methods themselves are self-explanatory. These
+    are not special names, but rather illustrate that we can create whatever private
+    functions we need within our widget, so long as their names begin with underscores.
+    When the tooltip is opened, we position it with CSS and show it; when it is closed,
+    we simply hide it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: During the opening process, we need to populate the tooltip with information.
+    We're using the `.data()` method for this, which can get and set arbitrary data
+    associated with any element. In this case, we are using the method to fetch the
+    value of the `data-tooltip-text` attribute of each element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With our plugin in place, the code `$(''a'').tooltip()` will cause a tooltip
+    to be displayed when the mouse is over any anchor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_08_08.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The plugin, thus far, is not very long, but densely packed with sophisticated
+    concepts. To make this sophistication pay off, the first thing we can do is to
+    make our widget stateful. The widget's state will allow users to enable and disable
+    it as needed, or even destroy it entirely after creation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Destroying widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We've seen that the widget factory creates a new jQuery method, in our case
+    called `.tooltip()`, that can be called with no arguments to apply the widget
+    to a set of elements. There's much more that this method can do, though. When
+    we give this method a string argument, it calls the method with the appropriate
+    name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the built-in methods is called `destroy`. Calling `.tooltip(''destroy'')` will
+    remove the tooltip widget from the page. The widget factory does most of the work,
+    but if we have modified parts of the document inside `._create()` (as we have
+    here, by creating the tooltip text `<div>`), we need to clean up after ourselves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.18
+  prefs: []
+  type: TYPE_NORMAL
+- en: This new code is added as a new property of the widget. The function undoes
+    the modifications we performed, then calls the prototype's version of destroy
+    so that the automatic cleanup occurs. The `_super()` and `_superApply()` methods
+    call the base widget methods of the same name. It's always a good idea to do this,
+    so that the proper initialization actions in the base widget are performed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that destroy is not preceded with an underscore; this is a `public` method
+    that we can call with `.tooltip('destroy')`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling and disabling widgets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In addition to being destroyed completely, any widget can be temporarily disabled
+    and later re-enabled. The base widget methods, `enable` and `disable`, help us
+    by setting the value of `this.options.disabled` to `true` or `false` as appropriate.
+    All we have to do to support these methods is to check this value before our widget
+    takes any action:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.19
+  prefs: []
+  type: TYPE_NORMAL
+- en: With this extra check in place, the tooltips stop displaying once `.tooltip('disable')`
+    is called and display once again after `.tooltip('enable')` is invoked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accepting widget options
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now it''s time to make our widget customizable. As we saw when constructing
+    the `.shadow()` plugin, it''s friendly to provide a customizable set of defaults
+    for a widget, and then to override those defaults with options the user specifies.
+    Nearly all of the work in this process is performed by the widget factory. All
+    we need to do is to provide an `options` property:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.20
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `options` property is a plain object. All the valid options for our widget
+    should be represented, so that none of them are mandatory for the user to provide.
+    Here we're supplying x and y coordinates for the tooltip relative to its trigger
+    element, as well as a function that generates the tooltip text for each element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The only piece of our code that needs to examine these options is `._open()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.21
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the `_open` method, we can access these properties using `this.options`.
+    We will always get the correct value for the option this way: the default value
+    or the overridden value if the user has provided one.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can still add our widget without arguments, such as `.tooltip()`, and get
+    the default behavior. Now we can supply options that override the default behavior:
+    `.tooltip({ offsetX: -10, offsetX: 25 })`. The widget factory even lets us change
+    these options after the widget is instantiated: `.tooltip(''option'', ''offsetX'',
+    20)`. The next time the option is accessed, we will see the new value.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reacting to option changes
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we need to immediately react to an option change, we can add a `_setOption`
+    function to our widget that handles the change and then calls the default implementation
+    of `_setOption`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding methods
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The built-in methods are convenient, but often we will want to expose more
+    hooks to the users of our plugin, as we''ve done with the built-in `destroy` method.
+    We''ve already seen how to create new private functions inside our widget. Creating
+    public methods is just the same, except that the widget property names do not
+    begin with an underscore. We can use this to create methods that manually open
+    and close the tooltip quite simply:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.22
+  prefs: []
+  type: TYPE_NORMAL
+- en: That's it! By adding public methods that call the private functions, we can
+    now open a tooltip with `.tooltip('open')` and close it with `.tooltip('close')`.
+    The widget factory even takes care of details for us like ensuring that chaining
+    continues to work even if we don't return anything from our method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Triggering widget events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'A great plugin not only extends jQuery, but also offers plenty of opportunities
+    for other code to extend the plugin itself. One simple way to offer this extensibility
+    is to support a set of custom events related to the plugin. The widget factory
+    makes this process straightforward:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 8.23
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calling `this._trigger()` in one of our functions allows code to listen for
+    the new custom event. The event's name will be prefixed with our widget name,
+    so we don't have to worry much about conflicts with other events. If we call `this._trigger('open')`
+    in our tooltip's opening function, for example, the event called `tooltipopen`
+    will be issued each time the tooltip opens. We can listen for this event by calling
+    `.on('tooltipopen')` on the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This only scratches the surface of what's possible with a full-fledged widget
+    plugin, but gives us the tools we need to build a widget that has the features
+    and conforms to the standards that jQuery UI users have come to expect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plugin design recommendations
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we have examined common ways to extend jQuery and jQuery UI by creating
+    plugins, we can review and supplement what we''ve learned with a list of recommendations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Protect the dollar (`$`) alias from potential interference from other libraries
+    by using `jQuery` instead or passing `$` into an IIFE, so that it can be used
+    as a local variable.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whether extending the jQuery object with `$.myPlugin` or the jQuery prototype
+    with `$.fn.myPlugin`, add no more than one property to the `$` namespace. Additional
+    public methods and properties should be added to the plugin's namespace (for example,
+    `$.myPlugin.publicMethod` or `$.fn.myPlugin.pluginProperty`).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Provide an object containing default options for the plugin: `$.fn.myPlugin.defaults
+    = {size: ''large''}`.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Allow the plugin user to optionally override any of the default settings for
+    all subsequent calls to the method (`$.fn.myPlugin.defaults.size = ''medium'';`)
+    or for a single call (`$(''div'').myPlugin({size: ''small''});`).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In most cases when extending the jQuery prototype `($.fn.myPlugin`), return
+    `this` to allow the plugin user to chain additional jQuery methods to it (for
+    example, `$('div').myPlugin().find('p').addClass('foo')`).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When extending the jQuery prototype (`$.fn.myPlugin`), enforce implicit iteration
+    by calling `this.each()`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use callback functions when appropriate to allow for flexible modification of
+    the plugin's behavior without having to change the plugin's code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the plugin calls for user interface elements or needs to track elements'
+    state, create it with the jQuery UI widget factory.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Maintain a set of automated unit tests for the plugin with a testing framework
+    such as QUnit to ensure that it works as expected. See Appendix A for more information
+    about QUnit.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use a version control system such as Git to track revisions to the code. Consider
+    hosting the plugin publicly on GitHub ([http://github.com/](http://github.com/))
+    and allowing others to contribute.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If making the plugin available for others to use, make the licensing terms clear.
+    Consider using the MIT license, which jQuery also uses.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Distributing a plugin
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By following the previous recommendations, we can produce a clean, maintainable
+    plugin that follows time-tested conventions. If it performs a useful, reusable
+    task, we may want to share it with the jQuery community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to properly preparing plugin code as defined earlier, we should
+    be sure to adequately document the operation of the plugin prior to distribution.
+    We can choose a documentation format that suits our style, but may want to consider
+    a standard such as JSDoc (described at [http://usejsdoc.org/](http://usejsdoc.org/)).
+    Several automatic documentation generators, including docco ([http://jashkenas.github.com/docco/](http://jashkenas.github.com/docco/))
+    and dox ([https://github.com/visionmedia/dox](https://github.com/visionmedia/dox))
+    are available. Regardless of format, we must ensure that our documentation covers
+    every parameter and option available for use with our plugin's methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plugin code and documentation can be hosted anywhere; npm ([https://www.npmjs.com/](https://www.npmjs.com/))
+    is the standard option. For more information about publishing jQuery plugins as
+    npm packages, take a look at this page: [http://blog.npmjs.org/post/112064849860/using-jquery-plugins-with-npm](http://blog.npmjs.org/post/112064849860/using-jquery-plugins-with-npm).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have seen how the functionality that is provided by the
+    jQuery core need not limit the library's capabilities. In addition to the readily
+    available plugins we explored in [Chapter 7](e101ee08-ea8f-40f0-966c-e00b6af852ed.xhtml),
+    *Using Plugins*, we now know how to extend the menu of features ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugins we've created contain various features, including global functions
+    that use the jQuery library, new methods of the jQuery object for acting on DOM
+    elements, and sophisticated jQuery UI widgets. With these tools at our disposal,
+    we can shape jQuery--and our own JavaScript code--into whatever form we desire.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The challenge exercises may require the use of the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create new plugin methods called `.slideFadeIn()` and `.slideFadeOut()`, combining
+    the opacity animations of `.fadeIn()` and `.fadeOut()` with the height animations
+    of `.slideDown()` and `.slideUp()`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Extend the customizability of the `.shadow()` method so that the z-index of
+    the cloned copies can be specified by the plugin user.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add a new submethod called `isOpen` to the tooltip widget. This submethod should
+    return `true` if the tooltip is currently displayed and `false` otherwise.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add code that listens for the `tooltipopen` event that our widget fires and
+    logs a message to the console.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Challenge**: Provide an alternative `content` option for the tooltip widget
+    that fetches the content of the page that an anchor''s `href` points to via Ajax,
+    and displays that content as the tooltip text.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Challenge**: Provide a new `effect` option for the tooltip widget that, if
+    specified, applies the named jQuery UI effect (such as `explode`) to the showing
+    and hiding of the tooltip.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

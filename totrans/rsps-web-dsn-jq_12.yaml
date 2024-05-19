@@ -1,0 +1,465 @@
+- en: Chapter 12. Improving Website Performance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Loading time is a major contributing factor to page abandonment. Users will
+    go elsewhere if pages take longer than 3-4 seconds to load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The need for pages that load quickly is more acute for those on mobile devices
+    because the users feel that the page loading takes longer than it does on desktops,
+    and it happens with the majority of current websites (73 percent according to
+    KISSmetrics, in their article *Loading Time*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A good part of the loading time is spent on performing client-side processing
+    and loading resources such as stylesheets, script files, and images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter we will learn ways to improve the performance for responsive
+    websites, by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a content delivery network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Making fewer HTTP requests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reducing the size of the payload
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Optimizing client-side processing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using tools to check website performance
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a content delivery network
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A **Content Delivery Network** (**CDN**) is a collection of web servers distributed
+    across multiple locations, making your pages load faster from the user's perspective.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The server selected for delivering content to a specific user is typically based
+    on network proximity and this content delivery is achieved in the quickest response
+    time. Also, this caches content into the browser so that it does not have to be
+    retrieved again the next time, thereby saving on making requests to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a cost-effective approach to use a CDN service provider, and some known
+    service providers are Akamai Technologies, Mirror Image Internet, and Limelight
+    Networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making fewer HTTP requests
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Decreasing the number of components included on a page reduces the number of
+    HTTP requests required to load the website and it is not related to the number
+    of KBs of each file only. There is also a problem that refers to the short time
+    for which each HTTP connection is consumed by servers processing each request
+    before delivering the file back to the browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will see some techniques to achieve reduction in the number of requests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using conditional loaders
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Combining multiple scripts into one script
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Combining multiple CSS files into one stylesheet
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using CSS Sprites
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using conditional loaders
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Conditional loaders such as RequireJS or yepnope.js, which we have talked about
+    earlier in the book, will only load code that is required.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consolidating and minifying resources (JavaScript and CSS)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The ideal result is that in production there will be a single CSS file and a
+    single JavaScript file for the entire site.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution for this is to **consolidate** that bunch of JavaScript files into
+    only one, reducing requests and speeding up page loading the first time, even
+    though it may not be cached efficiently on mobile devices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Minification** is the best practice to eliminate inessential characters such
+    as extra spaces, newline characters, indentation, and comments. Based on my personal
+    tests, this improvement may reduce the file size by an average of 20 percent.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This value is not accurate because it depends on the size of the file, the amount
+    of white space, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This combo grants a good performance improvement, mainly because it is commonly
+    executed before the site displays something.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are several online tools to perform this task. My personal favorite is
+    the YUI Compressor, which you can execute by accessing [http://refresh-sf.com/yui/](http://refresh-sf.com/yui/)
+    and Google Minify from [https://code.google.com/p/minify/](https://code.google.com/p/minify/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The procedure to use YUI Compressor is really simple. You only need to select
+    the files that will be consolidated, minify, and then click on the **Compress**
+    button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS Sprites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we know, using CSS Sprites is a practice of image consolidation since it
+    involves merging theme images into one. By combining (background) images, we can
+    reduce the overall size of image files, and therefore reduce the number of HTTP
+    requests made to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you use Photoshop to create image sprites, once you have created these sprites,
+    save the PSD source file for further changes. Later, if you want to include new
+    icons in this image sprite, expand down and/or right-click on the blank area of
+    this image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a sample of a Google image sprite:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![CSS Sprites](img/3602OS_12_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There are two online tools that I consider my favorites to create sprite images:
+    Stitches ([http://draeton.github.io/stitches/](http://draeton.github.io/stitches/))
+    and SpriteCow ([http://www.spritecow.com/](http://www.spritecow.com/)).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to create sprites using SpriteCow
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This tool generates the initial CSS code that you need to put in the CSS file
+    later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First of all, you need to create the image with all the buttons and icons (as
+    we can see in the previous image). Then, at [http://www.spritecow.com/](http://www.spritecow.com/),
+    there is a button named **Open Image** that will upload the sprite.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then click on the **Select Sprite** tool and make a square wrapping the icon
+    you want to customize by clicking on it. Do not worry if your selection was not
+    too near the icon because there is an automatic adjustment that improves this
+    selection. Try yourself!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reducing the size of payloads
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: After removing extra HTTP requests, it's time to reduce the size of remaining
+    files as much as possible. Not only does this make your pages load faster but
+    it also helps save bandwidth consumption.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minimizing the payload size of both dynamic and static resources can reduce
+    network latency significantly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will look at some practices to achieve this, such as Progressive JPEG, adaptive
+    images, image optimization, and better use of HTML5 and CSS3.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Progressive JPEG
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Progressive JPEG is not new. It was considered one of the best practices. However,
+    with the improvement of Internet speed, this feature became unnoticeable for a
+    while. But now, with limited bandwidths on mobile devices, this practice has surfaced
+    again.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The difference between saving a normal JPEG image as a baseline and with the
+    progressive option is represented in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Progressive JPEG](img/3602OS_12_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: In terms of size, the progressive one has its size around 10 percent more for
+    medium images when compared with the normal JPEG image. The loading time is almost
+    the same or some milliseconds more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But the preview effect of the progressive JPEG makes it seem a faster loading
+    page on visitors' perception when compared to adaptive images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On mobile devices, loading unnecessary high-resolution images is a massive waste
+    of bandwidth, processing time, and cache space. To speed up page rendering and
+    reduce bandwidth and memory consumption, replace images with smaller versions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, as we have learned in [Chapter 5](ch05.html "Chapter 5. Preparing Images
+    and Videos"), *Preparing Images and Videos*, it is highly recommended to use solutions
+    such as Foresight or Picturefill because they first check what the requesting
+    device is and only then allow the browser to download any image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Image optimization
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Images usually contain certain amount of useless data that can also be safely
+    removed while maintaining quality. There are two approaches to image optimization:
+    lossless and lossy compression.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lossless compression may remove extra information, such as embedded thumbnails,
+    comments within the data, metadata about the photo, camera model, ISO speed, whether
+    the flash was on or off, lens type, and focal length, and may save anywhere between
+    5 to 20 percent in file size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The process of optimizing images is very simple because it just requires selecting
+    which images should be changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are plenty of tools available online to achieve this. Personally, I prefer
+    using offline tools to remove this information because it gives more security
+    on the legal rights of the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For PNG images, I recommend PngGauntlet ([http://pnggauntlet.com](http://pnggauntlet.com));
+    for Mac, Imageoptim ([http://imageoptim.com](http://imageoptim.com)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Imageoptim also works for JPEG, but for Windows we may use RIOT ([http://luci.criosweb.ro/riot/](http://luci.criosweb.ro/riot/))
+    to optimize JPEG images, which is almost as good as Imageoptim. However, if the
+    image seems too big, such as a high-resolution picture, the best option is the
+    JPEGmini tool ([http://www.jpegmini.com/](http://www.jpegmini.com/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simplifying pages with HTML5 and CSS3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HTML5 specification includes new structural elements, such as `header`,
+    `nav`, `article`, and `footer`. Using these semantic elements yields a simpler
+    and more efficiently parsed page than using generic nested `div` and `span` tags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Almost the same happens when using CSS3 features that may help create lightweight
+    pages by providing dynamic artwork support for visual elements such as gradients,
+    rounded borders, shadows, animations, and transitions. As we know, before CSS3,
+    each of these mentioned effects required one graphical image that represented
+    it and would require loading many images. Consider the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Simplifying pages with HTML5 and CSS3](img/3602OS_12_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Testing website performance
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We will see two browser tools, PageSpeed Insights and YSlow, focused on analyzing
+    web pages and suggesting ways to improve their performance, based on a set of
+    rules for high-performance web pages that are extremely professional and are in
+    constant evolution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also, there are two online tools whose usage I recommend that run simple tests
+    or perform advanced testing including multistep transactions, video capture, content
+    blocking, and much more—WebPageTest and Mobitest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Testing website performance is key to maintaining a fast site; although it is
+    outside the scope of this book, if you would like to explore this further, you
+    may refer to *Instant PageSpeed Optimization* by *Sanjeev Jaiswal*, *Packt Publishing*
+    or *Even Faster Web Sites* by *Steve Sounders*, *O'Reilly Media*, for more information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PageSpeed Insights
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PageSpeed Insights is an online tool built by Google to help developers optimize
+    website performance. It evaluates the page's conformance to a number of different
+    rules that cover general frontend best practices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PageSpeed Insights gives tips and suggestions describing how we can best implement
+    the rules and incorporate them into our development process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can try to use this tool yourself by accessing the website at [http://developers.google.com/speed/pagespeed/insights/](http://developers.google.com/speed/pagespeed/insights/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can notice in the following screenshot that each notification shown has
+    a summary content and it is expandable for more details and links for further
+    information:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![PageSpeed Insights](img/3602OS_12_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: YSlow
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'YSlow is a browser plugin developed by Yahoo! and is also focused on analyzing
+    web pages and suggesting ways to improve their performance. Some of its features
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grades a web page based on a predefined ruleset or user-defined ruleset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Suggests how to improve the page's performance and explains the reason in detail
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summarizes the page's components, facilitating a faster search for critical
+    issues
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Displays the overall statistics of the page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Provides tools for performance analysis, including Smush.it™ (an online tool
+    for image optimization) and JSLint (a code checker that finds common mistakes
+    in scripts)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The plugin's website, which may be accessed from [http://developer.yahoo.com/yslow/](http://developer.yahoo.com/yslow/),
+    displays a table with the default weight of each rule of the best practices so
+    that we can prioritize critical issues before others ([http://yslow.org/faq/#faq_grading](http://yslow.org/faq/#faq_grading)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let''s take a look at its interface and how each rule is described for us.
+    Normally, only the small explanation about the rule (as shown in the following
+    screenshot) is good enough for our comprehension before starting the fixes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![YSlow](img/3602OS_12_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: WebPagetest
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: WebPagetest is a tool that was originally developed by AOL but is now supported
+    by Google. We can use it by accessing [http://www.webpagetest.org/](http://www.webpagetest.org/)
+    and running a simple test or performing advanced testing, including multistep
+    transactions, video capture, and content blocking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The rich diagnostic information includes resource-loading Waterfall charts,
+    page-speed-optimization checks, and gives suggestions for improvements that may
+    be achieved once we enter a website URL. Then we will inform what site we want
+    to test, the locale we want to test in, and the browser we want to use to do it.
+    The following screenshot shows the WebPagetest''s test result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![WebPagetest](img/3602OS_12_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mobitest
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Mobitest is a great tool that simulates a real mobile device loading a website,
+    capturing the page size, the total load time, and other performance-related stats.
+    Although it is a great checking tool, it is no substitute for the real statistics
+    that you would get from cell phone connections of limited bandwidth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is only one step to run the performance test after accessing [http://mobitest.akamai.com/](http://mobitest.akamai.com/),
+    which is to enter the website URL, choose one of the device/location options,
+    and submit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes it takes a long time to finalize the report, so the tool depends on
+    the number of tests that are ahead of us in the queue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is an example of a generated report:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mobitest](img/3602OS_12_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Although this site is lightweight, it still has improvements that can be implemented.
+    Let''s see what the generated diagram of loading activity process, named Waterfall
+    chart, indicates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Mobitest](img/3602OS_12_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Waterfall chart provided by Mobitest (image with horizontal bars) is demonstrating
+    each resource being requested step by step, processed by server, and delivered
+    back.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, in the second line, the loading of a static image hosted in another website
+    is taking a long time, which can be improved by adding the `expires` header and
+    using CDN.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we learned some best practices, such as using a CDN to improve
+    content delivery and cache static images, reducing HTTP requests by using conditional
+    loading, file consolidation, CSS sprites, reducing the size of payloads by optimizing
+    images, saving JPEG images as progressive, and simplifying page structure using
+    HTML5 and CSS3\. Additionally, we learned how to use tools such as PageSpeed,
+    YSlow, WebpageTest, and Mobitest for performance testing.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,691 @@
+- en: Chapter 10. Using Tabs
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with remote tab content
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Giving tabs an icon
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simplifying the tab theme
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using tabs as URL navigation links
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating effects between tab transitions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sorting tabs using the sortable interaction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting the active tab using href
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The **tabs** widget is a container used to organize the content on your page.
+    It is an excellent way to consolidate your page content so only the relevant items
+    are displayed. The user has an easy navigation mechanism to activate content.
+    The tabs widget can be applied in a larger navigational context, where the tabs
+    widget is the main top-level container element for the page. It can also serve
+    well as a smaller component for a specific page element, used to simply split
+    two sections of content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The tabs widget in the latest jQuery UI version offers the developer a cohesive
+    set of options to tweak the behavior of the widget. We'll look at how we can combine
+    these options, as well as how to get the most out of the navigational pieces of
+    the tabs widget. We'll also explore applying effects to tab transitions, and making
+    tabs sortable for the user.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with remote tab content
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The tabs widget knows how to populate a given tab panel with remote content
+    out of the box. It's all about how we specify the tab links. For example, an `href`
+    attribute that points to `#tab-content-home` will load the content using the HTML
+    found in that element. But, if instead of pointing to an already-existing element
+    we point to another page, the tabs widget will load the content into the appropriate
+    panel on demand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This works as expected without passing options to the tabs, but there is the
+    `beforeLoad` option should we want to tweak the behavior of the Ajax request in
+    an any way. Let's take a look at some of the ways we can work with remote content
+    using the tabs widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, we'll create the HTML for our tabs widget, which consists of four links.
+    The first three point to existing resources while the fourth doesn't exist, and
+    so the Ajax request will fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we have the JavaScript used to create the tabs widget instance as well
+    as specify some custom behavior to alter the Ajax request.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In order to view the Ajax behavior implemented in this demonstration, you''ll
+    want to put a web server in front of it. The easiest way to do that is to install
+    Python and run `python -m SimpleHTTPServer` from the directory with the main HTML
+    file, as well as the Ajax content files, `tab1.html`, `tab2.html`, and `tab3.html`.
+    Here is an example of what the tab1.html file looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you load this tabs widget in your browser, the first tab is selected by
+    default. So the widget will perform the Ajax request that loads the first tab''s
+    content right away. You should see something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_10_01.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Switching to the second and third tabs will execute the Ajax request necessary
+    to fetch the content. On the other hand, the fourth tab will result in an error
+    as the linked resource doesn't exist. Instead of content being displayed in that
+    panel, our custom behavior that we've added to the Ajax request displays an error
+    message.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_10_02.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: The last thing to note about this example is our other modification to the Ajax
+    request. If you were to revisit the first tab, we're not sending another Ajax
+    request as we already have the panel content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We're creating a tabs widget from the `#tabs` div when the document has finished
+    loading. We're passing `beforeLoad` a callback function, `tabLoad()`, defined
+    earlier. The `tabLoad` function gets called just before the Ajax request to fetch
+    the tab panel content that is dispatched. This gives us an opportunity to update
+    the state of the `jqXHR` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The `jqXHR` object returned by `$.ajax()` is an extension of the native `XMLHTTPRequest`
+    type found in JavaScript. Developers seldom interact with this object but occasionally,
+    the need does arise as we've seen here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first thing we're checking for in this example is whether or not the tab
+    panel has any content in it. The `ui.panel` object represents the `div` element
+    where the dynamic Ajax content will eventually land. If it is an empty string,
+    we continue loading the content. If, on the other hand, there is content already,
+    we abort the request. This is useful if the server isn't generating dynamic content
+    and we're merely using this feature of the tabs widget as a means of structural
+    composition. There is no point in requesting the same content over and over when
+    we already have it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're also attaching behavior to the `jqXHR` object that's executed if the Ajax
+    request fails. We update the tab content with the status text returned by the
+    server after formatting it using the `ui-state-error` and `ui-corner-all` classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The preceding example took the HTML retrieved from the remote resource and
+    placed it into the tab panel. But now we''ve decided that the `h1` tags in the
+    tab content are redundant, as the active tab serves the same purpose. We can take
+    the tags directly out of the remote resource that we''re using to build the tab
+    content, but that could pose a problem if we''re using that resource somewhere
+    else in the application. Instead, we can just alter the tab content before the
+    user actually sees it using the load event. Here is a modified version of our
+    tabs widget instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Looking at it now, you'll see that there is no longer a header inside the tab
+    panel. Our `load` callback passed to the tabs in the constructor will find and
+    remove any `h1` tags. The `load` event is triggered after the Ajax call has returned
+    and the content inserted into the panel. We don't need to worry about the `h1`
+    tags appearing after our code has run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_10_03.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Giving tabs an icon
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The tabs widget uses anchor elements, which when clicked, activate the various
+    tab panels to reveal their content. This anchor element only displays text by
+    default, which is good enough under the vast majority of circumstances. There
+    are other times, however, where the tab link itself would benefit from an icon.
+    For example, a house icon helps quickly cue what is in the panel content before
+    actually activating it. Let's look at how we can extend the tab's capabilities
+    to support using both an icon and text as the tab button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll create a basic `tabs` div to support our widget that looks like the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we have our JavaScript, including an extension to the tabs widget that
+    understands how to utilize the `new data-icon` attributes we've included in the
+    markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you were to look at this tabs widget in the browser, you'll notice that each
+    tab button now has an icon to the left of the button text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_10_04.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: What's interesting about this customization to the tabs widget is that we're
+    passing the data through the `li` elements that represent the tab buttons. As
+    any given tabs widget instance could have any number of tabs, it'd be hard to
+    specify which tab gets which icon through the `options` object. Instead, we're
+    simply transferring these options through the use of a data attribute, `data-icon`.
+    The value is the icon class we'd like to use from the theme framework.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The changes we've implemented could actually have been done manually in the
+    markup itself, as we're just adding new elements and new classes to the widget.
+    But, there are two problems with this way of thinking. First, there is a lot of
+    manually injected markup that could be generated based on the value of one data
+    attribute—it violates the DRY principle, especially if you're following this pattern
+    for several tabs widgets. Second, we would be introducing new markup that the
+    default widget implementation doesn't know about. It may work out fine, but when
+    things stop working as expected, this can be very difficult to diagnose. And so,
+    we're better off extending the tabs widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `_processTabs()` method we're overriding will iterate over each `li` element
+    that has the `data-icon` attribute, as these are the ones we need to manipulate.
+    The `data-icon` attribute stores the class of icons to use from the theme framework.
+    We construct a `span` element that uses the `ui-icon` class in conjunction with
+    the specific icon class. It also gets our new `ui-tabs-icon` class that properly
+    positions the element inside the link. We're then grabbing the original text of
+    the tab button and wrapping it in a `div`. The reason being, it's easier to insert
+    the icon `span`, followed by the text `span`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simplifying the tab theme
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sometimes, the context of our tabs widget has important theme implications.
+    The default visual components of the tabs widget work best when the widget is
+    near the top of the document, that is, the majority of the page content is nested
+    within the tab panels. In contrast, there may be preexisting page elements that
+    could benefit from being organized by a tabs widget. And therein lies the challenge—stuffing
+    a top-level widget such as tabs into a smaller block can look awkward at best,
+    unless we can figure out a way to strip down some unnecessary theme components
+    from the tabs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let''s first create ourselves some markup to base the tabs widget on. It should
+    look something like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll define some CSS used by the tabs widget and the tabs widget container.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next comes our JavaScript code that creates the tabs widget once the document
+    is ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `create` function we're passing to the tabs constructor gets triggered after
+    the widget is created. This is where we're adding our custom class, `ui-tabs-basic`,
+    which is used to override the `background` and `border` settings. These are the
+    components we would like to be removed, and so we just set them to `none`. We're
+    also removing the `ui-corner-all` class from the tabs navigation section because
+    we're keeping the bottom border, and leaving this class doesn't look right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Creating this widget normally, that is, without passing our `create` function,
+    the tabs widget would look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/2186_10_05.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: As you can see, it looks like the tabs widget was stuffed into the `#tabs-container`
+    element without much thought. After our simplifications were introduced, the tabs
+    take on a more natural look inside their new context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/2186_10_06.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you''re using this slimmed-down version of the tabs widget in several places
+    throughout your UI, it can be cumbersome to define a function callback several
+    times to pass to the tabs constructor. You could define the callback function
+    once and pass a reference to it in the constructor, but then you still have the
+    callback function out in the open. From a design perspective, we might want to
+    encapsulate this behavior in the tabs widget and expose it to the outside world
+    through a widget option. Here is a modification of the example that does just
+    that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we've moved the functionality previously in our callback into the tabs
+    constructor, but it's only ever executed if the `basic` option is set to `true`,
+    and it defaults to `false`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using tabs as URL navigation links
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The tabs widget isn't limited to populating tab panels using preloaded div elements
+    or by making Ajax calls. Some applications already have many components built,
+    and lots of content to display. If you're updating a site, or application such
+    as this, the tabs widget might be useful as the main form of navigation, especially
+    if you're already using jQuery UI widgets. What we would need then is something
+    generic that could be applied to every page, without much effort on the part of
+    the developer using the widget. Although the tabs widget wasn't designed for such
+    a purpose, we're not going to let that stop us because with a little tweaking,
+    we can create a generic component that gives us exactly what we need.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first thing we'll look at is the content on one of the pages in our application.
+    The HTML defines both the tabs widget structure and the content displayed under
+    the active tab.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: You'll notice that there are three pages in this application, and they each
+    use the same widget HTML structure; the only difference is the tab content paragraph.
+    Next, we'll define our new navigation widget and create it on the page. This same
+    JavaScript code is included on each page of the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, when you interact with this navigation widget, you'll see that each time
+    you activate a new tab, the browser will reload the page to point at the tab's
+    `href`; for example, `tab3.html`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_10_07.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's first look at the HTML structure before we discuss the new `nav` widget
+    we've created. The first thing to note is that the HTML structure we've provided
+    here is different from what the tabs widget is expecting. We have a `div` element
+    that holds the main content of the page and it has no ID, and thus no way for
+    any tab link to reference it. Not to worry though, this is intentional. The `nav`
+    widget is designed for sites or applications that have multiple pages—we're not
+    embedding multiple tab pane content in this widget. With this structural change
+    to the HTML the widget uses, it's best that we create an entirely new widget rather
+    than just extend the tabs widget. This approach will avoid confusion as to what
+    the HTML structure of a tabs widget should look like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The goal of our `nav` widget, based on the tabs widget, is to activate the appropriate
+    tab and render the `div` element as the selected tab panel. When a tab link is
+    clicked, we don't perform any of the usual tab activities, we simply follow `href`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All the methods we're overriding in the definition of the `nav` widget come
+    from the tabs widget, and for the most part, we're replacing the tabs functionality
+    we don't need. The first method is `_initialActive()`, which determines the active
+    tab when the widget is first created. Here, we're basing this decision on the
+    path in the location object. We compare it to the tab's `href` attributes. Next
+    is the `_eventHandler()` method. This method gets called when the user activates
+    a tab. Here, we're just performing the same action as a default browser link and
+    following the `href` attribute of the tab link. As we're doing this in the `_eventHandler()`
+    method, the `keypress` events used to switch tabs will still work as expected.
+    Next, the `_createPanel()` method is called when the tabs widget needs to create
+    and insert a tab panel. The reason the tabs widget calls this method is that it
+    needs a panel when making Ajax calls. As we're not making any Ajax calls in our
+    `nav` widget, this method will now use the default `div` that has the content
+    of the page. The only changes we're making to the content `div` is adding the
+    appropriate tab panel CSS classes. Finally, we have the `_getPanelForTab()` method
+    that returns our content `div`, the only one that matters for this widget, and
+    the `load()` method is `$.noop`. This prevents the widget from trying to load
+    Ajax content when the widget is first created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating effects between tab transitions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The tabs widget lets the developer specify an effect to run when transitioning
+    between tabs. Specifically, we're able to tell the tabs widget to run a specific
+    effect when showing a tab, and another effect when hiding a tab. When the user
+    clicks on a tab, both of these effects, if specified, are run. First the hide
+    effect, followed by the show effect. Let's take a look at how we can combine these
+    two tabs options to enhance the interactivity of the widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First, we''ll create the necessary HTML structure we need to build our tabs
+    widget. It should look something along the lines of what follows, producing three
+    tabs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, the following JavaScript code instantiates the tabs widget, with the `show`
+    and `hide` effect options passed to the widget constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When you view this tabs widget in your browser and click through the tabs, you'll
+    notice how the content of the current tab slides to the right, while fading out
+    at the same time. Once this effect has finished execution, the `show` effect of
+    the now-active tab runs, and in this case, slides the content in from the left.
+    The two effects complement each other—when combined, they create an illusion of
+    the new content pushing the old out of the panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two effects we've chosen here are actually very similar. The `drop` effect
+    is really just the `slide` effect with the addition of fading while sliding. The
+    key to their collaboration is the `direction` property we've passed to each `effect`
+    object. We've told the `hide` effect to move to the right when it runs. Likewise,
+    we've told the `show` effect to enter from the left.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting tabs using the sortable interaction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: When we implement tabs in a user interface, we might briefly consider the default
+    ordering of the tabs. Obviously, we want the most relevant tabs accessible to
+    the user in an order that makes most sense to them. But we seldom get this right
+    in a way that makes everyone happy. So why not let the user arrange the tabs in
+    a way that they see fit? Let's see if we can recruit the sortable interaction
+    widget for some help by providing this capability in the tabs widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We''ll use the following as the sample HTML driving our tabs instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we'll implement the new `sortable` option in the tabs widget. We'll also
+    need to extend the widget's behavior to take advantage of this new option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now when you drag the tab buttons along the x axis, dropping them will rearrange
+    their order. For example, dragging the first tab would look something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_10_08.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If we dropped the first tab at the end and activated **Tab 2**, now the first
+    tab, you should see something like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How to do it...](img/2186_10_09.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We've added a new option to the tabs widget, `sortable`, which when true will
+    use the sortable interaction widget to enable the sortable behavior with the tab
+    buttons. We've added this option by setting the default `sortable` value to `false`
+    in the `options` object. This object will be merged with the default tabs options.
+    In the `_create()` method, the tabs constructor, we call the original tabs widget
+    constructor as nothing special needs to happen with the default widget construction.
+    Next, still inside `_create()`, we check that the `sortable` option is `true`,
+    and if so create the sortable widget. The `tablist` property we're using to create
+    the sortable widget with is the `ul` element that holds our tabs buttons. This
+    is why we're calling it here, we want its children to be sortable along the x
+    axis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We're also passing the `stop` option of the sortable widget a callback function,
+    in this case, a proxy of the `_stopped()` method. This is using the `$.proxy()`
+    utility so that we can implement `_stopped()` as though it is a regular method
+    of tabs. Notice in the `_stopped()` implementation that this is the widget instance,
+    whereas without a proxy, this would be the `ul` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, the `_destroy()` method is overridden here to ensure that the sortable
+    widget is destroyed. Without doing so, we couldn't reliably destroy and recreate
+    the tabs widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can further enhance the user interaction of the tabs widget when the `sortable`
+    option is set to `true`. First, let''s modify `cursor` while the user is dragging
+    the tab so that it uses a standard move icon. Next, we''ll activate the dropped
+    tab. Here is the CSS we''ll need for the modified cursor; we''ll keep the previous
+    HTML structure as is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And here is the modified JavaScript:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now when you sort these tabs, you'll notice the new cursor is illustrated in
+    the following screenshot. The `ui-tab-move` class defines the `cursor` CSS property,
+    and this class is added to the `li` element in the `start` event handler of the
+    sortable widget. It is subsequently removed in the `stop` handler. You'll also
+    notice that the tab is activated when the tab is dropped. This is done by getting
+    the index of the `li` element and passing that to the `activate()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![There''s more...](img/2186_10_10.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Setting the active tab using href
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The tabs widget allows the developer to programmatically set the active tab.
+    This can be done by passing a zero-based index value to the `active` option. This
+    option can be set in the tabs constructor, which tells the widget which tab to
+    activate by default, or it can be set afterwards, potentially changing the active
+    tab. Changing the active tab using this option is essentially the same thing as
+    a user clicking on a tab button to activate the panel. However, we can improve
+    on this interface by allowing developers using the tabs widget to pass an `href`
+    value instead of an index. This way, you don't have to remember the ordering of
+    the tabs—which number represents which link, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to do it...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let's first set up the HTML used in this demonstration as the foundation of
+    the tabs widget.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next is the modified implementation of the tabs widget that enables us to activate
+    the second tab by passing the string `"#tab2"` to the `active` option.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: How it works...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You'll notice that when you look at this tabs widget in the browser, the second
+    tab is activated by default as we're passing in the string `"#tab2"`. You'll also
+    notice that the content of each tab panel has a link pointing to another tab.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![How it works...](img/2186_10_11.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: We're extending the tabs widget so that we can override a couple of tabs methods.
+    The first method is `_findActive()`, which in the original implementation expects
+    an integer. We've changed this to use the `_getIndex()` method that returns the
+    index based on the `href` attribute of the tab button, that is, unless it gets
+    an integer value passed to it, in which case, it just returns that number. In
+    short, we've changed `_findActive()` to accept either a zero-based index number,
+    or an `href` string.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next method is `_initialActive()`, which is called when the tabs widget
+    is first instantiated. What we're doing here is setting the active option to the
+    appropriate index value before calling the original implementation of `_initialActive()`.
+    This is necessary to support the `href` string in the constructor as the `active`
+    option value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, we're creating our tabs widget using an `href` string, and we're binding
+    an event handler to each of the tab-link anchors in the tab panels. Here, we're
+    activating the tab based solely on the `href` attribute of the link, so you can
+    see the value of this new `href` capability we've introduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There's more...
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the preceding example, we're utilizing the `href` attribute of the tab button
+    links. However, we're not utilizing the location hash of the browser. In other
+    words, when a tab is activated, the location hash in the browser URL doesn't change.
+    There are several advantages to supporting this approach. For one thing, we can
+    use the Back button to navigate through our active tabs. Another benefit is that
+    our links in the tab content panels no longer need an event handler; they can
+    just point their `href` attributes to the tab `href`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is the modified JavaScript that supports the same functionality as the
+    previous example. The only difference is that the URL hash will change any time
+    a tab is activated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now when you interact with this tabs widget in the browser, you'll notice that
+    the hash changes in the URL as you navigate through the tabs. This is done by
+    adding an event handler to the `_create()` method, after calling the original
+    implementation of `_create()`. We're using the `_on()` utility method to subscribe
+    to the window's `hashchange` event. Next, the `_hashChange()` method we've added
+    is the handler for this event. First, we check if the URL hash, stored in the
+    `location.hash` variable, is already pointing to the active tab. If not, we activate
+    the tab based on the current URL hash value. This is all we need to support the
+    links in the tab panel content that point directly to a URL hash. But, when the
+    user clicks directly on the tab button, there is no change in the hash value.
+    This doesn't help us much because we cannot track the tab navigation history.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is why we've implemented a customization of the `_eventHandler()` method.
+    We first call the original implementation of the method before we go about handling
+    the URL hash specifics. If the URL hash is already pointing to the active tab,
+    we have nothing to do here; otherwise, we update the URL hash.
+  prefs: []
+  type: TYPE_NORMAL

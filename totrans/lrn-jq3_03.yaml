@@ -1,0 +1,1279 @@
+- en: Handling Events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: JavaScript has several built-in ways of reacting to user interaction and other
+    events. To make a page dynamic and responsive, we need to harness this capability
+    so that we can, at the appropriate times, use the jQuery techniques you learned
+    so far and the other tricks you'll learn later. While we could do this with vanilla
+    JavaScript, jQuery enhances and extends the basic event-handling mechanisms to
+    give them a more elegant syntax while making them more powerful at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Executing JavaScript code when the page is ready
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling user events, such as mouse clicks and keystrokes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The flow of events through the document, and how to manipulate that flow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simulating events as if the user initiated them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Performing tasks on page load
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have already seen how to make jQuery react to the loading of a web page.
+    The `$(() => {})` event handler can be used to run code that depends on HTML elements,
+    but there's a bit more to be said about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Timing of code execution
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In [Chapter 1](33c0dcc2-d368-4c19-b3aa-15fd462917f8.xhtml), *Getting Started*,
+    we noted that `$(() => {})` was jQuery's primary way to perform tasks on page
+    load. It is not, however, the only method at our disposal. The native `window.onload`
+    event can do the same thing. While the two methods are similar, it is important
+    to recognize their difference in timing, even though it can be quite subtle depending
+    on the number of resources being loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `window.onload` event fires when a document is completely downloaded to
+    the browser. This means that every element on the page is ready to be manipulated
+    by JavaScript, which is a boon for writing feature-rich code without worrying
+    about load order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, a handler registered using `$(() => {})` is invoked when
+    the DOM is completely ready for use. This also means that all elements are accessible
+    by our scripts, but does not mean that every associated file has been downloaded.
+    As soon as the HTML file has been downloaded and parsed into a DOM tree, the code
+    can run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Style loading and code execution
+  prefs: []
+  type: TYPE_NORMAL
+- en: To ensure that the page has also been styled before the JavaScript code executes,
+    it is good practice to place the `<link rel="stylesheet">` and `<style>` tags
+    prior to any `<script>` tags within the document's `<head>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consider, for example, a page that presents an image gallery; such a page may
+    have many large images on it, which we can hide, show, move, and otherwise manipulate
+    with jQuery. If we set up our interface using the `onload` event, users will have
+    to wait until each and every image is completely downloaded before they can use
+    those features. Even worse, if behaviors are not yet attached to elements that
+    have default behaviors (such as links), user interactions could produce unintended
+    outcomes. However, when we use `$(() => {})` for the setup, the interface is ready
+    to be used earlier with the correct behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is loaded and what is not?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `$(() => {})` is almost always preferred over using an `onload` handler,
+    but we need to keep in mind that, because supporting files may not have loaded,
+    attributes such as image height and width are not necessarily available at this
+    time. If these are needed, we may at times also choose to implement an `onload`
+    handler; the two mechanisms can coexist peacefully.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling multiple scripts on one page
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The traditional mechanism for registering event handlers through JavaScript
+    (rather than adding handler attributes right in the HTML content) is to assign
+    a function to the DOM element''s corresponding property. For example, suppose
+    we had defined the following function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We could then either assign it within our HTML markup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or, we could assign it from within JavaScript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Both of these approaches will cause the function to execute when the page is
+    loaded. The advantage of the second is that the behavior is cleanly separated
+    from the markup.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Referencing versus calling functions
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we assign a function as a handler, we use the function name but omit the
+    trailing parentheses. With the parentheses, the function is called immediately;
+    without the parantheses, the name simply identifies, or *references*, the function,
+    and can be used to call it later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With one function, this strategy works quite well. However, suppose we have
+    a second function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We could then attempt to assign this function to run on page load:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, this assignment trumps the first one. The `.onload` attribute can only
+    store one function reference at a time, so we can't add to the existing behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `$(() => {})` mechanism handles this situation gracefully. Each call adds
+    the new function to an internal queue of behaviors; when the page is loaded, all
+    of the functions will execute. The functions will run in the order in which they
+    were registered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To be fair, jQuery doesn't have a monopoly on workarounds to this issue. We
+    can write a JavaScript function that calls the existing `onload` handler, then
+    calls a passed-in handler. This approach avoids conflicts between rival handlers
+    like `$(() => {})` does, but lacks some of the other benefits we have discussed.
+    In modern browsers, the `DOMContentLoaded` event can be triggered with the W3C
+    standard `document.addEventListener()` method. However, the `$(() => {})` is more
+    concise and elegant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing an argument to the document ready callback
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In some cases, it may prove useful to use more than one JavaScript library on
+    the same page. Since many libraries make use of the `$` identifier (since it is
+    short and convenient), we need a way to prevent collisions between libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fortunately, jQuery provides a method called `jQuery.noConflict()` to return
+    control of the `$` identifier back to other libraries. Typical usage of `jQuery.noConflict()`
+    follows the following pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, the other library (`prototype.js` in this example) is included. Then,
+    `jquery.js` itself is included, taking over `$` for its own use. Next, a call
+    to `.noConflict()` frees up `$`, so that control of it reverts to the first included
+    library (`prototype.js`). Now in our custom script, we can use both libraries,
+    but whenever we want to use a jQuery method, we need to write `jQuery` instead
+    of `$` as an identifier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `$(() => {})` document ready handler has one more trick up its sleeve to
+    help us in this situation. The callback function we pass to it can take a single
+    parameter--the `jQuery` object itself. This allows us to effectively rename it
+    without fear of conflicts using the following syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Handling simple events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are other times, apart from the loading of the page, at which we might
+    want to perform a task. Just as JavaScript allows us to intercept the page load
+    event with `<body onload="">` or `window.onload`, it provides similar hooks for
+    user-initiated events such as mouse clicks (`onclick`), form fields being modified
+    (`onchange`), and windows changing size (`onresize`). When assigned directly to
+    elements in the DOM, these hooks have similar drawbacks to the ones we outlined
+    for `onload`. Therefore, jQuery offers an improved way of handling these events
+    as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A simple style switcher
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To illustrate some event handling techniques, suppose we wish to have a single
+    page rendered in several different styles based on user input; we will present
+    buttons that allow the user to toggle between a normal view, a view in which the
+    text is constrained to a narrow column, and a view with large print for the content
+    area.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Progressive enhancement
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a real-world example, a good web citizen will employ the principle of progressive
+    enhancement here. In [Chapter 5](fa35636a-37d4-49b9-ba72-aa6596bab015.xhtml),
+    *Manipulating the DOM*, you will learn how we can inject content like this style
+    switcher right from our jQuery code, so that users without JavaScript available
+    will not see nonfunctional controls.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The HTML markup for the style switcher is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Combined with the rest of the page''s HTML markup and some basic CSS, we get
+    a page that looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'To begin with, we''ll make the Large Print button operate. We need a bit of
+    CSS to implement our alternative view of the page as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our goal, then, is to apply the `large` class to the `<body>` tag. This will
+    allow the stylesheet to reformat the page appropriately. Using what you learned
+    in [Chapter 2](195342ed-f533-42e7-8a8d-f9a3462382b7.xhtml), *Selecting Elements*,
+    we already know the statement needed to accomplish this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, we want this to occur when the button is clicked, not when the page
+    is loaded as we have seen so far. To do this, we''ll introduce the `.on()` method.
+    This method allows us to specify any DOM event and to attach a behavior to it.
+    In this case, the event is called `click`, and the behavior is a function consisting
+    of our previous one liner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now when the button gets clicked on, our code runs and the text is enlarged:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: That's all there is to binding a behavior to an event. The advantages we discussed
+    with the `$(() => {})` document ready handler apply here as well. Multiple calls
+    to `.on()` coexist nicely, appending additional behaviors to the same event as
+    necessary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This isn't necessarily the most elegant or efficient way to accomplish this
+    task. As we proceed through this chapter, we will extend and refine this code
+    into something we can be proud of.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enabling the other buttons
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We now have a Large Print button that works as advertised, but we need to apply
+    similar handling to the other two buttons (Default and Narrow Column) to make
+    them perform their tasks. This is straightforward: we use `.on()` to add a `click`
+    handler to each of them, removing and adding classes as necessary. The new code
+    reads as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is combined with a CSS rule for the `narrow` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, after clicking the Narrow Column button, its corresponding CSS is applied
+    and the text gets laid out differently:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_03.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Clicking on Default removes both class names from the `<body>` tag, returning
+    the page to its initial rendering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making use of event handler context
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Our switcher is behaving correctly, but we are not giving the user any feedback
+    about which button is currently active. Our approach for handling this will be
+    to apply the `selected` class to the button when it is clicked, and to remove
+    this class from the other buttons. The `selected` class simply makes the button''s
+    text bold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: We could accomplish this class modification as we did previously by referring
+    to each button by ID and applying or removing classes as necessary, but, instead,
+    we'll explore a more elegant and scalable solution that exploits the context in
+    which event handlers run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When any event handler is triggered, the keyword `this` refers to the DOM element
+    to which the behavior was attached. Earlier we noted that the `$()` function could
+    take a DOM element as its argument; this is one of the key reasons why that facility
+    is available. By writing `$(this)` within the event handler, we create a jQuery
+    object corresponding to the element, and we can act on it just as if we had located
+    it with a CSS selector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this in mind, we can write the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Placing this line in each of the three handlers will add the class when a button
+    is clicked. To remove the class from the other buttons, we can take advantage
+    of jQuery''s implicit iteration feature, and write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This line removes the class from every button inside the style switcher.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We should also add the class to the Default button when the document is ready.
+    So, placing these in the correct order, the code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now the style switcher gives appropriate feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Generalizing the statements by using the handler context allows us to be yet
+    more efficient. We can factor the highlighting routine out into a separate handler,
+    as shown in *Listing 3.4*, because it is the same for all three buttons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: This optimization takes advantage of three jQuery features we have already discussed.
+    First, **implicit iteration** is once again useful when we bind the same `click`
+    handler to each button with a single call to `.on()`. Second, **behavior queuing**
+    allows us to bind two functions to the same click event without the second overwriting
+    the first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When an event handler function references its context using `this`, you can't
+    use an arrow function (`() => {}`). These functions have a **lexical context**.
+    This means that when jQuery attempts to set the context as the element that triggered
+    the event, it doesn't work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consolidating code using event context
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The code optimization we''ve just completed is an example of **refactoring**--modifying
+    existing code to perform the same task in a more efficient or elegant way. To
+    explore further refactoring opportunities, let''s look at the behaviors we have
+    bound to each button. The `.removeClass()` method''s parameter is optional; when
+    omitted, it removes all classes from the element. We can streamline our code a
+    bit by exploiting this as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the order of operations has changed a bit to accommodate our more
+    general class removal; we need to execute `.removeClass()` first so that it doesn't
+    undo the call to `.addClass()`, which we perform in the same breath.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can only safely remove all classes because we are in charge of the HTML in
+    this case. When we are writing code for reuse (such as for a plugin), we need
+    to respect any classes that might be present and leave them intact.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now we are executing some of the same code in each of the button''s handlers.
+    This can be easily factored out into our general button `click` handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that we need to move the general handler above the specific ones now. The
+    `.removeClass()` call needs to happen before `.addClass()` executes, and we can
+    count on this because jQuery always triggers event handlers in the order in which
+    they were registered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we can get rid of the specific handlers entirely by, once again, exploiting
+    **event context**. Since the context keyword `this` gives us a DOM element rather
+    than a jQuery object, we can use native DOM properties to determine the ID of
+    the element that was clicked. We can thus bind the same handler to all the buttons,
+    and within the handler perform different actions for each button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: The value of the `bodyClass` variable will be `default`, `narrow`, or `large`,
+    depending on which button is clicked. Here, we are departing somewhat from our
+    previous code; in that we are adding a `default` class to `<body>` when the user
+    clicks on `<button id="switcher-default">`. While we do not need this class applied,
+    it isn't causing any harm either, and the reduction of code complexity more than
+    makes up for an unused class name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shorthand events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Binding a handler for an event (such as a simple `click` event) is such a common
+    task that jQuery provides an even terser way to accomplish it; shorthand event
+    methods work in the same way as their `.on()` counterparts with fewer keystrokes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, our style switcher could be written using `.click()` instead of
+    `.on()` as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shorthand event methods such as the previous one exist for the other standard
+    DOM events such as `blur`, `keydown`, and `scroll` as well. Each shortcut method
+    binds a handler to the event with the corresponding name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Showing and hiding page elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Suppose that we wanted to be able to hide our style switcher when it is not
+    needed. One convenient way to hide page elements is to make them collapsible.
+    We will allow one click on the label to hide the buttons, leaving the label alone.
+    Another click on the label will restore the buttons. We need another class that
+    will hide buttons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We could implement this feature by storing the current state of the buttons
+    in a variable and checking its value each time the label is clicked to know whether
+    to add or remove the hidden class on the buttons. However, jQuery provides an
+    easy way for us to add or remove a class depending on whether that class is already
+    present--the `.toggleClass()` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the first click, the buttons are all hidden:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'A second click then returns them to visibility:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_05.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once again, we rely on implicit iteration, this time to hide all the buttons
+    - siblings of the `<h3>` - in one fell swoop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event propagation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'In illustrating the ability of the `click` event to operate on normally non-clickable
+    page elements, we have crafted an interface that doesn''t indicate that the style
+    switcher label--just an `<h3>` element-is actually a *live* part of the page awaiting
+    user interaction. To remedy this, we can give it a rollover state, making it clear
+    that it interacts in some way with the mouse:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: The CSS specification includes a pseudo-class called `:hover`, which allows
+    a stylesheet to affect an element's appearance when the user's mouse cursor hovers
+    over it. This would certainly solve our problem in this instance, but instead,
+    we will take this opportunity to introduce jQuery's `.hover()` method, which allows
+    us to use JavaScript to change an element's styling--and indeed, perform any arbitrary
+    action--both when the mouse cursor enters the element and when it leaves the element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.hover()` method takes two function arguments, unlike the simple event
+    methods we have so far encountered. The first function will be executed when the
+    mouse cursor enters the selected element, and the second is fired when the cursor
+    leaves. We can modify the classes applied to the buttons at these times to achieve
+    a rollover effect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We once again use implicit iteration and event context for short and simple
+    code. Now when hovering over the `<h3>` element, we see our class applied:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_06.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The use of `.hover()` also means we avoid headaches caused by event propagation
+    in JavaScript. To understand this, we need to take a look at how JavaScript decides
+    which element gets to handle a given event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The journey of an event
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'When an event occurs on a page, an entire hierarchy of DOM elements gets a
+    chance to handle the event. Consider a page model like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We then visualize the code as a set of nested elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_07.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: For any event, there are multiple elements that could logically be responsible
+    for reacting. When the link on this page is clicked, for example, the `<div>`,
+    `<span>`, and `<a>` elements should all get the opportunity to respond to the
+    click. After all, these three elements are all under the user's mouse cursor at
+    the time. The `<p>` element, on the other hand, is not part of this interaction
+    at all.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One strategy for allowing multiple elements to respond to a user interaction
+    is called **event capturing**. With event capturing, the event is first given
+    to the most all-encompassing element, and then to progressively more specific
+    ones. In our example, this means that first the `<div>` element gets passed the
+    event, then the `<span>` element, and finally the `<a>` element, as shown in the
+    following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_08.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The opposite strategy is called **event** **bubbling**. The event gets sent
+    to the most specific element, and after this element has an opportunity to react,
+    the event **bubbles up** to more general elements. In our example, the `<a>` element
+    would be handed the event first, and then the `<span>` and `<div>` elements in
+    that order, as shown in the following figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_09.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Unsurprisingly, different browser developers originally decided on different
+    models for event propagation. The DOM standard that was eventually developed thus
+    specified that both strategies should be used: first the event is captured from
+    general elements to specific ones, and then the event bubbles back up to the top
+    of the DOM tree. Event handlers can be registered for either part of the process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: To provide consistent and easy-to-understand behavior, jQuery always registers
+    event handlers for the bubbling phase of the model. We can always assume that
+    the most specific element will get the first opportunity to respond to any event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Side effects of event bubbling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Event bubbling can cause unexpected behavior, especially when the wrong element
+    responds to a `mouseover` or `mouseout` event. Consider a `mouseout` event handler
+    attached to the `<div>` element in our example. When the user's mouse cursor exits
+    the `<div>` element, the `mouseout` handler is run as anticipated. Since this
+    is at the top of the hierarchy, no other elements get the event. On the other
+    hand, when the cursor exits the `<a>` element, a `mouseout` event is sent to that.
+    This event will then bubble up to the `<span>` element and then to the `<div>`
+    element, firing the same event handler. This bubbling sequence is unlikely to
+    be desired.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `mouseenter` and `mouseleave` events, either bound individually or combined
+    in the `.hover()` method, are aware of these bubbling issues and, when we use
+    them to attach events, we can ignore the problems caused by the wrong element
+    getting a `mouseover` or `mouseout` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `mouseout` scenario just described illustrates the need to constrain the
+    scope of an event. While `.hover()` handles this specific case, we will encounter
+    other situations in which we need to limit an event spatially (preventing the
+    event from being sent to certain elements) or temporally (preventing the event
+    from being sent at certain times).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Altering the journey - the event object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have already seen one situation in which event bubbling can cause problems.
+    To show a case in which `.hover()` does not help our cause, we'll alter the collapsing
+    behavior that we implemented earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose we wish to expand the clickable area that triggers the collapsing or
+    expanding of the style switcher. One way to do this is to move the event handler
+    from the label, `<h3>`, to its containing `<div>` element. In *Listing 3.9*, we
+    added a `click` handler to `#switcher h3`; we will attempt this change by attaching
+    the handler to `#switcher` instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: This alteration makes the entire area of the style switcher clickable to toggle
+    its visibility. The downside is that clicking on a button also collapses the style
+    switcher after the style on the content has been altered. This is due to event
+    bubbling; the event is first handled by the buttons, then passed up through the
+    DOM tree until it reaches the `<div id="switcher">` element, where our new handler
+    is activated and hides the buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To solve this problem, we need access to the `event` object. This is a DOM construct
+    that is passed to each element's event handler when it is invoked. It provides
+    information about the event, such as where the mouse cursor was at the time of
+    the event. It also provides some methods that can be used to affect the progress
+    of the event through the DOM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event object reference
+  prefs: []
+  type: TYPE_NORMAL
+- en: For detailed information about jQuery's implementation of the event object and
+    its properties, see [http://api.jquery.com/category/events/event-object/](http://api.jquery.com/category/events/event-object/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use the event object in our handlers, we only need to add a parameter to
+    the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we have named this parameter `event` because it is descriptive, not
+    because we need to. Naming it `flapjacks` or anything else for that matter would
+    work just as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event targets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now we have the event object available to us as `event` within our handler.
+    The property `event.target` can be helpful in controlling *where* an event takes
+    effect. This property is a part of the DOM API, but is not implemented in some
+    older browser versions; jQuery extends the event object as necessary to provide
+    the property in every browser. With `.target`, we can determine which element
+    in the DOM was the first to receive the event. In the case of a `click` event,
+    this will be the actual item clicked on. Remembering that `this` gives us the
+    DOM element handling the event, we can write the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: This code ensures that the item clicked on was `<div id="switcher">`, not one
+    of its sub-elements. Now, clicking on buttons will not collapse the style switcher,
+    but clicking on the switcher's background *will*. However, clicking on the label,
+    `<h3>`, now does nothing, because it, too, is a sub-element. Instead of placing
+    this check here, we can modify the behavior of the buttons to achieve our goals.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stopping event propagation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The event object provides the `.stopPropagation()` method, which can halt the
+    bubbling process completely for the event. Like `.target`, this method is a basic
+    DOM feature, but using the jQuery implementation will hide any browser inconsistencies
+    from our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll remove the `event.target == this` check we just added, and instead add
+    some code in our buttons'' `click` handlers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As before, we need to add an event parameter to the function we''re using as
+    the `click` handler: `e`. Then, we simply call `e.stopPropagation()` to prevent
+    any other DOM element from responding to the event. Now our click is handled by
+    the buttons, and only the buttons; clicks anywhere else on the style switcher
+    will collapse or expand it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preventing default actions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: If our `click` event handler was registered on a link element (`<a>`) rather
+    than a generic `<button>` element outside of a form, we would face another problem.
+    When a user clicks on a link, the browser loads a new page. This behavior is not
+    an event handler in the same sense as the ones we have been discussing; instead,
+    this is the default action for a click on a link element. Similarly, when the
+    *Enter* key is pressed while the user is editing a form, the `submit` event may
+    be triggered on the form, but then the form submission actually occurs after this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If these default actions are undesired, calling `.stopPropagation()` on the
+    event will not help. These actions don't occur in the normal flow of event propagation.
+    Instead, the `.preventDefault()` method serves to stop the event in its tracks
+    before the default action is triggered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calling `.preventDefault()` is often useful after we have done some tests on
+    the environment of the event. For example, during a form submission, we might
+    wish to check that required fields are filled in and prevent the default action
+    only if they are not. With links, we can check if some precondition has been met
+    before allowing the `href` to be followed, in essence, disabling the link under
+    some circumstances.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event propagation and default actions are independent mechanisms; either of
+    them can be stopped while the other still occurs. If we wish to halt both, we
+    can return `false` at the end of our event handler, which is a shortcut for calling
+    both `.stopPropagation()` and `.preventDefault()` on the event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delegating events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Event bubbling isn't always a hindrance; we can often use it to great benefit.
+    One great technique that exploits bubbling is called **event delegation**. With
+    it, we can use an event handler on a single element to do the work of many.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our example, there are just three `<button>` elements that have attached
+    `click` handlers. But what if there were many more than three? This is more common
+    than you might think. Consider, for example, a large table of information in which
+    each row has an interactive item requiring a `click` handler. Implicit iteration
+    makes assigning all of these `click` handlers easy, but performance can suffer
+    because of the looping being done internally to jQuery, and because of the memory
+    footprint of maintaining all the handlers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead, we can assign a single `click` handler to an ancestor element in the
+    DOM. An uninterrupted `click` event will eventually reach the ancestor due to
+    event bubbling, and we can do our work there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As an example, let's apply this technique to our style switcher (even though
+    the number of items does not demand the approach). As seen in *Listing 3.12* previously,
+    we can use the `e.target` property to check which element is under the mouse cursor
+    when the `click` event occurs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ve used a new method here called `.is()`. This method accepts the selector
+    expressions we investigated in the previous chapter and tests the current jQuery
+    object against the selector. If at least one element in the set is matched by
+    the selector, `.is()` returns `true`. In this case, `$(e.target).is(''button'')`
+    asks whether the element clicked is a `<button>` element. If so, we proceed with
+    the previous code, with one significant alteration: the keyword `this` now refers
+    to `<div id="switcher">`, so every time we are interested in the clicked button,
+    we must now refer to it with `e.target`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: .is() and .hasClass()
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can test for the presence of a class on an element with `.hasClass()`. The
+    `.is()` method is more flexible, however, and can test any selector expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have an unintentional side-effect from this code, however. When a button
+    is clicked now, the switcher collapses, as it did before we added the call to
+    `.stopPropagation()`. The handler for the switcher visibility toggle is now bound
+    to the same element as the handler for the buttons, so halting the event bubbling
+    does not stop the toggle from being triggered. To sidestep this issue, we can
+    remove the `.stopPropagation()` call and instead add another `.is()` test. Also,
+    since we''re making the entire switcher `<div>` element clickable, we ought to
+    toggle the `hover` class while the user''s mouse is over any part of it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This example is a bit over complicated for its size, but as the number of elements
+    with event handlers increases, so does event delegation''s benefit. Also, we can
+    avoid some of the code repetition by combining the two `click` handlers and using
+    a single `if-else` statement for the `.is()` test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: While our code could still use some fine tuning, it is approaching a state at
+    which we can feel comfortable using it for what we set out to do. Nevertheless,
+    for the sake of learning more about jQuery's event handling, we'll back up to
+    *Listing 3.15* and continue to modify that version of the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Event delegation is also useful in other situations we'll see later, such as
+    when new elements are added by DOM manipulation methods ([Chapter 5](fa35636a-37d4-49b9-ba72-aa6596bab015.xhtml),
+    *Manipulating the DOM*) or Ajax routines ([Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml),
+    *Sending Data with Ajax*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using built-in event delegation capabilities
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Because event delegation can be helpful in so many situations, jQuery includes
+    a set of tools to aid developers in using this technique. The `.on()` method we
+    have already discussed can perform event delegation when provided with appropriate
+    parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is looking pretty good now. We have two really simple handlers for all
+    click events in switcher feature. We added a selector expression to the `.on()`
+    method as the second argument. Specifically, we want to make sure that any elements
+    that bubble click events up to `#switch` are in fact button elements. This is
+    better than writing a bunch of logic in the event handler to determine how to
+    handle the event based on the element that generated it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We did have to add a call to `e.stopPropagation()`. The reason is so that the
+    second click handler, the one that handles toggling the button visibility, doesn't
+    have to worry about checking where the event came from. It's often easier to prevent
+    propagation than it is to introduce edge case handling into event handler code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With a few minor trade offs, we now have a single button click handler function
+    that works with 3 buttons, or with 300 buttons. It's the little things like this
+    that make jQuery code scale well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We'll fully examine this use of `.on()`, in [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
+    *Advanced Events*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Removing an event handler
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are times when we will be done with an event handler we previously registered.
+    Perhaps the state of the page has changed such that the action no longer makes
+    sense. It is possible to handle this situation with conditional statements inside
+    our event handlers, but it is more elegant to unbind the handler entirely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose that we want our collapsible style switcher to remain expanded whenever
+    the page is not using the normal style. While the Narrow Column or Large Print
+    button is selected, clicking on the background of the style switcher should do
+    nothing. We can accomplish this by calling the `.off()` method to remove the collapsing
+    handler when one of the non-default style switcher buttons is clicked:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.18
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now when a button such as Narrow Column is clicked, the `click` handler on the
+    style switcher `<div>` is removed, and clicking on the background of the box no
+    longer collapses it. However, the buttons don't work anymore! They are affected
+    by the `click` event of the style switcher `<div>` as well, because we rewrote
+    the button-handling code to use event delegation. This means that when we call
+    `$('#switcher').off('click')`, both behaviors are removed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Giving namespaces to event handlers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We need to make our `.off()` call more specific so that it does not remove both
+    of the click handlers we have registered. One way of doing this is to use **event**
+    **namespacing**. We can introduce additional information when an event is bound
+    that allows us to identify that particular handler later. To use namespaces, we
+    need to return to the non-shorthand method of binding event handlers, the `.on()`
+    method itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first parameter we pass to `.on()` is the name of the event we want to
+    watch for. We can use a special syntax here, though, that allows us to subcategorize
+    the event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.19
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.collapse` suffix is invisible to the event handling system; `click` events
+    are handled by this function, just as if we wrote `.on('click')`. However, the
+    addition of the namespace means that we can unbind just this handler without affecting
+    the separate `click` handler we wrote for the buttons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other ways of making our `.off()` call more specific, as we will see
+    in a moment. However, event namespacing is a useful tool in our arsenal. It is
+    especially handy in the creation of plugins, as we'll see in later chapters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rebinding events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Now clicking on the Narrow Column or Large Print button causes the style switcher
+    collapsing functionality to be disabled. However, we want the behavior to return
+    when the Default button is pressed. To do this, we will need to **rebind** the
+    handler whenever Default is clicked.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we should give our handler function a name so that we can use it more
+    than once without repeating ourselves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.20
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recall that we are passing `.on()` a **function** **reference** as its second
+    argument. It is important to remember when referring to a function that we must
+    omit parentheses after the function name; parentheses would cause the function
+    to be *called* rather than *referenced*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that the `toggleSwitcher()` function can be referenced, we can bind it
+    again later, without repeating the function definition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.21
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now the toggle behavior is bound when the document is loaded, unbound when Narrow
+    Column or Large Print is clicked, and rebound when Default is clicked after that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we have named the function, we no longer need to use namespacing. The
+    `.off()` method can take a function as a second argument; in this case, it unbinds
+    only that specific handler. However, we have run into another problem. Remember
+    that when a handler is bound to an event in jQuery, previous handlers remain in
+    effect. In this case, each time Default is clicked, another copy of the `toggleSwitcher`
+    handler is bound to the style switcher. In other words, the function is called
+    an extra time for each additional click until the user clicks Narrow or Large
+    Print, which unbinds all of the `toggleSwitcher` handlers at once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When an even number of `toggleSwitcher` handlers are bound, clicks on the style
+    switcher (but not on a button) appear to have no effect. In fact, the `hidden`
+    class is being toggled multiple times, ending up in the same state it was when
+    it began. To remedy this problem, we can unbind the handler when a user clicks
+    on *any* button, and rebind only after ensuring that the clicked button''s ID
+    is `switcher-default`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.22
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A shortcut is also available for the situation in which we want to unbind an
+    event handler immediately after the first time it is triggered. This shortcut,
+    called `.one()`, is used as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: This would cause the toggle action to occur only once.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simulating user interaction
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: At times, it is convenient to execute code that we have bound to an event, even
+    if the event isn't triggered directly by user input. For example, suppose we wanted
+    our style switcher to begin in its collapsed state. We could accomplish this by
+    hiding buttons from within the stylesheet, or by adding our `hidden` class or
+    calling the `.hide()` method from a `$(() => {})` handler. Another way would be
+    to simulate a click on the style switcher so that the toggling mechanism we've
+    already established is triggered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.trigger()` method allows us to do just this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.23
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now when the page loads, the switcher is collapsed just as if it had been clicked,
+    as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_03_10.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: If we were hiding content that we wanted people without JavaScript enabled to
+    see, this would be a reasonable way to implement **graceful degradation**. Although,
+    this is very uncommon these days.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.trigger()` method provides the same set of shortcut methods that `.on()`
+    does. When these shortcuts are used with no arguments, the behavior is to trigger
+    the action rather than bind it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.24
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reacting to keyboard events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As another example, we can add keyboard shortcuts to our style switcher. When
+    the user types the first letter of one of the display styles, we will have the
+    page behave as if the corresponding button was clicked. To implement this feature,
+    we will need to explore **keyboard events**, which behave a bit differently from
+    **mouse events**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are two types of keyboard events: those that react to the keyboard directly
+    (`keyup` and `keydown`) and those that react to text input (`keypress`). A single
+    character entry event could correspond to several keys, for example, when the
+    *Shift* key in combination with the *X* key creates the capital letter *X*. While
+    the specifics of implementation differ from one browser to the next (unsurprisingly),
+    a safe rule of thumb is: if you want to know what key the user pushed, you should
+    observe the `keyup` or `keydown` event; if you want to know what character ended
+    up on the screen as a result, you should observe the `keypress` event. For this
+    feature, we just want to know when the user presses the *D*, *N*, or *L* key,
+    so we will use `keyup`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we need to determine which element should watch for the event. This is
+    a little less obvious than with mouse events, where we have a visible mouse cursor
+    to tell us about the event's target. Instead, the target of a keyboard event is
+    the element that currently has the **keyboard focus**. The element with focus
+    can be changed in several ways, including using mouse clicks and pressing the
+    *Tab* key. Not every element can get the focus, either; only items that have default
+    keyboard-driven behaviors such as form fields, links, and elements with a `.tabIndex`
+    property are candidates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we don't really care what element has the focus; we want our switcher
+    to work whenever the user presses one of the keys. Event bubbling will once again
+    come in handy, as we can bind our `keyup` event to the `document` element and
+    have assurance that eventually any key event will bubble up to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, we will need to know which key was pressed when our `keyup` handler
+    gets triggered. We can inspect the `event` object for this. The `.which` property
+    of the event contains an identifier for the key that was pressed, and for alphabetic
+    keys, this identifier is the ASCII value of the uppercase letter. With this information,
+    we can now create an **object literal** of letters and their corresponding buttons
+    to click. When the user presses a key, we''ll see if its identifier is in the
+    map, and if so, trigger the click:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.25
+  prefs: []
+  type: TYPE_NORMAL
+- en: Presses of these three keys now simulate mouse clicks on the buttons--provided
+    that the key event is not interrupted by features such as Firefox's search for
+    text when I start typing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an alternative to using `.trigger()` to simulate this click, let''s explore
+    how to factor out code into a function so that more than one handler can call
+    it--in this case, both `click` and `keyup` handlers. While not necessary in this
+    case, this technique can be useful in eliminating code redundancy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 3.26
+  prefs: []
+  type: TYPE_NORMAL
+- en: This final revision consolidates all the previous code examples of this chapter.
+    We have moved the entire block of code into a single `$(() => {})` handler and
+    made our code less redundant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The abilities we've discussed in this chapter allow us to react to various user-driven
+    and browser-initiated events. We have learned how to safely perform actions when
+    the page loads, how to handle mouse events such as clicking on links or hovering
+    over buttons, and how to interpret keystrokes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, we have delved into some of the inner workings of the event system,
+    and can use this knowledge to perform event delegation and to change the default
+    behavior of an event. We can even simulate the effects of an event as if the user
+    initiated it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use these capabilities to build interactive pages. In the next chapter,
+    we'll learn how to provide visual feedback to the user during these interactions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The topic of event handling will be explored in more detail in [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
+    *Advanced Events*. A complete list of jQuery's event methods is available in *Appendix
+    C* of this book, or in the official jQuery documentation at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Challenge exercises may require the use of the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: When Charles Dickens is clicked, apply the `selected` style to it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When a chapter title (`<h3 class="chapter-title">`) is double-clicked, toggle
+    the visibility of the chapter text.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: When the user presses the right arrow key, cycle to the next `body` class. The
+    key code for the right arrow key is `39`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Challenge: Use the `console.log()` function to log the coordinates of the mouse
+    as it moves across any paragraph. (Note: `console.log()` displays its results
+    via the Firebug extension for Firefox, Safari''s Web Inspector, or the Developer
+    Tools in Chrome or Internet Explorer).'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Challenge: Use `.mousedown()` and `.mouseup()` to track mouse events anywhere
+    on the page. If the mouse button is released *above* where it was pressed, add
+    the `hidden` class to all paragraphs. If it is released *below* where it was pressed,
+    remove the `hidden` class from all paragraphs.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

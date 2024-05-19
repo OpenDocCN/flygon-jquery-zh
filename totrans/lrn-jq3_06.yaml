@@ -1,0 +1,1058 @@
+- en: Sending Data with Ajax
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The term **Asynchronous JavaScript and XML** (**Ajax**) was coined by *Jesse
+    James Garrett* in 2005\. Since then, it has come to represent many different things,
+    as the term encompasses a group of related capabilities and techniques. At its
+    most basic level, an Ajax solution includes the following technologies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**JavaScript**: This is used to capture interactions with the user or other
+    browser-related events and to interpret the data from the server and present it
+    on the page'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**XMLHttpRequest**: This allows requests to be made to the server without interrupting
+    other browser tasks'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Textual data:** The server provides data in a format such as XML, HTML, or
+    JSON'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ajax transforms static **web pages** into interactive **web applications**.
+    Unsurprisingly, browsers are not entirely consistent with their implementations
+    of the `XMLHttpRequest` object, but jQuery will assist us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading data from the server without a page refresh
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sending data from JavaScript in the browser back to the server
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Interpreting data in a variety of formats, including HTML, XML, and JSON
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Providing feedback to the user about the status of an Ajax request
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loading data on demand
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Ajax is just a means of loading data from the server into the web browser without
+    a page refresh. This data can take many forms, and we have many options for what
+    to do with it when it arrives. We'll see this by performing the same basic task,
+    using different approaches.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We are going to build a page that displays entries from a dictionary, grouped
+    by the starting letter of the dictionary entry. The HTML defining the content
+    area of the page will look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our page will have no content to begin with. We are going to use jQuery's various
+    Ajax methods to populate this `<div>` tag with dictionary entries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''re going to need a way to trigger the loading process, so we''ll add some
+    links for our event handlers to latch onto:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These simple links will lead us to pages that list the dictionary entries for
+    that letter. We will use progressive enhancement to allow these links to manipulate
+    the page without a full page load. With basic styling applied, this HTML will
+    produce a page that looks like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Now, we can focus on getting content onto the page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Appending HTML
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Ajax applications are often no more than a request for a chunk of HTML. This
+    technique, sometimes referred to as **Asynchronous HTTP and HTML** (**AHAH**),
+    is almost simple to implement with jQuery. First, we need some HTML to insert,
+    which we''ll place in a file called `a.html` alongside our main document. This
+    secondary HTML file begins as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The page continues with more entries in this HTML structure. Rendered on its
+    own, `a.html` is quite plain:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Note that `a.html` is not a true HTML document; it contains no `<html>`, `<head>`,
+    or `<body>`, all of which are normally required. We usually call such a file a
+    *partial* or *fragment*; its only purpose is to be inserted into another HTML
+    document, which we''ll do now:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `.load()` method does all the heavy lifting for us. We specify the target
+    location for the HTML snippet using a normal jQuery selector, and then pass the
+    URL of the file to be loaded as a parameter. Now, when the first link is clicked
+    on, the file is loaded and placed inside `<div id="dictionary">`. The browser
+    will render the new HTML as soon as it is inserted:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_03.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note that the HTML is now styled, whereas before it was plain. This is due to
+    the CSS rules in the main document; as soon as the new HTML snippet is inserted,
+    the rules apply to its elements as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When testing this example, the dictionary definitions will probably appear
+    instantaneously when the button is clicked on. This is a hazard of working on
+    our applications locally; it is hard to account for delays or interruptions in
+    transferring documents across the network. Suppose we added an alert box to display
+    after the definitions are loaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: We might assume from the structure of this code that the alert can only be displayed
+    after the load has been performed. JavaScript execution is **synchronous**, working
+    on one task after another in strict sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, when this particular code is tested on a production web server, the
+    alert will have come and gone before the load has completed, due to network lag.
+    This happens because all Ajax calls are by default **asynchronous**. Asynchronous
+    loading means that once the HTTP request to retrieve the HTML snippet is issued,
+    script execution immediately resumes without waiting. Some time later, the browser
+    receives the response from the server and handles it. This is the desired behavior;
+    it is unfriendly to lock up the whole web browser while waiting for data to be
+    retrieved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If actions must be delayed until the load has been completed, jQuery provides
+    a callback for this. We've already seen callbacks in [Chapter 4](6544cf68-239c-4a0b-99f6-2d128dc5f7b1.xhtml),
+    *Styling and Animating*, using them to execute actions after an effect has completed.
+    Ajax callbacks perform a similar function, executing after data arrives from the
+    server. We will use this capability in our next example, as you learn how to read
+    JSON data from the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Working with JavaScript objects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Pulling in fully formed HTML on demand is very convenient, but it means having
+    to transfer a lot of information about the HTML structure along with the actual
+    content. There are times when we would rather transfer as little data as possible
+    and process it after it arrives. In this case, we need to retrieve the data in
+    a structure that we can traverse with JavaScript.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With jQuery's selectors, we could traverse the HTML we get back and manipulate
+    it, but a native JavaScript data format involves less data to transfer and less
+    code to process it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving JSON
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: As we have often seen, JavaScript objects are just sets of key-value pairs,
+    and can be defined succinctly using curly braces (`{}`). JavaScript arrays, on
+    the other hand, are defined on the fly with square brackets (`[]`) and have implicit
+    keys, which are incrementing integers. Combining these two concepts, we can easily
+    express some very complex and rich data structures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The term **JavaScript Object Notation** (**JSON**) was coined by *Douglas Crockford*
+    to capitalize on this simple syntax. This notation can offer a concise alternative
+    to the bulky XML format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: While based on JavaScript object literals and array literals, JSON is more prescriptive
+    about its syntax requirements and more restrictive about the values it allows.
+    For example, JSON specifies that all object keys, as well as all string values
+    must be enclosed in double quotes. Also, functions are not valid JSON values.
+    Because of its strictness, developers should avoid hand-editing JSON and instead
+    rely on software such as a server-side script to format it properly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For information on JSON's syntax requirements, some of its potential advantages
+    and its implementations in many programming languages, visit [http://json.org/](http://json.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can encode our data using this format in many ways. To illustrate one approach,
+    we''ll place some dictionary entries in a JSON file that we''ll call `b.json`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: To retrieve this data, we'll use the `$.getJSON()` method, which fetches the
+    file and processes it. When the data arrives from the server, it is simply a text
+    string in JSON format. The `$.getJSON()` method parses this string and provides
+    the calling code with the resulting JavaScript object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using global jQuery functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Up until this point, all jQuery methods that we've used have been attached to
+    a jQuery object that we've built with the `$()` function. The selectors have allowed
+    us to specify a set of DOM nodes to work with, and the methods have operated on
+    them in some way. This `$.getJSON()` function, however, is different. There is
+    no logical DOM element to which it could apply; the resulting object has to be
+    provided to the script, not injected into the page. For this reason, `getJSON()`
+    is defined as a method of the global jQuery object (a single object called `jQuery`
+    or `$` defined once by the `jQuery` library), rather than of an individual jQuery
+    object instance (the object returned by the `$()` function).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If `$` were a class `$.getJSON()` would be a class method. For our purposes,
+    we'll refer to this type of method as a **global function**; in effect, they are
+    functions that use the `jQuery` namespace so as not to conflict with other function
+    names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use this function, we pass it the filename as before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: This code has no apparent effect when we click on the link. The function call
+    loads the file, but we have not told JavaScript what to do with the resulting
+    data. For this, we need to use a callback function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `$.getJSON()` function takes a second argument, which is a function to
+    be called when the load is complete. As mentioned earlier, Ajax calls are asynchronous,
+    and the callback provides a way to wait for the data to be transmitted rather
+    than executing code right away. The callback function also takes an argument,
+    which is filled with the resulting data. So, we can write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside this function, we can use the `data` parameter to traverse the JSON
+    structure as necessary. We''ll need to iterate over the top-level array, building
+    the HTML for each item. We''ll use the `reduce()` method of the data array to
+    turn it into an HTML string that we can then insert into the document. The `reduce()`
+    method takes a function as an argument and returns a section of the result for
+    each item of the array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use a template string to build the HTML content for each array item. The
+    `result` argument is the value from the previous array item. Using this approach,
+    it's a lot easier to see the HTML structure than would otherwise be using string
+    concatenation. Once all of the HTML has been built for each entry, we insert it
+    into `<div id="dictionary">` with `.html()`, replacing anything that may have
+    already been there.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Safe HTML
+  prefs: []
+  type: TYPE_NORMAL
+- en: This approach presumes that the data is safe for HTML consumption; it should
+    not contain any stray `<` characters, for example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All that''s left is to handle the entries with quotations, which we can accomplish
+    by implementing a couple of helper functions that use the `reduce()` technique
+    to build a string:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this code in place, we can click on the B link and confirm our results.
+    The dictionary entries are displayed on the right-hand side of the page, as expected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The JSON format is concise, but not forgiving. Every bracket, brace, quote,
+    and comma must be present and accounted for, or the file will not load. In some
+    cases, we won't even get an error message; the script will just silently fail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Executing a script
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Occasionally, we don't want to retrieve all the JavaScript we will need when
+    the page is first loaded. We might not know what scripts will be necessary until
+    some user interaction occurs. We could introduce the `<script>` tags on the fly
+    when they are needed, but a more elegant way to inject additional code is to have
+    jQuery load the `.js` file directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Pulling in a script is about as simple as loading an HTML fragment. In this
+    case, we use the `$.getScript()` function, which--like its siblings--accepts a
+    URL locating the script file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: In our last example, we needed to process the result data so that we could do
+    something useful with the loaded file. With a script file, though, the processing
+    is automatic; the script is simply run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Scripts that are fetched this way are run in the global context of the current
+    page. This means they have access to all globally defined functions and variables,
+    notably including jQuery itself. We can, therefore, mimic the JSON example to
+    prepare and insert HTML on the page when the script is executed, and place this
+    code in `c.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, clicking on the C link has the expected result, showing the appropriate
+    dictionary entries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading an XML document
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'XML is part of the acronym Ajax, but we haven''t actually loaded any XML yet.
+    Doing so is straightforward, and mirrors the JSON technique closely. First, we''ll
+    need an XML file, `d.xml`, containing some data we wish to display:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This data could be expressed in many ways, of course, and some would more closely
+    mimic the structure we established for the HTML or JSON used earlier. Here, however,
+    we're illustrating some of the features of XML designed to make it more readable
+    to humans, such as the use of attributes for `term` and `part` rather than tags.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start off our function in a familiar manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: This time, it's the `$.get()` function that does our work. In general, this
+    function simply fetches the file at the supplied URL and provides the plain text
+    to the callback. However, if the response is known to be XML because of its server-supplied
+    MIME type, the callback will be handed to the XML DOM tree.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fortunately, as we have already seen, jQuery has substantial DOM-traversing
+    capabilities. We can use the normal `.find()`, `.filter()`, and other traversal
+    methods on the XML document just as we would on HTML:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This has the expected effect when the D link is clicked on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_05.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is a new use for the DOM traversal methods we already know, shedding some
+    light on the flexibility of jQuery's CSS selector support. CSS syntax is typically
+    used to help beautify HTML pages, and thus selectors in standard `.css` files
+    use HTML tag names such as `div` and `body` to locate content. However, jQuery
+    can use arbitrary XML tag names, such as `entry` and `definition`, just as readily
+    as the standard HTML ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The advanced selector engine inside jQuery facilitates finding parts of the
+    XML document in much more complicated situations as well. For example, suppose
+    we wanted to limit the displayed entries to those that have quotes that, in turn,
+    have attributed authors. To do this, we can limit the entries to those with the
+    nested `<quote>` elements by changing `entry` to `entry:has(quote)`. Then, we
+    can further restrict the entries to those with `author` attributes on the `<quote>`
+    elements by writing `entry:has(quote[author])`. The line in *Listing 6.9* with
+    the initial selector now reads:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This new selector expression restricts the returned entries correspondingly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_06.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: While we can use jQuery on XML data that's returned from the server, the downside
+    is the size of our code has grown considerably.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing a data format
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We have looked at four formats for our external data, each of which is handled
+    by jQuery's Ajax functions. We have also verified that all four can handle the
+    task at hand, loading information onto an existing page when the user requests
+    it and not before. How, then, do we decide which one to use in our applications?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*HTML snippets* require very little work to implement. The external data can
+    be loaded and inserted into the page with one simple method that doesn''t even
+    require a callback function. No traversal of the data is necessary for the straightforward
+    task of adding the new HTML into the existing page. On the other hand, the data
+    is not necessarily structured in a way that makes it reusable for other applications.
+    The external file is tightly coupled with its intended container.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*JSON files* are structured for simple reuse. They are compact and easy to
+    read. The data structure must be traversed to pull out the information and present
+    it on the page, but this can be done with standard JavaScript techniques. Since
+    modern browsers parse the files natively with a single call to `JSON.parse()`,
+    reading in a JSON file is extremely fast. Errors in the JSON file can cause silent
+    failure or even side effects on the page, so the data must be crafted carefully
+    by a trusted party.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*JavaScript files* offer the ultimate in flexibility, but are not really a
+    data storage mechanism. Since the files are language-specific, they cannot be
+    used to provide the same information to disparate systems. Instead, the ability
+    to load a JavaScript file means that behaviors that are rarely needed can be factored
+    out into external files, reducing code size unless and until it is needed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: While *XML* has fallen out of favor in the JavaScript community, with most developers
+    preferring JSON, it is still so common that providing data in this format makes
+    it very likely that the data can be reused elsewhere. The XML format is somewhat
+    bulky, and can be a bit slower to parse and manipulate than other options.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With these characteristics in mind, it is typically easiest to provide external
+    data as HTML snippets, as long as the data is not needed in other applications
+    as well. In cases where the data will be reused but the other applications can
+    also be influenced, JSON is often a good choice due to its performance and size.
+    When the remote application is not known, XML may provide the greatest assurance
+    that interoperability will be possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More than any other consideration, we should determine if the data is already
+    available. If it is, chances are that it's in one of these formats to begin with,
+    so the decision may be made for us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Passing data to the server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our examples to this point have focused on the task of retrieving static data
+    files from the web server. However, the server can dynamically shape the data
+    based on input from the browser. We're helped along by jQuery in this task as
+    well; all of the methods we've covered so far can be modified so that data transfer
+    becomes a two-way street.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interacting with server-side code
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since demonstrating these techniques requires interaction with the web server,
+    we'll need to use server-side code for the first time here. The examples given
+    will use Node.js, which is very widely used as well as freely available. We will
+    not cover any Node.js or Express specifics here, but there are plentiful resource
+    on the web if you Google either of these technologies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performing a GET request
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'To illustrate the communication between client (using JavaScript) and server
+    (also using JavaScript), we''ll write a script that only sends one dictionary
+    entry to the browser on each request. The entry chosen will depend on a parameter
+    sent from the browser. Our script will pull its data from an internal data structure
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a production version of this example, the data would probably be stored
+    in a database and loaded on demand. Since the data is a part of the script here,
+    the code to retrieve it is quite straightforward. We examine the query string
+    part of the URL, then pass the term and entry to a function that returns the HTML
+    snippet to display:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, requests to this `/e` handler, will return the HTML snippet corresponding
+    to the term that was sent in the GET parameters. For example, when accessing the
+    handler with `/e?term=eavesdrop`, we get back:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_07.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Once again, we note the lack of formatting we saw with earlier HTML snippets,
+    because CSS rules have not been applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we''re showing how data is passed to the server, we will use a different
+    method to request entries than the solitary buttons we''ve been relying on so
+    far. Instead, we''ll present a list of links for each term, and cause a click
+    on any of them to load the corresponding definition. The HTML we''ll add for this
+    looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we need to get our frontend JavaScript code to call the backend JavaScript with
+    the right parameters. We could do this with the normal `.load()` mechanism, appending
+    the query string right to the URL and fetching data with addresses such as `e?term=eavesdrop`
+    directly. Instead, though, we can have jQuery construct the query string based
+    on an object we provide to the `$.get()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that we have seen other Ajax interfaces that jQuery provides, the operation
+    of this function seems familiar. The only difference is the second parameter,
+    which allows us to supply an object containing keys and values that become part
+    of the query string. In this case, the key is always `term`, but the value is
+    taken from the text of each link. Now, clicking on the first link in the list
+    causes its definition to appear:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_08.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: All the links here have URLs, even though we are not using them in the code.
+    To prevent the links from being followed normally when clicked on, we invoke the
+    `.preventDefault()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Return false or prevent default?
+  prefs: []
+  type: TYPE_NORMAL
+- en: When writing the `click` handlers in this chapter, we have chosen to use `e.preventDefault()`
+    rather than ending the handler with `return false`. This practice is recommended
+    when the default action would otherwise reload the page or load another page.
+    If our `click` handler, for example, contains a JavaScript error, calling `.preventDefault()`
+    on the handler's first line (before the error is encountered) ensures that the
+    form will not be submitted, and our browser's error console will properly report
+    the error. Remember from [Chapter 3](2036c6b0-e8c5-405a-b54b-b3f31eab404c.xhtml),
+    *Handling Events*, that return `false` calls both `event.preventDefault()` and
+    `event.stopPropagation()`. If we wanted to stop the event from bubbling, we would
+    need to call the latter as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Serializing a form
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Sending data to the server often involves the user filling out forms. Rather
+    than relying on the normal form submission mechanism, which will load the response
+    in the entire browser window, we can use jQuery's Ajax toolkit to submit the form
+    asynchronously and place the response inside the current page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To try this out, we''ll need to construct a simple form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This time, we''ll return a set of entries from the server by having our `/f`
+    handler search for the supplied search term as a substring of a dictionary term.
+    We''ll use our `formatEntry()` function from the `/e` handler to return the data
+    in the same format as before. Here''s the `/f` handler implementation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can react to a form submission and craft the proper query parameters
+    by traversing the DOM tree:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This code has the intended effect, but searching for input fields by name and
+    appending them to a map one by one is cumbersome. In particular, this approach
+    does not scale well as the form becomes more complex. Fortunately, jQuery offers
+    a shortcut for this often-used idiom. The `.serialize()` method acts on a jQuery
+    object and translates the matched DOM elements into a query string that can be
+    passed along with an Ajax request. We can generalize our submission handler as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The same script will work to submit the form, even as the number of fields
+    increases. When we perform a search for `fid`, for example, the terms containing
+    that substring are displayed as shown in the following screenshot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_10.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Keeping an eye on the request
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, it has been sufficient for us to make a call to an Ajax method and patiently
+    await the response. At times, though, it is handy to know a bit more about the
+    HTTP request as it progresses. If such a need arises, jQuery offers a suite of
+    functions that can be used to register callbacks when various Ajax-related events
+    occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.ajaxStart()` and `.ajaxStop()` methods are two examples of these observer
+    functions. When an Ajax call begins with no other transfer in progress, the `.ajaxStart()`
+    callback is fired. Conversely, when the last active request ends, the callback
+    attached with `.ajaxStop()` will be executed. All of the observers are global,
+    in that they are called when any Ajax communication occurs, regardless of what
+    code initiates it. And all of them, can only be bound to `$(document)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can use these methods to provide some feedback to the user in the case of
+    a slow network connection. The HTML for the page can have a suitable loading message
+    appended:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This message is just a piece of arbitrary HTML; it could include an animated
+    GIF image as a loading indicator, for instance. In this case, we''ll add a few
+    simple styles to the CSS file so that when the message is displayed, the page
+    will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_11.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'In keeping with the spirit of progressive enhancement, however, we won''t put
+    this HTML markup directly on the page. Instead, we''ll insert it using jQuery:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our CSS file will give this `<div>` a `display: none;` style declaration so
+    that the message is initially hidden. To display it at the right time, we just
+    register it as an observer with `.ajaxStart()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can chain the hiding behavior right onto this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: We now have our loading feedback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, note that these methods have no association with the particular
+    ways in which the Ajax communications begin. The `.load()` method attached to
+    the A link and the `.getJSON()` method attached to the B link both cause these
+    actions to occur.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, this global behavior is desirable. If we need to get more specific,
+    though, we have a few options at our disposal. Some of the observer methods, such
+    as `.ajaxError()`, send their callback a reference to the `XMLHttpRequest` object.
+    This can be used to differentiate one request from another and provide different
+    behaviors. Other more specific handling can be achieved by using the low-level
+    `$.ajax()` function, which we'll discuss a bit later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The most common way of interacting with the request is the `success` callback,
+    which we have already covered. We have used this in several of our examples to
+    interpret the data coming back from the server and to populate the page with the
+    results. It can be used for other feedback too, of course. Consider once again
+    our `.load()` example from *Listing 6.1*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can create a small enhancement here by making the loaded content fade into
+    view rather than appear suddenly. The `.load()` method can take a callback to
+    be fired on completion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, we hide the target element and then initiate the load. When the load
+    is complete, we use the callback to show the newly populated element by fading
+    it in.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Error handling
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far, we have only dealt with successful responses to Ajax requests, loading
+    the page with new content when everything goes as planned. Responsible developers,
+    however, should account for the possibility of network or data errors and report
+    them appropriately. Developing Ajax applications in a local environment can lull
+    developers into a sense of complacency since, aside from a possible mistyped URL,
+    Ajax errors don't just happen locally. The Ajax convenience methods such as `$.get()`
+    and `.load()` do not provide an error callback argument themselves, so we need
+    to look elsewhere for a solution to this problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Aside from using the `global .ajaxError()` method, we can react to errors by
+    capitalizing on jQuery''s deferred object system. We will discuss deferred objects
+    more fully in [Chapter 11](18ed1c5d-dfac-4361-b647-0cb63f5dd58b.xhtml), *Advanced
+    Effects*, but, for now, we''ll simply note that we can chain `.done()`, `.always()`,
+    and `.fail()` methods to any Ajax function except `.load()`, and use these methods
+    to attach the relevant callbacks. For example, if we take the code from *Listing
+    6.16* and change the URL to one that doesn''t exist, we can test the `.fail()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, clicking on any of the links for terms beginning with E will produce an
+    error message. The exact content of `jqXHR.responseText` will vary depending on
+    the server configuration:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_06_12.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The `.status` property contains a numeric code provided by the server. These
+    codes are defined in the HTTP specification, and when a `.fail()` handler is triggered,
+    they will represent an error condition such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **Response code** | **Description** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 400 | Bad request |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 401 | Unauthorized |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 403 | Forbidden |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 404 | Not found |'
+  prefs: []
+  type: TYPE_TB
+- en: '| 500 | Internal server error |'
+  prefs: []
+  type: TYPE_TB
+- en: 'A complete list of response codes can be found on the W3C''s site: [http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will examine error handling more closely in [Chapter 13](6bf83967-6247-454a-b1d2-3f3f48937865.xhtml),
+    *Advanced Ajax*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ajax and events
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Suppose we wanted to allow each dictionary term name to control the display
+    of the definition that follows; clicking on the term name would show or hide the
+    associated definition. With the techniques we have seen so far, this should be
+    pretty straightforward:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.16
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a term is clicked on, this code finds siblings of the element that have
+    a class of `definition`, and slides them up or down as appropriate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All seems in order, but a click does nothing with this code. Unfortunately,
+    the terms have not yet been added to the document when we attach the `click` handlers.
+    Even if we managed to attach `click` handlers to these items, once we clicked
+    on a different letter the handlers would no longer be attached.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a common problem with areas of a page populated by Ajax. A popular solution
+    is to rebind handlers each time the page area is refreshed. This can be cumbersome,
+    however, as the event-binding code needs to be called each time anything causes
+    the DOM structure of the page to change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A superior alternative was introduced in [Chapter 3](2036c6b0-e8c5-405a-b54b-b3f31eab404c.xhtml),
+    *Handling Events*. We can implement **event delegation**, actually binding the
+    event to an ancestor element that never changes. In this case, we''ll attach the
+    `click` handler to the `<body>` element, using `.on()` to catch our clicks that
+    way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.17
+  prefs: []
+  type: TYPE_NORMAL
+- en: When used this way, the `.on()` method tells the browser to observe all clicks
+    anywhere in the document. If (and only if) the clicked element matches the `h3.term`
+    selector, then the handler is executed. Now, the toggling behavior will take place
+    on any term, even if it is added by a later Ajax transaction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deferreds and promises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: jQuery deferred objects were introduced at a time when there was no consistent
+    way to handle asynchronous behavior in JavaScript code. Promises help us orchestrate
+    asynchronous stuff, such as multiple HTTP requests, file reads, animations, and
+    so on. Promises aren't exclusive to JavaScript, nor are they a new idea. The best
+    way to think about a promise is as a contract that promises to resolve a value
+    *eventually*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that promises are officially part of JavaScript, jQuery now fully supports
+    promises. That is, jQuery deferred objects behave just like any other promise.
+    This is important, as we'll see in this section, because it means that we can
+    use jQuery deferreds to compose complex asynchronous behavior with other code
+    that return native promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performing Ajax calls on page load
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Right now, our dictionary doesn't show any definitions on the initial page load.
+    Instead, it just shows some empty space. Let's change that by showing the "A"
+    entries when the document is ready. How do we do this?
+  prefs: []
+  type: TYPE_NORMAL
+- en: One approach is to simply add the `load('a.html')` call into our document ready
+    handler (`$(() => {})`) along with everything else. The problem is that this is
+    inefficient because we have to wait for the document to be ready before we can
+    even make the Ajax request. Wouldn't it be better to make the Ajax request as
+    soon as our JavaScript runs?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The challenge is then synchronizing the document ready event with the Ajax
+    response ready event. There is a race condition here because we don''t know which
+    event will happen first. There''s a good chance that the document will be ready
+    first, but we can''t make that assumption. This is where promises are super helpful:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.18
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `Promise.all()` method takes an array of other promises, and returns a new
+    promise. This new promise is then resolved when everything in the array argument
+    resolves. This is how promises handle asynchronous race conditions for us. It
+    doesn't matter if the Ajax promise (`$.get('a.html')`) resolves first or the document
+    ready promise (`$.ready`) resolves first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `then()` handler is where we want to execute any code that depends on asynchronous
+    values. For example, the content value is the resolved Ajax call. The document
+    being ready implicitly resolves the DOM. If the DOM isn't ready, we cannot run
+    `$('#dictionary')...`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using fetch()
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Another recent addition to JavaScript is the `fetch()` function. This is a
+    more flexible alternative to `XMLHttpRequest`. For example, it''s much easier
+    to use `fetch()` when making cross-domain requests, or when you need to tweak
+    specific HTTP header values. Let''s implement the *G* entries using `fetch()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 6.19
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `fetch()` function returns a promise, just like the various jQuery Ajax
+    functions. This means that if the `/g` URL that we're calling in this example
+    were actually located in another domain, we could use `fetch()` to access it.
+    If we want JSON data, which we do, we need to call `.json()` in the `.then()`
+    handler. Then, in a second handler, we can populate the DOM, using the same functions
+    we created earlier in the chapter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The whole idea behind promises is consistency. If we need to synchronize asynchronous
+    behavior, promises are the way to do it. Anything that jQuery does asynchronously,
+    can be used with other promises.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: You have learned that the Ajax methods provided by jQuery can help us to load
+    data in several different formats from the server without a page refresh. We can
+    execute scripts from the server on demand and send data back to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You've also learned how to deal with common challenges of asynchronous loading
+    techniques, such as keeping handlers bound after a load has occurred and loading
+    data from a third-party server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This concludes our tour of the basic components of the `jQuery` library. Next,
+    we'll look at how these features can be expanded upon easily using jQuery plugins.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The topic of Ajax will be explored in more detail in [Chapter 13](6bf83967-6247-454a-b1d2-3f3f48937865.xhtml),
+    *Advanced Ajax*. A complete list of Ajax methods is available in [Appendix B](d9485d2d-4300-48c1-825b-1c26c9b57a66.xhtml)*, Quick
+    Reference*, of this book or in the official jQuery documentation at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The challenge exercise may require the use of the official jQuery documentation
+    at
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[http://api.jquery.com/](http://api.jquery.com/):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the page loads, pull the body content of `exercises-content.html` into
+    the content area of the page.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Rather than displaying the whole document at once, create tooltips for the letters
+    in the left-hand column by loading just the appropriate letter's content from
+    `exercises-content.html` when the user's mouse is over the letter.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Add error handling for this page load, displaying the error message in the content
+    area. Test this error handling code by changing the script to request `does-not-exist.html`
+    rather than `exercises-content.html`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Here's a challenge. When the page loads, send a JSONP request to GitHub and
+    retrieve a list of repositories for a user. Insert the name and URL of each repository
+    into the content area of the page. The URL to retrieve the jQuery project's repositories
+    is [https://api.github.com/users/jquery/repos](https://api.github.com/users/jquery/repos).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL

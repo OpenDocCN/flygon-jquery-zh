@@ -1,0 +1,936 @@
+- en: Advanced DOM Manipulation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Throughout this book, we have used jQuery's powerful DOM manipulation methods
+    to alter the content of the document. We have now seen several ways in which we
+    can insert new content, move existing content around, or remove content altogether.
+    We also know how to alter the attributes and properties of elements to suit our
+    needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In [Chapter 5](fa35636a-37d4-49b9-ba72-aa6596bab015.xhtml), *Manipulating the
+    DOM*, we were introduced to these important techniques. In this more advanced
+    chapter, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting page elements using `.append()`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attaching custom data to elements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading HTML5 data attributes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating elements from JSON data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Extending the DOM manipulation system using CSS hooks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sorting table rows
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The majority of the topics we're investigating in this chapter can be demonstrated
+    through sorting the rows of a table. This common task is a useful way to assist
+    users in quickly finding the information they need. There are, naturally, a number
+    of ways to do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting tables on the server
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A common solution for data sorting is to perform it on the server. Data in tables
+    often comes from a database, which means that the code that pulls it out of the
+    database can request it in a given sort order (using, for example, the SQL language's
+    `ORDER BY` clause). If we have server-side code at our disposal, it is straightforward
+    to begin with a reasonable default sort order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sorting is most useful, though, when the user can determine the sort order.
+    A common user interface for this is to make the table headers (`<th>`) of sortable
+    columns into links. These links can go to the current page, but with a query string
+    appended indicating the column to sort by, as shown in the following code snippet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The server can react to the query string parameter by returning the database
+    contents in a different order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting tables using Ajax
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'This setup is simple, but requires a page refresh for each sort operation.
+    As we have seen, jQuery allows us to eliminate such page refreshes by using *Ajax*
+    methods. If we have the column headers set up as links as before, we can add jQuery
+    code that will translate those links into Ajax requests:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now when the anchors are clicked, jQuery sends an Ajax request to the server
+    for the same page. When jQuery is used to make a page request using Ajax, it sets
+    the `X-Requested-With` HTTP header to `XMLHttpRequest` so that the server can
+    determine that an Ajax request is being made. The server code can be written to
+    send back only the content of the `<tbody>` element itself, and not the surrounding
+    page, when this parameter is present. This way we can use the response to replace
+    the content of the existing `<tbody>` element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is an example of **progressive enhancement**. The page works perfectly
+    well without any JavaScript at all, as the links for server-side sorting are still
+    present. When JavaScript is available, however, we hijack the page request and
+    allow the sort to occur without a full page load.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting tables within the browser
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: There are times, though, when we either don't want to wait for server responses
+    when sorting or don't have a server-side scripting language available to us. A
+    viable alternative in this case can be to perform the sorting entirely on the
+    browser using JavaScript and jQuery's DOM manipulation methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to demonstrate the various techniques in this chapter, we will set
+    up three separate jQuery sorting mechanisms. Each will accomplish the same goal,
+    but in a unique way. Our examples will sort the table using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data extracted from the HTML content
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HTML5 custom data attributes
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A JSON representation of the table data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The tables that we''ll be sorting will have different HTML structures to accommodate
+    the varying JavaScript techniques, but each contains columns listing books, their
+    author names, release dates, and prices. The first table has this simple structure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Getting the example code
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can access the example code from the following GitHub repository: [https://github.com/PacktPublishing/Learning-jQuery-3](https://github.com/PacktPublishing/Learning-jQuery-3).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before we enhance the table with JavaScript, the first few rows look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_12_01.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Moving and inserting elements revisited
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Over the course of the coming examples, we will build a flexible sorting mechanism
+    that works on each of the columns. To do this, we will use the jQuery DOM manipulation
+    methods to insert some new elements and move other existing elements to new positions
+    within the DOM. We will start with the most straightforward piece of the puzzle--linking
+    the table headers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding links around existing text
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'We''d like to turn the table headers into links that sort the data by their
+    respective columns. We can use jQuery''s `.wrapInner()` method to add them; we
+    recall from [Chapter 5](https://cdp.packtpub.com/learning_jquery_3_0/wp-admin/post.php?post=37&action=edit#post_30),
+    *Manipulating the DOM*, that `.wrapInner()` places a new element (in this case
+    an `<a>` element) *inside* the matched element, but *around* child elements:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We skipped the first `<th>` element of each table (using `.slice()`) because
+    it contains no text other than white space, as there is no need to either label
+    or sort the cover photos. We then added a class of `sort` to the remaining `<th>`
+    elements so we can distinguish them in our CSS from their non-sortable counterparts.
+    Now the header rows look like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_12_02.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: This is an example of progressive enhancement's counterpart, **graceful degradation**.
+    Unlike the Ajax solution discussed earlier, this technique cannot function without
+    JavaScript; we are assuming the server has no scripting language available to
+    it for the purposes of this example. Since JavaScript is required for the sort
+    to work, we are adding the `sort` class and the anchors through code only, thereby
+    making sure that the interface indicates that sorting is possible only if the
+    script can run. And since we're actually creating links rather than simply adding
+    visual styles to indicate that the headers can be clicked, we provide the added
+    benefit of accessibility for users who need to navigate to the headers with the
+    keyboard (by pressing the *Tab* key). The page **degrades** into one that is still
+    functional, albeit without sorting available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting simple JavaScript arrays
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: To perform the sort, we will be taking advantage of JavaScript's built-in `.sort()`
+    method. It does an in-place sort on an array, and can take a **comparator** **function**
+    as an argument. This function compares two items in the array and should return
+    a positive or negative number depending on which item should come first in the
+    sorted array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, take a simple array of numbers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can sort this array by calling `arr.sort()`. After this, the items are in
+    the following order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By default, as we see here, the items are sorted **lexicographically** (in
+    alphabetical order). In this case, it might make more sense to sort the items
+    *numerically*. To do this, we can supply a comparator function to the `.sort()`
+    method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function returns a negative number if `a` should come first in the sorted
+    array, a positive number if `b` should come first, and zero if the order of the
+    items does not matter. With this information in hand, the `.sort()` method can
+    sequence the items appropriately:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will next apply this `.sort()` method to our table rows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting DOM elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Let''s perform a sort on the `Title` column of the table. Note that while we
+    added the `sort` class to it and the others, this column''s header cell already
+    has a `sort-alpha` class provided by the HTML. The other header cells received
+    similar treatment depending on the type of sorting for each, but for now we''ll
+    focus on the `Title` header, which requires a straightforward alphabetical sort:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have found the index of the clicked header cell, we retrieve an array
+    of all the data rows. This is a great example of how `.get()` is useful in transforming
+    a jQuery object into an array of DOM nodes; even though jQuery objects act like
+    arrays in many respects, they don't have all of the native array methods available,
+    such as `.pop()` or `.shift()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Internally, jQuery actually does define a few methods that act like native array
+    methods. For example, `.sort()`, `.push()`, and `.splice()` are methods of jQuery
+    objects. However, since these methods are for internal use and not publicly documented,
+    we cannot rely on them behaving in expected ways in our own code, and should thus
+    avoid calling them on jQuery objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we have an array of DOM nodes, we can sort them, but to do this, we
+    need to write an appropriate comparator function. We want to sort the rows according
+    to the textual contents of the relevant table cells, so this will be the information
+    the comparator function will examine. We know which cell to look at because we
+    captured the column index with the `.index()` call. We use jQuery's `$.trim()`
+    function to strip out leading and trailing white space, and then we convert the
+    text to uppercase because string comparisons in JavaScript are case-sensitive
+    while our sort should be case-insensitive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our array is now sorted, but note that the call to `.sort()` has not changed
+    the DOM itself. To do this, we need to call DOM manipulation methods to move the
+    rows around. We do this one row at a time, reinserting each into the table as
+    we loop through them. Since `.append()` does not clone nodes, this *moves* them
+    rather than copying them. Our table is now sorted:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_12_001-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Storing data alongside DOM elements
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our code works, but it is quite slow. The culprit is the comparator function,
+    which is doing a lot of work. This comparator will be called many times during
+    the course of a sort, which means that it needs to be fast.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Array sorting performance
+  prefs: []
+  type: TYPE_NORMAL
+- en: The actual sort algorithm used by JavaScript is not defined by the standard.
+    It may be a simple sort such as a **bubble** **sort** (worst case of Θ(*n*²) in
+    computational complexity terms), or a more sophisticated approach such as a **quick
+    sort** (which is Θ(*n* log *n*) on average). It is safe to say, though, that doubling
+    the number of items in an array will more than double the number of times the
+    comparator function is called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The remedy for our slow comparator is to **pre-compute** the keys for the comparison.
+    We can do most of the expensive work in an initial loop and store the result with
+    jQuery''s `.data()` method, which sets or retrieves arbitrary information associated
+    with page elements. Then we can simply examine the keys within the comparator
+    function, and our sort is markedly faster:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `.data()` method, paired with its complement `.removeData()`, provides a
+    data storage mechanism that is a convenient alternative to **expando** **properties**,
+    or non-standard properties added directly to DOM elements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Performing additional pre-computation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now we want to apply the same kind of sorting behavior to the Author(s) column
+    of our table. Because its table header cell has the `sort-alpha` class, the Author(s)
+    column can be sorted with our existing code. Ideally, though, authors should be
+    sorted by last name, not first. Since some books have multiple authors, and some
+    authors have middle names or initials listed, we need outside guidance to determine
+    what part of the text to use as our sort key. We can supply this guidance by wrapping
+    the relevant part of the cell in a tag:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we have to modify our sorting code to take this tag into account without
+    disturbing the existing behavior for the `Title` column, which is already working
+    well. By prepending the marked sort key to the key we have previously calculated,
+    we can sort first on the last name if it is called out, but on the whole string
+    as a fallback:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.4
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sorting by the Author(s) column now uses the provided key, thereby sorting
+    by last name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_12_002-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: If two last names are identical, the sort uses the entire string as a tiebreaker
+    for positioning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Storing non-string data
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Our user should be able to sort not just by the Title and Author(s) columns,
+    but the Publish Date and Price columns as well. Since we streamlined our comparator
+    function, it can handle all kinds of data, but first the computed keys will need
+    to be adjusted for other data types. For example, in the case of prices, we need
+    to strip off the leading `$` character and parse the rest so that we can compare
+    them numerically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The regular expression used here removes any leading characters other than numbers
+    and decimal points, passing the result on to `parseFloat()`. The result of `parseFloat()`
+    then needs to be checked, because if no number can be extracted from the text,
+    `NaN` (**Not a Number**) is returned. This can wreak havoc on `.sort()`, so we
+    set any non-number to `0`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the date cells, we can use the JavaScript `Date` object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The dates in this table contain a month and year only; `Date.parse()` requires
+    a fully specified date. To accommodate this, we prepend the string with `1`, so
+    that `September 2010` becomes `1 September 2010`. Now that we have a complete
+    date, `Date.parse()` can convert it into a **timestamp**, which can be sorted
+    using our normal comparator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can place these expressions into three separate functions, so that later
+    we can call the appropriate one based on the class applied to the table header:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.5
+  prefs: []
+  type: TYPE_NORMAL
+- en: We've modified the script to store `keyType` data for each column header cell
+    based on its class name. We strip off the `sort-` portion of the class so that
+    we're left with `alpha`, `numeric`, or `date`. By making each sort function a
+    method of the `sortKeys` object, we can use **array notation** and pass in the
+    value of the header cell's `keyType` data to call the appropriate function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Typically when we call methods, we use **dot notation**. This is, in fact,
+    the way we call methods of the jQuery object throughout this book. For example,
+    to add a class of `bar` to `<div class="foo">`, we write `$(''div.foo'').addClass(''bar'')`.
+    Because JavaScript allows properties and methods to be represented in either dot
+    or array notation, we could also write it as `$(''div.foo'')[''addClass''](''bar'')`.
+    It doesn''t make much sense to do this most of the time, but it can be a great
+    way to conditionally call methods without using a bunch of `if` statements. For
+    our `sortKeys` object, we could call the `alpha` method like `sortKeys.alpha($cell)`
+    or `sortKeys[''alpha'']($cell)` or, if the method name is stored in a `keyType` constant,
+    `sortKeys[keyType]($cell)`. We''ll use this third variation inside the `click`
+    handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.6
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can now sort by Publish Date or Price as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_12_003-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Alternating sort directions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Our final sorting enhancement is to allow for both **ascending** and **descending**
+    sort orders. When the user clicks on a column that is already sorted, we want
+    to reverse the current sort order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To reverse a sort, all we have to do is to invert the values returned by our
+    comparator. We can do this with a simple `direction` argument to the sort comparator:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If `direction` equals `1`, then the sort will be the same as before. If it
+    equals `-1`, the sort will be reversed. By combining this concept with some classes
+    to keep track of the current sort order of a column, achieving alternating sort
+    directions is simple:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.7
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As a side benefit, since we use classes to store the sort direction, we can
+    style the column headers to indicate the current order:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/image_12_004-1.jpg)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using HTML5 custom data attributes
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'So far, we''ve been relying on the content within the table cells to determine
+    the sort order. While we''ve managed to sort the rows correctly by manipulating
+    that content, we can make our code more efficient by outputting more HTML from
+    the server in the form of **HTML5 data attributes**. The second table in our example
+    page includes these attributes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice that each `<th>` element (except the first) has a `data-sort` attribute
+    and each `<tr>` element has a `data-book` attribute. We first saw custom data
+    attributes in [Chapter 7](e101ee08-ea8f-40f0-966c-e00b6af852ed.xhtml), *Using
+    Plugins*, where we provided information in attributes for plugin code to use.
+    Here, we will use jQuery to access the attribute values ourselves. To retrieve
+    the value, we pass the part of the attribute's name after `data-` to the `.data()`
+    method. For example, we write `$('th').first().data('sort')` to get the value
+    of the first `<th>` element's `data-sort` attribute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we use the `.data()` method to get the value of a data attribute, jQuery
+    converts the value to a number, array, object, Boolean, or null if it determines
+    that it is one of those types. Objects must be denoted using JSON syntax, as we
+    are doing here. Because the JSON format requires double quotes for its keys and
+    string values, we need to use single quotes to surround the attribute value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since jQuery converts this JSON string to an object for us, getting at the
+    values we want is simple. To get the value of the `key` property, for example,
+    we write:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once a custom data attribute is retrieved in this way, the data is stored internally
+    by jQuery and the HTML `data-*` attribute itself is no longer accessed or modified.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One great benefit of using data attributes here is that the stored values can
+    be different from the table cell content. In other words, all of the work that
+    we had to do in the first table to finesse the sorting--converting strings to
+    upper case, changing the date format, converting the price to a number--is already
+    taken care of. This allows us to write much simpler and more efficient sorting
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.8
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The simplicity of this approach is clear: the `sortKey` constant is set with
+    `.data(''sort'').key` and is then used to compare the rows'' sort values with
+    `$(a).data(''book'')[sortKey]` and `$(b).data(''book'')[sortKey]`. The efficiency
+    is evident in that there is no need to loop through the rows first and call one
+    of the `sortKeys` functions each time before calling the `sort` function. With
+    this combination of simplicity and efficiency, we''ve also improved the code''s
+    performance and made it easier to maintain.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sorting and building rows with JSON
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: So far in this chapter, we have been moving in the direction of outputting more
+    and more information from the server into HTML so that our client-side scripts
+    can remain as lean and efficient as possible. Now let's consider a different scenario,
+    one in which a whole new set of information is displayed when JavaScript is available.
+    Increasingly, web applications rely on JavaScript to deliver content as well as
+    manipulate it once it arrives. In our third table sorting example, we'll do the
+    same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We''ll start by writing three functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`buildAuthors()`: This builds a string list of author names'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`buildRow()`: This builds the HTML for a single table row'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`buildRows()`: This builds the HTML for the entire table by mapping the rows
+    built by `buildRow()`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.9
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For our purposes, we could get by with a single function to handle both tasks,
+    but by using three separate functions, we leave open the possibility of building
+    and inserting a single row at some other point. These functions will get their
+    data from the response to an Ajax request:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.10
+  prefs: []
+  type: TYPE_NORMAL
+- en: We shouldn't have to wait for the DOM to be ready before making an Ajax call.
+    There's two promises that need to resolve before we can call `buildRows()` with
+    JSON data. First, we need the actual JSON data to come back from the server. Second,
+    we need to ensure that the DOM is ready to be manipulated. So, we simply create
+    a new promise that's resolved when these two things happen, by using `Promise.all()`.
+    The `$.getJSON()` function returns a promise, and `$.ready` is a promise that's
+    resolved when the DOM is ready.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also worth noting is that we need to treat the `authors` data differently because
+    it comes from the server as an array of objects with `first_name` and `last_name`
+    properties, while everything else arrives as a string or a number. We loop through
+    the array of authors--even though for most rows the array consists of only one--and
+    concatenate the first name and the last. We then join the array values with a
+    comma and a space to end up with a formatted list of names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `buildRow()` function assumes that the text we're getting from the JSON
+    file is safe for consumption. Since we're concatenating `<img>`, `<td>`, and `<tr>`
+    tags along with the text content into a single text string, we need to be sure
+    that the text content has no unescaped `<`, `>`, or `&` characters. One way to
+    ensure HTML-safe strings is to process them on the server, converting all instances
+    of `<` to `&lt;`, `>` to `&gt;`, and `&` to `&amp;`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modifying the JSON object
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The work we''re doing with the `authors` array is fine if we only plan to call
+    the `buildRows()` function once. However, since we intend to call it each time
+    the rows are sorted, it''s a good idea to have the author information formatted
+    ahead of time. While we''re at it, we can format the title and the author information
+    for sorting as well. Unlike the second table, in which each row had sortable data
+    in the `data-book` attribute and display data in the table cells, the JSON data
+    we''re retrieving for the third table comes in only one flavor. Still, by writing
+    one more function, we can include modified values for sorting and displaying before
+    we ever get to the table building functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.11
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By passing our JSON data through this function, we add two properties to each
+    row''s object: `authorsFormatted` and `titleFormatted`. These properties will
+    be used for the displayed table contents, preserving the original `authors` and
+    `title` properties for sorting. The properties used for sorting are also converted
+    to uppercase to make the sort operation case insensitive. We''ve also added a
+    new separator argument to the `buildAuthors()` function so that we can use it
+    here.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we call this `prepRows()` function immediately inside the `$.getJSON()`
+    callback function, we store the returned value of the modified JSON object in
+    the `rows` variable and use that one for sorting and building. This means that
+    we also need to change the `buildRow()` function to take advantage of the simplicity
+    that our advance preparation has afforded it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.12
+  prefs: []
+  type: TYPE_NORMAL
+- en: Rebuilding content on demand
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Now that we''ve prepared the content for both sorting and displaying, we''re
+    ready to once again implement the column heading modification and the sorting
+    routine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.13
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code inside the `click` handler is nearly identical to the handler for
+    the second table in *Listing 12.8*. The one notable difference is that here we
+    insert elements into the DOM only once per sort. In tables one and two, even after
+    our other optimizations, we sorted the actual DOM elements and then looped through
+    them one-by-one, appending each one in turn to arrive at the new order. For example,
+    in *Listing 12.8* table rows are reinserted in a loop like so:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This type of repetitive DOM insertion can be quite costly from a performance
+    perspective, especially with a large number of rows. Compare that with our latest
+    approach in *Listing 12.13*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `buildRows()` function returns a string of HTML representing the rows and
+    inserts it in one fell swoop, replacing the rows instead of moving the existing
+    ones around.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Revisiting attribute manipulation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: By now, we are used to getting and setting values that are associated with DOM
+    elements. We have done this with simple methods such as `.attr()`, `.prop()`,
+    and `.css()`, convenient shorthands such as `.addClass()`, `.css()`, and `.val()`,
+    and complex bundles of behavior such as `.animate()`. Even the simple methods,
+    though, do quite a bit of work for us behind the scenes. We can get even more
+    utility out of them if we better understand what they do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using shorthand element creation syntax
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: We often create new elements in our jQuery code by providing an HTML string
+    to the `$()` function or to DOM insertion functions. For example, we create a
+    large HTML fragment in *Listing 12.9 *in order to produce many DOM elements. This
+    technique is fast and concise. There are circumstances when it is not ideal. We
+    might, for instance, want to escape special characters from text before it is
+    used, or apply style rules that are browser-dependent. In these cases, we can
+    create the element and then chain on additional jQuery methods to alter it, as
+    we have done many times already. In addition to this standard technique, the `$()`
+    function itself provides an alternative syntax to achieve the same result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose we want to introduce headings prior to each of the tables in our document.
+    We can use an `.each()` loop to iterate over the tables and create an appropriately-named
+    heading:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.14
+  prefs: []
+  type: TYPE_NORMAL
+- en: Providing an options object as the second argument to the `$()` function has
+    the same effect as first creating the element then passing that object to the
+    `.attr()` method. As we know, this method lets us set DOM attributes such as the
+    `id` value of the element and its `class`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The rest of the options in our example are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The text inside the element
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom additional data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A click handler
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An object containing CSS properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These are not DOM attributes, yet they get set all the same. The shorthand `$()`
+    syntax is able to handle these because it first checks to see if a jQuery method
+    exists with the given name, and if so, it calls it instead of setting the attribute
+    of that name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because jQuery gives methods precedence over attribute names, we must take care
+    in cases where meaning might be ambiguous; for example, the `size` attribute of
+    `<input>` elements, which cannot be set this way because a `.size()` method also
+    exists.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This shorthand `$()` syntax, along with the `.attr()` function, can handle even
+    more features through the use of **hooks**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: DOM manipulation hooks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Many jQuery methods that get and set properties can be extended for special
+    cases by defining the appropriate hooks. These hooks are arrays in the jQuery
+    namespace with names such as `$.cssHooks` and `$.attrHooks`. In general, hooks
+    are objects holding a `get` method that retrieves the requested value, and a `set`
+    method that provides a new value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hook types include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| **Hook type** | **Method altered** | **Example usage** |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `$.attrHooks` | `.attr()` | Prevents the `type` attribute of an element from
+    being changed. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `$.cssHooks` | `.css()` | Provides special handling for `opacity` in Internet
+    Explorer. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `$.propHooks` | `.prop()` | Corrects the behavior of the `selected` property
+    in Safari. |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `$.valHooks` | `.val()` | Allows radio buttons and checkboxes to report a
+    consistent value across browsers. |'
+  prefs: []
+  type: TYPE_TB
+- en: Usually the work performed by these hooks is completely hidden to us, and we
+    can benefit from them without thinking much about what is going on. Sometimes,
+    though, we might want to extend the behavior of jQuery's methods by adding hooks
+    of our own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing a CSS hook
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'The code in *Listing 12.14* injects a CSS property called `glowColor` onto
+    the page. This has no effect on the page at the moment, as such a property does
+    not exist. Instead, we are going to extend `$.cssHooks` to add support for this
+    newly invented property. We will add a soft glow around the text using the CSS3
+    `text-shadow` property when `glowColor` is set on an element:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: Listing 12.15
+  prefs: []
+  type: TYPE_NORMAL
+- en: A hook consists of a `get` method and a `set` method for an element. To keep
+    our example as brief and simple as possible, we are only defining `set` at this
+    time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With this hook in place, we now have a 2-pixel soft green glow around the heading
+    text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](img/5297_12_07.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'While the new hook works as advertised, it lacks many features that we might
+    expect. Some of these shortcomings include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The size of the glow is not customizable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The effect is mutually exclusive with other uses of `text-shadow` or `filter`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `get` callbacks are unimplemented, so we cannot test for the current value
+    of the property
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The property cannot be animated
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With enough work and additional code, we could surmount all of these obstacles.
+    In practice, we rarely have to define our own hooks, however; skilled plugin developers
+    have created hooks for a wide variety of needs, including most CSS3 properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding hooks
+  prefs: []
+  type: TYPE_NORMAL
+- en: The plugin landscape changes rapidly, so new hooks will crop up all the time,
+    and we cannot hope to list them all here. For a sampling of what is possible,
+    see Brandon Aaron's collection of CSS hooks at
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/brandonaaron/jquery-cssHooks](https://github.com/brandonaaron/jquery-cssHooks).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: In this chapter, we have solved a common problem--sorting a data table--in three
+    different ways, comparing the benefits of each approach. In doing so, we practiced
+    the DOM modification techniques that  we have learned earlier and explored the
+    `.data()` method for getting and setting data associated with any DOM element
+    or attached using HTML5 data attributes. We also pulled back the curtain on several
+    DOM modification routines, learning how to extend them for our own purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: A complete list of DOM manipulation methods is available in *Appendix C* of
+    this book, or in the official jQuery documentation at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exercises
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: The challenge exercise may require the use of the official jQuery documentation
+    at [http://api.jquery.com/](http://api.jquery.com/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modify the key computation for the first table so that titles and authors are
+    sorted by length rather than alphabetically.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Use the HTML5 data in the second table to compute the sum of all of the book
+    prices and insert this sum into the heading for that column.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Change the comparator used for the third table so that titles containing the
+    word jQuery come first when sorted by title.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Challenge: Implement the `get` callback for the `glowColor` CSS hook.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
