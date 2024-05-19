@@ -1101,49 +1101,59 @@
   id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 也许你已经注意到了，当你添加一个新产品时，库存会减少一个。这是因为当你在产品中使用`ko.toJS`函数时，它会执行所有的函数。因此，为了使用它，你应该避免那些会操作对象并可能在内部改变其值的方法。我们将在下一节中解决这个问题。
 - en: Test that the application sends data when you call the `addProduct` method.
   id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试应用程序在调用`addProduct`方法时是否发送数据。
 - en: '![Creating a new product](img/7074OS_05_06.jpg)'
   id: totrans-160
   prefs: []
   type: TYPE_IMG
+  zh: '![创建新产品](img/7074OS_05_06.jpg)'
 - en: Adding new products uses the AJAX call; pay attention to URL and type fields
   id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加新产品时使用AJAX调用；注意URL和类型字段
 - en: Separation of concerns – behavior and data
   id: totrans-162
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 关注关注点分离 - 行为和数据
 - en: We have found a problem in our application. When we use the `ko.toJS` function,
     the result is not as expected. This is a common scenario in software development.
   id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在应用程序中发现了一个问题。当我们使用`ko.toJS`函数时，结果与预期不符。这是软件开发中常见的情况。
 - en: We have made a bad choice setting some logic in our models and we need to fix
     it. To solve this problem, we are going to separate the data and these behaviors.
     We are going to use some classes that we will call services.
   id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在模型中设置了一些逻辑，这是一个错误的选择，我们需要修复它。为了解决这个问题，我们将数据和这些行为分开。我们将使用一些我们称之为服务的类。
 - en: Services will manage the logic of our models. This means that each model will
     have a related service that will manage its state.
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务将管理我们模型的逻辑。这意味着每个模型都会有一个相关的服务来管理其状态。
 - en: Creating the product service
   id: totrans-166
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 创建产品服务
 - en: 'If you look in the `models/product.js` file, you can see that the model contains
     some logic:'
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你查看`models/product.js`文件，你会发现该模型包含一些逻辑：
 - en: '[PRE29]'
   id: totrans-168
   prefs: []
@@ -1154,22 +1164,26 @@
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用以下步骤将此逻辑和更多内容移动到一个服务中：
 - en: Create a folder called `services`.
   id: totrans-170
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建一个名为`services`的文件夹。
 - en: Inside it, create a file called `ProductService`.
   id: totrans-171
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在其中，创建一个名为`ProductService`的文件。
 - en: 'Create a singleton object and add the `hasStock` and `decreaseStock` functions,
     as follows:'
   id: totrans-172
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建一个单例对象，并添加`hasStock`和`decreaseStock`函数，如下所示：
 - en: '[PRE30]'
   id: totrans-173
   prefs:
@@ -1181,6 +1195,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 更新`add-to-cart-button`组件：
 - en: '[PRE31]'
   id: totrans-175
   prefs:
@@ -1191,31 +1206,37 @@
   id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，你还需要创建一个服务来管理购物车商品的逻辑。
 - en: Creating the CartProduct service
   id: totrans-177
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 创建`CartProduct`服务
 - en: 'The cart item service also extracts the logic of the `CartProduct` model. To
     create this service, follow these steps:'
   id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 购物车商品服务还提取了`CartProduct`模型的逻辑。要创建此服务，请按照以下步骤操作：
 - en: Create a file called `CartProductService.js` in the `service` folder.
   id: totrans-179
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`service`文件夹中创建一个名为`CartProductService.js`的文件。
 - en: Remove the `addUnit` and `removeUnit` methods from the `CartProduct` model.
   id: totrans-180
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从`CartProduct`模型中删除`addUnit`和`removeUnit`方法。
 - en: 'Update the service with these methods:'
   id: totrans-181
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用以下方法更新服务：
 - en: '[PRE32]'
   id: totrans-182
   prefs:
@@ -1227,16 +1248,19 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 更新产品
 - en: 'In our catalog, we will want to update the value of our product. To complete
     this action, follow these steps:'
   id: totrans-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的目录中，我们将希望更新我们产品的价值。要完成此操作，请按照以下步骤操作：
 - en: 'First, to update a product you need to mock the URI that handles the action:'
   id: totrans-185
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先，要更新一个产品，你需要模拟处理该操作的URI：
 - en: '[PRE33]'
   id: totrans-186
   prefs:
@@ -1249,6 +1273,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`catalog.html`视图的每一行中添加一个按钮，在您有`add-to-cart-button`组件的相同单元格中：
 - en: '[PRE34]'
   id: totrans-188
   prefs:
@@ -1260,6 +1285,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在，使用这个产品的数据打开一个模态框：
 - en: '[PRE35]'
   id: totrans-190
   prefs:
@@ -1271,6 +1297,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`tmpProduct`将包含您要编辑的对象的副本：'
 - en: '[PRE36]'
   id: totrans-192
   prefs:
@@ -1282,6 +1309,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`selectedProduct`将包含您要编辑的原始产品：'
 - en: '[PRE37]'
   id: totrans-194
   prefs:
@@ -1293,6 +1321,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`ProductService`资源中创建`clone`函数：
 - en: '[PRE38]'
   id: totrans-196
   prefs:
@@ -1306,6 +1335,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`ProductService`资源中创建`refresh`函数。此方法允许服务在不丢失对购物车中产品的引用的情况下刷新产品。
 - en: '[PRE39]'
   id: totrans-198
   prefs:
@@ -1317,6 +1347,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将这两个方法添加到服务接口中：
 - en: '[PRE40]'
   id: totrans-200
   prefs:
@@ -1330,6 +1361,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建`edit-product-modal.html`模板以显示编辑模态框。此模板是`create-product-modal.html`模板的副本。你只需要更新form标签行，如下所示：
 - en: '[PRE41]'
   id: totrans-202
   prefs:
@@ -1341,6 +1373,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你还需要更新`button`绑定：
 - en: '[PRE42]'
   id: totrans-204
   prefs:
@@ -1651,17 +1684,21 @@
   id: totrans-253
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在您可以发送和接收数据了，但是如果用户设置了服务器不允许的一些数据会发生什么？您无法控制用户输入。如果某些值不允许，重要的是要提醒用户。要验证Knockout数据，有一个名为Knockout
+    Validation的库（可在[https://github.com/Knockout-Contrib/Knockout-Validation](https://github.com/Knockout-Contrib/Knockout-Validation)找到），可以使这变得非常容易。
 - en: This library extends the observables with some values that allow you to validate
     the data when it changes. We are now going to update our models to add some kind
     of validation.
   id: totrans-254
   prefs: []
   type: TYPE_NORMAL
+  zh: 此库通过为可观察对象添加一些值来扩展可观察对象，以使您在数据更改时能够验证数据。我们现在将更新我们的模型以添加某种验证。
 - en: Extending the product model
   id: totrans-255
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 扩展产品模型
 - en: 'To validate our models using the Knockout Validation library, we are going
     to extend our model''s attributes. **Extenders** are a basic feature of Knockout.
     Using extenders we can add some properties to our observables to increase their
@@ -1669,26 +1706,31 @@
   id: totrans-256
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使用Knockout Validation库验证我们的模型，我们将扩展我们模型的属性。**扩展器**是Knockout的基本功能。使用扩展器，我们可以向我们的可观察对象添加一些属性以增强其行为。有关扩展器的更多信息，请参阅以下链接：
 - en: '[http://knockoutjs.com/documentation/extenders.html](http://knockoutjs.com/documentation/extenders.html)'
   id: totrans-257
   prefs: []
   type: TYPE_NORMAL
+  zh: '[http://knockoutjs.com/documentation/extenders.html](http://knockoutjs.com/documentation/extenders.html)'
 - en: 'We are going to extend our product model with some properties that will allow
     us to validate data by following these steps:'
   id: totrans-258
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将通过以下步骤扩展我们的产品模型以添加一些属性，以允许我们验证数据：
 - en: Go to the `models/Product.js` file.
   id: totrans-259
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 转到`models/Product.js`文件。
 - en: 'Update the `name` field. It should have at least three letters and should contain
     just letters, numbers, and dashes:'
   id: totrans-260
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 更新`name`字段。它应至少包含三个字母，并且应仅包含字母、数字和破折号：
 - en: '[PRE59]'
   id: totrans-261
   prefs:
@@ -1701,6 +1743,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 更新`price`以仅允许数字，并为其设置范围（最大和最小值）：
 - en: '[PRE60]'
   id: totrans-263
   prefs:
@@ -1712,6 +1755,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对`stock`也执行同样的操作：
 - en: '[PRE61]'
   id: totrans-265
   prefs:
@@ -1723,6 +1767,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建一个验证组以确定何时整个对象是有效的：
 - en: '[PRE62]'
   id: totrans-267
   prefs:
@@ -1735,12 +1780,14 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 此错误变量将包含一个可观察数组。当此数组没有元素时，所有可观察对象均具有正确的值。
 - en: 'In the `add-to-catalog-modal.html` template, enable the create button only
     if all values in the product are valid:'
   id: totrans-269
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`add-to-catalog-modal.html`模板中，仅在产品中的所有值都有效时才启用创建按钮：
 - en: '[PRE63]'
   id: totrans-270
   prefs:
@@ -1752,6 +1799,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`edit-product-modal.html`模板中添加相同的按钮：
 - en: '[PRE64]'
   id: totrans-272
   prefs:
@@ -1765,6 +1813,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果要为错误消息设置样式，只需为`validationMessage`类定义CSS规则，如下所示。将显示一个`span`元素，显示在与验证的可观察对象绑定的元素旁边：
 - en: '[PRE65]'
   id: totrans-274
   prefs:
@@ -1776,44 +1825,53 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 扩展客户模型
 - en: 'You also need to validate the customer data. These are the rules for validation:'
   id: totrans-276
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还需要验证客户数据。以下是验证规则：
 - en: A first name is required
   id: totrans-277
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 名字是必需的
 - en: A last name is required and it needs a minimum of three characters
   id: totrans-278
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 姓是必需的，且至少需要三个字符
 - en: An address is required and it needs a minimum of five characters
   id: totrans-279
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 地址是必需的，且至少需要五个字符
 - en: An e-mail address is required and must match the built-in e-mail pattern
   id: totrans-280
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 电子邮件地址是必需的，并且必须与内置的电子邮件模式匹配
 - en: The zip code is required and must contain five numbers
   id: totrans-281
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 邮政编码是必需的，且必须包含五个数字
 - en: 'To achieve this task, make some updates in the code, as follows:'
   id: totrans-282
   prefs: []
   type: TYPE_NORMAL
+  zh: 要完成此任务，请按照以下方式更新代码：
 - en: 'Extend the customer object in the `models/Customer.js` file:'
   id: totrans-283
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`models/Customer.js`文件中扩展客户对象：
 - en: '[PRE66]'
   id: totrans-284
   prefs:
@@ -1826,6 +1884,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果客户数据已完成并且有效，请在`order.html`模板中启用购买按钮。
 - en: '[PRE67]'
   id: totrans-286
   prefs:
@@ -1837,6 +1896,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`finish-order-modal.html`模板中显示用户信息。
 - en: '[PRE68]'
   id: totrans-288
   prefs:
@@ -1848,16 +1908,19 @@
   prefs:
   - PREF_IND
   type: TYPE_IMG
+  zh: '![扩展客户模型](img/7074OS_05_09.jpg)'
 - en: Validation messages that appear if information in the fields is not valid
   id: totrans-290
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 如果字段中的信息无效，则显示验证消息。
 - en: Now our models are validated and we know that the data we are sending has a
     valid format.
   id: totrans-291
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们的模型已经验证，并且我们知道我们发送的数据具有有效的格式。
 - en: To view the complete code of the application, you can download the code of this
     chapter from [https://github.com/jorgeferrando/knockout-cart/tree/chapter5](https://github.com/jorgeferrando/knockout-cart/tree/chapter5).
   id: totrans-292
