@@ -1,72 +1,88 @@
 - en: Chapter 9. Making Your Game Mobile
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Mobile devices are quickly becoming the go-to platform for gaming. The good
     news is that the web browsers in most of these devices are pretty good, and in
     most cases, you can make your mobile game run smoothly on them.
+  id: totrans-1
   prefs: []
   type: TYPE_NORMAL
 - en: These devices have, however, some memory and power limitations. There are some
     games that simply won't work on a mobile browser at the moment. You cannot expect
     to have just as many sprites running smoothly on your smartphone that has one-tenth
     of the power of your desktop computer.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: 'On the plus side, a mobile device offers a few capabilities you typically don''t
     find on a desktop:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: The multi-touch interface allows for new kinds of interaction with your game
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The device orientation API allows you to control your game or UI in interesting
     ways
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Most devices allow your game to be installed to the "springboard" just like
     a native app, blurring the line between browser games and native ones
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: An offline cache allows your game to work even without an Internet connection
     active on the device
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'In this chapter, we will take our MMORP and make it work on an iOS device.
     Most of the APIs we will use are de facto standards and are supported on Android
     as well. Here is a short overview of the topics we will cover:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: Dealing with the performance limitations of mobile devices
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Adding multi-touch control to our game
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Integrating our game with the springboard and other mobile-specific configuration
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Using the device orientation API
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Taking advantage of web storage and the offline application cache
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'We chose to only consider the iOS side of things for several reasons:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: iOS is still globally the most commonly used mobile OS even though Android has
     caught up recently (depending on the source and what exactly is considered a mobile
     device, you will find market share for iOS between 30 percent and 50 percent).
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -74,11 +90,13 @@
     been very controversial, it has the positive side effect of making web development
     much easier. Indeed, you don't have to deal with too much diversity on the browser
     side.
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Most of the specific APIs available on mobile browsers have first been created
     or implemented by Apple on Webkit mobile.
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -88,20 +106,24 @@
     one it replaces. If you are serious about making games that take full advantage
     of mobile devices, you should invest some time to keep yourself up-to-date with
     those changes.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Making your game run well on mobile devices
+  id: totrans-19
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Performance issues are probably the single biggest problem you will encounter
     when developing a browser-based mobile game, the main reason being that a wide
     variety of devices is available, each with very different capabilities.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: Even if you chose to support only iOS, which is probably the simplest ecosystem
     at the moment, you will still have very large differences in performance, screen
     resolution, and browser support.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: To get an idea of the complexity of the situation, take a look at the supported
@@ -109,36 +131,43 @@
     For your game, you should probably have an approach similar to theirs; select
     a few device/software versions you will target. Your game should work flawlessly
     on those.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: Then make sure that the game runs without errors on a broader selection of devices.
     On those devices, performance can be less than ideal. Finally, draw a clear line
     beyond which you won't even bother to test whether your game runs at all.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: The size of each of these categories will depend on how much effort you want
     to invest in them. One problem is that you can't really use the emulators provided
     with each platform's SDK to investigate performance issues. This means that, in
     the end, you will have to test your game on actual devices.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
 - en: This is not a problem for large companies, but if you are a small indie game
     developer, you will probably find this to be a limiting factor on the number of
     devices you will support.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: Detecting mobile browsers
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'To cope with the differences between the desktop and the mobile device there
     are many possible approaches:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: Design one game only with mobile devices in mind. It will run without any problem
     on desktops too but may not be as beautiful or as complex as it might have been
     had it been designed specifically for desktops. The good thing is that if players
     compete with one another in your game, they will all be on the same level.
+  id: totrans-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -147,26 +176,31 @@
     server-side code (if any). This is the ideal solution in terms of performances,
     but if you have PvP (player versus player) in your game player on one platform,
     it could be advantageous compared to those in the other platforms.
+  id: totrans-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: You could design only one game but add some purely cosmetic features if the
     game runs on a desktop browser. With this solution, you have only one code base,
     but it may be slightly more complex. The problem with the PvP game remains.
+  id: totrans-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The approach you will choose to follow will depend on your priorities, but for
     the second and third approaches, you will need to detect what kind of platform
     the player is running your game on.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Depending on how precise you want to be, this can be quite a complex task.
     There are basically two general methods you can use: client-side detecting and
     server-side detecting.'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: Client-side browser detection
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -174,6 +208,7 @@
     the browser on the client side makes a lot of sense. The most common approach
     is to use the `navigator.userAgent` string (**UA** for short). This variable contains
     a very long and cryptic string that holds a lot of information.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: It's important to keep in mind that the browser can fake this string (this is
@@ -181,6 +216,7 @@
     it should imitate. The good thing is that mobile devices typically don't offer
     this without some hacking on the user part. Furthermore, some very different mobiles
     have the same UA such as the desktop and mobile versions of Internet Explorer.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'A big part of it is here for legacy reasons, and you really shouldn''t bother
@@ -188,36 +224,47 @@
     you can detect what kind of browser you''re dealing with. For example, if the
     `userAgent` string contains `iPhone`, you know that the browser is Safari mobile
     running on an iPhone. The corresponding JavaScript would be something like this:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Now this will work for an iPhone, but if your user is using an iPad, it won''t
     be detected. You have to look for the string `iPad` to detect an iPad. The same
     goes for iPod Touch, where you would have to look for `iPod`. If you want to differentiate
     between iDevices and others, you could do something like this:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'If you want the granularity to detect individual devices, you should use the
     following code:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: As you can imagine, this list could quickly become quite long if you want to
     detect a large number of devices. Hopefully, there exist code snippets that do
     exactly what you are aiming to do. If you just want to detect mobile devices,
     you can use the script provided at [http://detectmobilebrowsers.com/](http://detectmobilebrowsers.com/).
     If you want more control of what exactly it is that you detect, you can use the
     script provided by the always excellent Peter-Paul Koch at [http://www.quirksmode.org/js/detect.html](http://www.quirksmode.org/js/detect.html).
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
 - en: Server-side detection
+  id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -226,6 +273,7 @@
     player's browser on the server and redirect them to the right version of the game.
     As with client-side detection, the most common technique uses the browser's `userAgent`
     string.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you use PHP, you will be happy to learn that it almost supports browser
@@ -235,16 +283,21 @@
     You will have to configure the `browscap` property in your `php.ini` file to point
     to your `php_browscap.ini` file for it to be recognized. The code to replicate
     the client-side detection we''ve implemented previously would look like this:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This has the same shortcoming as the client-side implementation: the browser
     can forge the `userAgent` string.'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
 - en: Should you really detect the browser?
+  id: totrans-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -252,12 +305,14 @@
     solution is generally to use feature detection. For example, this really makes
     sense if you want to use device orientation, then you will simply check if the
     corresponding API is available at runtime.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
 - en: In this situation, it is a far more robust approach, but what we're talking
     about here is optimizing the game performance-wise. There is no feature that you
     can detect that will provide information about this. In this situation, I would
     argue that browser detection makes sense.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
 - en: A more robust alternative would be to run a very quick benchmark before starting
@@ -266,13 +321,16 @@
     can scale the performance of your game linearly. For example, you could define
     the number of trees you use to draw a forest in a very fine way, say, 80 percent
     of the maximum number of trees.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
 - en: This is typically the case if you use a lot of particle effects. Then it's very
     easy to change the total number of particles you use to match the device performance.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
 - en: Performance limitation – memory
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -280,30 +338,37 @@
     be able to adapt to the device's limitations. The first thing that probably pops
     up in your mind when talking about performance is the speed of the processor,
     but most of the time, memory is a bigger limitation.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'On the desktop, you don''t need to think about memory anymore, in most cases
     (except to avoid memory leaks). On mobile devices, memory is a much more limited
     resource, and sometimes, simply loading a big image is too much for the browser.
     For example, the maximum allowed size for an image is as follows for iDevices:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
 - en: '|   | **< 256 MB of RAM** | **> 256 MB of RAM** |'
+  id: totrans-56
   prefs: []
   type: TYPE_TB
 - en: '| **GIF, PNG, and TIFF images** | 3 megapixels | 5 megapixels |'
+  id: totrans-57
   prefs: []
   type: TYPE_TB
 - en: '| **JPEG** | 32 megapixels | 32 megapixels |'
+  id: totrans-58
   prefs: []
   type: TYPE_TB
 - en: '| **Canvas DOM element** | 3 megapixels | 5 megapixels |'
+  id: totrans-59
   prefs: []
   type: TYPE_TB
 - en: It's important to note that this has absolutely nothing to do with the compression
     of the image. Indeed, though it's important to compress your images to reduce
     the time it will take to download them for the memory imprint, the only thing
     that matters is the resolution.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
 - en: So if compression isn't going to help, what can we do? Let's take the example
@@ -311,12 +376,14 @@
     our tile map. Many of those tiles are not actually used in the map we created
     for our game. So, a very simple way to reduce this very large image is to remove
     all the tiles we don't need.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
 - en: This means that instead of having one large image that you will use through
     the whole game, you will have a smaller image for each zone. This will increase
     the complexity of the code because it means managing the transition between zones,
     but it has the advantage of not degrading your level design at all.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'In some situations, even with this technique you will find it hard to reduce
@@ -324,18 +391,22 @@
     level, one for the desktop and the other for mobile platforms. On the mobile version,
     you will reduce the variety of tiles. For example, in our game we use multiple
     tiles to render grass, as shown in the following figure:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
 - en: '![Performance limitation – memory](img/5060OT_09_01.jpg)'
+  id: totrans-64
   prefs: []
   type: TYPE_IMG
 - en: Here, we could simply use a single tile instead. Sure, the resulting graphics
     will be less varied, but it will dramatically decrease the number of tiles you'll
     need. This has, however, the disadvantage of requiring you to maintain two separate
     versions of each level.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
 - en: Performance limitation – speed
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -344,14 +415,17 @@
     won't run on mobile devices, no matter how much effort you put into them. There
     are, however, many games that you can slightly transform to make them run at a
     reasonable speed.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
 - en: When making a DOM-based game, there are not many areas where you can speed things
     up. The first thing you should do is to try reducing the number of sprites or
     tiles.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
 - en: Specifying the page's visible area
+  id: totrans-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -360,58 +434,71 @@
     area to fill up the entire screen, which means adapting to the device resolution.
     Well, yes...and no! Yes, you want the game area to fill the entire screen, but
     no, that doesn't necessarily mean using the full resolution.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
 - en: Mobile browsers offer a very handy `meta` property that allows you to specify
     how the browser should manage the page width. This will come in handy here since
     we can basically choose the size you want for the game area and then force the
     browser to display it in fullscreen mode.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
 - en: 'This property is called viewport, and to specify a given width for the screen
     you can simply write:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: We configure two different behaviors here. First, we say to the browser that
     the original width of the page is 480 pixels. Let's say the device's native resolution
     is 960 pixels; this will mean that the page will be zoomed in to. Had the device
     resolution been 320 pixels, the page would have been zoomed out of.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
 - en: The second thing we do here is to disable the zoom function for the user. This
     is not necessary if you want to use touch events later; to control the game, you
     want to be sure that the user won't zoom in or out while trying to manipulate
     the game.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
 - en: Level of details
+  id: totrans-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Reducing the number of sprites can be tricky. For example, you don't want to
     reduce the number of NPCs (Non Player Characters) or enemies in the game. Identifying
     the element that can be removed is a tedious task.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
 - en: The following figure is taken from [Chapter 5](ch05.html "Chapter 5. Putting
     Things into Perspective"), *Putting Things into Perspective*. It's a quick reminder
     of the structure of the tile map we used for our RPG.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
 - en: '![Level of details](img/5060OT_09_02.jpg)'
+  id: totrans-79
   prefs: []
   type: TYPE_IMG
 - en: If you keep the purely decorative elements in the last two layers in this figure
     it becomes easy to reduce the number of sprites; if needed, just delete those
     two layers and you're done.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
 - en: It doesn't necessarily mean that you have to get rid of all those elements.
     What you could do is have two different versions of those layers, one with a lot
     of elements and one with way fewer.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
 - en: If you really need to reduce the number of sprites even further, you will have
@@ -419,15 +506,18 @@
     here; you will have to approach each game individually and find the right balance
     between keeping your gameplay like you originally intended the and speed of your
     game.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
 - en: Touch control
+  id: totrans-83
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Until now we've only talked about the problematic parts of mobile devices, but
     there are also advantages that come with these devices. Touch screens allow for
     a very interesting game mechanism (and multi-touch screens even more so).
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: In this section, we will implement two different ways of controlling our game
@@ -436,6 +526,7 @@
     to know is that the API for touch control is not standard, and mobile devices
     may implement it with some differences. Nevertheless, the code shown in the following
     section should work on iOS and on recent versions of Android.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'Both interfaces we will implement are based on the same basic idea: the whole
@@ -443,13 +534,16 @@
     is that the bigger the surface used for control, the more precise the control.
     The disadvantage is that you need to explain to the user how it works if he/she
     will not be able to discover it by himself/herself by simply looking at the screen.'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: The code we use can easily be adapted to work with smaller control placed at
     the bottom/side of the screen.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: D-pad
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -459,50 +553,62 @@
     interface, where the player can choose a precise direction (for example, a 30
     degree angle). The first control methods we will implement divide the screen into
     five zones as shown in the following figure:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: '![D-pad](img/5060OT_09_03.jpg)'
+  id: totrans-90
   prefs: []
   type: TYPE_IMG
 - en: The advantage is that this method has a one-to-one mapping with the keyboard
     control. If the player touches the **UP** zone, it will correspond to pressing
     the up arrow on the keyboard and so on for the other border zones. If the player
     touches the center zone, it will correspond to pressing the Space bar.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
 - en: 'To implement this, we will create five virtual keys and expand the part of
     the code that checks for keyboard input to check for that as well. The following
     code extract is the definition of those virtual keys:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: As you can see, those keys have ID fields. This is necessary because we are
     dealing with multi-touch events, and we have to be able to identify which touch
     events ended to turn the `on` field back to `false` when the player lifts his/her
     finger.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
 - en: To detect that the player touches the screen, we will register a `touchstart`
     event handler. This event is similar to the `onmousedown` event, except that it
     contains a list of touches. This makes sense because we're dealing with multi-touch
     input and we cannot simply assume that only one finger is touching the screen.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
 - en: 'All those touches are stored in the `event.changedTouches` array. In your event
     handler, you simply need to look at each of them. The following code extract is
     the whole event handler:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Since "jQuery Core" doesn't support touch events, we use the standard way to
     register event handlers. Then we prevent the events from bubbling up to make sure
     they won't produce zooms, scroll, and so on. The last part of this event handler
     checks for each touch to find out what zone it's on, switches the `on` flag of
     the corresponding key to `true`, and sets the correct `id` value for tracking.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: Now we need to be able to detect when the touch ends. This is done with `touchend`
@@ -510,24 +616,32 @@
     of the event handler has the same structure. Here we don't need to worry about
     the position of the touch but only about its ID. We will then switch the `on`
     flag of the corresponding touch back to `false`.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Now that our virtual keys hold the correct value, we can use them in our code
     as we used the array that holds the state of the real keys. That''s exactly what
     the following code does; the modified parts have been highlighted:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: With these simple modifications, we've implemented the first version of our
     touch control.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
 - en: Analog joystick
+  id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -536,107 +650,154 @@
     comes in. Here, we only have two zones: a small one in the center that works like
     the Space bar and the rest of the screen. The following figure shows these two
     zones:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前的控制方法不错，但您可能想要让玩家以更自然的方式移动角色。这就是下面的方法发挥作用的地方。这里，我们只有两个区域：中心的一个小区域，它的作用类似于空格键，以及屏幕的其余部分。下图显示了这两个区域：
 - en: '![Analog joystick](img/5060OT_09_04.jpg)'
+  id: totrans-106
   prefs: []
   type: TYPE_IMG
+  zh: '![模拟摇杆](img/5060OT_09_04.jpg)'
 - en: 'If the player touches this bigger zone, the avatar will move in the direction
     of the touch. If the fingers of the player change direction, the avatar''s movement
     will change accordingly, as shown in the following figure:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果玩家触摸这个更大的区域，角色将朝触摸的方向移动。如果玩家的手指改变方向，角色的移动也会相应改变，如下图所示：
 - en: '![Analog joystick](img/5060OT_09_05.jpg)'
+  id: totrans-108
   prefs: []
   type: TYPE_IMG
+  zh: '![模拟摇杆](img/5060OT_09_05.jpg)'
 - en: 'To implement this means slightly changing the way the player is controlled,
     so we''ve added a new method to the `player` object: `direction`. This function
     takes an angle in degrees and extrapolates the most appropriate animation as well
     as the new position of the player. The following code shows this function:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 要实现这一点，我们稍微改变了玩家控制的方式，因此我们在`player`对象中添加了一个新方法：`direction`。该函数接受以度为单位的角度，并推断出最合适的动画，以及玩家的新位置。下面的代码显示了这个函数：
 - en: '[PRE9]'
+  id: totrans-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'There is only one piece of code worth pointing out here, highlighted in the
     preceding snippet. To compute the vertical and horizontal movement from the angle,
     we use sine and cosine functions. Their meaning is explained in the following
     figure:'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里只有一小段代码值得指出，如前面的片段所示。要从角度计算垂直和水平移动，我们使用正弦和余弦函数。它们的含义在下图中解释：
 - en: '![Analog joystick](img/5060OT_09_06.jpg)'
+  id: totrans-112
   prefs: []
   type: TYPE_IMG
+  zh: '![模拟摇杆](img/5060OT_09_06.jpg)'
 - en: Those two functions will give us a number between -1 and 1 that represent how
     much the player should move along each axis. We then simply multiply this by the
     maximum movement (3, in our case) to get the real movement along each axis.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两个函数将给我们一个介于-1和1之间的数字，表示玩家应该沿每个轴移动多少。然后我们简单地将这个数乘以最大移动量（在我们的例子中为3）来获得沿每个轴的实际移动。
 - en: We do nothing to support the case where the player tries to control the game
     with the keyboard and the touch screen since this is very unlikely.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不需要支持玩家尝试使用键盘和触摸屏控制游戏的情况，因为这种情况是非常不可能发生的。
 - en: Event handlers
+  id: totrans-115
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 事件处理程序
 - en: 'Now we will use a pattern somewhat similar to what we used before with our
     virtual keys. Here we will have only two of them. One will be the same as before:
     the interaction key. The second one is a bit special since it will be used to
     store the angle at which the avatar should move.'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们将使用一种与之前使用的虚拟键类似的模式，这里我们只会有两个。一个将与以前相同：交互键。第二个有点特殊，因为它将用于存储角度，该角度是角色应该移动的方向。
 - en: 'The `touchstart` event handler is almost the same as before, except that we
     compute the angle between the touch and the center of the screen:'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '`touchstart` 事件处理程序与之前几乎相同，只是我们计算了触摸点和屏幕中心之间的角度：'
 - en: '[PRE10]'
+  id: totrans-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'For this, we use another trigonometric function: cotangent. This function allows
     us to retrieve the angle between two segments of a right triangle as shown in
     the following figure:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，我们使用另一个三角函数：余切。这个函数允许我们检索右角三角形的两条边之间的角度，如下图所示：
 - en: '![Event handlers](img/5060OT_09_07.jpg)'
+  id: totrans-120
   prefs: []
   type: TYPE_IMG
+  zh: '![事件处理程序](img/5060OT_09_07.jpg)'
 - en: 'The `touchend` handler is identical to the previous one but for the two virtual
     keys:'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '`touchend` 处理程序与之前的处理程序相同，但适用于两个虚拟键。'
 - en: '[PRE11]'
+  id: totrans-122
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'We will need a third event handler to track the movement of the fingers between
     the start of the touch and its end. This handler has a structure similar to that
     of `touchend` but updates the angle of the `MOVE` virtual key:'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要第三个事件处理程序来跟踪手指在触摸开始和结束之间的移动。此处理程序的结构与`touchend`的结构类似，但更新了`MOVE`虚拟键的角度：
 - en: '[PRE12]'
+  id: totrans-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: With those three event handlers, our new control interface is implemented. You
     really have to try them to see which one you prefer. Those methods are really
     only two among many others, and choosing the right one will have a big influence
     on the success of your game on mobile devices, so don't hesitate to try a lot
     of them before choosing the final one!
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这三个事件处理程序，我们实现了新的控制界面。您真的必须尝试它们，看看哪种方法更适合您。这些方法实际上只是许多其他方法中的两种，选择合适的方法将对您的游戏在移动设备上的成功产生重大影响，因此在选择最终方法之前，请毫不犹豫地尝试很多方法！
 - en: Integrating our game with the springboard
+  id: totrans-126
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 将我们的游戏与主屏幕集成
 - en: 'There is a very elegant way to make your game run in fullscreen mode on iOS.
     With the proper configuration, we can make your game installable on the springboard.
     This will have several effects: the game will run without any browser UI element,
     and it will have an icon and a splash screen.'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
 - en: All this is done through setting a series of `meta` tags in the document header.
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
 - en: Making your game installable
+  id: totrans-129
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -644,55 +805,69 @@
     `meta` tag in your document head with the value `yes`. Once this is done the player
     will be able to add the game to the springboard from Safari as shown in the following
     screenshot:'
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
 - en: '![Making your game installable](img/5060OT_09_08.jpg)'
+  id: totrans-131
   prefs: []
   type: TYPE_IMG
 - en: 'The code you should have in your header is as follows:'
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-133
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'A web page installed this way will be run without any visible browser UI elements
     (also called Chrome). The following figure gives the name of all the UI elements:'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
 - en: '![Making your game installable](img/5060OT_09_10.jpg)'
+  id: totrans-135
   prefs: []
   type: TYPE_IMG
 - en: Sadly, at the time of writing, this property is not well supported by Android
     phones. Some of them will make the web page installable to the main screen with
     a custom icon but won't accept the chromeless mode. Others will simply ignore
     it entirely.
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
 - en: Configuring the status bar
+  id: totrans-137
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Once launched from the springboard, the only remaining UI element is the status
     bar. As shown in the preceding figure, it's the bar at the top of the screen that
     holds information such as network reception and name, and remaining battery.
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
 - en: You can choose how this status bar looks like to make it fit your application
     as much as possible. This is done with the `apple-mobile-web-app-status-bar-style`
     `meta` tag.
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following list holds the possible values you can give to this tag and their
     corresponding effects:'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
 - en: '`default`: If you don''t use this `meta` tag or give it this value, you will
     leave the choice of the appearance of the status bar to the OS.'
+  id: totrans-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`black`: With this value, the status bar will have a black background and white
     text.'
+  id: totrans-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -701,16 +876,21 @@
     page will be rendered under the status bar. This has the advantage of giving the
     full device resolution to the game; whereas, with the other settings, the web
     page will lose a few pixels on top of the screen.'
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'The code you should have in your header is as follows:'
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-145
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Specifying the application icon
+  id: totrans-146
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -719,41 +899,52 @@
     one or more `link` tags. The problem is that different iDevices need different
     icon sizes. The solution is to specify the size of the icon in the `link` tag
     like this:'
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'The possible sizes are: 57 x 57, 72 x 72, 114 x 114, and 144 x 144\. The icon
     you specified with this tag will be overlaid with a sort of gloss effect. If you
     want your icon to be used as is, you can use the `rel` tag `apple-touch-icon-precomposed`
     instead.'
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
 - en: Specifying a splash screen
+  id: totrans-150
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: When the user launches the game, a screenshot will be displayed during the loading
     of the page. If you instead want to specify an image, you can use a `link` tag
     with the `rel` tag `apple-touch-startup-image`.
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
 - en: 'We will have the same problem as with the icon: each device has another screen
     resolution and should use a corresponding image. However, the way to specify the
     resolution of the image is different from that for the icon. Here, you will need
     to use the `media` attribute.'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
 - en: 'With the `media` attribute, you can specify the device width with `device-width`,
     the device orientation with `orientation`, and whether the device uses retina
     display with `-webkit-device-pixel-ratio`. A complete example would be as follows:'
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-154
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Using device orientation
+  id: totrans-155
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -761,30 +952,38 @@
     For example, you can use it to control the avatar''s movement. To do this, you
     can simply register an event handler that will receive an event each time the
     device orientation changes. The following code does exactly that:'
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-157
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'The first `if` statement is there to check whether the device supports the
     device orientation API. Then we register an event handler that accesses the orientation
     of the device. This orientation is provided by three angles: `alpha` is the rotation
     around the z axis, `beta` is the rotation around the x axis, and `gamma` is the
     rotation around the y axis.'
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
 - en: You already know what the x and y axes are; they are the same that we used to
     position the elements of our games. The z axis is an axis that points out of the
     screen towards the player.
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following figure shows those axes and their corresponding angles:'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
 - en: '![Using device orientation](img/5060OT_09_09.jpg)'
+  id: totrans-161
   prefs: []
   type: TYPE_IMG
 - en: Using the offline application cache
+  id: totrans-162
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -792,33 +991,43 @@
     work offline. For a game like the platformer we created earlier, it means that,
     once installed, you won't ever need a network connection again to load the game
     assets.
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
 - en: To enable offline mode, you will need to create a file called a manifest. The
     manifest is a list of all the files required by the game. They will be stored
     locally on the device during game installation on the springboard.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
 - en: 'The format of this manifest is as follows:'
+  id: totrans-165
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-166
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: The `CACHE` section lists all the files to be stored locally. The `NETWORK`
     section lists all the external resources that are accessible when the application
     is online. If you don't want to restrict the network access you may simply write
     `*` as in the preceding example.
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
 - en: 'To link the manifest to your game, you will use the following attribute for
     your `html` tag:'
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-169
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: The manifest has to be served by the server with the MIME type `text/cache-manifest`.
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
 - en: You have to be aware that once the application is installed using such a manifest,
@@ -827,68 +1036,98 @@
     itself. If you don't really need to change the manifest, you can simply write
     a version number or timestamp in a comment; this will be enough to trigger the
     refresh.
+  id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 你必须意识到，一旦使用这样一个清单安装了应用程序，即使服务器上的应用程序发生了变化，游戏文件也不会被更新。强制刷新资源的唯一方法是更改清单本身。如果你不真的需要更改清单，你可以简单地在注释中写上版本号或时间戳；这就足够触发刷新。
 - en: Another possibility is that of adding a version number on your static media.
     This will help avoiding some bugs in iOS where the static files are not refreshed
     correctly.
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种可能性是在静态媒体中添加版本号。这将有助于避免iOS中静态文件未能正确刷新的一些错误。
 - en: Using web storage
+  id: totrans-173
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用Web存储
 - en: There are, however, situations where your application needs to transmit information
     to the server, for example, when the player hits a high score. What should you
     do if the game is running in offline mode at this moment?
+  id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在一些情况下，你的应用程序需要将信息传输到服务器，例如，当玩家获得高分时。如果此刻游戏正在离线模式下运行，你该怎么办？
 - en: The solution is to use web storage. We won't go into the details of all that
     you can do with web storage, but the basic idea here is to store all the information
     you want to send to the server in local storage and transmit it once the game
     is online again. This technology is part of the HTML5 specification and therefore
     supported only by modern browsers. The available space you have to save your data
     in is 5 MB, so you will have to use it wisely.
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决方案是使用Web存储。我们不会详细介绍你可以用Web存储做什么，但基本思想是在本地存储所有你想发送到服务器的信息，并在游戏再次在线时传输它。这项技术是HTML5规范的一部分，因此只有现代浏览器支持。你可以用它来保存数据的可用空间为5MB，所以你必须明智地使用它。
 - en: To store any value you want on the client's side, you can simply use the `setItem`
     method of the `sessionStorage` object. To retrieve the value, you can use the
     `getItem` method.
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在客户端存储任何值，你可以简单地使用`sessionStorage`对象的`setItem`方法。要检索该值，你可以使用`getItem`方法。
 - en: 'The following code shows exactly this:'
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下代码正是显示这一点：
 - en: '[PRE20]'
+  id: totrans-178
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Now if you want to check whether the game is online, you can use the `onLine`
     flag on the `navigator` object, as follows:'
+  id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果你想检查游戏是否在线，你可以使用`navigator`对象上的`onLine`标志，如下所示：
 - en: '[PRE21]'
+  id: totrans-180
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: In the case of our RPG, you may want to store the player position and the enemies
     he/she killed locally and push them to the server once the Internet connection
     is restored.
+  id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的RPG游戏来说，你可能希望在本地存储玩家位置和其击败的敌人，并在Internet连接恢复后将它们推送到服务器。
 - en: Summary
+  id: totrans-182
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this chapter you've learned a lot of specific APIs and techniques available
     only to the mobile device. Writing games for mobile devices using web technologies
     is often a challenge but will greatly increase the number of potential players
     for your game.
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，你已经学习了许多仅适用于移动设备的特定API和技术。使用Web技术为移动设备编写游戏通常是一个挑战，但会极大地增加你的游戏潜在玩家数量。
 - en: You can even distribute your game in the App Store by using PhoneGap (also known
     as Apache Cordova).
+  id: totrans-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 甚至可以通过使用PhoneGap（又名Apache Cordova）在App Store上分发你的游戏。
 - en: In the next chapter we will see how to add sound and music to your game. This
     is a tricky thing to do with web technologies, but it's well worth the trouble!
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一章中，我们将学习如何将声音和音乐添加到你的游戏中。使用Web技术来做这件事情可能有些麻烦，但它绝对是值得的！
