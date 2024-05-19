@@ -332,6 +332,7 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在对象内部，我们存储页面的 URL，并定义一个名为`clicks`的空数组，用于存储每次点击事件。最后，我们创建另一个数组，这次在我们的`clickStats`对象之外，我们将使用它来存储代表文档每个布局的对象。
 - en: We also set some defaults for any AJAX requests using jQuery's `ajaxSetup()`
     method, which accepts an object containing the options to set. We'll be making
     a couple of requests, so it makes sense to set defaults for any options that we
@@ -340,12 +341,14 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还使用 jQuery 的`ajaxSetup()`方法为任何 AJAX 请求设置一些默认值，该方法接受包含要设置的选项的对象。我们将进行几个请求，因此设置在两个请求中都设置的任何选项的默认值是有意义的。在本例中，我们需要将`type`设置为`POST`，将`contentType`设置为`application/json`，并将`dataType`设置为`json`。
 - en: Our next block of code is concerned with parsing any style sheets attached to
     the document via `<link>` elements and extracting any media queries defined in
     them.
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的下一个代码块涉及解析通过`<link>`元素附加到文档的任何样式表，并提取其中定义的任何媒体查询。
 - en: We start by using jQuery's `each()` method to iterate the style sheet objects
     stored in the `StyleSheets` collection of the `document` object. For each style
     sheet, there will be an object in the collection that contains all of its selectors
@@ -353,12 +356,14 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先使用 jQuery 的`each()`方法来迭代存储在`document`对象的`StyleSheets`集合中的样式表对象。对于每个样式表，集合中都会有一个对象，其中包含其所有选择器和规则，包括任何媒体查询。
 - en: The collection that we're iterating consists of objects, so the callback function
     we pass to the `each()` method will receive the index of the current object, which
     we set to `x`, and the current object itself, which we set to `ss` as arguments.
   id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们正在迭代的集合由对象组成，因此我们传递给`each()`方法的回调函数将接收当前对象的索引（我们将其设置为`x`）和当前对象本身（我们将其设置为`ss`）作为参数。
 - en: Within our callback function we again use jQuery's `each()` method. This time
     we're iterating the `rules` collection of the `ss` object passed into the callback
     function. This collection will contain a series of objects. The callback function
@@ -367,6 +372,7 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的回调函数内部，我们再次使用 jQuery 的`each()`方法。这次，我们正在迭代传递给回调函数的`ss`对象的`rules`集合。此集合将包含一系列对象。我们传递给该方法的回调函数将再次接收索引（这次设置为`y`）和当前对象（这次设置为`rule`）作为参数。
 - en: The type of object will differ depending on what it is. It may be a `CSSImportRule`
     for `@import` statements, a `CSSFontFaceRule` for `@font-face` rules, a `CSSStyleRule`
     for any selectors defined by the style sheet, or a `CSSMediaRule` for any media
@@ -374,18 +380,21 @@
   id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 对象的类型将取决于其是什么。它可能是一个`CSSImportRule`，用于`@import`语句，一个`CSSFontFaceRule`，用于`@font-face`规则，一个`CSSStyleRule`，用于样式表定义的任何选择器，或者一个`CSSMediaRule`，用于任何媒体查询。
 - en: We are only interested in the `CSSMediaRule` objects, so within the callback
     in the nested `each()` we first check whether the rule object has a `media` property
     and if the media property has a `length`.
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只对`CSSMediaRule`对象感兴趣，因此在嵌套的`each()`回调中，我们首先检查规则对象是否具有`media`属性，以及媒体属性是否具有`length`。
 - en: Only `CSSMediaRule` objects will have a `media` property, but this property
     may be empty, so we can check for the presence of this property and check that
     it has `length` using an `if` conditional within the nested callback.
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有`CSSMediaRule`对象会有一个`media`属性，但是此属性可能为空，因此我们可以在嵌套的回调中使用`if`条件检查此属性的存在并检查其是否具有`length`。
 - en: If both of these conditions are `true` (or truthy) we know we've found a media
     query. We first set a couple of new variables. The first variable is the first
     item of the `media` collection, which will contain the text string defining the
@@ -394,6 +403,7 @@
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果这两个条件都为`true`（或者是真值），我们就知道我们找到了一个媒体查询。我们首先设置一些新变量。第一个变量是`media`集合的第一项，它将包含定义媒体查询的文本字符串，第二个是一个称为`mq`的对象，我们将使用它来存储媒体查询的断点。
 - en: We set two properties of this object – the `min` and `max` values of the media
     query. We set the `min` property by checking whether the text string contains
     the word `min`. If it does we first split the string on the term `min-width:`
@@ -703,24 +713,28 @@
   id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很重要，并且将确保请求在 Chrome 中发出。无论如何，我们对服务器的响应不感兴趣 - 我们只需确保在页面卸载之前发出请求即可。
 - en: We also set the `type` to `POST` as we're sending data to the server, and set
     the `contentType` to `application/json`, which will set the appropriate headers
     for the request to ensure that the data is handled correctly on the server.
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还将 `type` 设置为 `POST`，因为我们正在向服务器发送数据，并将 `contentType` 设置为 `application/json`，这将为请求设置适当的头，以确保服务器正确处理数据。
 - en: The `url` is clearly the URL for the web service that we're sending the data
     to, and we set the `dataType` to `json`, which again can help to make consuming
     the data on the server easier.
   id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: '`url` 明显是我们要发送数据到的 Web 服务的 URL，并且我们将 `dataType` 设置为 `json`，这样可以更容易地在服务器上消耗数据。'
 - en: Lastly we stringify the `clicks` array and wrap it in an object using the browser's
     native JSON engine. We send the stringified data to the server using the `data`
     option.
   id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们将 `clicks` 数组转换为字符串并使用浏览器的原生 JSON 引擎将其包装在对象中。我们使用 `data` 选项将字符串化的数据发送到服务器。
 - en: At this point, when a page that this script is attached to is opened, the script
     will run quietly in the background recording the coordinates of any points on
     the page that are clicked. When the user leaves the page, the click data they've
@@ -728,26 +742,32 @@
   id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，当打开连接到该脚本的页面时，脚本将在后台静静运行，记录页面上点击的任何点的坐标。当用户离开页面时，他们生成的点击数据将被发送到服务器进行存储。
 - en: Classified Intel
   id: totrans-107
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 机密情报
 - en: Browsers that do not have a JSON engine, such as Version 7 of Internet Explorer
     and below, will not be able to run the code we added in this task, although there
     are polyfill scripts that can be used in these situations.
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 不具有 JSON 引擎的浏览器，比如 Internet Explorer 的第 7 版及更低版本，将无法运行我们在此任务中添加的代码，尽管存在可在这些情况下使用的
+    polyfill 脚本。
 - en: For more information see the JSON repository at Github ([https://github.com/douglascrockford/JSON-js](https://github.com/douglascrockford/JSON-js)).
   id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 更多信息请参阅 Github 上的 JSON 仓库（[https://github.com/douglascrockford/JSON-js](https://github.com/douglascrockford/JSON-js)）。
 - en: Adding the management console
   id: totrans-110
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 添加管理控制台
 - en: I said at the start of this project that we wouldn't need to write any HTML
     or CSS. That was a minor exaggeration; we'll have to build the management console
     page ourselves, but don't worry, we won't have to write much – most of what we'll
@@ -755,11 +775,14 @@
   id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在项目开始时说过我们不需要编写任何 HTML 或 CSS。那是一个小小的夸张；我们将不得不自己构建管理控制台页面，但不用担心，我们不需要写太多代码 -
+    我们在页面上显示的大部分内容都将是动态创建的。
 - en: Prepare for Lift Off
   id: totrans-112
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备起飞
 - en: Create a new HTML page based on our standard template file called `console.html`
     and save it in the `simplex` directory that we've been working in for this project.
     Next create a new script file called `console.js` and save it in the same folder.
@@ -768,10 +791,14 @@
   id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据我们的标准模板文件创建一个名为 `console.html` 的新 HTML 页面，并将其保存在我们为此项目工作的 `simplex` 目录中。接下来创建一个名为
+    `console.js` 的新脚本文件，并将其保存在相同的文件夹中。最后，创建一个名为 `console.css` 的新样式表，并将其保存在 `simplex`
+    目录内的 `css` 文件夹中。
 - en: 'We should link to the new style sheet from the `<head>` of our new HTML page:'
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该从新的 HTML 页面的 `<head>` 中链接到新样式表：
 - en: '[PRE8]'
   id: totrans-115
   prefs: []
@@ -782,6 +809,7 @@
   id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还应该在 `<body>` 的底部链接到 jQuery 和我们的新脚本文件：
 - en: '[PRE9]'
   id: totrans-117
   prefs: []
@@ -791,6 +819,7 @@
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们应该将类名 `jqheat` 添加到 `<body>` 元素中：
 - en: '[PRE10]'
   id: totrans-119
   prefs: []
@@ -801,11 +830,13 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: 'The page will need to display an interface that can be used to select a page
     to view the click stats for. Add the following code to the `<body>` of `console.html`:'
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 页面将需要显示一个界面，用于选择要查看点击统计信息的页面。将以下代码添加到 `console.html` 的 `<body>` 中：
 - en: '[PRE11]'
   id: totrans-122
   prefs: []
@@ -816,6 +847,7 @@
   id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以为这些元素添加一些非常基本的 CSS。将以下代码添加到 `console.css` 中：
 - en: '[PRE12]'
   id: totrans-124
   prefs: []
@@ -827,6 +859,8 @@
   id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此任务中，我们不会添加任何实际功能，但我们可以准备好我们的脚本文件，以便在下一个任务中使用通常的 `document ready` 处理程序。在 `console.js`
+    中，添加以下代码：
 - en: '[PRE13]'
   id: totrans-126
   prefs: []
@@ -837,6 +871,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目标已完成 - 迷你总结
 - en: Our page starts out with a `<header>` element that contains a heading for the
     page in `<h1>` and `<fieldset>`. Inside the `<fieldset>` is the mandatory `<legend>`
     and a very simple UI for the page, which consists of a single `<input>` and a
@@ -1174,12 +1209,16 @@
   id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦 AJAX 请求完成，我们首先存储已在 `<iframe>` 中加载的文档的高度。jQuery 方法可以在选择器之后传递第二个参数，该参数设置应该被搜索以匹配选择器的上下文。我们可以将上下文设置为页面上第一个
+    `<iframe>` 的 `contentDocument` 对象，我们可以使用 `frame[0]` 访问它。
 - en: Setting the `height` of the `<section>` element will automatically make the
     `<iframe>` and the `<canvas>` element that we created earlier the `width` and
     `height` of the `<section>` so that the page can be viewed full size.
   id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 设置 `<section>` 元素的 `height` 将自动使之前创建的 `<iframe>` 和 `<canvas>` 元素的 `width` 和
+    `height` 等于 `<section>` 的宽度和高度，以便可以全屏查看页面。
 - en: Next we set the `width` and `height` properties of the `<canvas>` element we
     created in the last task. We haven't set the `width` or `height` attributes of
     the `<canvas>` element yet, so by default it will only be 300 x 300 pixels in
@@ -1188,6 +1227,8 @@
   id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们设置了上一个任务中创建的 `<canvas>` 元素的 `width` 和 `height` 属性。我们尚未设置 `<canvas>` 元素的
+    `width` 或 `height` 属性，因此默认情况下，无论 CSS 设置的可见大小如何，它都只有 300 x 300 像素的大小。因此，我们将属性设置为正确的大小。
 - en: We can then append the new `<canvas>` to the `<section>` element on the page,
     and then fire the custom `canvasready` event. We're going to want to use the data
     passed by the server in an event handler for this event, so we pass this to the
@@ -1195,6 +1236,8 @@
   id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以将新的 `<canvas>` 添加到页面上的 `<section>` 元素中，然后触发自定义的 `canvasready` 事件。我们将要在此事件的事件处理程序中使用服务器传递的数据，因此我们使用
+    `trigger()` 方法的第二个参数将其传递给处理程序函数。
 - en: We then added a handler for the `canvasready` event. This function receives
     the event object and the click data as parameters. Within the function we first
     get the `width` and `height` of the `<canvas>` element. We stored the click data
@@ -1202,6 +1245,8 @@
   id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们接着为 `canvasready` 事件添加了一个处理程序。该函数接收事件对象和点击数据作为参数。在函数内部，我们首先获取 `<canvas>` 元素的
+    `width` 和 `height`。我们将点击数据存储为百分比，需要将其转换为像素值。
 - en: In order to paint on the `<canvas>`, we'll need to get a context. We can get
     a 2D context for the `<canvas>` and store it in a variable using the `getContext()`
     function of the canvas object. If the `<canvas>` element isn't supported, the
@@ -1210,6 +1255,9 @@
   id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了在 `<canvas>` 上绘制，我们需要获取一个上下文。我们可以使用 canvas 对象的 `getContext()` 函数获取 `<canvas>`
+    的 2D 上下文并将其存储在一个变量中。如果不支持 `<canvas>` 元素，则 `ctx` 变量将被设置为 `null`。因此，只有在上下文不为 `null`
+    时，我们才能继续与画布交互。
 - en: If `ctx` is not `null`, we first clear the `<canvas>` using the `clearRect()`
     function of the canvas API and then set the color that we'll be painting on the
     canvas. We can set it to the RGBA (Red, Green, Blue, Alpha) string `0,0,255,.05`
@@ -1217,6 +1265,8 @@
   id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 `ctx` 不为 `null`，我们首先使用 canvas API 的 `clearRect()` 函数清除 `<canvas>`，然后设置我们将要在画布上绘制的颜色。我们可以将其设置为
+    RGBA（红、绿、蓝、透明度）字符串 `0,0,255,.05`，这是一种半透明的蓝色。这只需要设置一次。
 - en: We then iterate over the click data returned by the server using jQuery's `each()`
     method. The iterator function, which will be executed for the number of items
     in the clicks array, is passed the index of the current item in the array and
@@ -1224,6 +1274,8 @@
   id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们使用 jQuery 的 `each()` 方法迭代服务器返回的点击数据。迭代器函数将执行数组中项目的数量，传递当前项目在数组中的索引和 `click`
+    对象。
 - en: We first store the `x` and `y` positions of each pixel that was clicked. These
     figures are currently percentages, so we need to convert them back to pixel values.
     This is just the opposite calculation that we performed in the client part of
@@ -1232,6 +1284,8 @@
   id: totrans-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先存储每个点击的像素的 `x` 和 `y` 位置。这些数字目前是百分比，因此我们需要将它们转换回像素值。这只是在热力图的客户端部分执行的相反计算。我们只需将百分比乘以
+    `<canvas>` 的 `width` 或 `height`，然后将该数字除以 `100`。
 - en: We can then paint a dot on the `<canvas>` where the click occurred. We do this
     by starting a new path using the `beginPath()` method of the canvas object. The
     dot is drawn using the `arc()` method, which is passed a number of arguments.
