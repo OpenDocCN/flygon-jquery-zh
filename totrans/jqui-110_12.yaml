@@ -3,6 +3,7 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第 12 章。可调整大小组件
 - en: We have already seen resizables in action briefly when we looked at the dialog
     widget, earlier in the book. In this chapter, we're going to focus on it directly.
     However, the dialog is a perfect example of how useful the resizable component
@@ -10,6 +11,7 @@
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们在本书前面查看对话框小部件时，我们已经简要地看到了可调整大小的效果。在本章中，我们将直接关注它。然而，对话框是一个很好的例子，说明了在实际应用中可调整大小的组件可以有多么有用。
 - en: The resizable widget adds the same functionality that is automatically added
     to `<textarea>` elements in WebKit browsers such as Safari or Chrome, or newer
     versions of Firefox. In these browsers, a resize handle is added to the bottom-right
@@ -18,55 +20,67 @@
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 可调整大小小部件添加了与在 WebKit 浏览器（如 Safari 或 Chrome）或较新版本的 Firefox 中自动添加到 `<textarea>`
+    元素中的相同功能。在这些浏览器中，会添加一个调整大小的手柄到右下角，允许调整元素的大小。使用 jQuery UI 可调整大小组件，我们可以将此行为添加到页面上几乎任何元素中。
 - en: 'In this chapter, we''ll be looking at the following aspects of the component:'
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们将关注该组件的以下方面：
 - en: Implementing basic resizability
   id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实现基本的可调整大小
 - en: The configurable options available for use
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可用于使用的可配置选项
 - en: Specifying which resize handles to add
   id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 指定要添加的调整大小手柄
 - en: Managing the resizable's minimum and maximum sizes
   id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 管理可调整大小的最小和最大尺寸
 - en: The role of resize helpers and ghosts
   id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 调整大小帮助器和幽灵的角色
 - en: A look at the built-in resize animations
   id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 查看内置的调整大小动画
 - en: How to react to resize events
   id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何响应调整大小事件
 - en: Determining the new size of a resizable
   id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 确定可调整大小的新尺寸
 - en: Using a resizable with other library widgets
   id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 与其他库小部件一起使用可调整大小
 - en: The resizable widget is a flexible component that can be used with a wide range
     of different elements. Throughout the examples in this chapter, we'll mostly be
     using simple `<div>` elements so that the focus remains on the component and not
@@ -75,23 +89,28 @@
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 可调整大小小部件是一个灵活的组件，可以与各种不同的元素一起使用。在本章的示例中，我们将主要使用简单的 `<div>` 元素，以便将重点放在组件上，而不是底层的
+    HTML 上。我们还将在本章末尾看一些简短的示例，使用 `<img>` 和 `<textarea>` 元素。
 - en: The resizable component works well with other components and is very often used
     in conjunction with draggables. However, while you can easily make draggable components
     resizable (think dialog), the two classes are in no way related.
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 可调整大小的组件与其他组件配合得很好，并且经常与可拖动的组件一起使用。然而，虽然你可以轻松地使可拖动的组件可调整大小（比如对话框），但是这两个类别并没有任何关联。
 - en: Implementing a basic resizable widget
   id: totrans-15
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 实现基本的可调整大小小部件
 - en: 'Let''s implement the basic resizable so we can see how easy making elements
     resizable is, when you use jQuery UI as the driving force behind your pages. In
     a new file in your text editor add the following code:'
   id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们实现基本的可调整大小，这样我们就可以看到当你使用 jQuery UI 作为页面的驱动力时，使元素可调整大小是多么容易的事情。在文本编辑器中的一个新文件中添加以下代码：
 - en: '[PRE0]'
   id: totrans-17
   prefs: []
@@ -103,12 +122,15 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此文件保存为`resizable1.html`。默认实现中使用的基本小部件方法没有参数，其使用与库的其余部分相同的简化语法。这只需要一行代码即可使示例工作。
 - en: 'Along with the CSS framework files that we need for any resizable implementations,
     we also use a custom stylesheet to add basic dimensions and borders to our resizable
     `<div>`. Use the following CSS in a new file in your text editor:'
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了我们需要用于任何可调整大小实现的 CSS 框架文件外，我们还使用自定义样式表为我们的可调整大小的 `<div>` 添加了基本的尺寸和边框。在文本编辑器中的一个新文件中使用以下
+    CSS：
 - en: '[PRE1]'
   id: totrans-20
   prefs: []
@@ -123,10 +145,13 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此文件保存为`resize.css`，放在`css`文件夹中。我们在 CSS 中指定了调整大小的 `<div>` 的尺寸，因为如果没有这些尺寸，`<div>`
+    元素将拉伸到屏幕的宽度。我们还指定了一个边框来清晰地定义它，因为默认实现只会在目标元素的右下角添加一个调整大小的手柄。下面的截图显示了在 `<div>` 元素调整大小后我们的基本页面应该是什么样子的：
 - en: '![Implementing a basic resizable widget](img/2209OS_12_01.jpg)'
   id: totrans-22
   prefs: []
   type: TYPE_IMG
+  zh: '![实现基本的可调整大小小部件](img/2209OS_12_01.jpg)'
 - en: 'The files required for the resizable component are as follows:'
   id: totrans-23
   prefs: []
@@ -723,6 +748,7 @@
   id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地控制，我们可以指定可调整大小应保持的实际宽高比：
 - en: '[PRE18]'
   id: totrans-118
   prefs: []
@@ -733,11 +759,13 @@
   id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过指定`0.5`的浮点值，我们要说的是当图像调整大小时，图像的x轴应该正好是y轴的一半。
 - en: Note
   id: totrans-120
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: Care should be taken when deviating from the aspect ratio of any images; it
     is wise to try to keep the element and container sizes in proportion, otherwise
     you may find an object doesn't resize to the full extent of its container, as
@@ -746,11 +774,13 @@
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 当偏离任何图像的宽高比时，应谨慎； 最好尝试保持元素和容器大小成比例，否则您可能会发现对象未调整到其容器的全部大小，就像我们的示例中发生的那样。 如果将`aspectRatio`更改为`1`，则会发现它会正确地调整为容器的全尺寸。
 - en: Resizable animations
   id: totrans-122
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 可调整大小的动画
 - en: 'The resizable API exposes three configuration options related to animations:
     `animate`, `animateDuration`, and `animateEasing`. By default, animations are
     switched off in resizable implementations. However, we can easily enable them
@@ -758,11 +788,14 @@
   id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 可调整大小的API公开了与动画相关的三个配置选项：`animate`，`animateDuration`和`animateEasing`。 默认情况下，在可调整大小的实现中关闭了动画。
+    但是，我们可以轻松地启用它们以查看它们如何增强此组件。
 - en: 'In this example, change the markup from the previous couple of examples so
     that the resizable element goes back to a plain `<div>`:'
   id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此示例中，将标记从前面的几个示例更改为可调整大小的元素返回到普通的`<div>`：
 - en: '[PRE19]'
   id: totrans-125
   prefs: []
@@ -772,6 +805,7 @@
   id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还应该切换回`resizeGhosts.css`样式表：
 - en: '[PRE20]'
   id: totrans-127
   prefs: []
@@ -781,6 +815,7 @@
   id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，将配置对象更改为使用以下选项：
 - en: '[PRE21]'
   id: totrans-129
   prefs: []
@@ -791,17 +826,20 @@
   id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此保存为`resizable10.html`。 我们在此示例中使用的配置对象以`ghost`选项开头。
 - en: Note
   id: totrans-131
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: While using animations, the resizable element is not resized until after the
     interaction has ended, so it's useful to show the ghost as a visual cue that the
     element will be resized.
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 在使用动画时，可调整大小的元素在交互结束后才被调整大小，因此显示幽灵作为视觉提示是有用的，以表示元素将被调整大小。
 - en: All we need to do to enable animation is set the `animate` option to `true`.
     That's it; no further configuration is required. Another option we can change
     is the speed of the animation, which we have done in this example by setting the
@@ -810,16 +848,20 @@
   id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 要启用动画，我们只需将`animate`选项设置为`true`。 就是这样； 不需要进一步配置。 我们可以更改的另一个选项是动画的速度，在此示例中，我们通过设置`animateDuration`选项来完成。
+    这可以接受与jQuery的`animate()`方法一起使用的任何标准值。
 - en: When we run this page in a browser, we should find that the `resize` div will
     smoothly animate to its new size, once we let go of the mouse button.
   id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们在浏览器中运行此页面时，我们应该发现`resize` div将平滑地动画到其新大小，一旦我们松开鼠标按钮。
 - en: Simultaneous resizing
   id: totrans-135
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 同时调整大小
 - en: We can easily make several elements on the same page individually resizable
     by passing references to them to the resizable widget method. But, in addition
     to doing this, we can make use of the `alsoResize` property to specify additional
@@ -828,10 +870,13 @@
   id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过将对它们的引用传递给可调整大小的小部件方法，轻松地使同一页上的几个元素单独可调整大小。 但是，除此之外，我们还可以使用`alsoResize`属性来指定额外的要作为组一起调整大小的元素，每当实际可调整大小的元素被调整大小时。
+    让我们看看如何做到这一点。
 - en: 'First, we''ll need to reference to a new stylesheet once again:'
   id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要再次引用新的样式表：
 - en: '[PRE22]'
   id: totrans-138
   prefs: []
@@ -841,6 +886,7 @@
   id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要将页面的`<body>`中的元素更改为如下所示：
 - en: '[PRE23]'
   id: totrans-140
   prefs: []
@@ -850,6 +896,7 @@
   id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后将配置对象更改为以下内容：
 - en: '[PRE24]'
   id: totrans-142
   prefs: []
@@ -861,11 +908,14 @@
   id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此文件保存为`resizable11.html`。 我们以第二个`<div>`元素的值作为`alsoResize`选项的值，以便目标第二个`<div>`元素。
+    次要元素将自动获取实际可调整大小的可调整大小属性。
 - en: So, if we limit the resizable to having just an `e` handle, the secondary element
     will also only resize in this direction.
   id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果我们将可调整大小限制为仅具有`e`手柄，则次要元素也将仅在此方向上调整大小。
 - en: 'The new stylesheet referenced in this example should contain the following
     code:'
   id: totrans-145
