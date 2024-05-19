@@ -515,6 +515,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为了给这个页面添加样式，将以下 CSS 代码添加到 `recipe-3.css` 文件中；代码中还包含一个 `sticky` 类，在用户滚动页面时会被
+    jQuery 应用到重要元素上：
 - en: '[PRE14]'
   id: totrans-76
   prefs:
@@ -527,6 +529,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，将以下 jQuery 代码添加到 `recipe-3.js` 中，当用户试图滚过时，将激活固定元素：
 - en: '[PRE15]'
   id: totrans-78
   prefs:
@@ -538,6 +541,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 工作原理...
 - en: 'At the top of `recipe-3.js`, there is a variable called `importantOrigin`,
     which will be used to store the original position of the important division element.
     Within the jQuery on-load block, `$(''.important'').offset()` is used to get the
@@ -547,6 +551,8 @@
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `recipe-3.js` 的顶部，有一个名为 `importantOrigin` 的变量，它将用于存储重要部分元素的原始位置。在 jQuery 的加载块中，使用
+    `$('.important').offset()` 获取重要元素的顶部和左侧位置，并将这些值存储在先前创建的 `importantOrigin` 变量中。如下面的代码片段所示：
 - en: '[PRE16]'
   id: totrans-81
   prefs: []
@@ -557,6 +563,7 @@
   id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery 的 `scroll()` 函数用于在用户滚动页面时执行 `sticky()` 方法：
 - en: '[PRE17]'
   id: totrans-83
   prefs: []
@@ -570,6 +577,8 @@
   id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '`sticky()` 方法使用 `$(''body, html'').scrollTop()` 获取页面的当前垂直位置，然后将其与重要元素的顶部位置进行比较。如果用户滚过了重要元素，则使用
+    `addClass()` 方法将 `sticky` CSS 类应用于重要元素：'
 - en: '[PRE18]'
   id: totrans-85
   prefs: []
@@ -585,32 +594,40 @@
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '如果页面的当前垂直位置低于 `sticky` 元素的顶部，则使用 `removeClass()` 将 `sticky` 类移除，将重要元素恢复到其原始状态。在
+    CSS 中使用 `position: fixed;`，可以使元素固定在页面的某一点。使用 jQuery 条件性地应用此 CSS，我们可以控制何时应用元素固定，因为通常直到用户滚动过元素，使其不再在屏幕上可见，才希望这样做。'
 - en: There's more…
   id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 还有更多...
 - en: There is a popular jQuery plugin called `sticky.js`, which can be found at [http://stickyjs.com/](http://stickyjs.com/).
     This plugin uses the same principles that you have learned as part of this recipe
     and bundles all of the functionality into a plugin so that it is easy to reuse.
   id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一个流行的 jQuery 插件叫做 `sticky.js`，可以在 [http://stickyjs.com/](http://stickyjs.com/)
+    找到。该插件使用了您在本文档中学到的相同原理，并将所有功能打包成插件，以便于重用。
 - en: See also
   id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 参见
 - en: '*Creating a dynamic table of contents*'
   id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*创建一个动态目录表*'
 - en: Implementing smooth scrolling
   id: totrans-91
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 实现平滑滚动
 - en: Anchor links to navigate to different sections of the page are useful to allow
     users to easily bypass the information in which they are not interested and go
     directly to that in which they are. However, when there is a lot of textual data
@@ -621,32 +638,39 @@
   id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 锚点链接用于导航到页面的不同部分，使用户能够轻松地跳过他们不感兴趣的信息，直接进入感兴趣的部分。然而，当屏幕上有大量文本数据时，在这些不同部分之间跳转通常会让用户感到困惑。使用平滑滚动并将屏幕动画地缓慢向上或向下移动到所选部分，用户可以更容易地可视化自己导航到的位置，而不会感到迷失方向。
 - en: Getting ready
   id: totrans-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备工作
 - en: Simply create the three standard recipe files, `recipe-4.html`, `recipe-4.css`,
     and `recipe-4.js`, and save them to the same directory as the latest version of
     the jQuery library.
   id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 只需创建三个标准的配方文件，`recipe-4.html`、`recipe-4.css` 和 `recipe-4.js`，并将它们保存到与最新版本的 jQuery
+    库相同的目录中。
 - en: How to do it…
   id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实现方法...
 - en: 'Perform the following simple steps to add smooth scrolling to a website or
     web page:'
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 执行以下简单步骤，为网站或网页添加平滑滚动效果：
 - en: 'Create a long web page by adding the following HTML code to `recipe-4.html`:'
   id: totrans-97
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过将以下 HTML 代码添加到 `recipe-4.html` 文件中，可以创建一个较长的网页：
 - en: '[PRE19]'
   id: totrans-98
   prefs:
@@ -843,6 +867,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将以下jQuery代码添加到`recipe-5.js`中，它将根据我们刚刚创建的HTML页面中的标题部分填充有序列表：
 - en: '[PRE28]'
   id: totrans-128
   prefs:
@@ -856,16 +881,19 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在网页中打开`recipe-5.html`将向您展示内容在屏幕左侧，动态生成的内容列表在右侧，如下截图所示：![如何做…](img/recipe-5.jpg)
 - en: How it works…
   id: totrans-130
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 它是如何运行的...
 - en: The HTML code provides a content pane with various sections headed by `h1`,
     `h2`, `h3`, and `h4` tags and an empty ordered list element.
   id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: HTML代码提供了一个包含由`h1`、`h2`、`h3`和`h4`标签标头的各种部分以及一个空的有序列表元素的内容窗格。
 - en: 'Our jQuery code first selects the content section and then finds all of the
     header elements inside it using the jQuery `find()` function and specifying `h1,
     h2, h3, h4` as the only argument. This will create an array of the found elements
@@ -873,6 +901,7 @@
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的jQuery代码首先选择内容部分，然后使用jQuery `find()`函数找到其中的所有标题元素，并指定`h1, h2, h3, h4`作为唯一参数。这将创建一个找到的元素数组，并将它们存储在`_headers`数组中，如下代码片段所示：
 - en: '[PRE29]'
   id: totrans-133
   prefs: []
@@ -884,6 +913,7 @@
   id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后使用jQuery `each()`函数，可以遍历找到的所有标题元素并构建目录。首先声明本地变量`_header`，并将当前标题元素存储在此变量中。
 - en: 'To be able to indent subsections in the table of contents, making it easier
     for the user to see the content structure, the code needs to determine what level
     the current header is at: `h1` being the top level and `h5` being the bottom.
@@ -895,6 +925,7 @@
   id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了能够缩进目录中的子节，使用户更容易看到内容结构，代码需要确定当前标题的级别：`h1`为顶级，`h5`为底级。使用`_header.context.localName`，我们可以获取标题元素的标签（例如，`h1`）并使用JavaScript的`replace()`删除"`h`"。然后，我们可以使用`parseInt()`将剩余值转换为整数。我们得到一个值，可以用来确定标题元素的级别。这个过程在以下代码片段中显示：
 - en: '[PRE30]'
   id: totrans-136
   prefs: []
@@ -908,6 +939,7 @@
   id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以创建列表元素，并将其插入有序列表中。为了将目录中的项目链接到内容的适当部分，我们需要检查标题元素是否有我们可以链接到的ID。如果有，我们通过执行以下代码创建带有链接的列表元素；否则，我们通过执行以下代码创建基本列表元素：
 - en: '[PRE31]'
   id: totrans-138
   prefs: []
@@ -919,11 +951,13 @@
   id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，创建完列表项后，使用`css()`函数和`level`变量添加所需的缩进填充，并将创建的列表项附加到内容的有序列表中。
 - en: There's more…
   id: totrans-140
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 还有更多...
 - en: You could combine this recipe with both the *Implementing smooth scrolling*
     and *Creating sticky elements* recipes to force the table of contents to follow
     the user down the page and also provide scrolling animation for a better user
@@ -931,26 +965,31 @@
   id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以将此配方与*实现平滑滚动*和*创建粘性元素*配方结合使用，迫使目录随用户向下滚动页面并为更好的用户体验提供滚动动画。
 - en: See also
   id: totrans-142
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 参见
 - en: '*Creating sticky elements*'
   id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*创建粘性元素*'
 - en: '*Implementing smooth scrolling*'
   id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*实现平滑滚动*'
 - en: Creating a basic drag-and-drop functionality
   id: totrans-145
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 创建基本的拖放功能
 - en: It is possible to create interesting and intuitive interfaces by adding drag-and-drop
     elements to your site. jQuery UI comes with a built-in plugin for drag-and-drop
     interfaces. This recipe will show you how to create a basic drag-and-drop functionality
