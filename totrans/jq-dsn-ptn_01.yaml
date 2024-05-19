@@ -306,11 +306,14 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在获取我们感兴趣的`box`元素之后，我们在每个元素的末尾添加两个换行空格和一些额外的斜体文本。然后，我们使用`$boxes`变量遍历DOM树，使用`parent()`方法上升一个级别。`parent()`方法返回一个不同的jQuery对象，其中包含我们最初选择的框的父`<div>`元素，然后我们链式调用`addClass()`方法将它们分配给`boxsizer`
+    CSS类。
 - en: Tip
   id: totrans-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 小贴士
 - en: If you need to traverse all the parent nodes of a selected element, you can
     use the `$.fn.parents()` method. If you just need to find the first ancestor element
     that matches a given CSS selector, consider using the `$.fn.closest()` method
@@ -318,6 +321,7 @@
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您需要遍历所选元素的所有父节点，则可以使用`$.fn.parents()`方法。如果您只需要找到与给定CSS选择器匹配的第一个祖先元素，请考虑改用`$.fn.closest()`方法。
 - en: Finally, since the `boxsizer` class uses floats to achieve the three-column
     layout, we need to clear the floats in the `boxContainer`. Once again, we traverse
     the DOM using the simple `.boxContainer` CSS selector and the `$()` function.
@@ -326,12 +330,15 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，由于`boxsizer`类使用浮动来实现三列布局，我们需要清除`boxContainer`中的浮动。再次，我们使用简单的`.boxContainer`
+    CSS选择器和`$()`函数遍历DOM。然后，我们调用`.append()`方法创建一个带有`.clear` CSS类的新`<div>`元素，并将其插入到`boxContainer`的末尾。
 - en: 'After 700 milliseconds, our jQuery code will have finished, resulting in the
     three-column layout as shown earlier. In its final state, the HTML code of our
     `boxContainer` element will look as follows:'
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 700毫秒后，我们的jQuery代码将完成，结果是之前显示的三列布局。在其最终状态下，我们的`boxContainer`元素的HTML代码如下所示：
 - en: '[PRE3]'
   id: totrans-43
   prefs: []
@@ -342,12 +349,14 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 方法链和流畅接口
 - en: 'Actually, in the preceding example, we can also go one step further and combine
     all three box-related code statements into just one, which looks something as
     follows:'
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，在上面的示例中，我们还可以进一步将所有三个与框相关的代码语句合并为一个，其效果如下所示：
 - en: '[PRE4]'
   id: totrans-46
   prefs: []
@@ -360,6 +369,7 @@
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种语法模式被称为**方法链**，并且被jQuery和JavaScript社区广泛推荐。方法链是流畅接口的面向对象实现模式的一部分，其中每个方法将其指令上下文传递给后续方法。
 - en: Most jQuery methods that apply on a jQuery object also return the same or a
     new jQuery element collection object. This allows us to chain several methods,
     not only resulting in a more readable and expressive code but also reducing the
@@ -367,11 +377,13 @@
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数适用于jQuery对象的jQuery方法也会返回相同或新的jQuery元素集合对象。这使我们能够链式调用多个方法，不仅使代码更易读和表达，而且减少了所需的变量声明。
 - en: The Composite Pattern
   id: totrans-49
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 组合模式
 - en: The key concept of the Composite Pattern is to enable us to treat a collection
     of objects in the same way as we treat a single object instance. Manipulating
     a composition by using a method on the collection will result in applying the
@@ -381,6 +393,7 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 组合模式的关键概念是使我们能够像处理单个对象实例一样处理对象集合。通过在集合上使用方法来操作组合将导致将操作应用于其每个部分。这样的方法可以成功应用，而不管组合集合中包含的元素数量如何，甚至当集合不包含元素时也可以。
 - en: Also, the objects of a composite collection do not necessarily have to provide
     the exact same methods. The Composite Object can either expose only the methods
     that are common among the objects of the collection, or can provide an abstracted
@@ -388,11 +401,13 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，组合集合的对象不一定需要提供完全相同的方法。组合对象可以只公开集合对象中对象之间共同的方法，或者可以提供一个抽象的API，并适当处理每个对象的方法差异。
 - en: Let's continue by exploring how the intuitive API that jQuery exposes is highly
     influenced from the Composite Pattern.
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们继续探讨jQuery公开的直观API如何受到组合模式的高度影响。
 - en: How the Composite Pattern is used by jQuery
   id: totrans-53
   prefs:
