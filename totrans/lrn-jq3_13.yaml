@@ -450,17 +450,20 @@
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 在发出 `$.ajax()` 调用之前，我们将 `loading` 类添加到响应容器中。加载完成后，我们再次将其删除。通过这样做，我们进一步增强了用户体验，因为现在有一个视觉指示器表明后台正在发生某事。
 - en: To really get a grasp of how the promise behavior can help us, though, we need
     to look at what we can do if we store the result of our `$.ajax()` call for later
     use.
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 要真正掌握 promise 行为如何帮助我们，我们需要看看如果将 `$.ajax()` 调用的结果存储起来供以后使用时我们可以做什么。
 - en: Caching responses
   id: totrans-72
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 缓存响应
 - en: If we need to use the same piece of data repeatedly, it is wasteful to make
     an Ajax request each time. To prevent this, we can cache the returned data in
     a variable. When we need to use some data, we can check to see whether the data
@@ -470,10 +473,13 @@
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们需要重复使用相同的数据片段，每次都进行 Ajax 请求是低效的。为了防止这种情况，我们可以将返回的数据缓存在一个变量中。当我们需要使用某些数据时，我们可以检查数据是否已经在缓存中。如果是，我们就对这些数据采取行动。如果没有，我们需要进行
+    Ajax 请求，在其 `.done()` 处理程序中，我们将数据存储在缓存中并对返回的数据进行操作。
 - en: 'If we exploit the properties of promises, it can be quite simple:'
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们利用 promise 的特性，事情会变得相当简单：
 - en: '[PRE10]'
   id: totrans-75
   prefs: []
@@ -483,6 +489,7 @@
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 列表 13.9
 - en: We've introduced a new `Map` constant named `cache` to hold the `jqXHR` promises
     that we create. The keys of this map correspond to the searches being performed.
     When the form is submitted, we look to see whether there is already a `jqXHR` promise
@@ -491,12 +498,16 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们引入了一个名为 `cache` 的新的 `Map` 常量，用于保存我们创建的 `jqXHR` promises。这个映射的键对应于正在执行的搜索。当提交表单时，我们会查看是否已经为该键存储了一个
+    `jqXHR` promise。如果没有，我们像以前一样执行查询，将结果对象存储在 `api` 中。
 - en: The `.then()`, `.catch()`, and `.always()` handlers are then attached to the
     `jqXHR` promise. Note that this happens regardless of whether an Ajax request
     was made. There are two possible situations to consider here.
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '`.then()`、`.catch()` 和 `.always()` 处理程序然后附加到 `jqXHR` promise。请注意，无论是否进行了 Ajax
+    请求，这都会发生。这里有两种可能的情况需要考虑。'
 - en: 'First, the Ajax request might be sent if it hasn''t been before. This is just
     like the previous behavior: the request is issued and we use the promise methods
     to attach handlers to the `jqXHR` object. When a response comes back from the
@@ -504,6 +515,8 @@
   id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，如果之前还没有发送过 Ajax 请求，就会发送 Ajax 请求。这与以前的行为完全一样：发出请求，然后我们使用 promise 方法将处理程序附加到
+    `jqXHR` 对象上。当服务器返回响应时，会触发适当的回调，并将结果打印到屏幕上。
 - en: On the other hand, if we have performed this search in the past, the `jqXHR` promise
     is already stored in `cache`. In this case, no new search is performed, but we
     still call the promise methods on the stored object. This attaches new handlers
@@ -512,22 +525,28 @@
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，如果我们过去执行过此搜索，则 `cache` 中已经存储了 `jqXHR` promise。在这种情况下，不会执行新的搜索，但我们仍然在存储的对象上调用
+    promise 方法。这会将新的处理程序附加到对象上，但由于延迟对象已经解决，因此相关的处理程序会立即触发。
 - en: The jQuery deferred object system handles all the hard work for us. With a couple
     of lines of code, we have eliminated duplicate network requests from the application.
   id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery 延迟对象系统为我们处理了所有繁重的工作。几行代码，我们就消除了应用程序中的重复网络请求。
 - en: Throttling Ajax requests
   id: totrans-82
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 限制 Ajax 请求速率
 - en: 'A common feature of searches is to display a dynamic list of results as the
     user is typing. We can emulate this "live search" feature for our jQuery API search
     by binding a handler to the `keyup` event:'
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 搜索的常见功能是在用户输入时显示动态结果列表。我们可以通过将处理程序绑定到 `keyup` 事件来模拟这个“实时搜索”功能，用于我们的 jQuery API
+    搜索：
 - en: '[PRE11]'
   id: totrans-84
   prefs: []
@@ -537,6 +556,7 @@
   id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 列表 13.10
 - en: Here, we simply trigger the form's submit handler whenever the user types something
     in the Search field. This could have the effect of sending many requests across
     the network in rapid succession, depending on the speed at which the user types.
@@ -545,6 +565,8 @@
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们只需在用户在搜索字段中键入任何内容时触发表单的提交处理程序。这可能导致快速连续发送许多请求到网络，这取决于用户输入的速度。这种行为可能会降低
+    JavaScript 的性能；它可能会堵塞网络连接，而服务器可能无法处理这种需求。
 - en: 'We''re already limiting the number of requests with the request caching that
     we''ve just put in place. We can further ease the burden on the server, however,
     by throttling the requests. In [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
@@ -555,6 +577,9 @@
   id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经通过刚刚实施的请求缓存来限制请求的数量。然而，我们可以通过对请求进行限速来进一步减轻服务器的负担。在[第 10 章](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml)中，*高级事件*，我们介绍了当我们创建一个特殊的
+    `throttledScroll` 事件以减少原生滚动事件触发的次数时，引入了节流的概念。在这种情况下，我们希望类似地减少活动; 这次是使用 `keyup`
+    事件：
 - en: '[PRE12]'
   id: totrans-88
   prefs: []
@@ -564,6 +589,7 @@
   id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 列表 13.11
 - en: Our technique here, sometimes referred to as debouncing, is a bit different
     from the one we used in [Chapter 10](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml),
     *Advanced Events*. Whereas in that example we needed our `scroll` handler to take
@@ -576,22 +602,29 @@
   id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在这里使用的技术有时被称为防抖动，与我们在[第 10 章](d150ca06-e7dc-4100-8c91-060f0272ff67.xhtml)中使用的技术有所不同。在那个例子中，我们需要我们的
+    `scroll` 处理程序在滚动继续时多次生效，而在这里，我们只需要在输入停止后一次发生 `keyup` 行为。为了实现这一点，我们跟踪一个 JavaScript
+    计时器，该计时器在用户按键时启动。每次按键都会重置该计时器，因此只有当用户停止输入指定的时间（300 毫秒）后，`submit` 处理程序才会被触发，然后执行
+    Ajax 请求。
 - en: Extending Ajax capabilities
   id: totrans-91
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 扩展 Ajax 功能
 - en: The jQuery Ajax framework is powerful, as we've seen, but even so there are
     times when we might want to change the way it behaves. Unsurprisingly, it offers
     multiple hooks that can be used by plugins to give the framework brand new capabilities.
   id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery Ajax 框架是强大的，正如我们所见，但即使如此，有时我们可能想要改变它的行为方式。毫不奇怪，它提供了多个钩子，可以被插件使用，为框架提供全新的功能。
 - en: Data type converters
   id: totrans-93
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 数据类型转换器
 - en: In [Chapter 6](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml), *Sending Data with
     Ajax*, we saw that the `$.ajaxSetup()` function allows us to change the defaults
     used by `$.ajax()`, thus potentially affecting many Ajax operations with a single
@@ -600,6 +633,8 @@
   id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[第 6 章](3a5a790f-4c0a-4b63-bb00-cc38e78309c6.xhtml)中，*使用 Ajax 发送数据*，我们看到 `$.ajaxSetup()`
+    函数允许我们更改 `$.ajax()` 使用的默认值，从而可能影响许多 Ajax 操作只需一次语句。这个相同的函数也可以用于扩展 `$.ajax()` 可以请求和解释的数据类型范围。
 - en: As an example, we can add a converter that understands the YAML data format.
     YAML ([http://www.yaml.org/](http://www.yaml.org/)) is a popular data representation
     with implementations in many programming languages. If our code needs to interact
@@ -608,10 +643,13 @@
   id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 举个例子，我们可以添加一个理解 YAML 数据格式的转换器。YAML（[http://www.yaml.org/](http://www.yaml.org/)）是一种流行的数据表示，许多编程语言都有实现。如果我们的代码需要与这样的替代格式交互，jQuery
+    允许我们将其兼容性构建到本地 Ajax 函数中。
 - en: 'A simple YAML file containing GitHub repository search criteria:'
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 包含 GitHub 仓库搜索条件的简单 YAML 文件：
 - en: '[PRE13]'
   id: totrans-97
   prefs: []
@@ -622,6 +660,8 @@
   id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将 jQuery 与现有的 YAML 解析器（如 Diogo Costa 的 [http://code.google.com/p/javascript-yaml-parser/](http://code.google.com/p/javascript-yaml-parser/)）结合起来，使
+    `$.ajax()` 也能够使用这种语言。
 - en: 'Defining a new Ajax data type involves passing three properties to `$.ajaxSetup()`:
     `accepts`, `contents`, and `converters`. The `accepts` property adds headers to
     be sent to the server, declaring to the server that particular MIME types are
