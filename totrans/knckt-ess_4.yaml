@@ -3,6 +3,7 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第四章 管理 KnockoutJS 事件
 - en: Interaction between our app and the user is the most important issue we need
     to resolve. In the last three chapters, we have focused on the business requirements,
     so now it is time to think about how to make it easy to use our app to the end
@@ -10,12 +11,14 @@
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的应用程序与用户之间的交互是我们需要解决的最重要问题。在过去的三章中，我们一直专注于业务需求，现在是时候考虑如何使最终用户更容易使用我们的应用程序了。
 - en: Event-driven programming is a powerful paradigm that allows us to isolate our
     code better. KnockoutJS gives us several ways to work with events. We can use
     click binding or event binding if we want to use the declarative paradigm.
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 事件驱动编程是一种强大的范式，它能让我们更好地隔离我们的代码。KnockoutJS 给了我们几种处理事件的方式。如果我们想使用声明范式，可以使用点击绑定或者事件绑定。
 - en: There are two different paradigms to declare events. The declarative paradigm
     says that we can write JavaScript and custom tags in our HTML. On the other hand,
     we have the imperative paradigm that tells us that we should isolate JavaScript
@@ -25,11 +28,14 @@
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两种不同的方式来声明事件。声明范式说我们可以在我们的 HTML 中写 JavaScript 和自定义标签。另一方面，命令范式告诉我们应该将 JavaScript
+    代码与 HMTL 标记分开。为此，我们可以使用 jQuery 来编写不显眼的事件，也可以编写自定义事件。我们可以使用 `bindingHandlers` 来包装自定义事件，以便在我们的应用程序中重复使用它们。
 - en: Event-driven programming
   id: totrans-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 事件驱动编程
 - en: When we use sequential programming to write our apps, we know exactly how our
     app is going to behave. We usually use this kind of programming paradigm when
     our app has no interaction with external agents. In web development, we need to
@@ -38,12 +44,14 @@
   id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们使用顺序编程来编写我们的应用程序时，我们会准确地知道我们的应用程序将会如何行为。通常情况下，我们在我们的应用程序与外部代理没有交互时使用这种编程范式。在网页开发中，我们需要使用事件驱动的编程范式，因为最终用户会主导应用程序的流程。
 - en: Even though we haven't talked about events earlier, we know what they are because
     we have been using one of the most important events in web development, the click
     event.
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使我们之前还没谈论过事件，我们知道它们是什么，因为我们一直在使用网页开发中最重要的事件之一，即点击事件。
 - en: There are many events that users can throw. A click event, as we mentioned earlier,
     is where the user can press a key on the keyboard; we can also receive events
     from the computer like the ready event to notify us that DOM elements are all
@@ -51,6 +59,7 @@
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户可以触发许多事件。正如我们之前提到的，点击事件是用户可以在键盘上按键的地方；我们还可以从计算机那里接收事件，比如就绪事件，以通知我们 DOM 元素都已加载完毕。现在，如果我们的屏幕是可以触摸的，我们也有触摸事件。
 - en: 'We can also define our custom events. This is useful if we want to communicate
     to entities but we don''t want to create a dependency between them. For example,
     suppose we want to add items to our cart. Now the responsibility to add items
@@ -63,6 +72,8 @@
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以定义我们自定义的事件。如果我们想要通知实体但又不想创建它们之间的依赖关系，这就很有用。例如，假设我们想向购物车中添加物品。现在添加物品到购物车的责任在于视图模型。我们可以创建一个购物车实体，它封装了所有的购物车行为：添加、编辑、删除、显示、隐藏等等。如果我们开始在我们的代码中写：
+    `cart.add`, `cart.delete` 或 `cart.show`，那么我们的应用程序将依赖于 `cart` 对象。如果我们在我们的应用程序中创建事件，那么我们只需要触发它们，然后忘记接下来会发生什么，因为事件处理程序将为我们处理。
 - en: 'Event-driven programming allows us to reduce coupling but also reduces cohesion.
     We should choose in which grade you want to maintain your code readable. Event-driven
     programming is sometimes a good solution, but there is one rule we should always
@@ -72,6 +83,7 @@
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 事件驱动编程能够减少耦合，但也降低内聚。我们应该选择在多大程度上要保持你的代码可读。事件驱动编程有时候是一个好的解决方案，但有一条规则我们应该始终遵循：KISS（保持简单，傻瓜）。所以，如果一个事件是一个简单的解决方案，就采用它。如果事件只是增加了代码行数，却没有给我们带来更好的结果，也许你应该考虑依赖注入作为更好的方法。
 - en: '![Event-driven programming](img/7074OS_04_01.jpg)'
   id: totrans-10
   prefs: []
@@ -510,19 +522,23 @@
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果我们有数千种产品，我们仍然只有两个事件处理程序，而不是数千个。以下图表显示了代理模式如何提高性能：
 - en: '![Delegation pattern](img/7074OS_04_04.jpg)'
   id: totrans-74
   prefs: []
   type: TYPE_IMG
+  zh: '![代理模式](img/7074OS_04_04.jpg)'
 - en: The delegate pattern improves performance
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 代理模式提高了性能。
 - en: Building custom events
   id: totrans-76
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 构建自定义事件
 - en: Sometimes we need to make two or more entities of our application communicate
     with each other, that are not related. For example, we want to keep our cart independent
     of the application. We can create custom events to update it from the outside
@@ -530,6 +546,7 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，我们需要使应用程序中的两个或多个实体进行通信，这些实体彼此不相关。例如，我们希望将我们的购物车保持独立于应用程序。我们可以创建自定义事件来从外部更新它，购物车将对此事件做出反应；应用所需的业务逻辑。
 - en: 'We can split the event in two different events: the click and the action. So
     when we click on the up arrow to add a product, we fire a new custom event that
     handles the addition of a new unit, and the same to remove it. This give us more
@@ -540,12 +557,14 @@
   id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将事件拆分为两个不同的事件：点击和动作。因此，当我们点击上箭头添加产品时，我们触发一个新的自定义事件来处理添加新单位的操作，删除产品时同样如此。这为我们提供了关于应用程序中正在发生的事情的更多信息，我们意识到一个通用含义的事件，比如点击，只是获取数据并将其发送到更专业的事件处理程序，该处理程序知道该怎么做。这意味着我们可以将事件数量减少到只有一个。
 - en: 'Create a `click` event handler at the end of the `viewmodel.js` file that throws
     a custom event:'
   id: totrans-79
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`viewmodel.js`文件末尾创建一个`click`事件处理程序，抛出一个自定义事件：
 - en: '[PRE13]'
   id: totrans-80
   prefs:
@@ -562,12 +581,14 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 粗体行展示了我们如何使用 jQuery 触发方法来发出自定义事件。与关注触发动作的元素不同，自定义事件将焦点放在被操作的元素上。这给了我们一些好处，比如代码清晰，因为自定义事件在其名称中有关于其行为的含义（当然我们可以称事件为`event1`，但我们不喜欢这种做法，对吧？）。
 - en: You can read more about custom events and see some examples in the jQuery documentation
     at [http://learn.jquery.com/events/introduction-to-custom-events/](http://learn.jquery.com/events/introduction-to-custom-events/).
   id: totrans-82
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 您可以在 jQuery 文档中阅读更多关于自定义事件的内容，并查看一些示例，网址为[http://learn.jquery.com/events/introduction-to-custom-events/](http://learn.jquery.com/events/introduction-to-custom-events/)。
 - en: Now that we have defined our events, it is time to move all of them to an isolated
     file. We call this file `cart/events.js`. This file will contain all the events
     of our application.
@@ -575,6 +596,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在我们已经定义了我们的事件，是时候将它们全部移到一个隔离的文件中了。我们将这个文件称为`cart/events.js`。这个文件将包含我们应用程序的所有事件。
 - en: '[PRE14]'
   id: totrans-84
   prefs:
@@ -587,6 +609,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，将文件添加到脚本部分的末尾，就在`viewmodel.js`脚本的下方：
 - en: '[PRE15]'
   id: totrans-86
   prefs:
@@ -601,11 +624,13 @@
   id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该注意到现在与购物车的通信是使用事件完成的，并且我们没有证据表明有一个名为`cart`的对象。我们只知道我们要与之通信的对象具有两个方法的接口，即`addUnit`和`removeUnit`。我们可以更改接口中的对象（HTML），如果我们遵守接口，它将按照我们的期望工作。
 - en: Events and bindings
   id: totrans-88
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 事件和绑定
 - en: We can wrap events and custom events inside `bindingHandlers`. Suppose we want
     filter products just when we press the *Enter* key. This allows us to reduce the
     calls we make to the filter method, and if we are making calls to the server,
@@ -613,10 +638,12 @@
   id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将事件和自定义事件包装在`bindingHandlers`中。假设我们希望仅在按下*Enter*键时过滤产品。这使我们能够减少对过滤方法的调用，并且如果我们正在对服务器进行调用，这种做法可以帮助我们减少流量。
 - en: 'Define the custom binding handler in the `custom/koBindings.js` file:'
   id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`custom/koBindings.js`文件中定义自定义绑定处理程序：
 - en: '[PRE16]'
   id: totrans-91
   prefs: []
