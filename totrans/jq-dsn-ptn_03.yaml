@@ -282,11 +282,13 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像我们以前的实现一样，我们使用`$(document).ready()`来延迟执行我们的代码，直到页面完全加载。首先，我们声明我们的代理并将其分配给`window`对象上的一个新变量，以便在页面上全局可用。对于我们应用程序的代理，我们使用了一个具有我们实现的最外层容器的jQuery对象，我们的情况下是具有`dashboardContainer`类的`<div>`元素。
 - en: Tip
   id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: Even though using global variables is generally an anti-pattern, we store the
     broker into a global variable since it is an important synchronization point of
     the whole application and must be available for every piece of our implementation,
@@ -296,6 +298,7 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使使用全局变量通常是一个反模式，我们将代理存储为全局变量，因为它是整个应用程序的重要同步点，并且必须对我们实现的每一部分都可用，即使是存储在单独的`.js`文件中的部分也是如此。正如我们将在下一章关于模块模式的讨论中所讨论的，前面的代码可以通过将代理存储为应用程序命名空间的属性来改进。
 - en: In order to implement the category selector, we are first observing the `<select>`
     element for the `change` event. When the selected category changes, we create
     our message using a plain JavaScript object with the `value` of the selected `<option>`
@@ -311,6 +314,7 @@
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现类别选择器，我们首先观察`<select>`元素的`change`事件。当所选类别更改时，我们使用一个简单的JavaScript对象创建我们的消息，并将所选`<option>`的`value`存储在`categoryID`属性中。然后，我们使用jQuery的`jQuery.fn.trigger()`方法在我们的代理上发布它到`dashboardCategorySelect`主题。这样，我们从UI元素事件移动到一个包含所有所需信息的具有应用程序语义的消息。在我们订阅者的代码中，我们使用`jQuery.fn.on()`方法在我们的代理上使用`dashboardCategorySelect`主题作为参数（我们的自定义事件），就像我们监听简单的DOM事件一样。然后订阅者使用从接收到的消息中的`categoryID`，就像我们在前一章的实现中所做的那样，来显示适当的类别项。
 - en: Following the same approach, we split the code that handles adding and closing
     information boxes in our dashboard in publishers and subscribers. For the needs
     of this demonstration, the message of the `categoryItemOpen` topic contains just
@@ -321,6 +325,8 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 按照相同的方法，我们将处理仪表板中添加和关闭信息框的代码分割成发布者和订阅者。为了这个演示的需要，`categoryItemOpen` 主题的消息只包含我们想要打开的类别的名称。然而，在一个从服务器检索框内容的应用程序中，我们可能会使用类别项
+    ID。然后订阅者使用消息中的类别项名称创建并插入所请求的信息框。
 - en: Similarly, the message for the `categoryItemClose` topic contains the index
     of the box that we want removed. Our publisher uses the `jQuery.fn.closest()`
     method to traverse the DOM and reach the child elements of our `boxContainer`
@@ -331,11 +337,13 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，`categoryItemClose`主题的消息包含我们要移除的框的索引。我们的发布者使用`jQuery.fn.closest()`方法遍历DOM并到达我们的`boxContainer`元素的子元素，然后使用`jQuery.fn.index()`方法在其同级元素中找到其位置。然后，订阅者使用从接收到的消息中的`boxIndex`属性和`jQuery.fn.eq()`方法来过滤并仅从仪表板中移除所请求的信息框。
 - en: Tip
   id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: In a more complex application, instead of the box index, we can associate each
     information box element with a newly retrieved `jQuery.guid` using a mapping object.
     This will allow our publisher to use that `guid` in the message instead of the
