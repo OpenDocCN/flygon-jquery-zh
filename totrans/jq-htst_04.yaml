@@ -3,6 +3,7 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第 4 章。jQuery Mobile 单页面应用程序
 - en: jQuery mobile is an exciting project that brings the power of jQuery to the
     world of handheld and mobile experience. Like jQuery UI, it builds on and extends
     the jQuery core with a series of UI widgets and helpers. In this case these are
@@ -10,16 +11,20 @@
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery mobile 是一个令人兴奋的项目，它将 jQuery 的强大功能带入了手持设备和移动体验的世界。与 jQuery UI 类似，它在 jQuery
+    核心基础上构建和扩展了一系列 UI 小部件和辅助工具。在这种情况下，这些小部件被优化用于移动显示和触摸界面。
 - en: We're also going to use JsRender, the official templating solution for jQuery
     and the successor to the jQuery template plugin `tmpl`.
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还将使用 JsRender，这是 jQuery 的官方模板解决方案，也是 jQuery 模板插件 `tmpl` 的后继者。
 - en: Mission Briefing
   id: totrans-3
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 任务简报
 - en: In this project we'll build a simple application that looks for questions on
     stack overflow that have an un-awarded bounty on them. We'll call it Bounty Hunter.
     It will contain just a few individual pages, but will be made to feel like a native
@@ -27,32 +32,38 @@
   id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本项目中，我们将构建一个简单的应用程序，该应用程序寻找在堆栈溢出上有未颁发奖励的问题。我们将其称为赏金猎人。它将只包含一些单独的页面，但将被制作成感觉像是一个本地应用程序，而不是一个标准的网站。
 - en: Although sites and apps built with jQuery Mobile will work perfectly fine on
     a laptop or desktop, jQuery Mobile subscribes to the mobile-first philosophy of
     building the smallest layouts first.
   id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然使用 jQuery Mobile 构建的站点和应用程序在笔记本电脑或台式机上运行得很好，但 jQuery Mobile 坚持采用先移动的理念，先构建最小的布局。
 - en: This is the layout that we'll be focusing on throughout this project. If you
     don't have a smartphone or other capable mobile device, the example app we'll
     be building will still work in a normal desktop browser.
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们在整个项目中将重点关注的布局。如果您没有智能手机或其他功能强大的移动设备，我们将构建的示例应用程序仍将在普通桌面浏览器中正常工作。
 - en: 'The app we''ll be building in this project will look as shown in the following
     screenshot:'
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本项目中，我们将构建的应用程序将如下截图所示：
 - en: '![Mission Briefing](img/9106OS_04_01.jpg)'
   id: totrans-8
   prefs: []
   type: TYPE_IMG
+  zh: '![任务简报](img/9106OS_04_01.jpg)'
 - en: Why Is It Awesome?
   id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 它为什么如此令人敬畏？
 - en: jQuery Mobile offers full support and, importantly, consistency across all of
     the major modern smartphones and tablets. It also offers limited support to a
     much wider sphere of common, but perhaps older, and definitely less capable mobile
@@ -62,6 +73,8 @@
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery Mobile 提供了对所有主要现代智能手机和平板电脑的全面支持，并且非常重要的是提供了一致性。它还向更广泛范围的常见但可能更老、功能更差的移动设备提供了有限支持。它建立在
+    jQuery 本身稳固的基础之上，并且从 jQuery UI 那里借鉴了许多最佳实践，特别是在小部件如何初始化和配置方面。
 - en: jQuery Mobile offers two ways in which widgets can be initialized; we can use
     the extensive HTML5 `data-` attribute system, which will trigger the initialization
     of widgets automatically without any additional configuration, or we can create
@@ -69,84 +82,100 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery Mobile 提供了两种小部件初始化的方式；我们可以使用广泛的 HTML5 `data-` 属性系统，它将自动触发小部件的初始化，无需任何额外的配置，或者我们可以动态创建小部件，并纯粹通过脚本调用它们。
 - en: Both techniques have their advantages and disadvantages and we'll get to look
     at both techniques over the course of this project, so you'll be able to decide
     which way suits you best.
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两种技术各有优缺点，我们将在本项目中学习这两种技术，这样您就可以决定哪种方式最适合您。
 - en: Your Hotshot Objectives
   id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 您的炫目目标
 - en: 'These are the tasks that this project will be broken down into:'
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些是本项目将分解成的任务：
 - en: Building the welcome screen
   id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建欢迎屏幕
 - en: Adding a second page
   id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 添加第二个页面
 - en: Creating the script wrapper
   id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建脚本包装器
 - en: Getting some bounties
   id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 获得一些赏金
 - en: Adding a JsRender template
   id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 添加一个 JsRender 模板
 - en: Building the list view
   id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建列表视图
 - en: Building an item view
   id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建一个项目视图
 - en: Handling paging
   id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 处理分页
 - en: Mission Checklist
   id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 任务清单
 - en: The jQuery Mobile site provides a page template to use as a starting point when
     developing with the framework. We can use that template as the basis for this
     project. To get set up we should visit [http://jquerymobile.com/demos/1.2.0/docs/about/getting-started.html](http://jquerymobile.com/demos/1.2.0/docs/about/getting-started.html).
   id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery Mobile 网站提供了一个页面模板，可用作使用该框架进行开发时的起点。我们可以将该模板用作此项目的基础。要设置，请访问 [http://jquerymobile.com/demos/1.2.0/docs/about/getting-started.html](http://jquerymobile.com/demos/1.2.0/docs/about/getting-started.html)。
 - en: Copy the template shown in the **Create a basic page template** section and
     save it as `bounty-hunter.html` in our main working directory. This template contains
     everything we need to get started.
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 复制“创建基本页面模板”部分显示的模板，并将其另存为 `bounty-hunter.html` 在我们的主工作目录中。 此模板包含我们启动所需的一切。
 - en: 'We should also link to JsRender at this point; add the following code directly
     after the `<script>` element that links to jQuery Mobile in the template we just
     saved:'
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，我们还应该链接到 JsRender； 在我们刚刚保存的模板中的链接到 jQuery Mobile 的 `<script>` 元素之后直接添加以下代码：
 - en: '[PRE0]'
   id: totrans-27
   prefs: []
@@ -157,6 +186,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: At the time of writing, the current version of jQuery Mobile is not compatible
     with jQuery 1.9\. The template that we'll get from the jQuery Mobile site will
     already link to a compatible version of jQuery, and 1.9 support will shortly be
@@ -164,6 +194,8 @@
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在撰写时，当前版本的 jQuery Mobile 与 jQuery 1.9 不兼容。 我们将从 jQuery Mobile 网站获取的模板将链接到兼容版本的
+    jQuery，并且一旦 jQuery Mobile 达到 1.3 里程碑，1.9 支持将很快可用。
 - en: In order to test our mobile app, we should also use a web server for this project
     so that the test page is viewed using a proper `http://` URL and not a `file:///`
     URL. You may already have an open source web server, such as Apache, installed
@@ -171,6 +203,8 @@
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了测试我们的移动应用，我们还应该为该项目使用 Web 服务器，以便使用适当的 `http://` URL 而不是 `file:///` URL 查看测试页面。
+    您可能已经在计算机上安装了开源 Web 服务器，例如 Apache，如果有，那就没问题了。
 - en: If you don't have a web server already installed and configured, I'd recommend
     downloading and installing Microsoft's **Visual Web Developer Express** (**VWDE**).
     This is a free version of Microsoft's industry-standard IDE Visual Studio, and
@@ -180,6 +214,9 @@
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您尚未安装和配置 Web 服务器，我建议下载并安装微软的 **Visual Web Developer Express**（**VWDE**）。 这是微软行业标准
+    IDE Visual Studio 的免费版本，除了包含内置的开发 Web 服务器外，还是一个非常强大的 IDE，具有 JavaScript 和 jQuery
+    的 Intellisense 支持以及一系列面向前端开发者的功能。
 - en: For developers who prefer open source software, the Apache web server, along
     with PHP and MySQL, can be installed on both Mac and Windows systems. To make
     installation and configuration easier, a range of packages have been created which
@@ -187,24 +224,32 @@
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于更喜欢开源软件的开发人员，Apache Web 服务器以及 PHP 和 MySQL 可以安装在 Mac 和 Windows 系统上。 为了使安装和配置更加简单，已经创建了一系列软件包，这些软件包一起安装软件并自动配置，例如
+    XAMPP。
 - en: Note
   id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: VWDE can be installed by visiting [http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-web-developer-express](http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-web-developer-express).
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: VWDE 可以通过访问 [http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-web-developer-express](http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-web-developer-express)
+    进行安装。
 - en: The XAMPP downloads are available at [http://www.apachefriends.org/en/xampp.html](http://www.apachefriends.org/en/xampp.html).
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: XAMPP 下载可在 [http://www.apachefriends.org/en/xampp.html](http://www.apachefriends.org/en/xampp.html)
+    获取。
 - en: Building the welcome page
   id: totrans-36
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 构建欢迎页面
 - en: Many apps have a welcome or home screen that the user can return to in order
     to select common actions. In our first task of this project, we'll build the welcome
     screen, which will consist of some simple page furniture such as a header, footer,
@@ -213,11 +258,14 @@
   id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多应用程序都有一个欢迎或主屏幕，用户可以返回以选择常见操作。 在这个项目的第一个任务中，我们将构建欢迎屏幕，它将包含一些简单的页面家具，如标题，页脚，徽标，并将包含一个搜索框和按钮，用于触发对
+    Stack Exchange API 的调用。
 - en: Prepare for Lift Off
   id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备起飞
 - en: At this point we can create the additional resources that we'll be using in
     the project. We should create a new style sheet called `bounty-hunter.css` in
     the `css` folder, and a new script file called `bounty-hunter.js` in the `js`
@@ -225,12 +273,16 @@
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此时，我们可以创建项目中将使用的其他资源。 我们应该在 `css` 文件夹中创建一个名为 `bounty-hunter.css` 的新样式表，以及一个名为
+    `bounty-hunter.js` 的新脚本文件。
 - en: 'We should add a `<link>` element to the `<head>` of the page for the style
     sheet. The following code should be added directly after the jQuery mobile style
     sheet (and before the jQuery mobile `<script>` elements):'
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该在页面的 `<head>` 中添加一个 `<link>` 元素来链接样式表。 以下代码应该直接添加在 jQuery 移动样式表之后（jQuery
+    移动 `<script>` 元素之前）：
 - en: '[PRE1]'
   id: totrans-41
   prefs: []
@@ -241,6 +293,7 @@
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将 `<script>` 元素添加到通常的位置，就在关闭的 `</body>` 标签之前：
 - en: '[PRE2]'
   id: totrans-43
   prefs: []
@@ -251,28 +304,33 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: Since jQuery Mobile provides its own baseline styling that includes a reset
     and typography defaults, we won't need to link to our `common.css` file in this
     example.
   id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于jQuery Mobile提供了自己的基线样式，其中包括重置和排版默认值，因此在此示例中，我们不需要链接到我们的`common.css`文件。
 - en: Engage Thrusters
   id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: The jQuery Mobile template that we downloaded contains the recommended basic
     structure that most jQuery Mobile pages should be built from. We'll use the recommended
     structure, but we'll be adding some extra attributes to the existing markup.
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们下载的jQuery Mobile模板包含了大多数jQuery Mobile页面应该构建的推荐基本结构。我们将使用推荐的结构，但会向现有标记添加一些额外的属性。
 - en: 'We should add an `id` attribute to the `<div>` element that has the `data-role="page"`
     attribute in `bounty-hunter.html`; set the `id` attribute to `welcome`:'
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该在`bounty-hunter.html`中具有`data-role="page"`属性的`<div>`元素中添加一个`id`属性；将`id`属性设置为`welcome`：
 - en: '[PRE3]'
   id: totrans-49
   prefs: []
@@ -283,6 +341,7 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们应该修改原始标记，使其显示如下。首先，我们可以添加一个标题区域：
 - en: '[PRE4]'
   id: totrans-51
   prefs: []
@@ -292,6 +351,7 @@
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们可以直接在标题区域后面添加主要内容区域：
 - en: '[PRE5]'
   id: totrans-53
   prefs: []
@@ -301,6 +361,7 @@
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们可以在主要内容区域后面添加一个页脚区域：
 - en: '[PRE6]'
   id: totrans-55
   prefs: []
@@ -311,6 +372,7 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以为欢迎屏幕添加一些样式。将以下选择器和规则添加到`bounty-hunter.css`中：
 - en: '[PRE7]'
   id: totrans-57
   prefs: []
@@ -321,17 +383,20 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目标完成 - 迷你总结
 - en: First we updated the text inside the `<h1>` element within the container `<div>`
     that has the `data-role="header"` attribute.
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们更新了具有`data-role="header"`属性的容器`<div>`内部`<h1>`元素中的文本。
 - en: We then added some content to the content container, including a paragraph of
     introductory text and a container `<div>`. Inside the container we added the `<label>`,
     `<input>`, and `<button>` elements.
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们向内容容器添加了一些内容，包括一段简介文字和一个容器`<div>`。容器内部我们添加了`<label>`、`<input>`和`<button>`元素。
 - en: jQuery Mobile recommends using a `<label>` element with a valid `for` attribute
     for all `<input>` elements for accessibility reasons, so we add one, but then
     hide it using the `ui-hidden-accessible` class. This will allow assistive technologies
@@ -339,6 +404,7 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 出于可访问性原因，jQuery Mobile建议为所有`<input>`元素使用具有有效`for`属性的`<label>`元素，因此我们添加了一个，但然后使用`ui-hidden-accessible`类将其隐藏。这将允许辅助技术仍然看到它，而不会在视觉上混淆页面。
 - en: The `<input>` is just a simple text field with an `id` attribute for easy selection
     from scripts and a `placeholder` attribute, which adds the specified text inside
     the `<input>` as placeholder text. This is nice to use to give a visual cue now
@@ -346,6 +412,7 @@
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '`<input>`只是一个带有`id`属性的简单文本字段，用于从脚本中轻松选择，以及一个`placeholder`属性，该属性将指定的文本添加到`<input>`内部作为占位符文本。这很好地用于在标签被隐藏时提供视觉提示，但在较旧的浏览器中可能不受支持。'
 - en: The `<button>` element has several custom jQuery Mobile `data-` attributes and
     will be enhanced automatically by the framework when the page initially loads.
     jQuery Mobile automatically enhances a range of different elements based on which
@@ -355,12 +422,14 @@
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '`<button>`元素具有几个自定义的jQuery Mobile`data-`属性，并且在页面初始加载时将由框架自动增强。jQuery Mobile根据元素类型和任何`data-`属性自动增强一系列不同的元素。增强通常包括将原始元素包装在容器中或添加其他附加元素以与之并列。'
 - en: The `data-inline="true"` attribute sets the container that is wrapped around
     the `<button>` to `inline-block` so that it doesn't span the full width of the
     viewport. The `data-icon="search"` attribute gives it a search icon.
   id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '`data-inline="true"`属性将包围`<button>`的容器设置为`inline-block`，以便它不会占据视口的全部宽度。`data-icon="search"`属性为其添加了一个搜索图标。'
 - en: We added some extra `data-` attributes to the container `<div>` element in the
     original template with the `data-role="footer"` attribute. The `data-position="fixed"`
     attribute works in conjunction with the `data-id="footer"` attribute to fix the
@@ -369,12 +438,14 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在原始模板中为容器`<div>`元素添加了一些额外的`data-`属性，其中包括`data-role="footer"`属性。`data-position="fixed"`属性与`data-id="footer"`属性配合使用，将元素固定在视口底部，并确保在页面更改时不进行过渡。
 - en: Inside the footer container, we added a `<small>` element with some fake copyright
     info, such as would usually be found in a web page's footer. We also added a new
     `<a>` element that links to another page, which we'll add in the next task.
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在页脚容器内，我们添加了一个 `<small>` 元素，其中包含一些虚假的版权信息，通常在网页的页脚中找到。我们还添加了一个新的 `<a>` 元素，链接到另一个页面，我们将在下一个任务中添加。
 - en: This element is also given several custom `data-` attributes. The `data-icon="info"`
     attribute gives the enhanced element an icon. The `data-role="button"` attribute
     triggers enhancement by the framework and gives this simple link its button-like
@@ -383,6 +454,8 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 该元素还具有几个自定义 `data-` 属性。`data-icon="info"` 属性为增强元素提供了一个图标。`data-role="button"`
+    属性通过框架触发增强，并赋予这个简单链接类似按钮的外观。`data-transition="slide"` 属性在导航到新页面时使用幻灯片转换。
 - en: Lastly we added some basic styling to the style sheet for this project. We floated
     the search button to the right and changed the margin given to it by jQuery Mobile.
     The style is added using the class we added to our container and a class added
@@ -391,23 +464,27 @@
   id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们为这个项目的样式表添加了一些基本的样式。我们将搜索按钮浮动到右边，并通过 jQuery Mobile 更改了给它的边距。样式是使用我们添加到容器的类和框架添加的类添加的。我们需要同时使用这两个类来确保我们的选择器比框架使用的选择器更具特异性。
 - en: We also styled our footer elements to float them left and right and position
     them as desired. Again we have to beat the specificity of the selector used by
     the default jQuery Mobile theme.
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还对页脚元素进行了样式设置，使它们左右浮动并按需定位。我们必须再次击败 jQuery Mobile 主题中默认选择器的特异性。
 - en: At this point, we should be able to run the page in a browser and see the home
     page with the header and footer at the top and bottom respectively, the super-simple
     search form, and the big orange image that gives the application a basic identity.
   id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们应该能够在浏览器中运行页面，并在顶部和底部分别看到带有标题和页脚的主页，简单的搜索表单以及给应用程序提供基本身份的大橙色图像。
 - en: Classified Intel
   id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 机密情报
 - en: jQuery Mobile is built upon a custom `data-` attribute system in which we can
     give certain attributes to elements and have the framework initialize widgets
     based on them. This custom `data-` attribute framework isn't mandatory; we can
@@ -415,62 +492,77 @@
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: jQuery Mobile 是建立在自定义 `data-` 属性系统之上的，我们可以给元素添加特定属性，并让框架基于这些属性初始化小部件。这个自定义 `data-`
+    属性框架并非强制性；如果需要的话，我们可以手动初始化和配置小部件。
 - en: But using the attributes is convenient and allows us to focus on the custom
     script code to add the behavior we want without worrying about the setup and initialization
     of the jQuery Mobile widgets we wish to use.
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是使用属性很方便，让我们能够专注于添加我们想要的行为的自定义脚本代码，而不用担心我们想要使用的 jQuery Mobile 小部件的设置和初始化。
 - en: Adding a second page
   id: totrans-74
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 添加第二个页面
 - en: In this task we'll add the page that the **About** hyperlink we added to the
     footer container of the welcome page links to. This allows us to experience jQuery
     Mobile transitions in action, configured purely via the `data-` attributes system.
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个任务中，我们将添加一个页面，**关于** 超链接，我们在欢迎页面的页脚容器中添加了链接到它。这使我们能够通过仅通过 `data-` 属性系统配置来体验
+    jQuery Mobile 转换的效果。
 - en: Note
   id: totrans-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: For more information, see the jQuery Mobile `data-`attributes reference at [http://jquerymobile.com/demos/1.2.0/docs/api/data-attributes.html](http://jquerymobile.com/demos/1.2.0/docs/api/data-attributes.html).
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关更多信息，请参阅 jQuery Mobile `data-` 属性参考文档：[http://jquerymobile.com/demos/1.2.0/docs/api/data-attributes.html](http://jquerymobile.com/demos/1.2.0/docs/api/data-attributes.html)。
 - en: Prepare for Lift Off
   id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为起飞做准备
 - en: Save a new copy of the jQuery Mobile page template that we used in the last
     task but this time call it `bounty-hunter-about.html` and save it in the main
     project directory (alongside the `bounty-hunter.html` page).
   id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 保存一个新的 jQuery Mobile 页面模板，我们在上一个任务中使用过，但这次将其命名为 `bounty-hunter-about.html`，并将其保存在主项目目录中（与
+    `bounty-hunter.html` 页面并列）。
 - en: We also still need to link to our `bounty-hunter.css` file, our `bounty-hunter.js`
     file, and JsRender as we did before.
   id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要像之前一样链接到我们的 `bounty-hunter.css` 文件，我们的 `bounty-hunter.js` 文件以及 JsRender。
 - en: Note
   id: totrans-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: For more information on JsRender, see the documentation at [https://github.com/BorisMoore/jsrender](https://github.com/BorisMoore/jsrender).
   id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关 JsRender 的更多信息，请参阅文档：[https://github.com/BorisMoore/jsrender](https://github.com/BorisMoore/jsrender)。
 - en: Engage Thrusters
   id: totrans-83
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: 'In our new `bounty-hunter-about.html` page, change the markup inside the `<div>`
     with a `data-role="page"` to the following:'
   id: totrans-84
@@ -678,6 +770,7 @@
   id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ajax()` 方法接受一个对象字面量，该字面量可用于配置 jQuery 支持的任何标准 AJAX 选项，以控制请求的执行方式。'
 - en: The `url` property sets the URL that the request is made to, which we set to
     the entry point of the Stack Exchange API that we'd like to use. We set the `dataType`
     to `JSONP` so that we can get the data from the Stack Exchange domain without
@@ -685,6 +778,8 @@
   id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '`url` 属性设置了请求所发出的 URL，我们将其设置为我们想要使用的 Stack Exchange API 的入口点。我们将 `dataType`
+    设置为 `JSONP`，以便我们可以从 Stack Exchange 域获取数据，而不触发浏览器的跨域安全限制。'
 - en: '**JSON** (**JavaScript Object Notation**) is a data format, with an extremely
     similar syntax to object literals in JavaScript, and it is used to exchange data
     across different platforms or systems. **JSONP** (**JSON with padding**) is a
@@ -695,6 +790,8 @@
   id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: '**JSON**（**JavaScript 对象表示法**）是一种数据格式，其语法与 JavaScript 中的对象字面量非常相似，用于在不同平台或系统之间交换数据。**JSONP**（带填充的
+    JSON）是一种技术，它动态将新脚本注入页面，将 JSON 数据暴露给浏览器中的 JavaScript 解析器。这是必要的，因为浏览器的同源安全策略限制了数据可以从当前域加载的域。'
 - en: The Stack Exchange API can be configured, and the data we receive filtered in
     very specific ways, using standard query string parameters to enable or disable
     particular functionality. We can use jQuery's `data` AJAX property to add the
@@ -702,15 +799,20 @@
   id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: Stack Exchange API 可以通过使用标准查询字符串参数以非常特定的方式配置，并过滤我们收到的数据，以启用或禁用特定功能。我们可以使用 jQuery
+    的 `data` AJAX 属性来添加我们希望设置的查询字符串参数。
 - en: Note
   id: totrans-116
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: For more information on the Stack Exchange API, see the documentation at [https://api.stackexchange.com/](https://api.stackexchange.com/).
   id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关 Stack Exchange API 的更多信息，请参阅[https://api.stackexchange.com/](https://api.stackexchange.com/)
+    的文档。
 - en: We use the `page` parameter to specify which page of the results we'd like to
     get, which will be received by the function as a parameter. We set the number
     of questions returned to `10` to page the amount of data shown at any one time.
@@ -718,6 +820,8 @@
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用 `page` 参数指定我们想要获取结果的哪一页，这将作为参数传递给函数。我们将返回的问题数量设置为 `10`，以将一次显示的数据量分页。这是使用
+    `pagesize` 参数设置的。
 - en: The `tagged` parameter uses the value of the tags variable, which we can manipulate
     when required later in the project. The Stack Exchange API won't complain if we
     send this parameter without a value, so we can safely set it regardless of whether
@@ -725,6 +829,7 @@
   id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: '`tagged` 参数使用标签变量的值，我们可以在项目后期需要时操纵它。如果我们发送此参数而没有值，Stack Exchange API 不会抱怨，因此我们可以安全地设置它，而不管实际上是否有任何标签。'
 - en: We specify that we'd like the results in descending order, and sort by activity,
     so questions with the most recent activity will be listed first. The `site` is
     set to `stackoverflow`, so that questions are not received from the entire Stack
@@ -732,6 +837,8 @@
   id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们指定希望结果按降序排列，并按活动排序，因此最近活动的问题将首先列出。`site` 设置为 `stackoverflow`，以便仅从 Stack Exchange
+    网站的整个网络中接收问题。
 - en: The last configuration property is a predefined filter that I have already created
     and saved on Stack Exchange. There is a tool included for doing this when browsing
     any of the API methods. The purpose of the filter is to control exactly which
@@ -740,11 +847,13 @@
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一个配置属性是我已经在 Stack Exchange 上创建并保存的预定义过滤器。当浏览任何 API 方法时，都包含了用于执行此操作的工具。过滤器的目的是精确控制在响应中返回哪些字段，以确保我们不会收到比我们需要的更多数据。
 - en: Note
   id: totrans-122
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: In this example we're just using the Stack Exchange API anonymously. For full
     production-ready applications intended for public use, we must always register
     the application with Stack Applications, and use an API key with any requests
@@ -752,6 +861,8 @@
   id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此示例中，我们仅匿名使用 Stack Exchange API。对于完全生产就绪、供公众使用的应用程序，我们必须始终在 Stack Applications
+    中注册应用程序，并在进行任何请求时使用 API 密钥。
 - en: Some fields that we want are not included in the default filter (which is used
     if no filter is provided when making the request), and a lot of fields that we
     don't need are returned. The filter we will use here gives us just the fields
@@ -759,12 +870,14 @@
   id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们想要的一些字段未包含在默认过滤器中（如果在发出请求时未提供过滤器，则使用默认过滤器），而返回了许多我们不需要的字段。我们将在此处使用的过滤器仅提供了我们此项目所需的字段，并且不需要身份验证即可使用。
 - en: These are most of the AJAX options that we need to set for this request; those
     which are not known at this point can be passed to the function when it is invoked.
     We'll see how to do this in the next task.
   id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些是我们需要为此请求设置的大多数 AJAX 选项；目前不知道的选项可以在调用函数时传递。我们将在下一个任务中看到如何做到这一点。
 - en: We can make use of jQuery's `beforeSend` AJAX event to show the jQuery Mobile
     AJAX spinner directly before the request is made. jQuery Mobile uses a spinner
     every time a page is transitioned, but we can subvert it for our own requirements
@@ -772,6 +885,8 @@
   id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以利用 jQuery 的`beforeSend`AJAX 事件，在发出请求之前直接显示 jQuery Mobile 的 AJAX 旋转器。每次转换页面时，jQuery
+    Mobile 都会使用旋转器，但是我们可以在进行 AJAX 请求时将其曲解为自己的要求。
 - en: The framework will automatically attach a `mobile` object to the instance of
     jQuery running on the current page. This object contains various properties used
     to configure the jQuery Mobile environment, and various methods to trigger different
@@ -779,22 +894,26 @@
   id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 框架将自动将`mobile`对象附加到当前页面上运行的 jQuery 实例上。此对象包含用于配置 jQuery Mobile 环境的各种属性，以及用于触发框架中不同行为的各种方法。我们现在可以使用其中的一些。
 - en: To ensure the message we wish to add is displayed, because by default the spinner
     uses accessibly-hidden text, we set the `loadingMessageTextVisible` property of
     the `mobile` object to `true`.
   id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了确保我们希望添加的消息被显示出来，因为默认情况下旋转器使用不可访问的文本，我们将`mobile`对象的`loadingMessageTextVisible`属性设置为`true`。
 - en: Note
   id: totrans-129
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: At page load, jQuery Mobile creates an object called `mobile`, which contains
     a range of useful properties and methods.
   id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 在页面加载时，jQuery Mobile 创建了一个名为`mobile`的对象，其中包含一系列有用的属性和方法。
 - en: To actually show the spinner, we can use the jQuery Mobile `showPageLoadingMsg()`
     method. This method takes the theme swatch to use as the first argument, which
     in this case we can set to the default theme `a`, and the text to display inside
@@ -802,6 +921,7 @@
   id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 要实际显示旋转器，我们可以使用 jQuery Mobile 的`showPageLoadingMsg()`方法。此方法将主题色作为第一个参数，本例中我们可以将其设置为默认主题`a`，并将要在旋转器内显示的文本作为第二个参数。
 - en: After the `ajax()` method, we chain the `done()` method. This is the new way
     of handling successful AJAX requests as of jQuery 1.8 and replaces jQuery's `success()`
     method. We pass an anonymous function to this method to be executed when the request
@@ -811,11 +931,14 @@
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`ajax()`方法之后，我们链式调用`done()`方法。这是自 jQuery 1.8 起处理成功的 AJAX 请求的新方法，取代了 jQuery
+    的`success()`方法。我们将一个匿名函数传递给此方法，以在请求对象返回时执行，此函数接收响应作为参数。在此函数中，我们只需调用将作为第二个参数传递给`getBounties()`的`callback()`函数，将数据从响应传递给它。
 - en: Classified Intel
   id: totrans-133
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 机密情报
 - en: In this task we made use of the `done()` method to handle the successful response
     from the Stack Exchange API instead of the more familiar `success()` method. This
     is now the preferred way of handling successful responses (as of jQuery 1.8).
@@ -825,17 +948,22 @@
   id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个任务中，我们使用了`done()`方法来处理来自 Stack Exchange API 的成功响应，而不是更常见的`success()`方法。这现在是处理成功响应的首选方法（截至
+    jQuery 1.8）。任何 jQuery 的 AJAX 方法返回的`jqXHR`对象的`error()`和`complete()`回调方法已经被弃用，改用`fail()`和`always()`。
 - en: As of jQuery 1.5, the AJAX suite of methods have returned the `jqXHR` object
     as a promise, or deferred, object, so this change to the API brings the AJAX methods
     in line with other implementations of the promise API within jQuery.
   id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 自 jQuery 1.5 起，AJAX 方法套件已将`jqXHR`对象作为 promise 或 deferred 对象返回，因此此 API 的更改将 AJAX
+    方法与 jQuery 中其他实现的 promise API 同步。
 - en: Getting some bounties
   id: totrans-136
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 获取一些赏金
 - en: In this task we need to get some bounties from stack overflow. We'll want to
     initialize a part of our script once the welcome page of our application has been
     initialized. Once this happens we can attach a handler for the `<button>` on the
@@ -844,16 +972,19 @@
   id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个任务中，我们需要从堆栈溢出获取一些赏金。一旦我们的应用程序的欢迎页面初始化完成，我们将希望初始化我们脚本的一部分。一旦这种情况发生，我们就可以附加一个处理程序到页面上的`<button>`，以触发使用我们在上一部分中添加的`getBounties()`函数进行AJAX请求。
 - en: Engage Thrusters
   id: totrans-138
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: 'Inside the outer function, but after the `getBounties()` function in `bounty-hunter.js`,
     add the following code:'
   id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`bounty-hunter.js`中的外部函数内，但在`getBounties()`函数之后，添加以下代码：
 - en: '[PRE10]'
   id: totrans-140
   prefs: []
@@ -864,6 +995,7 @@
   id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以在刚刚添加的代码之后直接为`pageshow`事件添加处理程序：
 - en: '[PRE11]'
   id: totrans-142
   prefs: []
@@ -874,6 +1006,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 完成目标 - 小结
 - en: We use the `pageinit` event to execute code when the page is initialized for
     the first time. Due to the AJAX nature of how new pages are pulled into the DOM
     of the existing page and displayed, this event is more reliable than `document
@@ -881,6 +1014,8 @@
   id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用`pageinit`事件在页面第一次初始化时执行代码。由于新页面被拉入现有页面的DOM并显示的AJAX性质，因此在使用jQuery Mobile时，此事件比`document
+    ready`更可靠。
 - en: We use jQuery's `on()` method to bind an event handler for this event to the
     document object, and set the first argument of the method to the `pageinit` event.
     Because our script will be used on every page, but the code we've added here is
@@ -890,6 +1025,7 @@
   id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用jQuery的`on()`方法将此事件的事件处理程序绑定到文档对象，并将方法的第一个参数设置为`pageinit`事件。因为我们的脚本将用于每个页面，但是我们在此处添加的代码仅在欢迎页面上相关，所以我们使用方法的第二个参数来确保事件处理程序（我们将其添加为第三个参数）仅在事件起源于欢迎页面时执行。
 - en: We then bind a handler for the `click` event to the search `<button>`, again
     using jQuery's `on()` method. Within the handler we first add the `ui-disabled`
     class to the outer `<button>` container to stop further requests being initiated.
@@ -899,18 +1035,21 @@
   id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们使用jQuery的`on()`方法将`click`事件的处理程序绑定到搜索`<button>`，再次使用。在处理程序中，我们首先向外部`<button>`容器添加`ui-disabled`类，以阻止进一步发起请求。然后，我们使用jQuery的`val()`方法获取可能在文本字段中输入的任何标签。这将返回文本输入的值，然后我们将其存储在我们的顶级`tags`变量中。
 - en: Next we can call the `getBounties()` function that we added in the last task.
     As the request is being initiated by the welcome page we need to get the first
     page of the results, so we pass `1` to the function as the first argument.
   id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们可以调用上一任务中添加的`getBounties()`函数。由于请求是由欢迎页面发起的，所以我们需要获取结果的第一页，因此将`1`作为第一个参数传递给该函数。
 - en: We pass an anonymous function as the second argument to `getBounties()`. Remember,
     the handler we added for the `done()` method will execute the function and automatically
     pass the data from the response to it.
   id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将一个匿名函数作为`getBounties()`的第二个参数。请记住，我们为`done()`方法添加的处理程序将执行该函数，并自动将响应中的数据传递给它。
 - en: Within this function we first need to add a new property to our `data` object
     to store the current page number. We can then store the `data` object so that
     we can use it in the next page. We can do this using `localStorage`, but because
@@ -919,6 +1058,7 @@
   id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个功能中，我们首先需要向我们的`data`对象添加一个新属性来存储当前页码。然后，我们可以存储`data`对象，以便在下一页中使用。我们可以使用`localStorage`来实现这一点，但是因为`localStorage`只能存储数组和原始类型，所以我们需要使用浏览器的原生`JSON.stringify()`方法将对象转换为JSON字符串。
 - en: We then use the jQuery Mobile `changePage()` method to change the current page
     to the page on which we'll display the response. This method is passed the URL
     of the page to change to as the first argument, and a configuration object as
@@ -926,17 +1066,20 @@
   id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们使用jQuery Mobile的`changePage()`方法将当前页面更改为我们将显示响应的页面。该方法的第一个参数是要更改到的页面的URL，第二个参数是一个配置对象。
 - en: We use this configuration object to set the transition to use when showing the
     new page with the `transition` option, which in this case we set to `slide`.
   id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用此配置对象来设置显示新页面时要使用的转换，该转换选项我们设置为`slide`。
 - en: After the `pageinit` handler we also added an event handler for the `pageshow`
     event. This event is dispatched every time a page is shown, unlike the `pageinit`
     event which is dispatched only the first time a given page is initialized.
   id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`pageinit`处理程序之后，我们还添加了一个`pageshow`事件的事件处理程序。每次显示页面时都会分派此事件，与仅在给定页面初始化时分派的`pageinit`事件不同。
 - en: We bind the event to the `document` object again and filter the event by the
     `#welcome` selector once again to ensure that the code only runs when the welcome
     page is shown. Within the event handler we simply remove the `ui-disabled` class
@@ -945,28 +1088,33 @@
   id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们再次将事件绑定到`document`对象，并再次通过`#welcome`选择器过滤事件，以确保代码仅在显示欢迎页面时运行。在事件处理程序内部，我们只是从外部的`<button>`容器中移除`ui-disabled`类。如果我们返回到欢迎页面，那可能是因为我们想执行一个新的搜索，也许使用不同的标签。
 - en: Adding a JsRender template
   id: totrans-154
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 添加一个JsRender模板
 - en: At the end of the last task we used the `changePage()` method to call a new
     page, so now we need to create that page. We can add our JsRender template to
     the new page ready for when we build the list view in the next task.
   id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上一个任务结束时，我们使用`changePage()`方法调用了一个新页面，所以现在我们需要创建该页面。我们可以在新页面中添加我们的JsRender模板，准备好在下一个任务中构建列表视图时使用。
 - en: Prepare for Lift Off
   id: totrans-156
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为升空做准备
 - en: Create a new page using the starting template from jQuery Mobile once again.
     Call it `bounty-hunter-list.html` and save it in the root of our project folder.
     Change the `id` attribute of the `data-role="page"` wrapper to `list`.
   id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次使用jQuery Mobile的起始模板创建一个新页面。将其命名为`bounty-hunter-list.html`并将其保存在项目文件夹的根目录中。将`data-role="page"`包装器的`id`属性更改为`list`。
 - en: The `<h1>` in the header `<div>` can be changed to something like `Active Bounties`,
     and we can add the home icon again as we did on the About page. The footer can
     stay the same as on the welcome page. The content `<div>` can be empty to begin
@@ -974,16 +1122,19 @@
   id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 在标题`<div>`中的`<h1>`可以更改为类似于`Active Bounties`的内容，并且我们可以像在关于页面上那样再次添加主页图标。页脚可以与欢迎页面上的相同。内容`<div>`可以一开始为空。
 - en: Engage Thrusters
   id: totrans-159
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: 'Near the bottom of the new page we just created, inside the page container,
     add the following JsRender template:'
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们刚刚创建的新页面底部，页面容器内，添加以下JsRender模板：
 - en: '[PRE12]'
   id: totrans-161
   prefs: []
@@ -994,6 +1145,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目标完成 - 小型总结
 - en: The `<script>` element that the template resides in is given a non-standard
     `type` attribute to stop the browser parsing the script. It's also given an `id`
     attribute so that we can easily select it from the page when we want to interpolate
@@ -1001,6 +1153,7 @@
   id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 包含模板的`<script>`元素具有一个非标准的`type`属性，以阻止浏览器解析脚本。它还具有一个`id`属性，以便我们在想要将模板与数据进行插值并呈现到页面时轻松选择它。
 - en: Inside the `<script>` element, we first create the `<ul>` element that will
     be turned into a Listview widget by jQuery Mobile. We give this element a `data-role`
     attribute of `listview`. We then use JsRender's loop construct `{{for}}`, which
@@ -1011,6 +1164,7 @@
   id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`<script>`元素内，我们首先创建一个`<ul>`元素，这将由jQuery Mobile转换为Listview小部件。我们给这个元素一个`data-role`属性为`listview`。然后我们使用JsRender的循环结构`{{for}}`，它接受要循环遍历的对象或数组。在这种情况下，我们对`data`对象中的`items`数组感兴趣，该数组是在上一个任务结束时保存在localStorage中的一部分，并且将被传递给呈现模板的模板函数。
 - en: The code we add within the `{{for}}` loop will be repeated for each item in
     the `items` array, which will consist of a series of questions from stack overflow.
     The object the template will iterate will be passed into the loop when we call
@@ -1018,6 +1172,7 @@
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在`{{for}}`循环内添加的代码将针对`items`数组中的每个项目重复执行，该数组将由一系列来自Stack Overflow的问题组成。当我们稍后调用JsRender的`template()`方法时，将传递模板将迭代的对象到循环中。
 - en: The first element we add is `<li>` as this should naturally be a child of the
     outer `<ul>` list. We give the `<li>` element several `data-` attributes including
     `data-shadow="false"` to disable shadows under each `<li>`, `data-icon="arrow-r"`
@@ -1026,27 +1181,35 @@
   id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们添加的第一个元素是 `<li>`，因为这应该自然地是外部 `<ul>` 列表的子元素。我们为 `<li>` 元素添加了几个 `data-` 属性，包括
+    `data-shadow="false"` 以在每个 `<li>` 下禁用阴影，`data-icon="arrow-r"` 以给每个列表项添加右指向箭头图标，`data-iconpos="right"`
+    以将图标定位在元素的右侧。
 - en: Tip
   id: totrans-167
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 贴士
 - en: '**Listitem icons**'
   id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Listitem 图标**'
 - en: In order for the icons we've added to our list items to be displayed, each item
     should contain a link. If no `<a>` elements are found within the item when the
     widget is initialized, no icon will be added.
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了让我们添加到列表项的图标显示出来，每个项目应包含一个链接。如果初始化小部件时在项目内找不到 `<a>` 元素，就不会添加图标。
 - en: Inside the list item, we add an `<a>` element and a unique `id` for when we
     come to display the item view later on. We can create a unique `id` using the
     loop index of the template, which is available to us within the loop as `#index`.
   id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 在列表项内部，我们添加一个 `<a>` 元素并为其添加一个唯一的 `id`，以便在以后显示该项视图时使用。我们可以使用模板的循环索引创建唯一的 `id`，这在循环中作为
+    `#index` 对我们可用。
 - en: Inside the `<a>` element we have several other elements. The first is a container
     for the bounty offered on the current question. Inside this container we have
     another JsRender token that will be replaced with the data from the object we
@@ -1058,18 +1221,22 @@
   id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `<a>` 元素内部，我们还有其他几个元素。第一个是当前问题上提供的悬赏的容器。在这个容器内，我们有另一个 JsRender 令牌，它将被替换为我们正在迭代的对象的数据。为了在我们的模板中访问对象的属性，我们使用
+    `{{:`，后跟属性名称，最后以 `}}` 结束。在开头的双大括号内的冒号表示不应执行任何 HTML 编码。Stack Exchange API 将为我们清理数据，所以我们可以直接使用它。
 - en: We can also display some text and the date that the bounty expires using some
     nested `<span>` elements, one of which has a `class` for some specific styling,
     and another property from our data object.
   id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以使用一些嵌套的 `<span>` 元素显示一些文本和悬赏过期的日期，其中一个具有用于特定样式的 `class`，还有我们数据对象的另一个属性。
 - en: We can output the title of the question using an `<h1>` element and another
     JsRender template tag that pulls out the `title` property from the current item
     from inside the `data` object.
   id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用 `<h1>` 元素输出问题的标题，另外还有另一个 JsRender 模板标记，从 `data` 对象内提取出当前项的 `title` 属性。
 - en: Lastly we can display some meta-information about the question such as the number
     of answers it has and the last time there was activity on the question. This information
     is added in the same way as before, using a combination of `<span>` elements and
@@ -1077,17 +1244,22 @@
   id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们可以显示有关问题的一些元信息，比如它有多少答案以及上次有活动的时间。这些信息与以前一样添加，使用 `<span>` 元素和 JsRender
+    模板标记的组合来显示从我们的数据对象中提取出的各种属性。
 - en: Building the list view
   id: totrans-175
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 构建列表视图
 - en: Our application should now be at the point where it has received some data that
     needs to be formatted and displayed. We've also added a JsRender template ready
     to be used to build the Listitem elements for a Listview widget.
   id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们的应用程序应该已经收到了需要进行格式化和显示的数据。我们还添加了一个准备好用于构建 Listview 小部件的 Listitem 元素的 JsRender
+    模板。
 - en: All we need to do now is render the template and display the results in our
     widget. We can also add some additional controls to the widget to let the visitor
     navigate through the paged results, although we won't make these functional just
@@ -1095,16 +1267,19 @@
   id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们只需渲染模板并在小部件中显示结果。我们还可以向小部件添加一些额外的控件，让访问者在分页结果中导航，尽管目前我们还不会使这些控件功能实现。
 - en: Engage Thrusters
   id: totrans-178
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: 'First of all we can add some additional markup to the content container in
     our list page (`bounty-hunter-list.html`):'
   id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们可以为列表页面的内容容器（`bounty-hunter-list.html`）添加一些附加标记：
 - en: '[PRE13]'
   id: totrans-180
   prefs: []
@@ -1116,6 +1291,7 @@
   id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要更新我们的脚本以渲染模板并显示数据。在 `bounty-hunter.js` 中，在 `pageshow` 事件的事件处理程序后直接添加以下代码：
 - en: '[PRE14]'
   id: totrans-182
   prefs: []
@@ -1321,6 +1497,8 @@
   id: totrans-210
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加脚本后，我们然后更新了模板，以利用我们创建的新的日期格式化辅助方法。要在模板中使用辅助方法，我们只需要使用`~`字符，后跟方法的注册名称。需要传递的任何参数，例如模板迭代中的每个项目的`bounty_closes_date`和`last_activity_date`属性，都是使用括号传递的，就像调用普通
+    JavaScript 函数一样。
 - en: Once the template has been rendered, we need to initialize the Listview. We
     do this by first getting the new `<ul>` element inside the container and then
     using its widget method, `listview()` in this case, to enhance it into a Listview
@@ -1328,6 +1506,8 @@
   id: totrans-211
   prefs: []
   type: TYPE_NORMAL
+  zh: 渲染模板后，我们需要初始化 Listview。首先，我们通过获取容器内的新`<ul>`元素，然后使用其小部件方法，在这种情况下是`listview()`，将其增强为一个
+    Listview 小部件。
 - en: Lastly we added some additional CSS styling to tweak the styling applied by
     the default theme in jQuery Mobile. We need to make the toolbars full-width to
     match the Listview widget, which we can do in the same way as the Listview widget
@@ -1335,6 +1515,8 @@
   id: totrans-212
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们添加了一些额外的 CSS 样式来微调 jQuery Mobile 中默认主题应用的样式。我们需要使工具栏与 Listview 小部件匹配，这可以通过使用负边距来实现，与
+    Listview 小部件本身一样简单。
 - en: The Listview has negative margin for its `top` and `bottom` properties as well
     as its `left` and `right` properties, so we need to counteract this by adding
     some positive margin to the `bottom` of the top toolbar, and some positive `top`
@@ -1342,12 +1524,14 @@
   id: totrans-213
   prefs: []
   type: TYPE_NORMAL
+  zh: Listview 的`top`和`bottom`属性以及其`left`和`right`属性具有负边距，因此我们需要通过为顶部工具栏添加一些正边距来抵消这一点，并为底部工具栏添加一些正`top`边距。
 - en: We can also float the back and forward buttons left and right respectively and
     center the heading text. We also shrink down the size of the heading text by a
     couple of pixels to help ensure that it doesn't interfere with our buttons.
   id: totrans-214
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以将后退和前进按钮分别浮动到左侧和右侧，并将标题文本居中。我们还将标题文本的大小缩小了几个像素，以确保它不会干扰我们的按钮。
 - en: The styling for the elements inside the Listview is almost entirely for the
     visual appearance of the elements we added using the template. The Listview itself
     will inherit a lot of styling from the framework, so it's just the elements inside
@@ -1355,20 +1539,24 @@
   id: totrans-215
   prefs: []
   type: TYPE_NORMAL
+  zh: Listview 内的元素样式几乎完全是为了视觉效果而添加的。Listview 本身将继承大量框架的样式，所以我们只需要担心每个 Listitem 内的元素。
 - en: 'Once the bounties button has been clicked and the results have been returned,
     the list view page should appear like the following screenshot:'
   id: totrans-216
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦点击了赏金按钮并返回了结果，列表视图页面应该看起来像下面的截图：
 - en: '![Objective Complete - Mini Debriefing](img/9106OS_04_02.jpg)'
   id: totrans-217
   prefs: []
   type: TYPE_IMG
+  zh: '![目标完成 - 小结](img/9106OS_04_02.jpg)'
 - en: Classified Intel
   id: totrans-218
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 机密情报
 - en: Like jQuery UI, jQuery Mobile widgets can be initialized completely from script,
     without using any hardcoded `data-` attributes in the underlying markup. We could
     just as easily have built the entire Listview widget from script instead of keeping
@@ -1376,6 +1564,8 @@
   id: totrans-219
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 jQuery UI 一样，jQuery Mobile 小部件可以完全从脚本初始化，而不使用底层标记中的任何硬编码`data-`属性。我们也可以像在标记中保留外部`<ul>`元素一样，完全从脚本构建整个
+    Listview 小部件。
 - en: To initialize a widget we can just call its widget method. If we are creating
     a Listview, the widget method is simply `listview()`. Other widgets can be initialized
     in the same way. Also like jQuery UI widgets, jQuery Mobile widgets can accept
@@ -1384,11 +1574,14 @@
   id: totrans-220
   prefs: []
   type: TYPE_NORMAL
+  zh: 要初始化小部件，我们只需调用其小部件方法。如果我们正在创建一个 Listview，则小部件方法就是`listview()`。其他小部件可以以相同的方式初始化。与
+    jQuery UI 小部件类似，jQuery Mobile 小部件可以接受配置选项和事件处理程序，并且具有可以从脚本调用的方法。
 - en: Building an item view
   id: totrans-221
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 构建项目视图
 - en: The Listview provides links for each list item containing a question. In this
     task we can add the page that is displayed when one of the questions is selected.
     This will be a much more detailed view of a single question so we can make use
@@ -1398,11 +1591,14 @@
   id: totrans-222
   prefs: []
   type: TYPE_NORMAL
+  zh: 列表视图为每个包含问题的列表项提供链接。在这个任务中，我们可以添加当其中一个问题被选中时显示的页面。这将是单个问题的更详细视图，所以我们可以利用 Stack
+    Exchange 返回给我们的其他一些属性。这次，我们不是链接到现有页面，而是动态创建一个新页面并将其注入到应用程序中。
 - en: Engage Thrusters
   id: totrans-223
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: 'We''ll use another template to render the item view because it''s so convenient;
     add the following code to `bounty-hunter-list.html` directly after the list template.
     We can start by adding the outer `<script>` wrapper, the outer page container,
@@ -1410,6 +1606,7 @@
   id: totrans-224
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用另一个模板来渲染项目视图，因为它非常方便；直接在`bounty-hunter-list.html`中的列表模板后面添加以下代码。我们可以从添加外部`<script>`包装器、外部页面容器和标题开始：
 - en: '[PRE18]'
   id: totrans-225
   prefs: []
@@ -1420,6 +1617,7 @@
   id: totrans-226
   prefs: []
   type: TYPE_NORMAL
+  zh: '接下来，我们可以添加内容区域包装器和内容标题。这应该放在页面容器中，在标题区域之后：  '
 - en: '[PRE19]'
   id: totrans-227
   prefs: []
@@ -1430,6 +1628,7 @@
   id: totrans-228
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们可以添加问题和答案列表。这应该直接放在我们刚刚添加的标题元素之后（但仍然在内容`<div>`内）：
 - en: '[PRE20]'
   id: totrans-229
   prefs: []
@@ -1440,6 +1639,7 @@
   id: totrans-230
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们可以为页面添加页脚。这应该直接放在内容区域之后，但仍然在外部页面容器内：
 - en: '[PRE21]'
   id: totrans-231
   prefs: []
@@ -1451,6 +1651,7 @@
   id: totrans-232
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要添加一些脚本来渲染模板并处理页面更改行为。我们可以在我们在上一个任务中添加的列表页面的`pageinit`处理程序中执行此操作：
 - en: '[PRE22]'
   id: totrans-233
   prefs: []
@@ -1461,6 +1662,7 @@
   id: totrans-234
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们需要一些用于我们添加的模板中新元素的 CSS。在`bounty-hunter.css`中，在文件的末尾添加以下代码：
 - en: '[PRE23]'
   id: totrans-235
   prefs: []
@@ -1471,6 +1673,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目标完成 - 小结。
 - en: We started out by adding a new template for the page to display a single question.
     This template was considerably larger than the first one we added, for several
     reasons. Primarily, because we're using this template to build an entire page,
@@ -1480,6 +1683,7 @@
   id: totrans-237
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先添加了一个新模板，用于显示单个问题的页面。这个模板比我们添加的第一个模板要大得多，原因有几个。主要是因为我们使用这个模板来构建整个页面，而且因为我们使用这个模板显示了更多的内容。这是问题的详细视图，所以我们自然希望显示比列表视图中显示的摘要更多的内容。
 - en: The outer page container that we specify is given an `id`, which we'll add in
     our script, so that we can easily select the correct page in order to show it.
     Aside from this we add some of the same elements to our template as we have been
@@ -1487,6 +1691,7 @@
   id: totrans-238
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们指定的外部页面容器被赋予一个`id`，我们将在我们的脚本中添加，以便我们可以轻松地选择正确的页面以显示它。除此之外，我们在我们的模板中添加了一些与我们在实际页面中一直添加的相同元素，例如标题、内容和页脚容器。
 - en: Within the content container is where most of the action is, although we're
     using the template in exactly the same way as before – defining HTML elements
     and interpolating them with properties from the object passed to the `render()`
@@ -1494,6 +1699,7 @@
   id: totrans-239
   prefs: []
   type: TYPE_NORMAL
+  zh: 大部分操作都在内容容器内部进行，尽管我们使用的模板方式与之前完全相同 - 定义 HTML 元素并使用传递给`render()`方法的对象的属性进行插值。
 - en: The only new technique in this template is the creation of the tags list. We
     use the `for` construct to iterate the list of tags, but this time the property
     we are iterating is a flat string array instead of an object. As there isn't a
@@ -1503,12 +1709,14 @@
   id: totrans-240
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此模板中唯一的新技巧是创建标签列表。我们使用`for`结构来迭代标签列表，但这次我们迭代的属性是一个平面字符串数组，而不是对象。由于在模板标签中没有可用于获取值的键，我们可以使用特殊值`#data`，它将给我们当前正在迭代的数组中的当前项目。
 - en: All of the code we added to our script was contained within a click handling
     function that we bind to the list of results display on the page, because we want
     to react to an individual list item being clicked.
   id: totrans-241
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们添加到脚本中的所有代码都包含在一个单击处理函数中，我们将其绑定到页面上显示的结果列表上，因为我们希望对单个列表项的点击做出反应。
 - en: Within the handler function, we first set the variable which will contain the
     numerical part of the `id` attribute of the list item that was clicked. We can
     easily get the numerical portion by using JavaScript's `split()` function and
@@ -1516,6 +1724,7 @@
   id: totrans-242
   prefs: []
   type: TYPE_NORMAL
+  zh: 在处理函数中，我们首先设置一个变量，该变量将包含被点击的列表项的`id`属性的数字部分。我们可以通过使用JavaScript的`split()`函数，并指定连字符作为分隔符，轻松获取数字部分。
 - en: When we render the template, we only want to show a single item, so we don't
     need to pass in the entire object received from the AJAX request. Instead we use
     the `index` variable that we just set to pull just the object representing the
@@ -1523,12 +1732,14 @@
   id: totrans-243
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们渲染模板时，我们只想显示单个项目，因此我们不需要传递从AJAX请求中接收到的整个对象。相反，我们使用刚刚设置的`index`变量，从`data`对象内的`items`数组中仅获取表示我们感兴趣的问题的对象。
 - en: Once we stored the object we'll be passing to our template to render, we need
     to add a new property to it that is added as the `id` attribute for the page container
     in the template. This is the `pageid` property that we set on the `question` object.
   id: totrans-244
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们存储了要传递给模板以进行渲染的对象，我们需要向其添加一个新属性，该属性作为模板中页面容器的`id`属性添加。这就是我们在`question`对象上设置的`pageid`属性。
 - en: Next we render our template using JsRender's `render()` method once more. We
     pass it the `question` object that we just prepared and this time the template
     is rendered to the body of the page. Because it gets rendered outside of the page
@@ -1536,6 +1747,7 @@
   id: totrans-245
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们再次使用JsRender的`render()`方法呈现我们的模板。我们将刚刚准备好的`question`对象传递给它，这一次模板呈现到页面的主体上。因为它被呈现在页面容器之外，所以不会立即可见。
 - en: Once the template has been rendered to the page, we select the outer page container
     and store a reference to it in the `page` variable. When a new page is created
     dynamically and appended to the page, jQuery Mobile will keep its markup in the
@@ -1543,6 +1755,7 @@
   id: totrans-246
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦模板呈现到页面上，我们选择外部页面容器，并将其引用存储在`page`变量中。当动态创建一个新页面并将其附加到页面上时，jQuery Mobile将保持其标记在页面中，即使我们离开页面也是如此。
 - en: To stop this from happening, we need to do two things; first of all we need
     to set the `data-external-page` attribute of the page to `true`. Secondly we need
     to set a handler for the `pageinit` event of the dynamic page. Once the new page
@@ -1551,55 +1764,66 @@
   id: totrans-247
   prefs: []
   type: TYPE_NORMAL
+  zh: 要阻止这种情况发生，我们需要做两件事：首先，我们需要将页面的`data-external-page`属性设置为`true`。其次，我们需要为动态页面的`pageinit`事件设置处理程序。一旦新页面已初始化，当访问者使用内部jQuery
+    Mobile `_bindPageRemove`方法导航离开页面时，我们将其标记为删除。
 - en: Once this is done, we can transition to the new page using the `changePage()`
     method. We pass the method the page element that we stored earlier, and use the
     configuration object to set the transition.
   id: totrans-248
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦完成这一步，我们可以使用`changePage()`方法转到新页面。我们将之前存储的页面元素传递给该方法，并使用配置对象设置转换。
 - en: Because we've passed the `changePage()` method a DOM element and not specified
     a URL, the address bar of the browser will not be updated and an entry will not
     be left in the browser's history.
   id: totrans-249
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为我们将`changePage()`方法传递了一个DOM元素而没有指定URL，所以浏览器的地址栏不会更新，并且浏览器的历史记录中不会留下条目。
 - en: 'At this point we should be able to run the page on a smartphone or tablet,
     click on one of the list items on the list view page and see the item view, as
     shown in the following screenshot:'
   id: totrans-250
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我们应该能够在智能手机或平板电脑上运行页面，单击列表视图页面上的其中一个列表项，并查看项目视图，如下图所示：
 - en: '![Objective Complete - Mini Debriefing](img/9106OS_04_03.jpg)'
   id: totrans-251
   prefs: []
   type: TYPE_IMG
+  zh: '![目标完成 - 迷你总结](img/9106OS_04_03.jpg)'
 - en: Handling paging
   id: totrans-252
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 处理分页
 - en: For our last task we'll look at wiring up the paging elements we added earlier.
     The Stack Exchange API makes it easy to get results in a paged format, so we can
     leverage that to our advantage.
   id: totrans-253
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的最后一个任务，我们将查看如何连接之前添加的分页元素。Stack Exchange API使得以分页格式获取结果变得很容易，因此我们可以利用这一点。
 - en: The trade-off for requesting all available data from Stack Exchange, saving
     ourselves that massive one-off hit, is that we make much smaller requests in response
     to the user initiating a request for more data.
   id: totrans-254
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 Stack Exchange 请求所有可用数据并节省一次性大量数据的代价是，我们在用户发起更多数据请求时会发出更小的请求。
 - en: Engage Thrusters
   id: totrans-255
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动推进器
 - en: 'Directly after the `click` handler we added for the `<li>` elements inside
     the Listview, add the following code:'
   id: totrans-256
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们为 Listview 内的`<li>`元素添加的`click`处理程序之后，添加以下代码：
 - en: '[PRE24]'
   id: totrans-257
   prefs: []
@@ -1610,12 +1834,14 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目标完成 - 小结
 - en: We attach a listener for all four buttons using the `data-icon` attribute once
     more to select them from the page. Don't forget that this will only be done once,
     the first time the list page loads.
   id: totrans-259
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们再次使用`data-icon`属性为所有四个按钮附加监听器，以便从页面中选择它们。不要忘记，这只会在第一次加载列表页面时完成一次。
 - en: We then store a reference to the button that was clicked, the value of the data-icon
     attribute of the clicked button, and the current page. We then check the value
     of the `dir` attribute and if it is equal to `forward` we increment the current
@@ -1623,11 +1849,13 @@
   id: totrans-260
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们将引用存储到被点击的按钮、被点击按钮的`data-icon`属性的值以及当前页面。然后我们检查`dir`属性的值，如果等于`forward`，则增加当前页面，否则减少当前页面。
 - en: We can then call our `getBounties()` method once more, passing it the updated
     `page` variable and the handler function to execute after the request.
   id: totrans-261
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以再次调用我们的`getBounties()`方法，传递更新后的`page`变量和请求后执行的处理程序函数。
 - en: Within this handler function, we first update the stored data by updating the
     `data` variable with the new object returned by the most recent call to `getBounties()`.
     We add a `currentpage` property to the `data` object once more and update the
@@ -1635,6 +1863,8 @@
   id: totrans-262
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此处理程序函数中，我们首先通过使用最近一次调用`getBounties()`返回的新对象更新`data`变量来更新存储的数据。我们再次向`data`对象添加一个`currentpage`属性，并更新我们在
+    localStorage 中的副本。
 - en: We can then hide the spinner manually using the `hidePageLoadingMsg()` jQuery
     Mobile method and then re-render the list template using the new data. Once this
     is done we can update the display showing the current page, and call our `setClasses()`
@@ -1642,11 +1872,13 @@
   id: totrans-263
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以使用`hidePageLoadingMsg()`jQuery Mobile 方法手动隐藏旋转器，然后使用新数据重新渲染列表模板。完成后，我们可以更新显示当前页面的显示，并调用我们的`setClasses()`实用函数分别启用或禁用前进和后退按钮。
 - en: Mission Accomplished
   id: totrans-264
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 任务完成
 - en: At this point we should have a fully working jQuery Mobile app than runs on
     both desktop and mobile devices. It's a simple app, but we've gotten to explore
     a reasonable amount of the framework. There is much more to learn, but seeing
@@ -1655,19 +1887,24 @@
   id: totrans-265
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我们应该拥有一个完全可工作的 jQuery Mobile 应用程序，可在桌面和移动设备上运行。这是一个简单的应用程序，但我们已经探索了相当数量的框架。还有很多东西要学习，但是看到我们在这个项目中使用的一些部分应该足以激发你深入研究框架及其提供的功能。
 - en: You Ready To Go Gung HO? A Hotshot Challenge
   id: totrans-266
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 你准备好全力以赴了吗？一个高手的挑战
 - en: One thing that we haven't looked at in this project so far is the theming capabilities
     of jQuery Mobile. Like jQuery UI, jQuery Mobile benefits from the advanced theming
     capabilities of Themeroller.
   id: totrans-267
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个项目中，到目前为止我们还没有研究过 jQuery Mobile 的主题能力。像 jQuery UI 一样，jQuery Mobile 受益于 Themeroller
+    的高级主题能力。
 - en: Your challenge for this project is to head on over to Themeroller at [http://jquerymobile.com/themeroller/](http://jquerymobile.com/themeroller/)
     and build yourself a custom theme for the finished application.
   id: totrans-268
   prefs: []
   type: TYPE_NORMAL
+  zh: 你在这个项目中的挑战是前往[http://jquerymobile.com/themeroller/](http://jquerymobile.com/themeroller/)，为已完成的应用程序构建一个自定义主题。
