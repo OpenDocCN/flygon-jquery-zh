@@ -749,21 +749,25 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备就绪
 - en: Copy the full code of this recipe from the `code/05/dynamic-slider` sources
     folder. This code can be launched using the URL `http://localhost:8080/05/dynamic-slider/main.html`.
   id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 从`code/05/dynamic-slider`源文件夹中复制这个配方的全部代码。可以使用URL `http://localhost:8080/05/dynamic-slider/main.html`启动这段代码。
 - en: How to do it...
   id: totrans-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何做...
 - en: 'In `main.html`, add the following empty form to the page content:'
   id: totrans-110
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`main.html`中，向页面内容添加以下空表单：
 - en: '[PRE14]'
   id: totrans-111
   prefs:
@@ -776,6 +780,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`<head>`部分添加以下脚本，动态添加一个开关和一个滑块：
 - en: '[PRE15]'
   id: totrans-113
   prefs:
@@ -787,6 +792,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 处理翻转开关的`change`事件以启用音量滑块控件：
 - en: '[PRE16]'
   id: totrans-115
   prefs:
@@ -799,6 +805,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 处理音量滑块的`change`事件以根据其值设置滑块样式：
 - en: '[PRE17]'
   id: totrans-117
   prefs:
@@ -810,6 +817,7 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 它是如何工作的...
 - en: 'Add an empty form `id=''volumeForm''` to `main.html`. Create an event handler
     for the `pageinit` event, which gets triggered after the page has been initialized.
     Here, generate the HTML content for the form. Add a flip toggle switch control
@@ -824,10 +832,12 @@
   id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`main.html`中添加一个空表单`id='volumeForm'`。为`pageinit`事件创建一个事件处理程序，该事件在页面初始化后触发。在这里，生成表单的HTML内容。使用带有`data-role='slider'`的选择控件添加一个翻转开关控件（`id='flipswitch'`）。这个翻转开关将切换音量**On**和**Off**。添加一个带有`type='range'`的输入控件以创建滑块控件（`id='volume'`）。在启动时将`disabled`属性添加到滑块上，以便控件在启动时被禁用。将此HTML内容设置为空表单并触发`'create'`方法以让框架初始化和增强控件。当页面加载时，您将看到**音量控制**表单，其中包含动态添加的翻转开关和禁用的滑块控件，如下图所示：
 - en: '![How it works...](img/7225_05_7.jpg)'
   id: totrans-120
   prefs: []
   type: TYPE_IMG
+  zh: '![它是如何工作的...](img/7225_05_7.jpg)'
 - en: 'Next add code to handle the `change` event of `#flipswitch` and in the event
     handler, check whether the flip switch is **on** or **off** using the `slider().val()`
     call. Based on this value, enable or disable the slider volume control by calling
@@ -837,10 +847,12 @@
   id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来添加代码来处理`#flipswitch`的`change`事件，在事件处理程序中，使用`slider().val()`调用检查翻转开关是**on**还是**off**。根据这个值，通过调用`slider('enable')`或`slider('disable')`来启用或禁用滑块音量控制。现在当你切换翻转开关的值时，你会看到滑块在屏幕截图中启用或禁用，如下所示：
 - en: '![How it works...](img/7225_05_8.jpg)'
   id: totrans-122
   prefs: []
   type: TYPE_IMG
+  zh: '![它是如何工作的...](img/7225_05_8.jpg)'
 - en: 'Bind the `change` event of the volume slider control in a `pageshow` event
     handler and here check for the value of the slider using the `slider().val()`
     call. If the value is greater than a threshold volume of **10**, set the slider
@@ -852,15 +864,18 @@
   id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`pageshow`事件处理程序中绑定音量滑块控件的`change`事件，并在此处使用`slider().val()`调用检查滑块的值。如果值大于**10**的阈值音量，则将滑块设置为主题`'e'`，如果尚未设置样式，则设置。如果值低于**10**的阈值，则将主题设置回主题`'b'`。您可以使用jQuery的`find()`方法并将`ui-btn-down-b`类替换为`ui-btn-down-e`类，反之亦然。现在当您设置一个高音量时，滑块会变成黄色，如下图所示：
 - en: '![How it works...](img/7225_05_9.jpg)'
   id: totrans-124
   prefs: []
   type: TYPE_IMG
+  zh: '![它是如何工作的...](img/7225_05_9.jpg)'
 - en: There's more...
   id: totrans-125
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 还有更多...
 - en: You can theme the flip switch and the slider control using the `data-theme`
     attribute and the slider track by using the `data-theme-track` attribute during
     initialization. To manipulate these controls post initialization, you will have
@@ -869,11 +884,13 @@
   id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以使用`data-theme`属性为翻转开关和滑块控件设置主题，使用`data-theme-track`属性在初始化时使用滑块轨道。要在初始化后操作这些控件，您将不得不操作底层本机控件，然后在它们上调用`'refresh'`方法。
 - en: Auto-initialization of sliders
   id: totrans-127
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 滑块的自动初始化
 - en: When the framework encounters an `input` control with `type='range'`, it automatically
     enhances it to a slider control using the **slider plugin** . Likewise the slider
     plugin enhances the select control with `data-role='slider'` to a flip switch.
