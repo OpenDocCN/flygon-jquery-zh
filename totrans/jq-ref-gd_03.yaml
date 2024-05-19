@@ -469,6 +469,7 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 此方法的第二种形式允许我们针对函数而不是选择器来过滤元素。假设我们有一个更复杂的 HTML 片段：
 - en: '[PRE12]'
   id: totrans-78
   prefs: []
@@ -478,6 +479,7 @@
   id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以选择列表项，然后根据它们的内容进行过滤：
 - en: '[PRE13]'
   id: totrans-80
   prefs: []
@@ -490,10 +492,13 @@
   id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个表达式的结果将只是第一个列表项，因为它只包含一个 `<strong>` 标签。在过滤函数中，`this`依次引用每个 DOM 元素。传递给函数的参数告诉我们该
+    DOM 元素在由 jQuery 对象匹配的集合中的索引。
 - en: 'We can also take advantage of the `index` passed through the function:'
   id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以利用通过函数传递的`index`：
 - en: '[PRE14]'
   id: totrans-83
   prefs: []
@@ -505,15 +510,18 @@
   id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个表达式的结果将是第三和第六个列表项，因为它使用模运算符（%）来选择每个索引值除以 3 余数为 2 的项。
 - en: .not()
   id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: .not()
 - en: '| Removes elements from the set of matched elements.'
   id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '| 从匹配元素的集合中移除元素。'
 - en: '[PRE15]'
   id: totrans-87
   prefs: []
@@ -523,40 +531,48 @@
   id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Parameters (first version)
   id: totrans-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参数（第一个版本）
 - en: 'selector: A string containing a selector expression to match elements against'
   id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'selector: 包含要匹配元素的选择器表达式的字符串'
 - en: Parameters (second version)
   id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参数（第二个版本）
 - en: 'elements: One or more DOM elements to remove from the matched set'
   id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'elements: 一个或多个要从匹配集合中删除的 DOM 元素'
 - en: Return Value
   id: totrans-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 返回值
 - en: The new jQuery object.
   id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的 jQuery 对象。
 - en: Description
   id: totrans-95
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 描述
 - en: Given a jQuery object that represents a set of DOM elements, the `.not` method
     constructs a new jQuery object from a subset of the matching elements. The supplied
     selector is tested against each element; the elements that don't match the selector
@@ -564,10 +580,12 @@
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定一个表示一组 DOM 元素的 jQuery 对象，`.not` 方法会从匹配元素的子集构造一个新的 jQuery 对象。提供的选择器会被测试以匹配每个元素；不匹配选择器的元素将包含在结果中。
 - en: 'Consider a page with a simple list on it:'
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个简单列表的页面：
 - en: '[PRE16]'
   id: totrans-98
   prefs: []
@@ -577,6 +595,7 @@
   id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将此方法应用于列表项集合：
 - en: '[PRE17]'
   id: totrans-100
   prefs: []
@@ -587,17 +606,20 @@
   id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个调用的结果是一个包含项`2`和`4`的 jQuery 对象，因为它们不匹配选择器（请回忆一下，:even 和 :odd 使用的是基于 0 的索引）。
 - en: Removing Specific Elements
   id: totrans-102
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 移除特定元素
 - en: 'The second version of the `.not` method allows us to remove elements from the
     matched set, assuming we have found those elements previously by some other means.
     For example, suppose our list had an identifier applied to one of its items:'
   id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '`.not` 方法的第二个版本允许我们从匹配集合中移除元素，假设我们以其他方式找到了这些元素。例如，假设我们的列表中的一个项目有一个标识符：'
 - en: '[PRE18]'
   id: totrans-104
   prefs: []
@@ -608,6 +630,7 @@
   id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用原生 JavaScript 的 `getElementById` 函数获取第三个列表项，然后从 jQuery 对象中移除它：
 - en: '[PRE19]'
   id: totrans-106
   prefs: []
@@ -619,15 +642,19 @@
   id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 此表达式产生一个匹配项 `1, 2, 4` 和 `5` 的 jQuery 对象。我们本可以用更简单的 jQuery 表达式来完成同样的事情，但是这种技术在其他库提供对普通
+    DOM 节点的引用时可能会有用。
 - en: .contains()
   id: totrans-108
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: .contains()
 - en: '| Reduces the set of matched elements to those containing the specified text.'
   id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: '| 将匹配元素集合减少到包含指定文本的元素。'
 - en: '[PRE20]'
   id: totrans-110
   prefs: []
@@ -637,30 +664,36 @@
   id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Parameters
   id: totrans-112
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参数
 - en: 'text: A string of text to search for'
   id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'text: 要搜索的文本字符串'
 - en: Return Value
   id: totrans-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 返回值
 - en: The new jQuery object.
   id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的 jQuery 对象。
 - en: Description
   id: totrans-116
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 描述
 - en: Given a jQuery object that represents a set of DOM elements, the `.contains`
     method constructs a new jQuery object from a subset of the matching elements.
     The supplied text is searched for in each element; all elements containing the
@@ -668,10 +701,12 @@
   id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定一个表示一组 DOM 元素的 jQuery 对象，`.contains` 方法会从匹配元素的子集构造一个新的 jQuery 对象。提供的文本会在每个元素中进行搜索；包含文本的所有元素（即使在后代元素中）都将包含在结果中。
 - en: 'Consider a page with a simple list on it:'
   id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个简单列表的页面：
 - en: '[PRE21]'
   id: totrans-119
   prefs: []
@@ -681,6 +716,7 @@
   id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将此方法应用于列表项集合：
 - en: '[PRE22]'
   id: totrans-121
   prefs: []
@@ -693,15 +729,18 @@
   id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 此调用的结果是包含指定文本的`item 2`的jQuery对象。使用jQuery的`.text`方法执行搜索，因此搜索文本可以位于匹配元素或其任何后代的文本字符串的连接中的任何位置。
 - en: .eq()
   id: totrans-123
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: .eq()
 - en: '| Reduces the set of matched elements to the one at the specified index.'
   id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: '| 将匹配元素的集合减少到指定索引处的一个元素。'
 - en: '[PRE23]'
   id: totrans-125
   prefs: []
@@ -711,40 +750,48 @@
   id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Parameters
   id: totrans-127
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参数
 - en: 'index: An integer indicating the *0-based* position of the element'
   id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: index：指示元素的*从0开始计数*的位置的整数
 - en: Return Value
   id: totrans-129
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 返回值
 - en: The new jQuery object.
   id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的jQuery对象。
 - en: Description
   id: totrans-131
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 描述
 - en: Given a jQuery object that represents a set of DOM elements, the `.eq` method
     constructs a new jQuery object from one of the matching elements. The supplied
     index identifies the position of this element in the set.
   id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定表示一组DOM元素的jQuery对象，`.eq`方法从匹配元素中构造一个新的jQuery对象。提供的索引标识集合中此元素的位置。
 - en: 'Consider a page with a simple list on it:'
   id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个包含简单列表的页面：
 - en: '[PRE24]'
   id: totrans-134
   prefs: []
@@ -754,6 +801,7 @@
   id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将此方法应用于列表项的集合：
 - en: '[PRE25]'
   id: totrans-136
   prefs: []
@@ -765,15 +813,18 @@
   id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 此调用的结果是包含`item 3`的jQuery对象。注意，提供的索引是*从0开始计数*的，并且是指jQuery对象内元素的位置，*而不是*DOM树内的位置。
 - en: .lt()
   id: totrans-138
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: .lt()
 - en: '| Reduces the set of matched elements to the ones before the specified index.'
   id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: '| 将匹配元素的集合减少到指定索引之前的元素。'
 - en: '[PRE26]'
   id: totrans-140
   prefs: []
@@ -783,31 +834,37 @@
   id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Parameters
   id: totrans-142
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参数
 - en: 'index: An integer indicating the *0-based* position before which the elements
     are selected'
   id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: index：指示选择元素之前的*从0开始计数*的位置的整数
 - en: Return Value
   id: totrans-144
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 返回值
 - en: The new jQuery object.
   id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的jQuery对象。
 - en: Description
   id: totrans-146
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 描述
 - en: Given a jQuery object that represents a set of DOM elements, the `.lt` method
     constructs a new jQuery object from a subset of the matching elements. The supplied
     `index` identifies the position of one of the elements in the set; all elements
@@ -815,10 +872,12 @@
   id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定表示一组DOM元素的jQuery对象，`.lt`方法从匹配元素的子集中构造一个新的jQuery对象。提供的`index`标识集合中一个元素的位置；此元素之前的所有元素都将包含在结果中。
 - en: 'Consider a page with a simple list on it:'
   id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个包含简单列表的页面：
 - en: '[PRE27]'
   id: totrans-149
   prefs: []
@@ -828,6 +887,7 @@
   id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将此方法应用于列表项的集合：
 - en: '[PRE28]'
   id: totrans-151
   prefs: []
@@ -839,15 +899,18 @@
   id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 此调用的结果是包含项目`1`和`2`的jQuery对象。注意，提供的索引是*从0开始计数*的，并且是指jQuery对象内的元素位置，*而不是*DOM树内的位置。
 - en: .gt()
   id: totrans-153
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: .gt()
 - en: '| Reduces the set of matched elements to the ones after the specified index.'
   id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: '| 将匹配元素的集合减少到指定索引之后的元素。'
 - en: '[PRE29]'
   id: totrans-155
   prefs: []
@@ -857,31 +920,37 @@
   id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Parameters
   id: totrans-157
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参数
 - en: 'index: An integer indicating the *0-based* position after which the elements
     are selected'
   id: totrans-158
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: index：指示选择元素之后的*从0开始计数*的位置的整数
 - en: Return Value
   id: totrans-159
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 返回值
 - en: The new jQuery object.
   id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的jQuery对象。
 - en: Description
   id: totrans-161
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 描述
 - en: Given a jQuery object that represents a set of DOM elements, the `.gt` method
     constructs a new jQuery object from a subset of the matching elements. The supplied
     `index` identifies the position of one of the elements in the set; all elements
@@ -889,10 +958,12 @@
   id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定表示一组DOM元素的jQuery对象，`.gt`方法从匹配元素的子集中构造一个新的jQuery对象。提供的`index`标识集合中一个元素的位置；此元素之后的所有元素都将包含在结果中。
 - en: 'Consider a page with a simple list on it:'
   id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个包含简单列表的页面：
 - en: '[PRE30]'
   id: totrans-164
   prefs: []
@@ -902,6 +973,7 @@
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将此方法应用于列表项的集合：
 - en: '[PRE31]'
   id: totrans-166
   prefs: []
@@ -913,25 +985,30 @@
   id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 此调用的结果是包含项目4和5的jQuery对象。注意，提供的索引是*从0开始计数*的，并且是指jQuery对象内的元素位置，*而不是*DOM树内的位置。
 - en: Tree Traversal Methods
   id: totrans-168
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 树遍历方法
 - en: These methods use the structure of the DOM tree to locate a new set of elements.
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些方法利用DOM树的结构来定位一组新的元素。
 - en: .find()
   id: totrans-170
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: .find()
 - en: '| Gets the descendants of each element in the current set of matched elements,
     filtered by a selector.'
   id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: '| 获取当前匹配的每个元素的后代，该后代经过选择器筛选。'
 - en: '[PRE32]'
   id: totrans-172
   prefs: []
@@ -941,25 +1018,30 @@
   id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Parameters
   id: totrans-174
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参数
 - en: 'selector: A string containing a selector expression to match elements against'
   id: totrans-175
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: selector：包含要匹配元素的选择器表达式的字符串
 - en: Return Value
   id: totrans-176
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 返回值
 - en: The new jQuery object.
   id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的jQuery对象。
 - en: Description
   id: totrans-178
   prefs:
