@@ -93,39 +93,3 @@ npm install jquery
 ### 贴士
 
 贴士和技巧会以这种方式出现。
-
-# 读者反馈
-
-我们随时欢迎读者的反馈意见。请告诉我们你对这本书的看法，你喜欢或不喜欢的地方。读者的反馈对我们来说非常重要，能帮助我们打造让你真正受益的书籍。
-
-要给我们发送一般反馈，直接发送一封电子邮件至`<feedback@packtpub.com>`，并在主题中提及书名。
-
-如果有你所需的书籍并且希望我们出版，欢迎在[www.packtpub.com](http://www.packtpub.com)的**SUGGEST A TITLE**表格中发送给我们一封邮件或者直接电邮至`<suggest@packtpub.com>`。
-
-如果你在某个专题上有专长，有兴趣成为书籍的作者或者贡献者，请访问[www.packtpub.com/authors](http://www.packtpub.com/authors)查看我们的作者指南。
-
-# 客户支持
-
-现在你已成为 Packt 图书的自豪所有者，我们有一系列措施可以帮助你充分利用你的购买。
-
-## 下载示例代码
-
-你可以在[`www.packtpub.com`](http://www.packtpub.com)的帐户中下载你购买的所有 Packt 图书的示例代码文件。如果你是在其他地方购买了这本书，你可以访问[`www.packtpub.com/support`](http://www.packtpub.com/support)注册并直接通过邮件接收这些文件。
-
-## 勘误
-
-虽然我们已尽一切努力确保我们内容的准确性，但错误仍然可能发生。如果你发现我们图书中的错误，可能是文字错误或代码错误，我们将非常感谢你向我们报告。通过这样做，你可以帮助其他读者避免挫折，帮助我们改进这本书的后续版本。如果你发现任何勘误，请通过访问[`www.packtpub.com/support`](http://www.packtpub.com/support)，选择你的书，点击**Errata Submission Form**链接，并输入勘误的详细信息进行报告。一旦你的勘误被验证，你的提交将被接受，并且勘误将被上传到我们的网站，或者被添加到现有勘误列表的任何书籍的**勘误**部分下面。
-
-要查看先前提交的勘误，前往[`www.packtpub.com/books/content/support`](https://www.packtpub.com/books/content/support)并在搜索框中输入书名。所需信息将会出现在**勘误**部分下面。
-
-## 盗版
-
-在互联网上盗版版权材料是跨媒体的持续问题。在 Packt，我们非常重视保护我们的版权和许可。如果您在互联网上发现我们作品的任何形式的非法复制，请立即向我们提供位置地址或网站名称，以便我们采取补救措施。
-
-请通过链接 `<copyright@packtpub.com>` 联系我们，提供涉嫌侵权材料的链接。
-
-我们感谢您帮助保护我们的作者，以及我们提供有价值内容的能力。
-
-## 问题
-
-如果您在阅读书籍的任何方面遇到问题，请联系我们 `<questions@packtpub.com>`，我们将尽力解决。
