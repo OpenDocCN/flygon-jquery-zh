@@ -546,15 +546,18 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们构建一个**观察者**小部件，帮助我们可视化应用程序中发生的所有潜在小部件事件。观察者小部件能够绑定到单个小部件、一组小部件或整个文档。我们将看看后一种情况，在那里观察者甚至会捕获未来创建的小部件的事件。
 - en: How to do it...
   id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何做...
 - en: 'Let''s take a look at the CSS styles used by the observer widget first:'
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先看一下观察者小部件使用的 CSS 样式：
 - en: '[PRE5]'
   id: totrans-62
   prefs: []
@@ -566,6 +569,7 @@
   id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们看一下用于创建一个基本页面和几个示例小部件的 HTML。这些小部件将触发我们试图用观察者捕获的事件。
 - en: '[PRE6]'
   id: totrans-64
   prefs: []
@@ -576,6 +580,7 @@
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，这是小部件的实现方式，以及在此页面上使用的四个小部件实例：
 - en: '[PRE7]'
   id: totrans-66
   prefs: []
@@ -586,25 +591,30 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在浏览器中查看此页面时，基本小部件布局如下截图所示：
 - en: '![How to do it...](img/2186OS_12_05.jpg)'
   id: totrans-68
   prefs: []
   type: TYPE_IMG
+  zh: '![如何做...](img/2186OS_12_05.jpg)'
 - en: Even simply creating these widgets will trigger events. For example, when the
     page first loads, you'll see that the dialog created by the observer widget is
     already populated with events.
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 甚至只是创建这些小部件也会触发事件。例如，当页面首次加载时，您会看到观察者小部件创建的对话框已经填充了事件。
 - en: '![How to do it...](img/2186OS_12_06.jpg)'
   id: totrans-70
   prefs: []
   type: TYPE_IMG
+  zh: '![如何做...](img/2186OS_12_06.jpg)'
 - en: How it works...
   id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 工作原理...
 - en: The observable widget, in this example, is applied to the `document` element.
     This means that it will pick up any widget events that bubble up to that level.
     The observable widget defines an `observables` option, an array of widgets whose
@@ -614,6 +624,7 @@
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中，可观察小部件应用于`document`元素。这意味着它将捕获冒泡到该级别的任何小部件事件。可观察小部件定义了一个`observables`选项，一个我们想要监听其事件的小部件数组。在这种情况下，为了简洁起见，我们只包括了三个小部件。这可以根据应用程序的需要随时扩展，因为它是一个选项。
 - en: The purpose of the `_getEvents()` method is to read the `observables` option
     and to build an object that we can use to bind these events to the `_event()`
     method. Notice that we're automatically adding the widget prefix value to the
@@ -625,6 +636,7 @@
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '`_getEvents()` 方法的目的是读取`observables`选项并构建一个我们可以使用它来将这些事件绑定到`_event()`方法的对象。请注意，我们在这里自动将小部件前缀值添加到事件名称——这在小部件原型的`widgetEventPrefix`属性中是可用的。`_create()`方法的工作是将`div`元素插入到`body`元素中，然后它成为一个对话框小部件。我们将其定位在页面的右上角，以便不妨碍用户。最后，我们使用由`_getEvents()`返回的对象使用`_on()`方法开始监听事件。'
 - en: The `_event()` method is the single callback used anytime one of the widget
     events we're listening to is fired. It simply logs the event to the observer dialog.
     It also logs the time of the event; so, this tool is useful for experimenting
@@ -634,11 +646,14 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '`_event()` 方法是我们监听的任何小部件事件触发时使用的单个回调函数。它简单地将事件记录到观察者对话框中。它还记录事件的时间；因此，这个工具对于尝试任何
+    jQuery UI 应用程序都是有用的，无论是大还是小，因为它可以突出显示实际发生的事件以及它们的顺序。该小部件还负责销毁它之前创建的对话框小部件。'
 - en: Using widgets with Backbone applications
   id: totrans-75
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Backbone 应用程序中使用小部件
 - en: With the seemingly endless variations of JavaScript environments you may find
     yourself working in, it's best to embrace the fact that not everything is done
     the jQuery UI way. If you find yourself on a project where you're just itching
