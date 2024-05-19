@@ -484,6 +484,8 @@
   id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们使用了`Handlebars.compile()`方法，该方法基于提供的模板字符串生成并返回模板函数。与我们在上一节中看到的`Underscore.js`的实现的主要区别在于，我们现在使用双花括号符号`{{
+    }}`来插值我们的模板中的值。除了外观上的差异外，`Handlebars.js`还默认执行HTML字符串转义，以尝试通过将转义作为其主要用例之一来消除HTML注入安全漏洞。
 - en: As we did earlier in this chapter, we will create the template function outside
     the `for` loop and use it to generate the HTML for each `<option>` element. All
     the generated HTML strings are gathered in an array and are finally combined and
@@ -491,12 +493,14 @@
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们在本章前面所做的那样，我们将在`for`循环之外创建模板函数，并将其用于为每个`<option>`元素生成HTML。所有生成的HTML字符串都被收集到一个数组中，最终通过一次操作使用`$.append()`方法将它们组合并附加到DOM树上。
 - en: 'The next incremental step to reduce the complexity of our implementation is
     to abstract the iterations away from our JavaScript code using the looping capabilities
     of the templating engine itself:'
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 减少我们实现复杂性的下一个渐进步骤是使用模板引擎本身的循环能力将迭代抽象化为我们的JavaScript代码之外：
 - en: '[PRE9]'
   id: totrans-63
   prefs: []
@@ -511,21 +515,27 @@
   id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Handlebars.js`库允许我们通过使用特殊的`{{#each }}`符号来实现这一点。在`{{#each }}`和`{{/each}}`之间，模板的上下文被更改以匹配迭代的每个单独对象，允许直接访问和插值`categoryInfos`数组中每个对象的`{{
+    title }}`。此外，为了访问循环计数器，Handlebars提供了特殊的`@index`变量作为循环的上下文的一部分。'
 - en: Note
   id: totrans-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: 'For a full list of all the special notations that Handlebars provides, you
     can read the documentation at: [http://handlebarsjs.com/reference.html](http://handlebarsjs.com/reference.html)'
   id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以阅读[http://handlebarsjs.com/reference.html](http://handlebarsjs.com/reference.html)上的文档，获取
+    Handlebars 提供的所有特殊符号的完整列表。
 - en: Separating HTML templates from JavaScript code
   id: totrans-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 将HTML模板与JavaScript代码分离
 - en: 'Like most templating engines, Handlebars also leads us to isolate our templates
     from the JavaScript implementation of our application and deliver them to the
     browser by including them in `<script>` tags, inside the HTML of our pages. Moreover,
@@ -536,6 +546,8 @@
   id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 和大多数模板引擎一样，Handlebars也让我们将模板与应用程序的JavaScript实现隔离开，并通过将它们包含在页面HTML中的`<script>`标签中，在浏览器中传递它们。此外，Handlebars有一定的偏好，更喜欢特殊的`text/x-handlebars-template`作为所有包含Handlebars模板的`<script>`标签的
+    type 属性。例如，这是根据库推荐的方式定义仪表板框的模板的方式：
 - en: '[PRE10]'
   id: totrans-69
   prefs: []
@@ -546,18 +558,21 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: Even though our implementation would still work if a different `type` was specified
     for the `<script>` tag, following the library's guidelines can obviously make
     implementations more uniform among developers.
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如果为`<script>`标签指定了不同的`type`，我们的实现仍然可以正常工作，但遵循库的指南显然可以使开发人员之间的实现更加统一。
 - en: 'As we did earlier in this chapter, we will follow the best practice of creating
     a separate function to be responsible for providing the templates wherever they
     are needed in the application:'
   id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们在本章前面所做的那样，我们将遵循最佳实践，创建一个单独的函数负责在应用程序中需要的任何地方提供模板：
 - en: '[PRE11]'
   id: totrans-73
   prefs: []
@@ -570,6 +585,7 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所看到的，该实现与我们在本章前面看到的`Undescore.js`示例基本相同。唯一的区别是我们现在使用`Handlebars.compile()`方法来从检索到的模板生成已编译模板函数。
 - en: Pre-compiling templates
   id: totrans-75
   prefs:
