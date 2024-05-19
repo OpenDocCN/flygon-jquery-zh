@@ -318,11 +318,14 @@
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们刚刚演示了如何使用PhoneGap Build服务将HTML（当然还包括JavaScript、CSS和图像）转换为真正的本机应用程序，以适应多个平台。然而，在本章的前面部分提到过，PhoneGap提供的不仅仅是简单的包装器来将HTML转换为本机应用程序。PhoneGap
+    JavaScript API提供了对许多酷炫的设备中心服务的访问，这些服务可以极大地增强您的应用程序的功能。对于我们的第二个示例，我们将看一下其中一个功能——联系人API（有关详细信息，请参阅*联系人API文档*，可在[http://docs.phonegap.com/en/1.4.1/phonegap_contacts_contacts.md.html#Contacts)](http://docs.phonegap.com/en/1.4.1/phonegap_contacts_contacts.md.html#Contacts)上找到）。
 - en: 'The application in `Listing 12-1` is a simple contact search tool. Let''s take
     a look at the code and then cover what''s going on:'
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用程序在`Listing 12-1`中是一个简单的联系人搜索工具。让我们看看代码，然后解释一下其中的内容：
 - en: '[PRE0]'
   id: totrans-43
   prefs: []
@@ -336,15 +339,18 @@
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先看看应用程序的布局部分，它位于文件的下半部分。您可以看到我们的jQuery Mobile页面结构，其中包括一个输入字段、一个按钮和一个空列表。这里的想法是用户将输入要搜索的名称，点击按钮，结果将显示在列表中。以下屏幕截图展示了输出：
 - en: '![Adding PhoneGap functionality](img/7263_12_8.jpg)'
   id: totrans-45
   prefs: []
   type: TYPE_IMG
+  zh: '![添加PhoneGap功能](img/7263_12_8.jpg)'
 - en: 'Now take a look at the JavaScript code. The first change we''ve made is to
     include the PhoneGap JavaScript library:'
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在看一下JavaScript代码。我们所做的第一个更改是包含PhoneGap JavaScript库：
 - en: '[PRE1]'
   id: totrans-47
   prefs: []
@@ -363,10 +369,13 @@
   id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 此JavaScript库可从您从PhoneGap下载的ZIP文件中获得。即使我们不打算在本地构建我们的应用程序（当然您也可以），我们也需要在发送到Build服务的ZIP文件中包含JavaScript文件。这里有一个棘手的部分。截至PhoneGap
+    v 1.4.1，每个平台的JavaScript文件都是唯一的。这意味着PhoneGap支持的每个操作系统都有一个不同的JavaScript文件。Build服务足够智能，可以用适当平台的正确文件替换您的文件引用。如果您使用本书的Github存储库中的代码，则是Android版本。如果您想将此代码用于iOS，请务必在本地替换JavaScript文件。
 - en: 'The next interesting tidbit is the following line of code:'
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个有趣的细节是以下代码行：
 - en: '[PRE2]'
   id: totrans-50
   prefs: []
@@ -378,17 +387,20 @@
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '`deviceready`事件是由PhoneGap触发的特殊事件。它基本上意味着您的代码现在可以使用高级功能，例如Contacts API。'
 - en: Within the event handler `onDeviceReady`, we have a few things going on. The
     first function of note is the event handler for the search button. The first few
     lines simply get, trim, and validate the value.
   id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在事件处理程序`onDeviceReady`中，我们有一些事情要做。值得注意的第一个函数是搜索按钮的事件处理程序。前几行代码只是获取、修整和验证值。
 - en: 'After we are sure there''s actually something to search for, you can see the
     first actual use of the Contacts API, as shown in the following code snippet:'
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 在确保实际有内容可以搜索后，您可以看到对Contacts API的第一个实际使用，如下面的代码片段所示：
 - en: '[PRE3]'
   id: totrans-54
   prefs: []
