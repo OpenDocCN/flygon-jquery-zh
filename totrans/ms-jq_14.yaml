@@ -3,15 +3,18 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 第14章。测试 jQuery
 - en: To test or not to test, that's the question…
   id: totrans-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 要测试还是不要测试，这是个问题…
 - en: To paraphrase that world-famous detective, the answer to this question should
     be elementary!
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了用这位世界著名的侦探的话来说，对于这个问题的答案应该是很简单的！
 - en: 'If you''ve spent any time with jQuery, you will no doubt be aware of its unit:
     the need to test code, and that the most popular way is to use its testing library,
     QUnit. Throughout this chapter, we''ll recap how to use it and then look at some
@@ -20,40 +23,48 @@
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你花了一些时间学习 jQuery，你肯定知道它的单元测试的重要性，而且最流行的方法就是使用它的测试库 QUnit。在本章中，我们将回顾如何使用它，然后看一些我们应该使用的最佳实践，以及探讨如何真正减少我们的工作流程，通过自动化我们对代码的测试。
 - en: 'In this chapter, we''ll cover the following topics:'
   id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，我们将涵盖以下主题：
 - en: Revisiting QUnit
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 重新审视 QUnit
 - en: Automated testing using NodeJS and RequireJS
   id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 NodeJS 和 RequireJS 进行自动化测试
 - en: Best practices when using QUnit
   id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 QUnit 时的最佳实践
 - en: Are you ready to get stuck in? Let's get started…
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 准备好了吗？让我们开始吧…
 - en: Revisiting QUnit
   id: totrans-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 重新审视 QUnit
 - en: Testing any code is vital to the successful construction of any online application
     or site; after all, it goes without saying that we don't want bugs appearing in
     the end result, right?
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 对任何代码进行测试对于成功构建任何在线应用程序或站点至关重要；毕竟，我们不希望在最终结果中出现错误，对吧？
 - en: Tests can be performed manually, but there is an increased risk of the human
     factor, where we can't always be sure that the tests were performed 100 percent
     identically. To reduce (or even eliminate) this risk, we can automate tests using
@@ -63,16 +74,20 @@
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试可以手动进行，但存在人为因素的增加风险，我们无法始终确定测试是否完全相同。为了减少（甚至消除）这种风险，我们可以使用 jQuery 的单元测试套件
+    QUnit 来自动化测试。当然，我们可以手动运行 QUnit 测试，但 QUnit 的美妙之处在于它可以完全自动化，我们将在本章后面看到。
 - en: For now, let's take a moment to recap the basics of how to get QUnit installed
     and run some basic tests.
   id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们花一点时间回顾一下如何安装 QUnit 并运行一些基本测试的基础知识。
 - en: Installing QUnit
   id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 安装 QUnit
 - en: There are three ways to install QUnit. We can simply include the two links to
     it in our code, using the JavaScript and CSS files available at [https://qunitjs.com](https://qunitjs.com).
     These can be referenced directly, as they are hosted on QUnit's CDN links that
@@ -80,12 +95,16 @@
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装 QUnit 有三种方式。我们可以简单地在代码中包含两个链接，使用 [https://qunitjs.com](https://qunitjs.com)
+    提供的 JavaScript 和 CSS 文件。这些文件可以直接引用，因为它们是托管在由 MaxCDN 提供的 QUnit 的 CDN 链接上。
 - en: 'The alternative is to use NodeJS. To do this, we can browse to the NodeJS site
     at [http://www.nodejs.org](http://www.nodejs.org), download the appropriate version
     for our platform, and then run this command on the NodeJS command prompt:'
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种方法是使用 NodeJS。为此，我们可以浏览到 NodeJS 网站 [http://www.nodejs.org](http://www.nodejs.org)，下载适合我们平台的版本，然后在
+    NodeJS 命令提示符上运行以下命令：
 - en: '[PRE0]'
   id: totrans-16
   prefs: []
@@ -96,6 +115,7 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们甚至可以使用 Bower 来安装 QUnit；要做到这一点，我们首先需要安装 NodeJS，然后运行以下命令来安装 Bower：
 - en: '[PRE1]'
   id: totrans-18
   prefs: []
@@ -105,6 +125,7 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦安装了 Bower，就可以用这个命令安装 QUnit：
 - en: '[PRE2]'
   id: totrans-20
   prefs: []
@@ -114,22 +135,26 @@
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个阶段，我们准备开始用 QUnit 创建我们的自动化测试。
 - en: Note
   id: totrans-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: If you want to really push the boat out, you can test the latest committed version
     of QUnit—the links are available at [http://code.jquery.com/qunit/](http://code.jquery.com/qunit/);
     it should be noted that this is not for production use!
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想要真正地深入了解，你可以测试最新提交的 QUnit 版本——链接在 [http://code.jquery.com/qunit/](http://code.jquery.com/qunit/)；需要注意的是这不适用于生产环境！
 - en: Creating a simple demo
   id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建一个简单的演示
 - en: 'Now that we have QUnit installed, we''re ready to run a simple test. To prove
     that it''s working, we''re going to modify a simple demo in order to test for
     the number of letters in a textbox and indicate whether it is above or below a
@@ -137,6 +162,7 @@
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经安装了 QUnit，我们准备运行一个简单的测试。为了证明它的工作原理，我们将修改一个简单的演示，以便测试文本框中的字母数，并指示它是否超过或低于给定的限制，如下所示：
 - en: We'll start by extracting copies of the code required for our demo from the
     code download that accompanies this book; go ahead and extract the `qunit.html`
     file along with the `css` and `js` folders and store these in your project area:![Creating
@@ -145,24 +171,28 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们将首先从附带本书的代码下载中提取我们演示所需的代码副本；请提取 `qunit.html` 文件以及 `css` 和 `js` 文件夹，并将它们存储在项目区域中：![创建一个简单的演示](img/image00492.jpeg)
 - en: Tip
   id: totrans-27
   prefs:
   - PREF_IND
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 提示
 - en: Don't worry about the presence of the `node_modules` folder; we will be creating
     this later in the chapter, when Node is installed.
   id: totrans-28
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 不必担心 `node_modules` 文件夹的存在；在后面的章节中，当安装 Node 时，我们将创建它。
 - en: 'We now need to modify our test markup, so go ahead and open up `qunit.html`
     and then modify it, as indicated:'
   id: totrans-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在，我们需要修改我们的测试标记，所以请打开 `qunit.html`，然后按照指示进行修改：
 - en: '[PRE3]'
   id: totrans-30
   prefs:
@@ -177,6 +207,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 接下来，打开你喜欢的文本编辑器，添加以下代码，并将其保存为 `js` 文件夹中的 `qunittest.js`。第一个代码块对文本字段的长度进行检查，并显示计数；如果超过了规定的八个字符的长度，则将该计数的背景设置为红色：
 - en: '[PRE4]'
   id: totrans-32
   prefs:
@@ -190,6 +221,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在上一个代码块的下方立即添加以下代码行；这将调用 QUnit 来测试我们的文本字段的长度，并在字母计数下方显示结果：
 - en: '[PRE5]'
   id: totrans-34
   prefs:
@@ -203,6 +235,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 文件已就绪，我们可以运行测试了；请在浏览器中运行 `qunit.html`。如果一切顺利，我们应该看到我们测试的结果，这种情况下将显示一个通过：![创建一个简单的演示](img/image00493.jpeg)
 - en: 'Not every test that we perform in real life will be successful; there will
     be occasions when our tests fail, if we''ve not provided the right values or performed
     a calculation that gives an unexpected result. To see how this looks in QUnit,
@@ -211,6 +244,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在现实生活中，我们进行的并非每次测试都会成功；如果我们没有提供正确的数值或执行了给出意外结果的计算，就会出现测试失败的情况。要查看在 QUnit 中的效果，请按照以下步骤将这些代码添加到
+    `qunittest.js` 文件中，如下所示：
 - en: '[PRE6]'
   id: totrans-37
   prefs:
@@ -224,22 +259,26 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在，刷新你的浏览器窗口；这一次，你应该看到测试已完成，但有一个失败，如下图所示：![创建一个简单的演示](img/image00494.jpeg)
 - en: Note
   id: totrans-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意
 - en: There is a completed version of this example in the code download, in the `completed
     version` folder, which explores the outcome of the tests.
   id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在代码下载的 `completed version` 文件夹中有这个示例的已完成版本，它探讨了测试的结果。
 - en: Although this was designed as a simple demo, it nevertheless highlights how
     easy it is to create simple tests that give the appropriate responses; let's pause
     for a moment to consider what we have covered in this exercise.
   id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这被设计为一个简单的演示，但它仍然突出了创建简单测试并给出适当响应的简易性；让我们暂停片刻，考虑一下我们在这个练习中涵盖了什么。
 - en: The key to each test lies in the use of the `assert.ok()` function—this performs
     a simple Boolean check. In our examples, we check whether the text length is 8
     characters or less or 8 characters or more and either show pass or fail depending
@@ -250,6 +289,8 @@
   id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个测试的关键在于使用 `assert.ok()` 函数—它执行一个简单的布尔检查。在我们的例子中，我们检查文本长度是否为 8 个字符或更少，或者为 8
+    个字符或更多，并根据结果显示通过或失败。此外，我们可以要求 QUnit 显示标准文本，或者用个性化消息进行覆盖。这种方法应该足以开始对代码进行单元测试；随着时间的推移，如果需要，我们总是可以进一步开发测试。
 - en: The beauty of this library is that we can use it with either jQuery or JavaScript;
     our examples in this chapter are naturally based around using the former, but
     QUnit is flexible enough to work with the latter, should we decide to move away
@@ -416,12 +457,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果一切顺利，我们应该看到类似以下截图的内容出现：![使用 QUnit 自动化测试](img/image00496.jpeg)
 - en: 'Let''s now start Grunt and set it to watch for any changes in our code; to
     do this, run this command in the NodeJS command prompt:'
   id: totrans-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在让我们启动 Grunt 并设置它监视代码的任何更改；要做到这一点，请在 NodeJS 命令提示符中运行以下命令：
 - en: '[PRE12]'
   id: totrans-69
   prefs:
@@ -435,17 +478,20 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 打开我们在本章前面创建的 `qunittest.js` 的副本，然后保存文件 —— 我知道这听起来有点疯狂，但这是触发 Grunt 进程所必需的。
 - en: If all went well, we should see this result appear in the NodeJS window:![Automating
     tests with QUnit](img/image00497.jpeg)
   id: totrans-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果一切顺利，我们应该在 NodeJS 窗口中看到这个结果出现：![使用 QUnit 自动化测试](img/image00497.jpeg)
 - en: 'Revert to `qunittest.js` and then change this line as shown here:'
   id: totrans-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 回滚到 `qunittest.js`，然后按照这里所示更改此行：
 - en: '[PRE13]'
   id: totrans-73
   prefs:
@@ -458,6 +504,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 保存文件，然后观察 Grunt 窗口，现在应该指示测试失败：![使用 QUnit 自动化测试](img/image00498.jpeg)
 - en: Let's change tack and move on to something else; although we've not covered
     the use of QUnit in any great depth, it is nevertheless important to try and follow
     best practices where possible, when using QUnit. Let's take a moment to consider
@@ -465,11 +512,13 @@
   id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们转变方向，继续前进；尽管我们没有深入讨论过如何使用 QUnit，但在使用 QUnit 时，尽可能遵循最佳实践仍然很重要。让我们花一点时间考虑一些这些最佳实践，以便了解它们如何提高我们的编码技能。
 - en: Exploring best practices when using QUnit
   id: totrans-76
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 探索使用 QUnit 时的最佳实践
 - en: 'The aim of any developer should be to follow best practices when possible;
     it''s not always practical to do this, so it is important to learn where to compromise
     if circumstances dictate. Assuming this won''t happen too often, there are a number
@@ -477,6 +526,8 @@
   id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何开发者的目标应该是在可能的情况下遵循最佳实践；但实际情况并非总是如此，因此在必要时学会在什么情况下妥协是很重要的。假设这种情况不会经常发生，那么在使用
+    QUnit 时，我们可以尝试遵循一些最佳实践指南：
 - en: '**Make each test independent of each other**: Each test we run should only
     test one specific behavior; if we test the same behavior in multiple tests, then
     we will have to change all the tests if the behavior needs to be changed.'
@@ -484,6 +535,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**使每个测试相互独立**：我们运行的每个测试都应该只测试一个特定的行为；如果我们在多个测试中测试相同的行为，那么如果行为需要更改，我们就必须更改所有的测试。'
 - en: '**Don''t make unnecessary assertions**: Ask yourself this question, "What behavior
     are we trying to test?". A unit test is meant to be a design schematic of how
     a certain behavior should work and not detail everything the code happens to do.
@@ -493,6 +545,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**不要做不必要的断言**：问问自己这个问题，“我们要测试什么行为？” 单元测试应该是对某个行为应该如何工作的设计草图，而不是详细描述代码发生的每件事情。尽可能地在每个测试中保持一个断言；如果我们的代码中已经在其他地方测试过某个断言，那么运行测试就没有意义了。'
 - en: '**Test only one code unit at a time**: The architecture design of your code
     must support testing units (that is, classes or very small groups of classes)
     independently and not chained together. If not, you risk creating a lot of overlap,
@@ -504,12 +557,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**一次只测试一个代码单元**：您的代码的架构设计必须支持独立测试单元（即类或非常小的类组），而不是将它们链接在一起。如果不这样做，您就会面临大量重叠的风险，这将导致代码的其他地方发生故障。如果您的应用程序或站点的设计不允许这样做，那么您的代码质量将会受到影响；可能需要使用**控制反转**（**IoC**）来测试您的工作。'
 - en: Note
   id: totrans-81
   prefs:
   - PREF_IND
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注
 - en: The usual practice is for the custom code to call into generic, reusable libraries
     (such as QUnit); IoC flips the process so that in this instance, the tests are
     performed by QUnit calling our custom code instead.
@@ -517,6 +572,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 通常的做法是让自定义代码调用通用的、可重用的库（例如 QUnit）；IoC 将这个过程反转，以便在这种情况下，测试由 QUnit 调用我们的自定义代码执行。
 - en: '**Mock out all external services and state data**: A key part of unit testing
     is to reduce the effect of external services on your code, where possible—the
     behavior of these services can overlap with your tests and impact the results.'
@@ -524,6 +580,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**模拟所有外部服务和状态数据**: 单元测试的关键部分是尽可能减少外部服务对你的代码的影响——这些服务的行为可能会与你的测试重叠，并影响结果。'
 - en: '**Avoid mocking up too many objects or state data**: If you have any data that
     controls the state of your application or site, then try to keep any mock data
     to below 5 percent; anything higher and you risk making your tests less trustworthy.
@@ -537,6 +594,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**避免模拟太多的对象或状态数据**: 如果你有任何控制应用程序或站点状态的数据，请尝试将任何模拟数据保持在低于5%的水平；任何更高的数值都会使你的测试不太可靠。在运行连续测试之前，将它们重置回一个已知的值也是明智的，因为不同的测试可能会影响其他测试的这些值。如果你发现你必须按特定顺序运行测试，或者你对活动数据库或网络连接有依赖，那么你的设计或代码就不正确，你应该重新审视两者，理解为什么以及如何去除这些依赖关系。'
 - en: '**Avoid unnecessary preconditions**: Avoid having common setup code that runs
     at the beginning of lots of unrelated tests. This will confuse your tests, as
     it won''t be clear which assumptions your test relies on and indicates that you''re
@@ -547,6 +605,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**避免不必要的前提条件**: 避免在许多不相关的测试的开头运行常见的设置代码。这会使你的测试变得混乱，因为不清楚你的测试依赖于哪些假设，并且表明你并不只是在测试单个单元。关键是创造正确的条件，即使这可能很困难——诀窍在于尽可能简单地保持它们。'
 - en: '**Don''t unit test configuration settings**: There is no benefit in inspecting
     your configuration settings when running unit tests; it will likely result in
     duplicated code, which isn''t necessary.'
@@ -554,6 +613,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**不要对配置设置进行单元测试**: 在运行单元测试时检查你的配置设置没有任何好处；这可能会导致重复的代码，这是没有必要的。'
 - en: '**Don''t specify your implementation – specify the result instead**: Unit testing
     is designed to focus on the results, not the implementation—does your function
     produce what you expect it to do? Take an example of the following code snippet:'
@@ -561,6 +621,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**不要指定你的实现方式 - 而是指定结果**: 单元测试旨在专注于结果，而不是实现方式——你的函数是否产生了你期望的结果？以以下代码片段为例：'
 - en: '[PRE14]'
   id: totrans-88
   prefs:
@@ -573,11 +634,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 这看起来完全合理，对吧？如果不是因为它专注于*代码是如何实现的*，而不是结果，那就是完全有效的。
 - en: 'A better way to test the code is to use this approach instead:'
   id: totrans-90
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 测试代码的更好方式是使用这种方法：
 - en: '[PRE15]'
   id: totrans-91
   prefs:
@@ -590,6 +653,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 在这个例子中，我们不关注获得结果的路线，而是关注结果本身；它是否产生了我们需要看到的内容？
 - en: '**Name your unit tests clearly and consistently**: A successful unit test will
     clearly indicate its purpose; a useful way to name tests is using what I call
     the **SSR** principle, or **Subject, Scenario, and Result**. This means that we
@@ -600,6 +664,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**清晰且一致地命名你的单元测试**: 一个成功的单元测试将清晰地表明其目的；一个有用的命名测试的方法是使用我称之为**SSR**原则，即**主题、场景和结果**。这意味着我们可以确定正在测试什么，测试应该何时运行，以及预期结果是什么。如果我们仅仅用主题来命名它，那么如果我们不知道我们试图维护什么，它就会变得难以维护！'
 - en: These tips only scratch the surface of what should be followed as a good practice;
     for a more in-depth discussion, it is worthwhile to read the article by Adam Kolawa
     on applying unit testing, which is available at [http://www.parasoft.com/wp-content/uploads/pdf/unittestting.pdf](http://www.parasoft.com/wp-content/uploads/pdf/unittestting.pdf).
@@ -608,23 +673,27 @@
   id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些提示只是浅尝辄止，作为良好实践应该遵循的内容；要进行更深入的讨论，值得阅读亚当·科拉瓦关于应用单元测试的文章，该文章位于[http://www.parasoft.com/wp-content/uploads/pdf/unittestting.pdf](http://www.parasoft.com/wp-content/uploads/pdf/unittestting.pdf)。但要记住的关键点是要保持简单、逻辑，并且不要试图过度复杂化你的测试，否则它们将变得毫无意义！
 - en: Summary
   id: totrans-95
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: We've now reached the end of the chapter; even though it was short, it covered
     some useful points on unit testing practices and how we can save ourselves time
     and effort by automating our testing. Let's quickly recap what we learned.
   id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在已经到了本章的结尾；虽然篇幅不长，但涵盖了一些关于单元测试实践的有用观点，以及我们如何通过自动化测试来节省时间和精力。让我们快速回顾一下我们学到的内容。
 - en: We kicked off with a quick revisit of the principles of QUnit and how to install
     it; we briefly covered the most popular method but also looked at how to use CDN
     and Bower to make the libraries available in our code.
   id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们开始时简要回顾了 QUnit 的原则以及如何安装它；我们简要介绍了最流行的方法，但也介绍了如何使用 CDN 和 Bower 在我们的代码中使用库。
 - en: Next up came a look at some basic examples of testing; while these are very
     simple, they highlighted the principles we should use in unit testing. These were
     explored further with a discussion on the best practices to follow when unit testing
@@ -632,6 +701,7 @@
   id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来我们来看一些基本的测试示例；虽然这些示例非常简单，但它们突显了我们在单元测试中应该遵循的原则。这些原则在使用 QUnit 进行单元测试时进一步探讨。
 - en: We've now reached the end of the book. I hope you enjoyed our journey through
     *Mastering jQuery* and have seen that it is not just about writing code but about
     some of the more soft topics, which will help enhance your skills as a jQuery
@@ -639,3 +709,5 @@
   id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在已经到了本书的结尾。希望你喜欢我们在*掌握 jQuery*中的旅程，并且发现这不仅仅是关于编写代码，还涉及一些更加软性的话题，这些话题将有助于提高你作为
+    jQuery 开发者的技能。
